@@ -1,12 +1,9 @@
 import { Optional } from "../types/types";
-import { objectEntries } from "../util";
+import { objectEntries, objectKeys } from "../util";
 import { ClaimPlanetHandler, UnclaimPlanetHandler } from "./claimPlanet";
 import { UpdateBreakthroughStateHandler } from "./updateBreakthroughState";
 
-function getExpeditionCountPerFaction(expedition: Optional<Expedition>) {
-  if (!expedition) {
-    return {};
-  }
+function getExpeditionCountPerFaction(expedition: Expedition) {
   const factionCounts: Partial<Record<FactionId, number>> = {};
   for (const factionId of Object.values(expedition)) {
     let count = factionCounts[factionId] ?? 0;
@@ -14,6 +11,22 @@ function getExpeditionCountPerFaction(expedition: Optional<Expedition>) {
     factionCounts[factionId] = count;
   }
   return factionCounts;
+}
+
+function getPotentialOwners(expedition: Expedition) {
+  const countsPerFaction: Partial<Record<FactionId, number>> = {};
+  let max = 0;
+  const owners = [];
+  for (const factionId of Object.values(expedition)) {
+    let count = countsPerFaction[factionId] ?? 0;
+    count++;
+    max = Math.max(count, max);
+    countsPerFaction[factionId] = count;
+  }
+
+  return objectEntries(countsPerFaction)
+    .filter(([_, count]) => count === max)
+    .map(([factionId, _]) => factionId);
 }
 
 export class CommitToExpeditionHandler implements Handler {
@@ -47,41 +60,20 @@ export class CommitToExpeditionHandler implements Handler {
       return updates;
     }
 
-    // TODO: Account for tie-breaker.
-    let addedFaction = !this.data.event.factionId;
-    let removedFaction = !this.data.event.prevFaction;
-    const counts = getExpeditionCountPerFaction(expedition);
-    let { total, max, topFaction } = objectEntries(counts).reduce(
-      (
-        runningTally: { total: number; max: number; topFaction?: FactionId },
-        [factionId, count]
-      ) => {
-        const updated = { ...runningTally };
-        let localCount = count;
-        if (factionId === this.data.event.factionId) {
-          localCount++;
-          addedFaction = true;
-        }
-        if (factionId === this.data.event.prevFaction) {
-          localCount--;
-          removedFaction = true;
-        }
-        updated.total += localCount;
-        if (localCount > updated.max) {
-          updated.max = localCount;
-          updated.topFaction = factionId;
-        }
-        return updated;
-      },
-      { total: 0, max: 0, topFaction: undefined }
-    );
-
-    if (!addedFaction) {
-      total++;
-      if (max === 1) {
-        // TODO: Handle tie-break including current player.
-      }
+    if (this.data.event.factionId) {
+      expedition[this.data.event.expedition] = this.data.event.factionId;
+    } else if (this.data.event.prevFaction) {
+      delete expedition[this.data.event.expedition];
     }
+
+    const total = objectKeys(expedition).length;
+    let topFaction: Optional<FactionId>;
+    const potentialOwners = getPotentialOwners(expedition);
+    if (potentialOwners.length === 1) {
+      topFaction = potentialOwners[0];
+    }
+
+    const counts = getExpeditionCountPerFaction(expedition);
 
     // If the previous faction should no longer have their breakthrough, lock their breakthrough.
     if (prevFaction) {
@@ -137,11 +129,11 @@ export class CommitToExpeditionHandler implements Handler {
     } else {
       updates[`expedition.${this.data.event.expedition}`] = "DELETE";
       // TODO: If this was the 6th expedition, remove ownership of Thunder's Edge.
-      if (total >= 5 && topFaction) {
+      if (total >= 5) {
         const handler = new UnclaimPlanetHandler(this.gameData, {
           action: "UNCLAIM_PLANET",
           event: {
-            faction: topFaction,
+            faction: "Vuil'raith Cabal",
             planet: "Thunder's Edge",
           },
         });

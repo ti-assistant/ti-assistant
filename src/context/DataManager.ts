@@ -135,27 +135,12 @@ export default class DataManager {
     );
 
     unlistenFns.push(
-      onSnapshot(doc(db, timerCollection, gameId), (doc) => {
-        const storedTimers = doc.data() as Record<string, number>;
-
-        this.latestServerData.timers = storedTimers;
-
-        this.storedData.timers = storedTimers;
-        this.data.timers = storedTimers;
-
-        this.publish();
-      })
-    );
-
-    unlistenFns.push(
       onSnapshot(doc(db, gameCollection, gameId), (doc) => {
         const storedData = doc.data() as StoredGameData;
 
         const serverActionLog = this.latestServerData.actionLog ?? [];
-        const serverTimers = this.latestServerData.timers ?? {};
         this.latestServerData = storedData;
         this.latestServerData.actionLog = serverActionLog;
-        this.latestServerData.timers = serverTimers;
 
         // If we are ahead of the server, don't update.
         if (this.storedData.sequenceNum > this.latestServerData.sequenceNum) {
@@ -163,10 +148,8 @@ export default class DataManager {
         }
 
         const actionLog = this.storedData.actionLog ?? [];
-        const timers = this.storedData.timers ?? {};
         this.storedData = doc.data() as StoredGameData;
         this.storedData.actionLog = actionLog;
-        this.storedData.timers = timers;
 
         const viewOnly = this.data.viewOnly;
 

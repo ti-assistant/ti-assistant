@@ -131,7 +131,8 @@ export async function POST(
   //   new Promise((resolve) => setTimeout(resolve, ms));
   // await delay(1000);
 
-  const timerDoc = await db.collection("timers").doc(gameId).get();
+  const timerRef = db.collection("timers").doc(gameId);
+  const timerDoc = await timerRef.get();
 
   const timers = timerDoc.data() as Record<string, number>;
 
@@ -150,7 +151,13 @@ export async function POST(
         });
       }
 
-      shouldRetry = await updateInTransaction(db, gameRef, data, gameTime);
+      shouldRetry = await updateInTransaction(
+        db,
+        gameRef,
+        timerRef,
+        data,
+        gameTime
+      );
       if (shouldRetry) {
         // Backoff after failures to potentially allow other updates to complete.
         await new Promise((r) => setTimeout(r, 100));
@@ -307,6 +314,7 @@ function insertLogEntry(
 function updateInTransaction(
   db: Firestore,
   gameRef: DocumentReference<DocumentData>,
+  timerRef: DocumentReference<DocumentData>,
   data: GameUpdateData & { timestamp: number },
   gameTime: number
 ) {
@@ -583,6 +591,12 @@ function updateInTransaction(
     if (Object.keys(updates).length > 0) {
       t.update(gameRef, updates);
     }
+    t.update(
+      timerRef,
+      convertToServerUpdates({
+        paused: "DELETE",
+      })
+    );
 
     return false;
   });

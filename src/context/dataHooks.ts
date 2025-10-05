@@ -5,6 +5,7 @@ import { getLogEntries } from "../util/actionLog";
 import { getCurrentTurnLogEntries } from "../util/api/actionLog";
 import { ActionLog, Optional } from "../util/types/types";
 import DataManager from "./DataManager";
+import TimerManager from "./TimerManager";
 
 export function useGameDataValue<Type>(path: string, defaultValue: Type): Type {
   const [value, setValue] = useState<Type>(
@@ -14,6 +15,19 @@ export function useGameDataValue<Type>(path: string, defaultValue: Type): Type {
   useEffect(() => {
     setValue(DataManager.getValue(path) ?? defaultValue);
     return DataManager.subscribe(setValue, path);
+  }, [path]);
+
+  return value;
+}
+
+export function useTimerValue<Type>(path: string, defaultValue: Type): Type {
+  const [value, setValue] = useState<Type>(
+    TimerManager.getValue(path) ?? defaultValue
+  );
+
+  useEffect(() => {
+    setValue(TimerManager.getValue(path) ?? defaultValue);
+    return TimerManager.subscribe(setValue, path);
   }, [path]);
 
   return value;
@@ -156,9 +170,8 @@ export function useTechs() {
   return useGameDataValue<Techs>("techs", {});
 }
 
-type Timers = Record<string, number>;
 export function useTimers() {
-  return useGameDataValue<Timers>("timers", {});
+  return useTimerValue<Timers>("", {});
 }
 
 export function useExpedition() {

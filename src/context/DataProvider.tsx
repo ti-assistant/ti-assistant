@@ -4,6 +4,7 @@ import { PropsWithChildren, useEffect } from "react";
 import { useIntl } from "react-intl";
 import DataManager from "./DataManager";
 import { Optional } from "../util/types/types";
+import TimerManager from "./TimerManager";
 
 export default function DataProvider({
   archive = false,
@@ -20,10 +21,15 @@ export default function DataProvider({
   const intl = useIntl();
 
   DataManager.init(gameId, sessionId, seedData, intl, archive);
+  TimerManager.init(gameId, seedData.timers ?? {}, archive);
 
   useEffect(() => {
     return DataManager.listen(gameId);
   }, [gameId]);
+
+  useEffect(() => {
+    return TimerManager.listen();
+  }, []);
 
   return <>{children}</>;
 }

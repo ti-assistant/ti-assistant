@@ -1,10 +1,9 @@
 import { FieldValue, getFirestore } from "firebase-admin/firestore";
+import { NextResponse } from "next/server";
 import {
   canEditGame,
-  getGameData,
-  getGameDataInTransaction,
+  getTimersInTransaction,
 } from "../../../../server/util/fetch";
-import { NextResponse } from "next/server";
 
 interface SetPauseData {
   paused: boolean;
@@ -24,24 +23,22 @@ export async function POST(
 
   const db = getFirestore();
 
-  const gameRef = db.collection("games").doc(gameId);
+  const timerRef = db.collection("timers").doc(gameId);
 
   try {
     await db.runTransaction(async (t) => {
       // Ensure that game exists.
-      await getGameDataInTransaction(gameRef, t);
+      await getTimersInTransaction(timerRef, t);
 
       const data = (await req.json()) as SetPauseData;
 
-      t.update(gameRef, {
-        "state.paused": data.paused ?? FieldValue.delete(),
+      t.update(timerRef, {
+        paused: data.paused ?? FieldValue.delete(),
       });
     });
   } catch (e) {
     console.log("Transaction failed");
   }
 
-  const gameData = await getGameData(gameId);
-
-  return NextResponse.json(gameData);
+  return NextResponse.json({});
 }

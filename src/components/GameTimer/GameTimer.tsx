@@ -1,11 +1,8 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import { FormattedMessage } from "react-intl";
 import { useGameId, useTimers, useViewOnly } from "../../context/dataHooks";
-import { useGameState } from "../../context/stateDataHooks";
-import { useSharedTimer } from "../../data/SharedTimer";
+import TimerManager from "../../context/TimerManager";
 import { setGlobalPauseAsync } from "../../dynamic/api";
-import { saveGameTimer, updateLocalGameTimer } from "../../util/api/timers";
-import { useInterval } from "../../util/client";
 import { rem } from "../../util/util";
 import TimerDisplay from "../TimerDisplay/TimerDisplay";
 import TurnTimer from "../TurnTimer/TurnTimer";
@@ -13,57 +10,23 @@ import styles from "./GameTimer.module.scss";
 
 export default function GameTimer({ frozen = false }) {
   const gameId = useGameId();
-  const state = useGameState();
   const timers = useTimers();
+
   const viewOnly = useViewOnly();
 
-  const [gameTimer, setGameTimer] = useState(timers.game ?? 0);
-  const { addSubscriber, removeSubscriber } = useSharedTimer();
+  const gameTimer = timers.game ?? 0;
 
-  const timerRef = useRef(0);
-  const lastUpdate = useRef(0);
-
-  useInterval(() => {
+  useEffect(() => {
     if (viewOnly) {
       return;
     }
-    if (lastUpdate.current < timerRef.current) {
-      lastUpdate.current = timerRef.current;
-      saveGameTimer(gameId, timerRef.current);
-    }
-  }, 2000);
+    TimerManager.activateTimer("game");
+    return () => TimerManager.deactivateTimer("game");
+  }, [viewOnly]);
 
-  const paused = state?.paused;
-
-  const updateTime = useCallback(() => {
-    if (!gameId || paused || frozen) {
-      return;
-    }
-    timerRef.current += 1;
-    updateLocalGameTimer(gameId, timerRef.current);
-    setGameTimer(timerRef.current);
-  }, [paused, frozen, gameId]);
-
-  useEffect(() => {
-    const id = addSubscriber(updateTime);
-    return () => {
-      removeSubscriber(id);
-    };
-  }, [updateTime, addSubscriber, removeSubscriber]);
-
-  const localGameTimer = timers?.game;
-  useEffect(() => {
-    if (localGameTimer && (localGameTimer > timerRef.current || viewOnly)) {
-      timerRef.current = localGameTimer;
-      lastUpdate.current = localGameTimer;
-      setGameTimer(localGameTimer);
-    }
-  }, [localGameTimer, gameTimer, viewOnly]);
+  const paused = timers.paused;
 
   function togglePause() {
-    if (!gameId) {
-      return;
-    }
     if (paused) {
       setGlobalPauseAsync(gameId, false);
     } else {

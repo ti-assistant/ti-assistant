@@ -5,10 +5,7 @@ type TimerUpdateAction =
   | "RESET_AGENDA_TIMERS";
 
 interface TimerUpdateData {
-  action?: TimerUpdateAction;
-  agendaNum?: number;
-  faction?: string;
-  timer?: number;
+  timers: Timers;
   timestamp?: number;
 }
 
@@ -16,5 +13,6 @@ interface Timers {
   firstAgenda?: number;
   game?: number;
   secondAgenda?: number;
+  paused?: boolean;
   [key: string]: Optional<number>;
 }

@@ -1,4 +1,5 @@
 import DataManager from "../../context/DataManager";
+import TimerManager from "../../context/TimerManager";
 import { updateGameData } from "./handler";
 import { getOppositeHandler } from "./opposite";
 import { updateActionLog } from "./update";
@@ -29,12 +30,18 @@ export function undo(gameId: string) {
       return storedGameData;
     }
 
+    const gameTimer = TimerManager.getValue<number>("game");
+
     updateGameData(storedGameData, handler.getUpdates());
-    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
+    updateActionLog(storedGameData, handler, now, gameTimer ?? 0);
 
     storedGameData.lastUpdate = now;
 
     return storedGameData;
+  });
+  TimerManager.update((timers) => {
+    timers.paused = false;
+    return timers;
   });
 
   return updatePromise.catch((_) => {

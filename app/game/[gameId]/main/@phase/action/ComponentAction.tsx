@@ -1049,6 +1049,9 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
           ) {
             return false;
           }
+          if (objective.type === "OTHER") {
+            return false;
+          }
           if (objective.type === "SECRET" && scorers.length > 0) {
             return false;
           }
@@ -1148,6 +1151,9 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
             objective.id === "Become a Martyr" ||
             objective.id === "Prove Endurance"
           ) {
+            return false;
+          }
+          if (objective.type === "OTHER") {
             return false;
           }
           if (objective.type === "SECRET" && scorers.length > 0) {

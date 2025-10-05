@@ -1,4 +1,5 @@
 import DataManager from "../../context/DataManager";
+import TimerManager from "../../context/TimerManager";
 import { ClaimPlanetHandler, UnclaimPlanetHandler } from "../model/claimPlanet";
 import { updateGameData } from "./handler";
 import { updateActionLog } from "./update";
@@ -30,11 +31,16 @@ export function claimPlanet(
 
     // Requires looking at action log.
     updateGameData(storedGameData, handler.getUpdates());
-    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
+    const gameTimer = TimerManager.getValue<number>("game");
+    updateActionLog(storedGameData, handler, now, gameTimer ?? 0);
 
     storedGameData.lastUpdate = now;
 
     return storedGameData;
+  });
+  TimerManager.update((timers) => {
+    timers.paused = false;
+    return timers;
   });
 
   return updatePromise.catch((_) => {
@@ -68,11 +74,16 @@ export function unclaimPlanet(
 
     // Requires looking at action log.
     updateGameData(storedGameData, handler.getUpdates());
-    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
+    const gameTimer = TimerManager.getValue<number>("game");
+    updateActionLog(storedGameData, handler, now, gameTimer ?? 0);
 
     storedGameData.lastUpdate = now;
 
     return storedGameData;
+  });
+  TimerManager.update((timers) => {
+    timers.paused = false;
+    return timers;
   });
 
   return updatePromise.catch((_) => {

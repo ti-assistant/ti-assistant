@@ -747,10 +747,10 @@ export function AdditionalActions({
                       const availableAttachments = Object.values(attachments)
                         .filter(
                           (attachment) =>
-                            (!attachment.required.type ||
-                              adjustedPlanet.types.includes(
-                                attachment.required.type
-                              )) &&
+                            attachment.required.type &&
+                            adjustedPlanet.types.includes(
+                              attachment.required.type
+                            ) &&
                             (attachment.id === currentAttachment ||
                               !claimedAttachments.has(attachment.id))
                         )
@@ -1014,10 +1014,10 @@ export function AdditionalActions({
                       const availableAttachments = Object.values(attachments)
                         .filter(
                           (attachment) =>
-                            (!attachment.required.type ||
-                              adjustedPlanet.types.includes(
-                                attachment.required.type
-                              )) &&
+                            attachment.required.type &&
+                            adjustedPlanet.types.includes(
+                              attachment.required.type
+                            ) &&
                             (attachment.id === currentAttachment ||
                               !claimedAttachments.has(attachment.id))
                         )
@@ -1247,9 +1247,11 @@ export function AdditionalActions({
           }
           if (
             objective.id === "Become a Martyr" ||
-            objective.id === "Prove Endurance" ||
-            objective.id === "Book of Latvinia"
+            objective.id === "Prove Endurance"
           ) {
+            return false;
+          }
+          if (objective.type === "OTHER") {
             return false;
           }
           if (objective.type === "SECRET" && scorers.length > 0) {
@@ -1565,9 +1567,11 @@ export function AdditionalActions({
           }
           if (
             objective.id === "Become a Martyr" ||
-            objective.id === "Prove Endurance" ||
-            objective.id === "Book of Latvinia"
+            objective.id === "Prove Endurance"
           ) {
+            return false;
+          }
+          if (objective.type === "OTHER") {
             return false;
           }
           if (objective.type === "SECRET" && scorers.length > 0) {

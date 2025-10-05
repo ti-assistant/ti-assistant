@@ -27,7 +27,7 @@ export async function POST(
 
   try {
     await db.runTransaction(async (t) => {
-      const timers = await getTimersInTransaction(timersRef, t);
+      await getTimersInTransaction(timersRef, t);
 
       if (!data.timestamp) {
         return new Response("Missing info", {
@@ -35,63 +35,68 @@ export async function POST(
         });
       }
 
-      switch (data.action) {
-        case "SET_GAME_TIMER": {
-          if (data.timer == undefined) {
-            return new Response("Missing info", {
-              status: 422,
-            });
-          }
-          const timer = timers.game ?? 0;
-          if (data.timer > timer) {
-            t.update(timersRef, {
-              game: data.timer,
-              lastUpdate: data.timestamp,
-            });
-          }
-          break;
-        }
-        case "SAVE_FACTION_TIMER": {
-          if (data.timer == undefined || !data.faction) {
-            return new Response("Missing info", {
-              status: 422,
-            });
-          }
-          const timer = timers[data.faction] ?? 0;
-          if (data.timer > timer) {
-            t.update(timersRef, {
-              [data.faction]: data.timer,
-              lastUpdate: data.timestamp,
-            });
-          }
-          break;
-        }
-        case "SAVE_AGENDA_TIMER": {
-          if (data.timer == undefined) {
-            return new Response("Missing info", {
-              status: 422,
-            });
-          }
-          const timerName =
-            (data.agendaNum ?? 1) === 1 ? "firstAgenda" : "secondAgenda";
-          const timer = timers[timerName] ?? 0;
-          if (data.timer > timer) {
-            t.update(timersRef, {
-              [timerName]: data.timer,
-              lastUpdate: data.timestamp,
-            });
-          }
-          break;
-        }
-        case "RESET_AGENDA_TIMERS": {
-          t.update(timersRef, {
-            firstAgenda: FieldValue.delete(),
-            secondAgenda: FieldValue.delete(),
-            lastUpdate: data.timestamp,
-          });
-          break;
-        }
-      }
+      // Paused should be set elsewhere.
+      delete data.timers.paused;
+
+      t.update(timersRef, data.timers);
+
+      // switch (data.action) {
+      //   case "SET_GAME_TIMER": {
+      //     if (data.timer == undefined) {
+      //       return new Response("Missing info", {
+      //         status: 422,
+      //       });
+      //     }
+      //     const timer = timers.game ?? 0;
+      //     if (data.timer > timer) {
+      //       t.update(timersRef, {
+      //         game: data.timer,
+      //         lastUpdate: data.timestamp,
+      //       });
+      //     }
+      //     break;
+      //   }
+      //   case "SAVE_FACTION_TIMER": {
+      //     if (data.timer == undefined || !data.faction) {
+      //       return new Response("Missing info", {
+      //         status: 422,
+      //       });
+      //     }
+      //     const timer = timers[data.faction] ?? 0;
+      //     if (data.timer > timer) {
+      //       t.update(timersRef, {
+      //         [data.faction]: data.timer,
+      //         lastUpdate: data.timestamp,
+      //       });
+      //     }
+      //     break;
+      //   }
+      //   case "SAVE_AGENDA_TIMER": {
+      //     if (data.timer == undefined) {
+      //       return new Response("Missing info", {
+      //         status: 422,
+      //       });
+      //     }
+      //     const timerName =
+      //       (data.agendaNum ?? 1) === 1 ? "firstAgenda" : "secondAgenda";
+      //     const timer = timers[timerName] ?? 0;
+      //     if (data.timer > timer) {
+      //       t.update(timersRef, {
+      //         [timerName]: data.timer,
+      //         lastUpdate: data.timestamp,
+      //       });
+      //     }
+      //     break;
+      //   }
+      //   case "RESET_AGENDA_TIMERS": {
+      //     t.update(timersRef, {
+      //       firstAgenda: FieldValue.delete(),
+      //       secondAgenda: FieldValue.delete(),
+      //       lastUpdate: data.timestamp,
+      //     });
+      //     break;
+      //   }
+      // }
     });
   } catch (e) {
     console.log("Transaction failed", e);

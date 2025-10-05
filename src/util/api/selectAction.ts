@@ -1,4 +1,5 @@
 import DataManager from "../../context/DataManager";
+import TimerManager from "../../context/TimerManager";
 import {
   SelectActionHandler,
   UnselectActionHandler,
@@ -26,12 +27,17 @@ export function selectAction(gameId: string, action: Action) {
       return storedGameData;
     }
 
-    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
+    const gameTimer = TimerManager.getValue<number>("game");
+    updateActionLog(storedGameData, handler, now, gameTimer ?? 0);
     updateGameData(storedGameData, handler.getUpdates());
 
     storedGameData.lastUpdate = now;
 
     return storedGameData;
+  });
+  TimerManager.update((timers) => {
+    timers.paused = false;
+    return timers;
   });
 
   return updatePromise.catch((_) => {
@@ -60,11 +66,16 @@ export function unselectAction(gameId: string, action: Action) {
 
     // Requires looking at the action log.
     updateGameData(storedGameData, handler.getUpdates());
-    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
+    const gameTimer = TimerManager.getValue<number>("game");
+    updateActionLog(storedGameData, handler, now, gameTimer ?? 0);
 
     storedGameData.lastUpdate = now;
 
     return storedGameData;
+  });
+  TimerManager.update((timers) => {
+    timers.paused = false;
+    return timers;
   });
 
   return updatePromise.catch((_) => {

@@ -59,8 +59,8 @@ export default function FrontierExploration({
     const availableAttachments = Object.values(attachments)
       .filter(
         (attachment) =>
-          (!attachment.required.type ||
-            adjustedPlanet.types.includes(attachment.required.type)) &&
+          attachment.required.type &&
+          adjustedPlanet.types.includes(attachment.required.type) &&
           (attachment.id === currentAttachment ||
             !claimedAttachments.has(attachment.id))
       )

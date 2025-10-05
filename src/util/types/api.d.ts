@@ -55,7 +55,6 @@ type GameUpdateData =
   | SwapMapTilesData
   | CommitToExpeditionData
   | (GainAllianceData | LoseAllianceData)
-  // TODO
   | UndoData;
 
 type Secondary = "PENDING" | "DONE" | "SKIPPED";
@@ -101,7 +100,7 @@ interface GameData {
   strategycards?: Partial<Record<StrategyCardId, StrategyCard>>;
   systems?: Partial<Record<SystemId, System>>;
   techs?: Partial<Record<TechId, Tech>>;
-  timers?: Record<string, number>;
+  timers?: Timers;
 
   // If set, prevent the user from making changes.
   viewOnly?: boolean;

@@ -130,10 +130,6 @@ export class UnclaimPlanetHandler implements Handler {
       return false;
     }
 
-    if (planet.owner !== this.data.event.faction) {
-      return false;
-    }
-
     return true;
   }
 

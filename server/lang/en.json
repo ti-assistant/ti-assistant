@@ -1655,6 +1655,14 @@
     "defaultMessage": "Zeal",
     "description": "Title of Faction Ability: Zeal"
   },
+  "Argent Flight.Breakthrough.Wing Transfer.Description": {
+    "defaultMessage": "When you activate a system that contains only your units, you may place command tokens from your reinforcements into any systems adjacent to that system that contain only your units; at the end of this action, you may move ships among the active system and systems adjacent to it that contain your command tokens.",
+    "description": "Description of Faction Breakthrough: Wing Transfer"
+  },
+  "Argent Flight.Breakthrough.Wing Transfer.Title": {
+    "defaultMessage": "Wing Transfer",
+    "description": "Title of Faction Breakthrough: Wing Transfer"
+  },
   "Argent Flight.Leaders.Mirik Aun Sissiri.AbilityName": {
     "defaultMessage": "HELIX PROTOCOL",
     "description": "Ability name for Argent Hero: Mirik Aun Sissiri"
@@ -1875,6 +1883,14 @@
     "defaultMessage": "Munitions Reserve",
     "description": "Title of Faction Ability: Munitions Reserve"
   },
+  "Barony of Letnev.Breakthrough.Gravleash Maneuvers.Description": {
+    "defaultMessage": "Before you roll dice during space combat, apply +1 to the results of 1 of your ship's rolls, where X is the number of ship types you have in the combat.{br}During movement, your non-fighter ships' move values are equal to the highest move value amongst moving ships in the system they started in.",
+    "description": "Description of Faction Breakthrough: Gravleash Maneuvers"
+  },
+  "Barony of Letnev.Breakthrough.Gravleash Maneuvers.Title": {
+    "defaultMessage": "Gravleash Maneuvers",
+    "description": "Title of Faction Breakthrough: Gravleash Maneuvers"
+  },
   "Barony of Letnev.Leaders.Darktalon Treilla.AbilityName": {
     "defaultMessage": "DARK MATTER AFFINITY",
     "description": "Ability name for Letnev Hero: Darktalon Treilla"
@@ -2003,6 +2019,14 @@
     "defaultMessage": "Scavenge",
     "description": "Title of Faction Ability: Scavenge"
   },
+  "Clan of Saar.Breakthrough.Deorbit Barrage.Description": {
+    "defaultMessage": "ACTION: Exhaust this card and spend any amount of resources to choose a planet up to 2 systems away from an asteroid field that contains your ships; roll a number of dice equal to the amount spent and assign 1 hit to a ground force on that planet for each roll of 4 or greater.",
+    "description": "Description of Faction Breakthrough: Deorbit Barrage"
+  },
+  "Clan of Saar.Breakthrough.Deorbit Barrage.Title": {
+    "defaultMessage": "Deorbit Barrage",
+    "description": "Title of Faction Breakthrough: Deorbit Barrage"
+  },
   "Clan of Saar.Leaders.Captain Mendosa.Description": {
     "defaultMessage": "After a player activates a system:{br}You may exhaust this card to increase the move value of 1 of that player's ships to match the move value of the ship on the game board that has the highest move value.",
     "description": "Description for Saar Agent: Captain Mendosa"
@@ -2107,6 +2131,10 @@
     "defaultMessage": "Assassinate Representative",
     "description": "Title of Component: Assassinate Representative"
   },
+  "Components.Avernus.Title": {
+    "defaultMessage": "Avernus",
+    "description": "Title of Component: Avernus"
+  },
   "Components.Black Market Forgery.Description": {
     "defaultMessage": "ACTION: Purge 2 of your relic fragments of the same type to gain 1 relic.{br}Then return this card to the Naaz-Rokha player.",
     "description": "Description for Component: Black Market Forgery"
@@ -2122,6 +2150,14 @@
   "Components.Blood Pact.Title": {
     "defaultMessage": "Blood Pact",
     "description": "Title of Component: Blood Pact"
+  },
+  "Components.Conventions of War Abandoned.Description": {
+    "defaultMessage": "ACTION: Exhaust X-89 BACTERIAL WEAPON to choose 1 planet in a system that contains 1 of your units that has BOMBARDMENT; purge its planet card and all attachments or legendary planet ability cards associated with it.",
+    "description": "Description for Component: Conventions of War Abandoned"
+  },
+  "Components.Conventions of War Abandoned.Title": {
+    "defaultMessage": "Conventions of War Abandoned",
+    "description": "Title of Component: Conventions of War Abandoned"
   },
   "Components.Dark Pact.Description": {
     "defaultMessage": "ACTION: Place this card face up in your play area.{br}When you give a number of commodities to the Empyrean player equal to your maximum commodity value, you each gain 1 trade good.{br}If you activate a system that contains 1 or more of the Empyrean player's units, return this card to the Empyrean player.",
@@ -2187,6 +2223,14 @@
     "defaultMessage": "Mageon Implants",
     "description": "Title of Component: Mageon Implants"
   },
+  "Components.Mercenaries for Hire.Description": {
+    "defaultMessage": "ACTION: Spend 3 trade goods to gain the top card of the mercenary deck and place it in your play area.",
+    "description": "Description for Component: Mercenaries for Hire"
+  },
+  "Components.Mercenaries for Hire.Title": {
+    "defaultMessage": "Mercenaries for Hire",
+    "description": "Title of Component: Mercenaries for Hire"
+  },
   "Components.Orbital Drop.Description": {
     "defaultMessage": "ACTION: Spend 1 token from your strategy pool to place 2 infantry from your reinforcements on 1 planet you control.",
     "description": "Description for Component: Orbital Drop"
@@ -2211,6 +2255,22 @@
     "defaultMessage": "Promise of Protection",
     "description": "Title of Component: Promise of Protection"
   },
+  "Components.Puppets of the Blade.Description": {
+    "defaultMessage": "If you have at least 1 plot card in your play area, gain the following ability:{br}ACTION: Purge The Firmament's faction sheet, leaders, planet cards, and promissory note. Then, gain all of the faction components for The Obsidian.",
+    "description": "Description for Component: Puppets of the Blade"
+  },
+  "Components.Puppets of the Blade.Title": {
+    "defaultMessage": "Puppets of the Blade",
+    "description": "Title of Component: Puppets of the Blade"
+  },
+  "Components.Share Knowledge.Description": {
+    "defaultMessage": "ACTION: Place this card faceup in your play area and gain 1 non-faction, non-unit upgrade technology that the Deepwrought player owns; place this technology on this card.{br}Return that technology to the deck and this card to the Deepwrought player at the end of the status phase.",
+    "description": "Description for Component: Share Knowledge"
+  },
+  "Components.Share Knowledge.Title": {
+    "defaultMessage": "Share Knowledge",
+    "description": "Title of Component: Share Knowledge"
+  },
   "Components.Sling Relay.Description": {
     "defaultMessage": "ACTION: Exhaust this card to produce 1 ship in any system that contains one of your space docks.",
     "description": "Description for Component: Sling Relay"
@@ -2234,6 +2294,14 @@
   "Components.Star Forge.Title": {
     "defaultMessage": "Star Forge",
     "description": "Title of Component: Star Forge"
+  },
+  "Components.Stellar Atomics.Description": {
+    "defaultMessage": "ACTION: Discard your control token from the Stellar Atomics card to destroy all ground forces and structures on any non-home planet.",
+    "description": "Description for Component: Stellar Atomics"
+  },
+  "Components.Stellar Atomics.Title": {
+    "defaultMessage": "Stellar Atomics",
+    "description": "Title of Component: Stellar Atomics"
   },
   "Components.Stymie.Description": {
     "defaultMessage": "ACTION: Place this card face up in your play area.{br}While this card is in your play area, the Arborec player cannot produce units in or adjacent to non-home systems that contain 1 or more of your units.{br}If you activate a system that contains 1 or more of the Arborec player's units, return this card to the Arborec player.",
@@ -2335,6 +2403,14 @@
     "defaultMessage": "The Tribunii",
     "description": "Title of Faction Ability: The Tribunii"
   },
+  "Council Keleres.Breakthrough.IIHQ Modernization.Description": {
+    "defaultMessage": "When you gain this card, gain the Custodia Vigilia planet card and its legendary planet ability card.{br}You are neighbors with all players that have units or control planets in or adjacent to the Mecatol Rex system.",
+    "description": "Description of Faction Breakthrough: IIHQ Modernization"
+  },
+  "Council Keleres.Breakthrough.IIHQ Modernization.Title": {
+    "defaultMessage": "I.I.H.Q. Modernization",
+    "description": "Title of Faction Breakthrough: IIHQ Modernization"
+  },
   "Council Keleres.Leaders.Harka Leeds.AbilityName": {
     "defaultMessage": "ERWAN'S COVENANT",
     "description": "Ability name for Keleres Hero: Harka Leeds"
@@ -2415,6 +2491,14 @@
     "defaultMessage": "Agency Supply Network",
     "description": "Title of Tech: Agency Supply Network"
   },
+  "Council Keleres.Techs.Executive Order.Description": {
+    "defaultMessage": "ACTION: Reveal the top or bottom card of the agenda deck and vote on it, being speaker. You may use trade goods to vote.",
+    "description": "Description for Tech: Executive Order"
+  },
+  "Council Keleres.Techs.Executive Order.Title": {
+    "defaultMessage": "Executive Order",
+    "description": "Title of Tech: Executive Order"
+  },
   "Council Keleres.Techs.I.I.H.Q. Modernization.Description": {
     "defaultMessage": "You are neighbors with all players that have units or control planets in or adjacent to the Mecatol Rex system.{br}Gain the Custodia Vigilia planet card and its legendary planet ability card. You cannot lose these cards, and this card cannot have an X or Y assimilator placed on it.",
     "description": "Description for Tech: I.I.H.Q. Modernization"
@@ -2442,6 +2526,118 @@
   "Council Keleres.Units.Omniopiares.Title": {
     "defaultMessage": "Omniopiares",
     "description": "Title of Faction Unit: Omniopiares"
+  },
+  "Crimson Rebellion.Abilities.Incursion.Description": {
+    "defaultMessage": "When you activate a system that contains a breach, you may flip that breach; systems that contain active breaches are adjacent. At the end of the status phase, any player with ships in a system that contains an active breach may remove that breach.",
+    "description": "Description for Faction Ability: Incursion"
+  },
+  "Crimson Rebellion.Abilities.Incursion.Title": {
+    "defaultMessage": "Incursion",
+    "description": "Title of Faction Ability: Incursion"
+  },
+  "Crimson Rebellion.Abilities.Sundered.Description": {
+    "defaultMessage": "You cannot use wormholes other than epsilon wormholes. Other players' units that move or are placed into your home system are destroyed.",
+    "description": "Description for Faction Ability: Sundered"
+  },
+  "Crimson Rebellion.Abilities.Sundered.Title": {
+    "defaultMessage": "Sundered",
+    "description": "Title of Faction Ability: Sundered"
+  },
+  "Crimson Rebellion.Abilities.The Sorrow.Description": {
+    "defaultMessage": "When you create the game board, place The Sorrow (tile 94) where your home system would be placed, and place an active breach in it. The Sorrow is not a home system. Then, place your home system (tile 118) in your play area.",
+    "description": "Description for Faction Ability: The Sorrow"
+  },
+  "Crimson Rebellion.Abilities.The Sorrow.Title": {
+    "defaultMessage": "The Sorrow",
+    "description": "Title of Faction Ability: The Sorrow"
+  },
+  "Crimson Rebellion.Breakthrough.Resonance Generator.Description": {
+    "defaultMessage": "During your tactical actions, apply +1 to the move value of each of your ships that starts its movement in your home system or in a system that contains an active breach.{br}ACTION: Exhaust this card to flip any breach or place an active breach in a non-home system that contains your units.",
+    "description": "Description of Faction Breakthrough: Resonance Generator"
+  },
+  "Crimson Rebellion.Breakthrough.Resonance Generator.Title": {
+    "defaultMessage": "Resonance Generator",
+    "description": "Title of Faction Breakthrough: Resonance Generator"
+  },
+  "Crimson Rebellion.Leaders.Ahk Ravin.Description": {
+    "defaultMessage": "ACTION: Exhaust this card to choose 1 player. That player may swap the position of 2 of their ships in any systems; they may transport units when they swap.",
+    "description": "Description for Rebellion Agent: Ahk Ravin"
+  },
+  "Crimson Rebellion.Leaders.Ahk Ravin.Name": {
+    "defaultMessage": "Ahk Ravin",
+    "description": "Name of Rebellion Agent: Ahk Ravin"
+  },
+  "Crimson Rebellion.Leaders.Ahk Siever.Description": {
+    "defaultMessage": "At the end of a combat between any players:{br}Gain 1 commodity or convert 1 of your commodities to a trade good.",
+    "description": "Description for Rebellion Commander: Ahk Siever"
+  },
+  "Crimson Rebellion.Leaders.Ahk Siever.Name": {
+    "defaultMessage": "Ahk Siever",
+    "description": "Name of Rebellion Commander: Ahk Siever"
+  },
+  "Crimson Rebellion.Leaders.Ahk Siever.Unlock": {
+    "defaultMessage": "TODO: Add unlock condition",
+    "description": "Unlock condition for Rebellion Commander: Ahk Siever"
+  },
+  "Crimson Rebellion.Leaders.TODO: Fragment Reality.AbilityName": {
+    "defaultMessage": "FRAGMENT REALITY",
+    "description": "Ability name for Rebellion Hero: TODO: Fragment Reality"
+  },
+  "Crimson Rebellion.Leaders.TODO: Fragment Reality.Description": {
+    "defaultMessage": "When you produce ships:{br}You may place any of those ships onto this card.{br}At the start of a space combat, you may purge this card to place all ships from this card into the active system.",
+    "description": "Description for Rebellion Hero: TODO: Fragment Reality"
+  },
+  "Crimson Rebellion.Leaders.TODO: Fragment Reality.Name": {
+    "defaultMessage": "TODO: Fragment Reality",
+    "description": "Name of Rebellion Hero: TODO: Fragment Reality"
+  },
+  "Crimson Rebellion.Name": {
+    "defaultMessage": "Crimson Rebellion",
+    "description": "Name of Faction: Crimson Rebellion"
+  },
+  "Crimson Rebellion.Promissories.Sever.Description": {
+    "defaultMessage": "ACTION: Place this card faceup in your play area and place the sever token in a system that contains your units; wormholes in that system have no effect during movement.{br}Remove the sever token and return this card to the Rebellion player at the end of the status phase.",
+    "description": "Description for Faction Promissory: Sever"
+  },
+  "Crimson Rebellion.Promissories.Sever.Title": {
+    "defaultMessage": "Sever",
+    "description": "Title of Faction Promissory: Sever"
+  },
+  "Crimson Rebellion.Shortname": {
+    "defaultMessage": "Rebellion",
+    "description": "Shortened version of Faction name: Crimson Rebellion"
+  },
+  "Crimson Rebellion.Techs.Subatomic Splicer.Description": {
+    "defaultMessage": "When one of your ships is destroyed, you may produce a ship of the same type at a space dock in your home system.",
+    "description": "Description for Tech: Subatomic Splicer"
+  },
+  "Crimson Rebellion.Techs.Subatomic Splicer.Title": {
+    "defaultMessage": "Subatomic Splicer",
+    "description": "Title of Tech: Subatomic Splicer"
+  },
+  "Crimson Rebellion.Units.Exile I.Description": {
+    "defaultMessage": "At the end of any player's combat in this unit's system or an adjacent system, you may place 1 inactive breach in that system.",
+    "description": "Description for Faction Unit: Exile I"
+  },
+  "Crimson Rebellion.Units.Exile I.Title": {
+    "defaultMessage": "Exile I",
+    "description": "Title of Faction Unit: Exile I"
+  },
+  "Crimson Rebellion.Units.Quietus.Description": {
+    "defaultMessage": "While this unit is in a system that contains an active breach, other players' units in systems with active breaches lose all of their unit abilities.",
+    "description": "Description for Faction Unit: Quietus"
+  },
+  "Crimson Rebellion.Units.Quietus.Title": {
+    "defaultMessage": "Quietus",
+    "description": "Title of Faction Unit: Quietus"
+  },
+  "Crimson Rebellion.Units.Revenant.Description": {
+    "defaultMessage": "DEPLOY: During the \"Commit Ground Forces\" step of your tactical action in a system that contains an active breach, you may commit 1 mech, even if you have no units in the system.",
+    "description": "Description for Faction Unit: Revenant"
+  },
+  "Crimson Rebellion.Units.Revenant.Title": {
+    "defaultMessage": "Revenant",
+    "description": "Title of Faction Unit: Revenant"
   },
   "Cw3noi": {
     "defaultMessage": "Pick Faction",
@@ -2499,6 +2695,10 @@
     "defaultMessage": "Doctor Carrina",
     "description": "Name of Deepwrought Agent: Doctor Carrina"
   },
+  "Deepwrought Scholarate.Leaders.Ta Zern.AbilityName": {
+    "defaultMessage": "WAVE FUNCTION COLLAPSE",
+    "description": "Ability name for Deepwrought Hero: Ta Zern"
+  },
   "Deepwrought Scholarate.Leaders.Ta Zern.Description": {
     "defaultMessage": "ACTION: Purge this card and a non-unit upgrade technology you own or from your deck; then, purge all cards with the same name owned by other players and in other players' decks.{br}Then, each player that purged a technology they owned researches another technology.",
     "description": "Description for Deepwrought Hero: Ta Zern"
@@ -2522,6 +2722,22 @@
   "Deepwrought Scholarate.Shortname": {
     "defaultMessage": "Deepwrought",
     "description": "Shortened version of Faction name: Deepwrought Scholarate"
+  },
+  "Deepwrought Scholarate.Techs.Hydrothermal Mining.Description": {
+    "defaultMessage": "At the start of the status phase, gain 1 trade good for each ocean card in play.",
+    "description": "Description for Tech: Hydrothermal Mining"
+  },
+  "Deepwrought Scholarate.Techs.Hydrothermal Mining.Title": {
+    "defaultMessage": "Hydrothermal Mining",
+    "description": "Title of Tech: Hydrothermal Mining"
+  },
+  "Deepwrought Scholarate.Techs.Radical Advancement.Description": {
+    "defaultMessage": "At the start of the status phase, you may replace one of your non-unit upgrade technologies with a technology of the same color that has exactly 1 more prerequisite.",
+    "description": "Description for Tech: Radical Advancement"
+  },
+  "Deepwrought Scholarate.Techs.Radical Advancement.Title": {
+    "defaultMessage": "Radical Advancement",
+    "description": "Title of Tech: Radical Advancement"
   },
   "Deepwrought Scholarate.Units.D.W.S Luminous.Description": {
     "defaultMessage": "This ship can move through systems that contain your units, even if other players units are present: if it would, apply +1 to its move value for each of those systems.",
@@ -2699,6 +2915,14 @@
     "defaultMessage": "Masters of Trade",
     "description": "Title of Faction Ability: Masters of Trade"
   },
+  "Emirates of Hacan.Breakthrough.Auto-Factories.Description": {
+    "defaultMessage": "When you produce 3 or more non-fighter ships, place 1 command token from your reinforcements into your fleet pool.",
+    "description": "Description of Faction Breakthrough: Auto-Factories"
+  },
+  "Emirates of Hacan.Breakthrough.Auto-Factories.Title": {
+    "defaultMessage": "Auto-Factories",
+    "description": "Title of Faction Breakthrough: Auto-Factories"
+  },
   "Emirates of Hacan.Leaders.Carth of Golden Sands.Description": {
     "defaultMessage": "During the action phase:{br}You may exhaust this card to gain 2 commodities or replenish another player's commodities.",
     "description": "Description for Hacan Agent: Carth of Golden Sands"
@@ -2803,6 +3027,14 @@
     "defaultMessage": "Voidborn",
     "description": "Title of Faction Ability: Voidborn"
   },
+  "Empyrean.Breakthrough.Void Tether.Description": {
+    "defaultMessage": "When you activate a system that contains or is adjacent to a unit or planet you control, you may place or move 1 of your void tether tokens onto a border that system shares with another system; other players do not treat those systems as adjacent to each other unless you allow it.",
+    "description": "Description of Faction Breakthrough: Void Tether"
+  },
+  "Empyrean.Breakthrough.Void Tether.Title": {
+    "defaultMessage": "Void Tether",
+    "description": "Title of Faction Breakthrough: Void Tether"
+  },
   "Empyrean.Leaders.Acamar.Description": {
     "defaultMessage": "After a player moves ships into a system that does not contain any planets:{br}You may exhaust this card; that player gains 1 command token.",
     "description": "Description for Empyrean Agent: Acamar"
@@ -2891,6 +3123,14 @@
     "defaultMessage": "Watcher",
     "description": "Title of Faction Unit: Watcher"
   },
+  "Events.Advent of the War Sun.Description": {
+    "defaultMessage": "At the end of setup, all players other than the Embers of Muaat player gain the War Sun unit upgrade technology.{br}The Embers of Muaat player purges their faction-specific promissory note, unlocks their commander, and places 1 additional War Sun in their home system.",
+    "description": "Description of Event: Advent of the War Sun"
+  },
+  "Events.Advent of the War Sun.Title": {
+    "defaultMessage": "Advent of the War Sun",
+    "description": "Title of Event: Advent of the War Sun"
+  },
   "Events.Age of Commerce.Description": {
     "defaultMessage": "Players do not have to be neighbors to perform transactions with each other.{br}Players do not have a maximum number of commodities; when they refresh commodities, they gain a number of commodities equal to their commodities value instead.{br}Players can share non-faction technology with other players as part of a transaction. When sharing technology, the receiving player gains that technology from their own deck; the sharing player does not lose the technology.",
     "description": "Description of Event: Age of Commerce"
@@ -2931,6 +3171,30 @@
     "defaultMessage": "Civilized Society",
     "description": "Title of Event: Civilized Society"
   },
+  "Events.Conventions of War Abandoned.Description": {
+    "defaultMessage": "Each hit produced by BOMBARDMENT rolls destroys 3 units instead of 1.{br}Players that have the X-89 BACTERIAL WEAPON technology can perform the following action:{br}ACTION: Exhaust X-89 BACTERIAL WEAPON to choose 1 planet in a system that contains 1 of your units that has BOMBARDMENT; purge its planet card and all attachments or legendary planet ability cards associated with it.{br}You are eliminated if all of your home system's planet cards are purged.",
+    "description": "Description of Event: Conventions of War Abandoned"
+  },
+  "Events.Conventions of War Abandoned.Title": {
+    "defaultMessage": "Conventions of War Abandoned",
+    "description": "Title of Event: Conventions of War Abandoned"
+  },
+  "Events.Cosmic Phenomenae.Description": {
+    "defaultMessage": "Anomalies are adjusted as follows:{br}Nebulae: The defender applies +3 to each of their ship's combat rolls in the nebula instead.{nl}Asteroid Fields: Fighters without a move value do not participate in space combat in asteroid fields.{nl}Supernovas: Units with PRODUCTION in or adjacent to supernovas have their PRODUCTION values increased by 1.{nl}Gravity Rifts: You may apply an additional +1 to the MOVE values of any of your ships moving out of gravity rifts; if you do, those ships are removed on a roll of 5 or lower.{nl}Entropic Scar: Systems that contain entropic scars are adjacent to each other.",
+    "description": "Description of Event: Cosmic Phenomenae"
+  },
+  "Events.Cosmic Phenomenae.Title": {
+    "defaultMessage": "Cosmic Phenomenae",
+    "description": "Title of Event: Cosmic Phenomenae"
+  },
+  "Events.Cultural Exchange Program.Description": {
+    "defaultMessage": "At the end of setup, shuffle the reference cards that correspond to each faction in play. Each player draws 1 of those cards and takes all leaders that correspond to that faction. They belong to that player for the remainder of the game. Then, each player unlocks their commander.{br}The Obsidian/Firmament player does not participate in the Cultural Exchange Program. Instead, they begin the game with \"The Obsidian\" relic.",
+    "description": "Description of Event: Cultural Exchange Program"
+  },
+  "Events.Cultural Exchange Program.Title": {
+    "defaultMessage": "Cultural Exchange Program",
+    "description": "Title of Event: Cultural Exchange Program"
+  },
   "Events.Dangerous Wilds.Description": {
     "defaultMessage": "During setup, place neutral infantry on each hazardous planet equal to that planet's resource value.{br}At the end of each round, for each hazardous planet that is not controlled, replenish any neutral units that were destroyed during the game round.{br}When a player gains control of a hazardous planet from the planet deck, they may research 1 technology; they may ignore a number of that technology's prerequisites equal to the planet's resource value.",
     "description": "Description for Event: Dangerous Wilds"
@@ -2947,6 +3211,14 @@
     "defaultMessage": "Hidden Agenda",
     "description": "Title of Event: Hidden Agenda"
   },
+  "Events.Mercenaries for Hire.Description": {
+    "defaultMessage": "At the start of the game, shuffle the alliance cards that correspond to the factions not in play and place them in the common play area with the cards fronts faceup; this is the mercenary deck.{br}All players can perform the following action:{br}ACTION: Spend 3 trade goods to gain the top card of the mercenary deck and place it in your play area.{br}Players can use the abilities of the mercenaries in their play area.",
+    "description": "Description of Event: Mercenaries for Hire"
+  },
+  "Events.Mercenaries for Hire.Title": {
+    "defaultMessage": "Mercenaries for Hire",
+    "description": "Title of Event: Mercenaries for Hire"
+  },
   "Events.Minor Factions.Description": {
     "defaultMessage": "During setup, players are dealt 1 fewer blue tile. Before creating the galaxy, shuffle the reference cards for factions not being played and deal 1 to each player. In speaker order, each player places that faction's home system in the second ring, equidistant from players' home systems. Then, that player places 3 neutral infantry on that system's planets, split as evenly as possible. These systems are minor faction systems and do not count as home systems.{br}When a player controls each planet in a minor faction system, they take that factions alliance card from the deck or from the player that owned it previously.{br}Planets in minor faction systems gain all three planet traits (cultural, industrial, and hazardous).",
     "description": "Description for Event: Minor Factions"
@@ -2954,6 +3226,22 @@
   "Events.Minor Factions.Title": {
     "defaultMessage": "Minor Factions",
     "description": "Title of Event: Minor Factions"
+  },
+  "Events.Monuments to the Ages.Description": {
+    "defaultMessage": "When you would place a structure on a non-home planet, you may spend 5 trade goods to place a neutral space dock instead; this is a monument, and is not considered to be a unit of any type. There can be only 3 monuments in play at once.{br}At the start of the status phase, place 1 commodity beneath each monument; each monument is worth 1 victory point to the player that controls its planet for every 3 commodities beneath it.{br}When a player gains control of a planet that contains a monument, they may destroy that monument.",
+    "description": "Description of Event: Monuments to the Ages"
+  },
+  "Events.Monuments to the Ages.Title": {
+    "defaultMessage": "Monuments to the Ages",
+    "description": "Title of Event: Monuments to the Ages"
+  },
+  "Events.Rapid Mobilization.Description": {
+    "defaultMessage": "After setup, put The Fracture into play. Then, each player simultaneously resolves the following effects in order:{br}Place 1 infantry onto each planet adjacent to your home system (or the Creuss Gate/The Sorrow, if playing those factions); gain control of and ready those planets but do not explore them.{br}Place 1 space dock on any planet you control and place your flagship and 3 fighters in its system.{br}Gain your breakthrough.{br}Research 1 technology; if you are the Nomad player, research 1 additional technology.",
+    "description": "Description of Event: Rapid Mobilization"
+  },
+  "Events.Rapid Mobilization.Title": {
+    "defaultMessage": "Rapid Mobilization",
+    "description": "Title of Event: Rapid Mobilization"
   },
   "Events.Stellar Atomics.Description": {
     "defaultMessage": "During setup, each player places one of their control tokens on this card.{br}All players can perform the following action:{br}ACTION: Discard your control token from this card to destroy all ground forces and structures on any non-home planet.{br}If you do not have a control token on this card, you cannot vote or play action cards during the agenda phase.",
@@ -2970,6 +3258,30 @@
   "Events.Total War.Title": {
     "defaultMessage": "Total War",
     "description": "Title of Event: Total War"
+  },
+  "Events.Weird Wormholes.Description": {
+    "defaultMessage": "After a ship moves using at least 1 alpha, beta, or gamma wormhole, roll 1 die and consult the following list.{br}Fighter > Destroyer > Cruiser > Dreadnought > Carrier > Flagship > War Sun (if researched){br}For each result of 1-5, replace that ship with the ship before it from your reinforcements, if able.{br}For each result of 6-10, replace that ship with the ship after it from your reinforcements, if able.{br}If there are no ships of that type in your reinforcements, skip that type and replace it with the next available type.",
+    "description": "Description of Event: Weird Wormholes"
+  },
+  "Events.Weird Wormholes.Title": {
+    "defaultMessage": "Weird Wormholes",
+    "description": "Title of Event: Weird Wormholes"
+  },
+  "Events.Wild Wild Galaxy.Description": {
+    "defaultMessage": "Action cards are adjusted as follows:{br}Direct Hit: Can be used against mechs{nl}Flank Speed: Applies +2 MOVE instead of +1{nl}Maneuvering Jets: Cancels all SPACE CANNON hits{nl}Morale Boost: Applies +2 to die rolls instead of +1{nl}Sabotage: Also take the canceled action card{nl}Shields Holding: Can be used in ground combat{nl}Skilled Retreat: Does not place a command token{nl}War Machine: Reduces cost by 5 instead of 1{nl}Diplomatic Pressure: Player must give 3 notes{br}Additionally, Stellar Converter and Nova Seed can be used against any planets and systems.",
+    "description": "Description of Event: Wild Wild Galaxy"
+  },
+  "Events.Wild Wild Galaxy.Title": {
+    "defaultMessage": "Wild, Wild Galaxy",
+    "description": "Title of Event: Wild Wild Galaxy"
+  },
+  "Events.Zealous Orthodoxy.Description": {
+    "defaultMessage": "The first player to score 2 secret objectives gains 1 victory point.{br}Then, place that faction's alliance card on this card; all players gain that ability. That faction's alliance promissory note is then purged.",
+    "description": "Description of Event: Zealous Orthodoxy"
+  },
+  "Events.Zealous Orthodoxy.Title": {
+    "defaultMessage": "Zealous Orthodoxy",
+    "description": "Title of Event: Zealous Orthodoxy"
   },
   "FHUFoZ": {
     "defaultMessage": "Game ID",
@@ -3087,6 +3399,110 @@
     "defaultMessage": "Owners",
     "description": "Text on a button that will show planet ownership."
   },
+  "Firmament.Abilities.Plots Within Plots.Description": {
+    "defaultMessage": "You can score secret objectives already scored by other players if you fulfill their requirements; this does not count against your secret objective limit or the number you can score in a round. When you score another player's secret objective, do not gain a victory point; instead, place a facedown plot card into your play area with that player's control token on it.",
+    "description": "Description for Faction Ability: Plots Within Plots"
+  },
+  "Firmament.Abilities.Plots Within Plots.Title": {
+    "defaultMessage": "Plots Within Plots",
+    "description": "Title of Faction Ability: Plots Within Plots"
+  },
+  "Firmament.Abilities.Puppets of the Blade.Description": {
+    "defaultMessage": "If you have at least 1 plot card in your play area, gain the following ability:{br}ACTION: Purge The Firmament's faction sheet, leaders, planet cards, and promissory note. Then, gain all of the faction components for The Obsidian.",
+    "description": "Description for Faction Ability: Puppets of the Blade"
+  },
+  "Firmament.Abilities.Puppets of the Blade.Title": {
+    "defaultMessage": "Puppets of the Blade",
+    "description": "Title of Faction Ability: Puppets of the Blade"
+  },
+  "Firmament.Breakthrough.The Sowing.Description": {
+    "defaultMessage": "When you gain this card and at the start of the status phase, you may place up to 3 of your trade goods on this card.{br}Flip this card if you become the Obsidian faction.",
+    "description": "Description of Faction Breakthrough: The Sowing"
+  },
+  "Firmament.Breakthrough.The Sowing.Title": {
+    "defaultMessage": "The Sowing",
+    "description": "Title of Faction Breakthrough: The Sowing"
+  },
+  "Firmament.Leaders.Captain Aroz.Description": {
+    "defaultMessage": "You may treat planets in systems that contain your ships as if you controlled them for the purpose of scoring secret objectives.",
+    "description": "Description for Firmament Commander: Captain Aroz"
+  },
+  "Firmament.Leaders.Captain Aroz.Name": {
+    "defaultMessage": "Captain Aroz",
+    "description": "Name of Firmament Commander: Captain Aroz"
+  },
+  "Firmament.Leaders.Captain Aroz.Unlock": {
+    "defaultMessage": "TODO: Add unlock criteria.",
+    "description": "Unlock condition for Firmament Commander: Captain Aroz"
+  },
+  "Firmament.Leaders.Myru Vos.Description": {
+    "defaultMessage": "When a player moves ships:{br}You may exhaust this card; if you do, SPACE CANNON cannot be used against those ships. If they are not transporting units, they can also move through other players' ships.",
+    "description": "Description for Firmament Agent: Myru Vos"
+  },
+  "Firmament.Leaders.Myru Vos.Name": {
+    "defaultMessage": "Myru Vos",
+    "description": "Name of Firmament Agent: Myru Vos"
+  },
+  "Firmament.Leaders.TODO: The Blade Beckons.AbilityName": {
+    "defaultMessage": "THE BLADE BECKONS",
+    "description": "Ability name for Firmament Hero: TODO: The Blade Beckons"
+  },
+  "Firmament.Leaders.TODO: The Blade Beckons.Description": {
+    "defaultMessage": "ACTION: Place 1 of your plot cards in play with any other player's control token on it. Then, you may place any player's control token on 1 of your in-play plot cards; one plot cannot have two of the same player's tokens.{br}Then, purge this card.",
+    "description": "Description for Firmament Hero: TODO: The Blade Beckons"
+  },
+  "Firmament.Leaders.TODO: The Blade Beckons.Name": {
+    "defaultMessage": "TODO: The Blade Beckons",
+    "description": "Name of Firmament Hero: TODO: The Blade Beckons"
+  },
+  "Firmament.Name": {
+    "defaultMessage": "Firmament",
+    "description": "Name of Faction: Firmament"
+  },
+  "Firmament.Promissories.Black Ops.Description": {
+    "defaultMessage": "When you receive this card, if you are not the Firmament:{br}The Firmament player may place 1 facedown plot card in their play area with your control token on it. Then, gain 2 command tokens, gain 2 trade goods, and purge this card.",
+    "description": "Description for Faction Promissory: Black Ops"
+  },
+  "Firmament.Promissories.Black Ops.Title": {
+    "defaultMessage": "Black Ops",
+    "description": "Title of Faction Promissory: Black Ops"
+  },
+  "Firmament.Shortname": {
+    "defaultMessage": "Firmament",
+    "description": "Shortened version of Faction name: Firmament"
+  },
+  "Firmament.Techs.Neural Parasite.Description": {
+    "defaultMessage": "At the start of the status phase, you may place 1 infantry from your reinforcements on a planet you control in your home system.{br}Flip this card if the Obsidian faction is in play.",
+    "description": "Description for Tech: Neural Parasite"
+  },
+  "Firmament.Techs.Neural Parasite.Title": {
+    "defaultMessage": "Neural Parasite",
+    "description": "Title of Tech: Neural Parasite"
+  },
+  "Firmament.Techs.Planesplitter.Description": {
+    "defaultMessage": "When you gain this card, put The Fracture into play.{br}Flip this card if the Obsidian faction is in play.",
+    "description": "Description for Tech: Planesplitter"
+  },
+  "Firmament.Techs.Planesplitter.Title": {
+    "defaultMessage": "Planesplitter",
+    "description": "Title of Tech: Planesplitter"
+  },
+  "Firmament.Units.Heaven's Eye.Description": {
+    "defaultMessage": "If the active system contains units that belong to a player who has a control token on 1 of your plots, apply +1 to this ship's move value and repair it at the end of every combat round.",
+    "description": "Description for Faction Unit: Heaven's Eye"
+  },
+  "Firmament.Units.Heaven's Eye.Title": {
+    "defaultMessage": "Heaven's Eye",
+    "description": "Title of Faction Unit: Heaven's Eye"
+  },
+  "Firmament.Units.Viper EX-23.Description": {
+    "defaultMessage": "When ground forces are committed to this planet, you may choose for your units to coexist, if they were not already. Flip this card if your faction becomes the Obsidian.",
+    "description": "Description for Faction Unit: Viper EX-23"
+  },
+  "Firmament.Units.Viper EX-23.Title": {
+    "defaultMessage": "Viper EX-23",
+    "description": "Title of Faction Unit: Viper EX-23"
+  },
   "GFfdMB": {
     "defaultMessage": "Confirm Swap",
     "description": "Text on a button that will apply a Strategy Card swap."
@@ -3118,6 +3534,14 @@
   "Ghosts of Creuss.Abilities.Slipstream.Title": {
     "defaultMessage": "Slipstream",
     "description": "Title of Faction Ability: Slipstream"
+  },
+  "Ghosts of Creuss.Breakthrough.Particle Synthesis.Description": {
+    "defaultMessage": "Each wormhole in a system that contains your ships gains PRODUCTION 1 as if it were a unit you control.{br}Reduce the combined cost of units you produce in systems that contain wormholes by 1 for each wormhole in that system.",
+    "description": "Description of Faction Breakthrough: Particle Synthesis"
+  },
+  "Ghosts of Creuss.Breakthrough.Particle Synthesis.Title": {
+    "defaultMessage": "Particle Synthesis",
+    "description": "Title of Faction Breakthrough: Particle Synthesis"
   },
   "Ghosts of Creuss.Leaders.Emissary Taivra.Description": {
     "defaultMessage": "After a player activates a system that contains a non-delta wormhole:{br}You may exhaust this card; if you do, that system is adjacent to all other systems that contain a wormhole during this tactical action.",
@@ -3254,6 +3678,10 @@
   "J2lfJ4": {
     "defaultMessage": "Average Scorers per game: {number} - ({total} in {games} games)",
     "description": "Statistic about the number of scorers of a public objective."
+  },
+  "JOb6MX": {
+    "defaultMessage": "Choose Thunder's Edge Owner",
+    "description": "Message for choosing the owner of Thunder's Edge"
   },
   "Jdx9F+": {
     "defaultMessage": "Remove Command Tokens",
@@ -3439,13 +3867,69 @@
     "defaultMessage": "Pheonix Standard",
     "description": "Title of Faction Ability: Pheonix Standard"
   },
+  "Last Bastion.Breakthrough.The Icon.Description": {
+    "defaultMessage": "When you produce ships, you may exhaust this card to place those ships in a system that contains 1 of your command tokens, at least 1 of your ground forces, and no other player's ships.",
+    "description": "Description of Faction Breakthrough: The Icon"
+  },
+  "Last Bastion.Breakthrough.The Icon.Title": {
+    "defaultMessage": "The Icon",
+    "description": "Title of Faction Breakthrough: The Icon"
+  },
+  "Last Bastion.Leaders.Dame Briar.Description": {
+    "defaultMessage": "When a player's unit is destroyed:{br}you may exhaust this card to galvanize another of that player's units in the destroyed unit's system.",
+    "description": "Description for Last Bastion Agent: Dame Briar"
+  },
+  "Last Bastion.Leaders.Dame Briar.Name": {
+    "defaultMessage": "Dame Briar",
+    "description": "Name of Last Bastion Agent: Dame Briar"
+  },
+  "Last Bastion.Leaders.Entity 4X41A Apollo.AbilityName": {
+    "defaultMessage": "INTELLIGENCE UNCHAINED",
+    "description": "Ability name for Last Bastion Hero: Entity 4X41A Apollo"
+  },
+  "Last Bastion.Leaders.Entity 4X41A Apollo.Description": {
+    "defaultMessage": "When one of your galvanized units is destroyed:{br}You may purge this card to roll 1 die for each unit in its system that belongs to another player; if the result is equal to or greater than the galvanized unit's combat value, destroy that unit.",
+    "description": "Description for Last Bastion Hero: Entity 4X41A Apollo"
+  },
+  "Last Bastion.Leaders.Entity 4X41A Apollo.Name": {
+    "defaultMessage": "Entity 4X41A \"Apollo\"",
+    "description": "Name of Last Bastion Hero: Entity 4X41A Apollo"
+  },
+  "Last Bastion.Leaders.Nip and Tuck.Description": {
+    "defaultMessage": "Your action cards cannot be canceled by \"Sabotage\" action cards.{br}The Nekro Virus cannot place assimilator tokens on your components.",
+    "description": "Description for Last Bastion Commander: Nip and Tuck"
+  },
+  "Last Bastion.Leaders.Nip and Tuck.Name": {
+    "defaultMessage": "Nip and Tuck",
+    "description": "Name of Last Bastion Commander: Nip and Tuck"
+  },
+  "Last Bastion.Leaders.Nip and Tuck.Unlock": {
+    "defaultMessage": "TODO: Add unlock criteria.",
+    "description": "Unlock condition for Last Bastion Commander: Nip and Tuck"
+  },
   "Last Bastion.Name": {
     "defaultMessage": "Last Bastion",
     "description": "Name of Faction: Last Bastion"
   },
+  "Last Bastion.Promissories.Raise the Standard.Description": {
+    "defaultMessage": "At the end of a combat:{br}Galvanize 1 of your units that participated.{br}Then, return this card to the Last Bastion player.",
+    "description": "Description for Faction Promissory: Raise the Standard"
+  },
+  "Last Bastion.Promissories.Raise the Standard.Title": {
+    "defaultMessage": "Raise the Standard",
+    "description": "Title of Faction Promissory: Raise the Standard"
+  },
   "Last Bastion.Shortname": {
-    "defaultMessage": "Bastion",
+    "defaultMessage": "Last Bastion",
     "description": "Shortened version of Faction name: Last Bastion"
+  },
+  "Last Bastion.Techs.Proxima Targeting VI.Description": {
+    "defaultMessage": "Cancel 1 hit produced by BOMBARDMENT rolls made against your ground forces for each of your galvanized units present.{br}At the start of a round of ground combat, you may resolve BOMBARDMENT 8 (x3) against your opponent's ground forces; if you do, make an identical roll against your own ground forces.",
+    "description": "Description for Tech: Proxima Targeting VI"
+  },
+  "Last Bastion.Techs.Proxima Targeting VI.Title": {
+    "defaultMessage": "Proxima Targeting VI",
+    "description": "Title of Tech: Proxima Targeting VI"
   },
   "Last Bastion.Units.4X41C \"Helios\" V1.Description": {
     "defaultMessage": "This unit's PRODUCTION value is equal to 2 more than the resource value of this planet.{br}The resource value of this planet is increased by 1.{br}Up to 3 fighters in this system do not count against your ships' capacity.",
@@ -3518,6 +4002,14 @@
   "Mahact Gene-Sorcerers.Abilities.Imperia.Title": {
     "defaultMessage": "Imperia",
     "description": "Title of Faction Ability: Imperia"
+  },
+  "Mahact Gene-Sorcerers.Breakthrough.Vaults of the Heir.Description": {
+    "defaultMessage": "ACTION: Exhaust this card and purge 1 of your technologies to gain 1 relic.",
+    "description": "Description of Faction Breakthrough: Vaults of the Heir"
+  },
+  "Mahact Gene-Sorcerers.Breakthrough.Vaults of the Heir.Title": {
+    "defaultMessage": "Vaults of the Heir",
+    "description": "Title of Faction Breakthrough: Vaults of the Heir"
   },
   "Mahact Gene-Sorcerers.Leaders.Airo Shir Aur.AbilityName": {
     "defaultMessage": "BENEDICTION",
@@ -3627,6 +4119,14 @@
     "defaultMessage": "Pillage",
     "description": "Title of Faction Ability: Pillage"
   },
+  "Mentak Coalition.Breakthrough.The Table's Grace.Description": {
+    "defaultMessage": "If you have the Cruiser II unit upgrade technology, flip this card and place it on top of Cruiser II.",
+    "description": "Description of Faction Breakthrough: The Table's Grace"
+  },
+  "Mentak Coalition.Breakthrough.The Table's Grace.Title": {
+    "defaultMessage": "The Table's Grace",
+    "description": "Title of Faction Breakthrough: The Table's Grace"
+  },
   "Mentak Coalition.Leaders.Ipswitch, Loose Cannon.AbilityName": {
     "defaultMessage": "SLEEPER CELL",
     "description": "Ability name for Mentak Hero: Ipswitch, Loose Cannon"
@@ -3691,6 +4191,14 @@
     "defaultMessage": "Salvage Operations",
     "description": "Title of Tech: Salvage Operations"
   },
+  "Mentak Coalition.Units.Corsair.Description": {
+    "defaultMessage": "If the active system contains another player's non-fighter ships, this unit can move through systems that contain other players' ships.",
+    "description": "Description for Faction Unit: Corsair"
+  },
+  "Mentak Coalition.Units.Corsair.Title": {
+    "defaultMessage": "Corsair",
+    "description": "Title of Faction Unit: Corsair"
+  },
   "Mentak Coalition.Units.Fourth Moon.Description": {
     "defaultMessage": "Other players' ships in this system cannot use SUSTAIN DAMAGE.",
     "description": "Description for Faction Unit: Fourth Moon"
@@ -3730,6 +4238,14 @@
   "Naalu Collective.Abilities.Telepathic.Title": {
     "defaultMessage": "Telepathic",
     "description": "Title of Faction Ability: Telepathic"
+  },
+  "Naalu Collective.Breakthrough.Mindsieve.Description": {
+    "defaultMessage": "When you would resolve the secondary ability of another player's strategy card, you may give them a promissory note to resolve it without spending a command token.",
+    "description": "Description of Faction Breakthrough: Mindsieve"
+  },
+  "Naalu Collective.Breakthrough.Mindsieve.Title": {
+    "defaultMessage": "Mindsieve",
+    "description": "Title of Faction Breakthrough: Mindsieve"
   },
   "Naalu Collective.Leaders.M'aban.Description": {
     "defaultMessage": "You may produce 1 additional fighter for their cost; these additional units do not count against your production limit.",
@@ -3859,6 +4375,14 @@
     "defaultMessage": "Fabrication",
     "description": "Title of Faction Ability: Fabrication"
   },
+  "Naaz-Rokha Alliance.Breakthrough.Absolute Synergy.Description": {
+    "defaultMessage": "When you have 4 mechs in the same system, you may return 3 of those mechs to your reinforcements to flip this card and place it on top of your mech card.",
+    "description": "Description of Faction Breakthrough: Absolute Synergy"
+  },
+  "Naaz-Rokha Alliance.Breakthrough.Absolute Synergy.Title": {
+    "defaultMessage": "Absolute Synergy",
+    "description": "Title of Faction Breakthrough: Absolute Synergy"
+  },
   "Naaz-Rokha Alliance.Leaders.Dart and Tai.Description": {
     "defaultMessage": "After you gain control of a planet that was controlled by another player:{br}You may explore that planet.",
     "description": "Description for Naaz-Rokha Commander: Dart and Tai"
@@ -3923,6 +4447,14 @@
     "defaultMessage": "Supercharge",
     "description": "Title of Tech: Supercharge"
   },
+  "Naaz-Rokha Alliance.Units.Eidolon Maximum.Description": {
+    "defaultMessage": "This unit is both a ship and a ground force. It cannot be assigned hits from unit abilities. Repair it at the start of every combat round. Game effects cannot place or produce your mechs. When this unit is destroyed or removed, flip this card and return it to your play area.",
+    "description": "Description for Faction Unit: Eidolon Maximum"
+  },
+  "Naaz-Rokha Alliance.Units.Eidolon Maximum.Title": {
+    "defaultMessage": "Eidolon Maximum",
+    "description": "Title of Faction Unit: Eidolon Maximum"
+  },
   "Naaz-Rokha Alliance.Units.Eidolon.Description": {
     "defaultMessage": "If this unit is in the space area of the active system at the start of a space combat, flip this card.{br}(This card begins the game with this side face up)",
     "description": "Description for Faction Unit: Eidolon"
@@ -3970,6 +4502,14 @@
   "Nekro Virus.Abilities.Technological Singularity.Title": {
     "defaultMessage": "Technological Singularity",
     "description": "Title of Faction Ability: Technological Singularity"
+  },
+  "Nekro Virus.Breakthrough.Valefar Assimilator Z.Description": {
+    "defaultMessage": "When you would gain another player's technology using one of your faction abilities, you may instead place one of your \"Z\" assimilator tokens on that player's faction sheet. Your flagship gains the text abilities of that faction's flagship in addition to its own.",
+    "description": "Description of Faction Breakthrough: Valefar Assimilator Z"
+  },
+  "Nekro Virus.Breakthrough.Valefar Assimilator Z.Title": {
+    "defaultMessage": "Valefar Assimilator Z",
+    "description": "Title of Faction Breakthrough: Valefar Assimilator Z"
   },
   "Nekro Virus.Leaders.Nekro Acidos.Description": {
     "defaultMessage": "After you gain a technology:{br}You may draw 1 action card.",
@@ -4050,6 +4590,14 @@
   "Nomad.Abilities.The Company.Title": {
     "defaultMessage": "The Company",
     "description": "Title of Faction Ability: The Company"
+  },
+  "Nomad.Breakthrough.Thunder's Paradox.Description": {
+    "defaultMessage": "At the start of any player's turn, you may exhaust 1 of your agents to ready any other agent.",
+    "description": "Description of Faction Breakthrough: Thunder's Paradox"
+  },
+  "Nomad.Breakthrough.Thunder's Paradox.Title": {
+    "defaultMessage": "Thunder's Paradox",
+    "description": "Title of Faction Breakthrough: Thunder's Paradox"
   },
   "Nomad.Leaders.Ahk-Syl Siven.AbilityName": {
     "defaultMessage": "PROBABILITY MATRIX",
@@ -4943,6 +5491,114 @@
     "defaultMessage": "Unveil Flagship",
     "description": "Title of Objective: Unveil Flagship"
   },
+  "Obsidian.Abilities.Marionettes.Description": {
+    "defaultMessage": "The player or players whose control tokens are on each plot card are the puppeted players for the plot.",
+    "description": "Description for Faction Ability: Marionettes"
+  },
+  "Obsidian.Abilities.Marionettes.Title": {
+    "defaultMessage": "Marionettes",
+    "description": "Title of Faction Ability: Marionettes"
+  },
+  "Obsidian.Abilities.Nocturne.Description": {
+    "defaultMessage": "This faction cannot be chosen during setup.",
+    "description": "Description for Faction Ability: Nocturne"
+  },
+  "Obsidian.Abilities.Nocturne.Title": {
+    "defaultMessage": "Nocturne",
+    "description": "Title of Faction Ability: Nocturne"
+  },
+  "Obsidian.Abilities.The Blade's Orchestra.Description": {
+    "defaultMessage": "When this faction comes into play, flip your home system, double-sided faction components, and all of your in-play plot cards. Then, ready Cronos Hollow and Tallin Hollow if you control them.",
+    "description": "Description for Faction Ability: The Blade's Orchestra"
+  },
+  "Obsidian.Abilities.The Blade's Orchestra.Title": {
+    "defaultMessage": "The Blade's Orchestra",
+    "description": "Title of Faction Ability: The Blade's Orchestra"
+  },
+  "Obsidian.Breakthrough.The Reaping.Description": {
+    "defaultMessage": "Place 1 trade good from the supply onto this card each time you win a combat against a puppeted player.{br}At the start of the status phase, gain all trade goods on this card, then gain an equal number of trade goods from the supply.",
+    "description": "Description of Faction Breakthrough: The Reaping"
+  },
+  "Obsidian.Breakthrough.The Reaping.Title": {
+    "defaultMessage": "The Reaping",
+    "description": "Title of Faction Breakthrough: The Reaping"
+  },
+  "Obsidian.Leaders.Aroz Hollow.Description": {
+    "defaultMessage": "Apply +1 to the result of each of your units' combat rolls in The Fracture.",
+    "description": "Description for Obsidian Commander: Aroz Hollow"
+  },
+  "Obsidian.Leaders.Aroz Hollow.Name": {
+    "defaultMessage": "Aroz Hollow",
+    "description": "Name of Obsidian Commander: Aroz Hollow"
+  },
+  "Obsidian.Leaders.Aroz Hollow.Unlock": {
+    "defaultMessage": "TODO: Add unlock criteria.",
+    "description": "Unlock condition for Obsidian Commander: Aroz Hollow"
+  },
+  "Obsidian.Leaders.TODO: The Blade Revealed.AbilityName": {
+    "defaultMessage": "THE BLADE REVEALED",
+    "description": "Ability name for Obsidian Hero: TODO: The Blade Revealed"
+  },
+  "Obsidian.Leaders.TODO: The Blade Revealed.Description": {
+    "defaultMessage": "ACTION: Ready all of your planets.{br}Then, purge this card.",
+    "description": "Description for Obsidian Hero: TODO: The Blade Revealed"
+  },
+  "Obsidian.Leaders.TODO: The Blade Revealed.Name": {
+    "defaultMessage": "TODO: The Blade Revealed",
+    "description": "Name of Obsidian Hero: TODO: The Blade Revealed"
+  },
+  "Obsidian.Leaders.Vos Hollow.Description": {
+    "defaultMessage": "When a player's ship is destroyed during any combat:{br}You may exhaust this card; if you do, that player's opponent must destroy 1 of their ships of the same type in the active system.",
+    "description": "Description for Obsidian Agent: Vos Hollow"
+  },
+  "Obsidian.Leaders.Vos Hollow.Name": {
+    "defaultMessage": "Vos Hollow",
+    "description": "Name of Obsidian Agent: Vos Hollow"
+  },
+  "Obsidian.Name": {
+    "defaultMessage": "Obsidian",
+    "description": "Name of Faction: Obsidian"
+  },
+  "Obsidian.Promissories.Malevolency.Description": {
+    "defaultMessage": "At the end of one of your tactical actions:{br}Spend 1 influence to give this card to one of your neighbors; you can use this ability even if you are the Obsidian player.{br}At the end of the status phase, if you are not the Obsidian player, remove 1 command token from your fleet pool and return it to your reinforcements.",
+    "description": "Description for Faction Promissory: Malevolency"
+  },
+  "Obsidian.Promissories.Malevolency.Title": {
+    "defaultMessage": "Malevolency",
+    "description": "Title of Faction Promissory: Malevolency"
+  },
+  "Obsidian.Shortname": {
+    "defaultMessage": "Obsidian",
+    "description": "Shortened version of Faction name: Obsidian"
+  },
+  "Obsidian.Techs.Neural Parasite (Obsidian).Description": {
+    "defaultMessage": "At the start of your turn, destroy 1 of another player's infantry in or adjacent to a system that contains your infantry.{br}This technology cannot be researched.",
+    "description": "Description for Tech: Neural Parasite (Obsidian)"
+  },
+  "Obsidian.Techs.Neural Parasite (Obsidian).Title": {
+    "defaultMessage": "Neural Parasite",
+    "description": "Title of Tech: Neural Parasite (Obsidian)"
+  },
+  "Obsidian.Techs.Planesplitter (Obsidian).Description": {
+    "defaultMessage": "At the start of your strategic actions, you may move an ingress token into a system that contains or is adjacent to your units.{br}This technology cannot be researched.",
+    "description": "Description for Tech: Planesplitter (Obsidian)"
+  },
+  "Obsidian.Techs.Planesplitter (Obsidian).Title": {
+    "defaultMessage": "Planesplitter",
+    "description": "Title of Tech: Planesplitter (Obsidian)"
+  },
+  "Obsidian.Units.Heaven's Hollow.Title": {
+    "defaultMessage": "Heaven's Hollow",
+    "description": "Title of Faction Unit: Heaven's Hollow"
+  },
+  "Obsidian.Units.Viper Hollow.Description": {
+    "defaultMessage": "If this unit was coexisting when this card flipped to this side, gain control of its planet; the other player's units are now coexisting.",
+    "description": "Description for Faction Unit: Viper Hollow"
+  },
+  "Obsidian.Units.Viper Hollow.Title": {
+    "defaultMessage": "Viper Hollow",
+    "description": "Title of Faction Unit: Viper Hollow"
+  },
   "OcsTaL": {
     "defaultMessage": "Shuffle decks",
     "description": "A step in the setup phase: Shuffle decks."
@@ -5031,9 +5687,37 @@
     "defaultMessage": "Unknown",
     "description": "Phase text shown while game is loading."
   },
+  "Planets.Avernus.Ability": {
+    "defaultMessage": "ACTION: Exhaust this card to use the Embers of Muaat's STAR FORGE faction ability without spending a command token.",
+    "description": "Planet Ability for Avernus"
+  },
+  "Planets.Emelpar.Ability": {
+    "defaultMessage": "You may exhaust this card at the end of your turn to ready another component that isn't a strategy card.",
+    "description": "Planet Ability for Emelpar"
+  },
+  "Planets.Faunus.Ability": {
+    "defaultMessage": "You may exhaust this card when you pass to gain control of a non-home, non-legendary planet that contains no units and has no attachments.",
+    "description": "Planet Ability for Faunus"
+  },
+  "Planets.Garbozia.Ability": {
+    "defaultMessage": "You may exhaust this card when you pass to place 1 action card from the discard pile faceup on this card; you can purge cards on this card to play them as if they were in your hand.",
+    "description": "Planet Ability for Garbozia"
+  },
+  "Planets.Industrex.Ability": {
+    "defaultMessage": "You may exhaust this card when you pass to place 1 ship that matches a unit upgrade technology you own from your reinforcements into a system that contains your ships.",
+    "description": "Planet Ability for Industrex"
+  },
+  "Planets.Ordinian.Ability": {
+    "defaultMessage": "You may exhaust this card when you pass to draw 1 action card and gain 1 command token.",
+    "description": "Planet Ability for Ordinian"
+  },
   "Planets.Styx.Ability": {
     "defaultMessage": "When you gain this card, gain 1 victory point.{br}When you lose this card, lose 1 victory point.",
     "description": "Planet Ability for Styx"
+  },
+  "Planets.Tempesta.Ability": {
+    "defaultMessage": "You may exhaust this card after you activate a system to apply +1 to the move value of 1 of your ships during this tactical action.",
+    "description": "Planet Ability for Tempesta"
   },
   "Planets.Thunder's Edge.Ability": {
     "defaultMessage": "Gain your breakthrough when you gain this card if you do not already have it.{br}You may exhaust this card at the end of your turn to perform an action.",
@@ -5087,6 +5771,30 @@
     "defaultMessage": "Revealed stage I {count, plural, one {objective} other {objectives}}",
     "description": "A label for the stage I objectives that have been revealed"
   },
+  "Ral Nel Consortium.Abilities.Miniaturization.Description": {
+    "defaultMessage": "Your structures can be transported by any ship; this does not require or count against capacity. While your structures are in the space area, they cannot use their unit abilities. At the end of your tactical actions, you may place your structures that are in space areas onto planets you control in their respective systems.",
+    "description": "Description for Faction Ability: Miniaturization"
+  },
+  "Ral Nel Consortium.Abilities.Miniaturization.Title": {
+    "defaultMessage": "Miniaturization",
+    "description": "Title of Faction Ability: Miniaturization"
+  },
+  "Ral Nel Consortium.Abilities.Survival Instinct.Description": {
+    "defaultMessage": "After another player activates a system that contains your ships, you may move up to 2 of your ships into the active system from adjacent systems that do not contain your command tokens.",
+    "description": "Description for Faction Ability: Survival Instinct"
+  },
+  "Ral Nel Consortium.Abilities.Survival Instinct.Title": {
+    "defaultMessage": "Survival Instinct",
+    "description": "Title of Faction Ability: Survival Instinct"
+  },
+  "Ral Nel Consortium.Breakthrough.Data Skimmer.Description": {
+    "defaultMessage": "During the action phase, if you have not passed, when other players would discard action cards, they are placed on this card instead.{br}When you pass, take 1 action card from this card and discard the rest.",
+    "description": "Description of Faction Breakthrough: Data Skimmer"
+  },
+  "Ral Nel Consortium.Breakthrough.Data Skimmer.Title": {
+    "defaultMessage": "Data Skimmer",
+    "description": "Title of Faction Breakthrough: Data Skimmer"
+  },
   "Ral Nel Consortium.Leaders.Kan Kip Rel.Description": {
     "defaultMessage": "ACTION: Exhaust this card to draw 2 action cards; give 1 of those cards to another player.",
     "description": "Description for Ral Nel Agent: Kan Kip Rel"
@@ -5095,13 +5803,85 @@
     "defaultMessage": "Kan Kip Rel",
     "description": "Name of Ral Nel Agent: Kan Kip Rel"
   },
+  "Ral Nel Consortium.Leaders.TODO: Name.AbilityName": {
+    "defaultMessage": "SIGNAL INTRUSION",
+    "description": "Ability name for Ral Nel Consortium Hero: TODO: Name"
+  },
+  "Ral Nel Consortium.Leaders.TODO: Name.Description": {
+    "defaultMessage": "After the last player passes:{br}You may choose to no longer be passed; if you do, gain 2 command tokens, draw 1 action card, and purge this card.",
+    "description": "Description for Ral Nel Consortium Hero: TODO: Name"
+  },
+  "Ral Nel Consortium.Leaders.TODO: Name.Name": {
+    "defaultMessage": "TODO: Name",
+    "description": "Name of Ral Nel Consortium Hero: TODO: Name"
+  },
+  "Ral Nel Consortium.Leaders.Watchful Ojz.Description": {
+    "defaultMessage": "When you declare a retreat:{br}Immediately retreat up to 2 of your ships from the active system to an adjacent system that does not contain another player's ships. Place a command token from your reinforcements into that system.",
+    "description": "Description for Ral Nel Commander: Watchful Ojz"
+  },
+  "Ral Nel Consortium.Leaders.Watchful Ojz.Name": {
+    "defaultMessage": "Watchful Ojz",
+    "description": "Name of Ral Nel Commander: Watchful Ojz"
+  },
+  "Ral Nel Consortium.Leaders.Watchful Ojz.Unlock": {
+    "defaultMessage": "TODO: Add unlock criteria.",
+    "description": "Unlock condition for Ral Nel Commander: Watchful Ojz"
+  },
   "Ral Nel Consortium.Name": {
     "defaultMessage": "Ral Nel Consortium",
     "description": "Name of Faction: Ral Nel Consortium"
   },
+  "Ral Nel Consortium.Promissories.Nano-Link Permit.Description": {
+    "defaultMessage": "After you activate a system:{br}You may move your structures from adjacent systems that do not contain your command tokens onto planets you control in the active system.{br}Then, return this card to the Ral Nel player.",
+    "description": "Description for Faction Promissory: Nano-Link Permit"
+  },
+  "Ral Nel Consortium.Promissories.Nano-Link Permit.Title": {
+    "defaultMessage": "Nano-Link Permit",
+    "description": "Title of Faction Promissory: Nano-Link Permit"
+  },
   "Ral Nel Consortium.Shortname": {
     "defaultMessage": "Ral Nel",
     "description": "Shortened version of Faction name: Ral Nel Consortium"
+  },
+  "Ral Nel Consortium.Techs.Linkship II.Description": {
+    "defaultMessage": "This unit can use the SPACE CANNON ability of one of your structures in its space area; each linkship can trigger the same structure.",
+    "description": "Description for Tech: Linkship II"
+  },
+  "Ral Nel Consortium.Techs.Linkship II.Title": {
+    "defaultMessage": "Linkship II",
+    "description": "Title of Tech: Linkship II"
+  },
+  "Ral Nel Consortium.Techs.Nanomachines.Description": {
+    "defaultMessage": "ACTION: Exhaust this card to place 1 PDS on a planet you control.{br}ACTION: Exhaust this card to repair all of your damaged units.{br}ACTION: Exhaust this card and discard 1 action card to draw 1 action card.",
+    "description": "Description for Tech: Nanomachines"
+  },
+  "Ral Nel Consortium.Techs.Nanomachines.Title": {
+    "defaultMessage": "Nanomachines",
+    "description": "Title of Tech: Nanomachines"
+  },
+  "Ral Nel Consortium.Units.Alarum.Description": {
+    "defaultMessage": "At the end of a round of combat on this planet, you may move up to 2 of your ground forces to this planet from planets in adjacent systems.",
+    "description": "Description for Faction Unit: Alarum"
+  },
+  "Ral Nel Consortium.Units.Alarum.Title": {
+    "defaultMessage": "Alarum",
+    "description": "Title of Faction Unit: Alarum"
+  },
+  "Ral Nel Consortium.Units.Last Dispatch.Description": {
+    "defaultMessage": "When this unit retreats, you may destroy 1 ship in the active system that does not have SUSTAIN DAMAGE.",
+    "description": "Description for Faction Unit: Last Dispatch"
+  },
+  "Ral Nel Consortium.Units.Last Dispatch.Title": {
+    "defaultMessage": "Last Dispatch",
+    "description": "Title of Faction Unit: Last Dispatch"
+  },
+  "Ral Nel Consortium.Units.Linkship I.Description": {
+    "defaultMessage": "This unit can use the SPACE CANNON ability of one of your structures in its space area; each structure can only be triggered once.",
+    "description": "Description for Faction Unit: Linkship I"
+  },
+  "Ral Nel Consortium.Units.Linkship I.Title": {
+    "defaultMessage": "Linkship I",
+    "description": "Title of Faction Unit: Linkship I"
   },
   "Relics.Accretion Engine.Description": {
     "defaultMessage": "Apply +1 to the PRODUCTION value of each of your units with PRODUCTION. When you produce 1 or more units, reduce the combined cost of the produced units by 1.",
@@ -5175,6 +5955,14 @@
     "defaultMessage": "Forgotten Throne",
     "description": "Title of Relic: Forgotten Throne"
   },
+  "Relics.Heart of Ixth.Description": {
+    "defaultMessage": "After any die is rolled, you may exhaust this card to add or subtract 1 from its result.",
+    "description": "Description for Relic: Heart of Ixth"
+  },
+  "Relics.Heart of Ixth.Title": {
+    "defaultMessage": "Heart of Ixth",
+    "description": "Title of Relic: Heart of Ixth"
+  },
   "Relics.JR-XS455-O.Description": {
     "defaultMessage": "ACTION: Exhaust this agent and choose a player; that player may spend 3 resources to place a structure on a planet they control. If they do not, they gain 1 trade good.",
     "description": "Description for Relic: JR-XS455-O"
@@ -5183,6 +5971,14 @@
     "defaultMessage": "JR-XS455-O",
     "description": "Title of Relic: JR-XS455-O"
   },
+  "Relics.Lightrail Ordnance.Description": {
+    "defaultMessage": "Your space docks gain SPACE CANNON 5 (x2). You may use your space dock's SPACE CANNON against ships that are adjacent to their systems.",
+    "description": "Description for Relic: Lightrail Ordnance"
+  },
+  "Relics.Lightrail Ordnance.Title": {
+    "defaultMessage": "Lightrail Ordnance",
+    "description": "Title of Relic: Lightrail Ordnance"
+  },
   "Relics.Maw of Worlds.Description": {
     "defaultMessage": "At the start of the agenda phase, you may purge this card and exhaust all of your planets to gain any 1 technology.",
     "description": "Description for Relic: Maw of Worlds"
@@ -5190,6 +5986,22 @@
   "Relics.Maw of Worlds.Title": {
     "defaultMessage": "Maw of Worlds",
     "description": "Title of Relic: Maw of Worlds"
+  },
+  "Relics.Metali Void Armaments.Description": {
+    "defaultMessage": "During the \"Anti-Fighter Barrage\" step of space combat, you may resolve ANTI-FIGHTER BARRAGE 6 (x3) against your opponent's units.",
+    "description": "Description for Relic: Metali Void Armaments"
+  },
+  "Relics.Metali Void Armaments.Title": {
+    "defaultMessage": "Metali Void Armaments",
+    "description": "Title of Relic: Metali Void Armaments"
+  },
+  "Relics.Metali Void Shielding.Description": {
+    "defaultMessage": "Each time hits are produced against 1 or more of your non-fighter ships, 1 of those ships may use SUSTAIN DAMAGE as if it had that ability.",
+    "description": "Description for Relic: Metali Void Shielding"
+  },
+  "Relics.Metali Void Shielding.Title": {
+    "defaultMessage": "Metali Void Shielding",
+    "description": "Title of Relic: Metali Void Shielding"
   },
   "Relics.Nano-Forge.Description": {
     "defaultMessage": "ACTION: Attach this card to a non-legendary, non-home planet you control; its resource and influence values are increased by 2 and it is a legendary planet.",
@@ -5278,6 +6090,30 @@
   "Relics.The Prophet's Tears.Title": {
     "defaultMessage": "The Prophet's Tears",
     "description": "Title of Relic: The Prophet's Tears"
+  },
+  "Relics.The Quantumcore.Description": {
+    "defaultMessage": "When you gain this card, gain your breakthrough.{br}You have SYNERGY for all technology types.",
+    "description": "Description for Relic: The Quantumcore"
+  },
+  "Relics.The Quantumcore.Title": {
+    "defaultMessage": "The Quantumcore",
+    "description": "Title of Relic: The Quantumcore"
+  },
+  "Relics.The Silver Flame.Description": {
+    "defaultMessage": "The Silver Flame may be exchanged as part of a transaction.{br}ACTION: Roll 1 die and purge this card; if the result is a 10, gain 1 victory point. Otherwise, purge your home system and all units in it; you cannot score public objectives. Put The Fracture into play if it is not already.",
+    "description": "Description for Relic: The Silver Flame"
+  },
+  "Relics.The Silver Flame.Title": {
+    "defaultMessage": "The Silver Flame",
+    "description": "Title of Relic: The Silver Flame"
+  },
+  "Relics.The Triad.Description": {
+    "defaultMessage": "This card can be readied and spent as if it were a planet card. Its resource and influence values are equal to 3 plus the number of different types of relic fragments you own.",
+    "description": "Description for Relic: The Triad"
+  },
+  "Relics.The Triad.Title": {
+    "defaultMessage": "The Triad",
+    "description": "Title of Relic: The Triad"
   },
   "Relics.Twilight Mirror.Description": {
     "defaultMessage": "At the start of the agenda phase, you may purge this card to resolve 1 non-strategic action.",
@@ -5791,6 +6627,14 @@
     "defaultMessage": "Terragenesis",
     "description": "Title of Faction Ability: Terragenesis"
   },
+  "Titans of Ul.Breakthrough.Slumberstate Computing.Description": {
+    "defaultMessage": "When COALESCENCE results in a ground combat, if you commit no other units, you may choose for your units to coexist instead. During the status phase, for each player you are coexisting with, you and that player each draw 1 additional action card.{br}Other players may allow you to place a sleeper token on a planet they control.",
+    "description": "Description of Faction Breakthrough: Slumberstate Computing"
+  },
+  "Titans of Ul.Breakthrough.Slumberstate Computing.Title": {
+    "defaultMessage": "Slumberstate Computing",
+    "description": "Title of Faction Breakthrough: Slumberstate Computing"
+  },
   "Titans of Ul.Leaders.Tellurian.Description": {
     "defaultMessage": "When a hit is produced against a unit:{br}You may exhaust this card to cancel that hit.",
     "description": "Description for Titans Agent: Tellurian"
@@ -5974,6 +6818,14 @@
   "Universities of Jol-Nar.Abilities.Fragile.Title": {
     "defaultMessage": "Fragile",
     "description": "Title of Faction Ability: Fragile"
+  },
+  "Universities of Jol-Nar.Breakthrough.Specialized Compounds.Description": {
+    "defaultMessage": "When you research technology using the \"Technology\" strategy card, you may exhaust a planet that has a technology specialty instead of spending resources; if you do, you must research a technology of that color.",
+    "description": "Description of Faction Breakthrough: Specialized Compounds"
+  },
+  "Universities of Jol-Nar.Breakthrough.Specialized Compounds.Title": {
+    "defaultMessage": "Specialized Compounds",
+    "description": "Title of Faction Breakthrough: Specialized Compounds"
   },
   "Universities of Jol-Nar.Leaders.Doctor Sucaban.Description": {
     "defaultMessage": "When a player spends resources to research:{br}You may exhaust this card to allow that player to remove any number of their infantry from the game board. For each unit removed, reduce the resources spent by 1.",
@@ -6215,6 +7067,14 @@
     "defaultMessage": "Reclamation",
     "description": "Title of Faction Ability: Reclamation"
   },
+  "Winnu.Breakthrough.Imperator.Description": {
+    "defaultMessage": "Apply +1 to the results of each of your unit's combat rolls for each \"Support for the Throne\" in your opponent's play area.{br}After you activate a system that contains a legendary planet, apply +1 to the move value of 1 of your ships during the tactical action.",
+    "description": "Description of Faction Breakthrough: Imperator"
+  },
+  "Winnu.Breakthrough.Imperator.Title": {
+    "defaultMessage": "Imperator",
+    "description": "Title of Faction Breakthrough: Imperator"
+  },
   "Winnu.Leaders.Berekar Berekon.Description": {
     "defaultMessage": "When 1 or more of a player's units use PRODUCTION:{br}You may exhaust this card to reduce the combined cost of the produced units by 2.",
     "description": "Description for Winnu Agent: Berekar Berekon"
@@ -6342,6 +7202,14 @@
   "Xxcha Kingdom.Abilities.Quash.Title": {
     "defaultMessage": "Quash",
     "description": "Title of Faction Ability: Quash"
+  },
+  "Xxcha Kingdom.Breakthrough.Archon's Gift.Description": {
+    "defaultMessage": "You can spend influence as if it were resources.{br}You can spend resources as if it were influence.",
+    "description": "Description of Faction Breakthrough: Archon's Gift"
+  },
+  "Xxcha Kingdom.Breakthrough.Archon's Gift.Title": {
+    "defaultMessage": "Archon's Gift",
+    "description": "Title of Faction Breakthrough: Archon's Gift"
   },
   "Xxcha Kingdom.Leaders.Elder Qanoj.Description": {
     "defaultMessage": "Each planet you exhaust to cast votes provides 1 additional vote. Game effects cannot prevent you from voting on an agenda.",
@@ -6638,6 +7506,14 @@
   "Yssaril Tribes.Abilities.Stall Tactics.Title": {
     "defaultMessage": "Stall Tactics",
     "description": "Title of Faction Ability: Stall Tactics"
+  },
+  "Yssaril Tribes.Breakthrough.Deepgloom Executable.Description": {
+    "defaultMessage": "You can allow other players to use your STALL TACTICS or SCHEMING faction abilities; when you do, you may resolve a transaction with that player. During the action phase, that transaction does not count against the once per player transaction limit for that turn.",
+    "description": "Description of Faction Breakthrough: Deepgloom Executable"
+  },
+  "Yssaril Tribes.Breakthrough.Deepgloom Executable.Title": {
+    "defaultMessage": "Deepgloom Executable",
+    "description": "Title of Faction Breakthrough: Deepgloom Executable"
   },
   "Yssaril Tribes.Leaders.Kyver, Blade and Key.AbilityName": {
     "defaultMessage": "GUILD OF SPIES",

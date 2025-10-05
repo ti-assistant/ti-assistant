@@ -42,7 +42,7 @@ export default function TurnTimer({ gameTime }: { gameTime: number }) {
         }}
       >
         <TimerDisplay
-          time={gameTime - prevTurnStartTime}
+          time={Math.max(gameTime - prevTurnStartTime, 0)}
           label={label}
           width={120}
           style={{ fontSize: rem(20) }}

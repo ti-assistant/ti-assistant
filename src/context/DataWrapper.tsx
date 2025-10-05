@@ -16,6 +16,8 @@ export default async function DataWrapper({
 }>) {
   const seedData = await data;
 
+  console.log("Timers", seedData.timers);
+
   return (
     <DataProvider
       gameId={gameId}

@@ -1,4 +1,5 @@
 import DataManager from "../../context/DataManager";
+import TimerManager from "../../context/TimerManager";
 import { SwapStrategyCardsHandler } from "../model/swapStrategyCards";
 import { updateGameData } from "./handler";
 import { updateActionLog } from "./update";
@@ -30,12 +31,17 @@ export function swapStrategyCards(
       return storedGameData;
     }
 
-    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
+    const gameTimer = TimerManager.getValue<number>("game");
+    updateActionLog(storedGameData, handler, now, gameTimer ?? 0);
     updateGameData(storedGameData, handler.getUpdates());
 
     storedGameData.lastUpdate = now;
 
     return storedGameData;
+  });
+  TimerManager.update((timers) => {
+    timers.paused = false;
+    return timers;
   });
 
   return updatePromise.catch((_) => {

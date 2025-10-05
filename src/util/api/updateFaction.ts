@@ -1,4 +1,5 @@
 import DataManager from "../../context/DataManager";
+import TimerManager from "../../context/TimerManager";
 import { Optional } from "../types/types";
 import { poster } from "./util";
 
@@ -52,6 +53,10 @@ export function updateFaction(
     }
 
     return storedGameData;
+  });
+  TimerManager.update((timers) => {
+    timers.paused = false;
+    return timers;
   });
 
   return updatePromise.catch((_) => {

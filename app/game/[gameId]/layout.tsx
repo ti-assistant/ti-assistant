@@ -22,8 +22,6 @@ import DynamicSidebars from "./dynamic-sidebars";
 import GameCode from "./game-code";
 import GameLoader from "./game-loader";
 import styles from "./game.module.scss";
-import { Metadata } from "next/types";
-
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
     ? "https://dev-dot-twilight-imperium-360307.wm.r.appspot.com"

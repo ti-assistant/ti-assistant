@@ -8,12 +8,14 @@ import styles from "./PlanetSummary.module.scss";
 interface PlanetSummaryProps {
   planets: Planet[];
   hasXxchaHero: boolean;
+  triad?: number;
 }
 
 // TODO: Figure out how to display oceans.
 export default function PlanetSummary({
   planets,
   hasXxchaHero,
+  triad,
 }: PlanetSummaryProps) {
   const options = useOptions();
 
@@ -73,6 +75,10 @@ export default function PlanetSummary({
     if ((planet.attachments ?? []).length > 0) {
       ++attachments;
     }
+  }
+  if (triad) {
+    resources += triad;
+    influence += triad;
   }
 
   return (

@@ -21,11 +21,13 @@ import {
   unplayComponentAsync,
   unscoreObjectiveAsync,
 } from "../dynamic/api";
+import PromissoryMenuSVG from "../icons/ui/PromissoryMenu";
 import RelicMenuSVG from "../icons/ui/RelicMenu";
 import { InfoRow } from "../InfoRow";
 import { SelectableRow } from "../SelectableRow";
 import { buildMergeFunction } from "../util/expansions";
 import { getFactionColor } from "../util/factions";
+import { Optional } from "../util/types/types";
 import { rem } from "../util/util";
 import { CollapsibleSection } from "./CollapsibleSection";
 import ExpeditionIcon from "./Expedition/ExpeditionIcon";
@@ -37,8 +39,6 @@ import LabeledDiv from "./LabeledDiv/LabeledDiv";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import OptionalLine from "./LineWithChildren/OptionalLine";
 import styles from "./ThundersEdgePanel.module.scss";
-import PromissoryMenuSVG from "../icons/ui/PromissoryMenu";
-import { Optional } from "../util/types/types";
 
 function getSupportScorer(factionId: FactionId, support: Objective) {
   if (!support.keyedScorers) {
@@ -180,10 +180,12 @@ function RelicsSection() {
         </div>
       }
       style={{
-        height: "fit-content",
+        height: "100%",
         gridArea: "left",
         padding: `${rem(8)}`,
         paddingTop: 0,
+        overflowY: "scroll",
+        overflowX: "hidden",
       }}
     >
       <div className="flexColumn">
@@ -657,7 +659,6 @@ function PromissoriesSection() {
           ) : null}
         </div>
         <OptionalLine label="Other"></OptionalLine>
-        <LabeledLine leftLabel="Other" />
         {/* {unownedRelics.map((relic) => {
           return (
             <div

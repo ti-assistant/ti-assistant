@@ -1,4 +1,4 @@
-import DataManager from "../../context/DataManager";
+import TimerManager from "../../context/TimerManager";
 import { poster } from "./util";
 
 interface SetPauseData {
@@ -14,14 +14,13 @@ export function setGlobalPause(gameId: string, paused: boolean) {
 
   const updatePromise = poster(`/api/${gameId}/setPause`, data, now);
 
-  DataManager.update((storedGameData) => {
-    storedGameData.state.paused = paused;
-    storedGameData.lastUpdate = now;
+  TimerManager.update((storedTimers) => {
+    storedTimers.paused = paused;
 
-    return storedGameData;
+    return storedTimers;
   });
 
   return updatePromise.catch((_) => {
-    DataManager.reset();
+    TimerManager.reset();
   });
 }
