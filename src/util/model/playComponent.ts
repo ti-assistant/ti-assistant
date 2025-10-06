@@ -8,8 +8,10 @@ import {
   buildState,
 } from "../../data/GameData";
 import { getCurrentTurnLogEntries } from "../api/actionLog";
+import { updateArray } from "../api/util";
 import { applyPlanetAttachments } from "../planets";
 import { Optional } from "../types/types";
+import { objectEntries } from "../util";
 import { AddAttachmentHandler, RemoveAttachmentHandler } from "./addAttachment";
 import { AddTechHandler, RemoveTechHandler } from "./addTech";
 import {
@@ -18,7 +20,6 @@ import {
 } from "./scoreObjective";
 import { SetSpeakerHandler } from "./setSpeaker";
 import { UpdateLeaderStateHandler } from "./updateLeaderState";
-import { objectEntries } from "../util";
 
 export class PlayComponentHandler implements Handler {
   constructor(
@@ -128,7 +129,34 @@ export class PlayComponentHandler implements Handler {
             }
             updates[`factions.Obsidian`] = faction;
             updates[`factions.Firmament`] = "DELETE";
-            updates[`state.activeplayer`] = "Obsidian";
+            for (const [id, faction] of objectEntries(this.gameData.factions)) {
+              if (id === "Firmament") {
+                continue;
+              }
+              let updatedFaction = { ...faction };
+              let needsUpdate = false;
+              if (faction.alliancePartner === "Firmament") {
+                updatedFaction.alliancePartner = "Obsidian";
+                needsUpdate = true;
+              }
+              if (faction.alliances?.includes("Firmament")) {
+                updatedFaction.alliances = updateArray(
+                  faction.alliances,
+                  ["Obsidian"],
+                  ["Firmament"]
+                );
+                needsUpdate = true;
+              }
+              if (needsUpdate) {
+                updates[`factions.${id}`] = updatedFaction;
+              }
+            }
+            if (this.gameData.state.activeplayer === "Firmament") {
+              updates[`state.activeplayer`] = "Obsidian";
+            }
+            if (this.gameData.state.speaker === "Firmament") {
+              updates[`state.speaker`] = "Obsidian";
+            }
             for (const [id, strategyCard] of objectEntries(
               this.gameData.strategycards ?? {}
             )) {
@@ -147,10 +175,76 @@ export class PlayComponentHandler implements Handler {
               for (const [factionId, scorers] of objectEntries(
                 objective.keyedScorers ?? {}
               )) {
-                updates[`objectives.${id}.keyedScorers.${factionId}`] =
-                  scorers.map((factionId) =>
-                    factionId === "Firmament" ? "Obsidian" : factionId
-                  );
+                if (factionId === "Firmament") {
+                  updates[`objectives.${id}.keyedScorers.Firmament`] = "DELETE";
+                  updates[`objectives.${id}.keyedScorers.Obsidian`] =
+                    scorers.map((factionId) =>
+                      factionId === "Firmament" ? "Obsidian" : factionId
+                    );
+                } else {
+                  updates[`objectives.${id}.keyedScorers.${factionId}`] =
+                    scorers.map((factionId) =>
+                      factionId === "Firmament" ? "Obsidian" : factionId
+                    );
+                }
+              }
+            }
+            for (const [id, agenda] of objectEntries(
+              this.gameData.agendas ?? {}
+            )) {
+              if (agenda.target === "Firmament") {
+                updates[`agendas.${id}.target`] = "Obsidian";
+              }
+            }
+            for (const [id, attachment] of objectEntries(
+              this.gameData.attachments ?? {}
+            )) {
+              let needsUpdate = false;
+              let updatedPlanets = attachment.planets ?? [];
+              if (attachment.planets?.includes("Cronos")) {
+                updatedPlanets = updateArray(
+                  updatedPlanets,
+                  ["Cronos Hollow"],
+                  ["Cronos"]
+                );
+                needsUpdate = true;
+              }
+              if (attachment.planets?.includes("Tallin")) {
+                updatedPlanets = updateArray(
+                  updatedPlanets,
+                  ["Tallin Hollow"],
+                  ["Tallin"]
+                );
+                needsUpdate = true;
+              }
+              if (needsUpdate) {
+                updates[`attachments.${id}.planets`] = updatedPlanets;
+              }
+            }
+            for (const [id, planet] of objectEntries(this.gameData.planets)) {
+              if (id === "Cronos" || id === "Tallin") {
+                updates[`planets.${id}`] = "DELETE";
+                const updatedPlanet = { ...planet };
+                if (updatedPlanet.owner === "Firmament") {
+                  updatedPlanet.owner = "Obsidian";
+                }
+                updates[`planets.${id} Hollow`] = updatedPlanet;
+              } else if (planet.owner === "Firmament") {
+                updates[`planets.${id}.owner`] = "Obsidian";
+              }
+            }
+            for (const [id, relic] of objectEntries(
+              this.gameData.relics ?? {}
+            )) {
+              if (relic.owner === "Firmament") {
+                updates[`relics.${id}.owner`] = "Obsidian";
+              }
+            }
+            for (const [id, expedition] of objectEntries(
+              this.gameData.expedition ?? {}
+            )) {
+              if (expedition === "Firmament") {
+                updates[`expedition.${id}`] = "Obsidian";
               }
             }
             break;
@@ -371,7 +465,34 @@ export class UnplayComponentHandler implements Handler {
           }
           updates[`factions.Firmament`] = faction;
           updates[`factions.Obsidian`] = "DELETE";
-          updates[`state.activeplayer`] = "Firmament";
+          for (const [id, faction] of objectEntries(this.gameData.factions)) {
+            if (id === "Obsidian") {
+              continue;
+            }
+            let updatedFaction = { ...faction };
+            let needsUpdate = false;
+            if (faction.alliancePartner === "Obsidian") {
+              updatedFaction.alliancePartner = "Firmament";
+              needsUpdate = true;
+            }
+            if (faction.alliances?.includes("Obsidian")) {
+              updatedFaction.alliances = updateArray(
+                faction.alliances,
+                ["Firmament"],
+                ["Obsidian"]
+              );
+              needsUpdate = true;
+            }
+            if (needsUpdate) {
+              updates[`factions.${id}`] = updatedFaction;
+            }
+          }
+          if (this.gameData.state.activeplayer === "Obsidian") {
+            updates[`state.activeplayer`] = "Firmament";
+          }
+          if (this.gameData.state.speaker === "Obsidian") {
+            updates[`state.speaker`] = "Firmament";
+          }
           for (const [id, strategyCard] of objectEntries(
             this.gameData.strategycards ?? {}
           )) {
@@ -389,10 +510,74 @@ export class UnplayComponentHandler implements Handler {
             for (const [factionId, scorers] of objectEntries(
               objective.keyedScorers ?? {}
             )) {
-              updates[`objectives.${id}.keyedScorers.${factionId}`] =
-                scorers.map((factionId) =>
-                  factionId === "Obsidian" ? "Firmament" : factionId
-                );
+              if (factionId === "Obsidian") {
+                updates[`objectives.${id}.keyedScorers.Obsidian`] = "DELETE";
+                updates[`objectives.${id}.keyedScorers.Firmament`] =
+                  scorers.map((factionId) =>
+                    factionId === "Obsidian" ? "Firmament" : factionId
+                  );
+              } else {
+                updates[`objectives.${id}.keyedScorers.${factionId}`] =
+                  scorers.map((factionId) =>
+                    factionId === "Obsidian" ? "Firmament" : factionId
+                  );
+              }
+            }
+          }
+          for (const [id, agenda] of objectEntries(
+            this.gameData.agendas ?? {}
+          )) {
+            if (agenda.target === "Obsidian") {
+              updates[`agendas.${id}.target`] = "Firmament";
+            }
+          }
+          for (const [id, attachment] of objectEntries(
+            this.gameData.attachments ?? {}
+          )) {
+            let needsUpdate = false;
+            let updatedPlanets = attachment.planets ?? [];
+            if (attachment.planets?.includes("Cronos Hollow")) {
+              updatedPlanets = updateArray(
+                updatedPlanets,
+                ["Cronos"],
+                ["Cronos Hollow"]
+              );
+              needsUpdate = true;
+            }
+            if (attachment.planets?.includes("Tallin Hollow")) {
+              updatedPlanets = updateArray(
+                updatedPlanets,
+                ["Tallin"],
+                ["Tallin Hollow"]
+              );
+              needsUpdate = true;
+            }
+            if (needsUpdate) {
+              updates[`attachments.${id}.planets`] = updatedPlanets;
+            }
+          }
+          for (const [id, planet] of objectEntries(this.gameData.planets)) {
+            if (id === "Cronos Hollow" || id === "Tallin Hollow") {
+              updates[`planets.${id}`] = "DELETE";
+              const updatedPlanet = { ...planet };
+              if (updatedPlanet.owner === "Obsidian") {
+                updatedPlanet.owner = "Firmament";
+              }
+              updates[`planets.${id.replace(" Hollow", "")}`] = updatedPlanet;
+            } else if (planet.owner === "Obsidian") {
+              updates[`planets.${id}.owner`] = "Firmament";
+            }
+          }
+          for (const [id, relic] of objectEntries(this.gameData.relics ?? {})) {
+            if (relic.owner === "Obsidian") {
+              updates[`relics.${id}.owner`] = "Firmament";
+            }
+          }
+          for (const [id, expedition] of objectEntries(
+            this.gameData.expedition ?? {}
+          )) {
+            if (expedition === "Obsidian") {
+              updates[`expedition.${id}`] = "Firmament";
             }
           }
           break;

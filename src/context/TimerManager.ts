@@ -28,6 +28,9 @@ export default class TimerManager {
   }
 
   public static getValue<Type>(path: string): Optional<Type> {
+    if (!this.timers) {
+      return;
+    }
     return getValueAtPath(this.timers, path) as Type;
   }
 
@@ -135,6 +138,9 @@ export default class TimerManager {
   private static hashes: Record<string, string>;
 
   public static subscribe(callback: CallbackFn<any>, path: string) {
+    if (!this.subscribers) {
+      return () => {};
+    }
     let id = makeid(12);
     while (!!this.subscribers[id]) {
       id = makeid(12);

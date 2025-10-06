@@ -328,6 +328,12 @@ function PromissoriesSection() {
   const omegaMergeFn = buildMergeFunction(options.expansions);
   const updatedBaseFactions = Object.values(baseFactions)
     .filter((faction) => {
+      if (factions.Obsidian && faction.id === "Firmament") {
+        return false;
+      }
+      if (factions.Firmament && faction.id === "Obsidian") {
+        return false;
+      }
       return (
         (faction.expansion === "BASE" ||
           options.expansions.includes(faction.expansion)) &&
@@ -614,9 +620,6 @@ function PromissoriesSection() {
                   const selected = (
                     factions["Yin Brotherhood"]?.alliances ?? []
                   ).includes(faction.id);
-                  if (faction.id === "Barony of Letnev") {
-                    console.log("Barony Selected?", selected);
-                  }
                   return (
                     <div
                       key={faction.id}

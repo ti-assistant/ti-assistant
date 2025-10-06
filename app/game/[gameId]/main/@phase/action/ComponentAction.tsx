@@ -1485,6 +1485,10 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       );
       break;
     }
+    case "Overrule": {
+      // TODO: Pick a strategy card, and then handle the primary.
+      // Politics, Diplo, Warfare, Technology, and Imperial all need actions.
+    }
   }
   if (!innerContent) {
     return null;

@@ -1,4 +1,6 @@
 namespace ThundersEdge {
+  type ActionCardId = "Overrule";
+
   type BreakthroughId =
     | "Psychospore" // Arborec
     | "Wing Transfer" // Argent Flight

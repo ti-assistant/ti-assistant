@@ -33,6 +33,17 @@ export function arrayRemove<Type>(array: Type[], value: Type) {
   return Array.from(set);
 }
 
+export function updateArray<Type>(array: Type[], add: Type[], remove: Type[]) {
+  const set = new Set(array);
+  for (const value of add) {
+    set.add(value);
+  }
+  for (const value of remove) {
+    set.delete(value);
+  }
+  return Array.from(set);
+}
+
 export async function fetcher(url: string) {
   if (!Cookies.get("secret")) {
     Cookies.set("secret", genCookie(16));

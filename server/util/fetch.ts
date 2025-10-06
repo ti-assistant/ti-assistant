@@ -258,7 +258,7 @@ export async function getTimers(gameId: string) {
     return {};
   }
 
-  const timers = timersDoc.data() as Record<string, number>;
+  const timers = timersDoc.data() as Timers;
 
   delete timers.deleteAt;
 
@@ -274,7 +274,7 @@ export async function getTimersInTransaction(
     return {};
   }
 
-  const timers = timerData.data() as Record<string, number>;
+  const timers = timerData.data() as Timers;
 
   delete timers.deleteAt;
 
@@ -292,7 +292,7 @@ export async function getArchivedTimers(gameId: string) {
     return {};
   }
 
-  const timers = timersDoc.data() as Record<string, number>;
+  const timers = timersDoc.data() as Timers;
 
   delete timers.deleteAt;
 

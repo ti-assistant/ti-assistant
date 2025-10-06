@@ -19,4 +19,5 @@ type ActionCardId =
   | BaseGame.ActionCardId
   | CodexOne.ActionCardId
   | ProphecyOfKings.ActionCardId
+  | ThundersEdge.ActionCardId
   | DiscordantStars.ActionCardId;

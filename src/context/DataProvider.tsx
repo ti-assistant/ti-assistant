@@ -10,7 +10,6 @@ export default function DataProvider({
   archive = false,
   children,
   gameId,
-  sessionId,
   seedData,
 }: PropsWithChildren<{
   archive?: boolean;
@@ -20,12 +19,12 @@ export default function DataProvider({
 }>) {
   const intl = useIntl();
 
-  DataManager.init(gameId, sessionId, seedData, intl, archive);
+  DataManager.init(gameId, seedData, intl, archive);
   TimerManager.init(gameId, seedData.timers ?? {}, archive);
 
   useEffect(() => {
-    return DataManager.listen(gameId);
-  }, [gameId]);
+    return DataManager.listen();
+  }, []);
 
   useEffect(() => {
     return TimerManager.listen();

@@ -61,7 +61,7 @@ export function FactionSummary({
   let VPs = 0;
 
   if (!faction) {
-    throw new Error("Faction " + factionId + " not found");
+    return null;
   }
 
   const ownedTechs = objectKeys(faction.techs ?? {});

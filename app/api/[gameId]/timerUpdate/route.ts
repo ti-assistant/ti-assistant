@@ -1,10 +1,10 @@
-import { FieldValue, getFirestore } from "firebase-admin/firestore";
+import { getFirestore } from "firebase-admin/firestore";
+import { NextResponse } from "next/server";
 import {
   canEditGame,
   getTimers,
   getTimersInTransaction,
 } from "../../../../server/util/fetch";
-import { NextResponse } from "next/server";
 
 export async function POST(
   req: Request,
@@ -27,12 +27,16 @@ export async function POST(
 
   try {
     await db.runTransaction(async (t) => {
-      await getTimersInTransaction(timersRef, t);
+      const timers = await getTimersInTransaction(timersRef, t);
 
       if (!data.timestamp) {
         return new Response("Missing info", {
           status: 422,
         });
+      }
+
+      if ((timers.game ?? 0) > (data.timers.game ?? 0)) {
+        return NextResponse.json(timers);
       }
 
       // Paused should be set elsewhere.
