@@ -12,6 +12,7 @@ import {
   getCurrentTurnLogEntriesInTransaction,
   getGameData,
   getGameDataInTransaction,
+  getTimersInTransaction,
 } from "../../../../server/util/fetch";
 import { TURN_BOUNDARIES } from "../../../../src/util/api/actionLog";
 import { getOppositeHandler } from "../../../../src/util/api/opposite";
@@ -136,11 +137,21 @@ export async function POST(
 
   const timers = timerDoc.data() as Record<string, number>;
 
-  const gameTime = timers.game ?? 0;
+  const serverGameTime = timers.game ?? 0;
 
   const gameRef = db.collection("games").doc(gameId);
 
-  const data = (await req.json()) as GameUpdateData & { timestamp: number };
+  const data = (await req.json()) as GameUpdateData & {
+    timestamp: number;
+    gameTime: number;
+  };
+
+  let gameTime = data.gameTime;
+  // Use the later time, unless the passed in time is more than 20 seconds after the server time.
+  if (gameTime < serverGameTime || gameTime - 20 > serverGameTime) {
+    gameTime = serverGameTime;
+  }
+
   try {
     let numAttempts = 3;
     let shouldRetry = true;
@@ -324,6 +335,7 @@ function updateInTransaction(
       gameRef,
       t
     );
+    const timers = await getTimersInTransaction(timerRef, t);
 
     // TODO: Validate actions.
     let handler: Optional<Handler>;
@@ -590,6 +602,23 @@ function updateInTransaction(
 
     if (Object.keys(updates).length > 0) {
       t.update(gameRef, updates);
+    }
+    const timerUpdates: Record<string, any> = {
+      paused: "DELETE",
+    };
+    if (
+      data.action === "PLAY_COMPONENT" &&
+      data.event.name === "Puppets of the Blade"
+    ) {
+      timerUpdates["Obsidian"] = timers["Firmament"] ?? 0;
+      timerUpdates["Firmament"] = "DELETE";
+    }
+    if (
+      data.action === "UNPLAY_COMPONENT" &&
+      data.event.name === "Puppets of the Blade"
+    ) {
+      timerUpdates["Firmament"] = timers["Obsidian"] ?? 0;
+      timerUpdates["Obsidian"] = "DELETE";
     }
     t.update(
       timerRef,

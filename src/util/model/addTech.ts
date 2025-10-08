@@ -113,7 +113,6 @@ export class RemoveTechHandler implements Handler {
         "DELETE",
     };
 
-    console.log("Data", this.data.event);
     for (const factionId of this.data.event.additionalFactions ?? []) {
       updates[`factions.${factionId}.techs.${this.data.event.tech}`] = "DELETE";
     }

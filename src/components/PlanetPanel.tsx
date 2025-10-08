@@ -174,7 +174,7 @@ function UnclaimedPlanetSection() {
               >
                 {viewOnly ? null : (
                   <FactionSelectHoverMenu
-                    options={objectKeys(factions)}
+                    options={possibleFactions}
                     onSelect={(factionId) => {
                       if (!gameId || !factionId) {
                         return;

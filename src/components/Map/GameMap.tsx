@@ -4,6 +4,8 @@ import styles from "./GameMap.module.scss";
 import OverlayLegend from "./OverlayLegend";
 import { OverlayDetails } from "./PlanetOverlay";
 import SystemImage from "./SystemImage";
+import { Optional } from "../../util/types/types";
+import Nexus, { NexusPosition } from "./Nexus";
 
 interface Cube {
   q: number;
@@ -148,123 +150,178 @@ export default function GameMap({
   const spiral = cubeSpiral(Cube(0, 0, 0), numRings);
 
   let ghosts = false;
-  let ghostsCorner = null;
+  let rebellion = false;
+  let ghostsCorner: Optional<NexusPosition>;
+  let rebellionCorner: Optional<NexusPosition>;
   factions.forEach((faction, index) => {
-    if (faction.id === "Ghosts of Creuss") {
+    if (
+      faction.id === "Ghosts of Creuss" ||
+      faction.id === "Crimson Rebellion"
+    ) {
+      let positionPriority: NexusPosition[] = ["bottom-left", "bottom-right"];
       switch (factions.length) {
         case 3:
           switch (index) {
             case 0:
-              ghostsCorner = "top-right";
+              positionPriority = ["top-right", "bottom-right"];
               break;
             case 1:
-              ghostsCorner = "bottom-right";
+              positionPriority = ["bottom-right", "bottom-left"];
               break;
             case 2:
-              ghostsCorner = "top-left";
+              positionPriority = ["top-left", "bottom-left"];
               break;
           }
           break;
         case 4:
           switch (index) {
             case 0:
-              ghostsCorner = mapStyle === "standard" ? "top-left" : "top-right";
+              positionPriority = ["top-right", "bottom-right"];
               break;
             case 1:
-              ghostsCorner =
-                mapStyle === "standard" ? "top-right" : "bottom-right";
+              if (mapStyle === "standard") {
+                positionPriority = ["bottom-right", "bottom-left"];
+              } else {
+                positionPriority = ["bottom-left", "top-left"];
+              }
               break;
             case 2:
-              ghostsCorner =
-                mapStyle === "standard" ? "bottom-right" : "bottom-left";
+              positionPriority = ["bottom-left", "top-left"];
               break;
             case 3:
-              ghostsCorner =
-                mapStyle === "standard" ? "bottom-left" : "top-left";
+              if (mapStyle === "standard") {
+                positionPriority = ["top-left", "top-right"];
+              } else {
+                positionPriority = ["top-left", "bottom-left"];
+              }
               break;
           }
           break;
         case 5:
           switch (index) {
             case 0:
-              ghostsCorner = "top-right";
+              positionPriority = ["top-right", "top-left"];
               break;
             case 1:
-              ghostsCorner = "bottom-right";
+              if (mapStyle === "standard") {
+                positionPriority = ["bottom-right", "top-right"];
+              } else {
+                positionPriority = ["top-right", "bottom-right"];
+              }
               break;
             case 2:
-              ghostsCorner = "bottom-right";
+              if (mapStyle === "standard") {
+                positionPriority = ["bottom-right", "bottom-left"];
+              } else {
+                positionPriority = ["bottom-right", "top-right"];
+              }
               break;
             case 3:
-              ghostsCorner = "bottom-left";
+              positionPriority = ["bottom-left", "top-left"];
               break;
             case 4:
-              ghostsCorner = "top-left";
+              if (mapStyle === "standard") {
+                positionPriority = ["top-left", "top-right"];
+              } else {
+                positionPriority = ["top-left", "bottom-left"];
+              }
               break;
           }
           break;
         case 6:
           switch (index) {
             case 0:
+              positionPriority = ["top-right", "top-left"];
+              break;
             case 1:
-              ghostsCorner = "top-right";
+              positionPriority = ["top-right", "bottom-right"];
               break;
             case 2:
+              positionPriority = ["bottom-right", "top-right"];
+              break;
             case 3:
-              ghostsCorner = "bottom-right";
+              positionPriority = ["bottom-right", "bottom-left"];
               break;
             case 4:
-              ghostsCorner = "bottom-left";
+              positionPriority = ["bottom-left", "top-left"];
               break;
             case 5:
-              ghostsCorner = "top-left";
+              positionPriority = ["top-left", "bottom-left"];
               break;
           }
           break;
         case 7:
           switch (index) {
             case 0:
+              positionPriority = ["top-right", "top-left"];
+              break;
             case 1:
-              ghostsCorner = "top-right";
+              positionPriority = ["top-right", "bottom-right"];
               break;
             case 2:
+              positionPriority = ["top-right", "bottom-right"];
+              break;
             case 3:
-              ghostsCorner = "bottom-right";
+              positionPriority = ["bottom-right", "top-right"];
               break;
             case 4:
-              ghostsCorner = "bottom-left";
+              positionPriority = ["bottom-left", "top-left"];
               break;
             case 5:
+              positionPriority = ["bottom-left", "top-left"];
+              break;
             case 6:
-              ghostsCorner = "top-left";
+              positionPriority = ["top-left", "bottom-left"];
               break;
           }
           break;
         case 8:
           switch (index) {
             case 0:
+              positionPriority = ["top-right", "top-left"];
+              break;
             case 1:
-              ghostsCorner = "top-right";
+              positionPriority = ["top-right", "bottom-right"];
               break;
             case 2:
+              positionPriority = ["top-right", "bottom-right"];
+              break;
             case 3:
+              positionPriority = ["bottom-right", "top-right"];
+              break;
             case 4:
-              ghostsCorner = "bottom-right";
+              positionPriority = ["bottom-right", "bottom-left"];
               break;
             case 5:
-              ghostsCorner = "bottom-left";
+              positionPriority = ["bottom-left", "top-left"];
               break;
             case 6:
+              positionPriority = ["bottom-left", "top-left"];
+              break;
             case 7:
-              ghostsCorner = "top-left";
+              positionPriority = ["top-left", "bottom-left"];
               break;
           }
           break;
       }
 
-      ghosts = true;
+      if (faction.id === "Ghosts of Creuss") {
+        ghosts = true;
+        ghostsCorner = positionPriority[0];
+        if (rebellionCorner === ghostsCorner) {
+          ghostsCorner = positionPriority[1];
+        }
+      } else if (faction.id === "Crimson Rebellion") {
+        rebellion = true;
+        rebellionCorner = positionPriority[0];
+        if (ghostsCorner === rebellionCorner) {
+          rebellionCorner = positionPriority[1];
+        }
+      }
     }
   });
+  console.log("Ghost ", ghostsCorner);
+  console.log("Crimson", rebellionCorner);
   if (!ghosts) {
     mapString.split(" ").forEach((system) => {
       if (system === "17") {
@@ -272,6 +329,22 @@ export default function GameMap({
         ghostsCorner = "bottom-right";
       }
     });
+  }
+  if (!rebellion) {
+    mapString.split(" ").forEach((system) => {
+      if (system === "94") {
+        rebellion = true;
+        rebellionCorner = "top-right";
+      }
+    });
+  }
+
+  let nexusCorner: NexusPosition = "bottom-left";
+  if (ghostsCorner === "bottom-left" || rebellionCorner === "bottom-left") {
+    nexusCorner = "bottom-right";
+    if (ghostsCorner === "bottom-right" || rebellionCorner === "bottom-right") {
+      nexusCorner = "top-right";
+    }
   }
 
   return (
@@ -317,69 +390,47 @@ export default function GameMap({
             </div>
           );
         })}
-        {ghosts ? (
-          <div
-            style={{
-              position: "absolute",
-              right:
-                ghostsCorner === "top-right" || ghostsCorner === "bottom-right"
-                  ? 0
-                  : undefined,
-              bottom:
-                ghostsCorner === "bottom-right" ||
-                ghostsCorner === "bottom-left"
-                  ? 0
-                  : undefined,
-              left:
-                ghostsCorner === "bottom-left" || ghostsCorner === "top-left"
-                  ? 0
-                  : undefined,
-              top:
-                ghostsCorner === "top-right" || ghostsCorner === "top-left"
-                  ? 0
-                  : undefined,
-              width: `${tilePercentage * HEX_RATIO}%`,
-              height: `${tilePercentage * HEX_RATIO}%`,
-            }}
-          >
-            <SystemImage
-              overlayDetails={overlayDetails}
-              planets={planetInfo}
-              systemNumber="51"
-              selectable={false}
-              onClick={onSelect}
-            />
-          </div>
+        {ghosts && ghostsCorner ? (
+          <Nexus
+            systemNumber="51"
+            overlayDetails={overlayDetails}
+            planetInfo={planetInfo}
+            selectable={false}
+            onClick={onSelect}
+            position={ghostsCorner}
+            tilePercentage={tilePercentage}
+            hexRatio={HEX_RATIO}
+          />
+        ) : null}
+        {rebellion && rebellionCorner ? (
+          <Nexus
+            systemNumber="118"
+            overlayDetails={overlayDetails}
+            planetInfo={planetInfo}
+            selectable={false}
+            onClick={onSelect}
+            position={rebellionCorner}
+            tilePercentage={tilePercentage}
+            hexRatio={HEX_RATIO}
+          />
         ) : null}
         {wormholeNexus ? (
-          <div
-            style={{
-              position: "absolute",
-              left: ghostsCorner !== "bottom-left" ? 0 : undefined,
-              right: ghostsCorner === "bottom-left" ? 0 : undefined,
-              bottom: 0,
-              width: `${tilePercentage * HEX_RATIO}%`,
-              height: `${getWormholeNexusHeight(
-                wormholeNexus,
-                tilePercentage,
-                HEX_RATIO
-              )}%`,
-            }}
-          >
-            <SystemImage
-              overlayDetails={overlayDetails}
-              planets={planetInfo}
-              systemNumber={getWormholeNexusSystemNum(wormholeNexus)}
-              selectable={
-                canSelectSystem
-                  ? canSelectSystem(
-                      wormholeNexus === "PURGED" ? "81" : `82${wormholeNexus}`
-                    )
-                  : false
-              }
-              onClick={onSelect}
-            />
-          </div>
+          <Nexus
+            systemNumber={getWormholeNexusSystemNum(wormholeNexus)}
+            overlayDetails={overlayDetails}
+            planetInfo={planetInfo}
+            selectable={
+              canSelectSystem
+                ? canSelectSystem(
+                    wormholeNexus === "PURGED" ? "81" : `82${wormholeNexus}`
+                  )
+                : false
+            }
+            onClick={onSelect}
+            position={nexusCorner}
+            tilePercentage={tilePercentage}
+            hexRatio={HEX_RATIO}
+          />
         ) : null}
         {hideFracture ? null : (
           <Fracture

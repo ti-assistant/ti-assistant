@@ -27,6 +27,7 @@ function getOverlayHeight(id: PlanetId) {
   switch (id) {
     case "Creuss":
     case "Mallice":
+    case "Ahk Creuxx":
       return "24%";
     case "Styx":
       return "20%";
@@ -41,7 +42,7 @@ function getOverlayHeight(id: PlanetId) {
 function getOverlayWidth(id: PlanetId) {
   switch (id) {
     case "Styx":
-      return `11%`;
+      return `10%`;
     case "Cocytus":
     case "Lethe":
     case "Phlegethon":
@@ -75,9 +76,6 @@ export default function PlanetOverlay({
   return (
     <>
       {systemPlanets.map((planet) => {
-        if (planet.id === "Styx") {
-          console.log("Planets", planet);
-        }
         let detailsSymbol: Optional<ReactNode>;
         const height = getOverlayHeight(planet.id);
         const width = getOverlayWidth(planet.id);

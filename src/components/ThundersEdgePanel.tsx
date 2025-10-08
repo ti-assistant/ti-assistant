@@ -356,8 +356,6 @@ function PromissoriesSection() {
     return null;
   }
 
-  console.log("Factions", factions);
-
   const showYinBreakthroughs =
     factions["Yin Brotherhood"]?.breakthrough.state === "readied";
 

@@ -1,5 +1,4 @@
-import DataManager from "../../context/DataManager";
-import TimerManager from "../../context/TimerManager";
+import { DataStore } from "../../context/dataStore";
 import {
   PlayComponentHandler,
   UnplayComponentHandler,
@@ -25,7 +24,7 @@ export function playComponent(
 
   const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
 
-  DataManager.update((storedGameData) => {
+  DataStore.update((storedGameData) => {
     const handler = new PlayComponentHandler(storedGameData, data);
 
     if (!handler.validate()) {
@@ -34,20 +33,22 @@ export function playComponent(
 
     // Requires looking at action log.
     updateGameData(storedGameData, handler.getUpdates());
-    const gameTimer = TimerManager.getValue<number>("game");
+    const gameTimer = storedGameData.timers?.game;
     updateActionLog(storedGameData, handler, now, gameTimer ?? 0);
 
-    storedGameData.lastUpdate = now;
+    if (storedGameData.timers) {
+      storedGameData.timers.paused = false;
+      if (data.event.name === "Puppets of the Blade") {
+        storedGameData.timers.Obsidian = storedGameData.timers.Firmament ?? 0;
+        delete storedGameData.timers.Firmament;
+      }
+    }
 
     return storedGameData;
-  });
-  TimerManager.update((timers) => {
-    timers.paused = false;
-    return timers;
-  });
+  }, "CLIENT");
 
   return updatePromise.catch((_) => {
-    DataManager.reset();
+    DataStore.reset();
   });
 }
 
@@ -68,27 +69,29 @@ export function unplayComponent(
 
   const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
 
-  DataManager.update((storedGameData) => {
+  DataStore.update((storedGameData) => {
     const handler = new UnplayComponentHandler(storedGameData, data);
 
     if (!handler.validate()) {
       return storedGameData;
     }
 
-    const gameTimer = TimerManager.getValue<number>("game");
+    const gameTimer = storedGameData.timers?.game;
     updateActionLog(storedGameData, handler, now, gameTimer ?? 0);
     updateGameData(storedGameData, handler.getUpdates());
 
-    storedGameData.lastUpdate = now;
+    if (storedGameData.timers) {
+      storedGameData.timers.paused = false;
+      if (data.event.name === "Puppets of the Blade") {
+        storedGameData.timers.Firmament = storedGameData.timers.Obsidian ?? 0;
+        delete storedGameData.timers.Obsidian;
+      }
+    }
 
     return storedGameData;
-  });
-  TimerManager.update((timers) => {
-    timers.paused = false;
-    return timers;
-  });
+  }, "CLIENT");
 
   return updatePromise.catch((_) => {
-    DataManager.reset();
+    DataStore.reset();
   });
 }

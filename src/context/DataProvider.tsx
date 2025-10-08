@@ -1,34 +1,26 @@
 "use client";
 
-import { PropsWithChildren, useEffect } from "react";
-import { useIntl } from "react-intl";
-import DataManager from "./DataManager";
+import { PropsWithChildren } from "react";
 import { Optional } from "../util/types/types";
-import TimerManager from "./TimerManager";
+import { DataStore } from "./dataStore";
+import TimerProvider from "./TimerProvider";
+
+export interface SeedData {
+  data: GameData;
+  baseData: BaseData;
+  storedData: StoredGameData;
+}
 
 export default function DataProvider({
-  archive = false,
   children,
   gameId,
   seedData,
 }: PropsWithChildren<{
-  archive?: boolean;
   gameId: string;
   sessionId: Optional<string>;
-  seedData: GameData;
+  seedData: SeedData;
 }>) {
-  const intl = useIntl();
-
-  DataManager.init(gameId, seedData, intl, archive);
-  TimerManager.init(gameId, seedData.timers ?? {}, archive);
-
-  useEffect(() => {
-    return DataManager.listen();
-  }, []);
-
-  useEffect(() => {
-    return TimerManager.listen();
-  }, []);
+  DataStore.init(gameId, seedData.data, seedData.baseData, seedData.storedData);
 
   return <>{children}</>;
 }

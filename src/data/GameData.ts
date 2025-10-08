@@ -110,7 +110,7 @@ import { buildMergeFunction } from "../util/expansions";
 //   getBaseTechs = module.getBaseTechs;
 // });
 
-function buildBaseData(intl: IntlShape): BaseData {
+export function buildBaseData(intl: IntlShape): BaseData {
   return {
     actionCards: getActionCards(intl),
     agendas: getAgendas(intl),

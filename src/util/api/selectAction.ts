@@ -1,5 +1,4 @@
-import DataManager from "../../context/DataManager";
-import TimerManager from "../../context/TimerManager";
+import { DataStore } from "../../context/dataStore";
 import {
   SelectActionHandler,
   UnselectActionHandler,
@@ -20,28 +19,26 @@ export function selectAction(gameId: string, action: Action) {
 
   const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
 
-  DataManager.update((storedGameData) => {
+  DataStore.update((storedGameData) => {
     const handler = new SelectActionHandler(storedGameData, data);
 
     if (!handler.validate()) {
       return storedGameData;
     }
 
-    const gameTimer = TimerManager.getValue<number>("game");
+    const gameTimer = storedGameData.timers?.game;
     updateActionLog(storedGameData, handler, now, gameTimer ?? 0);
     updateGameData(storedGameData, handler.getUpdates());
 
-    storedGameData.lastUpdate = now;
+    if (storedGameData.timers) {
+      storedGameData.timers.paused = false;
+    }
 
     return storedGameData;
-  });
-  TimerManager.update((timers) => {
-    timers.paused = false;
-    return timers;
-  });
+  }, "CLIENT");
 
   return updatePromise.catch((_) => {
-    DataManager.reset();
+    DataStore.reset();
   });
 }
 
@@ -57,7 +54,7 @@ export function unselectAction(gameId: string, action: Action) {
 
   const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
 
-  DataManager.update((storedGameData) => {
+  DataStore.update((storedGameData) => {
     const handler = new UnselectActionHandler(storedGameData, data);
 
     if (!handler.validate()) {
@@ -66,19 +63,17 @@ export function unselectAction(gameId: string, action: Action) {
 
     // Requires looking at the action log.
     updateGameData(storedGameData, handler.getUpdates());
-    const gameTimer = TimerManager.getValue<number>("game");
+    const gameTimer = storedGameData.timers?.game;
     updateActionLog(storedGameData, handler, now, gameTimer ?? 0);
 
-    storedGameData.lastUpdate = now;
+    if (storedGameData.timers) {
+      storedGameData.timers.paused = false;
+    }
 
     return storedGameData;
-  });
-  TimerManager.update((timers) => {
-    timers.paused = false;
-    return timers;
-  });
+  }, "CLIENT");
 
   return updatePromise.catch((_) => {
-    DataManager.reset();
+    DataStore.reset();
   });
 }

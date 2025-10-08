@@ -1,28 +1,30 @@
-import { useEffect } from "react";
+import { use, useEffect } from "react";
 import { FormattedMessage } from "react-intl";
+import { TimerContext } from "../../context/contexts";
 import { useGameId, useTimers, useViewOnly } from "../../context/dataHooks";
-import TimerManager from "../../context/TimerManager";
 import { setGlobalPauseAsync } from "../../dynamic/api";
 import { rem } from "../../util/util";
 import TimerDisplay from "../TimerDisplay/TimerDisplay";
 import TurnTimer from "../TurnTimer/TurnTimer";
 import styles from "./GameTimer.module.scss";
+import { useGameState, usePhase } from "../../context/stateDataHooks";
 
 export default function GameTimer({ frozen = false }) {
   const gameId = useGameId();
+  const phase = usePhase();
   const timers = useTimers();
+  const timerFns = use(TimerContext);
 
   const viewOnly = useViewOnly();
 
   const gameTimer = timers.game ?? 0;
 
   useEffect(() => {
-    if (viewOnly) {
+    if (viewOnly || phase === "END") {
       return;
     }
-    TimerManager.activateTimer("game");
-    return () => TimerManager.deactivateTimer("game");
-  }, [viewOnly]);
+    return timerFns.activateTimer("game");
+  }, [viewOnly, timerFns, phase]);
 
   const paused = timers.paused;
 

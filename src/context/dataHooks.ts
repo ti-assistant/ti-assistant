@@ -1,34 +1,26 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import stableHash from "stable-hash";
 import { BASE_OPTIONS } from "../../server/data/options";
 import { getLogEntries } from "../util/actionLog";
 import { getCurrentTurnLogEntries } from "../util/api/actionLog";
 import { ActionLog, Optional } from "../util/types/types";
-import DataManager from "./DataManager";
-import TimerManager from "./TimerManager";
+import { DataContext } from "./contexts";
+import { DataStore } from "./dataStore";
 
 export function useGameDataValue<Type>(path: string, defaultValue: Type): Type {
   const [value, setValue] = useState<Type>(
-    DataManager.getValue(path) ?? defaultValue
+    DataStore.getValue(path) ?? defaultValue
   );
+  const subscribe = use(DataContext);
+
+  if (path === "planets") {
+    console.log("Planet refresh");
+  }
 
   useEffect(() => {
-    setValue(DataManager.getValue(path) ?? defaultValue);
-    return DataManager.subscribe(setValue, path);
-  }, [path]);
-
-  return value;
-}
-
-export function useTimerValue<Type>(path: string, defaultValue: Type): Type {
-  const [value, setValue] = useState<Type>(
-    TimerManager.getValue(path) ?? defaultValue
-  );
-
-  useEffect(() => {
-    setValue(TimerManager.getValue(path) ?? defaultValue);
-    return TimerManager.subscribe(setValue, path);
-  }, [path]);
+    setValue(DataStore.getValue(path) ?? defaultValue);
+    return subscribe(setValue, path);
+  }, [path, subscribe]);
 
   return value;
 }
@@ -38,21 +30,22 @@ export function useMemoizedGameDataValue<BaseType, Type>(
   defaultValue: Type,
   fn: (value: BaseType) => Type
 ) {
-  const initialValue = DataManager.getValue<BaseType>(path);
+  const initialValue = DataStore.getValue<BaseType>(path);
   const baseVal = initialValue ? fn(initialValue) : defaultValue;
   const [value, setValue] = useState<Type>(baseVal);
+  const subscribe = use(DataContext);
 
   const valueHash = stableHash(value);
 
   useEffect(() => {
-    const newVal = DataManager.getValue<BaseType>(path);
+    const newVal = DataStore.getValue<BaseType>(path);
     if (newVal) {
       const newValue = fn(newVal);
       if (valueHash !== stableHash(newValue)) {
         setValue(newValue);
       }
     }
-    return DataManager.subscribe((newVal) => {
+    return subscribe((newVal) => {
       if (!newVal) {
         return;
       }
@@ -62,7 +55,7 @@ export function useMemoizedGameDataValue<BaseType, Type>(
       }
       setValue(newValue);
     }, path);
-  }, [path, fn, valueHash]);
+  }, [path, fn, valueHash, subscribe]);
 
   return value;
 }
@@ -171,7 +164,7 @@ export function useTechs() {
 }
 
 export function useTimers() {
-  return useTimerValue<Timers>("", {});
+  return useGameDataValue<Timers>("timers", {});
 }
 
 export function useExpedition() {

@@ -1,5 +1,4 @@
-import DataManager from "../../context/DataManager";
-import TimerManager from "../../context/TimerManager";
+import { DataStore } from "../../context/dataStore";
 import { SetSpeakerHandler } from "../model/setSpeaker";
 import { updateGameData } from "./handler";
 import { updateActionLog } from "./update";
@@ -17,7 +16,7 @@ export function setSpeaker(gameId: string, newSpeaker: FactionId) {
 
   const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
 
-  DataManager.update((storedGameData) => {
+  DataStore.update((storedGameData) => {
     const handler = new SetSpeakerHandler(storedGameData, data);
 
     if (!handler.validate()) {
@@ -26,19 +25,17 @@ export function setSpeaker(gameId: string, newSpeaker: FactionId) {
 
     // Requires looking at action log.
     updateGameData(storedGameData, handler.getUpdates());
-    const gameTimer = TimerManager.getValue<number>("game");
+    const gameTimer = storedGameData.timers?.game;
     updateActionLog(storedGameData, handler, now, gameTimer ?? 0);
 
-    storedGameData.lastUpdate = now;
+    if (storedGameData.timers) {
+      storedGameData.timers.paused = false;
+    }
 
     return storedGameData;
-  });
-  TimerManager.update((timers) => {
-    timers.paused = false;
-    return timers;
-  });
+  }, "CLIENT");
 
   return updatePromise.catch((_) => {
-    DataManager.reset();
+    DataStore.reset();
   });
 }

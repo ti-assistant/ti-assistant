@@ -207,7 +207,6 @@ function ResearchedTechsSection({
                 },
                 { techCount: 0, hadTech: true }
               );
-              console.log("Count", techCount);
               let additionalFactions: Optional<FactionId[]>;
               if (techCount === 1 && !hadTech) {
                 additionalFactions = ["Deepwrought Scholarate"];

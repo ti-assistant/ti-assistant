@@ -1,6 +1,7 @@
 import { PropsWithChildren } from "react";
-import DataProvider from "./DataProvider";
 import { Optional } from "../util/types/types";
+import DataProvider from "./DataProvider";
+import DBListener from "./DBListener";
 
 export default async function DataWrapper({
   archive = false,
@@ -12,20 +13,24 @@ export default async function DataWrapper({
   archive?: boolean;
   gameId: string;
   sessionId: Optional<string>;
-  data: Promise<GameData>;
+  data: Promise<{
+    data: GameData;
+    baseData: BaseData;
+    storedData: StoredGameData;
+  }>;
 }>) {
   const seedData = await data;
 
-  console.log("Timers", seedData.timers);
-
   return (
-    <DataProvider
-      gameId={gameId}
-      sessionId={sessionId}
-      seedData={seedData}
-      archive={archive}
-    >
-      {children}
-    </DataProvider>
+    <>
+      <DBListener gameId={gameId} archive={archive} />
+      <DataProvider
+        gameId={gameId}
+        sessionId={sessionId}
+        seedData={structuredClone(seedData)}
+      >
+        {children}
+      </DataProvider>
+    </>
   );
 }

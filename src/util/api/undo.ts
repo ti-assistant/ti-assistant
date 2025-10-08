@@ -1,5 +1,4 @@
-import DataManager from "../../context/DataManager";
-import TimerManager from "../../context/TimerManager";
+import { DataStore } from "../../context/dataStore";
 import { updateGameData } from "./handler";
 import { getOppositeHandler } from "./opposite";
 import { updateActionLog } from "./update";
@@ -14,7 +13,7 @@ export function undo(gameId: string) {
 
   const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
 
-  DataManager.update((storedGameData) => {
+  DataStore.update((storedGameData) => {
     const actionLog = storedGameData.actionLog ?? [];
     let actionToUndo = actionLog[0];
     if (!actionToUndo) {
@@ -30,21 +29,19 @@ export function undo(gameId: string) {
       return storedGameData;
     }
 
-    const gameTimer = TimerManager.getValue<number>("game");
+    const gameTimer = storedGameData.timers?.game;
 
     updateGameData(storedGameData, handler.getUpdates());
     updateActionLog(storedGameData, handler, now, gameTimer ?? 0);
 
-    storedGameData.lastUpdate = now;
+    if (storedGameData.timers) {
+      storedGameData.timers.paused = false;
+    }
 
     return storedGameData;
-  });
-  TimerManager.update((timers) => {
-    timers.paused = false;
-    return timers;
-  });
+  }, "CLIENT");
 
   return updatePromise.catch((_) => {
-    DataManager.reset();
+    DataStore.reset();
   });
 }

@@ -1,4 +1,5 @@
 import Cookies from "js-cookie";
+import { DataStore } from "../../context/dataStore";
 
 function genCookie(length: number): string {
   let result = "";
@@ -65,6 +66,7 @@ export async function poster(
   data: any,
   timestamp: number
 ): Promise<any> {
+  data.gameTime = DataStore.getValue("timers.game") ?? 0;
   data.timestamp = timestamp;
   const res = await fetch(url, {
     method: "POST",

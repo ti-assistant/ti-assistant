@@ -135,6 +135,7 @@ interface StoredGameData {
   state: GameState;
   strategycards?: Partial<Record<StrategyCardId, GameStrategyCard>>;
   systems?: Partial<Record<SystemId, GameSystem>>;
+  timers?: Timers;
   updates?: Record<string, { timestamp: Timestamp }>;
   // Secrets
   [key: string]: any;

@@ -1,9 +1,9 @@
 "use client";
 
-import { CSSProperties, useEffect } from "react";
+import { CSSProperties, use, useEffect } from "react";
 import TimerDisplay from "./components/TimerDisplay/TimerDisplay";
+import { TimerContext } from "./context/contexts";
 import { useTimers, useViewOnly } from "./context/dataHooks";
-import TimerManager from "./context/TimerManager";
 
 interface FactionTimerProps {
   factionId: FactionId | "Unknown";
@@ -23,6 +23,7 @@ export function StaticFactionTimer({
 
 export function FactionTimer({ factionId, style }: FactionTimerProps) {
   const timers = useTimers();
+  const timerFns = use(TimerContext);
   const viewOnly = useViewOnly();
 
   const factionTimer = timers[factionId] ?? 0;
@@ -31,9 +32,8 @@ export function FactionTimer({ factionId, style }: FactionTimerProps) {
     if (viewOnly) {
       return;
     }
-    TimerManager.activateTimer(factionId);
-    return () => TimerManager.deactivateTimer(factionId);
-  }, [factionId, viewOnly]);
+    return timerFns.activateTimer(factionId);
+  }, [factionId, viewOnly, timerFns]);
 
   return <TimerDisplay time={factionTimer} style={style} />;
 }

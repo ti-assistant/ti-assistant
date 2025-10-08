@@ -1,5 +1,4 @@
-import DataManager from "../../context/DataManager";
-import TimerManager from "../../context/TimerManager";
+import { DataStore } from "../../context/dataStore";
 import { PlayRelicHandler, UnplayRelicHandler } from "../model/playRelic";
 import { updateGameData } from "./handler";
 import { updateActionLog } from "./update";
@@ -15,28 +14,26 @@ export function playRelic(gameId: string, event: PlayRelicEvent) {
 
   const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
 
-  DataManager.update((storedGameData) => {
+  DataStore.update((storedGameData) => {
     const handler = new PlayRelicHandler(storedGameData, data);
 
     if (!handler.validate()) {
       return storedGameData;
     }
 
-    const gameTimer = TimerManager.getValue<number>("game");
+    const gameTimer = storedGameData.timers?.game;
     updateActionLog(storedGameData, handler, now, gameTimer ?? 0);
     updateGameData(storedGameData, handler.getUpdates());
 
-    storedGameData.lastUpdate = now;
+    if (storedGameData.timers) {
+      storedGameData.timers.paused = false;
+    }
 
     return storedGameData;
-  });
-  TimerManager.update((timers) => {
-    timers.paused = false;
-    return timers;
-  });
+  }, "CLIENT");
 
   return updatePromise.catch((_) => {
-    DataManager.reset();
+    DataStore.reset();
   });
 }
 
@@ -50,27 +47,25 @@ export function unplayRelic(gameId: string, event: PlayRelicEvent) {
 
   const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
 
-  DataManager.update((storedGameData) => {
+  DataStore.update((storedGameData) => {
     const handler = new UnplayRelicHandler(storedGameData, data);
 
     if (!handler.validate()) {
       return storedGameData;
     }
 
-    const gameTimer = TimerManager.getValue<number>("game");
+    const gameTimer = storedGameData.timers?.game;
     updateActionLog(storedGameData, handler, now, gameTimer ?? 0);
     updateGameData(storedGameData, handler.getUpdates());
 
-    storedGameData.lastUpdate = now;
+    if (storedGameData.timers) {
+      storedGameData.timers.paused = false;
+    }
 
     return storedGameData;
-  });
-  TimerManager.update((timers) => {
-    timers.paused = false;
-    return timers;
-  });
+  }, "CLIENT");
 
   return updatePromise.catch((_) => {
-    DataManager.reset();
+    DataStore.reset();
   });
 }

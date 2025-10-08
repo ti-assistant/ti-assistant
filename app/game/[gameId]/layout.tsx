@@ -11,7 +11,7 @@ import {
 } from "../../../server/util/fetch";
 import QRCodeButton from "../../../src/components/QRCode/QRCodeButton";
 import DataWrapper from "../../../src/context/DataWrapper";
-import { buildGameData } from "../../../src/data/GameData";
+import { buildBaseData, buildGameData } from "../../../src/data/GameData";
 import {
   getLocale,
   getMessages,
@@ -49,6 +49,7 @@ async function fetchGameData(
     sessionPromise,
   ]);
 
+  const baseData = buildBaseData(intl);
   const gameData = buildGameData(data, intl);
   gameData.timers = timers;
   gameData.gameId = gameId;
@@ -60,7 +61,7 @@ async function fetchGameData(
     }
   }
 
-  return gameData;
+  return { data: gameData, baseData: baseData, storedData: data };
 }
 
 async function getIntl() {

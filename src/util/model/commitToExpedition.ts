@@ -46,7 +46,6 @@ export class CommitToExpeditionHandler implements Handler {
   }
 
   getUpdates(): Record<string, any> {
-    console.log("Event", this.data.event);
     let updates: Record<string, any> = {
       [`state.paused`]: false,
       [`sequenceNum`]: "INCREMENT",
@@ -78,7 +77,7 @@ export class CommitToExpeditionHandler implements Handler {
     // If the previous faction should no longer have their breakthrough, lock their breakthrough.
     if (prevFaction) {
       const count = counts[prevFaction];
-      if (count && count <= 1) {
+      if (!count) {
         const handler = new UpdateBreakthroughStateHandler(this.gameData, {
           action: "UPDATE_BREAKTHROUGH_STATE",
           event: {
@@ -99,7 +98,7 @@ export class CommitToExpeditionHandler implements Handler {
 
       // If this faction should now have their breakthrough, update accordingly.
       const count = counts[factionId];
-      if (!count) {
+      if (count === 1) {
         const handler = new UpdateBreakthroughStateHandler(this.gameData, {
           action: "UPDATE_BREAKTHROUGH_STATE",
           event: {

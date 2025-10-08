@@ -5,6 +5,8 @@ import "../public/site.css";
 import LangSelectHoverMenu from "../src/components/LangSelectHoverMenu/LangSelectHoverMenu";
 import SettingsButton from "../src/components/SettingsModal/SettingsButton";
 import SiteLogo from "../src/components/SiteLogo/SiteLogo";
+import DataPubSubProvider from "../src/context/DataPubSubProvider";
+import TimerProvider from "../src/context/TimerProvider";
 import SharedModal from "../src/data/SharedModal";
 import { getLocale, getMessages, getSettings } from "../src/util/server";
 import styles from "./root.module.scss";
@@ -35,34 +37,38 @@ export default async function RootLayout({ children }: PropsWithChildren) {
     <html lang={locale}>
       <body>
         <SettingsProvider initialSettings={settings}>
-          <Wrapper locale={locale} messages={messages}>
-            <div className={styles.NavBar}>
-              <div className="flexRow">
-                <Link href={"/"} className={styles.HomeLink}>
-                  <div className={styles.Logo}>
-                    <SiteLogo />
+          <DataPubSubProvider>
+            <TimerProvider>
+              <Wrapper locale={locale} messages={messages}>
+                <div className={styles.NavBar}>
+                  <div className="flexRow">
+                    <Link href={"/"} className={styles.HomeLink}>
+                      <div className={styles.Logo}>
+                        <SiteLogo />
+                      </div>
+                      <span className={styles.FullName}>
+                        Twilight Imperium Assistant
+                      </span>
+                      <span className={styles.ShortName}>TI Assistant</span>
+                    </Link>
+                    <div className={styles.LangSelect}>
+                      <LangSelectHoverMenu
+                        selectedLocale={locale}
+                        locales={SUPPORTED_LOCALES}
+                        invalidLocales={[locale]}
+                        size={28}
+                      />
+                    </div>
                   </div>
-                  <span className={styles.FullName}>
-                    Twilight Imperium Assistant
-                  </span>
-                  <span className={styles.ShortName}>TI Assistant</span>
-                </Link>
-                <div className={styles.LangSelect}>
-                  <LangSelectHoverMenu
-                    selectedLocale={locale}
-                    locales={SUPPORTED_LOCALES}
-                    invalidLocales={[locale]}
-                    size={28}
-                  />
+                  <div className={styles.Settings}>
+                    <SettingsButton />
+                  </div>
                 </div>
-              </div>
-              <div className={styles.Settings}>
-                <SettingsButton />
-              </div>
-            </div>
-            <SharedModal />
-            {children}
-          </Wrapper>
+                <SharedModal />
+                {children}
+              </Wrapper>
+            </TimerProvider>
+          </DataPubSubProvider>
         </SettingsProvider>
       </body>
     </html>

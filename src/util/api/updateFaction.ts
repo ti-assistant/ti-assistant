@@ -1,5 +1,4 @@
-import DataManager from "../../context/DataManager";
-import TimerManager from "../../context/TimerManager";
+import { DataStore } from "../../context/dataStore";
 import { Optional } from "../types/types";
 import { poster } from "./util";
 
@@ -24,7 +23,7 @@ export function updateFaction(
 
   const updatePromise = poster(`/api/${gameId}/updateFaction`, data, now);
 
-  DataManager.update((storedGameData) => {
+  DataStore.update((storedGameData) => {
     const faction = storedGameData.factions[factionId];
     if (!faction) {
       return storedGameData;
@@ -53,13 +52,9 @@ export function updateFaction(
     }
 
     return storedGameData;
-  });
-  TimerManager.update((timers) => {
-    timers.paused = false;
-    return timers;
-  });
+  }, "CLIENT");
 
   return updatePromise.catch((_) => {
-    DataManager.reset();
+    DataStore.reset();
   });
 }
