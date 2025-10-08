@@ -371,6 +371,7 @@ function MobileOptions({
                     {filteredEvents.map(([eventId, event]) => {
                       return (
                         <Toggle
+                          key={eventId}
                           selected={options.events.has(eventId)}
                           toggleFn={(prevValue) =>
                             toggleEvent(!prevValue, eventId)
@@ -749,6 +750,7 @@ function Options({
                   {filteredEvents.map(([eventId, event]) => {
                     return (
                       <Toggle
+                        key={eventId}
                         selected={options.events.has(eventId)}
                         toggleFn={(prevValue) =>
                           toggleEvent(!prevValue, eventId)
