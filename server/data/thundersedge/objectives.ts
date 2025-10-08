@@ -21,5 +21,21 @@ export default function getThundersEdgeObjectives(
       points: 1,
       type: "OTHER",
     },
+    "The Silver Flame": {
+      description: intl.formatMessage({
+        id: "Objectives.The Silver Flame.Description",
+        description: "Description for Objective: The Silver Flame",
+        defaultMessage: "Roll a 10 when using The Silver Flame.",
+      }),
+      expansion: "THUNDERS EDGE",
+      id: "The Silver Flame",
+      name: intl.formatMessage({
+        id: "Objectives.The Silver Flame.Title",
+        description: "Title of Objective: The Silver Flame",
+        defaultMessage: "The Silver Flame",
+      }),
+      points: 1,
+      type: "OTHER",
+    },
   };
 }

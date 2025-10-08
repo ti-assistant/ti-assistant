@@ -57,7 +57,7 @@ export default function TechIcon({
       case "UPGRADE":
         return null;
     }
-  }, [type, outline]);
+  }, [type, outline, color]);
 
   const outerIconStyle: TechIconCSS = {
     "--width": typeof size === "string" ? size : rem(size),

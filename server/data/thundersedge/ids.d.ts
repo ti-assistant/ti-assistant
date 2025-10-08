@@ -32,7 +32,8 @@ namespace ThundersEdge {
     | "Imperator" // Winnu
     | "Archon's Gift" // Xxcha Kingdom
     | "Yin Ascendant" // Yin Brotherhood
-    | "Deepgloom Executable"; // Yssaril Tribes
+    | "Deepgloom Executable" // Yssaril Tribes
+    | "Dummy Breakthrough"; // Used for DS factions.
 
   type ComponentId =
     | "Avernus"

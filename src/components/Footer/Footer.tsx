@@ -364,7 +364,13 @@ export default function Footer() {
                 <ThundersEdgeMenuSVG />
               </div>
             </button>
-            <span style={{ whiteSpace: "nowrap" }}>Thunder's Edge</span>
+            <span style={{ whiteSpace: "nowrap" }}>
+              <FormattedMessage
+                id="sgqLYB"
+                defaultMessage="Other"
+                description="Text on a button used to select a non-listed value"
+              />
+            </span>
           </div>
         ) : null}
       </div>

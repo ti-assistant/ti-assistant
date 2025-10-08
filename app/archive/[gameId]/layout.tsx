@@ -7,7 +7,7 @@ import {
 } from "../../../server/util/fetch";
 import Footer from "../../../src/components/Footer/Footer";
 import DataWrapper from "../../../src/context/DataWrapper";
-import { buildGameData } from "../../../src/data/GameData";
+import { buildBaseData, buildGameData } from "../../../src/data/GameData";
 import {
   getLocale,
   getMessages,
@@ -24,12 +24,13 @@ async function fetchGameData(gameId: string, intlPromise: Promise<IntlShape>) {
 
   const [data, timers] = await Promise.all([dataPromise, timerPromise]);
 
+  const baseData = buildBaseData(intl);
   const gameData = buildGameData(data, intl);
   gameData.timers = timers;
   gameData.gameId = gameId;
   gameData.viewOnly = true;
 
-  return gameData;
+  return { data: gameData, baseData: baseData, storedData: data };
 }
 
 async function getIntl() {
