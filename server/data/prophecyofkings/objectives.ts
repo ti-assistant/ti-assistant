@@ -728,7 +728,7 @@ export default function getProphecyOfKingsObjectives(
       name: intl.formatMessage({
         id: "Objectives.Tomb + Crown of Emphidia.Title",
         description: "Title of Objective: Tomb + Crown of Emphidia",
-        defaultMessage: "Tomb + Crown of Emphidia",
+        defaultMessage: "Crown of Emphidia",
       }),
       points: 1,
       replaces: "The Crown of Emphidia",

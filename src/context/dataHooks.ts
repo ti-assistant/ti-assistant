@@ -13,10 +13,6 @@ export function useGameDataValue<Type>(path: string, defaultValue: Type): Type {
   );
   const subscribe = use(DataContext);
 
-  if (path === "planets") {
-    console.log("Planet refresh");
-  }
-
   useEffect(() => {
     setValue(DataStore.getValue(path) ?? defaultValue);
     return subscribe(setValue, path);

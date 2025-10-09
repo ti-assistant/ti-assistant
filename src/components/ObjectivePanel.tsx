@@ -396,6 +396,7 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
   const tomb = (objectives ?? {})["Tomb + Crown of Emphidia"];
 
   const book = objectives["Book of Latvinia"];
+  const silverFlame = objectives["The Silver Flame"];
 
   const politicalCensure = (objectives ?? {})["Political Censure"];
 
@@ -1926,6 +1927,11 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
                 <SimpleScorable
                   gameId={gameId}
                   objective={book}
+                  orderedFactionIds={orderedFactionIds}
+                />
+                <SimpleScorable
+                  gameId={gameId}
+                  objective={silverFlame}
                   orderedFactionIds={orderedFactionIds}
                 />
               </div>

@@ -1,36 +1,24 @@
 import React, { CSSProperties, useRef } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-import { ClientOnlyHoverMenu } from "../../../../../../src/HoverMenu";
 import { LockedButtons } from "../../../../../../src/LockedButton";
 import { SmallStrategyCard } from "../../../../../../src/StrategyCard";
 import { FactionTimer, StaticFactionTimer } from "../../../../../../src/Timer";
-import GainRelic from "../../../../../../src/components/Actions/GainRelic";
-import AttachmentSelectRadialMenu from "../../../../../../src/components/AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
 import Chip from "../../../../../../src/components/Chip/Chip";
 import ExpeditionSelector from "../../../../../../src/components/Expedition/ExpeditionSelector";
 import FactionCard from "../../../../../../src/components/FactionCard/FactionCard";
 import FactionCircle from "../../../../../../src/components/FactionCircle/FactionCircle";
 import FactionIcon from "../../../../../../src/components/FactionIcon/FactionIcon";
-import FactionSelectRadialMenu from "../../../../../../src/components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
 import LabeledLine from "../../../../../../src/components/LabeledLine/LabeledLine";
-import ObjectiveRow from "../../../../../../src/components/ObjectiveRow/ObjectiveRow";
-import ObjectiveSelectHoverMenu from "../../../../../../src/components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
-import PlanetIcon from "../../../../../../src/components/PlanetIcon/PlanetIcon";
-import PlanetRow from "../../../../../../src/components/PlanetRow/PlanetRow";
 import PromissoryMenu from "../../../../../../src/components/PromissoryMenu/PromissoryMenu";
 import { TacticalAction } from "../../../../../../src/components/TacticalAction";
 import TechResearchSection from "../../../../../../src/components/TechResearchSection/TechResearchSection";
 import {
-  useAttachments,
   useCurrentTurn,
   useGameId,
-  useOptions,
   usePlanets,
-  useRelics,
   useStrategyCards,
-  useTechs,
   useViewOnly,
 } from "../../../../../../src/context/dataHooks";
 import { useFactions } from "../../../../../../src/context/factionDataHooks";
@@ -41,40 +29,34 @@ import {
 import { useObjectives } from "../../../../../../src/context/objectiveDataHooks";
 import { useGameState } from "../../../../../../src/context/stateDataHooks";
 import {
-  addAttachmentAsync,
   advancePhaseAsync,
-  claimPlanetAsync,
   endTurnAsync,
   markSecondaryAsync,
-  removeAttachmentAsync,
   scoreObjectiveAsync,
   selectActionAsync,
-  setSpeakerAsync,
-  unclaimPlanetAsync,
   unscoreObjectiveAsync,
   unselectActionAsync,
 } from "../../../../../../src/dynamic/api";
 import { SymbolX } from "../../../../../../src/icons/svgs";
-import {
-  getAttachments,
-  getClaimedPlanets,
-  getResearchedTechs,
-} from "../../../../../../src/util/actionLog";
+import { getClaimedPlanets } from "../../../../../../src/util/actionLog";
 import {
   getNewSpeakerEventFromLog,
   getSelectedActionFromLog,
 } from "../../../../../../src/util/api/data";
-import { hasTech } from "../../../../../../src/util/api/techs";
 import {
   getFactionColor,
   getFactionName,
 } from "../../../../../../src/util/factions";
 import { getStrategyCardsForFaction } from "../../../../../../src/util/helpers";
-import { applyPlanetAttachments } from "../../../../../../src/util/planets";
 import { phaseString } from "../../../../../../src/util/strings";
 import { rem } from "../../../../../../src/util/util";
 import styles from "./ActionPhase.module.scss";
 import { ComponentAction } from "./ComponentAction";
+import Diplomacy from "./StrategicActions/Diplomacy";
+import Imperial from "./StrategicActions/Imperial";
+import Politics from "./StrategicActions/Politics";
+import Technology from "./StrategicActions/Technology";
+import Warfare from "./StrategicActions/Warfare";
 
 interface FactionActionButtonsProps {
   factionId: FactionId;
@@ -313,18 +295,13 @@ export function AdditionalActions({
   primaryOnly = false,
   secondaryOnly = false,
 }: AdditionalActionsProps) {
-  const attachments = useAttachments();
   const factions = useFactions();
   const gameId = useGameId();
   const objectives = useObjectives();
-  const options = useOptions();
   const planets = usePlanets();
-  const relics = useRelics();
   const state = useGameState();
-  const techs = useTechs();
   const viewOnly = useViewOnly();
 
-  const intl = useIntl();
   const currentTurn = useCurrentTurn();
 
   const activeFaction = factions[factionId];
@@ -332,49 +309,6 @@ export function AdditionalActions({
   if (!activeFaction) {
     return null;
   }
-
-  function getResearchableTechs(faction: Faction) {
-    const researchedTechs = getResearchedTechs(currentTurn, faction.id);
-    if (faction.id === "Nekro Virus") {
-      const nekroTechs = new Set<TechId>();
-      Object.values(factions ?? {}).forEach((otherFaction) => {
-        Object.keys(otherFaction.techs).forEach((id) => {
-          const techId = id as TechId;
-          if (!hasTech(faction, techId) && !researchedTechs.includes(techId)) {
-            nekroTechs.add(techId);
-          }
-        });
-      });
-      return Array.from(nekroTechs).map(
-        (techId) => (techs ?? {})[techId] as Tech
-      );
-    }
-    const replaces: TechId[] = [];
-    const availableTechs = Object.values(techs ?? {}).filter((tech) => {
-      if (hasTech(faction, tech.id)) {
-        return false;
-      }
-      if (
-        faction.id !== "Nekro Virus" &&
-        tech.faction &&
-        faction.id !== tech.faction
-      ) {
-        return false;
-      }
-      if (researchedTechs.includes(tech.id)) {
-        return false;
-      }
-      if (tech.type === "UPGRADE" && tech.replaces) {
-        replaces.push(tech.replaces);
-      }
-      return true;
-    });
-    return availableTechs.filter((tech) => !replaces.includes(tech.id));
-  }
-
-  const researchableTechs = getResearchableTechs(activeFaction);
-
-  const newSpeakerEvent = getNewSpeakerEventFromLog(currentTurn);
 
   function lastFaction() {
     const numFactions = Object.keys(factions).length;
@@ -441,18 +375,6 @@ export function AdditionalActions({
     }
     return objectiveObj.phase === "ACTION";
   });
-
-  const targetButtonStyle: CSSProperties = {
-    fontFamily: "Myriad Pro",
-    padding: rem(8),
-    display: "grid",
-    gridAutoFlow: "column",
-    gridTemplateRows: `repeat(${Math.min(12, claimablePlanets.length)}, auto)`,
-    gap: rem(4),
-    justifyContent: "flex-start",
-    overflowX: "auto",
-    maxWidth: "85vw",
-  };
 
   const orderedFactions = Object.values(factions).sort((a, b) => {
     if (a.order === activeFaction.order) {
@@ -529,20 +451,7 @@ export function AdditionalActions({
                   />
                 }
               />
-
-              <div style={{ width: "fit-content" }}>
-                <LabeledDiv
-                  label={getFactionName(activeFaction)}
-                  color={getFactionColor(activeFaction)}
-                  blur
-                >
-                  <TechResearchSection
-                    factionId={activeFaction.id}
-                    numTechs={2}
-                    hideWrapper
-                  />
-                </LabeledDiv>
-              </div>
+              <Technology.Primary factionId={activeFaction.id} />
             </div>
           ) : null}
           <div className="flexColumn" style={{ gap: rem(4), width: "100%" }}>
@@ -555,72 +464,16 @@ export function AdditionalActions({
                 />
               }
             />
-            <div
-              className="flexRow mediumFont"
-              style={{
-                paddingTop: rem(4),
-                width: "100%",
-                flexWrap: "wrap",
-              }}
-            >
-              {orderedFactions.map((faction) => {
-                if (
-                  faction.id === activeFaction.id ||
-                  faction.id === "Nekro Virus"
-                ) {
-                  return null;
-                }
-                let maxTechs = 1;
-                if (faction.id === "Universities of Jol-Nar") {
-                  maxTechs = 2;
-                }
-                const researchedTechs = getResearchedTechs(
-                  currentTurn,
-                  faction.id
-                );
-                const secondaryState =
-                  factions[faction.id]?.secondary ?? "PENDING";
-                if (
-                  researchedTechs.length === 0 &&
-                  secondaryState === "SKIPPED"
-                ) {
-                  return null;
-                }
-                return (
-                  <LabeledDiv
-                    key={faction.id}
-                    label={getFactionName(faction)}
-                    color={getFactionColor(faction)}
-                    style={{ width: "48%" }}
-                    opts={{ fixedWidth: true }}
-                    blur
-                  >
-                    <React.Fragment>
-                      <TechResearchSection
-                        factionId={faction.id}
-                        numTechs={maxTechs}
-                        hideWrapper
-                      />
-                    </React.Fragment>
-                  </LabeledDiv>
-                );
-              })}
-              <SecondaryCheck
-                activeFactionId={activeFaction.id}
-                gameId={gameId ?? ""}
-                orderedFactions={orderedFactions}
-              />
-            </div>
+            <Technology.Secondary activeFactionId={activeFaction.id} />
+            <SecondaryCheck
+              activeFactionId={activeFaction.id}
+              gameId={gameId ?? ""}
+              orderedFactions={orderedFactions}
+            />
           </div>
         </div>
       );
     case "Politics":
-      const selectedSpeaker = newSpeakerEvent?.newSpeaker
-        ? factions[newSpeakerEvent.newSpeaker]
-        : undefined;
-      const mapOrderedFactions = [...orderedFactions].sort(
-        (a, b) => a.mapPosition - b.mapPosition
-      );
       return (
         <div
           className="flexColumn"
@@ -636,45 +489,7 @@ export function AdditionalActions({
                 />
               }
             />
-            <div
-              className="flexRow largeFont"
-              style={{
-                justifyContent: "flex-start",
-                paddingLeft: rem(24),
-                width: "100%",
-              }}
-            >
-              <FormattedMessage
-                id="pTiYPm"
-                description="Label for a selector selecting a new speaker."
-                defaultMessage="New Speaker"
-              />
-              :
-              <FactionSelectRadialMenu
-                borderColor={
-                  selectedSpeaker ? getFactionColor(selectedSpeaker) : undefined
-                }
-                onSelect={(factionId, _) => {
-                  if (factionId) {
-                    setSpeakerAsync(gameId, factionId);
-                  } else {
-                    if (!newSpeakerEvent?.prevSpeaker) {
-                      return;
-                    }
-                    setSpeakerAsync(gameId, newSpeakerEvent.prevSpeaker);
-                  }
-                }}
-                factions={mapOrderedFactions.map((faction) => faction.id)}
-                invalidFactions={[
-                  selectedSpeaker
-                    ? (newSpeakerEvent?.prevSpeaker as FactionId)
-                    : state.speaker,
-                ]}
-                selectedFaction={selectedSpeaker?.id}
-                size={52}
-                viewOnly={viewOnly}
-              />
-            </div>
+            <Politics.Primary />
           </React.Fragment>
           <LabeledLine
             leftLabel={
@@ -693,491 +508,18 @@ export function AdditionalActions({
         </div>
       );
     case "Diplomacy":
-      if (activeFaction.id === "Xxcha Kingdom") {
-        const peaceAccordsPlanets = claimablePlanets
-          .filter((planet) => planet.id !== "Mecatol Rex")
-          .filter((planet) => !planet.attributes.includes("ocean"))
-          .sort((a, b) => (a.name > b.name ? 1 : -1));
-        return (
-          <div className="flexColumn largeFont" style={{ ...style }}>
-            <LabeledLine
-              leftLabel={
-                <FormattedMessage
-                  id="mhqGMn"
-                  description="The main ability for a strategy card."
-                  defaultMessage="Primary"
-                />
-              }
-            />
-            <LabeledDiv
-              label={
-                <FormattedMessage
-                  id="Xxcha Kingdom.Abilities.Peace Accords.Title"
-                  defaultMessage="Peace Accords"
-                  description="Title of Faction Ability: Peace Accords"
-                />
-              }
-              blur
-            >
-              <React.Fragment>
-                {claimedPlanets.length > 0 ? (
-                  <div
-                    className="flexColumn"
-                    style={{ alignItems: "stretch", width: "100%" }}
-                  >
-                    {claimedPlanets.map((planet) => {
-                      const planetObj = planets[planet.planet];
-                      if (!planetObj) {
-                        return null;
-                      }
-                      const adjustedPlanet = applyPlanetAttachments(
-                        planetObj,
-                        attachments ?? {}
-                      );
-                      const currentAttachment = getAttachments(
-                        currentTurn,
-                        planet.planet
-                      )[0];
-                      const claimedAttachments = new Set<AttachmentId>();
-                      for (const planet of Object.values(planets)) {
-                        for (const attachment of planet.attachments ?? []) {
-                          claimedAttachments.add(attachment);
-                        }
-                      }
-                      const availableAttachments = Object.values(attachments)
-                        .filter(
-                          (attachment) =>
-                            attachment.required.type &&
-                            adjustedPlanet.types.includes(
-                              attachment.required.type
-                            ) &&
-                            (attachment.id === currentAttachment ||
-                              !claimedAttachments.has(attachment.id))
-                        )
-                        .map((attachment) => attachment.id);
-                      return (
-                        <div
-                          key={planet.planet}
-                          className="flexColumn"
-                          style={{
-                            width: "100%",
-                            gap: 0,
-                            justifyItems: "flex-start",
-                            alignItems: "flex-start",
-                          }}
-                        >
-                          <div className="flexRow" style={{ width: "100%" }}>
-                            <div style={{ width: "100%" }}>
-                              <PlanetRow
-                                factionId={"Xxcha Kingdom"}
-                                planet={adjustedPlanet}
-                                removePlanet={() => {
-                                  unclaimPlanetAsync(
-                                    gameId,
-                                    "Xxcha Kingdom",
-                                    planet.planet
-                                  );
-                                }}
-                                opts={{
-                                  hideAttachButton: true,
-                                }}
-                              />
-                            </div>
-                            {availableAttachments.length > 0 &&
-                            !planet.prevOwner ? (
-                              <div
-                                className="flexRow"
-                                style={{ justifyContent: "center" }}
-                              >
-                                <AttachmentSelectRadialMenu
-                                  attachments={availableAttachments}
-                                  hasSkip={adjustedPlanet.attributes.reduce(
-                                    (hasSkip, attribute) => {
-                                      if (attribute.includes("skip")) {
-                                        if (
-                                          currentAttachment &&
-                                          attachments[currentAttachment]
-                                            ?.attribute === attribute
-                                        ) {
-                                          return planetObj.attributes.reduce(
-                                            (hasSkip, attribute) => {
-                                              if (attribute.includes("skip")) {
-                                                return true;
-                                              }
-                                              return hasSkip;
-                                            },
-                                            false
-                                          );
-                                        }
-                                        return true;
-                                      }
-                                      return hasSkip;
-                                    },
-                                    false
-                                  )}
-                                  onSelect={(attachmentId, prevAttachment) => {
-                                    if (prevAttachment) {
-                                      removeAttachmentAsync(
-                                        gameId,
-                                        planet.planet,
-                                        prevAttachment
-                                      );
-                                    }
-                                    if (attachmentId) {
-                                      addAttachmentAsync(
-                                        gameId,
-                                        planet.planet,
-                                        attachmentId
-                                      );
-                                    }
-                                  }}
-                                  selectedAttachment={currentAttachment}
-                                  tag={
-                                    <PlanetIcon
-                                      types={adjustedPlanet.types}
-                                      size="75%"
-                                    />
-                                  }
-                                />
-                              </div>
-                            ) : null}
-                          </div>
-                          {/* TODO: Remove if rules specify whenever a planet changes hands. */}
-                          {!planet.prevOwner &&
-                          adjustedPlanet.attributes.includes("relic") ? (
-                            <div style={{ marginLeft: rem(16) }}>
-                              <GainRelic
-                                factionId={activeFaction.id}
-                                planetId={planet.planet}
-                              />
-                            </div>
-                          ) : null}
-                        </div>
-                      );
-                    })}
-                  </div>
-                ) : null}
-                {peaceAccordsPlanets.length > 0 &&
-                claimedPlanets.length === 0 ? (
-                  <ClientOnlyHoverMenu
-                    label={
-                      <FormattedMessage
-                        id="UJs3kj"
-                        description="Text on a hover menu for claiming an empty planet."
-                        defaultMessage="Claim Empty Planet"
-                      />
-                    }
-                  >
-                    <div className="flexRow" style={targetButtonStyle}>
-                      {peaceAccordsPlanets.map((planet) => {
-                        return (
-                          <button
-                            key={planet.id}
-                            style={{
-                              minWidth:
-                                peaceAccordsPlanets.length > 50
-                                  ? rem(72)
-                                  : rem(90),
-                              fontSize:
-                                peaceAccordsPlanets.length > 50
-                                  ? rem(14)
-                                  : undefined,
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                            }}
-                            onClick={() =>
-                              claimPlanetAsync(
-                                gameId,
-                                activeFaction.id,
-                                planet.id
-                              )
-                            }
-                            disabled={viewOnly}
-                          >
-                            {planet.name}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </ClientOnlyHoverMenu>
-                ) : null}
-              </React.Fragment>
-            </LabeledDiv>
-            <LabeledLine
-              leftLabel={
-                <FormattedMessage
-                  id="PBW6vs"
-                  description="The alternate ability for a strategy card."
-                  defaultMessage="Secondary"
-                />
-              }
-            />
-            <SecondaryCheck
-              activeFactionId={activeFaction.id}
-              gameId={gameId ?? ""}
-              orderedFactions={orderedFactions}
-            />
-          </div>
-        );
-      } else if (factions["Xxcha Kingdom"]) {
-        const xxchaPlanets = currentTurn
-          .filter(
-            (logEntry) =>
-              logEntry.data.action === "CLAIM_PLANET" &&
-              logEntry.data.event.faction === "Xxcha Kingdom"
-          )
-          .map((logEntry) => {
-            return (logEntry.data as ClaimPlanetData).event;
-          });
-        const nonXxchaPlanets = Object.values(planets ?? {}).filter(
-          (planet) => {
-            if (planet.owner === "Xxcha Kingdom") {
-              return false;
-            }
-            if (planet.locked) {
-              return false;
-            }
-            if (planet.attributes.includes("ocean")) {
-              return false;
-            }
-            for (const claimedPlanet of claimedPlanets) {
-              if (claimedPlanet.planet === planet.id) {
-                return false;
-              }
-            }
-            if (claimedPlanets.length > 0) {
-              const claimedPlanet = claimedPlanets[0]
-                ? planets[claimedPlanets[0].planet]
-                : undefined;
-              if (claimedPlanet?.system) {
-                return planet.system === claimedPlanet.system;
-              }
-              if (claimedPlanet?.faction) {
-                return planet.faction === claimedPlanet.faction;
-              }
-              return false;
-            }
-            return true;
-          }
-        );
-        return (
-          <div
-            className="flexColumn largeFont"
-            style={{ width: "100%", ...style }}
-          >
-            <LabeledLine
-              leftLabel={
-                <FormattedMessage
-                  id="PBW6vs"
-                  description="The alternate ability for a strategy card."
-                  defaultMessage="Secondary"
-                />
-              }
-            />
-            <LabeledDiv
-              label={`${getFactionName(
-                factions["Xxcha Kingdom"]
-              )} - ${intl.formatMessage({
-                id: "Xxcha Kingdom.Abilities.Peace Accords.Title",
-                defaultMessage: "Peace Accords",
-                description: "Title of Faction Ability: Peace Accords",
-              })}
-              `}
-              color={getFactionColor(factions["Xxcha Kingdom"])}
-              blur
-            >
-              <React.Fragment>
-                {xxchaPlanets.length > 0 ? (
-                  <div
-                    className="flexColumn"
-                    style={{ alignItems: "stretch", width: "100%" }}
-                  >
-                    {xxchaPlanets.map((planet) => {
-                      const planetObj = planets[planet.planet];
-                      if (!planetObj) {
-                        return null;
-                      }
-                      const adjustedPlanet = applyPlanetAttachments(
-                        planetObj,
-                        attachments ?? {}
-                      );
-                      const currentAttachment = getAttachments(
-                        currentTurn,
-                        planet.planet
-                      )[0];
-                      const claimedAttachments = new Set<AttachmentId>();
-                      for (const planet of Object.values(planets)) {
-                        for (const attachment of planet.attachments ?? []) {
-                          claimedAttachments.add(attachment);
-                        }
-                      }
-                      const availableAttachments = Object.values(attachments)
-                        .filter(
-                          (attachment) =>
-                            attachment.required.type &&
-                            adjustedPlanet.types.includes(
-                              attachment.required.type
-                            ) &&
-                            (attachment.id === currentAttachment ||
-                              !claimedAttachments.has(attachment.id))
-                        )
-                        .map((attachment) => attachment.id);
-                      return (
-                        <div
-                          key={planet.planet}
-                          className="flexColumn"
-                          style={{
-                            width: "100%",
-                            gap: 0,
-                            justifyItems: "flex-start",
-                            alignItems: "flex-start",
-                          }}
-                        >
-                          <div
-                            key={planet.planet}
-                            className="flexRow"
-                            style={{ width: "100%" }}
-                          >
-                            <div style={{ width: "100%" }}>
-                              <PlanetRow
-                                factionId={"Xxcha Kingdom"}
-                                planet={adjustedPlanet}
-                                removePlanet={() => {
-                                  unclaimPlanetAsync(
-                                    gameId,
-                                    "Xxcha Kingdom",
-                                    planet.planet
-                                  );
-                                }}
-                              />
-                            </div>
-                            {availableAttachments.length > 0 &&
-                            !planet.prevOwner ? (
-                              <div
-                                className="flexRow"
-                                style={{ justifyContent: "center" }}
-                              >
-                                <AttachmentSelectRadialMenu
-                                  attachments={availableAttachments}
-                                  hasSkip={adjustedPlanet.attributes.reduce(
-                                    (hasSkip, attribute) => {
-                                      if (attribute.includes("skip")) {
-                                        if (
-                                          currentAttachment &&
-                                          attachments[currentAttachment]
-                                            ?.attribute === attribute
-                                        ) {
-                                          return planetObj.attributes.reduce(
-                                            (hasSkip, attribute) => {
-                                              if (attribute.includes("skip")) {
-                                                return true;
-                                              }
-                                              return hasSkip;
-                                            },
-                                            false
-                                          );
-                                        }
-                                        return true;
-                                      }
-                                      return hasSkip;
-                                    },
-                                    false
-                                  )}
-                                  onSelect={(attachmentId, prevAttachment) => {
-                                    if (prevAttachment) {
-                                      removeAttachmentAsync(
-                                        gameId,
-                                        planet.planet,
-                                        prevAttachment
-                                      );
-                                    }
-                                    if (attachmentId) {
-                                      addAttachmentAsync(
-                                        gameId,
-                                        planet.planet,
-                                        attachmentId
-                                      );
-                                    }
-                                  }}
-                                  selectedAttachment={currentAttachment}
-                                  tag={
-                                    <PlanetIcon
-                                      types={adjustedPlanet.types}
-                                      size="75%"
-                                    />
-                                  }
-                                />
-                              </div>
-                            ) : null}
-                          </div>
-                          {/* TODO: Remove if rules specify whenever a planet changes hands. */}
-                          {!planet.prevOwner &&
-                          adjustedPlanet.attributes.includes("relic") ? (
-                            <div style={{ marginLeft: rem(16) }}>
-                              <GainRelic
-                                factionId="Xxcha Kingdom"
-                                planetId={planet.planet}
-                              />
-                            </div>
-                          ) : null}
-                        </div>
-                      );
-                    })}
-                  </div>
-                ) : null}
-                {nonXxchaPlanets.length > 0 && xxchaPlanets.length === 0 ? (
-                  <ClientOnlyHoverMenu
-                    label={
-                      <FormattedMessage
-                        id="UJs3kj"
-                        description="Text on a hover menu for claiming an empty planet."
-                        defaultMessage="Claim Empty Planet"
-                      />
-                    }
-                  >
-                    <div className="flexRow" style={targetButtonStyle}>
-                      {nonXxchaPlanets.map((planet) => {
-                        return (
-                          <button
-                            key={planet.id}
-                            style={{
-                              minWidth:
-                                nonXxchaPlanets.length > 50 ? rem(72) : rem(90),
-                              fontSize:
-                                nonXxchaPlanets.length > 50
-                                  ? rem(14)
-                                  : undefined,
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                            }}
-                            onClick={() => {
-                              claimPlanetAsync(
-                                gameId,
-                                "Xxcha Kingdom",
-                                planet.id
-                              );
-                            }}
-                            disabled={viewOnly}
-                          >
-                            {planet.name}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </ClientOnlyHoverMenu>
-                ) : null}
-              </React.Fragment>
-            </LabeledDiv>
-            <SecondaryCheck
-              activeFactionId={activeFaction.id}
-              gameId={gameId}
-              orderedFactions={orderedFactions}
-            />
-          </div>
-        );
-      }
       return (
-        <div className="flexColumn" style={{ width: "100%" }}>
+        <div className="flexColumn largeFont" style={{ ...style }}>
+          <LabeledLine
+            leftLabel={
+              <FormattedMessage
+                id="mhqGMn"
+                description="The main ability for a strategy card."
+                defaultMessage="Primary"
+              />
+            }
+          />
+          <Diplomacy.Primary factionId={activeFaction.id} />
           <LabeledLine
             leftLabel={
               <FormattedMessage
@@ -1187,6 +529,7 @@ export function AdditionalActions({
               />
             }
           />
+          <Diplomacy.Secondary activeFactionId={activeFaction.id} />
           <SecondaryCheck
             activeFactionId={activeFaction.id}
             gameId={gameId ?? ""}
@@ -1216,50 +559,6 @@ export function AdditionalActions({
         </div>
       );
     case "Warfare": {
-      if (!options.expansions.includes("THUNDERS EDGE")) {
-        return (
-          <div className="flexColumn" style={{ width: "100%" }}>
-            <LabeledLine
-              leftLabel={
-                <FormattedMessage
-                  id="PBW6vs"
-                  description="The alternate ability for a strategy card."
-                  defaultMessage="Secondary"
-                />
-              }
-            />
-            <SecondaryCheck
-              activeFactionId={activeFaction.id}
-              gameId={gameId ?? ""}
-              orderedFactions={orderedFactions}
-            />
-          </div>
-        );
-      }
-      const scorableObjectives = Object.values(objectives).filter(
-        (objective) => {
-          const scorers = objective.scorers ?? [];
-          if (scorers.includes(activeFaction.id)) {
-            return false;
-          }
-          if (scoredObjectives.includes(objective.id)) {
-            return false;
-          }
-          if (
-            objective.id === "Become a Martyr" ||
-            objective.id === "Prove Endurance"
-          ) {
-            return false;
-          }
-          if (objective.type === "OTHER") {
-            return false;
-          }
-          if (objective.type === "SECRET" && scorers.length > 0) {
-            return false;
-          }
-          return objective.phase === "ACTION";
-        }
-      );
       return (
         <div
           className="flexColumn"
@@ -1276,14 +575,7 @@ export function AdditionalActions({
               }
             />
             <div></div>
-            <TacticalAction
-              activeFactionId={activeFaction.id}
-              claimablePlanets={claimablePlanets}
-              conqueredPlanets={claimedPlanets}
-              scorableObjectives={scorableObjectives}
-              scoredObjectives={scoredActionPhaseObjectives}
-              style={style}
-            />
+            <Warfare.Primary factionId={activeFaction.id} />
           </React.Fragment>
           <LabeledLine
             leftLabel={
@@ -1303,38 +595,6 @@ export function AdditionalActions({
       );
     }
     case "Imperial":
-      let hasImperialPoint = false;
-      const mecatol = planets["Mecatol Rex"];
-      if (mecatol && mecatol.owner === activeFaction.id) {
-        hasImperialPoint = true;
-      }
-      scoredObjectives.forEach((objective) => {
-        if (objective === "Imperial Point") {
-          hasImperialPoint = true;
-        }
-      });
-      const availablePublicObjectives = Object.values(objectives ?? {}).filter(
-        (objective) => {
-          if ((objective.scorers ?? []).includes(activeFaction.id)) {
-            return false;
-          }
-          if (!objective.selected) {
-            return false;
-          }
-          return (
-            objective.type === "STAGE ONE" || objective.type === "STAGE TWO"
-          );
-        }
-      );
-      const scoredPublics = scoredObjectives.filter((objective) => {
-        const objectiveObj = objectives[objective];
-        if (!objectiveObj) {
-          return false;
-        }
-        return (
-          objectiveObj.type === "STAGE ONE" || objectiveObj.type === "STAGE TWO"
-        );
-      });
       return (
         <div
           className="flexColumn largeFont"
@@ -1349,84 +609,7 @@ export function AdditionalActions({
               />
             }
           />
-          <div
-            style={{
-              backdropFilter: `blur(${rem(4)})`,
-              padding: `${rem(2)} 0`,
-            }}
-          >
-            {hasImperialPoint ? (
-              <FormattedMessage
-                id="a1rHE+"
-                description="Message telling a player that they get a victory point."
-                defaultMessage="+1 VP for controlling Mecatol Rex"
-              />
-            ) : (
-              <FormattedMessage
-                id="dd3UAo"
-                description="Message telling a player to draw a secret objective."
-                defaultMessage="Draw 1 secret objective"
-              />
-            )}
-          </div>
-          <LabeledDiv
-            label={
-              <FormattedMessage
-                id="73882v"
-                description="Message telling a player to score a public objective."
-                defaultMessage="Score Public Objective"
-              />
-            }
-          >
-            <React.Fragment>
-              {scoredPublics.length > 0 ? (
-                <div className="flexColumn" style={{ alignItems: "stretch" }}>
-                  {scoredPublics.map((objective) => {
-                    if (!objectives) {
-                      return null;
-                    }
-                    const objectiveObj = objectives[objective];
-                    if (!objectiveObj) {
-                      return null;
-                    }
-                    return (
-                      <ObjectiveRow
-                        key={objective}
-                        objective={objectiveObj}
-                        removeObjective={() =>
-                          unscoreObjectiveAsync(
-                            gameId,
-                            activeFaction.id,
-                            objective
-                          )
-                        }
-                        hideScorers={true}
-                      />
-                    );
-                  })}
-                </div>
-              ) : null}
-              {scoredPublics.length < 1 ? (
-                availablePublicObjectives.length > 0 ? (
-                  <ObjectiveSelectHoverMenu
-                    action={(_, objectiveId) =>
-                      scoreObjectiveAsync(gameId, activeFaction.id, objectiveId)
-                    }
-                    label={
-                      <FormattedMessage
-                        id="73882v"
-                        description="Message telling a player to score a public objective."
-                        defaultMessage="Score Public Objective"
-                      />
-                    }
-                    objectives={availablePublicObjectives}
-                  />
-                ) : (
-                  "No unscored public objectives"
-                )
-              ) : null}
-            </React.Fragment>
-          </LabeledDiv>
+          <Imperial.Primary factionId={activeFaction.id} />
           <LabeledLine
             leftLabel={
               <FormattedMessage

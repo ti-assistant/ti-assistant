@@ -70,7 +70,10 @@ export default function PlanetOverlay({
     if (systemNumber === "82A" || systemNumber === "82B") {
       return planet.system === "82B" || planet.system === "82A";
     }
-    return planet.system === parseInt(systemNumber);
+    if (typeof planet.system === "number") {
+      return planet.system === parseInt(systemNumber);
+    }
+    return planet.system === systemNumber;
   });
   systemPlanets = applyAllPlanetAttachments(systemPlanets, attachments);
   return (

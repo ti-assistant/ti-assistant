@@ -5,12 +5,14 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ClientOnlyHoverMenu } from "../../../../../../src/HoverMenu";
-import { InfoRow } from "../../../../../../src/InfoRow";
 import { SelectableRow } from "../../../../../../src/SelectableRow";
 import { TechRow } from "../../../../../../src/TechRow";
+import GainRelic from "../../../../../../src/components/Actions/GainRelic";
+import FactionIcon from "../../../../../../src/components/FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../../../../../../src/components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import FormattedDescription from "../../../../../../src/components/FormattedDescription/FormattedDescription";
 import FrontierExploration from "../../../../../../src/components/FrontierExploration/FrontierExploration";
+import IconDiv from "../../../../../../src/components/LabeledDiv/IconDiv";
 import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
 import LabeledLine from "../../../../../../src/components/LabeledLine/LabeledLine";
 import GameMap from "../../../../../../src/components/Map/GameMap";
@@ -40,13 +42,12 @@ import {
   useFactions,
   useNumFactions,
 } from "../../../../../../src/context/factionDataHooks";
+import { useOrderedFactionIds } from "../../../../../../src/context/gameDataHooks";
 import { useObjectives } from "../../../../../../src/context/objectiveDataHooks";
 import { useSharedModal } from "../../../../../../src/data/SharedModal";
 import {
   addAttachmentAsync,
   addTechAsync,
-  gainRelicAsync,
-  loseRelicAsync,
   playComponentAsync,
   removeAttachmentAsync,
   removeTechAsync,
@@ -59,7 +60,6 @@ import {
 import RelicMenuSVG from "../../../../../../src/icons/ui/RelicMenu";
 import {
   getClaimedPlanets,
-  getGainedRelic,
   getLogEntries,
   getPurgedPlanet,
   getReplacedTechs,
@@ -85,12 +85,7 @@ import { applyAllPlanetAttachments } from "../../../../../../src/util/planets";
 import { Optional } from "../../../../../../src/util/types/types";
 import { pluralize, rem } from "../../../../../../src/util/util";
 import PlanetaryRigs from "./components/PlanetaryRigs";
-import GainRelic from "../../../../../../src/components/Actions/GainRelic";
-import IconDiv from "../../../../../../src/components/LabeledDiv/IconDiv";
-import FactionIcon from "../../../../../../src/components/FactionIcon/FactionIcon";
-import { useOrderedFactionIds } from "../../../../../../src/context/gameDataHooks";
-import TechIcon from "../../../../../../src/components/TechIcon/TechIcon";
-import TechSVG from "../../../../../../src/icons/techs/Icon";
+import Overrule from "./components/Overrule";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -1228,6 +1223,11 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       innerContent = <PlanetaryRigs factionId={factionId} />;
       break;
     }
+    case "Overrule": {
+      leftLabel = undefined;
+      innerContent = <Overrule factionId={factionId} />;
+      break;
+    }
 
     // case "Repeal Law": {
     //   if (!agendas) {
@@ -1484,10 +1484,6 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
         </div>
       );
       break;
-    }
-    case "Overrule": {
-      // TODO: Pick a strategy card, and then handle the primary.
-      // Politics, Diplo, Warfare, Technology, and Imperial all need actions.
     }
   }
   if (!innerContent) {

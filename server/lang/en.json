@@ -707,6 +707,14 @@
     "defaultMessage": "Nav Suite",
     "description": "Name of action card: Nav Suite"
   },
+  "Action Cards.Overrule.Description": {
+    "defaultMessage": "ACTION: Perform the primary ability of a readied or unchosen strategy card.",
+    "description": "Description of action card: Overrule"
+  },
+  "Action Cards.Overrule.Name": {
+    "defaultMessage": "Overrule",
+    "description": "Name of action card: Overrule"
+  },
   "Action Cards.Parley.Description": {
     "defaultMessage": "After another player commits units to land on a planet you control:{br}Return the committed units to the space area.",
     "description": "Description of action card: Parley"
@@ -5435,6 +5443,14 @@
     "defaultMessage": "The Crown of Emphidia",
     "description": "Title of Objective: The Crown of Emphidia"
   },
+  "Objectives.The Silver Flame.Description": {
+    "defaultMessage": "Roll a 10 when using The Silver Flame.",
+    "description": "Description for Objective: The Silver Flame"
+  },
+  "Objectives.The Silver Flame.Title": {
+    "defaultMessage": "The Silver Flame",
+    "description": "Title of Objective: The Silver Flame"
+  },
   "Objectives.Threaten Enemies.Description": {
     "defaultMessage": "Have 1 or more ships in a system that is adjacent to another player's home system.",
     "description": "Description for Objective: Threaten Enemies"
@@ -5448,7 +5464,7 @@
     "description": "Description for Objective: Tomb + Crown of Emphidia"
   },
   "Objectives.Tomb + Crown of Emphidia.Title": {
-    "defaultMessage": "Tomb + Crown of Emphidia",
+    "defaultMessage": "Crown of Emphidia",
     "description": "Title of Objective: Tomb + Crown of Emphidia"
   },
   "Objectives.Total War.Description": {

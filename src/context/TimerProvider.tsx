@@ -21,8 +21,8 @@ export default function TimerProvider({ children }: PropsWithChildren) {
   }
 
   function tick() {
-    const paused = DataStore.getValue("timers.paused") ?? true;
-    if (paused) {
+    const timers = DataStore.getValue<Timers>("timers");
+    if (!timers || timers.paused) {
       return;
     }
 
@@ -34,6 +34,7 @@ export default function TimerProvider({ children }: PropsWithChildren) {
   }
 
   function activateTimer(timer: string) {
+    console.log("Timer Activeate", timer);
     activeTimers.add(timer);
     return () => {
       activeTimers.delete(timer);
