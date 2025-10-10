@@ -49,9 +49,7 @@ const loseRelicFn = import("../util/api/gainRelic").then(
 const manualVPUpdateFn = import("../util/api/manualVPUpdate").then(
   (mod) => mod.manualVPUpdate
 );
-const markSecondaryFn = import("../util/api/markSecondary").then(
-  (mod) => mod.markSecondary
-);
+const markSecondaryMod = import("../util/api/markSecondary");
 const playActionCardFn = import("../util/api/playActionCard").then(
   (mod) => mod.playActionCard
 );
@@ -356,8 +354,13 @@ export async function markSecondaryAsync(
   faction: FactionId,
   state: Secondary
 ) {
-  const markSecondary = await markSecondaryFn;
+  const markSecondary = (await markSecondaryMod).markSecondary;
   markSecondary(gameId, faction, state);
+}
+
+export async function markPrimaryAsync(gameId: string, completed: boolean) {
+  const markPrimary = (await markSecondaryMod).markPrimary;
+  markPrimary(gameId, completed);
 }
 
 export async function playActionCardAsync(

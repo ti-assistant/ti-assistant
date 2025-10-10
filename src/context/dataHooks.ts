@@ -1,7 +1,7 @@
 import { use, useEffect, useState } from "react";
 import stableHash from "stable-hash";
 import { BASE_OPTIONS } from "../../server/data/options";
-import { getLogEntries } from "../util/actionLog";
+import { getLogEntries, isPrimaryComplete } from "../util/actionLog";
 import { getCurrentTurnLogEntries } from "../util/api/actionLog";
 import { ActionLog, Optional } from "../util/types/types";
 import { DataContext } from "./contexts";
@@ -72,6 +72,13 @@ export function useCurrentTurn() {
     "actionLog",
     [],
     (log) => getCurrentTurnLogEntries(log)
+  );
+}
+export function usePrimaryCompleted() {
+  return useMemoizedGameDataValue<ActionLog, boolean>(
+    "actionLog",
+    false,
+    (log) => isPrimaryComplete(getCurrentTurnLogEntries(log))
   );
 }
 export function useLogEntries<DataType extends GameUpdateData>(

@@ -136,7 +136,9 @@ function FactionDiv({
           </div>
         )
       }
-      rightLabel={<StaticFactionTimer factionId={factionId} width={84} />}
+      rightLabel={
+        <StaticFactionTimer active={false} factionId={factionId} width={84} />
+      }
       color={fadeFaction ? "#555" : getFactionColor(faction)}
     >
       <div

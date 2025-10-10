@@ -47,7 +47,10 @@ import {
 } from "../../../../src/util/model/gainRelic";
 import { GiftOfPrescienceHandler } from "../../../../src/util/model/giftOfPrescience";
 import { ManualVPUpdateHandler } from "../../../../src/util/model/manualVPUpdate";
-import { MarkSecondaryHandler } from "../../../../src/util/model/markSecondary";
+import {
+  MarkPrimaryHandler,
+  MarkSecondaryHandler,
+} from "../../../../src/util/model/markSecondary";
 import {
   PlayActionCardHandler,
   UnplayActionCardHandler,
@@ -392,6 +395,10 @@ function updateInTransaction(
       }
       case "MARK_SECONDARY": {
         handler = new MarkSecondaryHandler(gameData, data);
+        break;
+      }
+      case "MARK_PRIMARY": {
+        handler = new MarkPrimaryHandler(gameData, data);
         break;
       }
       case "SCORE_OBJECTIVE": {

@@ -14,7 +14,10 @@ import { UnendTurnHandler } from "../model/endTurn";
 import { LoseRelicHandler } from "../model/gainRelic";
 import { GiftOfPrescienceHandler } from "../model/giftOfPrescience";
 import { ManualVPUpdateHandler } from "../model/manualVPUpdate";
-import { MarkSecondaryHandler } from "../model/markSecondary";
+import {
+  MarkPrimaryHandler,
+  MarkSecondaryHandler,
+} from "../model/markSecondary";
 import { UnplayActionCardHandler } from "../model/playActionCard";
 import { UnplayComponentHandler } from "../model/playComponent";
 import { UnplayPromissoryNoteHandler } from "../model/playPromissoryNote";
@@ -167,6 +170,15 @@ export function getOppositeHandler(
         },
       };
       return new MarkSecondaryHandler(gameData, markSecondaryData);
+    }
+    case "MARK_PRIMARY": {
+      const markPrimaryData: MarkPrimaryData = {
+        action: "MARK_PRIMARY",
+        event: {
+          completed: !data.event.completed,
+        },
+      };
+      return new MarkPrimaryHandler(gameData, markPrimaryData);
     }
     case "SCORE_OBJECTIVE": {
       const unscoreObjectiveData: UnscoreObjectiveData = {

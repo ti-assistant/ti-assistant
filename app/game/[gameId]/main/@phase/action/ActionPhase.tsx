@@ -3,7 +3,11 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { LockedButtons } from "../../../../../../src/LockedButton";
 import { SmallStrategyCard } from "../../../../../../src/StrategyCard";
-import { FactionTimer, StaticFactionTimer } from "../../../../../../src/Timer";
+import {
+  FactionSecondaryTimer,
+  FactionTimer,
+  StaticFactionTimer,
+} from "../../../../../../src/Timer";
 import Chip from "../../../../../../src/components/Chip/Chip";
 import ExpeditionSelector from "../../../../../../src/components/Expedition/ExpeditionSelector";
 import FactionCard from "../../../../../../src/components/FactionCard/FactionCard";
@@ -14,14 +18,20 @@ import LabeledLine from "../../../../../../src/components/LabeledLine/LabeledLin
 import PromissoryMenu from "../../../../../../src/components/PromissoryMenu/PromissoryMenu";
 import { TacticalAction } from "../../../../../../src/components/TacticalAction";
 import TechResearchSection from "../../../../../../src/components/TechResearchSection/TechResearchSection";
+import ThreeWayToggle from "../../../../../../src/components/ThreeWayToggle/ThreeWayToggle";
+import Toggle from "../../../../../../src/components/Toggle/Toggle";
 import {
   useCurrentTurn,
   useGameId,
   usePlanets,
+  usePrimaryCompleted,
   useStrategyCards,
   useViewOnly,
 } from "../../../../../../src/context/dataHooks";
-import { useFactions } from "../../../../../../src/context/factionDataHooks";
+import {
+  useAllSecondariesCompleted,
+  useFactions,
+} from "../../../../../../src/context/factionDataHooks";
 import {
   useActiveFaction,
   useOnDeckFaction,
@@ -31,6 +41,7 @@ import { useGameState } from "../../../../../../src/context/stateDataHooks";
 import {
   advancePhaseAsync,
   endTurnAsync,
+  markPrimaryAsync,
   markSecondaryAsync,
   scoreObjectiveAsync,
   selectActionAsync,
@@ -38,11 +49,15 @@ import {
   unselectActionAsync,
 } from "../../../../../../src/dynamic/api";
 import { SymbolX } from "../../../../../../src/icons/svgs";
-import { getClaimedPlanets } from "../../../../../../src/util/actionLog";
+import {
+  getClaimedPlanets,
+  isPrimaryComplete,
+} from "../../../../../../src/util/actionLog";
 import {
   getNewSpeakerEventFromLog,
   getSelectedActionFromLog,
 } from "../../../../../../src/util/api/data";
+import { BLACK_TEXT_GLOW } from "../../../../../../src/util/borderGlow";
 import {
   getFactionColor,
   getFactionName,
@@ -65,10 +80,12 @@ interface FactionActionButtonsProps {
 function SecondaryCheck({
   activeFactionId,
   gameId,
+  primaryCompleted,
   orderedFactions,
 }: {
   activeFactionId: FactionId;
   gameId: string;
+  primaryCompleted: boolean;
   orderedFactions: Faction[];
 }) {
   let allCompleted = true;
@@ -92,6 +109,43 @@ function SecondaryCheck({
           if (secondaryState === "PENDING") {
             allCompleted = false;
           }
+          return (
+            <div className="flexColumn" style={{ gap: rem(2) }}>
+              <ThreeWayToggle
+                key={faction.id}
+                selected={
+                  secondaryState === "DONE"
+                    ? "Positive"
+                    : secondaryState === "SKIPPED"
+                    ? "Negative"
+                    : undefined
+                }
+                toggleFn={(newVal) => {
+                  if (newVal === "Positive") {
+                    markSecondaryAsync(gameId, faction.id, "DONE");
+                  } else if (newVal === "Negative") {
+                    markSecondaryAsync(gameId, faction.id, "SKIPPED");
+                  } else {
+                    markSecondaryAsync(gameId, faction.id, "PENDING");
+                  }
+                }}
+              >
+                <FactionIcon factionId={faction.id} size={24} />
+              </ThreeWayToggle>
+              <FactionSecondaryTimer
+                factionId={faction.id}
+                active={primaryCompleted && secondaryState === "PENDING"}
+                style={{
+                  fontSize: rem(16),
+                  width: "auto",
+                  color:
+                    primaryCompleted && secondaryState === "PENDING"
+                      ? "#eee"
+                      : "#555",
+                }}
+              />
+            </div>
+          );
           return (
             <FactionCircle
               key={faction.id}
@@ -318,6 +372,8 @@ export function AdditionalActions({
     return numFactions - 1 === numPassed;
   }
 
+  const primaryCompleted = isPrimaryComplete(currentTurn);
+
   const claimedPlanets = getClaimedPlanets(currentTurn, activeFaction.id);
   const claimablePlanets = Object.values(planets).filter((planet) => {
     if (!planets) {
@@ -429,7 +485,8 @@ export function AdditionalActions({
                   />
                   <SecondaryCheck
                     activeFactionId={activeFaction.id}
-                    gameId={gameId ?? ""}
+                    gameId={gameId}
+                    primaryCompleted={primaryCompleted}
                     orderedFactions={orderedFactions}
                   />
                 </React.Fragment>
@@ -450,6 +507,19 @@ export function AdditionalActions({
                     defaultMessage="Primary"
                   />
                 }
+                rightLabel={
+                  // TODO: Implement secondary timers.
+                  <Toggle
+                    selected={primaryCompleted}
+                    toggleFn={() => markPrimaryAsync(gameId, !primaryCompleted)}
+                  >
+                    <FormattedMessage
+                      id="9F+GVy"
+                      description="Text on a button for marking something completed."
+                      defaultMessage="Done"
+                    />
+                  </Toggle>
+                }
               />
               <Technology.Primary factionId={activeFaction.id} />
             </div>
@@ -467,7 +537,8 @@ export function AdditionalActions({
             <Technology.Secondary activeFactionId={activeFaction.id} />
             <SecondaryCheck
               activeFactionId={activeFaction.id}
-              gameId={gameId ?? ""}
+              gameId={gameId}
+              primaryCompleted={primaryCompleted}
               orderedFactions={orderedFactions}
             />
           </div>
@@ -488,6 +559,19 @@ export function AdditionalActions({
                   defaultMessage="Primary"
                 />
               }
+              rightLabel={
+                // TODO: Implement secondary timers.
+                <Toggle
+                  selected={primaryCompleted}
+                  toggleFn={() => markPrimaryAsync(gameId, !primaryCompleted)}
+                >
+                  <FormattedMessage
+                    id="9F+GVy"
+                    description="Text on a button for marking something completed."
+                    defaultMessage="Done"
+                  />
+                </Toggle>
+              }
             />
             <Politics.Primary />
           </React.Fragment>
@@ -502,7 +586,8 @@ export function AdditionalActions({
           />
           <SecondaryCheck
             activeFactionId={activeFaction.id}
-            gameId={gameId ?? ""}
+            gameId={gameId}
+            primaryCompleted={primaryCompleted}
             orderedFactions={orderedFactions}
           />
         </div>
@@ -518,6 +603,21 @@ export function AdditionalActions({
                 defaultMessage="Primary"
               />
             }
+            rightLabel={
+              // TODO: Implement secondary timers.
+              <Toggle
+                selected={primaryCompleted}
+                toggleFn={() => {
+                  markPrimaryAsync(gameId, !primaryCompleted);
+                }}
+              >
+                <FormattedMessage
+                  id="9F+GVy"
+                  description="Text on a button for marking something completed."
+                  defaultMessage="Done"
+                />
+              </Toggle>
+            }
           />
           <Diplomacy.Primary factionId={activeFaction.id} />
           <LabeledLine
@@ -532,7 +632,8 @@ export function AdditionalActions({
           <Diplomacy.Secondary activeFactionId={activeFaction.id} />
           <SecondaryCheck
             activeFactionId={activeFaction.id}
-            gameId={gameId ?? ""}
+            gameId={gameId}
+            primaryCompleted={primaryCompleted}
             orderedFactions={orderedFactions}
           />
         </div>
@@ -545,6 +646,28 @@ export function AdditionalActions({
           <LabeledLine
             leftLabel={
               <FormattedMessage
+                id="mhqGMn"
+                description="The main ability for a strategy card."
+                defaultMessage="Primary"
+              />
+            }
+            rightLabel={
+              // TODO: Implement secondary timers.
+              <Toggle
+                selected={primaryCompleted}
+                toggleFn={() => markPrimaryAsync(gameId, !primaryCompleted)}
+              >
+                <FormattedMessage
+                  id="9F+GVy"
+                  description="Text on a button for marking something completed."
+                  defaultMessage="Done"
+                />
+              </Toggle>
+            }
+          />
+          <LabeledLine
+            leftLabel={
+              <FormattedMessage
                 id="PBW6vs"
                 description="The alternate ability for a strategy card."
                 defaultMessage="Secondary"
@@ -553,7 +676,8 @@ export function AdditionalActions({
           />
           <SecondaryCheck
             activeFactionId={activeFaction.id}
-            gameId={gameId ?? ""}
+            gameId={gameId}
+            primaryCompleted={primaryCompleted}
             orderedFactions={orderedFactions}
           />
         </div>
@@ -573,6 +697,19 @@ export function AdditionalActions({
                   defaultMessage="Primary"
                 />
               }
+              rightLabel={
+                // TODO: Implement secondary timers.
+                <Toggle
+                  selected={primaryCompleted}
+                  toggleFn={() => markPrimaryAsync(gameId, !primaryCompleted)}
+                >
+                  <FormattedMessage
+                    id="9F+GVy"
+                    description="Text on a button for marking something completed."
+                    defaultMessage="Done"
+                  />
+                </Toggle>
+              }
             />
             <div></div>
             <Warfare.Primary factionId={activeFaction.id} />
@@ -588,7 +725,8 @@ export function AdditionalActions({
           />
           <SecondaryCheck
             activeFactionId={activeFaction.id}
-            gameId={gameId ?? ""}
+            gameId={gameId}
+            primaryCompleted={primaryCompleted}
             orderedFactions={orderedFactions}
           />
         </div>
@@ -608,6 +746,19 @@ export function AdditionalActions({
                 defaultMessage="Primary"
               />
             }
+            rightLabel={
+              // TODO: Implement secondary timers.
+              <Toggle
+                selected={primaryCompleted}
+                toggleFn={() => markPrimaryAsync(gameId, !primaryCompleted)}
+              >
+                <FormattedMessage
+                  id="9F+GVy"
+                  description="Text on a button for marking something completed."
+                  defaultMessage="Done"
+                />
+              </Toggle>
+            }
           />
           <Imperial.Primary factionId={activeFaction.id} />
           <LabeledLine
@@ -621,7 +772,8 @@ export function AdditionalActions({
           />
           <SecondaryCheck
             activeFactionId={activeFaction.id}
-            gameId={gameId ?? ""}
+            gameId={gameId}
+            primaryCompleted={primaryCompleted}
             orderedFactions={orderedFactions}
           />
         </div>
@@ -867,8 +1019,10 @@ function ActivePlayerColumn({
   activeFaction,
   onDeckFaction,
 }: ActivePlayerColumnProps) {
+  const allSecondariesCompleted = useAllSecondariesCompleted();
   const gameId = useGameId();
   const intl = useIntl();
+  const primaryCompleted = usePrimaryCompleted();
   const viewOnly = useViewOnly();
 
   const primaryRef = useRef<HTMLDivElement>(null);
@@ -892,6 +1046,7 @@ function ActivePlayerColumn({
             faction={activeFaction}
             rightLabel={
               <FactionTimer
+                active={!primaryCompleted || allSecondariesCompleted}
                 factionId={activeFaction.id}
                 style={{ fontSize: rem(16), width: "auto" }}
               />
@@ -937,6 +1092,7 @@ function ActivePlayerColumn({
               }
               rightLabel={
                 <StaticFactionTimer
+                  active={false}
                   factionId={onDeckFaction.id}
                   style={{
                     fontSize: rem(16),

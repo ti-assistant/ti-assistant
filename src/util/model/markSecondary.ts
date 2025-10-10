@@ -46,3 +46,33 @@ export class MarkSecondaryHandler implements Handler {
     return "IGNORE";
   }
 }
+
+export class MarkPrimaryHandler implements Handler {
+  constructor(public gameData: StoredGameData, public data: MarkPrimaryData) {}
+
+  validate(): boolean {
+    return true;
+  }
+
+  getUpdates(): Record<string, any> {
+    return {
+      [`state.paused`]: false,
+      [`sequenceNum`]: "INCREMENT",
+    };
+  }
+
+  getLogEntry(): ActionLogEntry<GameUpdateData> {
+    return {
+      timestampMillis: Date.now(),
+      data: this.data,
+    };
+  }
+
+  getActionLogAction(entry: ActionLogEntry<GameUpdateData>): ActionLogAction {
+    if (entry.data.action === "MARK_PRIMARY") {
+      return "DELETE";
+    }
+
+    return "IGNORE";
+  }
+}

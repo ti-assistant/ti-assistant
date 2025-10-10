@@ -5,6 +5,10 @@ type ActionLogAction =
   | "REWIND_AND_DELETE"
   | "REWIND_AND_REPLACE";
 
+interface IHandler<DataType> {
+  new (public gameData: StoredGameData, public data: DataType): Handler;
+}
+
 interface Handler {
   gameData: StoredGameData;
   data: GameUpdateData;
@@ -23,7 +27,7 @@ type GameUpdateData =
   | (SelectActionData | UnselectActionData)
   | (EndTurnData | UnendTurnData)
   | SetSpeakerData
-  | MarkSecondaryData
+  | (MarkSecondaryData | MarkPrimaryData)
   | (ScoreObjectiveData | UnscoreObjectiveData)
   | (SwapStrategyCardsData | UnswapStrategyCardsData)
   | GiftOfPrescienceData
@@ -355,6 +359,15 @@ interface ManualVPUpdateEvent {
 interface ManualVPUpdateData {
   action: "MANUAL_VP_UPDATE";
   event: ManualVPUpdateEvent;
+}
+
+interface MarkPrimaryEvent {
+  completed: boolean;
+}
+
+interface MarkPrimaryData {
+  action: "MARK_PRIMARY";
+  event: MarkPrimaryEvent;
 }
 
 interface MarkSecondaryEvent {

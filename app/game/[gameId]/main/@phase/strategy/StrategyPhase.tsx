@@ -821,6 +821,7 @@ export default function StrategyPhase() {
                   }}
                 >
                   <FactionTimer
+                    active
                     factionId={activeFaction.id}
                     style={{ fontSize: rem(28) }}
                   />
@@ -864,6 +865,7 @@ export default function StrategyPhase() {
                   }}
                 >
                   <StaticFactionTimer
+                    active={false}
                     factionId={onDeckFaction.id}
                     style={{
                       fontSize: rem(18),

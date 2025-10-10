@@ -26,6 +26,10 @@ export function getResearchedTechs(actionLog: ActionLog, factionId: FactionId) {
     .map((logEntry) => (logEntry.data as AddTechData).event.tech);
 }
 
+export function isPrimaryComplete(currentTurn: ActionLog) {
+  return getLogEntries<MarkPrimaryData>(currentTurn, "MARK_PRIMARY").length > 0;
+}
+
 export function getAddTechEvents(actionLog: ActionLog) {
   return getLogEntries<AddTechData>(actionLog, "ADD_TECH").filter(
     (logEntry) => !logEntry.data.event.researchAgreement

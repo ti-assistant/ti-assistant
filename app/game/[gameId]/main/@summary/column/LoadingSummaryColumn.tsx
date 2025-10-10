@@ -36,7 +36,11 @@ export default function LoadingSummaryColumn() {
                 </div>
               }
               rightLabel={
-                <StaticFactionTimer factionId={"Unknown"} width={84} />
+                <StaticFactionTimer
+                  active={false}
+                  factionId={"Unknown"}
+                  width={84}
+                />
               }
               color={"var(--neutral-border)"}
             >

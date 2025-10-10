@@ -259,6 +259,10 @@
     "defaultMessage": "Setup Game",
     "description": "Text identifying that this is the setup step."
   },
+  "9F+GVy": {
+    "defaultMessage": "Done",
+    "description": "Text on a button for marking something completed."
+  },
   "9eqKm5": {
     "defaultMessage": "Unique {count, plural, one {Unit} other {Units}}",
     "description": "Header for section listing out unique units."

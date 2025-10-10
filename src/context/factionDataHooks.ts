@@ -38,3 +38,19 @@ export function useFactionDisplayName(factionId: FactionId) {
     (faction) => getFactionName(faction)
   );
 }
+
+export function useAllSecondariesCompleted() {
+  return useMemoizedGameDataValue<Factions, boolean>(
+    "factions",
+    false,
+    (factions) => {
+      const count = Object.values(factions).reduce((count, faction) => {
+        if (faction.secondary === "DONE" || faction.secondary === "SKIPPED") {
+          return count + 1;
+        }
+        return count;
+      }, 0);
+      return count === Object.values(factions).length - 1;
+    }
+  );
+}

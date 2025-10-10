@@ -1778,6 +1778,7 @@ export default function FactionPage({ factionId }: { factionId: FactionId }) {
           style={{ width: "100%" }}
           rightLabel={
             <StaticFactionTimer
+              active={false}
               factionId={factionId}
               width={80}
               style={{
