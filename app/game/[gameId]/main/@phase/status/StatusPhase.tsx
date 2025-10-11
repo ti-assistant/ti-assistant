@@ -1,4 +1,4 @@
-import React from "react";
+import React, { use } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ClientOnlyHoverMenu } from "../../../../../../src/HoverMenu";
 import { LockedButtons } from "../../../../../../src/LockedButton";
@@ -29,7 +29,6 @@ import {
   useRound,
   useSpeaker,
 } from "../../../../../../src/context/stateDataHooks";
-import { useSharedModal } from "../../../../../../src/data/SharedModal";
 import {
   advancePhaseAsync,
   hideObjectiveAsync,
@@ -56,6 +55,7 @@ import { ActionLog } from "../../../../../../src/util/types/types";
 import { rem } from "../../../../../../src/util/util";
 import styles from "./StatusPhase.module.scss";
 import FormattedDescription from "../../../../../../src/components/FormattedDescription/FormattedDescription";
+import { ModalContext } from "../../../../../../src/context/contexts";
 
 function CommandTokenGains() {
   const factions = useFactions();
@@ -610,7 +610,7 @@ export default function StatusPhase() {
 
   const intl = useIntl();
 
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   function nextPhase(skipAgenda = false) {
     if (!skipAgenda) {

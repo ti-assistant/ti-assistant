@@ -1,6 +1,6 @@
 "use client";
 
-import React, { CSSProperties, ReactNode } from "react";
+import React, { CSSProperties, ReactNode, use } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -25,6 +25,7 @@ import { Selector } from "../../../../../../src/components/Selector/Selector";
 import { TacticalAction } from "../../../../../../src/components/TacticalAction";
 import TechResearchSection from "../../../../../../src/components/TechResearchSection/TechResearchSection";
 import TechSelectHoverMenu from "../../../../../../src/components/TechSelectHoverMenu/TechSelectHoverMenu";
+import { ModalContext } from "../../../../../../src/context/contexts";
 import {
   useActionCards,
   useActionLog,
@@ -44,7 +45,6 @@ import {
 } from "../../../../../../src/context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../../../../src/context/gameDataHooks";
 import { useObjectives } from "../../../../../../src/context/objectiveDataHooks";
-import { useSharedModal } from "../../../../../../src/data/SharedModal";
 import {
   addAttachmentAsync,
   addTechAsync,
@@ -84,8 +84,8 @@ import { getMapString } from "../../../../../../src/util/options";
 import { applyAllPlanetAttachments } from "../../../../../../src/util/planets";
 import { Optional } from "../../../../../../src/util/types/types";
 import { pluralize, rem } from "../../../../../../src/util/util";
-import PlanetaryRigs from "./components/PlanetaryRigs";
 import Overrule from "./components/Overrule";
+import PlanetaryRigs from "./components/PlanetaryRigs";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -1520,7 +1520,7 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);
 
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   const playedComponent = currentTurn
     .filter((logEntry) => logEntry.data.action === "PLAY_COMPONENT")
@@ -1668,7 +1668,6 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
         if (!planet) {
           return false;
         }
-        console.log("Planet", planet);
         return planet.owner === factionId;
       }
 

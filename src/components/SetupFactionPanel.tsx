@@ -1,11 +1,13 @@
 import { useSearchParams } from "next/navigation";
-import { PropsWithChildren, ReactNode, useState } from "react";
+import { PropsWithChildren, ReactNode, use, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
+import { ModalContext } from "../context/contexts";
 import { buildBaseLeaders, buildBaseTechs } from "../data/GameData";
-import { useSharedModal } from "../data/SharedModal";
 import SynergySVG from "../icons/ui/Synergy";
 import { leaderTypeString } from "../util/strings";
+import { sortTechsByPreReqAndExpansion } from "../util/techs";
 import { rem } from "../util/util";
+import Chip from "./Chip/Chip";
 import { CollapsibleSection } from "./CollapsibleSection";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import FormattedDescription from "./FormattedDescription/FormattedDescription";
@@ -15,9 +17,6 @@ import TechIcon from "./TechIcon/TechIcon";
 import UnitIcon from "./Units/Icons";
 import UnitType from "./Units/Types";
 import UnitStats from "./UnitStats/UnitStats";
-import { sortTechsByPreReqAndExpansion } from "../util/techs";
-import Toggle from "./Toggle/Toggle";
-import Chip from "./Chip/Chip";
 
 function AbilitySection({
   leftLabel,
@@ -502,7 +501,7 @@ export default function SetupFactionPanel({
   options: Options;
   altFaction?: BaseFaction;
 }) {
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   return (
     <>

@@ -1,5 +1,6 @@
+import { use } from "react";
+import { ModalContext } from "../../context/contexts";
 import { useViewOnly } from "../../context/dataHooks";
-import { useSharedModal } from "../../data/SharedModal";
 import { SelectableRow } from "../../SelectableRow";
 import { rem } from "../../util/util";
 import FactionIcon from "../FactionIcon/FactionIcon";
@@ -51,7 +52,7 @@ export default function ObjectiveRow({
 }: ObjectiveRowProps) {
   const viewOnly = useViewOnly();
 
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   function canScore() {
     if (!scoreObjective || viewing || !factionId) {

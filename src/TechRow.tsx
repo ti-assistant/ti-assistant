@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, use } from "react";
 import { FormattedMessage } from "react-intl";
 import { SelectableRow } from "./SelectableRow";
 import FactionIcon from "./components/FactionIcon/FactionIcon";
@@ -8,9 +8,9 @@ import { ModalContent } from "./components/Modal/Modal";
 import TechIcon from "./components/TechIcon/TechIcon";
 import UnitStats from "./components/UnitStats/UnitStats";
 import UnitIcon from "./components/Units/Icons";
+import { ModalContext } from "./context/contexts";
 import { useGameId, useLogEntries, useViewOnly } from "./context/dataHooks";
 import { useFactions } from "./context/factionDataHooks";
-import { useSharedModal } from "./data/SharedModal";
 import { addTechAsync, removeTechAsync } from "./dynamic/api";
 import { hasTech } from "./util/api/techs";
 import { getFactionColor, getMapOrderedFactionIds } from "./util/factions";
@@ -100,7 +100,7 @@ export function TechRow({
   opts = {},
 }: TechRowProps) {
   const viewOnly = useViewOnly();
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   return (
     <SelectableRow
@@ -220,7 +220,7 @@ function ResearchAgreement({ tech }: { tech: Tech }) {
   const factions = useFactions();
   const gameId = useGameId();
   const viewOnly = useViewOnly();
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   const selectedFaction = researchAgreement?.data.event.faction;
 

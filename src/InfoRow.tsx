@@ -1,7 +1,7 @@
-import { PropsWithChildren, ReactNode } from "react";
+import { PropsWithChildren, ReactNode, use } from "react";
 
 import { ModalContent } from "./components/Modal/Modal";
-import { useSharedModal } from "./data/SharedModal";
+import { ModalContext } from "./context/contexts";
 import { rem } from "./util/util";
 
 interface InfoRowProps {
@@ -14,7 +14,7 @@ export function InfoRow({
   infoTitle,
   infoContent,
 }: PropsWithChildren<InfoRowProps>) {
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   return (
     <div

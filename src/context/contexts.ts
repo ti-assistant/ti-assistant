@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, ReactNode } from "react";
 import { DEFAULT_SETTINGS, Settings } from "../util/settings";
 
 interface SettingsContextObj {
@@ -12,6 +12,11 @@ type SubscribeFn = (callback: CallbackFn<any>, path: string) => () => void;
 
 interface TimerFns {
   activateTimer: (timer: string) => () => void;
+}
+
+interface ModalFns {
+  openModal: (content: ReactNode) => void;
+  popModal: () => void;
 }
 
 export const SettingsContext = createContext<SettingsContextObj>({
@@ -32,3 +37,10 @@ const DummyTimerFns = {
 };
 
 export const TimerContext = createContext<TimerFns>(DummyTimerFns);
+
+const DummyModalFns = {
+  openModal: (content: ReactNode) => {},
+  popModal: () => {},
+};
+
+export const ModalContext = createContext<ModalFns>(DummyModalFns);

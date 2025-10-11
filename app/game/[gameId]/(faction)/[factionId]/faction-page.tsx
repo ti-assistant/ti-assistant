@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { AddPlanetList } from "../../../../../src/AddPlanetList";
 import { AddTechList } from "../../../../../src/AddTechList";
@@ -26,6 +26,7 @@ import {
   computeRemainingVotes,
   getTargets,
 } from "../../../../../src/components/VoteBlock/VoteBlock";
+import { ModalContext } from "../../../../../src/context/contexts";
 import {
   useActionLog,
   useAgendas,
@@ -43,7 +44,6 @@ import {
 import { useFactions } from "../../../../../src/context/factionDataHooks";
 import { useObjectives } from "../../../../../src/context/objectiveDataHooks";
 import { useGameState } from "../../../../../src/context/stateDataHooks";
-import { useSharedModal } from "../../../../../src/data/SharedModal";
 import {
   addTechAsync,
   castVotesAsync,
@@ -1364,9 +1364,9 @@ function FactionContent({ factionId }: { factionId: FactionId }) {
   const techs = useTechs();
   const viewOnly = useViewOnly();
 
-  const [tabShown, setTabShown] = useState<string>("");
+  const { openModal } = use(ModalContext);
 
-  const { openModal } = useSharedModal();
+  const [tabShown, setTabShown] = useState<string>("");
 
   const faction = factions[factionId];
 

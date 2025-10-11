@@ -16,12 +16,8 @@ export default function DataPubSubProvider({ children }: PropsWithChildren) {
   const subscribers: Record<string, Record<string, Subscriber>> = {};
   let hashes: Record<string, string> = {};
 
-  console.log("Rendering DataPubSub", subscribers);
-
   useEffect(() => {
-    console.log("What?");
     return DataStore.listen(() => {
-      console.log("Received notify");
       publish();
     });
   }, []);
@@ -67,7 +63,6 @@ export default function DataPubSubProvider({ children }: PropsWithChildren) {
   }
 
   function publish() {
-    console.log("Subscribers", subscribers);
     const updatedHashes = structuredClone(hashes);
     for (const [path, subscribersPerPath] of objectEntries(subscribers)) {
       const value = DataStore.getValue(path);

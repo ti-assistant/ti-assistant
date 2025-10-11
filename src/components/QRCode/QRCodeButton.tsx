@@ -1,6 +1,7 @@
 "use client";
 
-import { useSharedModal } from "../../data/SharedModal";
+import { use } from "react";
+import { ModalContext } from "../../context/contexts";
 import QRCodeSVG from "../../icons/ui/QRCode";
 import { rem } from "../../util/util";
 import QRCodeModal from "./QRCodeModal";
@@ -12,7 +13,7 @@ export default function QRCodeButton({
   gameId: string;
   qrCode: string;
 }) {
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   return (
     <button

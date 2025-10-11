@@ -1,14 +1,16 @@
-import React, { PropsWithChildren, useState } from "react";
+import React, { PropsWithChildren, use, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ClientOnlyHoverMenu } from "../../../../../../src/HoverMenu";
 import { NumberedItem } from "../../../../../../src/NumberedItem";
 import { FactionTimer, StaticFactionTimer } from "../../../../../../src/Timer";
 import FactionCard from "../../../../../../src/components/FactionCard/FactionCard";
 import FactionSelectRadialMenu from "../../../../../../src/components/FactionSelectRadialMenu/FactionSelectRadialMenu";
+import FormattedDescription from "../../../../../../src/components/FormattedDescription/FormattedDescription";
 import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
 import { ModalContent } from "../../../../../../src/components/Modal/Modal";
 import { Selector } from "../../../../../../src/components/Selector/Selector";
 import { StrategyCardElement } from "../../../../../../src/components/StrategyCardElement/StrategyCardElement";
+import { ModalContext } from "../../../../../../src/context/contexts";
 import {
   useAgenda,
   useGameId,
@@ -21,7 +23,6 @@ import {
   useOnDeckFaction,
 } from "../../../../../../src/context/gameDataHooks";
 import { useRound } from "../../../../../../src/context/stateDataHooks";
-import { useSharedModal } from "../../../../../../src/data/SharedModal";
 import {
   advancePhaseAsync,
   assignStrategyCardAsync,
@@ -37,7 +38,6 @@ import { phaseString } from "../../../../../../src/util/strings";
 import { Optional } from "../../../../../../src/util/types/types";
 import { rem } from "../../../../../../src/util/util";
 import styles from "./StrategyPhase.module.scss";
-import FormattedDescription from "../../../../../../src/components/FormattedDescription/FormattedDescription";
 
 function ChecksAndBalancesMenu({
   faction,
@@ -526,7 +526,7 @@ export default function StrategyPhase() {
   const onDeckFaction = useOnDeckFaction();
   const round = useRound();
 
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   interface Ability {
     name: string;

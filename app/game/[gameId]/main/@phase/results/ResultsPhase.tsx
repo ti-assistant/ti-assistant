@@ -116,7 +116,7 @@ function InnerContent({ viewing }: { viewing: View }) {
   const intl = useIntl();
   const gameData = useGameData();
 
-  const worker = useRef<Worker>();
+  const worker = useRef<Optional<Worker>>(undefined);
 
   const [condensedData, setCondensedData] =
     useState<Optional<CondensedGameData>>();

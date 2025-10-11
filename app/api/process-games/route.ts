@@ -3,7 +3,7 @@ import { rewriteProcessedGames } from "../../stats/processor";
 import { headers } from "next/headers";
 
 export async function GET() {
-  const headerList = headers();
+  const headerList = await headers();
   const cron = headerList.get("X-Appengine-Cron");
   if (!cron) {
     throw new Error("Only cronjobs are allowed to call this endpoint.");

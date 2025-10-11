@@ -1,5 +1,6 @@
+import { use } from "react";
 import { FormattedMessage } from "react-intl";
-import { SelectableRow } from "../../SelectableRow";
+import { ModalContext } from "../../context/contexts";
 import {
   useAttachments,
   useGameId,
@@ -7,7 +8,6 @@ import {
   useViewOnly,
 } from "../../context/dataHooks";
 import { useFactions } from "../../context/factionDataHooks";
-import { useSharedModal } from "../../data/SharedModal";
 import { addAttachmentAsync, removeAttachmentAsync } from "../../dynamic/api";
 import ArcaneCitadelSVG from "../../icons/attachments/ArcaneCitadel";
 import CouncilPreserveSVG from "../../icons/attachments/CouncilPreserve";
@@ -18,6 +18,8 @@ import BlueTechSVG from "../../icons/techs/BlueTech";
 import GreenTechSVG from "../../icons/techs/GreenTech";
 import RedTechSVG from "../../icons/techs/RedTech";
 import YellowTechSVG from "../../icons/techs/YellowTech";
+import HitSVG from "../../icons/ui/Hit";
+import { SelectableRow } from "../../SelectableRow";
 import { getFactionColor } from "../../util/factions";
 import { applyPlanetAttachments } from "../../util/planets";
 import { Optional } from "../../util/types/types";
@@ -28,8 +30,6 @@ import { ModalContent } from "../Modal/Modal";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 import Toggle from "../Toggle/Toggle";
-import HitSVG from "../../icons/ui/Hit";
-import UnitIcon from "../Units/Icons";
 
 interface PlanetRowOpts {
   hideAttachButton?: boolean;
@@ -58,7 +58,7 @@ export default function PlanetRow({
   const factions = useFactions();
   const viewOnly = useViewOnly();
 
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   function canAttach() {
     return (

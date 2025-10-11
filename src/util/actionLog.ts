@@ -120,7 +120,6 @@ export function getPromissoryTargets(actionLog: ActionLog, card: string) {
 export function getGainedRelic(actionLog: ActionLog, planet?: PlanetId) {
   return getLogEntries<GainRelicData>(actionLog, "GAIN_RELIC")
     .filter((logEntry) => {
-      console.log(logEntry);
       return !planet || logEntry.data.event.planet === planet;
     })
     .map((logEntry) => logEntry.data.event.relic)[0];

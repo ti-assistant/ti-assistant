@@ -191,7 +191,7 @@ export async function POST(req: Request) {
       deleteAt: deleteDate,
     });
 
-    let sessionId = getSessionIdFromCookie();
+    let sessionId = await getSessionIdFromCookie();
     let session: Optional<TIASession>;
     if (sessionId) {
       session = await getSession(sessionId);

@@ -10,12 +10,14 @@ export async function getMessages(
   return JSON.parse(JSON.stringify(messages));
 }
 
-export function getLocale(): string {
-  return cookies().get("TI_LOCALE")?.value ?? "en";
+export async function getLocale(): Promise<string> {
+  const cookieValues = await cookies();
+  return cookieValues.get("TI_LOCALE")?.value ?? "en";
 }
 
-export function getSettings() {
-  let settings = cookies().get("settings");
+export async function getSettings() {
+  const cookieValues = await cookies();
+  let settings = cookieValues.get("settings");
 
   if (!settings) {
     return DEFAULT_SETTINGS;
@@ -26,16 +28,18 @@ export function getSettings() {
   };
 }
 
-export function getSessionIdFromCookie() {
-  const sessionIdCookie = cookies().get("session");
+export async function getSessionIdFromCookie() {
+  const cookieValues = await cookies();
+  const sessionIdCookie = cookieValues.get("session");
   if (!sessionIdCookie) {
     return;
   }
   return sessionIdCookie.value;
 }
 
-export function setSessionIdCookie(sessionId: string) {
-  cookies().set("session", sessionId);
+export async function setSessionIdCookie(sessionId: string) {
+  const cookieValues = await cookies();
+  cookieValues.set("session", sessionId);
 }
 
 export function hashPassword(password: string) {

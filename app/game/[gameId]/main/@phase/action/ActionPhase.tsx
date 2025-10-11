@@ -109,7 +109,11 @@ function SecondaryCheck({
             allCompleted = false;
           }
           return (
-            <div className="flexColumn" style={{ gap: rem(2) }}>
+            <div
+              key={faction.id}
+              className="flexColumn"
+              style={{ gap: rem(2) }}
+            >
               <ThreeWayToggle
                 key={faction.id}
                 selected={

@@ -11,9 +11,9 @@ interface SetPauseData {
 
 export async function POST(
   req: Request,
-  { params }: { params: { gameId: string } }
+  { params }: { params: Promise<{ gameId: string }> }
 ) {
-  const gameId = params.gameId;
+  const { gameId } = await params;
   const canEdit = await canEditGame(gameId);
   if (!canEdit) {
     return new Response("Not authorized", {

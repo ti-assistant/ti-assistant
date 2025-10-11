@@ -1,10 +1,10 @@
 "use client";
 
-import { ReactNode, useState } from "react";
-import { useBetween } from "use-between";
+import { PropsWithChildren, ReactNode, useState } from "react";
 import GenericModal from "../components/GenericModal/GenericModal";
+import { ModalContext } from "./contexts";
 
-const useModal = () => {
+const useModals = () => {
   const [modals, setModals] = useState<ReactNode[]>([]);
 
   function openModal(content: ReactNode) {
@@ -22,11 +22,28 @@ const useModal = () => {
   };
 };
 
-export const useSharedModal = () => useBetween(useModal);
+export default function ModalProvider({ children }: PropsWithChildren) {
+  const { modals, openModal, popModal } = useModals();
 
-export default function SharedModal() {
-  const { modals, popModal } = useSharedModal();
+  console.log("Rendering provider");
 
+  return (
+    <>
+      <Modals modals={modals} popModal={popModal} />
+      <ModalContext.Provider value={{ openModal, popModal }}>
+        {children}
+      </ModalContext.Provider>
+    </>
+  );
+}
+
+function Modals({
+  modals,
+  popModal,
+}: {
+  modals: ReactNode[];
+  popModal: () => void;
+}) {
   return (
     <>
       <GenericModal visible={modals.length > 0} level={1} closeMenu={popModal}>

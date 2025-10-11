@@ -22,7 +22,6 @@ export namespace DataStore {
     seedBaseData: BaseData,
     seedStoredData: StoredGameData
   ) {
-    console.log("Init called");
     gameId = seedGameId;
     data = seedData;
 
@@ -99,7 +98,6 @@ export namespace DataStore {
     }
 
     if (updateSource === "SERVER") {
-      console.log("Server update");
       latestServerData = structuredClone(updateFn(latestServerData));
 
       // If we are ahead of the server, don't update.
@@ -113,7 +111,6 @@ export namespace DataStore {
       data.gameId = gameId;
       data.viewOnly = viewOnly;
     } else {
-      console.log("Client update");
       storedData = structuredClone(updateFn(storedData));
 
       const viewOnly = data.viewOnly;

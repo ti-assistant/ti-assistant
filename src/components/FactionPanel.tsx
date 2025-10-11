@@ -1,5 +1,6 @@
-import { PropsWithChildren, ReactNode } from "react";
+import { PropsWithChildren, ReactNode, use } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
+import { ModalContext } from "../context/contexts";
 import {
   useGameId,
   useLeaders,
@@ -7,7 +8,6 @@ import {
   useViewOnly,
 } from "../context/dataHooks";
 import { useFaction } from "../context/factionDataHooks";
-import { useSharedModal } from "../data/SharedModal";
 import {
   addTechAsync,
   removeTechAsync,
@@ -891,7 +891,7 @@ export default function FactionPanel({
   factionId: FactionId;
   options: Options;
 }) {
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   return (
     <>

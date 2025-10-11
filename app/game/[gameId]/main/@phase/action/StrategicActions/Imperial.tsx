@@ -29,13 +29,11 @@ function Primary({ factionId }: { factionId: FactionId }) {
 
   let hasImperialPoint = false;
   if (mecatol && mecatol.owner === factionId) {
-    console.log("What - Meacatol", mecatol);
     hasImperialPoint = true;
   }
   const scoredObjectives = getScoredObjectives(currentTurn, factionId);
   scoredObjectives.forEach((objective) => {
     if (objective === "Imperial Point") {
-      console.log("What - Imperila");
       hasImperialPoint = true;
     }
   });

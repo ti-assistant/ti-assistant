@@ -5,15 +5,14 @@ import {
   getFirestore,
 } from "firebase-admin/firestore";
 
+import crypto from "crypto";
 import {
   PHASE_BOUNDARIES,
   TURN_BOUNDARIES,
 } from "../../src/util/api/actionLog";
-import { BASE_OPTIONS } from "../data/options";
-import { ActionLog, Optional } from "../../src/util/types/types";
-import crypto from "crypto";
 import { getSessionIdFromCookie } from "../../src/util/server";
-import { tree } from "next/dist/build/templates/app-page";
+import { ActionLog, Optional } from "../../src/util/types/types";
+import { BASE_OPTIONS } from "../data/options";
 
 /**
  * Returns the game data for a given game.
@@ -350,7 +349,7 @@ export async function canEditGame(gameId: string) {
     return true;
   }
 
-  const sessionId = getSessionIdFromCookie();
+  const sessionId = await getSessionIdFromCookie();
   if (!sessionId) {
     return false;
   }

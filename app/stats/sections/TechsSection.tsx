@@ -1,18 +1,17 @@
-import { useState } from "react";
+import { use, useState } from "react";
+import { FormattedMessage } from "react-intl";
+import Chip from "../../../src/components/Chip/Chip";
 import { CollapsibleSection } from "../../../src/components/CollapsibleSection";
-import GenericModal from "../../../src/components/GenericModal/GenericModal";
+import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
 import LabeledDiv from "../../../src/components/LabeledDiv/LabeledDiv";
 import TechIcon from "../../../src/components/TechIcon/TechIcon";
+import { ModalContext } from "../../../src/context/contexts";
 import { Optional } from "../../../src/util/types/types";
 import { objectEntries, rem } from "../../../src/util/util";
 import { ProcessedGame } from "../processor";
 import { PointsHistogram } from "./Histogram";
-import { HistogramData } from "./types";
 import styles from "./TechsSection.module.scss";
-import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
-import { FormattedMessage } from "react-intl";
-import Chip from "../../../src/components/Chip/Chip";
-import { useSharedModal } from "../../../src/data/SharedModal";
+import { HistogramData } from "./types";
 
 interface FactionTechInfo {
   games: number;
@@ -41,7 +40,7 @@ export default function TechsSection({
   points: number;
 }) {
   const [tab, setTab] = useState("Non-Faction");
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
   const techInfo: Partial<Record<TechId, TechInfo>> = {};
   const baseTechs = baseData.techs;
   let techGames = 0;

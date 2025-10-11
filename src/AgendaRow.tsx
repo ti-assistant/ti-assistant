@@ -1,19 +1,20 @@
+import { use } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { SelectableRow } from "./SelectableRow";
+import FormattedDescription from "./components/FormattedDescription/FormattedDescription";
 import { ModalContent } from "./components/Modal/Modal";
 import { translateOutcome } from "./components/VoteBlock/VoteBlock";
+import { ModalContext } from "./context/contexts";
 import {
   useAgendas,
   usePlanets,
   useStrategyCards,
   useViewOnly,
 } from "./context/dataHooks";
-import { useObjectives } from "./context/objectiveDataHooks";
 import { useFactions } from "./context/factionDataHooks";
-import { useSharedModal } from "./data/SharedModal";
+import { useObjectives } from "./context/objectiveDataHooks";
+import { SelectableRow } from "./SelectableRow";
 import { agendaTypeString, outcomeString } from "./util/strings";
 import { rem } from "./util/util";
-import FormattedDescription from "./components/FormattedDescription/FormattedDescription";
 
 function InfoContent({ agenda }: { agenda: Agenda }) {
   const intl = useIntl();
@@ -66,7 +67,7 @@ export function AgendaRow({
   const strategyCards = useStrategyCards();
   const viewOnly = useViewOnly();
 
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   const intl = useIntl();
 

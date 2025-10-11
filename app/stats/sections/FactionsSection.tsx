@@ -1,15 +1,14 @@
-import { Fragment, useState } from "react";
+import { Fragment, use } from "react";
+import { FormattedMessage } from "react-intl";
 import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
 import LabeledDiv from "../../../src/components/LabeledDiv/LabeledDiv";
-import { Optional } from "../../../src/util/types/types";
+import { ModalContext } from "../../../src/context/contexts";
+import { objectEntries, rem } from "../../../src/util/util";
 import { ProcessedGame } from "../processor";
 import FactionModal from "./FactionModal";
+import styles from "./FactionsSection.module.scss";
 import { PointsHistogram } from "./Histogram";
 import { FactionSummary } from "./types";
-import styles from "./FactionsSection.module.scss";
-import { FormattedMessage } from "react-intl";
-import { objectEntries, rem } from "../../../src/util/util";
-import { useSharedModal } from "../../../src/data/SharedModal";
 
 export default function FactionsSection({
   games,
@@ -20,7 +19,7 @@ export default function FactionsSection({
   baseData: BaseData;
   points: number;
 }) {
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   const baseObjectives = baseData.objectives;
   const factionInfo: Partial<Record<FactionId, FactionSummary>> = {};

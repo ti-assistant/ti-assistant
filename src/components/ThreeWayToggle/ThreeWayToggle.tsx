@@ -1,9 +1,9 @@
-import { CSSProperties, PropsWithChildren, ReactNode } from "react";
-import { useSharedModal } from "../../data/SharedModal";
+import { CSSProperties, PropsWithChildren, ReactNode, use } from "react";
+import { ModalContext } from "../../context/contexts";
+import { Optional } from "../../util/types/types";
 import { rem } from "../../util/util";
 import { ModalContent } from "../Modal/Modal";
 import styles from "./ThreeWayToggle.module.scss";
-import { Optional } from "../../util/types/types";
 
 interface SelectedCSSProperties extends CSSProperties {
   "--toggle-color": "var(--selected-bg)";
@@ -45,7 +45,7 @@ export default function ThreeWayToggle({
   disabled,
   info,
 }: PropsWithChildren<ToggleProps>) {
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   return (
     <label

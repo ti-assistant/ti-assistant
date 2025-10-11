@@ -34,7 +34,7 @@ async function fetchGameData(gameId: string, intlPromise: Promise<IntlShape>) {
 }
 
 async function getIntl() {
-  const locale = getLocale();
+  const locale = await getLocale();
   const messages = await getMessages(locale);
   const cache = createIntlCache();
   return createIntl({ locale, messages }, cache);
@@ -43,15 +43,16 @@ async function getIntl() {
 export default async function Layout({
   phase,
   summary,
-  params: { gameId },
+  params,
 }: {
-  params: { gameId: string };
+  params: Promise<{ gameId: string }>;
   phase: React.ReactNode;
   summary: React.ReactNode;
 }) {
+  const { gameId } = await params;
   const intlPromise = getIntl();
 
-  const sessionId = getSessionIdFromCookie();
+  const sessionId = await getSessionIdFromCookie();
 
   return (
     <>

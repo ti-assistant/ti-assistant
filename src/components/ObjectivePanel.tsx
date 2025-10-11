@@ -1,7 +1,12 @@
 import Image from "next/image";
-import React, { CSSProperties, PropsWithChildren, useContext } from "react";
+import React, {
+  CSSProperties,
+  PropsWithChildren,
+  use,
+  useContext,
+} from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { SettingsContext } from "../context/contexts";
+import { ModalContext, SettingsContext } from "../context/contexts";
 import {
   useActionLog,
   useGameId,
@@ -15,7 +20,6 @@ import {
 } from "../context/factionDataHooks";
 import { useFactionVPs, useOrderedFactionIds } from "../context/gameDataHooks";
 import { useObjective, useObjectives } from "../context/objectiveDataHooks";
-import { useSharedModal } from "../data/SharedModal";
 import {
   hideObjectiveAsync,
   manualVPUpdateAsync,
@@ -99,7 +103,7 @@ function ObjectiveColumn({
   objective: Objective;
   orderedFactionIds: FactionId[];
 }) {
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
   const viewOnly = useViewOnly();
   const { settings } = useContext(SettingsContext);
   const description = settings["display-objective-description"];
@@ -283,7 +287,7 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
   const { settings, updateSetting } = useContext(SettingsContext);
   const description = settings["display-objective-description"];
 
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   const intl = useIntl();
 
@@ -2283,7 +2287,7 @@ function SimpleScorable({
   const factions = useFactions();
   const viewOnly = useViewOnly();
 
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   if (!objective) {
     return null;

@@ -320,8 +320,6 @@ export default function GameMap({
       }
     }
   });
-  console.log("Ghost ", ghostsCorner);
-  console.log("Crimson", rebellionCorner);
   if (!ghosts) {
     mapString.split(" ").forEach((system) => {
       if (system === "17") {

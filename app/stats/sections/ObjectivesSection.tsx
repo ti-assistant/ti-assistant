@@ -1,16 +1,14 @@
-import { Fragment, useState } from "react";
+import { Fragment, use, useState } from "react";
 import { FormattedMessage } from "react-intl";
+import Chip from "../../../src/components/Chip/Chip";
 import { CollapsibleSection } from "../../../src/components/CollapsibleSection";
 import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
-import GenericModal from "../../../src/components/GenericModal/GenericModal";
 import LabeledDiv from "../../../src/components/LabeledDiv/LabeledDiv";
-import { Optional } from "../../../src/util/types/types";
+import { ModalContext } from "../../../src/context/contexts";
 import { objectEntries, objectKeys, rem } from "../../../src/util/util";
 import { ProcessedGame } from "../processor";
 import styles from "./ObjectivesSection.module.scss";
 import { ObjectiveGameCounts } from "./types";
-import Chip from "../../../src/components/Chip/Chip";
-import { useSharedModal } from "../../../src/data/SharedModal";
 
 interface ObjectiveInfo {
   games: number;
@@ -27,7 +25,7 @@ export default function ObjectivesSection({
   games: Record<string, ProcessedGame>;
   baseData: BaseData;
 }) {
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
   const [tab, setTab] = useState<ObjectiveType>("STAGE ONE");
 
   let objectivesByScore: Partial<Record<ObjectiveId, ObjectiveInfo>> = {};

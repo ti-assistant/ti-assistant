@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { getFactions } from "../../server/data/factions";
 import { ClientOnlyHoverMenu } from "../../src/HoverMenu";
@@ -20,7 +20,7 @@ import NumberInput from "../../src/components/NumberInput/NumberInput";
 import SiteLogo from "../../src/components/SiteLogo/SiteLogo";
 import Toggle from "../../src/components/Toggle/Toggle";
 import { Strings } from "../../src/components/strings";
-import { useSharedModal } from "../../src/data/SharedModal";
+import { ModalContext } from "../../src/context/contexts";
 import CodexSVG from "../../src/icons/ui/Codex";
 import ProphecyofKingsSVG from "../../src/icons/ui/ProphecyOfKings";
 import ThundersEdgeMenuSVG from "../../src/icons/ui/ThundersEdgeMenu";
@@ -498,7 +498,7 @@ function Options({
   maxFactions,
   events,
 }: OptionsProps) {
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   let variants: GameVariant[] = [];
   switch (numFactions) {

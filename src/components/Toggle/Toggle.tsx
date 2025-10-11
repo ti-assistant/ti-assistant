@@ -1,9 +1,8 @@
-import { CSSProperties, PropsWithChildren, ReactNode } from "react";
-import styles from "./Toggle.module.scss";
-import { useSharedModal } from "../../data/SharedModal";
+import { CSSProperties, PropsWithChildren, ReactNode, use } from "react";
+import { ModalContext } from "../../context/contexts";
 import { rem } from "../../util/util";
 import { ModalContent } from "../Modal/Modal";
-import FormattedDescription from "../FormattedDescription/FormattedDescription";
+import styles from "./Toggle.module.scss";
 
 interface SelectedCSSProperties extends CSSProperties {
   "--border-color": "var(--background-color)";
@@ -51,7 +50,7 @@ export default function Toggle({
   disabled,
   info,
 }: PropsWithChildren<ToggleProps>) {
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   let toggleStyle = getToggleStyle(selected);
   return (

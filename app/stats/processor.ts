@@ -151,7 +151,7 @@ async function getJSONFileFromStorage(
 }
 
 export async function rewriteProcessedGames() {
-  const locale = getLocale();
+  const locale = await getLocale();
   const messages = await getMessages(locale);
   const cache = createIntlCache();
   const intl = createIntl({ locale, messages }, cache);
@@ -243,7 +243,7 @@ export async function maybeUpdateProcessedGames(
 }
 
 export async function reprocessGames() {
-  const locale = getLocale();
+  const locale = await getLocale();
   const messages = await getMessages(locale);
   const cache = createIntlCache();
   const intl = createIntl({ locale, messages }, cache);

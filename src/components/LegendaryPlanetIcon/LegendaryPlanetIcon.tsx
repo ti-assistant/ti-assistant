@@ -1,6 +1,7 @@
 "use client";
 
-import { useSharedModal } from "../../data/SharedModal";
+import { use } from "react";
+import { ModalContext } from "../../context/contexts";
 import LegendaryPlanetSVG from "../../icons/planets/LegendaryPlanet";
 import { rem } from "../../util/util";
 import FormattedDescription from "../FormattedDescription/FormattedDescription";
@@ -32,7 +33,7 @@ export default function LegendaryPlanetIcon({
   planetName?: string;
   ability?: string;
 }) {
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   const cursor = ability ? "pointer" : "auto";
   return (

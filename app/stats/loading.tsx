@@ -4,7 +4,7 @@ import { getLocale, getMessages } from "../../src/util/server";
 import StatsPage from "./stats-page";
 
 export default async function Loading() {
-  const locale = getLocale();
+  const locale = await getLocale();
   const messages = await getMessages(locale);
   const cache = createIntlCache();
   const intl = createIntl({ locale, messages }, cache);

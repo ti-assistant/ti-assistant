@@ -1,11 +1,11 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { CSSProperties, useContext, useEffect, useState } from "react";
+import { CSSProperties, use, useContext, useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { FactionSummary } from "../../FactionSummary";
 import { Loader } from "../../Loader";
-import { SettingsContext } from "../../context/contexts";
+import { ModalContext, SettingsContext } from "../../context/contexts";
 import {
   useAllPlanets,
   useGameId,
@@ -16,14 +16,17 @@ import {
 } from "../../context/dataHooks";
 import { useFactions } from "../../context/factionDataHooks";
 import { useGameState } from "../../context/stateDataHooks";
-import { useSharedModal } from "../../data/SharedModal";
 import { setSpeakerAsync } from "../../dynamic/api";
 import MapMenuSVG from "../../icons/ui/MapMenu";
 import ObjectivesMenuSVG from "../../icons/ui/ObjectivesMenu";
 import PlanetMenuSVG from "../../icons/ui/PlanetMenu";
+import PromissoryMenuSVG from "../../icons/ui/PromissoryMenu";
+import RelicMenuSVG from "../../icons/ui/RelicMenu";
+import ThundersEdgeMenuSVG from "../../icons/ui/ThundersEdgeMenu";
 import { getFactionColor, getFactionName } from "../../util/factions";
 import { getWormholeNexusSystemNumber } from "../../util/map";
 import { getMapString } from "../../util/options";
+import { fracturePlanetsOwned } from "../../util/planets";
 import { Optional } from "../../util/types/types";
 import { rem } from "../../util/util";
 import Chip from "../Chip/Chip";
@@ -32,13 +35,9 @@ import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRad
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import GameMap from "../Map/GameMap";
 import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
+import ThundersEdgePanel from "../ThundersEdgePanel";
 import { Strings } from "../strings";
 import styles from "./Footer.module.scss";
-import ThundersEdgeMenuSVG from "../../icons/ui/ThundersEdgeMenu";
-import ThundersEdgePanel from "../ThundersEdgePanel";
-import RelicMenuSVG from "../../icons/ui/RelicMenu";
-import PromissoryMenuSVG from "../../icons/ui/PromissoryMenu";
-import { fracturePlanetsOwned } from "../../util/planets";
 
 const ObjectivePanel = dynamic(() => import("../ObjectivePanel"), {
   loading: () => <Loader />,
@@ -114,7 +113,7 @@ export default function Footer() {
 
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   const [selectedFaction, setSelectedFaction] =
     useState<Optional<FactionId>>(undefined);

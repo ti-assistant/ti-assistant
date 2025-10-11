@@ -18,7 +18,7 @@ async function getJSONFileFromStorage(
 }
 
 export default async function Page() {
-  const locale = getLocale();
+  const locale = await getLocale();
   const messages = await getMessages(locale);
   const cache = createIntlCache();
   const intl = createIntl({ locale, messages }, cache);

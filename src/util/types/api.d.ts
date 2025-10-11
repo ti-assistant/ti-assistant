@@ -6,7 +6,7 @@ type ActionLogAction =
   | "REWIND_AND_REPLACE";
 
 interface IHandler<DataType> {
-  new (public gameData: StoredGameData, public data: DataType): Handler;
+  new (gameData: StoredGameData, data: DataType): Handler;
 }
 
 interface Handler {

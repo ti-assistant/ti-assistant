@@ -65,7 +65,7 @@ async function fetchGameData(
 }
 
 async function getIntl() {
-  const locale = getLocale();
+  const locale = await getLocale();
   const messages = await getMessages(locale);
   const cache = createIntlCache();
   return createIntl({ locale, messages }, cache);
@@ -95,15 +95,16 @@ function getQRCode(gameId: string, size: number): Promise<string> {
 
 export default async function Layout({
   children,
-  params: { gameId },
-}: PropsWithChildren<{ params: { gameId: string } }>) {
+  params,
+}: PropsWithChildren<{ params: Promise<{ gameId: string }> }>) {
+  const { gameId } = await params;
   const intlPromise = getIntl();
 
   const qrCodePromise = getQRCode(gameId, 280);
 
   const qrCode = await qrCodePromise;
 
-  const sessionId = getSessionIdFromCookie();
+  const sessionId = await getSessionIdFromCookie();
 
   return (
     <>
