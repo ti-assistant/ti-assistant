@@ -1,5 +1,16 @@
 namespace ThundersEdge {
-  type ActionCardId = "Overrule";
+  type ActionCardId =
+    | "Crash Landing"
+    | "Crisis"
+    | "Extreme Duress"
+    | "Lie in Wait"
+    | "Mercenary Contract"
+    | "Overrule"
+    | "Pirate Contract"
+    | "Pirate Fleet"
+    | "Puppets on a String"
+    | "Rescue"
+    | "Strategize";
 
   type BreakthroughId =
     | "Psychospore" // Arborec
@@ -153,7 +164,9 @@ namespace ThundersEdge {
     | "Brine Pool"
     | "Coral Reef"
     | "Ice Shelf"
-    | "Lost Fleet";
+    | "Lost Fleet"
+    // Synthetic
+    | "The Triad";
 
   type ObjectiveId = "Styx" | "The Silver Flame";
 

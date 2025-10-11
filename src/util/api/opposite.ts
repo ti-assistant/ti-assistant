@@ -11,7 +11,7 @@ import { ChooseSubFactionHandler } from "../model/chooseSubFaction";
 import { UnclaimPlanetHandler, ClaimPlanetHandler } from "../model/claimPlanet";
 import { ContinueGameHandler } from "../model/endGame";
 import { UnendTurnHandler } from "../model/endTurn";
-import { LoseRelicHandler } from "../model/gainRelic";
+import { GainRelicHandler, LoseRelicHandler } from "../model/gainRelic";
 import { GiftOfPrescienceHandler } from "../model/giftOfPrescience";
 import { ManualVPUpdateHandler } from "../model/manualVPUpdate";
 import {
@@ -342,7 +342,10 @@ export function getOppositeHandler(
       });
     }
     case "LOSE_RELIC": {
-      throw new Error("LOSE_RELIC should not be in log");
+      return new GainRelicHandler(gameData, {
+        action: "GAIN_RELIC",
+        event: data.event,
+      });
     }
     case "GAIN_ALLIANCE": {
       if (data.event.prevFaction) {

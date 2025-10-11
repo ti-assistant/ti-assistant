@@ -29,6 +29,7 @@ import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 import Toggle from "../Toggle/Toggle";
 import HitSVG from "../../icons/ui/Hit";
+import UnitIcon from "../Units/Icons";
 
 interface PlanetRowOpts {
   hideAttachButton?: boolean;
@@ -75,6 +76,9 @@ export default function PlanetRow({
         // If attached to this planet, always show.
         if (planetAttachments.includes(attachment.id)) {
           return true;
+        }
+        if (planet.locked) {
+          return false;
         }
         if (planet.id === "Mecatol Rex" && attachment.id !== "Nano-Forge") {
           return false;
@@ -191,6 +195,7 @@ export default function PlanetRow({
               types={planet.types}
               factionId={planet.faction}
               size={28}
+              relic={planet.id === "The Triad"}
             />
           </div>
         </div>
@@ -213,6 +218,16 @@ export default function PlanetRow({
             ) : null}
           </div>
         ) : null}
+        {/* 
+        TODO: Add ability to mark bastion space docks and adjust The Triad.
+        {factionId === "Last Bastion" || previousOwner === "Last Bastion" ? (
+          <Toggle
+            selected={!!planet.bastionSpaceDock}
+            toggleFn={(prevValue: boolean) => {}}
+          >
+            <UnitIcon type="Space Dock" />
+          </Toggle>
+        ) : null} */}
         <ResourcesIcon
           resources={planet.resources}
           influence={planet.influence}

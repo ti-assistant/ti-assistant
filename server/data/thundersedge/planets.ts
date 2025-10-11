@@ -632,5 +632,15 @@ export default function getThundersEdgePlanets(
       resources: 1,
       types: [],
     },
+    "The Triad": {
+      attributes: ["synthetic"],
+      expansion: "THUNDERS EDGE",
+      influence: 3,
+      id: "The Triad",
+      locked: true,
+      name: "The Triad",
+      resources: 3,
+      types: [],
+    },
   };
 }

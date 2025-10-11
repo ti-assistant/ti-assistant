@@ -10,6 +10,7 @@ import Diplomacy from "../StrategicActions/Diplomacy";
 import Imperial from "../StrategicActions/Imperial";
 import Politics from "../StrategicActions/Politics";
 import Technology from "../StrategicActions/Technology";
+import Warfare from "../StrategicActions/Warfare";
 
 export default function Overrule({ factionId }: { factionId: FactionId }) {
   // TODO: Switch to a server item.
@@ -30,6 +31,7 @@ export default function Overrule({ factionId }: { factionId: FactionId }) {
       additionalActions = <Politics.Primary />;
       break;
     case "Warfare":
+      additionalActions = <Warfare.Primary factionId={factionId} />;
       break;
     case "Technology":
       additionalActions = <Technology.Primary factionId={factionId} />;
@@ -53,5 +55,4 @@ export default function Overrule({ factionId }: { factionId: FactionId }) {
       {additionalActions}
     </div>
   );
-  return <div>{validStrategyCards.map((card) => card.name)}</div>;
 }

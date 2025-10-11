@@ -7,7 +7,6 @@ import { DataStore } from "./dataStore";
 export default function TimerProvider({ children }: PropsWithChildren) {
   const activeTimers: Set<string> = new Set();
   let lastIncrease: number = Date.now();
-  console.log("Rendering TimerProvider");
 
   function updateTimers(storedData: StoredGameData) {
     const updatedTimers = structuredClone(storedData.timers ?? {});
@@ -34,7 +33,6 @@ export default function TimerProvider({ children }: PropsWithChildren) {
   }
 
   function activateTimer(timer: string) {
-    console.log("Timer Activeate", timer);
     activeTimers.add(timer);
     return () => {
       activeTimers.delete(timer);

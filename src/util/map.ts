@@ -485,11 +485,11 @@ export function getFactionSystemNumber(
   if (faction.id === "Council Keleres") {
     switch (faction.startswith?.faction) {
       case "Argent Flight":
-        return "101";
+        return "201";
       case "Xxcha Kingdom":
-        return "100";
+        return "200";
       case "Mentak Coalition":
-        return "102";
+        return "202";
     }
     return "299";
   }

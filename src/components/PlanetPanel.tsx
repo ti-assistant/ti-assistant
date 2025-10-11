@@ -5,7 +5,6 @@ import {
   useGameId,
   useLeaders,
   usePlanets,
-  useRelics,
   useViewOnly,
 } from "../context/dataHooks";
 import { useFaction, useFactions } from "../context/factionDataHooks";
@@ -35,15 +34,7 @@ function PlanetSection({
   const gameId = useGameId();
   const leaders = useLeaders();
   const planets = usePlanets();
-  const relics = useRelics();
   const viewOnly = useViewOnly();
-
-  const triad = relics["The Triad"];
-  let triadValue;
-  if (triad && triad.owner === factionId) {
-    // TODO: Allow adjusting.
-    triadValue = 3;
-  }
 
   const ownedPlanets = filterToClaimedPlanets(planets, factionId);
 
@@ -82,11 +73,7 @@ function PlanetSection({
           width: "100%",
         }}
       >
-        <PlanetSummary
-          planets={updatedPlanets}
-          hasXxchaHero={hasXxchaHero}
-          triad={triadValue}
-        />
+        <PlanetSummary planets={updatedPlanets} hasXxchaHero={hasXxchaHero} />
       </div>
       <div
         className={styles.planetList}

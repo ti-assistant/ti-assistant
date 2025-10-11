@@ -13,6 +13,7 @@ type PlanetAttribute =
   | "relic"
   | "space-station"
   | "ocean"
+  | "synthetic" // A planet that doesn't exist. Used for The Triad relic.
   // Discordant Stars
   | "extra-votes"
   | "production"
@@ -61,6 +62,8 @@ interface GamePlanet {
   ready?: boolean;
   state?: PlanetState;
   attachments?: AttachmentId[];
+  // Manual adjustments
+  bastionSpaceDock?: boolean;
 }
 
 type Planet = BasePlanet & GamePlanet;

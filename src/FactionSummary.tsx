@@ -10,7 +10,6 @@ import {
   useGameId,
   useLeaders,
   usePlanets,
-  useRelics,
   useTechs,
   useViewOnly,
 } from "./context/dataHooks";
@@ -45,17 +44,9 @@ export function FactionSummary({
   const leaders = useLeaders();
   const objectives = useObjectives();
   const planets = usePlanets();
-  const relics = useRelics();
   const state = useGameState();
   const techs = useTechs();
   const viewOnly = useViewOnly();
-
-  let triadValue;
-  const triad = relics["The Triad"];
-  if (triad && triad.owner === factionId) {
-    // TODO: Handle multiple values.
-    triadValue = 3;
-  }
 
   let updatedPlanets: Planet[] = [];
   let VPs = 0;
@@ -166,11 +157,7 @@ export function FactionSummary({
         <ObjectiveDots factionId={factionId} />
       </div>
       {options.hidePlanets ? null : (
-        <PlanetSummary
-          planets={updatedPlanets}
-          hasXxchaHero={hasXxchaHero}
-          triad={triadValue}
-        />
+        <PlanetSummary planets={updatedPlanets} hasXxchaHero={hasXxchaHero} />
       )}
     </div>
   );

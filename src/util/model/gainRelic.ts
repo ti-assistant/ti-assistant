@@ -1,7 +1,9 @@
+import { ClaimPlanetHandler, UnclaimPlanetHandler } from "./claimPlanet";
 import {
   ScoreObjectiveHandler,
   UnscoreObjectiveHandler,
 } from "./scoreObjective";
+import { UpdateBreakthroughStateHandler } from "./updateBreakthroughState";
 
 export class GainRelicHandler implements Handler {
   constructor(public gameData: StoredGameData, public data: GainRelicData) {}
@@ -29,6 +31,38 @@ export class GainRelicHandler implements Handler {
       updates = {
         ...updates,
         ...scoreHandler.getUpdates(),
+      };
+    }
+
+    if (this.data.event.relic === "The Triad") {
+      const planetHandler = new ClaimPlanetHandler(this.gameData, {
+        action: "CLAIM_PLANET",
+        event: {
+          faction: this.data.event.faction,
+          planet: "The Triad",
+        },
+      });
+
+      updates = {
+        ...updates,
+        ...planetHandler.getUpdates(),
+      };
+    }
+    if (this.data.event.relic === "The Quantumcore") {
+      const breakthroughHandler = new UpdateBreakthroughStateHandler(
+        this.gameData,
+        {
+          action: "UPDATE_BREAKTHROUGH_STATE",
+          event: {
+            factionId: this.data.event.faction,
+            state: "readied",
+          },
+        }
+      );
+
+      updates = {
+        ...updates,
+        ...breakthroughHandler.getUpdates(),
       };
     }
 
@@ -81,6 +115,21 @@ export class LoseRelicHandler implements Handler {
       updates = {
         ...updates,
         ...scoreHandler.getUpdates(),
+      };
+    }
+
+    if (this.data.event.relic === "The Triad") {
+      const planetHandler = new UnclaimPlanetHandler(this.gameData, {
+        action: "UNCLAIM_PLANET",
+        event: {
+          faction: this.data.event.faction,
+          planet: "The Triad",
+        },
+      });
+
+      updates = {
+        ...updates,
+        ...planetHandler.getUpdates(),
       };
     }
 

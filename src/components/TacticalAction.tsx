@@ -661,7 +661,12 @@ function BecomeAMartyr({
     for (const conqueredPlanet of conqueredPlanets) {
       const planet = planets[conqueredPlanet.planet];
       const prevOwner = conqueredPlanet.prevOwner;
-      if (!planet || !planet.home || !prevOwner) {
+      if (
+        !planet ||
+        !planet.home ||
+        !prevOwner ||
+        planet.attributes.includes("space-station")
+      ) {
         continue;
       }
       if (faction.id === prevOwner) {

@@ -96,6 +96,7 @@ export default function GainRelic({
         }}
         viewOnly={viewOnly}
         style={style}
+        itemsPerColumn={12}
       />
       {gainedRelic === "Book of Latvinia" ? (
         <TechResearchSection

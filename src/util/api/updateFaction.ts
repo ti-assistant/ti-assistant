@@ -1,5 +1,6 @@
 import { DataStore } from "../../context/dataStore";
 import { Optional } from "../types/types";
+import dataUpdate from "./dataUpdate";
 import { poster } from "./util";
 
 interface UpdateFactionData {

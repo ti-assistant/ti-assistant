@@ -1,8 +1,5 @@
-import { DataStore } from "../../context/dataStore";
 import { ChooseSubFactionHandler } from "../model/chooseSubFaction";
-import { updateGameData } from "./handler";
-import { updateActionLog } from "./update";
-import { poster } from "./util";
+import dataUpdate from "./dataUpdate";
 
 export function chooseSubFaction(
   gameId: string,
@@ -17,29 +14,5 @@ export function chooseSubFaction(
     },
   };
 
-  const now = Date.now();
-
-  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
-
-  DataStore.update((storedGameData) => {
-    const handler = new ChooseSubFactionHandler(storedGameData, data);
-
-    if (!handler.validate()) {
-      return storedGameData;
-    }
-
-    const gameTimer = storedGameData.timers?.game;
-    updateActionLog(storedGameData, handler, now, gameTimer ?? 0);
-    updateGameData(storedGameData, handler.getUpdates());
-
-    if (storedGameData.timers) {
-      storedGameData.timers.paused = false;
-    }
-
-    return storedGameData;
-  }, "CLIENT");
-
-  return updatePromise.catch((_) => {
-    DataStore.reset();
-  });
+  return dataUpdate(gameId, data, ChooseSubFactionHandler);
 }

@@ -1,11 +1,8 @@
-import { DataStore } from "../../context/dataStore";
 import {
   AddAttachmentHandler,
   RemoveAttachmentHandler,
 } from "../model/addAttachment";
-import { updateGameData } from "./handler";
-import { updateActionLog } from "./update";
-import { poster } from "./util";
+import dataUpdate from "./dataUpdate";
 
 // TODO: Determine whether planet treatment is necessary.
 export function addAttachment(
@@ -20,30 +17,8 @@ export function addAttachment(
       planet,
     },
   };
-  const now = Date.now();
 
-  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
-
-  DataStore.update((storedGameData) => {
-    const handler = new AddAttachmentHandler(storedGameData, data);
-
-    if (!handler.validate()) {
-      return storedGameData;
-    }
-
-    const gameTimer = storedGameData.timers?.game;
-    updateActionLog(storedGameData, handler, now, gameTimer ?? 0);
-    updateGameData(storedGameData, handler.getUpdates());
-    if (storedGameData.timers) {
-      storedGameData.timers.paused = false;
-    }
-
-    return storedGameData;
-  }, "CLIENT");
-
-  return updatePromise.catch((_) => {
-    DataStore.reset();
-  });
+  return dataUpdate(gameId, data, AddAttachmentHandler);
 }
 
 export function removeAttachment(
@@ -59,29 +34,5 @@ export function removeAttachment(
     },
   };
 
-  const now = Date.now();
-
-  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
-
-  DataStore.update((storedGameData) => {
-    const handler = new RemoveAttachmentHandler(storedGameData, data);
-
-    if (!handler.validate()) {
-      return storedGameData;
-    }
-
-    const gameTimer = storedGameData.timers?.game;
-    updateActionLog(storedGameData, handler, now, gameTimer ?? 0);
-    updateGameData(storedGameData, handler.getUpdates());
-
-    if (storedGameData.timers) {
-      storedGameData.timers.paused = false;
-    }
-
-    return storedGameData;
-  }, "CLIENT");
-
-  return updatePromise.catch((_) => {
-    DataStore.reset();
-  });
+  return dataUpdate(gameId, data, RemoveAttachmentHandler);
 }

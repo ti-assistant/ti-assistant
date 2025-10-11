@@ -69,9 +69,6 @@ export namespace DataStore {
 
   export function getValue<Type>(path: string): Optional<Type> {
     if (!data) {
-      if (path === "timers") {
-        console.log("No data yet");
-      }
       return;
     }
     const value = getValueAtPath<Type>(data, path);

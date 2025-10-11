@@ -57,7 +57,6 @@ import {
   getNewSpeakerEventFromLog,
   getSelectedActionFromLog,
 } from "../../../../../../src/util/api/data";
-import { BLACK_TEXT_GLOW } from "../../../../../../src/util/borderGlow";
 import {
   getFactionColor,
   getFactionName,
@@ -1211,12 +1210,10 @@ function StrategyCardColumn() {
 export default function ActionPhase() {
   const gameId = useGameId();
   const intl = useIntl();
-  const state = useGameState();
   const viewOnly = useViewOnly();
 
   const activeFaction = useActiveFaction();
   const onDeckFaction = useOnDeckFaction();
-  console.log("State", state);
 
   return (
     <>

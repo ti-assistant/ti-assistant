@@ -8,14 +8,12 @@ import styles from "./PlanetSummary.module.scss";
 interface PlanetSummaryProps {
   planets: Planet[];
   hasXxchaHero: boolean;
-  triad?: number;
 }
 
 // TODO: Figure out how to display oceans.
 export default function PlanetSummary({
   planets,
   hasXxchaHero,
-  triad,
 }: PlanetSummaryProps) {
   const options = useOptions();
 
@@ -31,11 +29,16 @@ export default function PlanetSummary({
   for (const planet of planets) {
     if (
       !planet.attributes.includes("space-station") &&
-      !planet.attributes.includes("ocean")
+      !planet.attributes.includes("ocean") &&
+      !planet.attributes.includes("synthetic")
     ) {
       numPlanets++;
     }
-    if (options.expansions.includes("CODEX THREE") && hasXxchaHero) {
+    if (
+      hasXxchaHero &&
+      options.expansions.includes("CODEX THREE") &&
+      !options.expansions.includes("THUNDERS EDGE")
+    ) {
       resources += planet.resources + planet.influence;
       influence += planet.resources + planet.influence;
     } else {
@@ -75,10 +78,6 @@ export default function PlanetSummary({
     if ((planet.attachments ?? []).length > 0) {
       ++attachments;
     }
-  }
-  if (triad) {
-    resources += triad;
-    influence += triad;
   }
 
   return (

@@ -6,12 +6,14 @@ import { rem } from "../../util/util";
 import CulturalPlanetSVG from "../../icons/planets/CulturalPlanet";
 import HazardousPlanetSVG from "../../icons/planets/HazardousPlanet";
 import IndustrialPlanetSVG from "../../icons/planets/IndustrialPlanet";
+import RelicMenuSVG from "../../icons/ui/RelicMenu";
 
 type Size = `${number}%` | number;
 
 interface PlanetIconProps {
   types: PlanetType[];
   factionId?: FactionId;
+  relic?: boolean;
   size: Size;
 }
 
@@ -33,8 +35,17 @@ function PlanetIconSVG({ type }: { type: PlanetType }) {
 export default function PlanetIcon({
   types,
   factionId,
+  relic,
   size,
 }: PlanetIconProps) {
+  if (relic) {
+    const width = typeof size === "string" ? size : rem(size);
+    return (
+      <div style={{ width: width, height: width }}>
+        <RelicMenuSVG color="#efe383" />
+      </div>
+    );
+  }
   if (types.length === 0) {
     return factionId ? <FactionIcon factionId={factionId} size={size} /> : null;
   }
