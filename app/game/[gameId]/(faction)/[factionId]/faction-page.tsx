@@ -161,6 +161,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
   const relics = useRelics();
   const state = useGameState();
   const strategyCards = useStrategyCards();
+  const techs = useTechs();
   const viewOnly = useViewOnly();
   const voteRef = useRef<HTMLDivElement>(null);
 
@@ -283,7 +284,8 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
     options,
     state,
     getCurrentPhasePreviousLogEntries(actionLog),
-    leaders
+    leaders,
+    techs
   );
   const mawOfWorlds = relics["Maw of Worlds"];
   if (mawOfWorlds && mawOfWorlds.owner === factionId) {

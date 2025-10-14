@@ -44,6 +44,7 @@ function InnerTechSelectHoverMenu({
 }: InnerTechSelectHoverMenuProps) {
   const faction = useFaction(factionId);
   const factions = useFactions();
+  const techObjs = useTechs();
   const options = useOptions();
   const viewOnly = useViewOnly();
 
@@ -75,7 +76,7 @@ function InnerTechSelectHoverMenu({
               prereqs,
               faction,
               isTechOwned,
-              techs
+              techObjs
             );
             return (
               <button

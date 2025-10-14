@@ -949,6 +949,7 @@ export default function StatusPhase() {
                       }
                       return (
                         <IconDiv
+                          key={faction.id}
                           color={getFactionColor(faction)}
                           icon={
                             <FactionIcon factionId={faction.id} size={24} />

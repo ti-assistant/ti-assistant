@@ -110,7 +110,7 @@ function AllSecondaries({ activeFactionId }: { activeFactionId: FactionId }) {
           return null;
         }
         return (
-          <div style={{ width: "48%" }}>
+          <div key={faction.id} style={{ width: "48%" }}>
             <Secondary factionId={faction.id} />
           </div>
         );
