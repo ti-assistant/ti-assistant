@@ -47,7 +47,7 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
     .map((id) => id);
   const availableNekroTechs = Object.values(techs ?? {}).filter((tech) => {
     const isResearched = orderedFactions.reduce((isResearched, faction) => {
-      return isResearched || hasTech(faction, tech.id);
+      return isResearched || hasTech(faction, tech);
     }, false);
     return (
       isResearched &&
@@ -210,7 +210,7 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                     </>
                   ) : (
                     factionTechs.map((tech) => {
-                      const factionHasTech = hasTech(faction, tech.id);
+                      const factionHasTech = hasTech(faction, tech);
                       return (
                         <div
                           key={tech.id}
@@ -267,60 +267,73 @@ function TechUpdateRow({
   const numFactions = orderedFactions.length;
 
   const isResearched = orderedFactions.reduce((isResearched, faction) => {
-    return isResearched || hasTech(faction, tech.id);
+    return isResearched || hasTech(faction, tech);
   }, false);
 
   return (
     <React.Fragment>
-      <TechRow tech={tech} opts={{ hideSymbols: true, fade: !isResearched }} />
-      <div
-        className={styles.factionIconRow}
-        style={
-          {
-            "--num-factions": numFactions,
-          } as NumFactionsCSS
-        }
-      >
-        {Object.values(orderedFactions).map((faction) => {
-          const factionHasTech = hasTech(faction, tech.id);
-          if (isTechReplaced(faction.id, tech.id) || isTechPurged(faction, tech.id)) {
-            return <div key={faction.id}></div>;
+      <TechRow
+        tech={tech}
+        opts={{
+          hideSymbols: true,
+          fade: tech.state === "purged" || !isResearched,
+        }}
+      />
+      {tech.state === "purged" ? (
+        <div style={{ opacity: 0.5 }}>PURGED</div>
+      ) : (
+        <div
+          className={styles.factionIconRow}
+          style={
+            {
+              "--num-factions": numFactions,
+            } as NumFactionsCSS
           }
-          return (
-            <div
-              key={faction.id}
-              className={`flexRow ${styles.selected} ${
-                styles.factionIconWrapper
-              } ${viewOnly ? styles.viewOnly : ""}`}
-              onClick={
-                viewOnly
-                  ? undefined
-                  : () => {
-                      if (factionHasTech) {
-                        removeTechAsync(gameId, faction.id, tech.id);
-                      } else {
-                        addTechAsync(gameId, faction.id, tech.id);
-                      }
-                    }
-              }
-            >
+        >
+          {Object.values(orderedFactions).map((faction) => {
+            const factionHasTech = hasTech(faction, tech);
+            if (
+              isTechReplaced(faction.id, tech.id) ||
+              isTechPurged(faction, tech)
+            ) {
+              return <div key={faction.id}></div>;
+            }
+            return (
               <div
-                className={`
-                  ${styles.factionIcon} ${
-                  factionHasTech ? styles.selected : ""
+                key={faction.id}
+                className={`flexRow ${styles.selected} ${
+                  styles.factionIconWrapper
                 } ${viewOnly ? styles.viewOnly : ""}`}
-                style={
-                  {
-                    "--color": getFactionColor(faction),
-                  } as ExtendedCSS
+                onClick={
+                  viewOnly
+                    ? undefined
+                    : () => {
+                        if (factionHasTech) {
+                          removeTechAsync(gameId, faction.id, tech.id);
+                        } else {
+                          addTechAsync(gameId, faction.id, tech.id);
+                        }
+                      }
                 }
               >
-                <FactionIcon factionId={faction.id} size="100%" />
+                <div
+                  className={`
+                  ${styles.factionIcon} ${
+                    factionHasTech ? styles.selected : ""
+                  } ${viewOnly ? styles.viewOnly : ""}`}
+                  style={
+                    {
+                      "--color": getFactionColor(faction),
+                    } as ExtendedCSS
+                  }
+                >
+                  <FactionIcon factionId={faction.id} size="100%" />
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </React.Fragment>
   );
 }
@@ -458,7 +471,7 @@ function TechsByFaction({
       return tech.state !== "purged";
     })
     .map(([techId, _]) => techs[techId])
-    .filter((tech) => !!tech) as Tech[];
+    .filter((tech) => !!tech && tech.state !== "purged") as Tech[];
 
   sortTechs(factionTechs);
 
@@ -467,7 +480,8 @@ function TechsByFaction({
       const nekroTechs = new Set<TechId>();
       Object.values(factions ?? {}).forEach((otherFaction) => {
         objectKeys(otherFaction.techs).forEach((id) => {
-          if (!hasTech(faction, id)) {
+          const tech = techs[id];
+          if (hasTech(otherFaction, tech) && !hasTech(faction, tech)) {
             nekroTechs.add(id);
           }
         });
@@ -476,7 +490,10 @@ function TechsByFaction({
     }
     const replaces: TechId[] = [];
     const availableTechs = Object.values(techs ?? {}).filter((tech) => {
-      if (hasTech(faction, tech.id)) {
+      if (isTechPurged(faction, tech)) {
+        return false;
+      }
+      if (hasTech(faction, tech)) {
         return false;
       }
       if (

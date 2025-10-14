@@ -15,6 +15,7 @@ import {
   useAgenda,
   useGameId,
   useStrategyCards,
+  useTech,
   useViewOnly,
 } from "../../../../../../src/context/dataHooks";
 import { useFactions } from "../../../../../../src/context/factionDataHooks";
@@ -119,6 +120,7 @@ function QuantumDatahubNode({
   strategyCards: StrategyCard[];
 }) {
   const gameId = useGameId();
+  const quantumTech = useTech("Quantum Datahub Node");
   const viewOnly = useViewOnly();
   const [quantum, setQuantum] = useState<{
     mainCard: Optional<StrategyCardId>;
@@ -142,7 +144,7 @@ function QuantumDatahubNode({
     swapStrategyCardsAsync(gameId, quantum.mainCard, quantum.otherCard);
   }
 
-  if (!faction || !hasTech(faction, "Quantum Datahub Node")) {
+  if (!faction || !hasTech(faction, quantumTech)) {
     return null;
   }
 
@@ -517,6 +519,9 @@ export default function StrategyPhase() {
   const imperialArbiter = useAgenda("Imperial Arbiter");
   const newConstitution = useAgenda("New Constitution");
 
+  // Techs
+  const quantumDatahubNode = useTech("Quantum Datahub Node");
+
   const factions = useFactions();
   const strategyCards = useStrategyCards();
   const intl = useIntl();
@@ -622,11 +627,11 @@ export default function StrategyPhase() {
       return true;
     }
     const hacan = factions["Emirates of Hacan"];
-    if (hacan && hasTech(hacan, "Quantum Datahub Node")) {
+    if (hacan && hasTech(hacan, quantumDatahubNode)) {
       return true;
     }
     const nekro = factions["Nekro Virus"];
-    if (nekro && hasTech(nekro, "Quantum Datahub Node")) {
+    if (nekro && hasTech(nekro, quantumDatahubNode)) {
       return true;
     }
     if (imperialArbiter && imperialArbiter.resolved && imperialArbiter.target) {

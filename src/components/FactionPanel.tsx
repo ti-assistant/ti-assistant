@@ -865,8 +865,12 @@ function FactionPanelContent({
             }}
           >
             {faction.units.map((unit, index) => {
+              const unitUpgradeTech = unit.upgrade
+                ? techs[unit.upgrade]
+                : undefined;
               const showUpgrade =
-                (unit.upgrade && hasTech(innerFaction, unit.upgrade)) ?? false;
+                (unit.upgrade && hasTech(innerFaction, unitUpgradeTech)) ??
+                false;
               return (
                 <FactionUnit
                   key={unit.name}

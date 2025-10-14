@@ -166,6 +166,10 @@ export function useTechs() {
   return useGameDataValue<Techs>("techs", {});
 }
 
+export function useTech(techId: TechId) {
+  return useGameDataValue<Optional<Tech>>(`techs.${techId}`, undefined);
+}
+
 export function useTimers() {
   return useGameDataValue<Timers>("timers", {});
 }

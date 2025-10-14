@@ -11,6 +11,7 @@ import {
   usePlanets,
   useRelics,
   useStrategyCards,
+  useTechs,
   useViewOnly,
 } from "../../context/dataHooks";
 import { useObjectives } from "../../context/objectiveDataHooks";
@@ -54,6 +55,7 @@ import { Selector } from "../Selector/Selector";
 import Toggle from "../Toggle/Toggle";
 import styles from "./VoteBlock.module.scss";
 import InfluenceSVG from "../../icons/planets/Influence";
+import { Techs } from "../../context/techDataHooks";
 
 // Checks whether or not a faction can use Blood Pact.
 function canUseBloodPact(currentTurn: ActionLog, factionId: FactionId) {
@@ -367,7 +369,8 @@ export function computeRemainingVotes(
   options: Options,
   state: GameState,
   currentPhasePrevious: ActionLog,
-  leaders: Partial<Record<LeaderId, Leader>>
+  leaders: Partial<Record<LeaderId, Leader>>,
+  techs: Techs
 ) {
   const representativeGovernment = agendas["Representative Government"];
 
@@ -456,7 +459,10 @@ export function computeRemainingVotes(
   if (factionId === "Xxcha Kingdom" && hasXxchaCommander) {
     extraVotes += planetCount;
   }
-  const hasPredictiveIntelligence = hasTech(faction, "Predictive Intelligence");
+  const hasPredictiveIntelligence = hasTech(
+    faction,
+    techs["Predictive Intelligence"]
+  );
   if (hasPredictiveIntelligence) {
     extraVotes += 3;
   }
@@ -787,6 +793,7 @@ function VotingSection({
   const relics = useRelics();
   const state = useGameState();
   const strategyCards = useStrategyCards();
+  const techs = useTechs();
   const viewOnly = useViewOnly();
 
   const intl = useIntl();
@@ -839,7 +846,8 @@ function VotingSection({
     options,
     state,
     getCurrentPhasePreviousLogEntries(actionLog ?? []),
-    leaders
+    leaders,
+    techs
   );
 
   const mawOfWorlds = relics["Maw of Worlds"];
@@ -966,7 +974,7 @@ function VotingSection({
                 />
               </Toggle>
             ) : null}
-            {hasTech(faction, "Predictive Intelligence") ? (
+            {hasTech(faction, techs["Predictive Intelligence"]) ? (
               <button
                 className={
                   usingPredictive.includes(factionId) ? "selected" : ""
@@ -1103,6 +1111,7 @@ function AvailableVotes({ factionId }: { factionId: FactionId }) {
   const planets = usePlanets();
   const relics = useRelics();
   const state = useGameState();
+  const techs = useTechs();
 
   let { influence, extraVotes } = computeRemainingVotes(
     factionId,
@@ -1113,7 +1122,8 @@ function AvailableVotes({ factionId }: { factionId: FactionId }) {
     options,
     state,
     getCurrentPhasePreviousLogEntries(actionLog),
-    leaders
+    leaders,
+    techs
   );
   const mawOfWorlds = relics["Maw of Worlds"];
   if (mawOfWorlds && mawOfWorlds.owner === factionId) {

@@ -1,3 +1,4 @@
+import { Techs } from "../context/techDataHooks";
 import { hasTech } from "./api/techs";
 import { Optional } from "./types/types";
 import { objectEntries } from "./util";
@@ -28,7 +29,7 @@ export function filterToOwnedTechs(
   faction: Faction
 ) {
   return Object.values(techs).filter((tech) => {
-    return !!hasTech(faction, tech.id);
+    return !!hasTech(faction, tech);
   });
 }
 
@@ -40,7 +41,7 @@ export function filterToUnownedTechs(
   faction: Faction
 ) {
   return Object.values(techs).filter((tech) => {
-    return !hasTech(faction, tech.id);
+    return !hasTech(faction, tech);
   });
 }
 
@@ -110,7 +111,7 @@ export function getFactionPreReqs(
       continue;
     }
     const tech = techs[techId];
-    if (!tech) {
+    if (!tech || tech.state === "purged") {
       continue;
     }
     prereqs[tech.type] += 1;
@@ -160,17 +161,18 @@ export function canResearchTech(
   options: Options,
   prereqs: Record<TechType, number>,
   faction: Optional<Faction>,
-  isTechOwned: boolean
+  isTechOwned: boolean,
+  techs: Techs
 ) {
   const localPrereqs = structuredClone(prereqs);
 
   let usedAida = true;
   let usedJolNar = true;
   if (faction) {
-    if (hasTech(faction, "Inheritance Systems")) {
+    if (hasTech(faction, techs["Inheritance Systems"])) {
       return true;
     }
-    if (hasTech(faction, "AI Development Algorithm")) {
+    if (hasTech(faction, techs["AI Development Algorithm"])) {
       usedAida = false;
     }
     switch (faction.id) {

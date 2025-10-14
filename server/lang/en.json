@@ -5751,6 +5751,10 @@
     "defaultMessage": "Strategy Card",
     "description": "Outcome type: Strategy Card"
   },
+  "P/Y6Fo": {
+    "defaultMessage": "Gain Faction Tech",
+    "description": "Message shown when a faction can gain a faction tech."
+  },
   "PBW6vs": {
     "defaultMessage": "Secondary",
     "description": "The alternate ability for a strategy card."
@@ -7858,6 +7862,10 @@
   "hicVw5": {
     "defaultMessage": "Win Rate with Custodians Token: {perc}% ({count} of {games})",
     "description": "Text for a stat about the number of times a faction won with the custodians token."
+  },
+  "hl6LkY": {
+    "defaultMessage": "Entropic Scar",
+    "description": "Name of an amomaly that grants techs."
   },
   "i3D47t": {
     "defaultMessage": "Faction Games",

@@ -227,7 +227,7 @@ function ResearchAgreement({ tech }: { tech: Tech }) {
   const orderedFactionIds = getMapOrderedFactionIds(factions);
   const fadedFactions = objectEntries(factions)
     .filter(([factionId, faction]) => {
-      return hasTech(faction, tech.id) && factionId !== selectedFaction;
+      return hasTech(faction, tech) && factionId !== selectedFaction;
     })
     .map(([factionId, _]) => factionId);
 

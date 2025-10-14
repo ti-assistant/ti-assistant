@@ -33,7 +33,7 @@ import {
   getLogEntries,
   getResearchedTechs,
 } from "../util/actionLog";
-import { hasTech } from "../util/api/techs";
+import { hasTech, isTechPurged } from "../util/api/techs";
 import { getWormholeNexusSystemNumber } from "../util/map";
 import { getMapString } from "../util/options";
 import { applyPlanetAttachments } from "../util/planets";
@@ -129,7 +129,12 @@ export function TacticalAction({
       Object.values(factions).forEach((otherFaction) => {
         objectKeys(otherFaction.techs).forEach((id) => {
           const techId = id;
-          if (!hasTech(faction, techId) && !addedTechs.includes(techId)) {
+          const tech = techs[id];
+          if (
+            hasTech(otherFaction, tech) &&
+            !hasTech(faction, tech) &&
+            !addedTechs.includes(techId)
+          ) {
             nekroTechs.add(techId);
           }
         });
@@ -138,7 +143,7 @@ export function TacticalAction({
     }
     const replaces: TechId[] = [];
     const availableTechs = Object.values(techs ?? {}).filter((tech) => {
-      if (hasTech(faction, tech.id)) {
+      if (hasTech(faction, tech)) {
         return false;
       }
       if (
@@ -180,7 +185,8 @@ export function TacticalAction({
   Object.values(factions).forEach((otherFaction) => {
     objectKeys(otherFaction.techs).forEach((id) => {
       const techId = id;
-      if (!hasTech(faction, techId)) {
+      const tech = techs[id];
+      if (hasTech(otherFaction, tech) && !hasTech(faction, tech)) {
         nekroPossibleTechs.add(techId);
       }
     });
@@ -487,7 +493,7 @@ export function TacticalAction({
         </React.Fragment>
       ) : null}
       {frontier &&
-      hasTech(faction, "Dark Energy Tap") &&
+      hasTech(faction, techs["Dark Energy Tap"]) &&
       conqueredPlanets.length === 0 &&
       !relic ? (
         <React.Fragment>

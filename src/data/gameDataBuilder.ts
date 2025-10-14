@@ -571,7 +571,7 @@ export function buildCompleteTechs(
 
     techs[tech.id] = {
       ...updatedTech,
-      ...(techs[tech.id] ?? {}),
+      ...(storedTechs[tech.id] ?? {}),
     };
   });
 
@@ -580,6 +580,8 @@ export function buildCompleteTechs(
       delete techs[tech.deprecates];
     }
   }
+
+  console.log("Antimass", techs["Antimass Deflectors"]);
 
   return techs;
 }

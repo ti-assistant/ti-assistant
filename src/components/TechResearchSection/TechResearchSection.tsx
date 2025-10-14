@@ -29,7 +29,7 @@ function getResearchableTechs(
   }
   const replaces: TechId[] = [];
   const availableTechs = Object.values(techs).filter((tech) => {
-    if (hasTech(faction, tech.id)) {
+    if (hasTech(faction, tech)) {
       return false;
     }
     const factionTech = (faction.techs ?? {})[tech.id];
@@ -138,7 +138,7 @@ export default function TechResearchSection({
               let additionalFactions: Optional<FactionId[]>;
               if (duplicateToFaction) {
                 const extraFaction = factions[duplicateToFaction];
-                if (extraFaction && !hasTech(extraFaction, tech.id)) {
+                if (extraFaction && !hasTech(extraFaction, tech)) {
                   additionalFactions = [extraFaction.id];
                 }
               }

@@ -149,7 +149,7 @@ export default function getThundersEdgeLeaders(
         description: "Name of Deepwrought Hero: Ta Zern",
         defaultMessage: "Ta Zern",
       }),
-      timing: "TACTICAL_ACTION",
+      timing: "COMPONENT_ACTION",
       type: "HERO",
     },
     // Firmament

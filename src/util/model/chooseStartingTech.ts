@@ -19,7 +19,7 @@ export class ChooseStartingTechHandler implements Handler {
     if (!faction || !tech) {
       return false;
     }
-    if (hasTech(faction, this.data.event.tech)) {
+    if (hasTech(faction, tech)) {
       return false;
     }
 
@@ -97,7 +97,7 @@ export class RemoveStartingTechHandler implements Handler {
     if (!faction || !tech) {
       return false;
     }
-    if (!hasTech(faction, this.data.event.tech)) {
+    if (!hasTech(faction, tech)) {
       return false;
     }
 

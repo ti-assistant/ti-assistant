@@ -88,6 +88,7 @@ import Overrule from "./components/Overrule";
 import PlanetaryRigs from "./components/PlanetaryRigs";
 import Strategize from "./components/Strategize";
 import VaultsOfTheHeir from "./components/VaultsOfTheHeir";
+import TaZernDeepwrought from "./components/TaZernDeepwrought";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -642,6 +643,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
 
   let requiredNeighbors = 2;
   let nonHomeNeighbors = false;
+  console.log("Component", componentName);
   switch (componentName) {
     case "Enigmatic Device":
     case "Focused Research": {
@@ -656,7 +658,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       innerContent = (
         <TechResearchSection
           factionId={factionId}
-          filter={(tech) => hasTech(deepwrought, tech.id)}
+          filter={(tech) => hasTech(deepwrought, tech)}
           gain
           shareKnowledge
         />
@@ -678,7 +680,11 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
           if (!tech || tech.faction) {
             return;
           }
-          if (!hasTech(faction, techId) && !researchedTech.includes(techId)) {
+          if (
+            hasTech(otherFaction, tech) &&
+            !hasTech(faction, tech) &&
+            !researchedTech.includes(techId)
+          ) {
             possibleTechs.add(techId);
           }
         });
@@ -706,6 +712,9 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
         .filter((techId) => {
           const techObj = techs[techId as TechId];
           if (!techObj) {
+            return false;
+          }
+          if (!hasTech(faction, techObj)) {
             return false;
           }
           return !techObj.faction && techObj.type !== "UPGRADE";
@@ -1235,10 +1244,16 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       innerContent = <Strategize factionId={factionId} />;
       break;
     }
-    case "Vaults of the Heir":
+    case "Vaults of the Heir": {
       leftLabel = undefined;
       innerContent = <VaultsOfTheHeir factionId={factionId} />;
       break;
+    }
+    case "Ta Zern (Deepwrought)": {
+      leftLabel = undefined;
+      innerContent = <TaZernDeepwrought factionId={factionId} />;
+      break;
+    }
 
     // case "Repeal Law": {
     //   if (!agendas) {
@@ -1527,6 +1542,7 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
   const leaders = useLeaders();
   const planets = usePlanets();
   const relics = useRelics();
+  const techs = useTechs();
   const viewOnly = useViewOnly();
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);
@@ -1645,8 +1661,12 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
         }
       }
 
-      if (component.type === "TECH" && !hasTech(faction, component.id)) {
-        return false;
+      if (component.type === "TECH") {
+        const tech = techs[component.id];
+        if (!tech) {
+          return false;
+        }
+        return hasTech(faction, tech);
       }
 
       if (component.state === "purged") {
@@ -1667,9 +1687,11 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
         }
       }
 
+      const darkEnergyTap = techs["Dark Energy Tap"];
       if (
         component.id === "Age of Exploration" &&
-        !hasTech(faction, "Dark Energy Tap")
+        darkEnergyTap &&
+        !hasTech(faction, darkEnergyTap)
       ) {
         return false;
       }

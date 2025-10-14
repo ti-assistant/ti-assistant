@@ -122,7 +122,14 @@ export default function StartingComponents({
     choices = Object.values(techs)
       .filter((tech) => {
         return (
-          canResearchTech(tech, options, factionPreReqs, faction, false) &&
+          canResearchTech(
+            tech,
+            options,
+            factionPreReqs,
+            faction,
+            false,
+            techs
+          ) &&
           (!tech.faction || tech.faction === faction.id)
         );
       })

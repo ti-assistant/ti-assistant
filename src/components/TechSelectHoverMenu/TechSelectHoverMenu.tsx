@@ -74,7 +74,8 @@ function InnerTechSelectHoverMenu({
               options,
               prereqs,
               faction,
-              isTechOwned
+              isTechOwned,
+              techs
             );
             return (
               <button
