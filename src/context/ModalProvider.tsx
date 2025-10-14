@@ -25,12 +25,10 @@ const useModals = () => {
 export default function ModalProvider({ children }: PropsWithChildren) {
   const { modals, openModal, popModal } = useModals();
 
-  console.log("Rendering provider");
-
   return (
     <>
-      <Modals modals={modals} popModal={popModal} />
       <ModalContext.Provider value={{ openModal, popModal }}>
+        <Modals modals={modals} popModal={popModal} />
         {children}
       </ModalContext.Provider>
     </>

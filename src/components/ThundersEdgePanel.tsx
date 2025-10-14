@@ -147,6 +147,7 @@ function RelicsSection() {
   const gameId = useGameId();
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
   const relics = useRelics();
+  const viewOnly = useViewOnly();
 
   const ownedRelics = Object.values(relics)
     .filter((relic) => relic.owner && relic.state !== "purged")
@@ -209,6 +210,7 @@ function RelicsSection() {
                   itemId={relic.id}
                   removeItem={() => loseRelicAsync(gameId, owner, relic.id)}
                   style={{ width: "100%" }}
+                  viewOnly={viewOnly}
                 >
                   <InfoRow
                     infoTitle={relic.name}
@@ -259,6 +261,7 @@ function RelicsSection() {
                   }}
                   selectedFaction={relic.owner}
                   size={24}
+                  viewOnly={viewOnly}
                 />
               </div>
             );
@@ -285,6 +288,7 @@ function RelicsSection() {
                         unplayComponentAsync(gameId, relic.id, owner)
                       }
                       style={{ width: "100%" }}
+                      viewOnly={viewOnly}
                     >
                       <InfoRow
                         infoTitle={relic.name}
@@ -320,7 +324,6 @@ function PromissoriesSection() {
   const gameId = useGameId();
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
   const options = useOptions();
-  const relics = useRelics();
   const viewOnly = useViewOnly();
   const intl = useIntl();
   const baseFactions = getFactions(intl);
@@ -358,17 +361,6 @@ function PromissoriesSection() {
 
   const showYinBreakthroughs =
     factions["Yin Brotherhood"]?.breakthrough.state === "readied";
-
-  const ownedRelics = Object.values(relics)
-    .filter((relic) => relic.owner && relic.state !== "purged")
-    .sort((a, b) => (a.name > b.name ? 1 : -1));
-  const unownedRelics = Object.values(relics)
-    .filter((relic) => !relic.owner)
-    .sort((a, b) => (a.name > b.name ? 1 : -1));
-  // TODO: Fix purged relics.
-  const purgedRelics = Object.values(relics)
-    .filter((relic) => relic.state === "purged")
-    .sort((a, b) => (a.name > b.name ? 1 : -1));
 
   const numColumns =
     mapOrderedFactionIds.length > 4
@@ -456,6 +448,7 @@ function PromissoriesSection() {
                   tag={<FactionIcon factionId={factionId} size="100%" />}
                   tagBorderColor={getFactionColor(factions[factionId])}
                   // size={24}
+                  viewOnly={viewOnly}
                 />
               </div>
             );
@@ -517,6 +510,7 @@ function PromissoriesSection() {
                     tag={<FactionIcon factionId={factionId} size="100%" />}
                     tagBorderColor={getFactionColor(factions[factionId])}
                     // size={24}
+                    viewOnly={viewOnly}
                   />
                 </div>
               );
@@ -660,76 +654,6 @@ function PromissoriesSection() {
           ) : null}
         </div>
         <OptionalLine label="Other"></OptionalLine>
-        {/* {unownedRelics.map((relic) => {
-          return (
-            <div
-              key={relic.id}
-              className="flexRow"
-              style={{
-                width: "100%",
-                padding: `0 ${rem(8)}`,
-              }}
-            >
-              <InfoRow
-                infoTitle={relic.name}
-                infoContent={
-                  <FormattedDescription description={relic.description} />
-                }
-              >
-                {relic.name}
-              </InfoRow>
-              <FactionSelectRadialMenu
-                factions={mapOrderedFactionIds}
-                onSelect={(factionId, prevFaction) => {
-                  if (factionId) {
-                    gainRelicAsync(gameId, factionId, relic.id);
-                  }
-                  if (prevFaction) {
-                    loseRelicAsync(gameId, prevFaction, relic.id);
-                  }
-                }}
-                selectedFaction={relic.owner}
-                size={24}
-              />
-            </div>
-          );
-        })}
-        <LabeledLine leftLabel="Purged Relics" />
-        {purgedRelics.length > 0 ? (
-          <>
-            {purgedRelics.map((relic) => {
-              const owner = relic.owner as FactionId;
-              return (
-                <div
-                  key={relic.id}
-                  className="flexRow"
-                  style={{
-                    width: "100%",
-                    padding: `0 ${rem(8)}`,
-                  }}
-                >
-                  <SelectableRow
-                    itemId={relic.id}
-                    removeItem={() =>
-                      // TODO: Replace with just updating the state.
-                      unplayComponentAsync(gameId, relic.id, owner)
-                    }
-                    style={{ width: "100%" }}
-                  >
-                    <InfoRow
-                      infoTitle={relic.name}
-                      infoContent={
-                        <FormattedDescription description={relic.description} />
-                      }
-                    >
-                      {relic.name}
-                    </InfoRow>
-                  </SelectableRow>
-                </div>
-              );
-            })}
-          </>
-        ) : null} */}
       </div>
     </CollapsibleSection>
   );

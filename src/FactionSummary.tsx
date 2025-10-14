@@ -23,7 +23,7 @@ import {
   applyAllPlanetAttachments,
   filterToClaimedPlanets,
 } from "./util/planets";
-import { objectEntries, objectKeys, rem } from "./util/util";
+import { objectEntries, rem } from "./util/util";
 
 interface FactionSummaryProps {
   factionId: FactionId;
@@ -55,7 +55,9 @@ export function FactionSummary({
     return null;
   }
 
-  const ownedTechs = objectKeys(faction.techs ?? {});
+  const ownedTechs = objectEntries(faction.techs ?? {})
+    .filter(([_, tech]) => tech.state !== "purged")
+    .map(([techId, _]) => techId);
 
   const ownedPlanets = factionId
     ? filterToClaimedPlanets(planets ?? {}, factionId)

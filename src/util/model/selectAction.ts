@@ -1,12 +1,11 @@
 import { createIntl, createIntlCache } from "react-intl";
 import { buildObjectives, buildPlanets } from "../../data/GameData";
-import { getSelectedAction } from "../api/data";
 
 export class SelectActionHandler implements Handler {
   constructor(public gameData: StoredGameData, public data: SelectActionData) {}
 
   validate(): boolean {
-    return true;
+    return !!this.data.event.action;
   }
 
   getUpdates(): Record<string, any> {
@@ -17,7 +16,7 @@ export class SelectActionHandler implements Handler {
     const cache = createIntlCache();
     const intl = createIntl({ locale: "en" }, cache);
 
-    const selectedAction = getSelectedAction(this.gameData);
+    const selectedAction = this.data.event.action;
 
     if (selectedAction === "Imperial") {
       const mecatol = buildPlanets(this.gameData, intl)["Mecatol Rex"];

@@ -2,7 +2,11 @@ import { CSSProperties } from "react";
 import { useGameId, useTechs } from "../../context/dataHooks";
 import { useFaction } from "../../context/factionDataHooks";
 import { addTechAsync, removeTechAsync } from "../../dynamic/api";
-import { getReplacementTech, hasTech } from "../../util/api/techs";
+import {
+  getReplacementTech,
+  hasTech,
+  isTechPurged,
+} from "../../util/api/techs";
 import { getTechTypeColor } from "../../util/techs";
 import { objectEntries, objectKeys, rem } from "../../util/util";
 import styles from "./TechTree.module.scss";
@@ -41,6 +45,7 @@ export default function TechTree({
   type: TechType | "FACTION";
   viewOnly?: boolean;
 }) {
+  const faction = useFaction(factionId);
   let style: CSSProperties;
   let rowStyle: CSSProperties;
   const layers: TechTreeElement[][] = [];
@@ -68,12 +73,14 @@ export default function TechTree({
           return TYPE_ORDER[a.type] - TYPE_ORDER[b.type];
         });
       for (const tech of factionTechs) {
+        const isPurged = faction ? isTechPurged(faction, tech.id) : false;
         const level: TechTreeElement[] = [
           {
             id: tech.id,
             name: tech.name,
             filled: ownedTechs.includes(tech.id),
-            color: getTechTypeColor(tech.type),
+            color: isPurged ? "#555" : getTechTypeColor(tech.type),
+            purged: isPurged,
           },
         ];
         layers.push(level);
@@ -106,12 +113,18 @@ export default function TechTree({
         let filled = replacement
           ? ownedTechs.includes(replacement)
           : ownedTechs.includes(upgrade.id);
+        const isPurged = faction
+          ? replacement
+            ? isTechPurged(faction, replacement)
+            : isTechPurged(faction, upgrade.id)
+          : false;
         const row = layers[level] ?? [];
         row.push({
           id: replacement ?? upgrade.id,
           name: replacementTech?.name ?? upgrade.name,
           filled,
-          color,
+          color: isPurged ? "#555" : color,
+          purged: isPurged,
         });
         layers[level] = row;
         if (upgrade.id === "Cruiser II" || upgrade.id === "PDS II") {
@@ -127,12 +140,14 @@ export default function TechTree({
         .filter((tech) => tech.type === type)
         .filter((tech) => !tech.faction)
         .forEach((tech) => {
+          const isPurged = faction ? isTechPurged(faction, tech.id) : false;
           const prereqs = layers[tech.prereqs.length] ?? [];
           const element: TechTreeElement = {
             id: tech.id,
             name: tech.name,
             filled: ownedTechs.includes(tech.id),
-            color: getTechTypeColor(tech.type),
+            color: isPurged ? "#555" : getTechTypeColor(tech.type),
+            purged: isPurged,
           };
           prereqs.push(element);
           prereqs.sort((a, _) => {
@@ -236,6 +251,7 @@ interface TechTreeElement {
   name: string;
   color: string;
   filled: boolean;
+  purged: boolean;
 }
 
 function TechTreeContent({
@@ -284,9 +300,10 @@ function TechTreeContent({
                   style={{
                     border: `1px solid ${tech.color}`,
                     backgroundColor: tech.filled ? tech.color : undefined,
+                    cursor: tech.purged ? "default" : undefined,
                   }}
                   onClick={
-                    viewOnly
+                    viewOnly || tech.purged
                       ? undefined
                       : () => {
                           if (tech.filled) {

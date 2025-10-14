@@ -114,6 +114,10 @@ import {
   GainAllianceHandler,
   LoseAllianceHandler,
 } from "../../../../src/util/model/gainAlliance";
+import {
+  PurgeTechHandler,
+  UnpurgeTechHandler,
+} from "../../../../src/util/model/purgeTech";
 
 export async function POST(
   req: Request,
@@ -579,6 +583,12 @@ function updateInTransaction(
         break;
       case "COMMIT_TO_EXPEDITION":
         handler = new CommitToExpeditionHandler(gameData, data);
+        break;
+      case "PURGE_TECH":
+        handler = new PurgeTechHandler(gameData, data);
+        break;
+      case "UNPURGE_TECH":
+        handler = new UnpurgeTechHandler(gameData, data);
         break;
       case "UNDO": {
         const actionToUndo = (gameData.actionLog ?? [])[0];

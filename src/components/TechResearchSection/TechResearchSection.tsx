@@ -32,6 +32,10 @@ function getResearchableTechs(
     if (hasTech(faction, tech.id)) {
       return false;
     }
+    const factionTech = (faction.techs ?? {})[tech.id];
+    if (factionTech && factionTech.state === "purged") {
+      return false;
+    }
     // TODO: See if this can be removed by filtered in gameData.
     if (tech.faction && !factions[tech.faction]) {
       return false;

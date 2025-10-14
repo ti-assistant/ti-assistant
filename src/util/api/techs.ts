@@ -7,7 +7,16 @@ export function hasTech(faction: Faction, techId: TechId) {
   if (!faction.techs) {
     return false;
   }
-  return !!faction.techs[techId];
+  const factionTech = faction.techs[techId];
+  return !!factionTech && factionTech.state !== "purged";
+}
+
+export function isTechPurged(faction: Faction, techId: TechId) {
+  const factionTech = (faction.techs ?? {})[techId];
+  if (!factionTech) {
+    return false;
+  }
+  return factionTech.state === "purged";
 }
 
 export function isTechReplaced(factionId: FactionId, techId: TechId) {

@@ -1,5 +1,6 @@
 import { hasTech } from "./api/techs";
 import { Optional } from "./types/types";
+import { objectEntries } from "./util";
 
 export function getTechColor(tech: Tech) {
   return getTechTypeColor(tech.type);
@@ -104,8 +105,11 @@ export function getFactionPreReqs(
     return prereqs;
   }
 
-  for (const ownedTech of Object.keys(faction.techs)) {
-    const tech = techs[ownedTech as TechId];
+  for (const [techId, factionTech] of objectEntries(faction.techs)) {
+    if (factionTech.state === "purged") {
+      continue;
+    }
+    const tech = techs[techId];
     if (!tech) {
       continue;
     }

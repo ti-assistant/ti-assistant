@@ -114,6 +114,9 @@ export class AdvancePhaseHandler implements Handler {
               updates[`factions.${factionId}.techs.${techId}`] = "DELETE";
               continue;
             }
+            if (tech.state === "exhausted") {
+              updates[`factions.${factionId}.techs.${techId}.state`] = "ready";
+            }
             if (!tech.ready) {
               updates[`factions.${factionId}.techs.${techId}.ready`] = true;
             }

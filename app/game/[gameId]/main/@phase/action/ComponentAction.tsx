@@ -86,6 +86,8 @@ import { Optional } from "../../../../../../src/util/types/types";
 import { pluralize, rem } from "../../../../../../src/util/util";
 import Overrule from "./components/Overrule";
 import PlanetaryRigs from "./components/PlanetaryRigs";
+import Strategize from "./components/Strategize";
+import VaultsOfTheHeir from "./components/VaultsOfTheHeir";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -1228,6 +1230,15 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       innerContent = <Overrule factionId={factionId} />;
       break;
     }
+    case "Strategize": {
+      leftLabel = undefined;
+      innerContent = <Strategize factionId={factionId} />;
+      break;
+    }
+    case "Vaults of the Heir":
+      leftLabel = undefined;
+      innerContent = <VaultsOfTheHeir factionId={factionId} />;
+      break;
 
     // case "Repeal Law": {
     //   if (!agendas) {

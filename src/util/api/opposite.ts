@@ -56,6 +56,7 @@ import {
   GainAllianceHandler,
   LoseAllianceHandler,
 } from "../model/gainAlliance";
+import { UnpurgeTechHandler } from "../model/purgeTech";
 
 export function getOppositeHandler(
   gameData: StoredGameData,
@@ -502,5 +503,11 @@ export function getOppositeHandler(
           expedition: data.event.expedition,
         },
       });
+    case "PURGE_TECH":
+      return new UnpurgeTechHandler(gameData, {
+        action: "UNPURGE_TECH",
+        event: data.event,
+      });
+    case "UNPURGE_TECH": 
   }
 }

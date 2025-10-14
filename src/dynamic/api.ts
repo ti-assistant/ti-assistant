@@ -65,6 +65,7 @@ const playRelicFn = import("../util/api/playRelic").then(
 const playRiderFn = import("../util/api/playRider").then(
   (mod) => mod.playRider
 );
+const purgeTechMod = import("../util/api/purgeTech");
 const removeAttachmentFn = import("../util/api/addAttachment").then(
   (mod) => mod.removeAttachment
 );
@@ -403,6 +404,24 @@ export async function playRiderAsync(
 ) {
   const playRider = await playRiderFn;
   playRider(gameId, rider, faction, outcome);
+}
+
+export async function purgeTechAsync(
+  gameId: string,
+  techId: TechId,
+  factionId?: FactionId
+) {
+  const mod = await purgeTechMod;
+  mod.purgeTech(gameId, techId, factionId);
+}
+
+export async function unpurgeTechAsync(
+  gameId: string,
+  techId: TechId,
+  factionId?: FactionId
+) {
+  const mod = await purgeTechMod;
+  mod.unpurgeTech(gameId, techId, factionId);
 }
 
 export async function removeAttachmentAsync(

@@ -12,7 +12,10 @@ import {
   usePlanets,
   useViewOnly,
 } from "../../../../../../../src/context/dataHooks";
-import { useFactions } from "../../../../../../../src/context/factionDataHooks";
+import {
+  useFaction,
+  useFactions,
+} from "../../../../../../../src/context/factionDataHooks";
 import {
   addAttachmentAsync,
   claimPlanetAsync,
@@ -34,6 +37,7 @@ import { rem } from "../../../../../../../src/util/util";
 const Diplomacy = {
   Primary,
   Secondary,
+  AllSecondaries,
 };
 
 export default Diplomacy;
@@ -264,16 +268,16 @@ function Primary({ factionId }: { factionId: FactionId }) {
   );
 }
 
-function Secondary({ activeFactionId }: { activeFactionId: FactionId }) {
+function Secondary({ factionId }: { factionId: FactionId }) {
   const attachments = useAttachments();
   const currentTurn = useCurrentTurn();
-  const factions = useFactions();
+  const faction = useFaction(factionId);
   const gameId = useGameId();
   const intl = useIntl();
   const planets = usePlanets();
   const viewOnly = useViewOnly();
 
-  if (!factions["Xxcha Kingdom"] || activeFactionId === "Xxcha Kingdom") {
+  if (factionId !== "Xxcha Kingdom") {
     return null;
   }
 
@@ -311,15 +315,13 @@ function Secondary({ activeFactionId }: { activeFactionId: FactionId }) {
 
   return (
     <LabeledDiv
-      label={`${getFactionName(
-        factions["Xxcha Kingdom"]
-      )} - ${intl.formatMessage({
+      label={`${getFactionName(faction)} - ${intl.formatMessage({
         id: "Xxcha Kingdom.Abilities.Peace Accords.Title",
         defaultMessage: "Peace Accords",
         description: "Title of Faction Ability: Peace Accords",
       })}
               `}
-      color={getFactionColor(factions["Xxcha Kingdom"])}
+      color={getFactionColor(faction)}
       blur
     >
       <>
@@ -497,4 +499,14 @@ function Secondary({ activeFactionId }: { activeFactionId: FactionId }) {
       </>
     </LabeledDiv>
   );
+}
+
+function AllSecondaries({ activeFactionId }: { activeFactionId: FactionId }) {
+  const factions = useFactions();
+
+  if (!factions["Xxcha Kingdom"] || activeFactionId === "Xxcha Kingdom") {
+    return null;
+  }
+
+  return <Secondary factionId="Xxcha Kingdom" />;
 }

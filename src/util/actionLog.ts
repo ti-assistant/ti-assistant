@@ -48,6 +48,12 @@ export function getReplacedTechs(actionLog: ActionLog, factionId: FactionId) {
     .map((logEntry) => logEntry.data.event.tech);
 }
 
+export function getPurgedTechs(actionLog: ActionLog) {
+  return getLogEntries<PurgeTechData>(actionLog, "PURGE_TECH").map(
+    (logEntry) => logEntry.data.event.techId
+  );
+}
+
 export function getClaimedPlanets(actionLog: ActionLog, factionId: FactionId) {
   return getLogEntries<ClaimPlanetData>(actionLog, "CLAIM_PLANET")
     .filter((logEntry) => logEntry.data.event.faction === factionId)

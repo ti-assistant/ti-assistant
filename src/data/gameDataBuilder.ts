@@ -556,6 +556,7 @@ export function buildCompleteTechs(
   storedGameData: StoredGameData
 ) {
   const options = storedGameData.options;
+  const storedTechs = storedGameData.techs ?? {};
 
   const omegaMergeFn = buildMergeFunction(options.expansions);
 
@@ -566,7 +567,12 @@ export function buildCompleteTechs(
       return;
     }
 
-    techs[tech.id] = omegaMergeFn(tech);
+    const updatedTech = omegaMergeFn(tech);
+
+    techs[tech.id] = {
+      ...updatedTech,
+      ...(techs[tech.id] ?? {}),
+    };
   });
 
   for (const tech of Object.values(techs)) {

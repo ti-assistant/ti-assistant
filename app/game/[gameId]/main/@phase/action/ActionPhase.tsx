@@ -537,7 +537,7 @@ export function AdditionalActions({
                 />
               }
             />
-            <Technology.Secondary activeFactionId={activeFaction.id} />
+            <Technology.AllSecondaries activeFactionId={activeFaction.id} />
             <SecondaryCheck
               activeFactionId={activeFaction.id}
               gameId={gameId}
@@ -632,7 +632,7 @@ export function AdditionalActions({
               />
             }
           />
-          <Diplomacy.Secondary activeFactionId={activeFaction.id} />
+          <Diplomacy.AllSecondaries activeFactionId={activeFaction.id} />
           <SecondaryCheck
             activeFactionId={activeFaction.id}
             gameId={gameId}

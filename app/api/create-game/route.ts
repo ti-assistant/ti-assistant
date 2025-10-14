@@ -65,9 +65,10 @@ export async function POST(req: Request) {
 
     // Get starting techs for each faction.
     const baseFaction = BASE_FACTIONS[faction.id];
-    const startingTechs: Partial<Record<TechId, { ready: boolean }>> = {};
+    const startingTechs: Partial<Record<TechId, GameTech>> = {};
     (baseFaction.startswith.techs ?? []).forEach((tech) => {
       startingTechs[tech] = {
+        state: "ready",
         ready: true,
       };
     });

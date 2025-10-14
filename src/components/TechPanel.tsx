@@ -4,11 +4,11 @@ import { TechRow } from "../TechRow";
 import { useGameId, useTechs, useViewOnly } from "../context/dataHooks";
 import { useFactions } from "../context/factionDataHooks";
 import { addTechAsync, removeTechAsync } from "../dynamic/api";
-import { hasTech, isTechReplaced } from "../util/api/techs";
+import { hasTech, isTechPurged, isTechReplaced } from "../util/api/techs";
 import { getFactionColor, getFactionName } from "../util/factions";
 import { techTypeString } from "../util/strings";
 import { getTechTypeColor, sortTechs } from "../util/techs";
-import { objectKeys, rem } from "../util/util";
+import { objectEntries, objectKeys, rem } from "../util/util";
 import { CollapsibleSection } from "./CollapsibleSection";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import LabeledDiv from "./LabeledDiv/LabeledDiv";
@@ -283,7 +283,7 @@ function TechUpdateRow({
       >
         {Object.values(orderedFactions).map((faction) => {
           const factionHasTech = hasTech(faction, tech.id);
-          if (isTechReplaced(faction.id, tech.id)) {
+          if (isTechReplaced(faction.id, tech.id) || isTechPurged(faction, tech.id)) {
             return <div key={faction.id}></div>;
           }
           return (
@@ -448,9 +448,16 @@ function TechsByFaction({
     return null;
   }
 
-  const ownedTechs = objectKeys(faction.techs ?? {});
-  const factionTechs = objectKeys(faction.techs ?? {})
-    .map((techId) => techs[techId])
+  const ownedTechs = objectEntries(faction.techs ?? {})
+    .filter(([_, tech]) => {
+      return tech.state !== "purged";
+    })
+    .map(([techId, _]) => techId);
+  const factionTechs = objectEntries(faction.techs ?? {})
+    .filter(([_, tech]) => {
+      return tech.state !== "purged";
+    })
+    .map(([techId, _]) => techs[techId])
     .filter((tech) => !!tech) as Tech[];
 
   sortTechs(factionTechs);

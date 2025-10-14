@@ -20,6 +20,7 @@ interface Handler {
 
 type GameUpdateData =
   | (AddTechData | RemoveTechData)
+  | (PurgeTechData | UnpurgeTechData)
   | (RevealObjectiveData | HideObjectiveData)
   | (AdvancePhaseData | RewindPhaseData)
   | (AssignStrategyCardData | UnassignStrategyCardData)
@@ -139,6 +140,7 @@ interface StoredGameData {
   state: GameState;
   strategycards?: Partial<Record<StrategyCardId, GameStrategyCard>>;
   systems?: Partial<Record<SystemId, GameSystem>>;
+  techs?: Partial<Record<TechId, GameTech>>;
   timers?: Timers;
   updates?: Record<string, { timestamp: Timestamp }>;
   // Secrets
@@ -182,6 +184,21 @@ interface AddTechData {
 interface RemoveTechData {
   action: "REMOVE_TECH";
   event: AddTechEvent;
+}
+
+interface PurgeTechEvent {
+  techId: TechId;
+  factionId?: FactionId;
+}
+
+interface PurgeTechData {
+  action: "PURGE_TECH";
+  event: PurgeTechEvent;
+}
+
+interface UnpurgeTechData {
+  action: "UNPURGE_TECH";
+  event: PurgeTechEvent;
 }
 
 interface AdvancePhaseEvent {

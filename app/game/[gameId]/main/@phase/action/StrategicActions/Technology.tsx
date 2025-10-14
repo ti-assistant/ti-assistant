@@ -15,6 +15,7 @@ import { rem } from "../../../../../../../src/util/util";
 const Technology = {
   Primary,
   Secondary,
+  AllSecondaries,
 };
 
 export default Technology;
@@ -35,8 +36,41 @@ function Primary({ factionId }: { factionId: FactionId }) {
   );
 }
 
-function Secondary({ activeFactionId }: { activeFactionId: FactionId }) {
+function Secondary({ factionId }: { factionId: FactionId }) {
   const currentTurn = useCurrentTurn();
+  const faction = useFaction(factionId);
+  if (!faction) {
+    return null;
+  }
+  let maxTechs = 1;
+  if (factionId === "Universities of Jol-Nar") {
+    maxTechs = 2;
+  }
+  const researchedTechs = getResearchedTechs(currentTurn, faction.id);
+  const secondaryState = faction?.secondary ?? "PENDING";
+  if (researchedTechs.length === 0 && secondaryState === "SKIPPED") {
+    return null;
+  }
+  return (
+    <LabeledDiv
+      key={faction.id}
+      label={getFactionName(faction)}
+      color={getFactionColor(faction)}
+      opts={{ fixedWidth: true }}
+      blur
+    >
+      <>
+        <TechResearchSection
+          factionId={faction.id}
+          numTechs={maxTechs}
+          hideWrapper
+        />
+      </>
+    </LabeledDiv>
+  );
+}
+
+function AllSecondaries({ activeFactionId }: { activeFactionId: FactionId }) {
   const factions = useFactions();
 
   const activeFaction = factions[activeFactionId];
@@ -75,32 +109,10 @@ function Secondary({ activeFactionId }: { activeFactionId: FactionId }) {
         if (faction.id === activeFactionId || faction.id === "Nekro Virus") {
           return null;
         }
-        let maxTechs = 1;
-        if (faction.id === "Universities of Jol-Nar") {
-          maxTechs = 2;
-        }
-        const researchedTechs = getResearchedTechs(currentTurn, faction.id);
-        const secondaryState = factions[faction.id]?.secondary ?? "PENDING";
-        if (researchedTechs.length === 0 && secondaryState === "SKIPPED") {
-          return null;
-        }
         return (
-          <LabeledDiv
-            key={faction.id}
-            label={getFactionName(faction)}
-            color={getFactionColor(faction)}
-            style={{ width: "48%" }}
-            opts={{ fixedWidth: true }}
-            blur
-          >
-            <>
-              <TechResearchSection
-                factionId={faction.id}
-                numTechs={maxTechs}
-                hideWrapper
-              />
-            </>
-          </LabeledDiv>
+          <div style={{ width: "48%" }}>
+            <Secondary factionId={faction.id} />
+          </div>
         );
       })}
     </div>
