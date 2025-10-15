@@ -73,6 +73,29 @@ export async function POST(req: Request) {
       };
     });
 
+    const events = options.events ?? [];
+    if (events.includes("Advent of the War Sun")) {
+      if (faction.id !== "Embers of Muaat") {
+        startingTechs["War Sun"] = {
+          ready: true,
+          state: "ready",
+        };
+      }
+    }
+    if (events.includes("Age of Fighters")) {
+      if (faction.id === "Naalu Collective") {
+        startingTechs["Hybrid Crystal Fighter II"] = {
+          ready: true,
+          state: "ready",
+        };
+      } else {
+        startingTechs["Fighter II"] = {
+          ready: true,
+          state: "ready",
+        };
+      }
+    }
+
     const gameFaction: GameFaction = {
       // Client specified values
       id: faction.id,
@@ -91,6 +114,12 @@ export async function POST(req: Request) {
     };
 
     if (faction.id === "Crimson Rebellion") {
+      gameFaction.breakthrough = {
+        state: "readied",
+      };
+    }
+
+    if (events.includes("Rapid Mobilization")) {
       gameFaction.breakthrough = {
         state: "readied",
       };

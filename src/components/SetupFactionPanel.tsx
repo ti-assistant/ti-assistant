@@ -3,9 +3,11 @@ import { PropsWithChildren, ReactNode, use, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ModalContext } from "../context/contexts";
 import { buildBaseLeaders, buildBaseTechs } from "../data/GameData";
+import FlipSVG from "../icons/ui/Flip";
 import SynergySVG from "../icons/ui/Synergy";
 import { leaderTypeString } from "../util/strings";
 import { sortTechsByPreReqAndExpansion } from "../util/techs";
+import { Optional } from "../util/types/types";
 import { rem } from "../util/util";
 import Chip from "./Chip/Chip";
 import { CollapsibleSection } from "./CollapsibleSection";
@@ -64,6 +66,8 @@ function FactionPanelContent({
   faction: BaseFaction;
   options: Options;
 }) {
+  const [reverse, setReverse] = useState(false);
+
   const searchParams = useSearchParams();
   const gameId = searchParams?.get("gameid");
   const intl = useIntl();
@@ -353,36 +357,8 @@ function FactionPanelContent({
                 </AbilitySection>
               );
             })}
-            {options.expansions.includes("THUNDERS EDGE") &&
-            faction.breakthrough?.name ? (
-              <AbilitySection
-                leftLabel={
-                  <div className="flexRow">
-                    {faction.breakthrough.name.toUpperCase()}
-                  </div>
-                }
-                rightLabel={
-                  faction.breakthrough.synergy ? (
-                    <div className="flexRow" style={{ gap: rem(2) }}>
-                      <TechIcon
-                        type={faction.breakthrough.synergy.left}
-                        size={16}
-                      />
-                      <div className="flexRow" style={{ width: rem(24) }}>
-                        <SynergySVG />
-                      </div>
-                      <TechIcon
-                        type={faction.breakthrough.synergy.right}
-                        size={16}
-                      />
-                    </div>
-                  ) : null
-                }
-              >
-                <FormattedDescription
-                  description={faction.breakthrough.description}
-                />
-              </AbilitySection>
+            {options.expansions.includes("THUNDERS EDGE") ? (
+              <FactionBreakthrough faction={faction} />
             ) : null}
           </div>
         </CollapsibleSection>
@@ -438,7 +414,10 @@ function FactionPanelContent({
           }}
         >
           {faction.units.map((unit, index) => {
-            const localUnit = { ...unit };
+            let localUnit = { ...unit };
+            if (reverse && unit.reverse) {
+              localUnit = unit.reverse;
+            }
             if (
               unit.expansion !== "BASE" &&
               !options.expansions.includes(unit.expansion)
@@ -483,12 +462,112 @@ function FactionPanelContent({
                   type={localUnit.type}
                   size={rem(82)}
                 />
+                {unit.reverse ? (
+                  <div
+                    className="flexRow"
+                    style={{
+                      position: "absolute",
+                      right: rem(4),
+                      bottom: 0,
+                      width: rem(24),
+                      cursor: "pointer",
+                    }}
+                    onClick={() => setReverse(!reverse)}
+                  >
+                    <FlipSVG />
+                  </div>
+                ) : null}
               </AbilitySection>
             );
           })}
         </div>
       </CollapsibleSection>
     </div>
+  );
+}
+
+function FactionBreakthrough({ faction }: { faction: BaseFaction }) {
+  const [reverse, setReverse] = useState(false);
+
+  if (!faction.breakthrough.name) {
+    return null;
+  }
+
+  let name = faction.breakthrough.name.toUpperCase();
+  let description: Optional<string> = faction.breakthrough.description;
+  let abilities: string[] = [];
+  if (reverse && faction.breakthrough.reverse) {
+    name = faction.breakthrough.reverse.name;
+    description = faction.breakthrough.reverse.description;
+    abilities = faction.breakthrough.reverse.abilities ?? [];
+  }
+
+  return (
+    <AbilitySection
+      leftLabel={<div className="flexRow">{name}</div>}
+      rightLabel={
+        faction.breakthrough.synergy ? (
+          <div className="flexRow" style={{ gap: rem(2) }}>
+            <TechIcon type={faction.breakthrough.synergy.left} size={16} />
+            <div className="flexRow" style={{ width: rem(24) }}>
+              <SynergySVG />
+            </div>
+            <TechIcon type={faction.breakthrough.synergy.right} size={16} />
+          </div>
+        ) : null
+      }
+      label={
+        reverse && faction.breakthrough.reverse ? (
+          <UnitIcon
+            type={faction.breakthrough.reverse.type}
+            color="var(--neutral-border)"
+            size={18}
+          />
+        ) : undefined
+      }
+    >
+      <FormattedDescription description={description} />
+      {abilities.length > 0 ? (
+        <div
+          style={{
+            display: "grid",
+            gridAutoFlow: "row",
+            whiteSpace: "nowrap",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            fontFamily: "Slider",
+            paddingLeft: rem(8),
+            rowGap: rem(2),
+            width: "100%",
+          }}
+        >
+          {abilities.map((ability) => {
+            return <div key={ability}>{ability.toUpperCase()}</div>;
+          })}
+        </div>
+      ) : null}
+      {reverse && faction.breakthrough.reverse ? (
+        <UnitStats
+          stats={faction.breakthrough.reverse.stats}
+          type={faction.breakthrough.reverse.type}
+          size={rem(82)}
+        />
+      ) : null}
+      {faction.breakthrough.reverse ? (
+        <div
+          className="flexRow"
+          style={{
+            position: "absolute",
+            right: rem(4),
+            bottom: 0,
+            width: rem(24),
+            cursor: "pointer",
+          }}
+          onClick={() => setReverse(!reverse)}
+        >
+          <FlipSVG />
+        </div>
+      ) : null}
+    </AbilitySection>
   );
 }
 

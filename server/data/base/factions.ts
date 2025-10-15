@@ -1438,6 +1438,28 @@ export default function getBaseFactions(
         id: "The Table's Grace",
         synergy: { left: "YELLOW", right: "GREEN" },
         timing: "PASSIVE",
+        reverse: {
+          abilities: [],
+          description: intl.formatMessage({
+            id: "Mentak Coalition.Units.Corsair.Description",
+            description: "Description for Faction Unit: Corsair",
+            defaultMessage:
+              "If the active system contains another player's non-fighter ships, this unit can move through systems that contain other players' ships.",
+          }),
+          expansion: "THUNDERS EDGE",
+          name: intl.formatMessage({
+            id: "Mentak Coalition.Units.Corsair.Title",
+            description: "Title of Faction Unit: Corsair",
+            defaultMessage: "Corsair",
+          }),
+          stats: {
+            cost: 2,
+            combat: 6,
+            move: 3,
+            capacity: 2,
+          },
+          type: "Cruiser",
+        },
       },
       colors: {
         Black: 0.5,
@@ -1540,28 +1562,6 @@ export default function getBaseFactions(
             combat: 6,
           },
           type: "Mech",
-        },
-        {
-          abilities: [],
-          description: intl.formatMessage({
-            id: "Mentak Coalition.Units.Corsair.Description",
-            description: "Description for Faction Unit: Corsair",
-            defaultMessage:
-              "If the active system contains another player's non-fighter ships, this unit can move through systems that contain other players' ships.",
-          }),
-          expansion: "THUNDERS EDGE",
-          name: intl.formatMessage({
-            id: "Mentak Coalition.Units.Corsair.Title",
-            description: "Title of Faction Unit: Corsair",
-            defaultMessage: "Corsair",
-          }),
-          stats: {
-            cost: 2,
-            combat: 6,
-            move: 3,
-            capacity: 2,
-          },
-          type: "Cruiser",
         },
       ],
     },

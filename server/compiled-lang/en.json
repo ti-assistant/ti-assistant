@@ -475,6 +475,12 @@
       "value": "Back to Game"
     }
   ],
+  "8/FTsP": [
+    {
+      "type": 0,
+      "value": "Purged Planet"
+    }
+  ],
   "8/h2ME": [
     {
       "type": 0,
@@ -15703,6 +15709,12 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "count"
+    }
+  ],
+  "bPVF6s": [
+    {
+      "type": 0,
+      "value": "Purge Planet"
     }
   ],
   "c4LYqr": [

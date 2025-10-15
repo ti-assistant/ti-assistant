@@ -101,3 +101,14 @@
 .selected {
   opacity: 1;
 }
+
+@media only screen and (max-width: 56.25rem) {
+  .ThundersEdgeGrid {
+    display: flex;
+    flex-direction: column;
+    grid-auto-flow: row;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+
+    padding-bottom: 1rem;
+  }
+}

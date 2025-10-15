@@ -39,6 +39,7 @@ import LabeledDiv from "./LabeledDiv/LabeledDiv";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import OptionalLine from "./LineWithChildren/OptionalLine";
 import styles from "./ThundersEdgePanel.module.scss";
+import ThundersEdgeMenuSVG from "../icons/ui/ThundersEdgeMenu";
 
 function getSupportScorer(factionId: FactionId, support: Objective) {
   if (!support.keyedScorers) {
@@ -68,12 +69,21 @@ function ExpeditionSection() {
   return (
     <CollapsibleSection
       title={
-        <div className={styles.planetTitle}>
+        <div
+          className="flexRow"
+          style={{ justifyContent: "center", gap: rem(6) }}
+        >
+          <div className="flexRow" style={{ width: rem(18) }}>
+            <ThundersEdgeMenuSVG />
+          </div>
           <FormattedMessage
             id="1bUwOq"
             description="Text shown on a menu for selecting an expedition."
             defaultMessage="Thunder's Edge Expedition"
           />
+          <div className="flexRow" style={{ width: rem(18) }}>
+            <ThundersEdgeMenuSVG />
+          </div>
         </div>
       }
       style={{ height: "fit-content", gridArea: "expedition" }}

@@ -239,6 +239,10 @@
     "defaultMessage": "Back to Game",
     "description": "Text shown on a button that will return to the game."
   },
+  "8/FTsP": {
+    "defaultMessage": "Purged Planet",
+    "description": "Label for a planet that has been purged."
+  },
   "8/h2ME": {
     "defaultMessage": "Advance to {phase} Phase",
     "description": "Text on a button that will advance the game to a specific phase."
@@ -7734,6 +7738,10 @@
   "as4lhc": {
     "defaultMessage": "Purged {count, plural, one {Tech} other {Techs}}",
     "description": "Label for a section listing purged techs."
+  },
+  "bPVF6s": {
+    "defaultMessage": "Purge Planet",
+    "description": "Label for a selector for choosing a planet to purge."
   },
   "c4LYqr": {
     "defaultMessage": "Cannot Vote",

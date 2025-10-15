@@ -1,4 +1,4 @@
-import { PropsWithChildren, ReactNode, use } from "react";
+import { PropsWithChildren, ReactNode, use, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ModalContext } from "../context/contexts";
 import {
@@ -14,6 +14,7 @@ import {
   updateBreakthroughStateAsync,
   updateLeaderStateAsync,
 } from "../dynamic/api";
+import FlipSVG from "../icons/ui/Flip";
 import HitSVG from "../icons/ui/Hit";
 import SynergySVG from "../icons/ui/Synergy";
 import { hasTech } from "../util/api/techs";
@@ -270,6 +271,8 @@ function FactionUnit({
   viewUpgrade: boolean;
   viewOnly?: boolean;
 }) {
+  const [reverse, setReverse] = useState(false);
+
   const gameId = useGameId();
   const techs = useTechs();
   const abilities = unit.abilities ?? [];
@@ -280,12 +283,16 @@ function FactionUnit({
       <FactionTech tech={upgradeTech} faction={faction} viewOnly={viewOnly} />
     );
   }
+  let localUnit = unit;
+  if (reverse && unit.reverse) {
+    localUnit = unit.reverse;
+  }
   return (
     <AbilitySection
-      key={unit.name}
+      key={localUnit.name}
       leftLabel={
         <div className="flexRow" style={{ height: "100%" }}>
-          {unit.name}
+          {localUnit.name}
           {upgradeTech ? (
             <div className="flexRow" style={{ gap: rem(2) }}>
               {upgradeTech.prereqs.map((prereq, index) => {
@@ -296,10 +303,14 @@ function FactionUnit({
         </div>
       }
       rightLabel={
-        <UnitIcon type={unit.type} color="var(--neutral-border)" size={18} />
+        <UnitIcon
+          type={localUnit.type}
+          color="var(--neutral-border)"
+          size={18}
+        />
       }
     >
-      <FormattedDescription description={unit.description} />
+      <FormattedDescription description={localUnit.description} />
       {abilities.length > 0 ? (
         <div
           style={{
@@ -318,7 +329,7 @@ function FactionUnit({
           })}
         </div>
       ) : null}
-      <UnitStats stats={unit.stats} type={unit.type} size={rem(82)} />
+      <UnitStats stats={localUnit.stats} type={localUnit.type} size={rem(82)} />
       {!viewOnly && upgradeTech ? (
         <div className="flexRow" style={{ width: "100%" }}>
           <button
@@ -333,6 +344,21 @@ function FactionUnit({
           >
             Upgrade
           </button>
+        </div>
+      ) : null}
+      {unit.reverse ? (
+        <div
+          className="flexRow"
+          style={{
+            position: "absolute",
+            right: rem(4),
+            bottom: 0,
+            width: rem(24),
+            cursor: "pointer",
+          }}
+          onClick={() => setReverse(!reverse)}
+        >
+          <FlipSVG />
         </div>
       ) : null}
     </AbilitySection>
@@ -717,64 +743,8 @@ function FactionPanelContent({
                 </AbilitySection>
               );
             })}
-            {options.expansions.includes("THUNDERS EDGE") &&
-            faction.breakthrough.name ? (
-              <AbilitySection
-                leftLabel={
-                  <div className="flexRow">
-                    {faction.breakthrough.name.toUpperCase()}
-                    {!viewOnly ? (
-                      <div
-                        className="flexRow"
-                        onClick={() => {
-                          const state: ComponentState =
-                            !faction.breakthrough.state ||
-                            faction.breakthrough.state === "locked"
-                              ? "readied"
-                              : "locked";
-                          updateBreakthroughStateAsync(
-                            gameId,
-                            faction.id,
-                            state
-                          );
-                        }}
-                        style={{
-                          gap: rem(4),
-                          cursor: "pointer",
-                        }}
-                      >
-                        {!faction.breakthrough.state ||
-                        faction.breakthrough.state === "locked" ? (
-                          <>&#128274;</>
-                        ) : (
-                          <>&#128275;</>
-                        )}
-                      </div>
-                    ) : null}
-                  </div>
-                }
-                rightLabel={
-                  faction.breakthrough.synergy ? (
-                    <div className="flexRow" style={{ gap: rem(2) }}>
-                      <TechIcon
-                        type={faction.breakthrough.synergy.left}
-                        size={16}
-                      />
-                      <div className="flexRow" style={{ width: rem(24) }}>
-                        <SynergySVG />
-                      </div>
-                      <TechIcon
-                        type={faction.breakthrough.synergy.right}
-                        size={16}
-                      />
-                    </div>
-                  ) : null
-                }
-              >
-                <FormattedDescription
-                  description={faction.breakthrough.description}
-                />
-              </AbilitySection>
+            {options.expansions.includes("THUNDERS EDGE") ? (
+              <FactionBreakthrough faction={faction} />
             ) : null}
           </div>
         </CollapsibleSection>
@@ -885,6 +855,121 @@ function FactionPanelContent({
         </CollapsibleSection>
       </div>
     </div>
+  );
+}
+
+function FactionBreakthrough({ faction }: { faction: Faction }) {
+  const [reverse, setReverse] = useState(false);
+  const gameId = useGameId();
+  const viewOnly = useViewOnly();
+
+  if (!faction.breakthrough.name) {
+    return null;
+  }
+
+  let name = faction.breakthrough.name.toUpperCase();
+  let description: Optional<string> = faction.breakthrough.description;
+  let abilities: string[] = [];
+  if (reverse && faction.breakthrough.reverse) {
+    name = faction.breakthrough.reverse.name;
+    description = faction.breakthrough.reverse.description;
+    abilities = faction.breakthrough.reverse.abilities ?? [];
+  }
+
+  return (
+    <AbilitySection
+      leftLabel={
+        <div className="flexRow">
+          {name}
+          {!viewOnly ? (
+            <div
+              className="flexRow"
+              onClick={() => {
+                const state: ComponentState =
+                  !faction.breakthrough.state ||
+                  faction.breakthrough.state === "locked"
+                    ? "readied"
+                    : "locked";
+                updateBreakthroughStateAsync(gameId, faction.id, state);
+              }}
+              style={{
+                gap: rem(4),
+                cursor: "pointer",
+              }}
+            >
+              {!faction.breakthrough.state ||
+              faction.breakthrough.state === "locked" ? (
+                <>&#128274;</>
+              ) : (
+                <>&#128275;</>
+              )}
+            </div>
+          ) : null}
+        </div>
+      }
+      rightLabel={
+        faction.breakthrough.synergy ? (
+          <div className="flexRow" style={{ gap: rem(2) }}>
+            <TechIcon type={faction.breakthrough.synergy.left} size={16} />
+            <div className="flexRow" style={{ width: rem(24) }}>
+              <SynergySVG />
+            </div>
+            <TechIcon type={faction.breakthrough.synergy.right} size={16} />
+          </div>
+        ) : null
+      }
+      label={
+        reverse && faction.breakthrough.reverse ? (
+          <UnitIcon
+            type={faction.breakthrough.reverse.type}
+            color="var(--neutral-border)"
+            size={18}
+          />
+        ) : undefined
+      }
+    >
+      <FormattedDescription description={description} />
+      {abilities.length > 0 ? (
+        <div
+          style={{
+            display: "grid",
+            gridAutoFlow: "row",
+            whiteSpace: "nowrap",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            fontFamily: "Slider",
+            paddingLeft: rem(8),
+            rowGap: rem(2),
+            width: "100%",
+          }}
+        >
+          {abilities.map((ability) => {
+            return <div key={ability}>{ability.toUpperCase()}</div>;
+          })}
+        </div>
+      ) : null}
+      {reverse && faction.breakthrough.reverse ? (
+        <UnitStats
+          stats={faction.breakthrough.reverse.stats}
+          type={faction.breakthrough.reverse.type}
+          size={rem(82)}
+        />
+      ) : null}
+      {faction.breakthrough.reverse ? (
+        <div
+          className="flexRow"
+          style={{
+            position: "absolute",
+            right: rem(4),
+            bottom: 0,
+            width: rem(24),
+            cursor: "pointer",
+          }}
+          onClick={() => setReverse(!reverse)}
+        >
+          <FlipSVG />
+        </div>
+      ) : null}
+    </AbilitySection>
   );
 }
 

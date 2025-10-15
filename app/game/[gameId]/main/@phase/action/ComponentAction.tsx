@@ -55,13 +55,11 @@ import {
   selectSubComponentAsync,
   swapMapTilesAsync,
   unplayComponentAsync,
-  updatePlanetStateAsync,
 } from "../../../../../../src/dynamic/api";
 import RelicMenuSVG from "../../../../../../src/icons/ui/RelicMenu";
 import {
   getClaimedPlanets,
   getLogEntries,
-  getPurgedPlanet,
   getReplacedTechs,
   getResearchedTechs,
   getScoredObjectives,
@@ -86,9 +84,10 @@ import { Optional } from "../../../../../../src/util/types/types";
 import { pluralize, rem } from "../../../../../../src/util/util";
 import Overrule from "./components/Overrule";
 import PlanetaryRigs from "./components/PlanetaryRigs";
+import PurgePlanet from "./components/PurgePlanet";
 import Strategize from "./components/Strategize";
-import VaultsOfTheHeir from "./components/VaultsOfTheHeir";
 import TaZernDeepwrought from "./components/TaZernDeepwrought";
+import VaultsOfTheHeir from "./components/VaultsOfTheHeir";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -133,7 +132,10 @@ function ComponentSelect({
   const options = useOptions();
   const leaders = useLeaders();
   const relics = useRelics();
+  const techs = useTechs();
   const viewOnly = useViewOnly();
+
+  const faction = factions[factionId];
 
   const nonTechComponents: (BaseComponent & GameComponent)[] =
     components.filter(
@@ -142,7 +144,9 @@ function ComponentSelect({
   const actionCards = Object.values(allActionCards)
     .filter((actionCard) => actionCard.timing === "COMPONENT_ACTION")
     .sort((a, b) => (a.name > b.name ? 1 : -1));
-  const techs = components.filter((component) => component.type === "TECH");
+  const techComponents = components.filter(
+    (component) => component.type === "TECH"
+  );
   const leaderComponents = nonTechComponents
     .filter((component) => component.type === "LEADER")
     .filter((component) => {
@@ -173,9 +177,18 @@ function ComponentSelect({
       );
     }),
   ].sort((a, b) => (a.name > b.name ? 1 : -1));
-  const events = nonTechComponents.filter(
-    (component) => component.type === "EVENT"
-  );
+  const events = nonTechComponents
+    .filter((component) => component.type === "EVENT")
+    .filter((event) => {
+      if (event.requiresTech) {
+        if (!faction) {
+          return false;
+        }
+        const tech = techs[event.requiresTech];
+        return hasTech(faction, tech);
+      }
+      return true;
+    });
   const promissory = nonTechComponents.filter(
     (component) => component.type === "PROMISSORY"
   );
@@ -188,7 +201,6 @@ function ComponentSelect({
     factionComponents.push(component);
     promissoryByFaction[component.faction] = factionComponents;
   });
-  const faction = factions[factionId];
   const others = nonTechComponents
     .filter(
       (component) =>
@@ -270,7 +282,7 @@ function ComponentSelect({
           })}
         </div>
       </ClientOnlyHoverMenu>
-      {techs.length > 0 ? (
+      {techComponents.length > 0 ? (
         <ClientOnlyHoverMenu
           label={
             <FormattedMessage
@@ -284,10 +296,13 @@ function ComponentSelect({
             className="flexRow"
             style={{
               ...innerStyle,
-              gridTemplateRows: `repeat(${Math.min(techs.length, 10)}, auto)`,
+              gridTemplateRows: `repeat(${Math.min(
+                techComponents.length,
+                10
+              )}, auto)`,
             }}
           >
-            {techs.map((component) => {
+            {techComponents.map((component) => {
               if (!faction) {
                 return null;
               }
@@ -587,19 +602,6 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
     }
     addTechAsync(gameId, factionId, techId);
   }
-  function destroyPlanet(planetId: PlanetId) {
-    if (!gameId) {
-      return;
-    }
-
-    updatePlanetStateAsync(gameId, planetId, "PURGED");
-  }
-  function undestroyPlanet(planetId: PlanetId) {
-    if (!gameId) {
-      return;
-    }
-    updatePlanetStateAsync(gameId, planetId, "READIED");
-  }
   function toggleAttachment(
     planetId: PlanetId,
     attachmentId: AttachmentId,
@@ -858,43 +860,21 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       break;
     }
     case "Stellar Converter": {
-      const nonHomeNonLegendaryNonMecatolPlanets = updatedPlanets.filter(
-        (planet) => {
-          return (
+      leftLabel = <PurgePlanet.Label />;
+      innerContent = (
+        <PurgePlanet.Content
+          planetFilter={(planet) =>
             !planet.home &&
             !planet.attributes.includes("legendary") &&
             planet.id !== "Mecatol Rex"
-          );
-        }
+          }
+        />
       );
-      const destroyedPlanet = getPurgedPlanet(currentTurn);
-      if (destroyedPlanet) {
-        leftLabel = "Destroyed Planet";
-        nonHomeNonLegendaryNonMecatolPlanets.push({
-          id: destroyedPlanet,
-          name: destroyedPlanet,
-        } as Planet);
-      }
-      innerContent = (
-        <div
-          className="flexColumn"
-          style={{ width: "100%", alignItems: "flex-start" }}
-        >
-          <Selector
-            hoverMenuLabel="Destroy Planet"
-            options={nonHomeNonLegendaryNonMecatolPlanets}
-            selectedItem={destroyedPlanet}
-            toggleItem={(planetId, add) => {
-              if (add) {
-                destroyPlanet(planetId);
-              } else {
-                undestroyPlanet(planetId);
-              }
-            }}
-            viewOnly={viewOnly}
-          />
-        </div>
-      );
+      break;
+    }
+    case "Conventions of War Abandoned": {
+      leftLabel = <PurgePlanet.Label />;
+      innerContent = <PurgePlanet.Content />;
       break;
     }
     case "Nano-Forge": {

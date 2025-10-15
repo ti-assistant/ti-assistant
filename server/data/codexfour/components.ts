@@ -19,6 +19,7 @@ export default function getCodexFourComponents(
         description: "Title of Component: Age of Exploration",
         defaultMessage: "Age of Exploration",
       }),
+      requiresTech: "Dark Energy Tap",
       type: "EVENT",
     },
     "Total War": {

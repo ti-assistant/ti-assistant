@@ -64,6 +64,7 @@ interface Unit {
   type: UnitType;
   omegas?: Omega<Unit>[];
   upgrade?: TechId;
+  reverse?: Unit;
 }
 
 interface Breakthrough {
@@ -76,6 +77,7 @@ interface Breakthrough {
   };
   timing: Timing;
   state?: ComponentState;
+  reverse?: Unit;
 }
 
 interface BaseFaction {

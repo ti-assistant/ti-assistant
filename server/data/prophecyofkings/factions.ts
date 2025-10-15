@@ -595,6 +595,28 @@ export default function getProphecyOfKingsFactions(
         id: "Absolute Synergy",
         synergy: { left: "GREEN", right: "BLUE" },
         timing: "OTHER",
+        reverse: {
+          description: intl.formatMessage(
+            {
+              id: "Naaz-Rokha Alliance.Units.Eidolon Maximum.Description",
+              description: "Description for Faction Unit: Eidolon Maximum",
+              defaultMessage:
+                "This unit is both a ship and a ground force. It cannot be assigned hits from unit abilities. Repair it at the start of every combat round. Game effects cannot place or produce your mechs. When this unit is destroyed or removed, flip this card and return it to your play area.",
+            },
+            { br: "\n\n" }
+          ),
+          expansion: "THUNDERS EDGE",
+          name: intl.formatMessage({
+            id: "Naaz-Rokha Alliance.Units.Eidolon Maximum.Title",
+            description: "Title of Faction Unit: Eidolon Maximum",
+            defaultMessage: "Eidolon Maximum",
+          }),
+          stats: {
+            combat: "4(x4)",
+            move: 3,
+          },
+          type: "Mech",
+        },
       },
       colors: {
         Green: 1.6,
@@ -699,50 +721,28 @@ export default function getProphecyOfKingsFactions(
             combat: "6(x2)",
           },
           type: "Mech",
-        },
-        {
-          description: intl.formatMessage(
-            {
-              id: "Naaz-Rokha Alliance.Units.Z-Grav Eidolon.Description",
-              description: "Description for Faction Unit: Z-Grav Eidolon",
-              defaultMessage:
-                "If this unit is in the space area of the active system, it is also a ship. At the end of a space battle in the active system, flip this card.{br}(This card begins the game with this side face down)",
+          reverse: {
+            description: intl.formatMessage(
+              {
+                id: "Naaz-Rokha Alliance.Units.Z-Grav Eidolon.Description",
+                description: "Description for Faction Unit: Z-Grav Eidolon",
+                defaultMessage:
+                  "If this unit is in the space area of the active system, it is also a ship. At the end of a space battle in the active system, flip this card.{br}(This card begins the game with this side face down)",
+              },
+              { br: "\n\n" }
+            ),
+            expansion: "POK",
+            name: intl.formatMessage({
+              id: "Naaz-Rokha Alliance.Units.Z-Grav Eidolon.Title",
+              description: "Title of Faction Unit: Z-Grav Eidolon",
+              defaultMessage: "Z-Grav Eidolon",
+            }),
+            stats: {
+              cost: 2,
+              combat: "8(x2)",
             },
-            { br: "\n\n" }
-          ),
-          expansion: "POK",
-          name: intl.formatMessage({
-            id: "Naaz-Rokha Alliance.Units.Z-Grav Eidolon.Title",
-            description: "Title of Faction Unit: Z-Grav Eidolon",
-            defaultMessage: "Z-Grav Eidolon",
-          }),
-          stats: {
-            cost: 2,
-            combat: "8(x2)",
+            type: "Mech",
           },
-          type: "Mech",
-        },
-        {
-          description: intl.formatMessage(
-            {
-              id: "Naaz-Rokha Alliance.Units.Eidolon Maximum.Description",
-              description: "Description for Faction Unit: Eidolon Maximum",
-              defaultMessage:
-                "This unit is both a ship and a ground force. It cannot be assigned hits from unit abilities. Repair it at the start of every combat round. Game effects cannot place or produce your mechs. When this unit is destroyed or removed, flip this card and return it to your play area.",
-            },
-            { br: "\n\n" }
-          ),
-          expansion: "THUNDERS EDGE",
-          name: intl.formatMessage({
-            id: "Naaz-Rokha Alliance.Units.Eidolon Maximum.Title",
-            description: "Title of Faction Unit: Eidolon Maximum",
-            defaultMessage: "Eidolon Maximum",
-          }),
-          stats: {
-            combat: "4(x4)",
-            move: 3,
-          },
-          type: "Mech",
         },
       ],
     },

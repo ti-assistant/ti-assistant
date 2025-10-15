@@ -67,6 +67,7 @@ interface BaseComponent {
   leader?: LeaderType;
   name: string;
   replaces?: string;
+  requiresTech?: TechId;
   subFaction?: FactionId;
   type: Exclude<ComponentType, "TECH">;
   unlock?: string;

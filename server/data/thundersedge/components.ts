@@ -39,6 +39,7 @@ export default function getThundersEdgeComponents(
         description: "Title of Component: Conventions of War Abandoned",
         defaultMessage: "Conventions of War Abandoned",
       }),
+      requiresTech: "X-89 Bacterial Weapon",
       type: "EVENT",
     },
     "Mercenaries for Hire": {
