@@ -10,9 +10,15 @@ const app = next({ dev, port: HTTP_PORT });
 const handle = app.getRequestHandler();
 
 app.prepare().then(async () => {
-  const server = createServer((req, res) =>
-    handle(req, res, parse(req.url, true))
-  );
+  const server = createServer((req, res) => {
+    const reqUrl = req.url
+      .replaceAll(/\[/g, "%5B")
+      .replaceAll(/]/g, "%5D")
+      .replaceAll("%5b", "%5B")
+      .replaceAll("%5d", "%5D")
+      .replaceAll("@", "%40");
+    handle(req, res, parse(reqUrl, true));
+  });
   const env = process.env.NODE_ENV;
   const emulator = process.env.FIRESTORE_EMULATOR_HOST;
   const projectId = process.env.NEXT_PUBLIC_TI_PROJECT;
