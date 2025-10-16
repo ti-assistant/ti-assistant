@@ -74,7 +74,7 @@ namespace ThundersEdge {
     // Firmament
     | "Myru Vos"
     | "Captain Aroz"
-    | "TODO: The Blade Beckons"
+    | "Sharsiss"
     // Last Bastion
     | "Dame Briar"
     | "Nip and Tuck"
@@ -82,7 +82,7 @@ namespace ThundersEdge {
     // Obsidian
     | "Vos Hollow"
     | "Aroz Hollow"
-    | "TODO: The Blade Revealed"
+    | "Sharsiss Hollow"
     // Ral Nel Consortium
     | "Kan Kip Rel"
     | "Watchful Ojz"
@@ -227,6 +227,7 @@ namespace ThundersEdge {
     | "Executive Order"
     // Crimson Rebellion
     | "Subatomic Splicer"
+    | "Exile II"
     // Deepwrought Scholarate
     | "Hydrothermal Mining"
     | "Radical Advancement"
@@ -235,6 +236,7 @@ namespace ThundersEdge {
     | "Planesplitter"
     // Last Bastion
     | "Proxima Targeting VI"
+    | "4X4IC Helios VI II"
     // Obsidian
     | "Planesplitter (Obsidian)"
     | "Neural Parasite (Obsidian)"

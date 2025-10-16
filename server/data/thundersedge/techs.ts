@@ -1,5 +1,5 @@
 import { IntlShape } from "react-intl";
-import { antiFighterBarrage } from "../../../src/util/strings";
+import { antiFighterBarrage, production } from "../../../src/util/strings";
 
 export default function getThundersEdgeTechs(
   intl: IntlShape
@@ -43,6 +43,33 @@ export default function getThundersEdgeTechs(
       }),
       prereqs: ["YELLOW"],
       type: "YELLOW",
+    },
+    // TODO: Confirm tech.
+    "Exile II": {
+      abilities: [antiFighterBarrage("6 (x3)", intl)],
+      description: intl.formatMessage({
+        id: "Crimson Rebellion.Techs.Exile II.Description",
+        description: "Description for Tech: Exile II",
+        defaultMessage:
+          "At the end of any player's combat in this unit's system or up to 2 systems away, you may place one active or inactive breach in the system.",
+      }),
+      expansion: "THUNDERS EDGE",
+      faction: "Crimson Rebellion",
+      id: "Exile II",
+      name: intl.formatMessage({
+        id: "Crimson Rebellion.Techs.Exile II.Title",
+        description: "Title of Tech: Exile II",
+        defaultMessage: "Exile II",
+      }),
+      prereqs: ["RED", "RED"],
+      replaces: "Destroyer II",
+      stats: {
+        cost: 1,
+        combat: 7,
+        move: 2,
+      },
+      type: "UPGRADE",
+      unitType: "Destroyer",
     },
     // Deepwrought Scholarate
     "Hydrothermal Mining": {
@@ -146,7 +173,31 @@ export default function getThundersEdgeTechs(
       prereqs: ["RED"],
       type: "RED",
     },
-    // TODO: 2nd Last Bastion Tech
+    // TODO: Confirm tech.
+    "4X4IC Helios VI II": {
+      abilities: [production("X", intl)],
+      description: intl.formatMessage(
+        {
+          id: "Techs.4X4IC Helios VI II.Description",
+          description: "Description for Tech: 4X4IC Helios VI II",
+          defaultMessage:
+            "This unit's PRODUCTION value is equal to 4 more than the resource value of this planet.{br}The resource value of this planet is increased by 2.{br}Up to 3 fighters in this system do not count against your ships' capacity.",
+        },
+        { br: "\n\n" }
+      ),
+      expansion: "THUNDERS EDGE",
+      id: "4X4IC Helios VI II",
+      name: intl.formatMessage({
+        id: "Techs.4X4IC Helios VI II.Title",
+        description: "Title of Tech: 4X4IC Helios VI II",
+        defaultMessage: '4X4IC "Helios" VI II',
+      }),
+      prereqs: ["YELLOW", "YELLOW"],
+      replaces: "Space Dock II",
+      stats: {},
+      type: "UPGRADE",
+      unitType: "Space Dock",
+    },
     // Obsidian
     "Neural Parasite (Obsidian)": {
       description: intl.formatMessage(

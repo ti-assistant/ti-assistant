@@ -46,10 +46,11 @@ export default function getThundersEdgeLeaders(
       }),
       timing: "PASSIVE",
       type: "COMMANDER",
+      // TODO: Confirm unlock condition.
       unlock: intl.formatMessage({
         id: "Crimson Rebellion.Leaders.Ahk Siever.Unlock",
         description: "Unlock condition for Rebellion Commander: Ahk Siever",
-        defaultMessage: "TODO: Add unlock condition",
+        defaultMessage: "Resolve a combat with another player.",
       }),
     },
     "TODO: Fragment Reality": {
@@ -194,23 +195,23 @@ export default function getThundersEdgeLeaders(
       }),
       timing: "PASSIVE",
       type: "COMMANDER",
+      // TODO: Confirm unlock condition.
       unlock: intl.formatMessage({
         id: "Firmament.Leaders.Captain Aroz.Unlock",
         description: "Unlock condition for Firmament Commander: Captain Aroz",
-        defaultMessage: "TODO: Add unlock criteria.",
+        defaultMessage: "Have one plot card in play.",
       }),
     },
-    "TODO: The Blade Beckons": {
+    Sharsiss: {
       abilityName: intl.formatMessage({
-        id: "Firmament.Leaders.TODO: The Blade Beckons.AbilityName",
-        description: "Ability name for Firmament Hero: TODO: The Blade Beckons",
+        id: "Firmament.Leaders.Sharsiss.AbilityName",
+        description: "Ability name for Firmament Hero: Sharsiss",
         defaultMessage: "THE BLADE BECKONS",
       }),
       description: intl.formatMessage(
         {
-          id: "Firmament.Leaders.TODO: The Blade Beckons.Description",
-          description:
-            "Description for Firmament Hero: TODO: The Blade Beckons",
+          id: "Firmament.Leaders.Sharsiss.Description",
+          description: "Description for Firmament Hero: Sharsiss",
           defaultMessage:
             "ACTION: Place 1 of your plot cards in play with any other player's control token on it. Then, you may place any player's control token on 1 of your in-play plot cards; one plot cannot have two of the same player's tokens.{br}Then, purge this card.",
         },
@@ -218,11 +219,11 @@ export default function getThundersEdgeLeaders(
       ),
       expansion: "POK",
       faction: "Firmament",
-      id: "TODO: The Blade Beckons",
+      id: "Sharsiss",
       name: intl.formatMessage({
-        id: "Firmament.Leaders.TODO: The Blade Beckons.Name",
-        description: "Name of Firmament Hero: TODO: The Blade Beckons",
-        defaultMessage: "TODO: The Blade Beckons",
+        id: "Firmament.Leaders.Sharsiss.Name",
+        description: "Name of Firmament Hero: Sharsiss",
+        defaultMessage: "Sharsiss",
       }),
       timing: "COMPONENT_ACTION",
       type: "HERO",
@@ -344,23 +345,23 @@ export default function getThundersEdgeLeaders(
       }),
       timing: "PASSIVE",
       type: "COMMANDER",
+      // TODO: Confirm unlock condition.
       unlock: intl.formatMessage({
         id: "Obsidian.Leaders.Aroz Hollow.Unlock",
         description: "Unlock condition for Obsidian Commander: Aroz Hollow",
-        defaultMessage: "TODO: Add unlock criteria.",
+        defaultMessage: "Have units in The Fracture.",
       }),
     },
-    "TODO: The Blade Revealed": {
+    "Sharsiss Hollow": {
       abilityName: intl.formatMessage({
-        id: "Obsidian.Leaders.TODO: The Blade Revealed.AbilityName",
-        description: "Ability name for Obsidian Hero: TODO: The Blade Revealed",
+        id: "Obsidian.Leaders.Sharsiss Hollow.AbilityName",
+        description: "Ability name for Obsidian Hero: Sharsiss Hollow",
         defaultMessage: "THE BLADE REVEALED",
       }),
       description: intl.formatMessage(
         {
-          id: "Obsidian.Leaders.TODO: The Blade Revealed.Description",
-          description:
-            "Description for Obsidian Hero: TODO: The Blade Revealed",
+          id: "Obsidian.Leaders.Sharsiss Hollow.Description",
+          description: "Description for Obsidian Hero: Sharsiss Hollow",
           defaultMessage:
             "ACTION: Ready all of your planets.{br}Then, purge this card.",
         },
@@ -368,11 +369,11 @@ export default function getThundersEdgeLeaders(
       ),
       expansion: "POK",
       faction: "Obsidian",
-      id: "TODO: The Blade Revealed",
+      id: "Sharsiss Hollow",
       name: intl.formatMessage({
-        id: "Obsidian.Leaders.TODO: The Blade Revealed.Name",
-        description: "Name of Obsidian Hero: TODO: The Blade Revealed",
-        defaultMessage: "TODO: The Blade Revealed",
+        id: "Obsidian.Leaders.Sharsiss Hollow.Name",
+        description: "Name of Obsidian Hero: Sharsiss Hollow",
+        defaultMessage: "Sharsiss Hollow",
       }),
       timing: "COMPONENT_ACTION",
       type: "HERO",
