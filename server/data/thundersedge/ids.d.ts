@@ -179,11 +179,7 @@ namespace ThundersEdge {
     | "The Silver Flame"
     | "The Triad";
 
-  // TODO: Change if fracture has actual system numbers.
   type SystemId =
-    // | 83
-    // | 84
-    // TODO: Verify above
     | 92
     | 93
     | 94

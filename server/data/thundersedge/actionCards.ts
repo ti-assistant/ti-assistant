@@ -207,7 +207,6 @@ export default function getThundersEdgeActionCards(
       }),
       timing: "TACTICAL_ACTION",
     },
-    // TODO: Add component details.
     Strategize: {
       count: 4,
       description: intl.formatMessage(

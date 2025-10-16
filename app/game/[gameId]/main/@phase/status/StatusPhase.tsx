@@ -780,20 +780,9 @@ export default function StatusPhase() {
     return abilities;
   }
 
-  const orderedStrategyCards = Object.values(strategyCards)
-    .filter((card) => card.faction)
-    .sort((a, b) => a.order - b.order);
-
-  const cardsByFaction: Partial<Record<FactionId, StrategyCard[]>> = {};
-  orderedStrategyCards.forEach((card) => {
-    if (!card.faction) {
-      return;
-    }
-    if (!cardsByFaction[card.faction]) {
-      cardsByFaction[card.faction] = [];
-    }
-    cardsByFaction[card.faction]?.push(card);
-  });
+  const orderedFactions = Object.values(factions).sort((a, b) =>
+    a.order > b.order ? 1 : -1
+  );
 
   const revealedObjectives = currentTurn
     .filter((logEntry) => logEntry.data.action === "REVEAL_OBJECTIVE")
@@ -927,7 +916,7 @@ export default function StatusPhase() {
                       />
                     }
                   >
-                    {Object.values(factions).map((faction) => {
+                    {orderedFactions.map((faction) => {
                       if (faction.id === "Nekro Virus") {
                         return null;
                       }

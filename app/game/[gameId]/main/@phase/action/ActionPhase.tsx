@@ -511,7 +511,6 @@ export function AdditionalActions({
                   />
                 }
                 rightLabel={
-                  // TODO: Implement secondary timers.
                   <Toggle
                     selected={primaryCompleted}
                     toggleFn={() => markPrimaryAsync(gameId, !primaryCompleted)}
@@ -563,7 +562,6 @@ export function AdditionalActions({
                 />
               }
               rightLabel={
-                // TODO: Implement secondary timers.
                 <Toggle
                   selected={primaryCompleted}
                   toggleFn={() => markPrimaryAsync(gameId, !primaryCompleted)}
@@ -607,7 +605,6 @@ export function AdditionalActions({
               />
             }
             rightLabel={
-              // TODO: Implement secondary timers.
               <Toggle
                 selected={primaryCompleted}
                 toggleFn={() => {
@@ -655,7 +652,6 @@ export function AdditionalActions({
               />
             }
             rightLabel={
-              // TODO: Implement secondary timers.
               <Toggle
                 selected={primaryCompleted}
                 toggleFn={() => markPrimaryAsync(gameId, !primaryCompleted)}
@@ -701,7 +697,6 @@ export function AdditionalActions({
                 />
               }
               rightLabel={
-                // TODO: Implement secondary timers.
                 <Toggle
                   selected={primaryCompleted}
                   toggleFn={() => markPrimaryAsync(gameId, !primaryCompleted)}
@@ -750,7 +745,6 @@ export function AdditionalActions({
               />
             }
             rightLabel={
-              // TODO: Implement secondary timers.
               <Toggle
                 selected={primaryCompleted}
                 toggleFn={() => markPrimaryAsync(gameId, !primaryCompleted)}

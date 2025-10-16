@@ -825,7 +825,6 @@ export default function getThundersEdgeFactions(
         defaultMessage: "Obsidian",
       }),
       startswith: {
-        // TODO: Add starting stuff.
         planets: [],
         units: {},
       },

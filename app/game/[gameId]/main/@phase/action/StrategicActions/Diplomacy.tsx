@@ -446,7 +446,6 @@ function Secondary({ factionId }: { factionId: FactionId }) {
                       </div>
                     ) : null}
                   </div>
-                  {/* TODO: Remove if rules specify whenever a planet changes hands. */}
                   {!planet.prevOwner &&
                   adjustedPlanet.attributes.includes("relic") ? (
                     <div style={{ marginLeft: rem(16) }}>

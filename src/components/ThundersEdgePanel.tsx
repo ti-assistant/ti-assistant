@@ -165,7 +165,6 @@ function RelicsSection() {
   const unownedRelics = Object.values(relics)
     .filter((relic) => !relic.owner)
     .sort((a, b) => (a.name > b.name ? 1 : -1));
-  // TODO: Fix purged relics.
   const purgedRelics = Object.values(relics)
     .filter((relic) => relic.state === "purged")
     .sort((a, b) => (a.name > b.name ? 1 : -1));

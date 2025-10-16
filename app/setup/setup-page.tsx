@@ -1603,7 +1603,6 @@ export default function SetupPage({
       currentOptions.expansions.add(expansion);
 
       // Add codices if using Thunder's Edge. Some components will not be usable otherwise.
-      // TODO: Determine if this is the "right" way to handle this.
       if (expansion === "THUNDERS EDGE") {
         currentOptions.expansions.add("CODEX ONE");
         currentOptions.expansions.add("CODEX TWO");
