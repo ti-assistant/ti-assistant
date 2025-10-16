@@ -581,8 +581,6 @@ export function buildCompleteTechs(
     }
   }
 
-  console.log("Antimass", techs["Antimass Deflectors"]);
-
   return techs;
 }
 

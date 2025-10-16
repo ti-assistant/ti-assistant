@@ -212,7 +212,7 @@ export function validSystemNumber(number: string) {
   if (intVal > 199) {
     return true;
   }
-  if (intVal > 118) {
+  if (intVal > 124) {
     return false;
   }
 

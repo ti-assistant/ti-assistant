@@ -645,7 +645,6 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
 
   let requiredNeighbors = 2;
   let nonHomeNeighbors = false;
-  console.log("Component", componentName);
   switch (componentName) {
     case "Enigmatic Device":
     case "Focused Research": {

@@ -207,6 +207,17 @@ export default function MapBuilderPage() {
       tileNumbers.push(`${i}A${rotation !== 0 ? rotation : ""}`);
       tileNumbers.push(`${i}B${rotation !== 0 ? rotation : ""}`);
     }
+
+    for (let i = 119; i < 125; i++) {
+      const inMapString = mapString.split(" ").reduce((found, systemNumber) => {
+        return found || systemNumber.startsWith(i.toString());
+      }, false);
+      if (inMapString) {
+        continue;
+      }
+      tileNumbers.push(`${i}A${rotation !== 0 ? rotation : ""}`);
+      tileNumbers.push(`${i}B${rotation !== 0 ? rotation : ""}`);
+    }
   }
   if (filters.has("HOME_SYSTEMS")) {
     if (filters.has("BASE_GAME")) {
