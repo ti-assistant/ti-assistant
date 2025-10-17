@@ -24,6 +24,7 @@ import { Optional } from "../../src/util/types/types";
 import { objectEntries, rem } from "../../src/util/util";
 import { ProcessedGame } from "../stats/processor";
 import styles from "./game-page.module.scss";
+import MultiStateToggle from "../../src/components/MultiStateToggle/MultiStateToggle";
 
 function FilterButton<T extends string | number>({
   filter,
@@ -75,7 +76,7 @@ function ThreeWayFilterButton<T extends string | number>({
     value = "Negative";
   }
   return (
-    <ThreeWayToggle
+    <MultiStateToggle
       selected={value}
       toggleFn={(newValue) => {
         setFilters((filters) => {
@@ -97,7 +98,7 @@ function ThreeWayFilterButton<T extends string | number>({
       }}
     >
       {text ?? filter}
-    </ThreeWayToggle>
+    </MultiStateToggle>
   );
 }
 

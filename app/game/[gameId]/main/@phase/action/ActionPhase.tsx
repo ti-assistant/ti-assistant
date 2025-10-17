@@ -71,6 +71,9 @@ import Imperial from "./StrategicActions/Imperial";
 import Politics from "./StrategicActions/Politics";
 import Technology from "./StrategicActions/Technology";
 import Warfare from "./StrategicActions/Warfare";
+import MultiStateToggle from "../../../../../../src/components/MultiStateToggle/MultiStateToggle";
+import { InfoRow } from "../../../../../../src/InfoRow";
+import FormattedDescription from "../../../../../../src/components/FormattedDescription/FormattedDescription";
 
 interface FactionActionButtonsProps {
   factionId: FactionId;
@@ -96,7 +99,7 @@ function SecondaryCheck({
         style={{
           justifyContent: "center",
           flexWrap: "wrap",
-          gap: rem(2),
+          gap: rem(4),
         }}
       >
         {orderedFactions.map((faction) => {
@@ -114,7 +117,7 @@ function SecondaryCheck({
               className="flexColumn"
               style={{ gap: rem(2) }}
             >
-              <ThreeWayToggle
+              <MultiStateToggle
                 key={faction.id}
                 selected={
                   secondaryState === "DONE"
@@ -123,18 +126,22 @@ function SecondaryCheck({
                     ? "Negative"
                     : undefined
                 }
-                toggleFn={(newVal) => {
-                  if (newVal === "Positive") {
-                    markSecondaryAsync(gameId, faction.id, "DONE");
-                  } else if (newVal === "Negative") {
-                    markSecondaryAsync(gameId, faction.id, "SKIPPED");
-                  } else {
+                toggleFn={(nextVal) => {
+                  if (!nextVal) {
                     markSecondaryAsync(gameId, faction.id, "PENDING");
+                  }
+                  switch (nextVal) {
+                    case "Positive":
+                      markSecondaryAsync(gameId, faction.id, "DONE");
+                      break;
+                    case "Negative":
+                      markSecondaryAsync(gameId, faction.id, "SKIPPED");
+                      break;
                   }
                 }}
               >
                 <FactionIcon factionId={faction.id} size={24} />
-              </ThreeWayToggle>
+              </MultiStateToggle>
               <FactionSecondaryTimer
                 factionId={faction.id}
                 active={primaryCompleted && secondaryState === "PENDING"}
@@ -357,6 +364,7 @@ export function AdditionalActions({
   const objectives = useObjectives();
   const planets = usePlanets();
   const state = useGameState();
+  const strategyCards = useStrategyCards();
   const viewOnly = useViewOnly();
 
   const currentTurn = useCurrentTurn();
@@ -458,6 +466,7 @@ export function AdditionalActions({
 
   switch (selectedAction) {
     case "Technology":
+      const strategyCard = strategyCards.Technology;
       if (!!primaryOnly || !!secondaryOnly) {
         const isActive = state?.activeplayer === factionId;
         const numTechs =
@@ -504,11 +513,20 @@ export function AdditionalActions({
             <div className="flexColumn" style={{ gap: rem(4), width: "100%" }}>
               <LabeledLine
                 leftLabel={
-                  <FormattedMessage
-                    id="mhqGMn"
-                    description="The main ability for a strategy card."
-                    defaultMessage="Primary"
-                  />
+                  <InfoRow
+                    infoTitle={`${strategyCard?.name} Primary`}
+                    infoContent={
+                      <FormattedDescription
+                        description={strategyCard?.primary}
+                      />
+                    }
+                  >
+                    <FormattedMessage
+                      id="mhqGMn"
+                      description="The main ability for a strategy card."
+                      defaultMessage="Primary"
+                    />
+                  </InfoRow>
                 }
                 rightLabel={
                   <Toggle
@@ -529,11 +547,20 @@ export function AdditionalActions({
           <div className="flexColumn" style={{ gap: rem(4), width: "100%" }}>
             <LabeledLine
               leftLabel={
-                <FormattedMessage
-                  id="PBW6vs"
-                  description="The alternate ability for a strategy card."
-                  defaultMessage="Secondary"
-                />
+                <InfoRow
+                  infoTitle={`${strategyCard?.name} Secondary`}
+                  infoContent={
+                    <FormattedDescription
+                      description={strategyCard?.secondary}
+                    />
+                  }
+                >
+                  <FormattedMessage
+                    id="PBW6vs"
+                    description="The alternate ability for a strategy card."
+                    defaultMessage="Secondary"
+                  />
+                </InfoRow>
               }
             />
             <Technology.AllSecondaries activeFactionId={activeFaction.id} />
@@ -546,7 +573,8 @@ export function AdditionalActions({
           </div>
         </div>
       );
-    case "Politics":
+    case "Politics": {
+      const strategyCard = strategyCards.Politics;
       return (
         <div
           className="flexColumn"
@@ -555,11 +583,18 @@ export function AdditionalActions({
           <React.Fragment>
             <LabeledLine
               leftLabel={
-                <FormattedMessage
-                  id="mhqGMn"
-                  description="The main ability for a strategy card."
-                  defaultMessage="Primary"
-                />
+                <InfoRow
+                  infoTitle={`${strategyCard?.name} Primary`}
+                  infoContent={
+                    <FormattedDescription description={strategyCard?.primary} />
+                  }
+                >
+                  <FormattedMessage
+                    id="mhqGMn"
+                    description="The main ability for a strategy card."
+                    defaultMessage="Primary"
+                  />
+                </InfoRow>
               }
               rightLabel={
                 <Toggle
@@ -578,11 +613,18 @@ export function AdditionalActions({
           </React.Fragment>
           <LabeledLine
             leftLabel={
-              <FormattedMessage
-                id="PBW6vs"
-                description="The alternate ability for a strategy card."
-                defaultMessage="Secondary"
-              />
+              <InfoRow
+                infoTitle={`${strategyCard?.name} Secondary`}
+                infoContent={
+                  <FormattedDescription description={strategyCard?.secondary} />
+                }
+              >
+                <FormattedMessage
+                  id="PBW6vs"
+                  description="The alternate ability for a strategy card."
+                  defaultMessage="Secondary"
+                />
+              </InfoRow>
             }
           />
           <SecondaryCheck
@@ -593,16 +635,25 @@ export function AdditionalActions({
           />
         </div>
       );
-    case "Diplomacy":
+    }
+    case "Diplomacy": {
+      const strategyCard = strategyCards.Diplomacy;
       return (
         <div className="flexColumn largeFont" style={{ ...style }}>
           <LabeledLine
             leftLabel={
-              <FormattedMessage
-                id="mhqGMn"
-                description="The main ability for a strategy card."
-                defaultMessage="Primary"
-              />
+              <InfoRow
+                infoTitle={`${strategyCard?.name} Primary`}
+                infoContent={
+                  <FormattedDescription description={strategyCard?.primary} />
+                }
+              >
+                <FormattedMessage
+                  id="mhqGMn"
+                  description="The main ability for a strategy card."
+                  defaultMessage="Primary"
+                />
+              </InfoRow>
             }
             rightLabel={
               <Toggle
@@ -622,11 +673,18 @@ export function AdditionalActions({
           <Diplomacy.Primary factionId={activeFaction.id} />
           <LabeledLine
             leftLabel={
-              <FormattedMessage
-                id="PBW6vs"
-                description="The alternate ability for a strategy card."
-                defaultMessage="Secondary"
-              />
+              <InfoRow
+                infoTitle={`${strategyCard?.name} Secondary`}
+                infoContent={
+                  <FormattedDescription description={strategyCard?.secondary} />
+                }
+              >
+                <FormattedMessage
+                  id="PBW6vs"
+                  description="The alternate ability for a strategy card."
+                  defaultMessage="Secondary"
+                />
+              </InfoRow>
             }
           />
           <Diplomacy.AllSecondaries activeFactionId={activeFaction.id} />
@@ -638,18 +696,27 @@ export function AdditionalActions({
           />
         </div>
       );
+    }
     case "Leadership":
     case "Construction":
-    case "Trade":
+    case "Trade": {
+      const strategyCard = strategyCards[selectedAction];
       return (
         <div className="flexColumn" style={{ width: "100%" }}>
           <LabeledLine
             leftLabel={
-              <FormattedMessage
-                id="mhqGMn"
-                description="The main ability for a strategy card."
-                defaultMessage="Primary"
-              />
+              <InfoRow
+                infoTitle={`${strategyCard?.name} Primary`}
+                infoContent={
+                  <FormattedDescription description={strategyCard?.primary} />
+                }
+              >
+                <FormattedMessage
+                  id="mhqGMn"
+                  description="The main ability for a strategy card."
+                  defaultMessage="Primary"
+                />
+              </InfoRow>
             }
             rightLabel={
               <Toggle
@@ -666,11 +733,18 @@ export function AdditionalActions({
           />
           <LabeledLine
             leftLabel={
-              <FormattedMessage
-                id="PBW6vs"
-                description="The alternate ability for a strategy card."
-                defaultMessage="Secondary"
-              />
+              <InfoRow
+                infoTitle={`${strategyCard?.name} Secondary`}
+                infoContent={
+                  <FormattedDescription description={strategyCard?.secondary} />
+                }
+              >
+                <FormattedMessage
+                  id="PBW6vs"
+                  description="The alternate ability for a strategy card."
+                  defaultMessage="Secondary"
+                />
+              </InfoRow>
             }
           />
           <SecondaryCheck
@@ -681,7 +755,9 @@ export function AdditionalActions({
           />
         </div>
       );
+    }
     case "Warfare": {
+      const strategyCard = strategyCards.Warfare;
       return (
         <div
           className="flexColumn"
@@ -690,11 +766,18 @@ export function AdditionalActions({
           <React.Fragment>
             <LabeledLine
               leftLabel={
-                <FormattedMessage
-                  id="mhqGMn"
-                  description="The main ability for a strategy card."
-                  defaultMessage="Primary"
-                />
+                <InfoRow
+                  infoTitle={`${strategyCard?.name} Primary`}
+                  infoContent={
+                    <FormattedDescription description={strategyCard?.primary} />
+                  }
+                >
+                  <FormattedMessage
+                    id="mhqGMn"
+                    description="The main ability for a strategy card."
+                    defaultMessage="Primary"
+                  />
+                </InfoRow>
               }
               rightLabel={
                 <Toggle
@@ -714,11 +797,18 @@ export function AdditionalActions({
           </React.Fragment>
           <LabeledLine
             leftLabel={
-              <FormattedMessage
-                id="PBW6vs"
-                description="The alternate ability for a strategy card."
-                defaultMessage="Secondary"
-              />
+              <InfoRow
+                infoTitle={`${strategyCard?.name} Secondary`}
+                infoContent={
+                  <FormattedDescription description={strategyCard?.secondary} />
+                }
+              >
+                <FormattedMessage
+                  id="PBW6vs"
+                  description="The alternate ability for a strategy card."
+                  defaultMessage="Secondary"
+                />
+              </InfoRow>
             }
           />
           <SecondaryCheck
@@ -730,7 +820,8 @@ export function AdditionalActions({
         </div>
       );
     }
-    case "Imperial":
+    case "Imperial": {
+      const strategyCard = strategyCards.Imperial;
       return (
         <div
           className="flexColumn largeFont"
@@ -738,11 +829,18 @@ export function AdditionalActions({
         >
           <LabeledLine
             leftLabel={
-              <FormattedMessage
-                id="mhqGMn"
-                description="The main ability for a strategy card."
-                defaultMessage="Primary"
-              />
+              <InfoRow
+                infoTitle={`${strategyCard?.name} Primary`}
+                infoContent={
+                  <FormattedDescription description={strategyCard?.primary} />
+                }
+              >
+                <FormattedMessage
+                  id="mhqGMn"
+                  description="The main ability for a strategy card."
+                  defaultMessage="Primary"
+                />
+              </InfoRow>
             }
             rightLabel={
               <Toggle
@@ -760,11 +858,18 @@ export function AdditionalActions({
           <Imperial.Primary factionId={activeFaction.id} />
           <LabeledLine
             leftLabel={
-              <FormattedMessage
-                id="PBW6vs"
-                description="The alternate ability for a strategy card."
-                defaultMessage="Secondary"
-              />
+              <InfoRow
+                infoTitle={`${strategyCard?.name} Secondary`}
+                infoContent={
+                  <FormattedDescription description={strategyCard?.secondary} />
+                }
+              >
+                <FormattedMessage
+                  id="PBW6vs"
+                  description="The alternate ability for a strategy card."
+                  defaultMessage="Secondary"
+                />
+              </InfoRow>
             }
           />
           <SecondaryCheck
@@ -775,6 +880,7 @@ export function AdditionalActions({
           />
         </div>
       );
+    }
     case "Component":
       return <ComponentAction factionId={activeFaction.id} />;
     case "Pass":

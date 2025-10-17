@@ -31,6 +31,8 @@ interface BaseStrategyCard {
   name: string;
   omegas?: Omega<BaseStrategyCard>[];
   order: number;
+  primary: string;
+  secondary: string;
 }
 
 interface GameStrategyCard {

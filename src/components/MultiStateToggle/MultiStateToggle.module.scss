@@ -1,0 +1,99 @@
+.ToggleContainer {
+  --border-color: green;
+  --toggle-color: #444;
+
+  --transition-speed: 100ms;
+
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  background-color: var(--toggle-color);
+  border-radius: 1.25rem;
+  border: var(--border-size) solid var(--border-color);
+  gap: 0.25rem;
+  padding-right: 0.375rem;
+  cursor: pointer;
+
+  font-size: 0.875rem;
+}
+
+.ToggleContainer > input[type="checkbox"] {
+  appearance: none;
+}
+
+.ToggleContainer > input[type="checkbox"]::before {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 100%;
+  margin: 0.125rem 0.125rem 0.125rem 0.125rem;
+}
+
+.ToggleContainer:hover {
+  background-color: var(--hovered-bg);
+  border: var(--border-size) solid var(--neutral-border);
+}
+
+.ToggleContainer.disabled,
+.ToggleContainer.disabled:hover {
+  background-color: var(--disabled-bg);
+  border: var(--border-size) solid var(--disabled-border);
+  color: var(--interactive-bg);
+  cursor: default;
+}
+
+.ToggleContainer.Negative {
+  color: var(--neutral-border);
+}
+
+.ToggleContainer > input[type="checkbox"]:not(:checked)::before {
+  content: "";
+  border-radius: 100%;
+  background-color: var(--background-color);
+}
+
+.ToggleContainer.Positive > input[type="checkbox"]:checked::before {
+  content: "✓";
+  font-size: 0.7rem;
+  background-color: var(--selected-border);
+  color: var(--background-color);
+}
+
+.ToggleContainer.Negative > input[type="checkbox"]:checked::before {
+  content: "⤫";
+  font-size: 0.8rem;
+  line-height: 0.85rem;
+  background-color: var(--background-color);
+  color: var(--neutral-border);
+}
+
+.ToggleContainer * {
+  cursor: pointer;
+}
+
+.ToggleContainer.disabled * {
+  cursor: default;
+}
+
+.ToggleInfo {
+  font-family: "Myriad Pro";
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 20rem;
+  padding: 0.25rem;
+  white-space: pre-line;
+  text-align: center;
+  font-size: 2rem;
+}
+
+@media only screen and (max-width: 56.25rem) {
+  .ToggleInfo {
+    font-size: 1.25rem;
+  }
+}

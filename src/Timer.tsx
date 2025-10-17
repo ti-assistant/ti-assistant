@@ -57,5 +57,5 @@ export function FactionSecondaryTimer({
     return timerFns.activateTimer(`${factionId}-secondary`);
   }, [factionId, viewOnly, timerFns, active]);
 
-  return <TimerDisplay time={factionTimer} style={style} />;
+  return <TimerDisplay time={factionTimer} hideHours style={style} />;
 }

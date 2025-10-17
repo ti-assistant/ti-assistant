@@ -10,9 +10,9 @@ import {
 import { FormattedMessage, useIntl } from "react-intl";
 import Chip from "../../src/components/Chip/Chip";
 import LabeledDiv from "../../src/components/LabeledDiv/LabeledDiv";
+import MultiStateToggle from "../../src/components/MultiStateToggle/MultiStateToggle";
 import NonGameHeader from "../../src/components/NonGameHeader/NonGameHeader";
 import { Strings } from "../../src/components/strings";
-import ThreeWayToggle from "../../src/components/ThreeWayToggle/ThreeWayToggle";
 import TimerDisplay from "../../src/components/TimerDisplay/TimerDisplay";
 import Toggle from "../../src/components/Toggle/Toggle";
 import { Loader } from "../../src/Loader";
@@ -77,7 +77,7 @@ function ThreeWayFilterButton<T extends string | number>({
     value = "Negative";
   }
   return (
-    <ThreeWayToggle
+    <MultiStateToggle
       selected={value}
       toggleFn={(newValue) => {
         setFilters((filters) => {
@@ -99,29 +99,7 @@ function ThreeWayFilterButton<T extends string | number>({
       }}
     >
       {text ?? filter}
-    </ThreeWayToggle>
-  );
-}
-
-function CountButton<T extends string | number>({
-  filter,
-  filters,
-  setFilters,
-}: {
-  filter: T;
-  filters: T;
-  setFilters: (value: T) => void;
-}) {
-  return (
-    <Chip
-      selected={filters === filter}
-      toggleFn={(prevValue) => {
-        setFilters(filter);
-      }}
-      fontSize={14}
-    >
-      {filter}
-    </Chip>
+    </MultiStateToggle>
   );
 }
 

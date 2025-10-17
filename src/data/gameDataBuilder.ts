@@ -519,10 +519,14 @@ export function buildCompleteStrategyCards(
 ) {
   const strategyCards = storedGameData.strategycards ?? {};
 
+  const omegaMergeFn = buildMergeFunction(storedGameData.options.expansions);
+
   const cards: Partial<Record<StrategyCardId, StrategyCard>> = {};
   objectEntries(baseData.strategycards).forEach(([cardId, card]) => {
+    const updatedCard = omegaMergeFn(card);
+
     cards[cardId] = {
-      ...card,
+      ...updatedCard,
       ...(strategyCards[cardId] ?? {}),
     };
   });
