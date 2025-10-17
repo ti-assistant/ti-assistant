@@ -88,6 +88,7 @@ import PurgePlanet from "./components/PurgePlanet";
 import Strategize from "./components/Strategize";
 import TaZernDeepwrought from "./components/TaZernDeepwrought";
 import VaultsOfTheHeir from "./components/VaultsOfTheHeir";
+import SilverFlame from "./components/SilverFlame";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -1209,28 +1210,27 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       break;
     }
     case "Planetary Rigs": {
-      leftLabel = undefined;
       innerContent = <PlanetaryRigs factionId={factionId} />;
       break;
     }
     case "Overrule": {
-      leftLabel = undefined;
       innerContent = <Overrule factionId={factionId} />;
       break;
     }
     case "Strategize": {
-      leftLabel = undefined;
       innerContent = <Strategize factionId={factionId} />;
       break;
     }
     case "Vaults of the Heir": {
-      leftLabel = undefined;
       innerContent = <VaultsOfTheHeir factionId={factionId} />;
       break;
     }
     case "Ta Zern (Deepwrought)": {
-      leftLabel = undefined;
       innerContent = <TaZernDeepwrought factionId={factionId} />;
+      break;
+    }
+    case "The Silver Flame": {
+      innerContent = <SilverFlame.Content factionId={factionId} />;
       break;
     }
 

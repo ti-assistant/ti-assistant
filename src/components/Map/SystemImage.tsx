@@ -5,6 +5,7 @@ import { Optional } from "../../util/types/types";
 import { rem } from "../../util/util";
 import styles from "./GameMap.module.scss";
 import PlanetOverlay, { OverlayDetails } from "./PlanetOverlay";
+import { useSystem } from "../../context/dataHooks";
 
 function getRotationClass(key: string) {
   switch (key) {
@@ -71,6 +72,11 @@ export default function SystemImage({
 }) {
   if (!systemNumber || systemNumber === "0") {
     return <EmptyHex />;
+  }
+  const system = useSystem(systemNumber as SystemId);
+
+  if (system && system.purged) {
+    return null;
   }
 
   // Systems with a rotation applied to them.

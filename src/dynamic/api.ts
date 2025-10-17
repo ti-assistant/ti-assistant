@@ -161,6 +161,7 @@ const updatePlanetStateFn = import("../util/api/updatePlanetState").then(
 const playAdjudicatorBaalModule = import("../util/api/playAdjudicatorBaal");
 const swapMapTilesModule = import("../util/api/swapMapTiles");
 const gainAllianceModule = import("../util/api/gainAlliance");
+const purgeSystemModule = import("../util/api/purgeSystem");
 
 export async function addAttachmentAsync(
   gameId: string,
@@ -709,4 +710,14 @@ export async function playAdjudicatorBaalAsync(
 ) {
   const mod = await playAdjudicatorBaalModule;
   mod.playAdjudicatorBaal(gameId, systemId);
+}
+
+export async function purgeSystemAsync(gameId: string, systemId: SystemId) {
+  const mod = await purgeSystemModule;
+  mod.purgeSystem(gameId, systemId);
+}
+
+export async function unpurgeSystemAsync(gameId: string, systemId: SystemId) {
+  const mod = await purgeSystemModule;
+  mod.unpurgeSystem(gameId, systemId);
 }

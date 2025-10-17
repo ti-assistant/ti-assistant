@@ -7,7 +7,9 @@ interface BaseSystem {
   type: SystemType;
 }
 
-interface GameSystem {}
+interface GameSystem {
+  purged?: boolean;
+}
 
 type System = BaseSystem & GameSystem;
 

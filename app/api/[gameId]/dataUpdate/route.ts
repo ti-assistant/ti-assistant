@@ -36,11 +36,16 @@ import {
   ClaimPlanetHandler,
   UnclaimPlanetHandler,
 } from "../../../../src/util/model/claimPlanet";
+import { CommitToExpeditionHandler } from "../../../../src/util/model/commitToExpedition";
 import {
   ContinueGameHandler,
   EndGameHandler,
 } from "../../../../src/util/model/endGame";
 import { EndTurnHandler } from "../../../../src/util/model/endTurn";
+import {
+  GainAllianceHandler,
+  LoseAllianceHandler,
+} from "../../../../src/util/model/gainAlliance";
 import {
   GainRelicHandler,
   LoseRelicHandler,
@@ -76,6 +81,14 @@ import {
   UnplayRiderHandler,
 } from "../../../../src/util/model/playRider";
 import {
+  PurgeSystemHandler,
+  UnpurgeSystemHandler,
+} from "../../../../src/util/model/purgeSystem";
+import {
+  PurgeTechHandler,
+  UnpurgeTechHandler,
+} from "../../../../src/util/model/purgeTech";
+import {
   RepealAgendaHandler,
   ResolveAgendaHandler,
 } from "../../../../src/util/model/resolveAgenda";
@@ -105,20 +118,11 @@ import { SpeakerTieBreakHandler } from "../../../../src/util/model/speakerTieBre
 import { StartVotingHandler } from "../../../../src/util/model/startVoting";
 import { SwapMapTilesHandler } from "../../../../src/util/model/swapMapTiles";
 import { SwapStrategyCardsHandler } from "../../../../src/util/model/swapStrategyCards";
+import { PassHandler, UnpassHandler } from "../../../../src/util/model/unpass";
+import { UpdateBreakthroughStateHandler } from "../../../../src/util/model/updateBreakthroughState";
 import { UpdateLeaderStateHandler } from "../../../../src/util/model/updateLeaderState";
 import { UpdatePlanetStateHandler } from "../../../../src/util/model/updatePlanetState";
 import { Optional } from "../../../../src/util/types/types";
-import { UpdateBreakthroughStateHandler } from "../../../../src/util/model/updateBreakthroughState";
-import { CommitToExpeditionHandler } from "../../../../src/util/model/commitToExpedition";
-import {
-  GainAllianceHandler,
-  LoseAllianceHandler,
-} from "../../../../src/util/model/gainAlliance";
-import {
-  PurgeTechHandler,
-  UnpurgeTechHandler,
-} from "../../../../src/util/model/purgeTech";
-import { PassHandler, UnpassHandler } from "../../../../src/util/model/unpass";
 
 export async function POST(
   req: Request,
@@ -596,6 +600,12 @@ function updateInTransaction(
         break;
       case "PASS":
         handler = new PassHandler(gameData, data);
+        break;
+      case "PURGE_SYSTEM":
+        handler = new PurgeSystemHandler(gameData, data);
+        break;
+      case "UNPURGE_SYSTEM":
+        handler = new UnpurgeSystemHandler(gameData, data);
         break;
 
       case "UNDO": {

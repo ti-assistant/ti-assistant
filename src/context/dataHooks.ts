@@ -169,6 +169,9 @@ type Systems = Partial<Record<SystemId, System>>;
 export function useSystems() {
   return useGameDataValue<Systems>("systems", {});
 }
+export function useSystem(systemId: SystemId) {
+  return useGameDataValue<Optional<System>>(`systems.${systemId}`, undefined);
+}
 
 type Techs = Partial<Record<TechId, Tech>>;
 export function useTechs() {
