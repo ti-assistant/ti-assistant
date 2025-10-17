@@ -304,6 +304,7 @@ interface ContinueGameData {
 
 interface EndTurnEvent {
   samePlayer?: boolean;
+  jumpToPlayer?: FactionId;
   // Set by server
   prevFaction?: string;
   selectedAction?: string;

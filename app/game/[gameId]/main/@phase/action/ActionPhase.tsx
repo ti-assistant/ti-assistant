@@ -21,6 +21,8 @@ import TechResearchSection from "../../../../../../src/components/TechResearchSe
 import ThreeWayToggle from "../../../../../../src/components/ThreeWayToggle/ThreeWayToggle";
 import Toggle from "../../../../../../src/components/Toggle/Toggle";
 import {
+  useActionCard,
+  useActionCards,
   useCurrentTurn,
   useGameId,
   usePlanets,
@@ -231,6 +233,10 @@ export function FactionActionButtons({ factionId }: FactionActionButtonsProps) {
   const viewOnly = useViewOnly();
 
   function canFactionPass(factionId: FactionId) {
+    const faction = factions[factionId];
+    if (faction?.passed) {
+      return false;
+    }
     for (const card of getStrategyCardsForFaction(strategyCards, factionId)) {
       if (!card.used) {
         return false;
@@ -1039,8 +1045,11 @@ interface NextPlayerButtonsProps {
 export function NextPlayerButtons({
   buttonStyle = {},
 }: NextPlayerButtonsProps) {
+  const puppets = useActionCard("Puppets on a String");
   const gameId = useGameId();
   const currentTurn = useCurrentTurn();
+  const factions = useFactions();
+  const state = useGameState();
   const viewOnly = useViewOnly();
   const selectedAction = getSelectedActionFromLog(currentTurn);
   const newSpeaker = getNewSpeakerEventFromLog(currentTurn);
@@ -1068,45 +1077,81 @@ export function NextPlayerButtons({
     return !!selectedAction;
   }
 
+  const passedFactions = Object.values(factions).filter(
+    (faction) => faction.passed && faction.id !== state.activeplayer
+  );
+
   if (!isTurnComplete()) {
     return null;
   } else {
     return (
-      <div className="flexRow" style={{ gap: rem(16) }}>
-        <button
-          onClick={completeActions}
-          className={styles.EndTurnButton}
-          style={buttonStyle}
-          disabled={viewOnly}
-        >
-          <FormattedMessage
-            id="NxpzKH"
-            description="Text on a button that will end the player's turn."
-            defaultMessage="End Turn"
-          />
-        </button>
-        {selectedAction !== "Pass" ? (
-          <React.Fragment>
-            <div style={{ fontSize: rem(16) }}>
-              <FormattedMessage
-                id="PnNSxg"
-                description="Text between two fields linking them together."
-                defaultMessage="OR"
-              />
-            </div>
-            <button
-              onClick={finalizeAction}
-              className={styles.EndTurnButton}
-              style={buttonStyle}
-              disabled={viewOnly}
-            >
-              <FormattedMessage
-                id="5ChhqO"
-                description="Text on a button that will let the player take another action."
-                defaultMessage="Take Another Action"
-              />
-            </button>
-          </React.Fragment>
+      <div className="flexColumn">
+        <div className="flexRow" style={{ gap: rem(16) }}>
+          <button
+            onClick={completeActions}
+            className={styles.EndTurnButton}
+            style={buttonStyle}
+            disabled={viewOnly}
+          >
+            <FormattedMessage
+              id="NxpzKH"
+              description="Text on a button that will end the player's turn."
+              defaultMessage="End Turn"
+            />
+          </button>
+          {selectedAction !== "Pass" ? (
+            <React.Fragment>
+              <div style={{ fontSize: rem(16) }}>
+                <FormattedMessage
+                  id="PnNSxg"
+                  description="Text between two fields linking them together."
+                  defaultMessage="OR"
+                />
+              </div>
+              <button
+                onClick={finalizeAction}
+                className={styles.EndTurnButton}
+                style={buttonStyle}
+                disabled={viewOnly}
+              >
+                <FormattedMessage
+                  id="5ChhqO"
+                  description="Text on a button that will let the player take another action."
+                  defaultMessage="Take Another Action"
+                />
+              </button>
+            </React.Fragment>
+          ) : null}
+        </div>
+        {puppets && passedFactions.length > 0 ? (
+          <LabeledDiv
+            label={
+              <InfoRow
+                infoTitle={puppets.name}
+                infoContent={puppets.description}
+              >
+                Puppets on a String
+              </InfoRow>
+            }
+            style={{ width: "min-content" }}
+            innerStyle={{
+              flexDirection: "row",
+              gap: rem(2),
+              justifyContent: "center",
+            }}
+          >
+            {passedFactions.map((faction) => {
+              return (
+                <button
+                  key={faction.id}
+                  style={{ borderRadius: "100%", padding: rem(2) }}
+                  onClick={() => endTurnAsync(gameId, false, faction.id)}
+                >
+                  <FactionIcon factionId={faction.id} size={20} />
+                </button>
+              );
+            })}
+          </LabeledDiv>
         ) : null}
       </div>
     );

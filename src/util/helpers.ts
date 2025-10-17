@@ -66,6 +66,9 @@ export function getOnDeckFaction(
       return faction;
     }
     case "ACTION": {
+      const activeplayer = state.lastActivePlayer
+        ? state.lastActivePlayer
+        : state.activeplayer;
       const orderedStrategyCards = Object.values(strategyCards).sort(
         (a, b) => a.order - b.order
       );
@@ -81,7 +84,7 @@ export function getOnDeckFaction(
         }
       );
       const activeIndex = filteredStrategyCards.findIndex(
-        (card) => card.faction === state.activeplayer
+        (card) => card.faction === activeplayer
       );
       if (activeIndex === -1) {
         return undefined;
@@ -108,12 +111,12 @@ export function getOnDeckFaction(
           return factions[factionId];
         }
       }
-      if (!state.activeplayer) {
+      if (!activeplayer) {
         return undefined;
       }
       const currentFaction =
-        state.activeplayer && state.activeplayer !== "None"
-          ? factions[state.activeplayer]
+        activeplayer && activeplayer !== "None"
+          ? factions[activeplayer]
           : undefined;
       return currentFaction?.passed ? undefined : currentFaction;
     }

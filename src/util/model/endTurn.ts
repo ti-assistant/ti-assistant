@@ -37,8 +37,14 @@ export class EndTurnHandler implements Handler {
       [`state.paused`]: false,
       [`sequenceNum`]: "INCREMENT",
     };
-    if (!this.data.event.samePlayer) {
+    if (this.data.event.jumpToPlayer) {
+      updates[`state.activeplayer`] = this.data.event.jumpToPlayer;
+      updates[`state.lastActivePlayer`] =
+        this.gameData.state.lastActivePlayer ??
+        this.gameData.state.activeplayer;
+    } else if (!this.data.event.samePlayer) { 
       updates[`state.activeplayer`] = onDeckFaction ? onDeckFaction.id : "None";
+      updates[`state.lastActivePlayer`] = "DELETE";
     }
 
     for (const factionId of Object.keys(this.gameData.factions)) {

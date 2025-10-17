@@ -274,9 +274,13 @@ export async function endGameAsync(gameId: string) {
   endGame(gameId);
 }
 
-export async function endTurnAsync(gameId: string, samePlayer?: boolean) {
+export async function endTurnAsync(
+  gameId: string,
+  samePlayer?: boolean,
+  jumpToPlayer?: FactionId
+) {
   const endTurn = await endTurnFn;
-  endTurn(gameId, samePlayer);
+  endTurn(gameId, samePlayer, jumpToPlayer);
 }
 
 export async function gainRelicAsync(

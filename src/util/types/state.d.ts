@@ -32,6 +32,8 @@ interface GameState {
   agendaNum?: number;
   agendaUnlocked?: boolean;
   finalPhase?: Phase;
+  // Used when jumping around in turn order.
+  lastActivePlayer?: FactionId;
   paused?: boolean;
   phase: Phase;
   round: number;
