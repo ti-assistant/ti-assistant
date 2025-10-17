@@ -70,10 +70,10 @@ export default function SystemImage({
   selectable?: boolean;
   systemNumber: Optional<string>;
 }) {
+  const system = useSystem(systemNumber as SystemId);
   if (!systemNumber || systemNumber === "0") {
     return <EmptyHex />;
   }
-  const system = useSystem(systemNumber as SystemId);
 
   if (system && system.purged) {
     return null;
