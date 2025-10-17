@@ -166,7 +166,6 @@ export default function getThundersEdgeActionCards(
       }),
       timing: "COMPONENT_ACTION",
     },
-    // TODO: Add ability to "unpass"
     "Puppets on a String": {
       count: 1,
       description: intl.formatMessage(

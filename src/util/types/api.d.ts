@@ -60,6 +60,7 @@ type GameUpdateData =
   | SwapMapTilesData
   | CommitToExpeditionData
   | (GainAllianceData | LoseAllianceData)
+  | (PassData | UnpassData)
   | UndoData;
 
 type Secondary = "PENDING" | "DONE" | "SKIPPED";
@@ -319,6 +320,20 @@ interface EndTurnData {
 interface UnendTurnData {
   action: "UNEND_TURN";
   event: EndTurnEvent;
+}
+
+interface UnpassEvent {
+  factionId: FactionId;
+}
+
+interface UnpassData {
+  action: "UNPASS";
+  event: UnpassEvent;
+}
+
+interface PassData {
+  action: "PASS";
+  event: UnpassEvent;
 }
 
 interface GainRelicEvent {

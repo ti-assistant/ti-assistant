@@ -2672,7 +2672,7 @@
     "description": "Name of Rebellion Commander: Ahk Siever"
   },
   "Crimson Rebellion.Leaders.Ahk Siever.Unlock": {
-    "defaultMessage": "TODO: Add unlock condition",
+    "defaultMessage": "Resolve a combat with another player.",
     "description": "Unlock condition for Rebellion Commander: Ahk Siever"
   },
   "Crimson Rebellion.Leaders.TODO: Fragment Reality.AbilityName": {
@@ -2702,6 +2702,14 @@
   "Crimson Rebellion.Shortname": {
     "defaultMessage": "Rebellion",
     "description": "Shortened version of Faction name: Crimson Rebellion"
+  },
+  "Crimson Rebellion.Techs.Exile II.Description": {
+    "defaultMessage": "At the end of any player's combat in this unit's system or up to 2 systems away, you may place one active or inactive breach in the system.",
+    "description": "Description for Tech: Exile II"
+  },
+  "Crimson Rebellion.Techs.Exile II.Title": {
+    "defaultMessage": "Exile II",
+    "description": "Title of Tech: Exile II"
   },
   "Crimson Rebellion.Techs.Subatomic Splicer.Description": {
     "defaultMessage": "When one of your ships is destroyed, you may produce a ship of the same type at a space dock in your home system.",
@@ -3528,7 +3536,7 @@
     "description": "Name of Firmament Commander: Captain Aroz"
   },
   "Firmament.Leaders.Captain Aroz.Unlock": {
-    "defaultMessage": "TODO: Add unlock criteria.",
+    "defaultMessage": "Have one plot card in play.",
     "description": "Unlock condition for Firmament Commander: Captain Aroz"
   },
   "Firmament.Leaders.Myru Vos.Description": {
@@ -3539,17 +3547,17 @@
     "defaultMessage": "Myru Vos",
     "description": "Name of Firmament Agent: Myru Vos"
   },
-  "Firmament.Leaders.TODO: The Blade Beckons.AbilityName": {
+  "Firmament.Leaders.Sharsiss.AbilityName": {
     "defaultMessage": "THE BLADE BECKONS",
-    "description": "Ability name for Firmament Hero: TODO: The Blade Beckons"
+    "description": "Ability name for Firmament Hero: Sharsiss"
   },
-  "Firmament.Leaders.TODO: The Blade Beckons.Description": {
+  "Firmament.Leaders.Sharsiss.Description": {
     "defaultMessage": "ACTION: Place 1 of your plot cards in play with any other player's control token on it. Then, you may place any player's control token on 1 of your in-play plot cards; one plot cannot have two of the same player's tokens.{br}Then, purge this card.",
-    "description": "Description for Firmament Hero: TODO: The Blade Beckons"
+    "description": "Description for Firmament Hero: Sharsiss"
   },
-  "Firmament.Leaders.TODO: The Blade Beckons.Name": {
-    "defaultMessage": "TODO: The Blade Beckons",
-    "description": "Name of Firmament Hero: TODO: The Blade Beckons"
+  "Firmament.Leaders.Sharsiss.Name": {
+    "defaultMessage": "Sharsiss",
+    "description": "Name of Firmament Hero: Sharsiss"
   },
   "Firmament.Name": {
     "defaultMessage": "Firmament",
@@ -5636,20 +5644,20 @@
     "description": "Name of Obsidian Commander: Aroz Hollow"
   },
   "Obsidian.Leaders.Aroz Hollow.Unlock": {
-    "defaultMessage": "TODO: Add unlock criteria.",
+    "defaultMessage": "Have units in The Fracture.",
     "description": "Unlock condition for Obsidian Commander: Aroz Hollow"
   },
-  "Obsidian.Leaders.TODO: The Blade Revealed.AbilityName": {
+  "Obsidian.Leaders.Sharsiss Hollow.AbilityName": {
     "defaultMessage": "THE BLADE REVEALED",
-    "description": "Ability name for Obsidian Hero: TODO: The Blade Revealed"
+    "description": "Ability name for Obsidian Hero: Sharsiss Hollow"
   },
-  "Obsidian.Leaders.TODO: The Blade Revealed.Description": {
+  "Obsidian.Leaders.Sharsiss Hollow.Description": {
     "defaultMessage": "ACTION: Ready all of your planets.{br}Then, purge this card.",
-    "description": "Description for Obsidian Hero: TODO: The Blade Revealed"
+    "description": "Description for Obsidian Hero: Sharsiss Hollow"
   },
-  "Obsidian.Leaders.TODO: The Blade Revealed.Name": {
-    "defaultMessage": "TODO: The Blade Revealed",
-    "description": "Name of Obsidian Hero: TODO: The Blade Revealed"
+  "Obsidian.Leaders.Sharsiss Hollow.Name": {
+    "defaultMessage": "Sharsiss Hollow",
+    "description": "Name of Obsidian Hero: Sharsiss Hollow"
   },
   "Obsidian.Leaders.Vos Hollow.Description": {
     "defaultMessage": "When a player's ship is destroyed during any combat:{br}You may exhaust this card; if you do, that player's opponent must destroy 1 of their ships of the same type in the active system.",
@@ -6391,33 +6399,129 @@
     "defaultMessage": "Thunder's Edge",
     "description": "Text on a button that will enable/disable the Thunder's Edge expansion."
   },
+  "Strategy Cards.Construction.POK.Secondary": {
+    "defaultMessage": "Spend 1 token from your strategy pool and place it in any system; you may place either 1 space dock or 1 PDS on a planet you control in that system.",
+    "description": "Secondary of Strategy Card: Construction"
+  },
+  "Strategy Cards.Construction.Primary": {
+    "defaultMessage": "Place 1 PDS or 1 Space Dock on a planet you control.{br}Place 1 PDS on a planet you control.",
+    "description": "Primary of Strategy Card: Construction"
+  },
+  "Strategy Cards.Construction.Secondary": {
+    "defaultMessage": "Place 1 token from your strategy pool in any system; you may place either 1 space dock or 1 PDS on a planet you control in that system.",
+    "description": "Secondary of Strategy Card: Construction"
+  },
+  "Strategy Cards.Construction.TE.Primary": {
+    "defaultMessage": "Either place 1 structure on a planet you control, or use the PRODUCTION ability of 1 of your space docks.{br}Place 1 structure on a planet you control.",
+    "description": "Primary of Strategy Card: Construction"
+  },
+  "Strategy Cards.Construction.TE.Secondary": {
+    "defaultMessage": "Spend 1 token from your strategy pool to place 1 structure on a planet you control.",
+    "description": "Secondary of Strategy Card: Construction"
+  },
   "Strategy Cards.Construction.Title": {
     "defaultMessage": "Construction",
     "description": "Title of Strategy Card: Construction"
+  },
+  "Strategy Cards.Diplomacy.Codex I.Primary": {
+    "defaultMessage": "Choose 1 system other than the Mecatol Rex system that contains a planet you control; each other player places a command token from their reinforcements in the chosen system. Then, ready up to 2 exhausted planets you control.",
+    "description": "Primary of Strategy Card: Diplomacy"
+  },
+  "Strategy Cards.Diplomacy.Codex I.Secondary": {
+    "defaultMessage": "Spend 1 token from your strategy pool to ready up to 2 exhausted planets you control.",
+    "description": "Secondary of Strategy Card: Diplomacy"
+  },
+  "Strategy Cards.Diplomacy.Codex One.Primary": {
+    "defaultMessage": "Choose 1 system other than the Mecatol Rex system that contains a planet you control; each other player places a command token from their reinforcements in the chosen system. Then, ready up to 2 exhausted planets you control.",
+    "description": "Primary of Strategy Card: Diplomacy"
+  },
+  "Strategy Cards.Diplomacy.Primary": {
+    "defaultMessage": "Choose 1 system other than the Mecatol Rex system that contains a planet you control; each other player places a command token from their reinforcements in the chosen system. Then, ready each exhausted planet you control in that system.",
+    "description": "Primary of Strategy Card: Diplomacy"
+  },
+  "Strategy Cards.Diplomacy.Secondary": {
+    "defaultMessage": "Spend 1 token from your strategy pool to ready up to 2 exhausted planets.",
+    "description": "Secondary of Strategy Card: Diplomacy"
   },
   "Strategy Cards.Diplomacy.Title": {
     "defaultMessage": "Diplomacy",
     "description": "Title of Strategy Card: Diplomacy"
   },
+  "Strategy Cards.Imperial.Primary": {
+    "defaultMessage": "Immediately score 1 public objective if you fulfill its requirements.{br}Gain 1 victory point if you control Mecatol Rex; otherwise, draw 1 secret objective.",
+    "description": "Primary of Strategy Card: Imperial"
+  },
+  "Strategy Cards.Imperial.Secondary": {
+    "defaultMessage": "Spend 1 token from your strategy pool to draw 1 secret objective.",
+    "description": "Secondary of Strategy Card: Imperial"
+  },
   "Strategy Cards.Imperial.Title": {
     "defaultMessage": "Imperial",
     "description": "Title of Strategy Card: Imperial"
+  },
+  "Strategy Cards.Leadership.Primary": {
+    "defaultMessage": "Gain 3 command tokens.{br}Spend any amount of influence to gain 1 command token for every 3 influence spent.",
+    "description": "Primary of Strategy Card: Leadership"
+  },
+  "Strategy Cards.Leadership.Secondary": {
+    "defaultMessage": "Spend any amount of influence to gain 1 command token for every 3 influence spent.",
+    "description": "Secondary of Strategy Card: Leadership"
   },
   "Strategy Cards.Leadership.Title": {
     "defaultMessage": "Leadership",
     "description": "Title of Strategy Card: Leadership"
   },
+  "Strategy Cards.Politics.Primary": {
+    "defaultMessage": "Choose a player other than the speaker. That player gains the speaker token.{br}Draw 2 action cards.{br}Look at the top 2 cards of the agenda deck. Place each card on the top or bottom of the deck in any order.",
+    "description": "Primary of Strategy Card: Politics"
+  },
+  "Strategy Cards.Politics.Secondary": {
+    "defaultMessage": "Spend 1 token from your strategy pool to draw 2 action cards.",
+    "description": "Secondary of Strategy Card: Politics"
+  },
   "Strategy Cards.Politics.Title": {
     "defaultMessage": "Politics",
     "description": "Title of Strategy Card: Politics"
+  },
+  "Strategy Cards.Technology.Primary": {
+    "defaultMessage": "Research 1 technology.{br}Spend 6 resources to research 1 technology.",
+    "description": "Primary of Strategy Card: Technology"
+  },
+  "Strategy Cards.Technology.Secondary": {
+    "defaultMessage": "Spend 1 token from your strategy pool and 4 resources to research 1 technology.",
+    "description": "Secondary of Strategy Card: Technology"
   },
   "Strategy Cards.Technology.Title": {
     "defaultMessage": "Technology",
     "description": "Title of Strategy Card: Technology"
   },
+  "Strategy Cards.Trade.Primary": {
+    "defaultMessage": "Gain 3 trade goods.{br}Replenish commodities.{br}Choose any number of other players. Those players use the secondary ability of this strategy card without spending a command token.",
+    "description": "Primary of Strategy Card: Trade"
+  },
+  "Strategy Cards.Trade.Secondary": {
+    "defaultMessage": "Spend 1 token from your strategy pool to replenish your commodities.",
+    "description": "Secondary of Strategy Card: Trade"
+  },
   "Strategy Cards.Trade.Title": {
     "defaultMessage": "Trade",
     "description": "Title of Strategy Card: Trade"
+  },
+  "Strategy Cards.Warfare.Primary": {
+    "defaultMessage": "Remove 1 of your command tokens from the game board; then, gain 1 command token.{br}Redistribute any number of the command tokens on your command sheet.",
+    "description": "Primary of Strategy Card: Warfare"
+  },
+  "Strategy Cards.Warfare.Secondary": {
+    "defaultMessage": "Spend 1 token from your strategy pool to use the PRODUCTION ability of 1 of your space docks in your home system.",
+    "description": "Secondary of Strategy Card: Warfare"
+  },
+  "Strategy Cards.Warfare.TE.Primary": {
+    "defaultMessage": "Perform a tactical action in any system without placing a command token, even if the system already has your command token in it; that system still counts as being activated. You may redistribute your command tokens before and after this action.",
+    "description": "Primary of Strategy Card: Warfare"
+  },
+  "Strategy Cards.Warfare.TE.Secondary": {
+    "defaultMessage": "Spend 1 token from your strategy pool to use the PRODUCTION abilities of units in your home system.",
+    "description": "Secondary of Strategy Card: Warfare"
   },
   "Strategy Cards.Warfare.Title": {
     "defaultMessage": "Warfare",
@@ -6430,6 +6534,14 @@
   "SyY9is": {
     "defaultMessage": "{count} {count, plural, one {Dreadnought} other {Dreadnoughts}}",
     "description": "A number of Dreadnought units."
+  },
+  "Techs.4X4IC Helios VI II.Description": {
+    "defaultMessage": "This unit's PRODUCTION value is equal to 4 more than the resource value of this planet.{br}The resource value of this planet is increased by 2.{br}Up to 3 fighters in this system do not count against your ships' capacity.",
+    "description": "Description for Tech: 4X4IC Helios VI II"
+  },
+  "Techs.4X4IC Helios VI II.Title": {
+    "defaultMessage": "4X4IC \"Helios\" VI II",
+    "description": "Title of Tech: 4X4IC Helios VI II"
   },
   "Techs.AI Development Algorithm.Description": {
     "defaultMessage": "When you research a unit upgrade technology, you may exhaust this card to ignore any 1 prerequisite.{br}When 1 or more of your units use PRODUCTION, you may exhaust this card to reduce the combined cost of the produced units by the number of unit upgrade technologies that you own.",

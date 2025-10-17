@@ -131,6 +131,9 @@ type Leaders = Partial<Record<LeaderId, Leader>>;
 export function useLeaders() {
   return useGameDataValue<Leaders>("leaders", {});
 }
+export function useLeader(leaderId: LeaderId) {
+  return useGameDataValue<Optional<Leader>>(`leaders.${leaderId}`, undefined);
+}
 
 export function useOptions() {
   return useGameDataValue<Options>("options", BASE_OPTIONS);

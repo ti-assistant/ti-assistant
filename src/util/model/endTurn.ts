@@ -42,8 +42,15 @@ export class EndTurnHandler implements Handler {
       updates[`state.lastActivePlayer`] =
         this.gameData.state.lastActivePlayer ??
         this.gameData.state.activeplayer;
-    } else if (!this.data.event.samePlayer) { 
+    } else if (!this.data.event.samePlayer) {
       updates[`state.activeplayer`] = onDeckFaction ? onDeckFaction.id : "None";
+      if (
+        onDeckFaction &&
+        this.data.event.selectedAction === "Pass" &&
+        onDeckFaction.id === this.gameData.state.activeplayer
+      ) {
+        updates[`state.activeplayer`] = "None";
+      }
       updates[`state.lastActivePlayer`] = "DELETE";
     }
 

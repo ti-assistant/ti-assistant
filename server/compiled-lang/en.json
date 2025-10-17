@@ -5742,7 +5742,7 @@
   "Crimson Rebellion.Leaders.Ahk Siever.Unlock": [
     {
       "type": 0,
-      "value": "TODO: Add unlock condition"
+      "value": "Resolve a combat with another player."
     }
   ],
   "Crimson Rebellion.Leaders.TODO: Fragment Reality.AbilityName": [
@@ -5809,6 +5809,18 @@
     {
       "type": 0,
       "value": "Rebellion"
+    }
+  ],
+  "Crimson Rebellion.Techs.Exile II.Description": [
+    {
+      "type": 0,
+      "value": "At the end of any player's combat in this unit's system or up to 2 systems away, you may place one active or inactive breach in the system."
+    }
+  ],
+  "Crimson Rebellion.Techs.Exile II.Title": [
+    {
+      "type": 0,
+      "value": "Exile II"
     }
   ],
   "Crimson Rebellion.Techs.Subatomic Splicer.Description": [
@@ -7778,7 +7790,7 @@
   "Firmament.Leaders.Captain Aroz.Unlock": [
     {
       "type": 0,
-      "value": "TODO: Add unlock criteria."
+      "value": "Have one plot card in play."
     }
   ],
   "Firmament.Leaders.Myru Vos.Description": [
@@ -7801,13 +7813,13 @@
       "value": "Myru Vos"
     }
   ],
-  "Firmament.Leaders.TODO: The Blade Beckons.AbilityName": [
+  "Firmament.Leaders.Sharsiss.AbilityName": [
     {
       "type": 0,
       "value": "THE BLADE BECKONS"
     }
   ],
-  "Firmament.Leaders.TODO: The Blade Beckons.Description": [
+  "Firmament.Leaders.Sharsiss.Description": [
     {
       "type": 0,
       "value": "ACTION: Place 1 of your plot cards in play with any other player's control token on it. Then, you may place any player's control token on 1 of your in-play plot cards; one plot cannot have two of the same player's tokens."
@@ -7821,10 +7833,10 @@
       "value": "Then, purge this card."
     }
   ],
-  "Firmament.Leaders.TODO: The Blade Beckons.Name": [
+  "Firmament.Leaders.Sharsiss.Name": [
     {
       "type": 0,
-      "value": "TODO: The Blade Beckons"
+      "value": "Sharsiss"
     }
   ],
   "Firmament.Name": [
@@ -11620,16 +11632,16 @@
   "Obsidian.Leaders.Aroz Hollow.Unlock": [
     {
       "type": 0,
-      "value": "TODO: Add unlock criteria."
+      "value": "Have units in The Fracture."
     }
   ],
-  "Obsidian.Leaders.TODO: The Blade Revealed.AbilityName": [
+  "Obsidian.Leaders.Sharsiss Hollow.AbilityName": [
     {
       "type": 0,
       "value": "THE BLADE REVEALED"
     }
   ],
-  "Obsidian.Leaders.TODO: The Blade Revealed.Description": [
+  "Obsidian.Leaders.Sharsiss Hollow.Description": [
     {
       "type": 0,
       "value": "ACTION: Ready all of your planets."
@@ -11643,10 +11655,10 @@
       "value": "Then, purge this card."
     }
   ],
-  "Obsidian.Leaders.TODO: The Blade Revealed.Name": [
+  "Obsidian.Leaders.Sharsiss Hollow.Name": [
     {
       "type": 0,
-      "value": "TODO: The Blade Revealed"
+      "value": "Sharsiss Hollow"
     }
   ],
   "Obsidian.Leaders.Vos Hollow.Description": [
@@ -13141,10 +13153,86 @@
       "value": "Thunder's Edge"
     }
   ],
+  "Strategy Cards.Construction.POK.Secondary": [
+    {
+      "type": 0,
+      "value": "Spend 1 token from your strategy pool and place it in any system; you may place either 1 space dock or 1 PDS on a planet you control in that system."
+    }
+  ],
+  "Strategy Cards.Construction.Primary": [
+    {
+      "type": 0,
+      "value": "Place 1 PDS or 1 Space Dock on a planet you control."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Place 1 PDS on a planet you control."
+    }
+  ],
+  "Strategy Cards.Construction.Secondary": [
+    {
+      "type": 0,
+      "value": "Place 1 token from your strategy pool in any system; you may place either 1 space dock or 1 PDS on a planet you control in that system."
+    }
+  ],
+  "Strategy Cards.Construction.TE.Primary": [
+    {
+      "type": 0,
+      "value": "Either place 1 structure on a planet you control, or use the PRODUCTION ability of 1 of your space docks."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Place 1 structure on a planet you control."
+    }
+  ],
+  "Strategy Cards.Construction.TE.Secondary": [
+    {
+      "type": 0,
+      "value": "Spend 1 token from your strategy pool to place 1 structure on a planet you control."
+    }
+  ],
   "Strategy Cards.Construction.Title": [
     {
       "type": 0,
       "value": "Construction"
+    }
+  ],
+  "Strategy Cards.Diplomacy.Codex I.Primary": [
+    {
+      "type": 0,
+      "value": "Choose 1 system other than the Mecatol Rex system that contains a planet you control; each other player places a command token from their reinforcements in the chosen system. Then, ready up to 2 exhausted planets you control."
+    }
+  ],
+  "Strategy Cards.Diplomacy.Codex I.Secondary": [
+    {
+      "type": 0,
+      "value": "Spend 1 token from your strategy pool to ready up to 2 exhausted planets you control."
+    }
+  ],
+  "Strategy Cards.Diplomacy.Codex One.Primary": [
+    {
+      "type": 0,
+      "value": "Choose 1 system other than the Mecatol Rex system that contains a planet you control; each other player places a command token from their reinforcements in the chosen system. Then, ready up to 2 exhausted planets you control."
+    }
+  ],
+  "Strategy Cards.Diplomacy.Primary": [
+    {
+      "type": 0,
+      "value": "Choose 1 system other than the Mecatol Rex system that contains a planet you control; each other player places a command token from their reinforcements in the chosen system. Then, ready each exhausted planet you control in that system."
+    }
+  ],
+  "Strategy Cards.Diplomacy.Secondary": [
+    {
+      "type": 0,
+      "value": "Spend 1 token from your strategy pool to ready up to 2 exhausted planets."
     }
   ],
   "Strategy Cards.Diplomacy.Title": [
@@ -13153,10 +13241,50 @@
       "value": "Diplomacy"
     }
   ],
+  "Strategy Cards.Imperial.Primary": [
+    {
+      "type": 0,
+      "value": "Immediately score 1 public objective if you fulfill its requirements."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Gain 1 victory point if you control Mecatol Rex; otherwise, draw 1 secret objective."
+    }
+  ],
+  "Strategy Cards.Imperial.Secondary": [
+    {
+      "type": 0,
+      "value": "Spend 1 token from your strategy pool to draw 1 secret objective."
+    }
+  ],
   "Strategy Cards.Imperial.Title": [
     {
       "type": 0,
       "value": "Imperial"
+    }
+  ],
+  "Strategy Cards.Leadership.Primary": [
+    {
+      "type": 0,
+      "value": "Gain 3 command tokens."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Spend any amount of influence to gain 1 command token for every 3 influence spent."
+    }
+  ],
+  "Strategy Cards.Leadership.Secondary": [
+    {
+      "type": 0,
+      "value": "Spend any amount of influence to gain 1 command token for every 3 influence spent."
     }
   ],
   "Strategy Cards.Leadership.Title": [
@@ -13165,10 +13293,58 @@
       "value": "Leadership"
     }
   ],
+  "Strategy Cards.Politics.Primary": [
+    {
+      "type": 0,
+      "value": "Choose a player other than the speaker. That player gains the speaker token."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Draw 2 action cards."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Look at the top 2 cards of the agenda deck. Place each card on the top or bottom of the deck in any order."
+    }
+  ],
+  "Strategy Cards.Politics.Secondary": [
+    {
+      "type": 0,
+      "value": "Spend 1 token from your strategy pool to draw 2 action cards."
+    }
+  ],
   "Strategy Cards.Politics.Title": [
     {
       "type": 0,
       "value": "Politics"
+    }
+  ],
+  "Strategy Cards.Technology.Primary": [
+    {
+      "type": 0,
+      "value": "Research 1 technology."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Spend 6 resources to research 1 technology."
+    }
+  ],
+  "Strategy Cards.Technology.Secondary": [
+    {
+      "type": 0,
+      "value": "Spend 1 token from your strategy pool and 4 resources to research 1 technology."
     }
   ],
   "Strategy Cards.Technology.Title": [
@@ -13177,10 +13353,70 @@
       "value": "Technology"
     }
   ],
+  "Strategy Cards.Trade.Primary": [
+    {
+      "type": 0,
+      "value": "Gain 3 trade goods."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Replenish commodities."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Choose any number of other players. Those players use the secondary ability of this strategy card without spending a command token."
+    }
+  ],
+  "Strategy Cards.Trade.Secondary": [
+    {
+      "type": 0,
+      "value": "Spend 1 token from your strategy pool to replenish your commodities."
+    }
+  ],
   "Strategy Cards.Trade.Title": [
     {
       "type": 0,
       "value": "Trade"
+    }
+  ],
+  "Strategy Cards.Warfare.Primary": [
+    {
+      "type": 0,
+      "value": "Remove 1 of your command tokens from the game board; then, gain 1 command token."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Redistribute any number of the command tokens on your command sheet."
+    }
+  ],
+  "Strategy Cards.Warfare.Secondary": [
+    {
+      "type": 0,
+      "value": "Spend 1 token from your strategy pool to use the PRODUCTION ability of 1 of your space docks in your home system."
+    }
+  ],
+  "Strategy Cards.Warfare.TE.Primary": [
+    {
+      "type": 0,
+      "value": "Perform a tactical action in any system without placing a command token, even if the system already has your command token in it; that system still counts as being activated. You may redistribute your command tokens before and after this action."
+    }
+  ],
+  "Strategy Cards.Warfare.TE.Secondary": [
+    {
+      "type": 0,
+      "value": "Spend 1 token from your strategy pool to use the PRODUCTION abilities of units in your home system."
     }
   ],
   "Strategy Cards.Warfare.Title": [
@@ -13227,6 +13463,34 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "count"
+    }
+  ],
+  "Techs.4X4IC Helios VI II.Description": [
+    {
+      "type": 0,
+      "value": "This unit's PRODUCTION value is equal to 4 more than the resource value of this planet."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "The resource value of this planet is increased by 2."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Up to 3 fighters in this system do not count against your ships' capacity."
+    }
+  ],
+  "Techs.4X4IC Helios VI II.Title": [
+    {
+      "type": 0,
+      "value": "4X4IC \"Helios\" VI II"
     }
   ],
   "Techs.AI Development Algorithm.Description": [

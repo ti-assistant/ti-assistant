@@ -56,7 +56,8 @@ import {
   GainAllianceHandler,
   LoseAllianceHandler,
 } from "../model/gainAlliance";
-import { UnpurgeTechHandler } from "../model/purgeTech";
+import { PurgeTechHandler, UnpurgeTechHandler } from "../model/purgeTech";
+import { PassHandler, UnpassHandler } from "../model/unpass";
 
 export function getOppositeHandler(
   gameData: StoredGameData,
@@ -508,6 +509,20 @@ export function getOppositeHandler(
         action: "UNPURGE_TECH",
         event: data.event,
       });
-    case "UNPURGE_TECH": 
+    case "UNPURGE_TECH":
+      return new PurgeTechHandler(gameData, {
+        action: "PURGE_TECH",
+        event: data.event,
+      });
+    case "UNPASS":
+      return new PassHandler(gameData, {
+        action: "PASS",
+        event: data.event,
+      });
+    case "PASS":
+      return new UnpassHandler(gameData, {
+        action: "UNPASS",
+        event: data.event,
+      });
   }
 }

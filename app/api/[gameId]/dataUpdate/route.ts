@@ -118,6 +118,7 @@ import {
   PurgeTechHandler,
   UnpurgeTechHandler,
 } from "../../../../src/util/model/purgeTech";
+import { PassHandler, UnpassHandler } from "../../../../src/util/model/unpass";
 
 export async function POST(
   req: Request,
@@ -590,6 +591,13 @@ function updateInTransaction(
       case "UNPURGE_TECH":
         handler = new UnpurgeTechHandler(gameData, data);
         break;
+      case "UNPASS":
+        handler = new UnpassHandler(gameData, data);
+        break;
+      case "PASS":
+        handler = new PassHandler(gameData, data);
+        break;
+
       case "UNDO": {
         const actionToUndo = (gameData.actionLog ?? [])[0];
 

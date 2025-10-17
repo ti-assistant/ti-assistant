@@ -30,7 +30,7 @@ const continueGameFn = import("../util/api/endGame").then(
   (mod) => mod.continueGame
 );
 const endGameFn = import("../util/api/endGame").then((mod) => mod.endGame);
-const endTurnFn = import("../util/api/endTurn").then((mod) => mod.endTurn);
+const endTurnMod = import("../util/api/endTurn");
 const gainRelicFn = import("../util/api/gainRelic").then(
   (mod) => mod.gainRelic
 );
@@ -279,8 +279,13 @@ export async function endTurnAsync(
   samePlayer?: boolean,
   jumpToPlayer?: FactionId
 ) {
-  const endTurn = await endTurnFn;
-  endTurn(gameId, samePlayer, jumpToPlayer);
+  const mod = await endTurnMod;
+  mod.endTurn(gameId, samePlayer, jumpToPlayer);
+}
+
+export async function unpassAsync(gameId: string, factionId: FactionId) {
+  const mod = await endTurnMod;
+  mod.unpass(gameId, factionId);
 }
 
 export async function gainRelicAsync(

@@ -25,6 +25,8 @@ import {
   useActionCards,
   useCurrentTurn,
   useGameId,
+  useLeader,
+  useLeaders,
   usePlanets,
   usePrimaryCompleted,
   useStrategyCards,
@@ -32,6 +34,7 @@ import {
 } from "../../../../../../src/context/dataHooks";
 import {
   useAllSecondariesCompleted,
+  useFaction,
   useFactions,
 } from "../../../../../../src/context/factionDataHooks";
 import {
@@ -47,6 +50,7 @@ import {
   markSecondaryAsync,
   scoreObjectiveAsync,
   selectActionAsync,
+  unpassAsync,
   unscoreObjectiveAsync,
   unselectActionAsync,
 } from "../../../../../../src/dynamic/api";
@@ -76,6 +80,8 @@ import Warfare from "./StrategicActions/Warfare";
 import MultiStateToggle from "../../../../../../src/components/MultiStateToggle/MultiStateToggle";
 import { InfoRow } from "../../../../../../src/InfoRow";
 import FormattedDescription from "../../../../../../src/components/FormattedDescription/FormattedDescription";
+import IconDiv from "../../../../../../src/components/LabeledDiv/IconDiv";
+import { Optional } from "../../../../../../src/util/types/types";
 
 interface FactionActionButtonsProps {
   factionId: FactionId;
@@ -1160,7 +1166,7 @@ export function NextPlayerButtons({
 
 interface ActivePlayerColumnProps {
   activeFaction: Faction;
-  onDeckFaction: Faction;
+  onDeckFaction: Optional<Faction>;
 }
 
 function ActivePlayerColumn({
@@ -1219,71 +1225,73 @@ function ActivePlayerColumn({
         </CSSTransition>
       </SwitchTransition>
       <NextPlayerButtons />
-      <div
-        className="flexRow"
-        style={{ width: "100%", justifyContent: "center" }}
-      >
-        <SwitchTransition>
-          <CSSTransition
-            key={onDeckFaction.id}
-            timeout={120}
-            classNames="fade"
-            nodeRef={secondaryRef}
-          >
-            <LabeledDiv
-              label={
-                <FormattedMessage
-                  id="S0vXJt"
-                  description="Label showing that the specific player is up next."
-                  defaultMessage="On Deck"
-                />
-              }
-              rightLabel={
-                <StaticFactionTimer
-                  active={false}
-                  factionId={onDeckFaction.id}
-                  style={{
-                    fontSize: rem(16),
-                  }}
-                  width={84}
-                />
-              }
-              color={getFactionColor(onDeckFaction)}
-              style={{
-                width: "fit-content",
-                minWidth: rem(200),
-              }}
+      {onDeckFaction ? (
+        <div
+          className="flexRow"
+          style={{ width: "100%", justifyContent: "center" }}
+        >
+          <SwitchTransition>
+            <CSSTransition
+              key={onDeckFaction.id}
+              timeout={120}
+              classNames="fade"
+              nodeRef={secondaryRef}
             >
-              <div
-                ref={secondaryRef}
-                className="flexColumn"
+              <LabeledDiv
+                label={
+                  <FormattedMessage
+                    id="S0vXJt"
+                    description="Label showing that the specific player is up next."
+                    defaultMessage="On Deck"
+                  />
+                }
+                rightLabel={
+                  <StaticFactionTimer
+                    active={false}
+                    factionId={onDeckFaction.id}
+                    style={{
+                      fontSize: rem(16),
+                    }}
+                    width={84}
+                  />
+                }
+                color={getFactionColor(onDeckFaction)}
                 style={{
-                  width: "100%",
-                  height: rem(44),
-                  whiteSpace: "nowrap",
-                  gap: rem(4),
-                  fontSize: rem(24),
+                  width: "fit-content",
+                  minWidth: rem(200),
                 }}
               >
-                {getFactionName(onDeckFaction)}
                 <div
-                  className="flexRow"
+                  ref={secondaryRef}
+                  className="flexColumn"
                   style={{
-                    position: "absolute",
-                    width: rem(44),
+                    width: "100%",
                     height: rem(44),
-                    zIndex: -1,
-                    opacity: 0.7,
-                    userSelect: "none",
+                    whiteSpace: "nowrap",
+                    gap: rem(4),
+                    fontSize: rem(24),
                   }}
                 >
-                  <FactionIcon factionId={onDeckFaction.id} size="100%" />
+                  {getFactionName(onDeckFaction)}
+                  <div
+                    className="flexRow"
+                    style={{
+                      position: "absolute",
+                      width: rem(44),
+                      height: rem(44),
+                      zIndex: -1,
+                      opacity: 0.7,
+                      userSelect: "none",
+                    }}
+                  >
+                    <FactionIcon factionId={onDeckFaction.id} size="100%" />
+                  </div>
                 </div>
-              </div>
-            </LabeledDiv>
-          </CSSTransition>
-        </SwitchTransition>
-      </div>
+              </LabeledDiv>
+            </CSSTransition>
+          </SwitchTransition>
+        </div>
+      ) : null}
       <LockedButtons
         unlocked={!activeFaction}
         style={{ marginTop: rem(12) }}
@@ -1358,7 +1366,9 @@ function StrategyCardColumn() {
 
 export default function ActionPhase() {
   const gameId = useGameId();
+  const ralNel = useFaction("Ral Nel Consortium");
   const intl = useIntl();
+  const ralNelLeader = useLeader("TODO: Name");
   const viewOnly = useViewOnly();
 
   const activeFaction = useActiveFaction();
@@ -1369,7 +1379,7 @@ export default function ActionPhase() {
       <StrategyCardColumn />
       <div className="flexColumn" style={{ gap: rem(16) }}>
         <div className="flexColumn" style={{ width: "100%" }}>
-          {activeFaction && onDeckFaction ? (
+          {activeFaction ? (
             <ActivePlayerColumn
               activeFaction={activeFaction}
               onDeckFaction={onDeckFaction}
@@ -1394,6 +1404,19 @@ export default function ActionPhase() {
                   values={{ phase: phaseString("ACTION", intl) }}
                 />
               </div>
+              {ralNelLeader?.state === "readied" ? (
+                <LabeledDiv
+                  label={getFactionName(ralNel)}
+                  color={getFactionColor(ralNel)}
+                  style={{ width: "min-content" }}
+                >
+                  <button
+                    onClick={() => unpassAsync(gameId, "Ral Nel Consortium")}
+                  >
+                    Use Hero to Unpass
+                  </button>
+                </LabeledDiv>
+              ) : undefined}
               <LockedButtons
                 unlocked={true}
                 buttons={[
