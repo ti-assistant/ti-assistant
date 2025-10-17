@@ -1,11 +1,15 @@
 import { useSearchParams } from "next/navigation";
-import { PropsWithChildren, ReactNode } from "react";
+import { PropsWithChildren, ReactNode, use, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
+import { ModalContext } from "../context/contexts";
 import { buildBaseLeaders, buildBaseTechs } from "../data/GameData";
-import { useSharedModal } from "../data/SharedModal";
-import { UnitStat } from "../TechRow";
+import FlipSVG from "../icons/ui/Flip";
+import SynergySVG from "../icons/ui/Synergy";
 import { leaderTypeString } from "../util/strings";
+import { sortTechsByPreReqAndExpansion } from "../util/techs";
+import { Optional } from "../util/types/types";
 import { rem } from "../util/util";
+import Chip from "./Chip/Chip";
 import { CollapsibleSection } from "./CollapsibleSection";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import FormattedDescription from "./FormattedDescription/FormattedDescription";
@@ -14,6 +18,7 @@ import styles from "./SetupFactionPanel.module.scss";
 import TechIcon from "./TechIcon/TechIcon";
 import UnitIcon from "./Units/Icons";
 import UnitType from "./Units/Types";
+import UnitStats from "./UnitStats/UnitStats";
 
 function AbilitySection({
   leftLabel,
@@ -54,85 +59,6 @@ function AbilitySection({
   );
 }
 
-function UnitStatBlock({ stats }: { stats?: UnitStats }) {
-  if (!stats) {
-    return null;
-  }
-  return (
-    <div className="flexRow" style={{ width: "100%" }}>
-      <div
-        className="flexRow"
-        style={{
-          display: "grid",
-          gridAutoFlow: "column",
-          gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
-          gap: rem(4),
-          fontFamily: "Slider",
-          width: "fit-content",
-          boxSizing: "border-box",
-        }}
-      >
-        {stats.cost ? (
-          <UnitStat
-            name={
-              <FormattedMessage
-                id="Unit.Stats.Cost"
-                defaultMessage="COST"
-                description="Label for unit stat block - cost of the unit."
-              />
-            }
-            stat={stats.cost ?? "-"}
-          />
-        ) : (
-          <div></div>
-        )}
-        {stats.combat ? (
-          <UnitStat
-            name={
-              <FormattedMessage
-                id="Unit.Stats.Combat"
-                defaultMessage="COMBAT"
-                description="Label for unit stat block - combat value of the unit."
-              />
-            }
-            stat={stats.combat ?? "-"}
-          />
-        ) : (
-          <div></div>
-        )}
-        {stats.move ? (
-          <UnitStat
-            name={
-              <FormattedMessage
-                id="Unit.Stats.Move"
-                defaultMessage="MOVE"
-                description="Label for unit stat block - move value of the unit."
-              />
-            }
-            stat={stats.move ?? "-"}
-          />
-        ) : (
-          <div></div>
-        )}
-        {stats.capacity ? (
-          <UnitStat
-            name={
-              <FormattedMessage
-                id="Unit.Stats.Capacity"
-                defaultMessage="CAPACITY"
-                description="Label for unit stat block - capacity value of the unit."
-              />
-            }
-            stat={stats.capacity ?? "-"}
-          />
-        ) : (
-          <div></div>
-        )}
-      </div>
-    </div>
-  );
-}
-
 function FactionPanelContent({
   faction,
   options,
@@ -140,19 +66,18 @@ function FactionPanelContent({
   faction: BaseFaction;
   options: Options;
 }) {
+  const [reverse, setReverse] = useState(false);
+
   const searchParams = useSearchParams();
   const gameId = searchParams?.get("gameid");
   const intl = useIntl();
   const techs = buildBaseTechs(options, intl);
   const leaders = buildBaseLeaders(options, intl);
 
-  if (!faction) {
-    return null;
-  }
-
   const factionTechs = Object.values(techs).filter(
     (tech) => tech.faction === faction.id
   );
+  sortTechsByPreReqAndExpansion(factionTechs);
   const factionLeaders = Object.values(leaders)
     .filter((leader) => leader.faction === faction.id)
     .filter((leader) =>
@@ -177,10 +102,6 @@ function FactionPanelContent({
       }
       return a.name > b.name ? 1 : -1;
     });
-
-  if (!faction) {
-    return null;
-  }
 
   return (
     <div className={styles.factionInfoGrid}>
@@ -326,7 +247,7 @@ function FactionPanelContent({
               className="flexColumn"
               style={{
                 gap: rem(4),
-                padding: rem(4),
+                padding: `0 ${rem(4)} ${rem(4)}`,
                 fontSize: rem(14),
               }}
             >
@@ -381,7 +302,11 @@ function FactionPanelContent({
                             })}
                           </div>
                         ) : null}
-                        <UnitStatBlock stats={tech.stats} />
+                        <UnitStats
+                          stats={tech.stats}
+                          type={tech.unitType}
+                          size={rem(82)}
+                        />
                       </>
                     ) : null}
                   </AbilitySection>
@@ -398,9 +323,14 @@ function FactionPanelContent({
         <CollapsibleSection
           title={
             <FormattedMessage
-              id="2dmEIv"
-              defaultMessage="Abilities"
+              id="I54oy6"
+              defaultMessage="{count, plural, one {Ability} other {Abilities}}"
               description="Header for a section listing out abilities."
+              values={{
+                count:
+                  faction.abilities.length +
+                  (options.expansions.includes("THUNDERS EDGE") ? 1 : 0),
+              }}
             />
           }
           style={{ width: "100%" }}
@@ -413,7 +343,7 @@ function FactionPanelContent({
               // gridAutoFlow: "row",
               // gridTemplateRows: `repeat(${faction.abilities.length}, 1fr)`,
               gap: rem(4),
-              padding: rem(4),
+              padding: `0 ${rem(4)} ${rem(4)}`,
               fontSize: rem(14),
             }}
           >
@@ -427,6 +357,9 @@ function FactionPanelContent({
                 </AbilitySection>
               );
             })}
+            {options.expansions.includes("THUNDERS EDGE") ? (
+              <FactionBreakthrough faction={faction} />
+            ) : null}
           </div>
         </CollapsibleSection>
         <CollapsibleSection
@@ -444,7 +377,7 @@ function FactionPanelContent({
             className="flexColumn"
             style={{
               gap: rem(4),
-              padding: rem(4),
+              padding: `0 ${rem(4)} ${rem(4)}`,
               fontSize: rem(14),
               width: "100%",
             }}
@@ -476,12 +409,21 @@ function FactionPanelContent({
           className="flexColumn"
           style={{
             gap: rem(4),
-            padding: rem(4),
+            padding: `0 ${rem(4)} ${rem(4)}`,
             fontSize: rem(14),
           }}
         >
           {faction.units.map((unit, index) => {
-            const localUnit = { ...unit };
+            let localUnit = { ...unit };
+            if (reverse && unit.reverse) {
+              localUnit = unit.reverse;
+            }
+            if (
+              unit.expansion !== "BASE" &&
+              !options.expansions.includes(unit.expansion)
+            ) {
+              return null;
+            }
             let leftLabel: ReactNode = unit.name;
             return (
               <AbilitySection
@@ -515,7 +457,26 @@ function FactionPanelContent({
                     })}
                   </div>
                 ) : null}
-                <UnitStatBlock stats={localUnit.stats} />
+                <UnitStats
+                  stats={localUnit.stats}
+                  type={localUnit.type}
+                  size={rem(82)}
+                />
+                {unit.reverse ? (
+                  <div
+                    className="flexRow"
+                    style={{
+                      position: "absolute",
+                      right: rem(4),
+                      bottom: 0,
+                      width: rem(24),
+                      cursor: "pointer",
+                    }}
+                    onClick={() => setReverse(!reverse)}
+                  >
+                    <FlipSVG />
+                  </div>
+                ) : null}
               </AbilitySection>
             );
           })}
@@ -525,14 +486,101 @@ function FactionPanelContent({
   );
 }
 
+function FactionBreakthrough({ faction }: { faction: BaseFaction }) {
+  const [reverse, setReverse] = useState(false);
+
+  if (!faction.breakthrough.name) {
+    return null;
+  }
+
+  let name = faction.breakthrough.name.toUpperCase();
+  let description: Optional<string> = faction.breakthrough.description;
+  let abilities: string[] = [];
+  if (reverse && faction.breakthrough.reverse) {
+    name = faction.breakthrough.reverse.name;
+    description = faction.breakthrough.reverse.description;
+    abilities = faction.breakthrough.reverse.abilities ?? [];
+  }
+
+  return (
+    <AbilitySection
+      leftLabel={<div className="flexRow">{name}</div>}
+      rightLabel={
+        faction.breakthrough.synergy ? (
+          <div className="flexRow" style={{ gap: rem(2) }}>
+            <TechIcon type={faction.breakthrough.synergy.left} size={16} />
+            <div className="flexRow" style={{ width: rem(24) }}>
+              <SynergySVG />
+            </div>
+            <TechIcon type={faction.breakthrough.synergy.right} size={16} />
+          </div>
+        ) : null
+      }
+      label={
+        reverse && faction.breakthrough.reverse ? (
+          <UnitIcon
+            type={faction.breakthrough.reverse.type}
+            color="var(--neutral-border)"
+            size={18}
+          />
+        ) : undefined
+      }
+    >
+      <FormattedDescription description={description} />
+      {abilities.length > 0 ? (
+        <div
+          style={{
+            display: "grid",
+            gridAutoFlow: "row",
+            whiteSpace: "nowrap",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            fontFamily: "Slider",
+            paddingLeft: rem(8),
+            rowGap: rem(2),
+            width: "100%",
+          }}
+        >
+          {abilities.map((ability) => {
+            return <div key={ability}>{ability.toUpperCase()}</div>;
+          })}
+        </div>
+      ) : null}
+      {reverse && faction.breakthrough.reverse ? (
+        <UnitStats
+          stats={faction.breakthrough.reverse.stats}
+          type={faction.breakthrough.reverse.type}
+          size={rem(82)}
+        />
+      ) : null}
+      {faction.breakthrough.reverse ? (
+        <div
+          className="flexRow"
+          style={{
+            position: "absolute",
+            right: rem(4),
+            bottom: 0,
+            width: rem(24),
+            cursor: "pointer",
+          }}
+          onClick={() => setReverse(!reverse)}
+        >
+          <FlipSVG />
+        </div>
+      ) : null}
+    </AbilitySection>
+  );
+}
+
 export default function SetupFactionPanel({
   faction,
   options,
+  altFaction,
 }: {
   faction: BaseFaction;
   options: Options;
+  altFaction?: BaseFaction;
 }) {
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   return (
     <>
@@ -543,7 +591,11 @@ export default function SetupFactionPanel({
         }}
         onClick={() =>
           openModal(
-            <SetupFactionPanelModal faction={faction} options={options} />
+            <SetupFactionPanelModal
+              faction={faction}
+              options={options}
+              altFaction={altFaction}
+            />
           )
         }
       >
@@ -556,10 +608,16 @@ export default function SetupFactionPanel({
 function SetupFactionPanelModal({
   faction,
   options,
+  altFaction,
 }: {
   faction: BaseFaction;
   options: Options;
+  altFaction?: BaseFaction;
 }) {
+  const [viewAlt, setViewAlt] = useState(false);
+
+  const selectedFaction = !viewAlt || !altFaction ? faction : altFaction;
+
   return (
     <div
       className="flexColumn"
@@ -579,10 +637,20 @@ function SetupFactionPanelModal({
           borderRadius: rem(4),
         }}
       >
-        <FactionIcon factionId={faction.id} size={36} />
-        {faction.name}
-        <FactionIcon factionId={faction.id} size={36} />
+        <FactionIcon factionId={selectedFaction.id} size={36} />
+        {selectedFaction.name}
+        <FactionIcon factionId={selectedFaction.id} size={36} />
       </div>
+      {altFaction ? (
+        <div className="flexRow" onClick={(e) => e.stopPropagation()}>
+          <Chip selected={!viewAlt} toggleFn={() => setViewAlt(false)}>
+            {faction.name}
+          </Chip>
+          <Chip selected={viewAlt} toggleFn={() => setViewAlt(true)}>
+            {altFaction.name}
+          </Chip>
+        </div>
+      ) : null}
       <div
         className="flexColumn largeFont"
         onClick={(e) => e.stopPropagation()}
@@ -593,7 +661,7 @@ function SetupFactionPanelModal({
           height: "fit-content",
         }}
       >
-        <FactionPanelContent faction={faction} options={options} />
+        <FactionPanelContent faction={selectedFaction} options={options} />
       </div>
     </div>
   );

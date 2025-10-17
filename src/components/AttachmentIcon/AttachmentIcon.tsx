@@ -50,8 +50,6 @@ export default function AttachmentIcon({
               ? undefined
               : `var(--border-size) solid ${getTechTypeColor(techType)}`,
             borderRadius: "100%",
-            paddingTop: hasSkip ? rem(4) : undefined,
-            paddingLeft: hasSkip ? rem(1) : undefined,
           }}
         >
           {hasSkip ? (
@@ -160,7 +158,6 @@ export default function AttachmentIcon({
           justifyContent: "center",
           width: "100%",
           aspectRatio: 1,
-          paddingTop: rem(4),
           paddingLeft: rem(1),
         }}
       >

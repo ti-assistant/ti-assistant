@@ -10,6 +10,7 @@ interface PlanetSummaryProps {
   hasXxchaHero: boolean;
 }
 
+// TODO: Figure out how to display oceans.
 export default function PlanetSummary({
   planets,
   hasXxchaHero,
@@ -26,8 +27,18 @@ export default function PlanetSummary({
   let techSkips = 0;
   let attachments = 0;
   for (const planet of planets) {
-    numPlanets++;
-    if (options.expansions.includes("CODEX THREE") && hasXxchaHero) {
+    if (
+      !planet.attributes.includes("space-station") &&
+      !planet.attributes.includes("ocean") &&
+      !planet.attributes.includes("synthetic")
+    ) {
+      numPlanets++;
+    }
+    if (
+      hasXxchaHero &&
+      options.expansions.includes("CODEX THREE") &&
+      !options.expansions.includes("THUNDERS EDGE")
+    ) {
       resources += planet.resources + planet.influence;
       influence += planet.resources + planet.influence;
     } else {
@@ -46,16 +57,18 @@ export default function PlanetSummary({
     if (hasSkip) {
       ++techSkips;
     }
-    switch (planet.type) {
-      case "CULTURAL":
-        ++cultural;
-        break;
-      case "INDUSTRIAL":
-        ++industrial;
-        break;
-      case "HAZARDOUS":
-        ++hazardous;
-        break;
+    for (const type of planet.types) {
+      switch (type) {
+        case "CULTURAL":
+          ++cultural;
+          break;
+        case "INDUSTRIAL":
+          ++industrial;
+          break;
+        case "HAZARDOUS":
+          ++hazardous;
+          break;
+      }
     }
     if (planet.attachments?.includes("Terraform")) {
       ++cultural;
@@ -80,11 +93,11 @@ export default function PlanetSummary({
       <div className={styles.CountSection}>
         <div className={styles.PlanetTypeGrid}>
           <div className={styles.centered}>{cultural || "-"}</div>
-          <PlanetIcon type={"CULTURAL"} size={16} />
+          <PlanetIcon types={["CULTURAL"]} size={16} />
           <div className={styles.centered}>{hazardous || "-"}</div>
-          <PlanetIcon type={"HAZARDOUS"} size={16} />
+          <PlanetIcon types={["HAZARDOUS"]} size={16} />
           <div className={styles.centered}>{industrial || "-"}</div>
-          <PlanetIcon type={"INDUSTRIAL"} size={16} />
+          <PlanetIcon types={["INDUSTRIAL"]} size={16} />
         </div>
         <div className={styles.PlanetTypeGrid}>
           <LegendaryPlanetIcon />

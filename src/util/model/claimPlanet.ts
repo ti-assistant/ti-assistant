@@ -2,6 +2,7 @@ import { createIntl, createIntlCache } from "react-intl";
 import { buildPlanets } from "../../data/GameData";
 import { getCurrentTurnLogEntries } from "../api/actionLog";
 import { Optional } from "../types/types";
+import { UpdateBreakthroughStateHandler } from "./updateBreakthroughState";
 
 export class ClaimPlanetHandler implements Handler {
   constructor(public gameData: StoredGameData, public data: ClaimPlanetData) {
@@ -39,7 +40,7 @@ export class ClaimPlanetHandler implements Handler {
       }
     }
 
-    const updates: Record<string, any> = {
+    let updates: Record<string, any> = {
       [`state.paused`]: false,
       [`sequenceNum`]: "INCREMENT",
       [`planets.${this.data.event.planet}.owner`]: this.data.event.faction,
@@ -52,6 +53,28 @@ export class ClaimPlanetHandler implements Handler {
       updates[`objectives.Custodians Token.scorers`] = [
         this.data.event.faction,
       ];
+    }
+
+    if (this.data.event.planet === "Styx") {
+      updates[`objectives.Styx.scorers`] = [this.data.event.faction];
+    }
+
+    if (this.data.event.planet === "Thunder's Edge") {
+      const breakthroughState =
+        this.gameData.factions[this.data.event.faction]?.breakthrough?.state;
+      if (!breakthroughState || breakthroughState === "locked") {
+        const handler = new UpdateBreakthroughStateHandler(this.gameData, {
+          action: "UPDATE_BREAKTHROUGH_STATE",
+          event: {
+            factionId: this.data.event.faction,
+            state: "readied",
+          },
+        });
+        updates = {
+          ...updates,
+          ...handler.getUpdates(),
+        };
+      }
     }
 
     return updates;
@@ -107,10 +130,6 @@ export class UnclaimPlanetHandler implements Handler {
       return false;
     }
 
-    if (planet.owner !== this.data.event.faction) {
-      return false;
-    }
-
     return true;
   }
 
@@ -140,6 +159,16 @@ export class UnclaimPlanetHandler implements Handler {
       this.data.event.planet === "Mecatol Rex"
     ) {
       updates[`objectives.Custodians Token.scorers`] = "DELETE";
+    }
+
+    if (this.data.event.planet === "Styx") {
+      updates[`objectives.Styx.scorers`] = prevOwner ? [prevOwner] : "DELETE";
+    }
+
+    if (this.data.event.planet === "Thunder's Edge") {
+      // TODO: Check if player should've unlocked their breakthrough.
+      //   1st - Check expedition.
+      //   2nd - Check log for previous control of Thunder's Edge.
     }
 
     return updates;

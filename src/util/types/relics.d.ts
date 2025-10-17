@@ -26,4 +26,5 @@ type RelicId =
   | ProphecyOfKings.RelicId
   | CodexTwo.RelicId
   | CodexFour.RelicId
+  | ThundersEdge.RelicId
   | DiscordantStars.RelicId;

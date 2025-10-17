@@ -1,10 +1,12 @@
 export default function BlueTechSVG({
+  color = "#eee",
   outline = false,
 }: {
+  color?: string;
   outline?: boolean;
 }) {
   const fill = outline ? "none" : "#005384";
-  const stroke = outline ? "#eee" : "#00aed9";
+  const stroke = outline ? color : "#00aed9";
   return (
     <svg viewBox="0 0 58 58" xmlns="http://www.w3.org/2000/svg">
       <g transform="translate(-58.824 -112.13)" fill={fill} stroke={stroke}>

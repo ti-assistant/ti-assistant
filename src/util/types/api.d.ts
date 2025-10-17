@@ -5,6 +5,10 @@ type ActionLogAction =
   | "REWIND_AND_DELETE"
   | "REWIND_AND_REPLACE";
 
+interface IHandler<DataType> {
+  new (gameData: StoredGameData, data: DataType): Handler;
+}
+
 interface Handler {
   gameData: StoredGameData;
   data: GameUpdateData;
@@ -16,6 +20,7 @@ interface Handler {
 
 type GameUpdateData =
   | (AddTechData | RemoveTechData)
+  | (PurgeTechData | UnpurgeTechData)
   | (RevealObjectiveData | HideObjectiveData)
   | (AdvancePhaseData | RewindPhaseData)
   | (AssignStrategyCardData | UnassignStrategyCardData)
@@ -23,7 +28,7 @@ type GameUpdateData =
   | (SelectActionData | UnselectActionData)
   | (EndTurnData | UnendTurnData)
   | SetSpeakerData
-  | MarkSecondaryData
+  | (MarkSecondaryData | MarkPrimaryData)
   | (ScoreObjectiveData | UnscoreObjectiveData)
   | (SwapStrategyCardsData | UnswapStrategyCardsData)
   | GiftOfPrescienceData
@@ -41,6 +46,7 @@ type GameUpdateData =
   | (GainRelicData | LoseRelicData)
   | UpdatePlanetStateData
   | UpdateLeaderStateData
+  | UpdateBreakthroughStateData
   | SelectFactionData
   | SelectSubComponentData
   | SelectEligibleOutcomesData
@@ -52,7 +58,9 @@ type GameUpdateData =
   | (PlayRelicData | UnplayRelicData)
   | (PlayAdjudicatorBaalData | UndoAdjudicatorBaalData)
   | SwapMapTilesData
-  // TODO
+  | CommitToExpeditionData
+  | (GainAllianceData | LoseAllianceData)
+  | (PassData | UnpassData)
   | UndoData;
 
 type Secondary = "PENDING" | "DONE" | "SKIPPED";
@@ -64,9 +72,11 @@ interface ActionLogEntry<DataType extends GameUpdateData> {
 }
 
 interface BaseData {
+  actionCards: Record<ActionCardId, BaseActionCard>;
   agendas: Record<AgendaId, BaseAgenda>;
   attachments: Record<AttachmentId, BaseAttachment>;
   components: Record<ComponentId, BaseComponent | BaseTechComponent>;
+  events: Record<EventId, TIEvent>;
   factions: Record<FactionId, BaseFaction>;
   leaders: Record<LeaderId, BaseLeader>;
   objectives: Record<ObjectiveId, BaseObjective>;
@@ -78,10 +88,12 @@ interface BaseData {
 }
 
 interface GameData {
+  actionCards?: Partial<Record<ActionCardId, ActionCard>>;
   actionLog?: ActionLog;
   agendas?: Partial<Record<AgendaId, Agenda>>;
   attachments?: Partial<Record<AttachmentId, Attachment>>;
   components?: Record<string, Component>;
+  expedition?: Expedition;
   factions: Partial<Record<FactionId, Faction>>;
   gameId?: string;
   leaders: Partial<Record<LeaderId, Leader>>;
@@ -94,7 +106,7 @@ interface GameData {
   strategycards?: Partial<Record<StrategyCardId, StrategyCard>>;
   systems?: Partial<Record<SystemId, System>>;
   techs?: Partial<Record<TechId, Tech>>;
-  timers?: Record<string, number>;
+  timers?: Timers;
 
   // If set, prevent the user from making changes.
   viewOnly?: boolean;
@@ -103,11 +115,23 @@ interface GameData {
   allPlanets?: Partial<Record<PlanetId, Planet>>;
 }
 
+type ExpeditionId =
+  | "actionCards"
+  | "influence"
+  | "secrets"
+  | "techSkip"
+  | "tradeGoods"
+  | "resources";
+
+type Expedition = Partial<Record<ExpeditionId, FactionId>>;
+
 interface StoredGameData {
+  actionCards?: Partial<Record<ActionCardId, GameActionCard>>;
   actionLog?: ActionLog;
   agendas?: Record<string, GameAgenda>;
   attachments?: Partial<Record<AttachmentId, GameAttachment>>;
   components?: Record<string, GameComponent>;
+  expedition?: Expedition;
   factions: Partial<Record<FactionId, GameFaction>>;
   leaders?: Partial<Record<LeaderId, GameLeader>>;
   objectives?: Partial<Record<ObjectiveId, GameObjective>>;
@@ -117,6 +141,8 @@ interface StoredGameData {
   state: GameState;
   strategycards?: Partial<Record<StrategyCardId, GameStrategyCard>>;
   systems?: Partial<Record<SystemId, GameSystem>>;
+  techs?: Partial<Record<TechId, GameTech>>;
+  timers?: Timers;
   updates?: Record<string, { timestamp: Timestamp }>;
   // Secrets
   [key: string]: any;
@@ -144,7 +170,10 @@ interface RemoveAttachmentData {
 
 interface AddTechEvent {
   faction: FactionId;
+  additionalFactions?: FactionId[];
   researchAgreement?: boolean;
+  // Tech gained with Share Knowledge is lost at the end of the status phase.
+  shareKnowledge?: boolean;
   tech: TechId;
 }
 
@@ -156,6 +185,21 @@ interface AddTechData {
 interface RemoveTechData {
   action: "REMOVE_TECH";
   event: AddTechEvent;
+}
+
+interface PurgeTechEvent {
+  techId: TechId;
+  factionId?: FactionId;
+}
+
+interface PurgeTechData {
+  action: "PURGE_TECH";
+  event: PurgeTechEvent;
+}
+
+interface UnpurgeTechData {
+  action: "UNPURGE_TECH";
+  event: PurgeTechEvent;
 }
 
 interface AdvancePhaseEvent {
@@ -261,6 +305,7 @@ interface ContinueGameData {
 
 interface EndTurnEvent {
   samePlayer?: boolean;
+  jumpToPlayer?: FactionId;
   // Set by server
   prevFaction?: string;
   selectedAction?: string;
@@ -277,14 +322,52 @@ interface UnendTurnData {
   event: EndTurnEvent;
 }
 
+interface UnpassEvent {
+  factionId: FactionId;
+}
+
+interface UnpassData {
+  action: "UNPASS";
+  event: UnpassEvent;
+}
+
+interface PassData {
+  action: "PASS";
+  event: UnpassEvent;
+}
+
 interface GainRelicEvent {
   faction: FactionId;
   relic: RelicId;
+  // Used to differentiate when selecting from planets.
+  planet?: PlanetId;
 }
 
 interface GainRelicData {
   action: "GAIN_RELIC";
   event: GainRelicEvent;
+}
+
+interface GainAllianceEvent {
+  faction: FactionId;
+  fromFaction: FactionId;
+  prevFaction?: FactionId;
+}
+
+interface LoseAllianceEvent {
+  faction: FactionId;
+  fromFaction: FactionId;
+  prevFaction?: FactionId;
+}
+
+interface GainAllianceData {
+  action: "GAIN_ALLIANCE";
+  event: GainAllianceEvent;
+}
+
+interface LoseAllianceData {
+  action: "LOSE_ALLIANCE";
+  event: LoseAllianceEvent;
 }
 
 interface LoseRelicData {
@@ -309,6 +392,15 @@ interface ManualVPUpdateEvent {
 interface ManualVPUpdateData {
   action: "MANUAL_VP_UPDATE";
   event: ManualVPUpdateEvent;
+}
+
+interface MarkPrimaryEvent {
+  completed: boolean;
+}
+
+interface MarkPrimaryData {
+  action: "MARK_PRIMARY";
+  event: MarkPrimaryEvent;
 }
 
 interface MarkSecondaryEvent {
@@ -557,6 +649,17 @@ interface UnswapStrategyCardsData {
   event: SwapStrategyCardsEvent;
 }
 
+interface UpdateBreakthroughStateEvent {
+  factionId: FactionId;
+  state: ComponentState;
+  prevState?: ComponentState;
+}
+
+interface UpdateBreakthroughStateData {
+  action: "UPDATE_BREAKTHROUGH_STATE";
+  event: UpdateBreakthroughStateEvent;
+}
+
 interface UpdateLeaderStateEvent {
   leaderId: LeaderId;
   state: LeaderState;
@@ -637,4 +740,15 @@ interface SwapMapTilesEvent {
 interface SwapMapTilesData {
   action: "SWAP_MAP_TILES";
   event: SwapMapTilesEvent;
+}
+
+interface CommitToExpeditionEvent {
+  factionId?: FactionId;
+  expedition: keyof Expedition;
+  prevFaction?: FactionId; // Used to undo.
+}
+
+interface CommitToExpeditionData {
+  action: "COMMIT_TO_EXPEDITION";
+  event: CommitToExpeditionEvent;
 }

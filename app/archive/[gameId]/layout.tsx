@@ -7,7 +7,7 @@ import {
 } from "../../../server/util/fetch";
 import Footer from "../../../src/components/Footer/Footer";
 import DataWrapper from "../../../src/context/DataWrapper";
-import { buildGameData } from "../../../src/data/GameData";
+import { buildBaseData, buildGameData } from "../../../src/data/GameData";
 import {
   getLocale,
   getMessages,
@@ -24,16 +24,17 @@ async function fetchGameData(gameId: string, intlPromise: Promise<IntlShape>) {
 
   const [data, timers] = await Promise.all([dataPromise, timerPromise]);
 
+  const baseData = buildBaseData(intl);
   const gameData = buildGameData(data, intl);
   gameData.timers = timers;
   gameData.gameId = gameId;
   gameData.viewOnly = true;
 
-  return gameData;
+  return { data: gameData, baseData: baseData, storedData: data };
 }
 
 async function getIntl() {
-  const locale = getLocale();
+  const locale = await getLocale();
   const messages = await getMessages(locale);
   const cache = createIntlCache();
   return createIntl({ locale, messages }, cache);
@@ -42,15 +43,16 @@ async function getIntl() {
 export default async function Layout({
   phase,
   summary,
-  params: { gameId },
+  params,
 }: {
-  params: { gameId: string };
+  params: Promise<{ gameId: string }>;
   phase: React.ReactNode;
   summary: React.ReactNode;
 }) {
+  const { gameId } = await params;
   const intlPromise = getIntl();
 
-  const sessionId = getSessionIdFromCookie();
+  const sessionId = await getSessionIdFromCookie();
 
   return (
     <>

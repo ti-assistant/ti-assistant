@@ -1,11 +1,8 @@
-import DataManager from "../../context/DataManager";
 import {
   AddAttachmentHandler,
   RemoveAttachmentHandler,
 } from "../model/addAttachment";
-import { updateGameData } from "./handler";
-import { updateActionLog } from "./update";
-import { poster } from "./util";
+import dataUpdate from "./dataUpdate";
 
 // TODO: Determine whether planet treatment is necessary.
 export function addAttachment(
@@ -20,28 +17,8 @@ export function addAttachment(
       planet,
     },
   };
-  const now = Date.now();
 
-  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
-
-  DataManager.update((storedGameData) => {
-    const handler = new AddAttachmentHandler(storedGameData, data);
-
-    if (!handler.validate()) {
-      return storedGameData;
-    }
-
-    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
-    updateGameData(storedGameData, handler.getUpdates());
-
-    storedGameData.lastUpdate = now;
-
-    return storedGameData;
-  });
-
-  return updatePromise.catch((_) => {
-    DataManager.reset();
-  });
+  return dataUpdate(gameId, data, AddAttachmentHandler);
 }
 
 export function removeAttachment(
@@ -57,26 +34,5 @@ export function removeAttachment(
     },
   };
 
-  const now = Date.now();
-
-  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
-
-  DataManager.update((storedGameData) => {
-    const handler = new RemoveAttachmentHandler(storedGameData, data);
-
-    if (!handler.validate()) {
-      return storedGameData;
-    }
-
-    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
-    updateGameData(storedGameData, handler.getUpdates());
-
-    storedGameData.lastUpdate = now;
-
-    return storedGameData;
-  });
-
-  return updatePromise.catch((_) => {
-    DataManager.reset();
-  });
+  return dataUpdate(gameId, data, RemoveAttachmentHandler);
 }

@@ -4,6 +4,8 @@ import styles from "./GameMap.module.scss";
 import OverlayLegend from "./OverlayLegend";
 import { OverlayDetails } from "./PlanetOverlay";
 import SystemImage from "./SystemImage";
+import { Optional } from "../../util/types/types";
+import Nexus, { NexusPosition } from "./Nexus";
 
 interface Cube {
   q: number;
@@ -32,6 +34,7 @@ function Point(x: number, y: number): Point {
 }
 
 const HEX_RATIO = 2 / Math.sqrt(3);
+const HEX_OVERLAP = 0.2888;
 
 const CUBE_DIRECTIONS = [
   Cube(0, -1, +1),
@@ -94,6 +97,8 @@ interface MapProps {
   }[];
   planets?: Partial<Record<PlanetId, Planet>>;
   hideLegend?: boolean;
+  hideFracture?: boolean;
+  expansions: Expansion[];
   // Used for selecting systems.
   canSelectSystem?: (systemId: string) => boolean;
   onSelect?: (systemId: string) => void;
@@ -109,6 +114,8 @@ export default function GameMap({
   planets,
   canSelectSystem,
   onSelect,
+  hideFracture,
+  expansions,
 }: MapProps) {
   const planetInfo = planets ?? {};
   const [overlayDetails, setOverlayDetails] =
@@ -143,121 +150,174 @@ export default function GameMap({
   const spiral = cubeSpiral(Cube(0, 0, 0), numRings);
 
   let ghosts = false;
-  let ghostsCorner = null;
+  let rebellion = false;
+  let ghostsCorner: Optional<NexusPosition>;
+  let rebellionCorner: Optional<NexusPosition>;
   factions.forEach((faction, index) => {
-    if (faction.id === "Ghosts of Creuss") {
+    if (
+      faction.id === "Ghosts of Creuss" ||
+      faction.id === "Crimson Rebellion"
+    ) {
+      let positionPriority: NexusPosition[] = ["bottom-left", "bottom-right"];
       switch (factions.length) {
         case 3:
           switch (index) {
             case 0:
-              ghostsCorner = "top-right";
+              positionPriority = ["top-right", "bottom-right"];
               break;
             case 1:
-              ghostsCorner = "bottom-right";
+              positionPriority = ["bottom-right", "bottom-left"];
               break;
             case 2:
-              ghostsCorner = "top-left";
+              positionPriority = ["top-left", "bottom-left"];
               break;
           }
           break;
         case 4:
           switch (index) {
             case 0:
-              ghostsCorner = mapStyle === "standard" ? "top-left" : "top-right";
+              positionPriority = ["top-right", "bottom-right"];
               break;
             case 1:
-              ghostsCorner =
-                mapStyle === "standard" ? "top-right" : "bottom-right";
+              if (mapStyle === "standard") {
+                positionPriority = ["bottom-right", "bottom-left"];
+              } else {
+                positionPriority = ["bottom-left", "top-left"];
+              }
               break;
             case 2:
-              ghostsCorner =
-                mapStyle === "standard" ? "bottom-right" : "bottom-left";
+              positionPriority = ["bottom-left", "top-left"];
               break;
             case 3:
-              ghostsCorner =
-                mapStyle === "standard" ? "bottom-left" : "top-left";
+              if (mapStyle === "standard") {
+                positionPriority = ["top-left", "top-right"];
+              } else {
+                positionPriority = ["top-left", "bottom-left"];
+              }
               break;
           }
           break;
         case 5:
           switch (index) {
             case 0:
-              ghostsCorner = "top-right";
+              positionPriority = ["top-right", "top-left"];
               break;
             case 1:
-              ghostsCorner = "bottom-right";
+              if (mapStyle === "standard") {
+                positionPriority = ["bottom-right", "top-right"];
+              } else {
+                positionPriority = ["top-right", "bottom-right"];
+              }
               break;
             case 2:
-              ghostsCorner = "bottom-right";
+              if (mapStyle === "standard") {
+                positionPriority = ["bottom-right", "bottom-left"];
+              } else {
+                positionPriority = ["bottom-right", "top-right"];
+              }
               break;
             case 3:
-              ghostsCorner = "bottom-left";
+              positionPriority = ["bottom-left", "top-left"];
               break;
             case 4:
-              ghostsCorner = "top-left";
+              if (mapStyle === "standard") {
+                positionPriority = ["top-left", "top-right"];
+              } else {
+                positionPriority = ["top-left", "bottom-left"];
+              }
               break;
           }
           break;
         case 6:
           switch (index) {
             case 0:
+              positionPriority = ["top-right", "top-left"];
+              break;
             case 1:
-              ghostsCorner = "top-right";
+              positionPriority = ["top-right", "bottom-right"];
               break;
             case 2:
+              positionPriority = ["bottom-right", "top-right"];
+              break;
             case 3:
-              ghostsCorner = "bottom-right";
+              positionPriority = ["bottom-right", "bottom-left"];
               break;
             case 4:
-              ghostsCorner = "bottom-left";
+              positionPriority = ["bottom-left", "top-left"];
               break;
             case 5:
-              ghostsCorner = "top-left";
+              positionPriority = ["top-left", "bottom-left"];
               break;
           }
           break;
         case 7:
           switch (index) {
             case 0:
+              positionPriority = ["top-right", "top-left"];
+              break;
             case 1:
-              ghostsCorner = "top-right";
+              positionPriority = ["top-right", "bottom-right"];
               break;
             case 2:
+              positionPriority = ["top-right", "bottom-right"];
+              break;
             case 3:
-              ghostsCorner = "bottom-right";
+              positionPriority = ["bottom-right", "top-right"];
               break;
             case 4:
-              ghostsCorner = "bottom-left";
+              positionPriority = ["bottom-left", "top-left"];
               break;
             case 5:
+              positionPriority = ["bottom-left", "top-left"];
+              break;
             case 6:
-              ghostsCorner = "top-left";
+              positionPriority = ["top-left", "bottom-left"];
               break;
           }
           break;
         case 8:
           switch (index) {
             case 0:
+              positionPriority = ["top-right", "top-left"];
+              break;
             case 1:
-              ghostsCorner = "top-right";
+              positionPriority = ["top-right", "bottom-right"];
               break;
             case 2:
+              positionPriority = ["top-right", "bottom-right"];
+              break;
             case 3:
+              positionPriority = ["bottom-right", "top-right"];
+              break;
             case 4:
-              ghostsCorner = "bottom-right";
+              positionPriority = ["bottom-right", "bottom-left"];
               break;
             case 5:
-              ghostsCorner = "bottom-left";
+              positionPriority = ["bottom-left", "top-left"];
               break;
             case 6:
+              positionPriority = ["bottom-left", "top-left"];
+              break;
             case 7:
-              ghostsCorner = "top-left";
+              positionPriority = ["top-left", "bottom-left"];
               break;
           }
           break;
       }
 
-      ghosts = true;
+      if (faction.id === "Ghosts of Creuss") {
+        ghosts = true;
+        ghostsCorner = positionPriority[0];
+        if (rebellionCorner === ghostsCorner) {
+          ghostsCorner = positionPriority[1];
+        }
+      } else if (faction.id === "Crimson Rebellion") {
+        rebellion = true;
+        rebellionCorner = positionPriority[0];
+        if (ghostsCorner === rebellionCorner) {
+          rebellionCorner = positionPriority[1];
+        }
+      }
     }
   });
   if (!ghosts) {
@@ -268,9 +328,31 @@ export default function GameMap({
       }
     });
   }
+  if (!rebellion) {
+    mapString.split(" ").forEach((system) => {
+      if (system === "94") {
+        rebellion = true;
+        rebellionCorner = "top-right";
+      }
+    });
+  }
+
+  let nexusCorner: NexusPosition = "bottom-left";
+  if (ghostsCorner === "bottom-left" || rebellionCorner === "bottom-left") {
+    nexusCorner = "bottom-right";
+    if (ghostsCorner === "bottom-right" || rebellionCorner === "bottom-right") {
+      nexusCorner = "top-right";
+    }
+  }
 
   return (
-    <div className={styles.Map}>
+    <div
+      className={`${styles.Map} ${
+        !hideFracture && expansions.includes("THUNDERS EDGE")
+          ? styles.Fracture
+          : ""
+      }`}
+    >
       {hideLegend ? null : (
         <OverlayLegend
           overlayDetails={overlayDetails}
@@ -306,70 +388,59 @@ export default function GameMap({
             </div>
           );
         })}
-        {ghosts ? (
-          <div
-            style={{
-              position: "absolute",
-              right:
-                ghostsCorner === "top-right" || ghostsCorner === "bottom-right"
-                  ? 0
-                  : undefined,
-              bottom:
-                ghostsCorner === "bottom-right" ||
-                ghostsCorner === "bottom-left"
-                  ? 0
-                  : undefined,
-              left:
-                ghostsCorner === "bottom-left" || ghostsCorner === "top-left"
-                  ? 0
-                  : undefined,
-              top:
-                ghostsCorner === "top-right" || ghostsCorner === "top-left"
-                  ? 0
-                  : undefined,
-              width: `${tilePercentage * HEX_RATIO}%`,
-              height: `${tilePercentage * HEX_RATIO}%`,
-            }}
-          >
-            <SystemImage
-              overlayDetails={overlayDetails}
-              planets={planetInfo}
-              systemNumber="51"
-              selectable={false}
-              onClick={onSelect}
-            />
-          </div>
+        {ghosts && ghostsCorner ? (
+          <Nexus
+            systemNumber="51"
+            overlayDetails={overlayDetails}
+            planetInfo={planetInfo}
+            selectable={false}
+            onClick={onSelect}
+            position={ghostsCorner}
+            tilePercentage={tilePercentage}
+            hexRatio={HEX_RATIO}
+          />
+        ) : null}
+        {rebellion && rebellionCorner ? (
+          <Nexus
+            systemNumber="118"
+            overlayDetails={overlayDetails}
+            planetInfo={planetInfo}
+            selectable={false}
+            onClick={onSelect}
+            position={rebellionCorner}
+            tilePercentage={tilePercentage}
+            hexRatio={HEX_RATIO}
+          />
         ) : null}
         {wormholeNexus ? (
-          <div
-            style={{
-              position: "absolute",
-              left: ghostsCorner !== "bottom-left" ? 0 : undefined,
-              right: ghostsCorner === "bottom-left" ? 0 : undefined,
-              bottom: 0,
-              width: `${tilePercentage * HEX_RATIO}%`,
-              height: `${getWormholeNexusHeight(
-                wormholeNexus,
-                tilePercentage,
-                HEX_RATIO
-              )}%`,
-            }}
-          >
-            <SystemImage
-              overlayDetails={overlayDetails}
-              planets={planetInfo}
-              systemNumber={getWormholeNexusSystemNum(wormholeNexus)}
-              selectable={
-                canSelectSystem
-                  ? canSelectSystem(
-                      wormholeNexus === "PURGED" ? "81" : `82${wormholeNexus}`
-                    )
-                  : false
-              }
-              onClick={onSelect}
-            />
-          </div>
+          <Nexus
+            systemNumber={getWormholeNexusSystemNum(wormholeNexus)}
+            overlayDetails={overlayDetails}
+            planetInfo={planetInfo}
+            selectable={
+              canSelectSystem
+                ? canSelectSystem(
+                    wormholeNexus === "PURGED" ? "81" : `82${wormholeNexus}`
+                  )
+                : false
+            }
+            onClick={onSelect}
+            position={nexusCorner}
+            tilePercentage={tilePercentage}
+            hexRatio={HEX_RATIO}
+          />
         ) : null}
+        {hideFracture ? null : (
+          <Fracture
+            tilePercentage={tilePercentage}
+            overlayDetails={overlayDetails}
+            planetInfo={planetInfo}
+            numRings={numRings}
+            expansions={expansions}
+            mapStyle={mapStyle}
+            numFactions={factions.length}
+          />
+        )}
       </div>
     </div>
   );
@@ -397,4 +468,139 @@ function getWormholeNexusSystemNum(mallice: string | SystemId) {
     return "82B";
   }
   return (mallice as SystemId).toString();
+}
+
+function getFracturePosition(
+  numFactions: number,
+  mapStyle: MapStyle
+): { left: Cube; center: Cube; right: Cube } {
+  switch (numFactions) {
+    case 3:
+      return {
+        left: Cube(-1, 0, -3),
+        center: Cube(-2, 0, -1),
+        right: Cube(-4, 0, 3),
+      };
+    case 4:
+    case 5:
+      return {
+        left: Cube(-1, 0, -3),
+        center: Cube(-3, 0, -1),
+        right: Cube(-4, 0, 3),
+      };
+    case 6:
+      if (mapStyle === "large") {
+        return {
+          left: Cube(-2, 0, -3),
+          center: Cube(-4, 0, -1),
+          right: Cube(-5, 0, 3),
+        };
+      }
+      return {
+        left: Cube(-1, 0, -3),
+        center: Cube(-3, 0, -1),
+        right: Cube(-4, 0, 3),
+      };
+    case 7:
+    case 8:
+      return {
+        left: Cube(-2, 0, -3),
+        center: Cube(-4, 0, -1),
+        right: Cube(-5, 0, 3),
+      };
+  }
+  return {
+    left: Cube(-1, 0, -3),
+    center: Cube(-3, 0, -1),
+    right: Cube(-4, 0, 3),
+  };
+}
+
+function Fracture({
+  tilePercentage,
+  overlayDetails,
+  planetInfo,
+  numRings,
+  expansions,
+  numFactions,
+  mapStyle,
+}: {
+  tilePercentage: number;
+  overlayDetails: OverlayDetails;
+  planetInfo: Partial<Record<PlanetId, Planet>>;
+  numRings: number;
+  expansions: Expansion[];
+  numFactions: number;
+  mapStyle: MapStyle;
+}) {
+  if (!expansions.includes("THUNDERS EDGE")) {
+    return null;
+  }
+
+  const position = getFracturePosition(numFactions, mapStyle);
+
+  const twoTileWidth = tilePercentage * (HEX_RATIO * 2 - HEX_OVERLAP);
+  const threeTileWidth = tilePercentage * (HEX_RATIO * 3 - HEX_OVERLAP * 2);
+  const tileHeight = tilePercentage * 1.5;
+
+  const fracture = CubeToPixel(position.left, tilePercentage * HEX_RATIO);
+  const fractureMid = CubeToPixel(position.center, tilePercentage * HEX_RATIO);
+  const fractureBot = CubeToPixel(position.right, tilePercentage * HEX_RATIO);
+
+  const leftShift = (tileHeight * HEX_RATIO) / 2;
+  const threeTileLeftShift = tileHeight * HEX_RATIO;
+  const topShift = -tileHeight / 3;
+
+  return (
+    <>
+      <div
+        style={{
+          position: "absolute",
+          width: `${twoTileWidth}%`,
+          height: `${tileHeight}%`,
+          marginLeft: `${fracture.x + leftShift}%`,
+          marginTop: `${fracture.y + topShift}%`,
+        }}
+      >
+        <SystemImage
+          overlayDetails={overlayDetails}
+          planets={planetInfo}
+          systemNumber={"666"}
+          selectable={false}
+        />
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          width: `${threeTileWidth}%`,
+          height: `${tileHeight}%`,
+          marginLeft: `${fractureMid.x + threeTileLeftShift}%`,
+          marginTop: `${fractureMid.y + topShift}%`,
+        }}
+      >
+        <SystemImage
+          overlayDetails={overlayDetails}
+          planets={planetInfo}
+          systemNumber={"667"}
+          selectable={false}
+        />
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          width: `${twoTileWidth}%`,
+          height: `${tileHeight}%`,
+          marginLeft: `${fractureBot.x - leftShift}%`,
+          marginTop: `${fractureBot.y + topShift}%`,
+        }}
+      >
+        <SystemImage
+          overlayDetails={overlayDetails}
+          planets={planetInfo}
+          systemNumber={"668"}
+          selectable={false}
+        />
+      </div>
+    </>
+  );
 }

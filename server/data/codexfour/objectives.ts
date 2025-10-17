@@ -12,6 +12,7 @@ export default function getCodexFourObjectives(
           "Discard 10 commodities from planets in your home system.",
       }),
       expansion: "CODEX FOUR",
+      event: "Total War",
       id: "Total War",
       name: intl.formatMessage({
         id: "Objectives.Total War.Title",

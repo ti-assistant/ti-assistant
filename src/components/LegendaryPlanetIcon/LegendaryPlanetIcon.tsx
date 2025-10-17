@@ -1,6 +1,7 @@
 "use client";
 
-import { useSharedModal } from "../../data/SharedModal";
+import { use } from "react";
+import { ModalContext } from "../../context/contexts";
 import LegendaryPlanetSVG from "../../icons/planets/LegendaryPlanet";
 import { rem } from "../../util/util";
 import FormattedDescription from "../FormattedDescription/FormattedDescription";
@@ -10,13 +11,14 @@ function InfoContent({ ability }: { ability: string }) {
   const description = ability.replaceAll("\\n", "\n");
   return (
     <div
-      className="myriadPro"
+      className="myriadPro flexColumn"
       style={{
         width: "100%",
         padding: rem(4),
         whiteSpace: "pre-line",
         textAlign: "center",
         fontSize: rem(32),
+        gap: rem(32),
       }}
     >
       <FormattedDescription description={description} />
@@ -31,7 +33,7 @@ export default function LegendaryPlanetIcon({
   planetName?: string;
   ability?: string;
 }) {
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   const cursor = ability ? "pointer" : "auto";
   return (

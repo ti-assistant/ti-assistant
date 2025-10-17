@@ -1,37 +1,30 @@
-import DataManager from "../../context/DataManager";
 import { EndTurnHandler } from "../model/endTurn";
-import { updateGameData } from "./handler";
-import { updateActionLog } from "./update";
-import { poster } from "./util";
+import { UnpassHandler } from "../model/unpass";
+import dataUpdate from "./dataUpdate";
 
-export function endTurn(gameId: string, samePlayer?: boolean) {
+export function endTurn(
+  gameId: string,
+  samePlayer?: boolean,
+  jumpToPlayer?: FactionId
+) {
   const data: GameUpdateData = {
     action: "END_TURN",
     event: {
       samePlayer,
+      jumpToPlayer,
     },
   };
 
-  const now = Date.now();
+  return dataUpdate(gameId, data, EndTurnHandler);
+}
 
-  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
+export function unpass(gameId: string, factionId: FactionId) {
+  const data: GameUpdateData = {
+    action: "UNPASS",
+    event: {
+      factionId,
+    },
+  };
 
-  DataManager.update((storedGameData) => {
-    const handler = new EndTurnHandler(storedGameData, data);
-
-    if (!handler.validate()) {
-      return storedGameData;
-    }
-
-    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
-    updateGameData(storedGameData, handler.getUpdates());
-
-    storedGameData.lastUpdate = now;
-
-    return storedGameData;
-  });
-
-  return updatePromise.catch((_) => {
-    DataManager.reset();
-  });
+  return dataUpdate(gameId, data, UnpassHandler);
 }

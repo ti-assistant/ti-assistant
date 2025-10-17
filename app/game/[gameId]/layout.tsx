@@ -11,7 +11,7 @@ import {
 } from "../../../server/util/fetch";
 import QRCodeButton from "../../../src/components/QRCode/QRCodeButton";
 import DataWrapper from "../../../src/context/DataWrapper";
-import { buildGameData } from "../../../src/data/GameData";
+import { buildBaseData, buildGameData } from "../../../src/data/GameData";
 import {
   getLocale,
   getMessages,
@@ -22,7 +22,6 @@ import DynamicSidebars from "./dynamic-sidebars";
 import GameCode from "./game-code";
 import GameLoader from "./game-loader";
 import styles from "./game.module.scss";
-
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
     ? "https://dev-dot-twilight-imperium-360307.wm.r.appspot.com"
@@ -50,6 +49,7 @@ async function fetchGameData(
     sessionPromise,
   ]);
 
+  const baseData = buildBaseData(intl);
   const gameData = buildGameData(data, intl);
   gameData.timers = timers;
   gameData.gameId = gameId;
@@ -61,11 +61,11 @@ async function fetchGameData(
     }
   }
 
-  return gameData;
+  return { data: gameData, baseData: baseData, storedData: data };
 }
 
 async function getIntl() {
-  const locale = getLocale();
+  const locale = await getLocale();
   const messages = await getMessages(locale);
   const cache = createIntlCache();
   return createIntl({ locale, messages }, cache);
@@ -95,15 +95,16 @@ function getQRCode(gameId: string, size: number): Promise<string> {
 
 export default async function Layout({
   children,
-  params: { gameId },
-}: PropsWithChildren<{ params: { gameId: string } }>) {
+  params,
+}: PropsWithChildren<{ params: Promise<{ gameId: string }> }>) {
+  const { gameId } = await params;
   const intlPromise = getIntl();
 
   const qrCodePromise = getQRCode(gameId, 280);
 
   const qrCode = await qrCodePromise;
 
-  const sessionId = getSessionIdFromCookie();
+  const sessionId = await getSessionIdFromCookie();
 
   return (
     <>

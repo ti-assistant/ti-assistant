@@ -14,14 +14,17 @@ import LabeledDiv from "../../src/components/LabeledDiv/LabeledDiv";
 import Sidebars from "../../src/components/Sidebars/Sidebars";
 import { Strings } from "../../src/components/strings";
 import TechSkipIcon from "../../src/components/TechSkipIcon/TechSkipIcon";
+import ThreeWayToggle from "../../src/components/ThreeWayToggle/ThreeWayToggle";
 import Toggle from "../../src/components/Toggle/Toggle";
 import MapMenuSVG from "../../src/icons/ui/MapMenu";
 import ObjectivesMenuSVG from "../../src/icons/ui/ObjectivesMenu";
 import PlanetMenuSVG from "../../src/icons/ui/PlanetMenu";
 import { Loader } from "../../src/Loader";
+import { Optional } from "../../src/util/types/types";
 import { objectEntries, rem } from "../../src/util/util";
 import { ProcessedGame } from "../stats/processor";
 import styles from "./game-page.module.scss";
+import MultiStateToggle from "../../src/components/MultiStateToggle/MultiStateToggle";
 
 function FilterButton<T extends string | number>({
   filter,
@@ -54,10 +57,56 @@ function FilterButton<T extends string | number>({
   );
 }
 
+function ThreeWayFilterButton<T extends string | number>({
+  filter,
+  filters,
+  setFilters,
+  text,
+}: {
+  filter: T;
+  filters: IncludeExclude<T>;
+  setFilters: Dispatch<SetStateAction<IncludeExclude<T>>>;
+  text?: ReactNode;
+}) {
+  let value: Optional<"Positive" | "Negative">;
+  if (filters.include.has(filter)) {
+    value = "Positive";
+  }
+  if (filters.exclude.has(filter)) {
+    value = "Negative";
+  }
+  return (
+    <MultiStateToggle
+      selected={value}
+      toggleFn={(newValue) => {
+        setFilters((filters) => {
+          const newInclude = new Set(filters.include);
+          const newExclude = new Set(filters.exclude);
+          newInclude.delete(filter);
+          newExclude.delete(filter);
+          if (newValue === "Positive") {
+            newInclude.add(filter);
+          }
+          if (newValue === "Negative") {
+            newExclude.add(filter);
+          }
+          return {
+            include: newInclude,
+            exclude: newExclude,
+          };
+        });
+      }}
+    >
+      {text ?? filter}
+    </MultiStateToggle>
+  );
+}
+
 function applyFilters(
   games: Record<string, ProcessedGame>,
   filters: {
-    expansions: Set<Expansion>;
+    events: IncludeExclude<EventId>;
+    expansions: IncludeExclude<Expansion>;
     playerCounts: Set<number>;
     victoryPoints: Set<number>;
   }
@@ -65,20 +114,31 @@ function applyFilters(
   const filteredGames: Record<string, ProcessedGame> = {};
 
   objectEntries(games).forEach(([id, game]) => {
-    // Expansion Filter
-    if (filters.expansions.size !== 1) {
-      // for (const expansion of game.expansions) {
-      //   if (!filters.expansions.has(expansion)) {
-      //     return;
-      //   }
-      // }
-      for (const expansion of Array.from(filters.expansions)) {
-        if (expansion === "BASE" || expansion === "BASE ONLY") {
-          continue;
-        }
-        if (!game.expansions.includes(expansion)) {
-          return;
-        }
+    // Event Filter
+    const gameEvents = game.events ?? [];
+    for (const event of gameEvents) {
+      if (filters.events.exclude.has(event)) {
+        return;
+      }
+    }
+    for (const event of Array.from(filters.events.include)) {
+      if (!gameEvents.includes(event)) {
+        return;
+      }
+    }
+
+    // Expansion filter
+    for (const expansion of game.expansions) {
+      if (filters.expansions.exclude.has(expansion)) {
+        return;
+      }
+    }
+    for (const expansion of Array.from(filters.expansions.include)) {
+      if (expansion === "BASE" || expansion === "BASE ONLY") {
+        continue;
+      }
+      if (!game.expansions.includes(expansion)) {
+        return;
       }
     }
 
@@ -104,17 +164,28 @@ function applyFilters(
   return filteredGames;
 }
 
+interface IncludeExclude<T> {
+  include: Set<T>;
+  exclude: Set<T>;
+}
 export default function ArchivePage({
+  baseEvents,
   loading,
   processedGames,
 }: {
+  baseEvents: TIEvent[];
   processedGames: Record<string, ProcessedGame>;
   loading?: boolean;
 }) {
   const intl = useIntl();
-  const [expansions, setExpansions] = useState<Set<Expansion>>(
-    new Set(["BASE", "POK", "CODEX ONE", "CODEX TWO", "CODEX THREE"])
-  );
+  const [expansions, setExpansions] = useState<IncludeExclude<Expansion>>({
+    include: new Set(["BASE", "POK", "CODEX ONE", "CODEX TWO", "CODEX THREE"]),
+    exclude: new Set(["DISCORDANT STARS"]),
+  });
+  const [events, setEvents] = useState<IncludeExclude<EventId>>({
+    include: new Set(),
+    exclude: new Set(baseEvents.map((event) => event.id)),
+  });
 
   const [victoryPoints, setVictoryPoints] = useState<Set<number>>(
     new Set([10])
@@ -122,6 +193,7 @@ export default function ArchivePage({
   const [playerCounts, setPlayerCounts] = useState<Set<number>>(new Set([6]));
   const [localGames, setLocalGames] = useState(
     applyFilters(processedGames, {
+      events,
       expansions,
       playerCounts,
       victoryPoints,
@@ -131,12 +203,13 @@ export default function ArchivePage({
   useEffect(() => {
     setLocalGames(
       applyFilters(processedGames, {
+        events,
         expansions,
         playerCounts,
         victoryPoints,
       })
     );
-  }, [processedGames, expansions, playerCounts, victoryPoints]);
+  }, [processedGames, events, expansions, playerCounts, victoryPoints]);
 
   const orderedGames = objectEntries(localGames).sort((a, b) => {
     if (a[1].timestampMillis < b[1].timestampMillis) {
@@ -171,37 +244,43 @@ export default function ArchivePage({
             description="A label for a selector specifying which expansions should be enabled."
           />
           <div className={`flexRow ${styles.FilterRow}`}>
-            <FilterButton
+            <ThreeWayFilterButton
               filters={expansions}
               filter="POK"
               setFilters={setExpansions}
               text={<Strings.Expansion expansion="POK" />}
             />
-            <FilterButton
+            <ThreeWayFilterButton
               filters={expansions}
               filter="CODEX ONE"
               setFilters={setExpansions}
               text={<Strings.Expansion expansion="CODEX ONE" />}
             />
-            <FilterButton
+            <ThreeWayFilterButton
               filters={expansions}
               filter="CODEX TWO"
               setFilters={setExpansions}
               text={<Strings.Expansion expansion="CODEX TWO" />}
             />
-            <FilterButton
+            <ThreeWayFilterButton
               filters={expansions}
               filter="CODEX THREE"
               setFilters={setExpansions}
               text={<Strings.Expansion expansion="CODEX THREE" />}
             />
-            <FilterButton
+            <ThreeWayFilterButton
               filters={expansions}
               filter="CODEX FOUR"
               setFilters={setExpansions}
               text={<Strings.Expansion expansion="CODEX FOUR" />}
             />
-            <FilterButton
+            <ThreeWayFilterButton
+              filters={expansions}
+              filter="THUNDERS EDGE"
+              setFilters={setExpansions}
+              text={<Strings.Expansion expansion="THUNDERS EDGE" />}
+            />
+            <ThreeWayFilterButton
               filters={expansions}
               filter="DISCORDANT STARS"
               setFilters={setExpansions}
@@ -299,6 +378,36 @@ export default function ArchivePage({
               setFilters={setVictoryPoints}
             />
           </div> */}
+        {expansions.exclude.has("CODEX FOUR") &&
+        expansions.exclude.has("THUNDERS EDGE") ? null : (
+          <div
+            className="flexRow"
+            style={{
+              fontSize: rem(12),
+              gap: rem(4),
+            }}
+          >
+            <FormattedMessage
+              id="WVs5Hr"
+              defaultMessage="Events"
+              description="Event actions."
+            />
+            :
+            <div className={`flexRow ${styles.FilterRow}`}>
+              {baseEvents.map((event) => {
+                return (
+                  <ThreeWayFilterButton
+                    key={event.id}
+                    filters={events}
+                    filter={event.id}
+                    setFilters={setEvents}
+                    text={event.name}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        )}
       </LabeledDiv>
       <LabeledDiv label="Games" innerStyle={{ height: "calc(100dvh - 4rem)" }}>
         <div className={styles.ArchiveGames}>

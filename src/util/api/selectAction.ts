@@ -1,11 +1,8 @@
-import DataManager from "../../context/DataManager";
 import {
   SelectActionHandler,
   UnselectActionHandler,
 } from "../model/selectAction";
-import { updateGameData } from "./handler";
-import { updateActionLog } from "./update";
-import { poster } from "./util";
+import dataUpdate from "./dataUpdate";
 
 export function selectAction(gameId: string, action: Action) {
   const data: GameUpdateData = {
@@ -15,28 +12,7 @@ export function selectAction(gameId: string, action: Action) {
     },
   };
 
-  const now = Date.now();
-
-  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
-
-  DataManager.update((storedGameData) => {
-    const handler = new SelectActionHandler(storedGameData, data);
-
-    if (!handler.validate()) {
-      return storedGameData;
-    }
-
-    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
-    updateGameData(storedGameData, handler.getUpdates());
-
-    storedGameData.lastUpdate = now;
-
-    return storedGameData;
-  });
-
-  return updatePromise.catch((_) => {
-    DataManager.reset();
-  });
+  return dataUpdate(gameId, data, SelectActionHandler);
 }
 
 export function unselectAction(gameId: string, action: Action) {
@@ -47,27 +23,5 @@ export function unselectAction(gameId: string, action: Action) {
     },
   };
 
-  const now = Date.now();
-
-  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
-
-  DataManager.update((storedGameData) => {
-    const handler = new UnselectActionHandler(storedGameData, data);
-
-    if (!handler.validate()) {
-      return storedGameData;
-    }
-
-    // Requires looking at the action log.
-    updateGameData(storedGameData, handler.getUpdates());
-    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
-
-    storedGameData.lastUpdate = now;
-
-    return storedGameData;
-  });
-
-  return updatePromise.catch((_) => {
-    DataManager.reset();
-  });
+  return dataUpdate(gameId, data, UnselectActionHandler);
 }

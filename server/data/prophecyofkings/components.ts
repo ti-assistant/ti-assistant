@@ -4,22 +4,6 @@ export default function getProphecyOfKingsComponents(
   intl: IntlShape
 ): Record<ProphecyOfKings.ComponentId, BaseComponent | BaseTechComponent> {
   return {
-    "Archaeological Expedition": {
-      description: intl.formatMessage({
-        id: "Components.Archaeological Expedition.Description",
-        description: "Description for Component: Archaeological Expedition",
-        defaultMessage:
-          "ACTION: Reveal the top 3 cards of an exploration deck that matches a planet you control; gain any relic fragments that you reveal and discard the rest.",
-      }),
-      expansion: "POK",
-      id: "Archaeological Expedition",
-      name: intl.formatMessage({
-        id: "Components.Archaeological Expedition.Title",
-        description: "Title of Component: Archaeological Expedition",
-        defaultMessage: "Archaeological Expedition",
-      }),
-      type: "CARD",
-    },
     "Black Market Forgery": {
       description: intl.formatMessage(
         {
@@ -80,22 +64,6 @@ export default function getProphecyOfKingsComponents(
       }),
       type: "PROMISSORY",
     },
-    "Divert Funding": {
-      description: intl.formatMessage({
-        id: "Components.Divert Funding.Description",
-        description: "Description for Component: Divert Funding",
-        defaultMessage:
-          "ACTION: Return a non-unit upgrade, non-faction technology that you own to your technology deck. Then, research another technology.",
-      }),
-      expansion: "POK",
-      id: "Divert Funding",
-      name: intl.formatMessage({
-        id: "Components.Divert Funding.Title",
-        description: "Title of Component: Divert Funding",
-        defaultMessage: "Divert Funding",
-      }),
-      type: "CARD",
-    },
     "Enigmatic Device": {
       description: intl.formatMessage({
         id: "Components.Enigmatic Device.Description",
@@ -111,22 +79,6 @@ export default function getProphecyOfKingsComponents(
         defaultMessage: "Enigmatic Device",
       }),
       type: "EXPLORATION",
-    },
-    "Exploration Probe": {
-      description: intl.formatMessage({
-        id: "Components.Exploration Probe.Description",
-        description: "Description for Component: Exploration Probe",
-        defaultMessage:
-          "ACTION: Explore a frontier token that is in or adjacent to a system that contains 1 or more of your ships.",
-      }),
-      expansion: "POK",
-      id: "Exploration Probe",
-      name: intl.formatMessage({
-        id: "Components.Exploration Probe.Title",
-        description: "Title of Component: Exploration Probe",
-        defaultMessage: "Exploration Probe",
-      }),
-      type: "CARD",
     },
     Fabrication: {
       description: intl.formatMessage({
@@ -160,54 +112,6 @@ export default function getProphecyOfKingsComponents(
         defaultMessage: "Gain Relic",
       }),
       type: "EXPLORATION",
-    },
-    "Refit Troops": {
-      description: intl.formatMessage({
-        id: "Components.Refit Troops.Description",
-        description: "Description for Component: Refit Troops",
-        defaultMessage:
-          "ACTION: Choose 1 or 2 of your infantry on the game board; replace each of those infantry with mechs.",
-      }),
-      expansion: "POK",
-      id: "Refit Troops",
-      name: intl.formatMessage({
-        id: "Components.Refit Troops.Title",
-        description: "Title of Component: Refit Troops",
-        defaultMessage: "Refit Troops",
-      }),
-      type: "CARD",
-    },
-    Scuttle: {
-      description: intl.formatMessage({
-        id: "Components.Scuttle.Description",
-        description: "Description for Component: Scuttle",
-        defaultMessage:
-          "ACTION: Choose 1 or 2 of your non-fighter ships on the game board and return them to your reinforcements; gain trade goods equal to the combined cost of those ships.",
-      }),
-      expansion: "POK",
-      id: "Scuttle",
-      name: intl.formatMessage({
-        id: "Components.Scuttle.Title",
-        description: "Title of Component: Scuttle",
-        defaultMessage: "Scuttle",
-      }),
-      type: "CARD",
-    },
-    "Seize Artifact": {
-      description: intl.formatMessage({
-        id: "Components.Seize Artifact.Description",
-        description: "Description for Component: Seize Artifact",
-        defaultMessage:
-          "ACTION: Choose 1 of your neighbors that has 1 or more relic fragments. That player must give you 1 relic fragment of your choice.",
-      }),
-      expansion: "POK",
-      id: "Seize Artifact",
-      name: intl.formatMessage({
-        id: "Components.Seize Artifact.Title",
-        description: "Title of Component: Seize Artifact",
-        defaultMessage: "Seize Artifact",
-      }),
-      type: "CARD",
     },
     "Sling Relay": {
       description: intl.formatMessage({

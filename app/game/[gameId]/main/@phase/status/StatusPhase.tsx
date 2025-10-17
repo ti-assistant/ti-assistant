@@ -1,16 +1,20 @@
-import React from "react";
+import React, { use } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ClientOnlyHoverMenu } from "../../../../../../src/HoverMenu";
 import { LockedButtons } from "../../../../../../src/LockedButton";
 import { NumberedItem } from "../../../../../../src/NumberedItem";
 import CrownOfEmphidia from "../../../../../../src/components/CrownOfEmphidia/CrownOfEmphidia";
 import FactionIcon from "../../../../../../src/components/FactionIcon/FactionIcon";
+import FormattedDescription from "../../../../../../src/components/FormattedDescription/FormattedDescription";
+import IconDiv from "../../../../../../src/components/LabeledDiv/IconDiv";
 import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
 import LabeledLine from "../../../../../../src/components/LabeledLine/LabeledLine";
 import { ModalContent } from "../../../../../../src/components/Modal/Modal";
 import ObjectiveRow from "../../../../../../src/components/ObjectiveRow/ObjectiveRow";
 import ObjectiveSelectHoverMenu from "../../../../../../src/components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import { Selector } from "../../../../../../src/components/Selector/Selector";
+import TechResearchSection from "../../../../../../src/components/TechResearchSection/TechResearchSection";
+import { ModalContext } from "../../../../../../src/context/contexts";
 import {
   useActionLog,
   useAgenda,
@@ -20,6 +24,8 @@ import {
   usePlanets,
   useRelics,
   useStrategyCards,
+  useTech,
+  useTechs,
   useViewOnly,
 } from "../../../../../../src/context/dataHooks";
 import { useFactions } from "../../../../../../src/context/factionDataHooks";
@@ -29,7 +35,6 @@ import {
   useRound,
   useSpeaker,
 } from "../../../../../../src/context/stateDataHooks";
-import { useSharedModal } from "../../../../../../src/data/SharedModal";
 import {
   advancePhaseAsync,
   hideObjectiveAsync,
@@ -53,13 +58,13 @@ import {
   phaseString,
 } from "../../../../../../src/util/strings";
 import { ActionLog } from "../../../../../../src/util/types/types";
-import { rem } from "../../../../../../src/util/util";
+import { objectKeys, rem } from "../../../../../../src/util/util";
 import styles from "./StatusPhase.module.scss";
-import FormattedDescription from "../../../../../../src/components/FormattedDescription/FormattedDescription";
 
 function CommandTokenGains() {
   const factions = useFactions();
   const strategyCards = useStrategyCards();
+  const hyperMetabolism = useTech("Hyper Metabolism");
 
   const orderedStrategyCards = Object.values(strategyCards)
     .filter((card) => card.faction)
@@ -89,12 +94,12 @@ function CommandTokenGains() {
     }
     let number: 2 | 3 | 4 = 2;
     if (factionId === "Federation of Sol") {
-      if (hasTech(faction, "Hyper Metabolism")) {
+      if (hasTech(faction, hyperMetabolism)) {
         number = 4;
       } else {
         number = 3;
       }
-    } else if (hasTech(faction, "Hyper Metabolism")) {
+    } else if (hasTech(faction, hyperMetabolism)) {
       number = 3;
     }
     numberOfCommandTokens[number].push(faction);
@@ -167,6 +172,7 @@ function CommandTokenGains() {
 
 function ActionCardDraws() {
   const factions = useFactions();
+  const neuralMotivator = useTech("Neural Motivator");
   const strategyCards = useStrategyCards();
 
   const orderedStrategyCards = Object.values(strategyCards)
@@ -195,7 +201,7 @@ function ActionCardDraws() {
     if (!faction) {
       return;
     }
-    if (hasTech(faction, "Neural Motivator")) {
+    if (hasTech(faction, neuralMotivator)) {
       number = 2;
     }
     if (factionId === "Yssaril Tribes") {
@@ -232,7 +238,7 @@ function ActionCardDraws() {
           if (
             num === 3 &&
             factions["Yssaril Tribes"] &&
-            !hasTech(factions["Yssaril Tribes"], "Neural Motivator")
+            !hasTech(factions["Yssaril Tribes"], neuralMotivator)
           ) {
             displayNum = 2;
           }
@@ -600,6 +606,7 @@ export default function StatusPhase() {
   const planets = usePlanets();
   const relics = useRelics();
   const strategyCards = useStrategyCards();
+  const techs = useTechs();
 
   const agendaUnlocked = useAgendaUnlocked();
   const round = useRound();
@@ -610,7 +617,7 @@ export default function StatusPhase() {
 
   const intl = useIntl();
 
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   function nextPhase(skipAgenda = false) {
     if (!skipAgenda) {
@@ -626,6 +633,9 @@ export default function StatusPhase() {
   }
 
   function hasStartOfStatusPhaseAbilities() {
+    if (options.expansions.includes("THUNDERS EDGE")) {
+      return true;
+    }
     for (const ability of Object.values(getStartOfStatusPhaseAbilities())) {
       if (ability.length > 0) {
         return true;
@@ -660,7 +670,7 @@ export default function StatusPhase() {
       }
       if (
         !(options?.expansions ?? []).includes("POK") &&
-        hasTech(faction, "Wormhole Generator")
+        hasTech(faction, techs["Wormhole Generator"])
       ) {
         factionAbilities.push({
           name: intl.formatMessage({
@@ -733,7 +743,7 @@ export default function StatusPhase() {
           }),
         });
       }
-      if (hasTech(faction, "Bioplasmosis")) {
+      if (hasTech(faction, techs["Bioplasmosis"])) {
         factionAbilities.push({
           name: intl.formatMessage({
             id: "Arborec.Techs.Bioplasmosis.Title",
@@ -770,20 +780,9 @@ export default function StatusPhase() {
     return abilities;
   }
 
-  const orderedStrategyCards = Object.values(strategyCards)
-    .filter((card) => card.faction)
-    .sort((a, b) => a.order - b.order);
-
-  const cardsByFaction: Partial<Record<FactionId, StrategyCard[]>> = {};
-  orderedStrategyCards.forEach((card) => {
-    if (!card.faction) {
-      return;
-    }
-    if (!cardsByFaction[card.faction]) {
-      cardsByFaction[card.faction] = [];
-    }
-    cardsByFaction[card.faction]?.push(card);
-  });
+  const orderedFactions = Object.values(factions).sort((a, b) =>
+    a.order > b.order ? 1 : -1
+  );
 
   const revealedObjectives = currentTurn
     .filter((logEntry) => logEntry.data.action === "REVEAL_OBJECTIVE")
@@ -907,6 +906,61 @@ export default function StatusPhase() {
                       </LabeledDiv>
                     );
                   })}
+                {options.expansions.includes("THUNDERS EDGE") ? (
+                  <LabeledDiv
+                    label={
+                      <FormattedMessage
+                        id="hl6LkY"
+                        defaultMessage="Entropic Scar"
+                        description="Name of an amomaly that grants techs."
+                      />
+                    }
+                  >
+                    {orderedFactions.map((faction) => {
+                      if (faction.id === "Nekro Virus") {
+                        return null;
+                      }
+                      const numFactionTechs = objectKeys(faction.techs).reduce(
+                        (count, techId) => {
+                          const tech = techs[techId];
+                          if (!tech) {
+                            return count;
+                          }
+                          if (!!tech.faction) {
+                            return count + 1;
+                          }
+                          return count;
+                        },
+                        0
+                      );
+                      if (numFactionTechs === 2) {
+                        return null;
+                      }
+                      return (
+                        <IconDiv
+                          key={faction.id}
+                          color={getFactionColor(faction)}
+                          icon={
+                            <FactionIcon factionId={faction.id} size={24} />
+                          }
+                          iconSize={24}
+                        >
+                          <TechResearchSection
+                            label={intl.formatMessage({
+                              id: "P/Y6Fo",
+                              description:
+                                "Message shown when a faction can gain a faction tech.",
+                              defaultMessage: "Gain Faction Tech",
+                            })}
+                            filter={(tech) => !!tech.faction}
+                            factionId={faction.id}
+                            gain
+                          />
+                        </IconDiv>
+                      );
+                    })}
+                  </LabeledDiv>
+                ) : null}
               </div>
             </ClientOnlyHoverMenu>
           </NumberedItem>

@@ -1,6 +1,7 @@
+import { use } from "react";
+import { ModalContext } from "../../context/contexts";
 import { useGameId, useRelics, useViewOnly } from "../../context/dataHooks";
 import { useFactions } from "../../context/factionDataHooks";
-import { useSharedModal } from "../../data/SharedModal";
 import { gainRelicAsync, loseRelicAsync } from "../../dynamic/api";
 import { InfoRow } from "../../InfoRow";
 import { getFactionColor } from "../../util/factions";
@@ -94,7 +95,7 @@ function RelicPanelContent({}) {
 }
 
 export default function RelicPanel({}) {
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   return (
     <>

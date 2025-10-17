@@ -23,7 +23,8 @@ import {
   applyAllPlanetAttachments,
   filterToClaimedPlanets,
 } from "./util/planets";
-import { objectEntries, objectKeys, rem } from "./util/util";
+import { objectEntries, rem } from "./util/util";
+import { isTechPurged } from "./util/api/techs";
 
 interface FactionSummaryProps {
   factionId: FactionId;
@@ -52,10 +53,18 @@ export function FactionSummary({
   let VPs = 0;
 
   if (!faction) {
-    throw new Error("Faction " + factionId + " not found");
+    return null;
   }
 
-  const ownedTechs = objectKeys(faction.techs ?? {});
+  const ownedTechs = objectEntries(faction.techs ?? {})
+    .filter(([techId, _]) => {
+      const tech = techs[techId];
+      if (!tech) {
+        return false;
+      }
+      return !isTechPurged(faction, tech);
+    })
+    .map(([techId, _]) => techId);
 
   const ownedPlanets = factionId
     ? filterToClaimedPlanets(planets ?? {}, factionId)

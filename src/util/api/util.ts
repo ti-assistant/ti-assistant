@@ -1,4 +1,5 @@
 import Cookies from "js-cookie";
+import { DataStore } from "../../context/dataStore";
 
 function genCookie(length: number): string {
   let result = "";
@@ -33,6 +34,17 @@ export function arrayRemove<Type>(array: Type[], value: Type) {
   return Array.from(set);
 }
 
+export function updateArray<Type>(array: Type[], add: Type[], remove: Type[]) {
+  const set = new Set(array);
+  for (const value of add) {
+    set.add(value);
+  }
+  for (const value of remove) {
+    set.delete(value);
+  }
+  return Array.from(set);
+}
+
 export async function fetcher(url: string) {
   if (!Cookies.get("secret")) {
     Cookies.set("secret", genCookie(16));
@@ -54,6 +66,7 @@ export async function poster(
   data: any,
   timestamp: number
 ): Promise<any> {
+  data.gameTime = DataStore.getValue("timers.game") ?? 0;
   data.timestamp = timestamp;
   const res = await fetch(url, {
     method: "POST",

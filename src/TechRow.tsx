@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, use } from "react";
 import { FormattedMessage } from "react-intl";
 import { SelectableRow } from "./SelectableRow";
 import FactionIcon from "./components/FactionIcon/FactionIcon";
@@ -6,114 +6,16 @@ import FactionSelectRadialMenu from "./components/FactionSelectRadialMenu/Factio
 import FormattedDescription from "./components/FormattedDescription/FormattedDescription";
 import { ModalContent } from "./components/Modal/Modal";
 import TechIcon from "./components/TechIcon/TechIcon";
+import UnitStats from "./components/UnitStats/UnitStats";
 import UnitIcon from "./components/Units/Icons";
+import { ModalContext } from "./context/contexts";
 import { useGameId, useLogEntries, useViewOnly } from "./context/dataHooks";
 import { useFactions } from "./context/factionDataHooks";
-import { useSharedModal } from "./data/SharedModal";
 import { addTechAsync, removeTechAsync } from "./dynamic/api";
 import { hasTech } from "./util/api/techs";
 import { getFactionColor, getMapOrderedFactionIds } from "./util/factions";
 import { getTechColor } from "./util/techs";
 import { objectEntries, rem } from "./util/util";
-
-export function UnitStat({
-  name,
-  stat,
-}: {
-  name: ReactNode;
-  stat: number | string;
-}) {
-  return (
-    <div
-      className="centered"
-      style={{
-        width: rem(82),
-        boxSizing: "border-box",
-        border: "1px solid #eee",
-        borderRadius: rem(10),
-      }}
-    >
-      <div
-        style={{
-          fontSize: rem(24),
-          borderBottom: "1px solid #eee",
-        }}
-      >
-        {stat}
-      </div>
-      <div
-        style={{
-          lineHeight: rem(18),
-          fontSize: rem(11),
-          padding: `0 ${rem(6)}`,
-        }}
-      >
-        {name}
-      </div>
-    </div>
-  );
-}
-
-function UnitStatBlock({ stats }: { stats?: UnitStats }) {
-  if (!stats) {
-    return null;
-  }
-  return (
-    <div
-      className="flexRow"
-      style={{
-        gap: rem(3),
-        padding: `0 ${rem(4)}`,
-        margin: `${rem(4)} ${rem(4)} ${rem(4)} 0`,
-        fontFamily: "Slider",
-        alignItems: "stretch",
-        justifyContent: "center",
-        boxSizing: "border-box",
-      }}
-    >
-      <UnitStat
-        name={
-          <FormattedMessage
-            id="Unit.Stats.Cost"
-            defaultMessage="COST"
-            description="Label for unit stat block - cost of the unit."
-          />
-        }
-        stat={stats.cost ?? "-"}
-      />
-      <UnitStat
-        name={
-          <FormattedMessage
-            id="Unit.Stats.Combat"
-            defaultMessage="COMBAT"
-            description="Label for unit stat block - combat value of the unit."
-          />
-        }
-        stat={stats.combat ?? "-"}
-      />
-      <UnitStat
-        name={
-          <FormattedMessage
-            id="Unit.Stats.Move"
-            defaultMessage="MOVE"
-            description="Label for unit stat block - move value of the unit."
-          />
-        }
-        stat={stats.move ?? "-"}
-      />
-      <UnitStat
-        name={
-          <FormattedMessage
-            id="Unit.Stats.Capacity"
-            defaultMessage="CAPACITY"
-            description="Label for unit stat block - capacity value of the unit."
-          />
-        }
-        stat={stats.capacity ?? "-"}
-      />
-    </div>
-  );
-}
 
 function InfoContent({ tech }: { tech: Tech }) {
   if (tech.type === "UPGRADE") {
@@ -149,7 +51,7 @@ function InfoContent({ tech }: { tech: Tech }) {
               })}
             </div>
           ) : null}
-          <UnitStatBlock stats={tech.stats} />
+          <UnitStats stats={tech.stats} type={tech.unitType} size={rem(192)} />
         </div>
       </div>
     );
@@ -198,7 +100,7 @@ export function TechRow({
   opts = {},
 }: TechRowProps) {
   const viewOnly = useViewOnly();
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   return (
     <SelectableRow
@@ -318,14 +220,14 @@ function ResearchAgreement({ tech }: { tech: Tech }) {
   const factions = useFactions();
   const gameId = useGameId();
   const viewOnly = useViewOnly();
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   const selectedFaction = researchAgreement?.data.event.faction;
 
   const orderedFactionIds = getMapOrderedFactionIds(factions);
   const fadedFactions = objectEntries(factions)
     .filter(([factionId, faction]) => {
-      return hasTech(faction, tech.id) && factionId !== selectedFaction;
+      return hasTech(faction, tech) && factionId !== selectedFaction;
     })
     .map(([factionId, _]) => factionId);
 
@@ -344,7 +246,7 @@ function ResearchAgreement({ tech }: { tech: Tech }) {
       selectedFaction={selectedFaction}
       onSelect={(factionId, prevFaction) => {
         if (factionId) {
-          addTechAsync(gameId, factionId, tech.id, true);
+          addTechAsync(gameId, factionId, tech.id, undefined, true);
         }
         if (prevFaction) {
           removeTechAsync(gameId, prevFaction, tech.id);

@@ -6,31 +6,27 @@ import { rem } from "../../util/util";
 
 interface SelectorProps<Id extends string, Name extends string> {
   autoSelect?: boolean;
-  borderColor?: string;
-  buttonStyle?: CSSProperties;
+  borderless?: boolean;
   hoverMenuLabel: ReactNode;
+  hoverMenuStyle?: CSSProperties;
+  icon?: ReactNode;
   itemsPerColumn?: number;
   numToSelect?: number;
   options: { id: Id; name: Name }[];
   fadedOptions?: Id[];
   toggleItem: (itemId: Id, add: boolean) => void;
   renderItem?: (itemId: Id, itemName: Name) => ReactNode;
-  renderButton?: (
-    itemId: Id,
-    itemName: Name,
-    toggleItem: (itemId: Id, add: boolean) => void
-  ) => ReactNode;
   selectedItem?: Id;
   selectedLabel?: ReactNode;
   style?: CSSProperties;
   viewOnly?: boolean;
 }
 
-interface IdType {
+interface TypeWithId {
   id: string;
 }
 
-function getItemWithId<Type extends IdType>(id: string, items: Type[]) {
+function getItemWithId<Type extends TypeWithId>(id: string, items: Type[]) {
   for (const item of items) {
     if (item.id === id) {
       return item;
@@ -41,17 +37,17 @@ function getItemWithId<Type extends IdType>(id: string, items: Type[]) {
 
 export function Selector<Id extends string, Name extends string>({
   autoSelect,
-  buttonStyle = {},
+  borderless,
   hoverMenuLabel,
+  hoverMenuStyle = {},
+  icon,
   itemsPerColumn = 10,
-  borderColor,
   fadedOptions = [],
   selectedLabel,
   options,
   toggleItem,
   selectedItem,
   renderItem,
-  renderButton,
   style,
   viewOnly,
 }: SelectorProps<Id, Name>) {
@@ -118,16 +114,13 @@ export function Selector<Id extends string, Name extends string>({
 
   return (
     <ClientOnlyHoverMenu
-      buttonStyle={buttonStyle}
-      borderColor={borderColor}
       label={hoverMenuLabel}
+      borderless={borderless}
       style={{ minWidth: "100%" }}
+      buttonStyle={hoverMenuStyle}
       renderProps={(closeFn) => (
         <div className="flexColumn" style={innerStyle}>
           {options.map((option) => {
-            if (renderButton) {
-              return renderButton(option.id, option.name, toggleItem);
-            }
             return (
               <button
                 key={option.id}

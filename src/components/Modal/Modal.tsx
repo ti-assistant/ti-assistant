@@ -18,6 +18,7 @@ export default function Modal({
 }: PropsWithChildren<ModalProps>) {
   const zIndex = 900 * (level ?? 1);
   const nodeRef = useRef<HTMLDivElement>(null);
+  const innerNodeRef = useRef<HTMLDivElement>(null);
 
   function onExited() {
     if (!nodeRef.current) {
@@ -52,8 +53,13 @@ export default function Modal({
         style={{ zIndex: zIndex + 3 }}
       >
         <div className={styles.Overlay} onClick={closeModal}></div>
-        <CSSTransition in={visible} timeout={300} classNames="modal">
-          <div className={styles.Content}>
+        <CSSTransition
+          in={visible}
+          timeout={300}
+          classNames="modal"
+          nodeRef={innerNodeRef}
+        >
+          <div className={styles.Content} ref={innerNodeRef}>
             <div className={styles.Header}>
               {closeMenu ? (
                 <div

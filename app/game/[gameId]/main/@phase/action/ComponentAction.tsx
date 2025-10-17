@@ -1,15 +1,18 @@
 "use client";
 
-import React, { CSSProperties, ReactNode } from "react";
+import React, { CSSProperties, ReactNode, use } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ClientOnlyHoverMenu } from "../../../../../../src/HoverMenu";
-import { InfoRow } from "../../../../../../src/InfoRow";
 import { SelectableRow } from "../../../../../../src/SelectableRow";
 import { TechRow } from "../../../../../../src/TechRow";
+import GainRelic from "../../../../../../src/components/Actions/GainRelic";
+import FactionIcon from "../../../../../../src/components/FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../../../../../../src/components/FactionSelectRadialMenu/FactionSelectRadialMenu";
+import FormattedDescription from "../../../../../../src/components/FormattedDescription/FormattedDescription";
 import FrontierExploration from "../../../../../../src/components/FrontierExploration/FrontierExploration";
+import IconDiv from "../../../../../../src/components/LabeledDiv/IconDiv";
 import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
 import LabeledLine from "../../../../../../src/components/LabeledLine/LabeledLine";
 import GameMap from "../../../../../../src/components/Map/GameMap";
@@ -20,8 +23,11 @@ import { ModalContent } from "../../../../../../src/components/Modal/Modal";
 import PlanetRow from "../../../../../../src/components/PlanetRow/PlanetRow";
 import { Selector } from "../../../../../../src/components/Selector/Selector";
 import { TacticalAction } from "../../../../../../src/components/TacticalAction";
+import TechResearchSection from "../../../../../../src/components/TechResearchSection/TechResearchSection";
 import TechSelectHoverMenu from "../../../../../../src/components/TechSelectHoverMenu/TechSelectHoverMenu";
+import { ModalContext } from "../../../../../../src/context/contexts";
 import {
+  useActionCards,
   useActionLog,
   useAttachments,
   useComponents,
@@ -33,17 +39,15 @@ import {
   useTechs,
   useViewOnly,
 } from "../../../../../../src/context/dataHooks";
-import { useObjectives } from "../../../../../../src/context/objectiveDataHooks";
 import {
   useFactions,
   useNumFactions,
 } from "../../../../../../src/context/factionDataHooks";
-import { useSharedModal } from "../../../../../../src/data/SharedModal";
+import { useOrderedFactionIds } from "../../../../../../src/context/gameDataHooks";
+import { useObjectives } from "../../../../../../src/context/objectiveDataHooks";
 import {
   addAttachmentAsync,
   addTechAsync,
-  gainRelicAsync,
-  loseRelicAsync,
   playComponentAsync,
   removeAttachmentAsync,
   removeTechAsync,
@@ -51,13 +55,11 @@ import {
   selectSubComponentAsync,
   swapMapTilesAsync,
   unplayComponentAsync,
-  updatePlanetStateAsync,
 } from "../../../../../../src/dynamic/api";
+import RelicMenuSVG from "../../../../../../src/icons/ui/RelicMenu";
 import {
   getClaimedPlanets,
-  getGainedRelic,
   getLogEntries,
-  getPurgedPlanet,
   getReplacedTechs,
   getResearchedTechs,
   getScoredObjectives,
@@ -80,15 +82,22 @@ import { getMapString } from "../../../../../../src/util/options";
 import { applyAllPlanetAttachments } from "../../../../../../src/util/planets";
 import { Optional } from "../../../../../../src/util/types/types";
 import { pluralize, rem } from "../../../../../../src/util/util";
+import Overrule from "./components/Overrule";
 import PlanetaryRigs from "./components/PlanetaryRigs";
-import { useOrderedFactionIds } from "../../../../../../src/context/gameDataHooks";
-import FormattedDescription from "../../../../../../src/components/FormattedDescription/FormattedDescription";
+import PurgePlanet from "./components/PurgePlanet";
+import Strategize from "./components/Strategize";
+import TaZernDeepwrought from "./components/TaZernDeepwrought";
+import VaultsOfTheHeir from "./components/VaultsOfTheHeir";
 
 function capitalizeFirstLetter(string: string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
+  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
-function InfoContent({ component }: { component: Component }) {
+function InfoContent({
+  component,
+}: {
+  component: ActionCard | Component | Relic;
+}) {
   return (
     <div
       className="myriadPro"
@@ -118,19 +127,26 @@ function ComponentSelect({
   selectComponent: (componentName: string) => void;
   factionId: FactionId;
 }) {
+  const allActionCards = useActionCards();
   const factions = useFactions();
   const options = useOptions();
   const leaders = useLeaders();
+  const relics = useRelics();
+  const techs = useTechs();
   const viewOnly = useViewOnly();
+
+  const faction = factions[factionId];
 
   const nonTechComponents: (BaseComponent & GameComponent)[] =
     components.filter(
       (component) => component.type !== "TECH"
     ) as (BaseComponent & GameComponent)[];
-  const actionCards = nonTechComponents
-    .filter((component) => component.type === "CARD")
+  const actionCards = Object.values(allActionCards)
+    .filter((actionCard) => actionCard.timing === "COMPONENT_ACTION")
     .sort((a, b) => (a.name > b.name ? 1 : -1));
-  const techs = components.filter((component) => component.type === "TECH");
+  const techComponents = components.filter(
+    (component) => component.type === "TECH"
+  );
   const leaderComponents = nonTechComponents
     .filter((component) => component.type === "LEADER")
     .filter((component) => {
@@ -149,18 +165,30 @@ function ComponentSelect({
       }
       return 0;
     });
-  const exploration = nonTechComponents.filter((component) => {
-    if (component.type === "EXPLORATION") {
+  const exploration = [
+    ...nonTechComponents.filter(
+      (component) => component.type === "EXPLORATION"
+    ),
+    ...Object.values(relics).filter((relic) => {
+      return (
+        relic.timing === "COMPONENT_ACTION" &&
+        relic.owner === factionId &&
+        relic.state !== "purged"
+      );
+    }),
+  ].sort((a, b) => (a.name > b.name ? 1 : -1));
+  const events = nonTechComponents
+    .filter((component) => component.type === "EVENT")
+    .filter((event) => {
+      if (event.requiresTech) {
+        if (!faction) {
+          return false;
+        }
+        const tech = techs[event.requiresTech];
+        return hasTech(faction, tech);
+      }
       return true;
-    }
-    if (component.type !== "RELIC") {
-      return false;
-    }
-    return true;
-  });
-  const events = nonTechComponents.filter(
-    (component) => component.type === "EVENT"
-  );
+    });
   const promissory = nonTechComponents.filter(
     (component) => component.type === "PROMISSORY"
   );
@@ -173,15 +201,23 @@ function ComponentSelect({
     factionComponents.push(component);
     promissoryByFaction[component.faction] = factionComponents;
   });
-  const others = nonTechComponents.filter(
-    (component) =>
-      component.type !== "LEADER" &&
-      component.type !== "CARD" &&
-      component.type !== "RELIC" &&
-      component.type !== "PROMISSORY" &&
-      component.type !== "EXPLORATION" &&
-      component.type !== "EVENT"
-  );
+  const others = nonTechComponents
+    .filter(
+      (component) =>
+        component.type !== "LEADER" &&
+        component.type !== "CARD" &&
+        component.type !== "RELIC" &&
+        component.type !== "PROMISSORY" &&
+        component.type !== "EXPLORATION" &&
+        component.type !== "EVENT"
+    )
+    .filter(
+      (component) =>
+        component.type !== "BREAKTHROUGH" ||
+        (faction?.breakthrough?.state &&
+          faction.breakthrough.state !== "locked")
+    )
+    .sort((a, b) => (a.name > b.name ? 1 : -1));
 
   const innerStyle: CSSProperties = {
     fontFamily: "Myriad Pro",
@@ -196,8 +232,6 @@ function ComponentSelect({
   };
 
   const className = window.innerWidth < 900 ? "flexColumn" : "flexRow";
-
-  const faction = factions[factionId];
 
   return (
     <div
@@ -228,31 +262,27 @@ function ComponentSelect({
               : undefined,
           }}
         >
-          {actionCards.map((component) => {
+          {actionCards.map((actionCard) => {
             return (
               <button
-                key={component.id}
+                key={actionCard.id}
                 style={{
                   writingMode: "horizontal-tb",
                   fontSize: options.expansions.includes("DISCORDANT STARS")
                     ? rem(14)
                     : undefined,
                 }}
-                className={
-                  component.state === "exhausted" || component.state === "used"
-                    ? "faded"
-                    : ""
-                }
-                onClick={() => selectComponent(component.id)}
+                className={actionCard.state === "discarded" ? "faded" : ""}
+                onClick={() => selectComponent(actionCard.id)}
                 disabled={viewOnly}
               >
-                {component.name}
+                {actionCard.name}
               </button>
             );
           })}
         </div>
       </ClientOnlyHoverMenu>
-      {techs.length > 0 ? (
+      {techComponents.length > 0 ? (
         <ClientOnlyHoverMenu
           label={
             <FormattedMessage
@@ -266,10 +296,13 @@ function ComponentSelect({
             className="flexRow"
             style={{
               ...innerStyle,
-              gridTemplateRows: `repeat(${Math.min(techs.length, 10)}, auto)`,
+              gridTemplateRows: `repeat(${Math.min(
+                techComponents.length,
+                10
+              )}, auto)`,
             }}
           >
-            {techs.map((component) => {
+            {techComponents.map((component) => {
               if (!faction) {
                 return null;
               }
@@ -345,19 +378,33 @@ function ComponentSelect({
             }}
           >
             {exploration.map((component) => {
+              const isRelic = !component.hasOwnProperty("type");
+              const faded =
+                component.state === "exhausted" || component.state === "used";
               return (
                 <button
                   key={component.id}
-                  className={
-                    component.state === "exhausted" ||
-                    component.state === "used"
-                      ? "faded"
-                      : ""
-                  }
+                  className={`flexRow ${faded ? "faded" : ""}`}
                   onClick={() => selectComponent(component.id)}
                   disabled={viewOnly}
+                  style={{ position: "relative", justifyContent: "flex-start" }}
                 >
                   {component.name}
+                  {isRelic ? (
+                    <>
+                      <div style={{ width: rem(4) }}></div>
+                      <div
+                        style={{
+                          position: "absolute",
+                          bottom: rem(4),
+                          right: rem(4),
+                          width: rem(10),
+                        }}
+                      >
+                        <RelicMenuSVG color={faded ? "#555" : undefined} />
+                      </div>
+                    </>
+                  ) : null}
                 </button>
               );
             })}
@@ -480,6 +527,29 @@ function ComponentSelect({
                   </div>
                 );
               }
+              if (component.type === "BREAKTHROUGH") {
+                const state = faction?.breakthrough?.state;
+                return (
+                  <div
+                    className="flexColumn"
+                    key={component.id}
+                    style={{ minWidth: rem(150), alignItems: "flex-start" }}
+                  >
+                    <LabeledLine
+                      leftLabel={capitalizeFirstLetter(component.type)}
+                    />
+                    <button
+                      className={
+                        state === "exhausted" || state === "used" ? "faded" : ""
+                      }
+                      onClick={() => selectComponent(component.id)}
+                      disabled={viewOnly}
+                    >
+                      {component.name}
+                    </button>
+                  </div>
+                );
+              }
               return (
                 <button
                   key={component.id}
@@ -502,56 +572,18 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
   const attachments = useAttachments();
   const factions = useFactions();
   const gameId = useGameId();
+  const mapOrderedFactionIds = useOrderedFactionIds("MAP");
   const objectives = useObjectives();
   const options = useOptions();
   const planets = usePlanets();
-  const relics = useRelics();
   const techs = useTechs();
   const viewOnly = useViewOnly();
 
   const intl = useIntl();
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);
-  const mapOrderedFactionIds = useOrderedFactionIds("MAP");
   const numFactions = useNumFactions();
 
-  function getResearchableTechs(faction: Faction) {
-    const replaces: TechId[] = [];
-    const availableTechs = Object.values(techs ?? {}).filter((tech) => {
-      if (hasTech(faction, tech.id)) {
-        return false;
-      }
-      if (tech.faction && !factions[tech.faction]) {
-        return false;
-      }
-      if (
-        faction.id !== "Nekro Virus" &&
-        tech.faction &&
-        faction.id !== tech.faction
-      ) {
-        return false;
-      }
-      const researchedTechs = getResearchedTechs(currentTurn, faction.id);
-      if (researchedTechs.includes(tech.id)) {
-        return false;
-      }
-      if (tech.type === "UPGRADE" && tech.replaces) {
-        replaces.push(tech.replaces);
-      }
-      return true;
-    });
-    if (faction.id !== "Nekro Virus") {
-      return availableTechs.filter((tech) => !replaces.includes(tech.id));
-    }
-    return availableTechs;
-  }
-
-  function addTechLocal(tech: Tech) {
-    if (!gameId) {
-      return;
-    }
-    addTechAsync(gameId, factionId, tech.id);
-  }
   function removeTechLocal(techId: TechId) {
     if (!gameId) {
       return;
@@ -569,31 +601,6 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       return;
     }
     addTechAsync(gameId, factionId, techId);
-  }
-  function addRelic(relicId: RelicId) {
-    if (!gameId) {
-      return;
-    }
-    gainRelicAsync(gameId, factionId, relicId);
-  }
-  function removeRelic(relicId: RelicId) {
-    if (!gameId) {
-      return;
-    }
-    loseRelicAsync(gameId, factionId, relicId);
-  }
-  function destroyPlanet(planetId: PlanetId) {
-    if (!gameId) {
-      return;
-    }
-
-    updatePlanetStateAsync(gameId, planetId, "PURGED");
-  }
-  function undestroyPlanet(planetId: PlanetId) {
-    if (!gameId) {
-      return;
-    }
-    updatePlanetStateAsync(gameId, planetId, "READIED");
   }
   function toggleAttachment(
     planetId: PlanetId,
@@ -641,70 +648,22 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
   switch (componentName) {
     case "Enigmatic Device":
     case "Focused Research": {
-      const faction = factions[factionId];
-      if (!faction) {
-        break;
+      innerContent = <TechResearchSection factionId={factionId} />;
+      break;
+    }
+    case "Share Knowledge": {
+      const deepwrought = factions["Deepwrought Scholarate"];
+      if (!deepwrought) {
+        return null;
       }
-      if (factionId === "Nekro Virus") {
-        innerContent = (
-          <div className="flexRow" style={{ width: "100%" }}>
-            <FormattedMessage
-              id="t5fXQR"
-              description="Text telling a player how many command tokens to gain."
-              defaultMessage="Gain {count} command {count, plural, one {token} other {tokens}}"
-              values={{ count: 3 }}
-            />
-          </div>
-        );
-        break;
-      }
-      const researchedTech = getResearchedTechs(currentTurn, factionId);
-      const availableTechs = getResearchableTechs(faction);
-
-      if (researchedTech.length > 0) {
-        leftLabel = (
-          <FormattedMessage
-            id="wHhicR"
-            description="Label for a section listing researched techs."
-            defaultMessage="Researched {count, plural, one {Tech} other {Techs}}"
-            values={{ count: researchedTech.length }}
-          />
-        );
-        innerContent = (
-          <React.Fragment>
-            {researchedTech.map((tech) => {
-              if (!techs) {
-                return null;
-              }
-              const techObj = techs[tech];
-              if (!techObj) {
-                return null;
-              }
-              return (
-                <TechRow
-                  key={tech}
-                  tech={techObj}
-                  removeTech={() => removeTechLocal(tech)}
-                  researchAgreement={factionId === "Universities of Jol-Nar"}
-                />
-              );
-            })}
-          </React.Fragment>
-        );
-      } else {
-        innerContent = (
-          <TechSelectHoverMenu
-            factionId={factionId}
-            label={intl.formatMessage({
-              id: "3qIvsL",
-              description: "Label on a hover menu used to research tech.",
-              defaultMessage: "Research Tech",
-            })}
-            techs={availableTechs}
-            selectTech={addTechLocal}
-          />
-        );
-      }
+      innerContent = (
+        <TechResearchSection
+          factionId={factionId}
+          filter={(tech) => hasTech(deepwrought, tech)}
+          gain
+          shareKnowledge
+        />
+      );
       break;
     }
     case "Plagiarize": {
@@ -722,7 +681,11 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
           if (!tech || tech.faction) {
             return;
           }
-          if (!hasTech(faction, techId) && !researchedTech.includes(techId)) {
+          if (
+            hasTech(otherFaction, tech) &&
+            !hasTech(faction, tech) &&
+            !researchedTech.includes(techId)
+          ) {
             possibleTechs.add(techId);
           }
         });
@@ -731,52 +694,13 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
         (techId) => techs[techId] as Tech
       );
 
-      if (researchedTech.length > 0) {
-        leftLabel = (
-          <FormattedMessage
-            id="+tb/XA"
-            description="Label for a section listing gained techs."
-            defaultMessage="Gained {count, plural, one {Tech} other {Techs}}"
-            values={{ count: researchedTech.length }}
-          />
-        );
-        innerContent = (
-          <div className="flexColumn" style={{ width: "100%" }}>
-            {researchedTech.map((tech) => {
-              if (!techs) {
-                return null;
-              }
-              const techObj = techs[tech];
-              if (!techObj) {
-                return null;
-              }
-              return (
-                <TechRow
-                  key={tech}
-                  tech={techObj}
-                  removeTech={() => removeTechLocal(tech)}
-                  researchAgreement={factionId === "Universities of Jol-Nar"}
-                />
-              );
-            })}
-          </div>
-        );
-      } else {
-        innerContent = (
-          <div className="flexColumn" style={{ width: "100%" }}>
-            <TechSelectHoverMenu
-              factionId={factionId}
-              label={intl.formatMessage({
-                id: "McKqpw",
-                description: "Label on a hover menu used to gain tech.",
-                defaultMessage: "Gain Tech",
-              })}
-              techs={availableTechs}
-              selectTech={addTechLocal}
-            />
-          </div>
-        );
-      }
+      innerContent = (
+        <TechResearchSection
+          factionId={factionId}
+          filter={(tech) => possibleTechs.has(tech.id)}
+          gain
+        />
+      );
       break;
     }
     case "Divert Funding": {
@@ -791,11 +715,13 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
           if (!techObj) {
             return false;
           }
+          if (!hasTech(faction, techObj)) {
+            return false;
+          }
           return !techObj.faction && techObj.type !== "UPGRADE";
         })
         .map((techId) => techs[techId as TechId] as Tech);
       const researchedTech = getResearchedTechs(currentTurn, factionId);
-      const availableTechs = getResearchableTechs(faction);
 
       innerContent = (
         <div className="flexColumn" style={{ width: "100%" }}>
@@ -828,53 +754,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
                   );
                 })}
               </LabeledDiv>
-              {researchedTech.length > 0 ? (
-                <LabeledDiv
-                  label={
-                    <FormattedMessage
-                      id="wHhicR"
-                      description="Label for a section listing researched techs."
-                      defaultMessage="Researched {count, plural, one {Tech} other {Techs}}"
-                      values={{ count: researchedTech.length }}
-                    />
-                  }
-                >
-                  {researchedTech.map((tech) => {
-                    const techObj = techs[tech];
-                    if (!techObj) {
-                      return null;
-                    }
-                    return (
-                      <TechRow
-                        key={tech}
-                        tech={techObj}
-                        removeTech={() => removeTechLocal(tech)}
-                        researchAgreement={
-                          factionId === "Universities of Jol-Nar"
-                        }
-                      />
-                    );
-                  })}
-                </LabeledDiv>
-              ) : factionId !== "Nekro Virus" ? (
-                <TechSelectHoverMenu
-                  factionId={factionId}
-                  label={intl.formatMessage({
-                    id: "3qIvsL",
-                    description: "Label on a hover menu used to research tech.",
-                    defaultMessage: "Research Tech",
-                  })}
-                  techs={availableTechs}
-                  selectTech={addTechLocal}
-                />
-              ) : (
-                <FormattedMessage
-                  id="t5fXQR"
-                  description="Text telling a player how many command tokens to gain."
-                  defaultMessage="Gain {count} command {count, plural, one {token} other {tokens}}"
-                  values={{ count: 3 }}
-                />
-              )}
+              <TechResearchSection factionId={factionId} />
             </React.Fragment>
           ) : (
             <TechSelectHoverMenu
@@ -888,6 +768,41 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
               selectTech={addRemoveTech}
             />
           )}
+        </div>
+      );
+      break;
+    }
+    case "Visionaria Select": {
+      innerContent = (
+        <div
+          className="flexColumn"
+          style={{ width: "100%", boxSizing: "border-box" }}
+        >
+          {mapOrderedFactionIds.map((id) => {
+            const faction = factions[id];
+            if (!faction) {
+              return null;
+            }
+            if (faction.id === "Deepwrought Scholarate") {
+              return null;
+            }
+            return (
+              <IconDiv
+                key={faction.id}
+                // icon={<TechSVG />}
+                icon={<FactionIcon size={24} factionId={faction.id} />}
+                iconSize={24}
+                color={getFactionColor(faction)}
+              >
+                <TechResearchSection
+                  factionId={faction.id}
+                  duplicateToFaction="Deepwrought Scholarate"
+                  hideWrapper
+                  filter={(tech) => !tech.faction && tech.type !== "UPGRADE"}
+                />
+              </IconDiv>
+            );
+          })}
         </div>
       );
       break;
@@ -913,7 +828,6 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
     }
     case "Exploration Probe":
     case "Circlet of the Void":
-      const gainedRelic = getGainedRelic(currentTurn);
       const claimedPlanets = getClaimedPlanets(currentTurn, factionId);
       const mirageClaimed = claimedPlanets.reduce((claimed, planet) => {
         if (planet.planet === "Mirage") {
@@ -931,123 +845,35 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       if (mirageClaimed) {
         leftLabel = "Mirage";
       }
-      if (gainedRelic) {
-        leftLabel = (
-          <FormattedMessage
-            id="cqWqzv"
-            description="Label for section listing the relic gained."
-            defaultMessage="Gained Relic"
-          />
-        );
-      }
       innerContent = <FrontierExploration factionId={factionId} />;
       break;
     case "Gain Relic":
     case "Black Market Forgery":
     case "Hesh and Prit":
     case "Fabrication": {
-      const gainedRelic = getGainedRelic(currentTurn);
-      const unownedRelics = Object.values(relics)
-        .filter((relic) => !relic.owner || gainedRelic === relic.id)
-        .sort((a, b) => (a.name > b.name ? 1 : -1));
-      if (gainedRelic) {
-        leftLabel = (
-          <FormattedMessage
-            id="cqWqzv"
-            description="Label for section listing the relic gained."
-            defaultMessage="Gained Relic"
-          />
-        );
-      }
-      innerContent =
-        unownedRelics.length > 0 ? (
-          <Selector
-            hoverMenuLabel={
-              <FormattedMessage
-                id="Components.Gain Relic.Title"
-                description="Title of Component: Gain Relic"
-                defaultMessage="Gain Relic"
-              />
-            }
-            options={unownedRelics}
-            renderItem={(itemId, _) => {
-              const relic = relics[itemId];
-              if (!relic) {
-                return null;
-              }
-              return (
-                <div className="flexColumn" style={{ gap: 0, width: "100%" }}>
-                  <SelectableRow
-                    itemId={relic.id}
-                    removeItem={removeRelic}
-                    viewOnly={viewOnly}
-                  >
-                    <InfoRow
-                      infoTitle={relic.name}
-                      infoContent={
-                        <FormattedDescription description={relic.description} />
-                      }
-                    >
-                      {relic.name}
-                    </InfoRow>
-                  </SelectableRow>
-                  {relic.id === "Shard of the Throne" ? <div>+1 VP</div> : null}
-                </div>
-              );
-            }}
-            selectedItem={gainedRelic}
-            toggleItem={(relicId, add) => {
-              if (add) {
-                addRelic(relicId);
-              } else {
-                removeRelic(relicId);
-              }
-            }}
-            viewOnly={viewOnly}
-          />
-        ) : (
-          "No Relics remaining"
-        );
+      innerContent = (
+        <div className="flexColumn" style={{ width: "100%" }}>
+          <GainRelic factionId={factionId} />
+        </div>
+      );
       break;
     }
     case "Stellar Converter": {
-      const nonHomeNonLegendaryNonMecatolPlanets = updatedPlanets.filter(
-        (planet) => {
-          return (
+      leftLabel = <PurgePlanet.Label />;
+      innerContent = (
+        <PurgePlanet.Content
+          planetFilter={(planet) =>
             !planet.home &&
             !planet.attributes.includes("legendary") &&
             planet.id !== "Mecatol Rex"
-          );
-        }
+          }
+        />
       );
-      const destroyedPlanet = getPurgedPlanet(currentTurn);
-      if (destroyedPlanet) {
-        leftLabel = "Destroyed Planet";
-        nonHomeNonLegendaryNonMecatolPlanets.push({
-          id: destroyedPlanet,
-          name: destroyedPlanet,
-        } as Planet);
-      }
-      innerContent = (
-        <div
-          className="flexColumn"
-          style={{ width: "100%", alignItems: "flex-start" }}
-        >
-          <Selector
-            hoverMenuLabel="Destroy Planet"
-            options={nonHomeNonLegendaryNonMecatolPlanets}
-            selectedItem={destroyedPlanet}
-            toggleItem={(planetId, add) => {
-              if (add) {
-                destroyPlanet(planetId);
-              } else {
-                undestroyPlanet(planetId);
-              }
-            }}
-            viewOnly={viewOnly}
-          />
-        </div>
-      );
+      break;
+    }
+    case "Conventions of War Abandoned": {
+      leftLabel = <PurgePlanet.Label />;
+      innerContent = <PurgePlanet.Content />;
       break;
     }
     case "Nano-Forge": {
@@ -1109,16 +935,13 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       break;
     }
     case "Terraform": {
-      const ownedNonHomeNonLegendaryNonMecatolPlanets = updatedPlanets.filter(
-        (planet) => {
-          return (
-            planet.owner === factionId &&
-            !planet.home &&
-            !planet.attributes.includes("legendary") &&
-            planet.id !== "Mecatol Rex"
-          );
-        }
-      );
+      const ownedNonHomeNonMecatolPlanets = updatedPlanets.filter((planet) => {
+        return (
+          planet.owner === factionId &&
+          !planet.home &&
+          planet.id !== "Mecatol Rex"
+        );
+      });
       let terraformedPlanet: Optional<PlanetId>;
       Object.values(planets).forEach((planet) => {
         if ((planet.attachments ?? []).includes("Terraform")) {
@@ -1135,7 +958,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
         >
           <Selector
             hoverMenuLabel="Attach to Planet"
-            options={ownedNonHomeNonLegendaryNonMecatolPlanets}
+            options={ownedNonHomeNonMecatolPlanets}
             selectedItem={terraformedPlanet}
             renderItem={(planetId) => {
               const planet = updatedPlanets.find(
@@ -1145,15 +968,17 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
                 return null;
               }
               return (
-                <PlanetRow
-                  planet={planet}
-                  factionId={factionId}
-                  removePlanet={
-                    viewOnly
-                      ? undefined
-                      : () => toggleAttachment(planetId, "Terraform", false)
-                  }
-                />
+                <div style={{ width: "100%" }}>
+                  <PlanetRow
+                    planet={planet}
+                    factionId={factionId}
+                    removePlanet={
+                      viewOnly
+                        ? undefined
+                        : () => toggleAttachment(planetId, "Terraform", false)
+                    }
+                  />
+                </div>
               );
             }}
             toggleItem={(planetId, add) => {
@@ -1172,6 +997,9 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
           return false;
         }
         if (planet.owner === factionId) {
+          return false;
+        }
+        if (planet.attributes.includes("ocean")) {
           return false;
         }
         return true;
@@ -1204,6 +1032,9 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
             objective.id === "Turn Their Fleets to Dust" ||
             objective.id === "Unveil Flagship"
           ) {
+            return false;
+          }
+          if (objective.type === "OTHER") {
             return false;
           }
           if (objective.type === "SECRET" && scorers.length > 0) {
@@ -1253,18 +1084,30 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
             return false;
           }
         }
+        if (planet.attributes.includes("ocean")) {
+          return selectedFaction === "Deepwrought Scholarate";
+        }
+        // Avernus could be in any system.
+        if (planet.id === "Avernus" && planet.owner) {
+          return true;
+        }
         if (claimedPlanets.length > 0) {
-          const claimedPlanetName = claimedPlanets[0]?.planet;
-          const claimedPlanet = claimedPlanetName
-            ? planets[claimedPlanetName]
-            : undefined;
-          if (claimedPlanet?.system) {
-            return planet.system === claimedPlanet.system;
+          for (const claimedPlanetEvent of claimedPlanets) {
+            if (claimedPlanetEvent.planet === "Avernus") {
+              continue;
+            }
+            const claimedPlanet = planets[claimedPlanetEvent.planet];
+            if (claimedPlanet?.attributes.includes("ocean")) {
+              continue;
+            }
+            if (claimedPlanet?.system) {
+              return planet.system === claimedPlanet.system;
+            }
+            if (claimedPlanet?.faction) {
+              return planet.faction === claimedPlanet.faction;
+            }
+            return false;
           }
-          if (claimedPlanet?.faction) {
-            return planet.faction === claimedPlanet.faction;
-          }
-          return false;
         }
         return true;
       });
@@ -1293,6 +1136,9 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
             objective.id === "Become a Martyr" ||
             objective.id === "Prove Endurance"
           ) {
+            return false;
+          }
+          if (objective.type === "OTHER") {
             return false;
           }
           if (objective.type === "SECRET" && scorers.length > 0) {
@@ -1353,63 +1199,38 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       break;
     }
     case "UNITDSGNFLAYESH": {
-      const faction = factions[factionId];
-      if (!faction) {
-        break;
-      }
-      const researchedTech = getResearchedTechs(currentTurn, factionId);
-      const availableTechs = getResearchableTechs(faction).filter((tech) => {
-        return !tech.faction && tech.type !== "UPGRADE";
-      });
-
-      if (researchedTech.length > 0) {
-        leftLabel = (
-          <FormattedMessage
-            id="+tb/XA"
-            description="Label for a section listing gained techs."
-            defaultMessage="Gained {count, plural, one {Tech} other {Techs}}"
-            values={{ count: researchedTech.length }}
-          />
-        );
-        innerContent = (
-          <React.Fragment>
-            {researchedTech.map((tech) => {
-              if (!techs) {
-                return null;
-              }
-              const techObj = techs[tech];
-              if (!techObj) {
-                return null;
-              }
-              return (
-                <TechRow
-                  key={tech}
-                  tech={techObj}
-                  removeTech={() => removeTechLocal(tech)}
-                />
-              );
-            })}
-          </React.Fragment>
-        );
-      } else {
-        innerContent = (
-          <TechSelectHoverMenu
-            factionId={factionId}
-            label={intl.formatMessage({
-              id: "McKqpw",
-              description: "Label on a hover menu used to gain tech.",
-              defaultMessage: "Gain Tech",
-            })}
-            techs={availableTechs}
-            selectTech={addTechLocal}
-          />
-        );
-      }
+      innerContent = (
+        <TechResearchSection
+          factionId={factionId}
+          filter={(tech) => !tech.faction && tech.type !== "UPGRADE"}
+          gain
+        />
+      );
       break;
     }
     case "Planetary Rigs": {
       leftLabel = undefined;
       innerContent = <PlanetaryRigs factionId={factionId} />;
+      break;
+    }
+    case "Overrule": {
+      leftLabel = undefined;
+      innerContent = <Overrule factionId={factionId} />;
+      break;
+    }
+    case "Strategize": {
+      leftLabel = undefined;
+      innerContent = <Strategize factionId={factionId} />;
+      break;
+    }
+    case "Vaults of the Heir": {
+      leftLabel = undefined;
+      innerContent = <VaultsOfTheHeir factionId={factionId} />;
+      break;
+    }
+    case "Ta Zern (Deepwrought)": {
+      leftLabel = undefined;
+      innerContent = <TaZernDeepwrought factionId={factionId} />;
       break;
     }
 
@@ -1471,7 +1292,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
         if (planet.owner !== factionId) {
           return false;
         }
-        return planet.type === "ALL" || planet.type === "INDUSTRIAL";
+        return planet.types.includes("INDUSTRIAL");
       }).length;
 
       innerContent = (
@@ -1599,12 +1420,14 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
             mapStyle={options["map-style"]}
             factions={mapOrderedFactions}
             hideLegend
+            hideFracture
             wormholeNexus={getWormholeNexusSystemNumber(
               options,
               planets,
               factions
             )}
             planets={planets}
+            expansions={options.expansions}
           />
         </div>
       ) : (
@@ -1690,25 +1513,35 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
 }
 
 export function ComponentAction({ factionId }: { factionId: FactionId }) {
+  const actionCards = useActionCards();
   const actionLog = useActionLog();
   const components = useComponents();
   const factions = useFactions();
   const gameId = useGameId();
   const leaders = useLeaders();
+  const planets = usePlanets();
   const relics = useRelics();
+  const techs = useTechs();
   const viewOnly = useViewOnly();
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);
 
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   const playedComponent = currentTurn
     .filter((logEntry) => logEntry.data.action === "PLAY_COMPONENT")
     .map((logEntry) => (logEntry.data as PlayComponentData).event.name)[0];
 
-  const component = playedComponent
-    ? components[playedComponent as ComponentId]
-    : null;
+  let component: Optional<Component | ActionCard | Relic>;
+  if (playedComponent) {
+    component = components[playedComponent];
+    if (!component) {
+      component = actionCards[playedComponent as ActionCardId];
+    }
+    if (!component) {
+      component = relics[playedComponent as RelicId];
+    }
+  }
 
   async function selectComponent(componentName: string) {
     if (!gameId) {
@@ -1773,7 +1606,8 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
       if (
         component.faction &&
         component.type !== "PROMISSORY" &&
-        component.type !== "TECH"
+        component.type !== "TECH" &&
+        component.type !== "PLANET"
       ) {
         if (component.faction !== faction.id) {
           return false;
@@ -1806,8 +1640,12 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
         }
       }
 
-      if (component.type === "TECH" && !hasTech(faction, component.id)) {
-        return false;
+      if (component.type === "TECH") {
+        const tech = techs[component.id];
+        if (!tech) {
+          return false;
+        }
+        return hasTech(faction, tech);
       }
 
       if (component.state === "purged") {
@@ -1828,11 +1666,21 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
         }
       }
 
+      const darkEnergyTap = techs["Dark Energy Tap"];
       if (
         component.id === "Age of Exploration" &&
-        !hasTech(faction, "Dark Energy Tap")
+        darkEnergyTap &&
+        !hasTech(faction, darkEnergyTap)
       ) {
         return false;
+      }
+
+      if (component.type === "PLANET") {
+        const planet = planets[component.id as PlanetId];
+        if (!planet) {
+          return false;
+        }
+        return planet.owner === factionId;
       }
 
       return true;
@@ -1979,7 +1827,9 @@ function RiftwalkerMeian() {
             factions
           )}
           hideLegend
+          hideFracture
           planets={planets}
+          expansions={options.expansions}
         />
       </div>
     );

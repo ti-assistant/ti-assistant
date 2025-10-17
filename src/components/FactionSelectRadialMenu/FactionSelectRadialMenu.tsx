@@ -8,6 +8,7 @@ import { rem } from "../../util/util";
 
 interface FactionSelectRadialMenuProps {
   selectedFaction?: FactionId;
+  disabled?: boolean;
   factions: FactionId[];
   fadedFactions?: FactionId[];
   invalidFactions?: FactionId[];
@@ -64,6 +65,7 @@ export default function FactionSelectRadialMenu({
   borderColor = "var(--neutral-border)",
   tagBorderColor = "var(--neutral-border)",
   viewOnly,
+  disabled,
 }: FactionSelectRadialMenuProps) {
   const menu = useRef<HTMLDivElement>(null);
   const innerMenu = useRef<HTMLDivElement>(null);
@@ -103,7 +105,7 @@ export default function FactionSelectRadialMenu({
       }}
       ref={menu}
     >
-      {factions.length > 0 && !viewOnly ? (
+      {factions.length > 0 && !viewOnly && !disabled ? (
         <React.Fragment>
           <div className={styles.hoverBackground}></div>
           <div className={`flexRow ${styles.hoverRadial}`} ref={innerMenu}>
@@ -191,6 +193,14 @@ export default function FactionSelectRadialMenu({
         tag={tag}
         tagBorderColor={tagBorderColor}
         size={size}
+        style={
+          disabled
+            ? {
+                color: "#555",
+                backgroundColor: "var(--background-color)",
+              }
+            : undefined
+        }
       />
     </div>
   );

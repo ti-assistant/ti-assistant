@@ -24,7 +24,7 @@ export default function getProphecyOfKingsLeaders(
       unlock: intl.formatMessage({
         id: "L1Z1X Mindnet.Leaders.2RAM.Unlock",
         description: "Unlock condition for L1Z1X Commander: 2RAM",
-        defaultMessage: "Have 4 dreadnoughts on the Board.",
+        defaultMessage: "Have 4 dreadnoughts on the board.",
       }),
     },
     Acamar: {
@@ -186,23 +186,25 @@ export default function getProphecyOfKingsLeaders(
         description: "Name of Yin Agent: Brother Milor",
         defaultMessage: "Brother Milor",
       }),
-      omega: {
-        description: intl.formatMessage(
-          {
-            id: "Yin Brotherhood.Leaders.Brother Milor.Omega.Description",
-            description: "Description for Yin Agent: Brother Milor Ω",
-            defaultMessage:
-              "After a player's unit is destroyed:{br}You may exhaust this card to allow that player to place 2 fighters in the destroyed unit's system if it was a ship, or 2 infantry on its planet if it was a ground force.",
-          },
-          { br: "\n\n" }
-        ),
-        expansion: "CODEX THREE",
-        name: intl.formatMessage({
-          id: "Yin Brotherhood.Leaders.Brother Milor.Omega.Name",
-          description: "Name of Yin Agent: Brother Milor Ω",
-          defaultMessage: "Brother Milor Ω",
-        }),
-      },
+      omegas: [
+        {
+          description: intl.formatMessage(
+            {
+              id: "Yin Brotherhood.Leaders.Brother Milor.Omega.Description",
+              description: "Description for Yin Agent: Brother Milor Ω",
+              defaultMessage:
+                "After a player's unit is destroyed:{br}You may exhaust this card to allow that player to place 2 fighters in the destroyed unit's system if it was a ship, or 2 infantry on its planet if it was a ground force.",
+            },
+            { br: "\n\n" }
+          ),
+          expansion: "CODEX THREE",
+          name: intl.formatMessage({
+            id: "Yin Brotherhood.Leaders.Brother Milor.Omega.Name",
+            description: "Name of Yin Agent: Brother Milor Ω",
+            defaultMessage: "Brother Milor Ω",
+          }),
+        },
+      ],
       timing: "TACTICAL_ACTION",
       type: "AGENT",
     },
@@ -224,28 +226,30 @@ export default function getProphecyOfKingsLeaders(
         description: "Name of Yin Commander: Brother Omar",
         defaultMessage: "Brother Omar",
       }),
-      omega: {
-        description: intl.formatMessage(
-          {
-            id: "Yin Brotherhood.Leaders.Brother Omar.Omega.Description",
-            description: "Description for Yin Commander: Brother Omar Ω",
-            defaultMessage:
-              "This card satisfies a green technology prerequisite.{br}When you research a technology owned by another player, you may return 1 of your infantry to reinforcements to ignore its prerequisites.",
-          },
-          { br: "\n\n" }
-        ),
-        expansion: "CODEX THREE",
-        name: intl.formatMessage({
-          id: "Yin Brotherhood.Leaders.Brother Omar.Omega.Name",
-          description: "Name of Yin Commander: Brother Omar Ω",
-          defaultMessage: "Brother Omar Ω",
-        }),
-        unlock: intl.formatMessage({
-          id: "Yin Brotherhood.Leaders.Brother Omar.Omega.Unlock",
-          description: "Unlock condition for Yin Commander: Brother Omar Ω",
-          defaultMessage: "Use one of your faction abilities.",
-        }),
-      },
+      omegas: [
+        {
+          description: intl.formatMessage(
+            {
+              id: "Yin Brotherhood.Leaders.Brother Omar.Omega.Description",
+              description: "Description for Yin Commander: Brother Omar Ω",
+              defaultMessage:
+                "This card satisfies a green technology prerequisite.{br}When you research a technology owned by another player, you may return 1 of your infantry to reinforcements to ignore its prerequisites.",
+            },
+            { br: "\n\n" }
+          ),
+          expansion: "CODEX THREE",
+          name: intl.formatMessage({
+            id: "Yin Brotherhood.Leaders.Brother Omar.Omega.Name",
+            description: "Name of Yin Commander: Brother Omar Ω",
+            defaultMessage: "Brother Omar Ω",
+          }),
+          unlock: intl.formatMessage({
+            id: "Yin Brotherhood.Leaders.Brother Omar.Omega.Unlock",
+            description: "Unlock condition for Yin Commander: Brother Omar Ω",
+            defaultMessage: "Use one of your faction abilities.",
+          }),
+        },
+      ],
       timing: "PASSIVE",
       type: "COMMANDER",
       unlock: intl.formatMessage({
@@ -372,28 +376,30 @@ export default function getProphecyOfKingsLeaders(
         description: "Name of Yin Hero: Dannel of the Tenth",
         defaultMessage: "Dannel of the Tenth",
       }),
-      omega: {
-        abilityName: intl.formatMessage({
-          id: "Yin Brotherhood.Leaders.Dannel of the Tenth.Omega.AbilityName",
-          description: "Ability name for Yin Hero: Dannel of the Tenth Ω",
-          defaultMessage: "QUANTUM DISSEMINATION Ω",
-        }),
-        description: intl.formatMessage(
-          {
-            id: "Yin Brotherhood.Leaders.Dannel of the Tenth.Omega.Description",
-            description: "Description for Yin Hero: Dannel of the Tenth Ω",
-            defaultMessage:
-              "ACTION: Commit up to 3 infantry from your reinforcements to any non-home planets and resolve invasions on those planets; players cannot use SPACE CANNON against those units.{br}Then, purge this card.",
-          },
-          { br: "\n\n" }
-        ),
-        expansion: "CODEX THREE",
-        name: intl.formatMessage({
-          id: "Yin Brotherhood.Leaders.Dannel of the Tenth.Omega.Name",
-          description: "Name of Yin Hero: Dannel of the Tenth Ω",
-          defaultMessage: "Dannel of the Tenth Ω",
-        }),
-      },
+      omegas: [
+        {
+          abilityName: intl.formatMessage({
+            id: "Yin Brotherhood.Leaders.Dannel of the Tenth.Omega.AbilityName",
+            description: "Ability name for Yin Hero: Dannel of the Tenth Ω",
+            defaultMessage: "QUANTUM DISSEMINATION Ω",
+          }),
+          description: intl.formatMessage(
+            {
+              id: "Yin Brotherhood.Leaders.Dannel of the Tenth.Omega.Description",
+              description: "Description for Yin Hero: Dannel of the Tenth Ω",
+              defaultMessage:
+                "ACTION: Commit up to 3 infantry from your reinforcements to any non-home planets and resolve invasions on those planets; players cannot use SPACE CANNON against those units.{br}Then, purge this card.",
+            },
+            { br: "\n\n" }
+          ),
+          expansion: "CODEX THREE",
+          name: intl.formatMessage({
+            id: "Yin Brotherhood.Leaders.Dannel of the Tenth.Omega.Name",
+            description: "Name of Yin Hero: Dannel of the Tenth Ω",
+            defaultMessage: "Dannel of the Tenth Ω",
+          }),
+        },
+      ],
       timing: "COMPONENT_ACTION",
       type: "HERO",
     },
@@ -982,29 +988,31 @@ export default function getProphecyOfKingsLeaders(
         description: "Name of Naalu Commander: M'aban",
         defaultMessage: "M'aban",
       }),
-      omega: {
-        description: intl.formatMessage(
-          {
-            id: "Naalu Collective.Leaders.M'aban.Omega.Description",
-            description: "Description for Naalu Commander: M'aban Ω",
+      omegas: [
+        {
+          description: intl.formatMessage(
+            {
+              id: "Naalu Collective.Leaders.M'aban.Omega.Description",
+              description: "Description for Naalu Commander: M'aban Ω",
+              defaultMessage:
+                "At any time:{br}You may look at your neighbours' hand of promissory notes and the top and bottom card of the agenda deck.",
+            },
+            { br: "\n\n" }
+          ),
+          expansion: "CODEX THREE",
+          name: intl.formatMessage({
+            id: "Naalu Collective.Leaders.M'aban.Omega.Name",
+            description: "Name of Naalu Commander: M'aban Ω",
+            defaultMessage: "M'aban Ω",
+          }),
+          unlock: intl.formatMessage({
+            id: "Naalu Collective.Leaders.M'aban.Omega.Unlock",
+            description: "Unlock condition for Naalu Commander: M'aban Ω",
             defaultMessage:
-              "At any time:{br}You may look at your neighbours' hand of promissory notes and the top and bottom card of the agenda deck.",
-          },
-          { br: "\n\n" }
-        ),
-        expansion: "CODEX THREE",
-        name: intl.formatMessage({
-          id: "Naalu Collective.Leaders.M'aban.Omega.Name",
-          description: "Name of Naalu Commander: M'aban Ω",
-          defaultMessage: "M'aban Ω",
-        }),
-        unlock: intl.formatMessage({
-          id: "Naalu Collective.Leaders.M'aban.Omega.Unlock",
-          description: "Unlock condition for Naalu Commander: M'aban Ω",
-          defaultMessage:
-            "Have ground forces in or adjacent to the Mecatol Rex system.",
-        }),
-      },
+              "Have ground forces in or adjacent to the Mecatol Rex system.",
+          }),
+        },
+      ],
       timing: "PASSIVE",
       type: "COMMANDER",
       unlock: intl.formatMessage({
@@ -1837,26 +1845,51 @@ export default function getProphecyOfKingsLeaders(
         description: "Name of Xxcha Hero: Xxekir Grom",
         defaultMessage: "Xxekir Grom",
       }),
-      omega: {
-        abilityName: intl.formatMessage({
-          id: "Xxcha Kingdom.Leaders.Xxekir Grom.Omega.AbilityName",
-          description: "Ability name for Xxcha Hero: Xxekir Grom Ω",
-          defaultMessage: "POLITICAL DATA NEXUS Ω",
-        }),
-        description: intl.formatMessage({
-          id: "Xxcha Kingdom.Leaders.Xxekir Grom.Omega.Description",
-          description: "Description for Xxcha Hero: Xxekir Grom Ω",
-          defaultMessage:
-            "When you exhaust planets, combine the values of their resources and influence. Treat the combined value as if it were both resources and influence",
-        }),
-        expansion: "CODEX THREE",
-        name: intl.formatMessage({
-          id: "Xxcha Kingdom.Leaders.Xxekir Grom.Omega.Name",
-          description: "Name of Xxcha Hero: Xxekir Grom Ω",
-          defaultMessage: "Xxekir Grom Ω",
-        }),
-        timing: "PASSIVE",
-      },
+      omegas: [
+        {
+          abilityName: intl.formatMessage({
+            id: "Xxcha Kingdom.Leaders.Xxekir Grom.Omega.AbilityName",
+            description: "Ability name for Xxcha Hero: Xxekir Grom Ω",
+            defaultMessage: "POLITICAL DATA NEXUS Ω",
+          }),
+          description: intl.formatMessage({
+            id: "Xxcha Kingdom.Leaders.Xxekir Grom.Omega.Description",
+            description: "Description for Xxcha Hero: Xxekir Grom Ω",
+            defaultMessage:
+              "When you exhaust planets, combine the values of their resources and influence. Treat the combined value as if it were both resources and influence.",
+          }),
+          expansion: "CODEX THREE",
+          name: intl.formatMessage({
+            id: "Xxcha Kingdom.Leaders.Xxekir Grom.Omega.Name",
+            description: "Name of Xxcha Hero: Xxekir Grom Ω",
+            defaultMessage: "Xxekir Grom Ω",
+          }),
+          timing: "PASSIVE",
+        },
+        {
+          abilityName: intl.formatMessage({
+            id: "Xxcha Kingdom.Leaders.Xxekir Grom.Thunders Edge.AbilityName",
+            description: "Ability name for Xxcha Hero: Xxekir Grom",
+            defaultMessage: "PLANETARY DEFENSE NEXUS",
+          }),
+          description: intl.formatMessage(
+            {
+              id: "Xxcha Kingdom.Leaders.Xxekir Grom.Thunders Edge.Description",
+              description: "Description for Xxcha Hero: Xxekir Grom",
+              defaultMessage:
+                "ACTION: Place any combination of up to 4 PDS or mechs onto planets that you control; ready each planet that you place a unit on.{br}Then, purge this card.",
+            },
+            { br: "\n\n" }
+          ),
+          expansion: "THUNDERS EDGE",
+          name: intl.formatMessage({
+            id: "Xxcha Kingdom.Leaders.Xxekir Grom.Name",
+            description: "Name of Xxcha Hero: Xxekir Grom",
+            defaultMessage: "Xxekir Grom",
+          }),
+          timing: "COMPONENT_ACTION",
+        },
+      ],
       timing: "COMPONENT_ACTION",
       type: "HERO",
     },
@@ -1878,21 +1911,23 @@ export default function getProphecyOfKingsLeaders(
         description: "Name of Naalu Agent: Z'eu",
         defaultMessage: "Z'eu",
       }),
-      omega: {
-        description: intl.formatMessage({
-          id: "Naalu Collective.Leaders.Z'eu.Omega.Description",
-          description: "Description for Naalu Agent: Z'eu Ω",
-          defaultMessage:
-            "ACTION: Exhaust this card and choose a player; that player may perform a tactical action in a non-home system without placing a command token; that system still counts as being activated",
-        }),
-        expansion: "CODEX THREE",
-        name: intl.formatMessage({
-          id: "Naalu Collective.Leaders.Z'eu.Omega.Name",
-          description: "Name of Naalu Agent: Z'eu Ω",
-          defaultMessage: "Z'eu Ω",
-        }),
-        timing: "COMPONENT_ACTION",
-      },
+      omegas: [
+        {
+          description: intl.formatMessage({
+            id: "Naalu Collective.Leaders.Z'eu.Omega.Description",
+            description: "Description for Naalu Agent: Z'eu Ω",
+            defaultMessage:
+              "ACTION: Exhaust this card and choose a player; that player may perform a tactical action in a non-home system without placing a command token; that system still counts as being activated",
+          }),
+          expansion: "CODEX THREE",
+          name: intl.formatMessage({
+            id: "Naalu Collective.Leaders.Z'eu.Omega.Name",
+            description: "Name of Naalu Agent: Z'eu Ω",
+            defaultMessage: "Z'eu Ω",
+          }),
+          timing: "COMPONENT_ACTION",
+        },
+      ],
       timing: "AGENDA_PHASE",
       type: "AGENT",
     },

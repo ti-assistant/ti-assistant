@@ -1,3 +1,4 @@
+import { buildMergeFunction } from "../util/expansions";
 import { isValidMapString, validSystemNumber } from "../util/map";
 import { getMapString } from "../util/options";
 import { objectEntries } from "../util/util";
@@ -7,10 +8,12 @@ export function buildCompleteGameData(
   baseData: BaseData
 ) {
   const completeGameData: GameData = {
+    actionCards: buildCompleteActionCards(baseData, storedGameData),
     actionLog: storedGameData.actionLog,
     agendas: buildCompleteAgendas(baseData, storedGameData),
     attachments: buildCompleteAttachments(baseData, storedGameData),
     components: buildCompleteComponents(baseData, storedGameData),
+    expedition: storedGameData.expedition,
     factions: buildCompleteFactions(baseData, storedGameData),
     leaders: buildCompleteLeaders(baseData, storedGameData),
     objectives: buildCompleteObjectives(baseData, storedGameData),
@@ -28,6 +31,32 @@ export function buildCompleteGameData(
   };
 
   return completeGameData;
+}
+
+export function buildCompleteActionCards(
+  baseData: BaseData,
+  storedGameData: StoredGameData
+) {
+  const actionCards: Partial<Record<ActionCardId, ActionCard>> = {};
+
+  const expansions = storedGameData.options.expansions;
+  const gameActionCards = storedGameData.actionCards ?? {};
+
+  objectEntries(baseData.actionCards).forEach(([actionCardId, actionCard]) => {
+    if (
+      actionCard.expansion !== "BASE" &&
+      !expansions.includes(actionCard.expansion)
+    ) {
+      return;
+    }
+
+    actionCards[actionCardId] = {
+      ...actionCard,
+      ...(gameActionCards[actionCardId] ?? {}),
+    };
+  });
+
+  return actionCards;
 }
 
 export function buildCompleteAgendas(
@@ -114,6 +143,8 @@ export function buildCompleteComponents(
   const expansions = storedGameData.options.expansions;
   const events = storedGameData.options.events ?? [];
 
+  const omegaMergeFn = buildMergeFunction(expansions);
+
   let components: Record<string, Component> = {};
   Object.entries(baseData.components).forEach(([componentId, component]) => {
     // Maybe filter out PoK components.
@@ -126,6 +157,7 @@ export function buildCompleteComponents(
       return;
     }
 
+    // TODO: Remove this for TE.
     // Filter out Codex Two relics if not using PoK.
     if (!expansions.includes("POK") && component.type === "RELIC") {
       return;
@@ -134,6 +166,7 @@ export function buildCompleteComponents(
     if (!expansions.includes("POK") && component.type === "LEADER") {
       return;
     }
+    // TODO: Consider this for TE.
     // Filter out components that are removed by PoK.
     if (expansions.includes("POK") && component.expansion === "BASE ONLY") {
       return;
@@ -163,18 +196,7 @@ export function buildCompleteComponents(
     })
     // Update leaders with omega versions if applicable.
     .map(([leaderId, leader]): [string, BaseLeader] => {
-      const updatedLeader: BaseLeader = { ...leader };
-      if (leader.omega && expansions.includes(leader.omega.expansion)) {
-        if (leader.omega.abilityName) {
-          updatedLeader.abilityName = leader.omega.abilityName;
-        }
-        updatedLeader.description = leader.omega.description;
-        updatedLeader.name = leader.omega.name;
-        if (leader.omega.timing) {
-          updatedLeader.timing = leader.omega.timing;
-        }
-      }
-      return [leaderId, updatedLeader];
+      return [leaderId, omegaMergeFn(leader)];
     })
     // Filter out leaders that have the wrong timing.
     .filter(([_, leader]) => {
@@ -202,24 +224,38 @@ export function buildCompleteComponents(
     delete components["Ssruu"];
   }
 
-  objectEntries(baseData.relics)
-    .filter(([_, relic]) => relic.timing === "COMPONENT_ACTION")
-    .forEach(([relicId, relic]) => {
-      if (!expansions.includes("POK")) {
-        return;
-      }
-      // Maybe filter out Codex Two relics.
-      if (!expansions.includes(relic.expansion)) {
-        return;
-      }
+  // objectEntries(baseData.relics)
+  //   .filter(([_, relic]) => relic.timing === "COMPONENT_ACTION")
+  //   .forEach(([relicId, relic]) => {
+  //     if (!expansions.includes("POK")) {
+  //       return;
+  //     }
+  //     // Maybe filter out Codex Two relics.
+  //     if (!expansions.includes(relic.expansion)) {
+  //       return;
+  //     }
 
-      components[relicId] = {
-        ...relic,
-        ...(gameComponents[relicId] ?? {}),
-        ...(gameRelics[relicId] ?? {}),
-        type: "RELIC",
-      };
+  //     components[relicId] = {
+  //       ...relic,
+  //       ...(gameComponents[relicId] ?? {}),
+  //       ...(gameRelics[relicId] ?? {}),
+  //       type: "RELIC",
+  //     };
+  //   });
+
+  // Faction breakthroughs
+  if (expansions.includes("THUNDERS EDGE")) {
+    objectEntries(baseData.factions).map(([factionId, faction]) => {
+      if (faction.breakthrough?.timing === "COMPONENT_ACTION") {
+        components[faction.breakthrough.id] = {
+          ...faction.breakthrough,
+          expansion: "THUNDERS EDGE",
+          faction: factionId,
+          type: "BREAKTHROUGH",
+        };
+      }
     });
+  }
 
   Object.values(components).forEach((component) => {
     if (component.replaces) {
@@ -241,9 +277,23 @@ export function buildCompleteFactions(
     if (!baseFaction) {
       throw new Error("Unable to get base version of faction.");
     }
+
+    const omegaMergeFn = buildMergeFunction(storedGameData.options.expansions);
+
+    let updatedFaction = omegaMergeFn(baseFaction);
+
+    updatedFaction.abilities = updatedFaction.abilities.map(omegaMergeFn);
+    updatedFaction.promissories = updatedFaction.promissories.map(omegaMergeFn);
+    updatedFaction.units = updatedFaction.units.map(omegaMergeFn);
+
+    const breakthrough = {
+      ...updatedFaction.breakthrough,
+      ...faction.breakthrough,
+    };
     factions[factionId] = {
-      ...baseFaction,
+      ...updatedFaction,
       ...faction,
+      breakthrough,
     };
   });
 
@@ -269,7 +319,10 @@ export function buildCompleteObjectives(
   storedGameData: StoredGameData
 ) {
   const gameObjectives = storedGameData.objectives ?? {};
-  const expansions = storedGameData.options?.expansions ?? [];
+  const expansions = storedGameData.options.expansions;
+  const events = storedGameData.options.events ?? [];
+
+  const omegaMergeFn = buildMergeFunction(storedGameData.options.expansions);
 
   const objectives: Partial<Record<ObjectiveId, Objective>> = {};
   objectEntries(baseData.objectives).forEach(([objectiveId, objective]) => {
@@ -282,12 +335,15 @@ export function buildCompleteObjectives(
       return;
     }
 
-    if (objective.omega && expansions.includes(objective.omega.expansion)) {
-      objective.description = objective.omega.description;
+    // Filter out event objectives.
+    if (objective.event && !events.includes(objective.event)) {
+      return;
     }
 
+    const updatedObjective = omegaMergeFn(objective);
+
     objectives[objectiveId] = {
-      ...objective,
+      ...updatedObjective,
       ...(gameObjectives[objectiveId] ?? {}),
     };
   });
@@ -324,6 +380,8 @@ export function buildCompletePlanets(
     )
     .map((system) => parseInt(system) as SystemId);
 
+  const omegaMergeFn = buildMergeFunction(gameOptions.expansions);
+
   let planets: Partial<Record<PlanetId, Planet>> = {};
   objectEntries(baseData.planets).forEach(([_, planet]) => {
     let isPlanetInMap = planet.system && inGameSystems.includes(planet.system);
@@ -355,6 +413,7 @@ export function buildCompletePlanets(
       planet.id !== "Mirage" &&
       planet.id !== "Mallice" &&
       planet.id !== "Mecatol Rex" &&
+      !planet.alwaysInclude &&
       !planet.faction
     ) {
       // TODO: Remove once Milty Draft site fixes numbering
@@ -366,6 +425,14 @@ export function buildCompletePlanets(
       } else {
         return;
       }
+    }
+
+    if (
+      planet.alwaysInclude &&
+      planet.expansion !== "BASE" &&
+      !gameOptions.expansions.includes(planet.expansion)
+    ) {
+      return;
     }
     // Maybe filter out PoK/DS systems. Only do it this way if not using the map to filter.
     if (
@@ -394,7 +461,7 @@ export function buildCompletePlanets(
     }
 
     planet = {
-      ...planet,
+      ...omegaMergeFn(planet),
       ...(gamePlanets[planet.id] ?? {}),
     };
 
@@ -402,7 +469,7 @@ export function buildCompletePlanets(
       const attributes = new Set(planet.attributes);
       attributes.add("all-types");
       planet.attributes = Array.from(attributes);
-      planet.type = "ALL";
+      planet.types = ["CULTURAL", "HAZARDOUS", "INDUSTRIAL"];
     }
 
     planets[planet.id] = planet;
@@ -452,10 +519,14 @@ export function buildCompleteStrategyCards(
 ) {
   const strategyCards = storedGameData.strategycards ?? {};
 
+  const omegaMergeFn = buildMergeFunction(storedGameData.options.expansions);
+
   const cards: Partial<Record<StrategyCardId, StrategyCard>> = {};
   objectEntries(baseData.strategycards).forEach(([cardId, card]) => {
+    const updatedCard = omegaMergeFn(card);
+
     cards[cardId] = {
-      ...card,
+      ...updatedCard,
       ...(strategyCards[cardId] ?? {}),
     };
   });
@@ -489,6 +560,9 @@ export function buildCompleteTechs(
   storedGameData: StoredGameData
 ) {
   const options = storedGameData.options;
+  const storedTechs = storedGameData.techs ?? {};
+
+  const omegaMergeFn = buildMergeFunction(options.expansions);
 
   const techs: Partial<Record<TechId, Tech>> = {};
   Object.values(baseData.techs).forEach((tech) => {
@@ -496,20 +570,20 @@ export function buildCompleteTechs(
     if (!options.expansions.includes("POK") && tech.expansion === "POK") {
       return;
     }
-    const techCopy = { ...tech };
 
-    // Maybe update techs for codices.
-    const omegas = tech.omegas ?? [];
-    for (const omega of omegas) {
-      if (!options.expansions.includes(omega.expansion)) {
-        continue;
-      }
-      techCopy.name = omega.name;
-      techCopy.description = omega.description;
-    }
+    const updatedTech = omegaMergeFn(tech);
 
-    techs[tech.id] = techCopy;
+    techs[tech.id] = {
+      ...updatedTech,
+      ...(storedTechs[tech.id] ?? {}),
+    };
   });
+
+  for (const tech of Object.values(techs)) {
+    if (tech.type !== "UPGRADE" && tech.deprecates) {
+      delete techs[tech.deprecates];
+    }
+  }
 
   return techs;
 }
@@ -522,23 +596,15 @@ export function buildCompleteLeaders(
   const options = storedGameData.options;
   const storedLeaders = storedGameData.leaders ?? {};
   const leaders: Partial<Record<LeaderId, Leader>> = {};
+
+  const omegaMergeFn = buildMergeFunction(options.expansions);
+
   objectEntries(baseData.leaders).forEach(([leaderId, leader]) => {
     // Maybe filter out PoK technologies.
     if (!options.expansions.includes("POK") && leader.expansion === "POK") {
       return;
     }
-    const leaderCopy = { ...leader };
-
-    // Maybe update techs for codices.
-    if (leader.omega && options.expansions.includes(leader.omega.expansion)) {
-      leaderCopy.abilityName =
-        leader.omega.abilityName ?? leaderCopy.abilityName;
-      leaderCopy.name = leader.omega.name ?? leaderCopy.name;
-      leaderCopy.description =
-        leader.omega.description ?? leaderCopy.description;
-      leaderCopy.unlock = leader.omega.unlock ?? leaderCopy.unlock;
-      leaderCopy.timing = leader.omega.timing ?? leaderCopy.timing;
-    }
+    const updatedLeader = omegaMergeFn(leader);
 
     if (
       leader.subFaction &&
@@ -548,7 +614,7 @@ export function buildCompleteLeaders(
     }
 
     leaders[leaderId] = {
-      ...leaderCopy,
+      ...updatedLeader,
       ...(storedLeaders[leaderId] ?? {}),
     };
   });

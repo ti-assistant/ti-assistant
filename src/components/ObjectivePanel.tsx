@@ -1,7 +1,12 @@
 import Image from "next/image";
-import React, { CSSProperties, PropsWithChildren, useContext } from "react";
+import React, {
+  CSSProperties,
+  PropsWithChildren,
+  use,
+  useContext,
+} from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { SettingsContext } from "../context/contexts";
+import { ModalContext, SettingsContext } from "../context/contexts";
 import {
   useActionLog,
   useGameId,
@@ -15,7 +20,6 @@ import {
 } from "../context/factionDataHooks";
 import { useFactionVPs, useOrderedFactionIds } from "../context/gameDataHooks";
 import { useObjective, useObjectives } from "../context/objectiveDataHooks";
-import { useSharedModal } from "../data/SharedModal";
 import {
   hideObjectiveAsync,
   manualVPUpdateAsync,
@@ -39,13 +43,13 @@ import Chip from "./Chip/Chip";
 import { CollapsibleSection } from "./CollapsibleSection";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "./FactionSelectRadialMenu/FactionSelectRadialMenu";
+import FormattedDescription from "./FormattedDescription/FormattedDescription";
 import LabeledDiv from "./LabeledDiv/LabeledDiv";
 import { ModalContent } from "./Modal/Modal";
 import styles from "./ObjectivePanel.module.scss";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 import ObjectiveSelectHoverMenu from "./ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import { Selector } from "./Selector/Selector";
-import FormattedDescription from "./FormattedDescription/FormattedDescription";
 
 function GridHeader({ children }: PropsWithChildren) {
   return (
@@ -99,7 +103,7 @@ function ObjectiveColumn({
   objective: Objective;
   orderedFactionIds: FactionId[];
 }) {
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
   const viewOnly = useViewOnly();
   const { settings } = useContext(SettingsContext);
   const description = settings["display-objective-description"];
@@ -283,7 +287,7 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
   const { settings, updateSetting } = useContext(SettingsContext);
   const description = settings["display-objective-description"];
 
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   const intl = useIntl();
 
@@ -396,6 +400,7 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
   const tomb = (objectives ?? {})["Tomb + Crown of Emphidia"];
 
   const book = objectives["Book of Latvinia"];
+  const silverFlame = objectives["The Silver Flame"];
 
   const politicalCensure = (objectives ?? {})["Political Censure"];
 
@@ -406,6 +411,7 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
   const crownScorers = crown?.scorers ?? [];
 
   const imperialRider = (objectives ?? {})["Imperial Rider"];
+  const styx = objectives["Styx"];
 
   const seed = (objectives ?? {})["Seed of an Empire"];
 
@@ -486,19 +492,6 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
                   <Selector
                     options={remainingStageOneObjectives}
                     hoverMenuLabel={objectiveTypeString("STAGE ONE", intl)}
-                    renderButton={(itemId, itemName, toggleItem) => {
-                      return (
-                        <button
-                          key={itemId}
-                          style={{ fontSize: rem(14) }}
-                          onClick={() => {
-                            toggleItem(itemId, true);
-                          }}
-                        >
-                          {itemName}
-                        </button>
-                      );
-                    }}
                     toggleItem={(objectiveId, add) => {
                       if (!gameId) {
                         return;
@@ -513,19 +506,6 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
                   <Selector
                     options={remainingStageTwoObjectives}
                     hoverMenuLabel={objectiveTypeString("STAGE TWO", intl)}
-                    renderButton={(itemId, itemName, toggleItem) => {
-                      return (
-                        <button
-                          key={itemId}
-                          style={{ fontSize: rem(14) }}
-                          onClick={() => {
-                            toggleItem(itemId, true);
-                          }}
-                        >
-                          {itemName}
-                        </button>
-                      );
-                    }}
                     toggleItem={(objectiveId, add) => {
                       if (!gameId) {
                         return;
@@ -540,19 +520,6 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
                   <Selector
                     options={remainingSecretObjectives}
                     hoverMenuLabel={"Secret (as Public)"}
-                    renderButton={(itemId, itemName, toggleItem) => {
-                      return (
-                        <button
-                          key={itemId}
-                          style={{ fontSize: rem(14) }}
-                          onClick={() => {
-                            toggleItem(itemId, true);
-                          }}
-                        >
-                          {itemName}
-                        </button>
-                      );
-                    }}
                     itemsPerColumn={10}
                     toggleItem={(objectiveId, add) => {
                       if (!gameId) {
@@ -570,6 +537,7 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
             )}
             <div className="flexRow" style={{ width: "95%" }}>
               <CustodiansToken />
+              <Styx />
             </div>
           </div>
 
@@ -1728,6 +1696,7 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
             style={{ gridColumn: "1 / 3", width: "100%", height: "100%" }}
           >
             <CustodiansToken />
+            <Styx />
           </div>
           <LabeledDiv
             label={
@@ -1962,6 +1931,11 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
                 <SimpleScorable
                   gameId={gameId}
                   objective={book}
+                  orderedFactionIds={orderedFactionIds}
+                />
+                <SimpleScorable
+                  gameId={gameId}
+                  objective={silverFlame}
                   orderedFactionIds={orderedFactionIds}
                 />
               </div>
@@ -2313,7 +2287,7 @@ function SimpleScorable({
   const factions = useFactions();
   const viewOnly = useViewOnly();
 
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   if (!objective) {
     return null;
@@ -2530,6 +2504,67 @@ function CustodiansToken({}) {
           }}
           borderColor={
             custodiansScorerId ? convertToFactionColor(scorerColor) : undefined
+          }
+          viewOnly={viewOnly}
+        />
+      </div>
+    </div>
+  );
+}
+
+function Styx({}) {
+  const gameId = useGameId();
+  const viewOnly = useViewOnly();
+  const options = useOptions();
+  const orderedFactionIds = useOrderedFactionIds("MAP");
+  const styx = useObjective("Styx");
+  const styxScorerId = (styx?.scorers ?? [])[0];
+
+  const scorerColor = useFactionColor(styxScorerId ?? "Vuil'raith Cabal");
+
+  if (!options.expansions.includes("THUNDERS EDGE")) {
+    return null;
+  }
+
+  return (
+    <div
+      className="flexRow"
+      style={{
+        position: "relative",
+        alignItems: "flex-start",
+        width: rem(72),
+        height: rem(72),
+      }}
+    >
+      <Image
+        sizes={rem(144)}
+        // TODO: Replace with higher quality image of Styx.
+        src={`/images/styx.png`}
+        alt={`Styx`}
+        fill
+        style={{ objectFit: "contain" }}
+      />
+      <div
+        className="flexRow"
+        style={{
+          position: "absolute",
+          marginLeft: "72%",
+          marginTop: "44%",
+        }}
+      >
+        <FactionSelectRadialMenu
+          factions={orderedFactionIds}
+          selectedFaction={styxScorerId}
+          onSelect={(factionId) => {
+            if (styxScorerId) {
+              unscoreObjectiveAsync(gameId, styxScorerId, "Styx");
+            }
+            if (factionId) {
+              scoreObjectiveAsync(gameId, factionId, "Styx");
+            }
+          }}
+          borderColor={
+            styxScorerId ? convertToFactionColor(scorerColor) : undefined
           }
           viewOnly={viewOnly}
         />

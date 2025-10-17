@@ -1,14 +1,23 @@
 import { FormattedMessage, useIntl } from "react-intl";
 import { SelectableRow } from "../../SelectableRow";
-import { useGameId, useTechs, useViewOnly } from "../../context/dataHooks";
+import {
+  useGameId,
+  useOptions,
+  useTechs,
+  useViewOnly,
+} from "../../context/dataHooks";
 import { useFaction } from "../../context/factionDataHooks";
 import {
   chooseStartingTechAsync,
   chooseSubFactionAsync,
   removeStartingTechAsync,
 } from "../../dynamic/api";
-import { getTechColor } from "../../util/techs";
-import { objectEntries, rem } from "../../util/util";
+import {
+  canResearchTech,
+  getFactionPreReqs,
+  getTechColor,
+} from "../../util/techs";
+import { objectEntries, objectKeys, rem } from "../../util/util";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
@@ -26,6 +35,8 @@ import SpaceDockSVG from "../../icons/units/SpaceDock";
 import FlagshipSVG from "../../icons/units/Flagship";
 import WarSunSVG from "../../icons/units/WarSun";
 import MechSVG from "../../icons/units/Mech";
+import TechIcon from "../TechIcon/TechIcon";
+import SynergySVG from "../../icons/ui/Synergy";
 
 interface StartingComponentsProps {
   factionId: FactionId;
@@ -53,6 +64,7 @@ export default function StartingComponents({
 }: StartingComponentsProps) {
   const faction = useFaction(factionId);
   const gameId = useGameId();
+  const options = useOptions();
   const techs = useTechs();
   const viewOnly = useViewOnly();
 
@@ -98,43 +110,66 @@ export default function StartingComponents({
           }
         })
     : [];
-  const orderedChoices = techs
-    ? ((startswith.choice ?? {}).options ?? [])
-        .filter((tech) => {
-          return !(startswith.techs ?? []).includes(tech);
-        })
-        .filter((tech) => {
-          return !!techs[tech];
-        })
-        .filter((tech) => {
-          if (factionId !== "Edyn Mandate") {
-            return true;
-          }
-          const selectedTypes = (startswith.techs ?? []).map(
-            (tech) => techs[tech]?.type
-          );
-          return !selectedTypes.includes(techs[tech]?.type);
-        })
-        .map((tech) => {
-          return techs[tech] as Tech;
-        })
-        .sort((a, b) => {
-          const typeDiff =
-            techOrder.indexOf(a.type) - techOrder.indexOf(b.type);
-          if (typeDiff !== 0) {
-            return typeDiff;
-          }
-          const prereqDiff: number = a.prereqs.length - b.prereqs.length;
-          if (prereqDiff !== 0) {
-            return prereqDiff;
-          }
-          if (a.id < b.id) {
-            return -1;
-          } else {
-            return 1;
-          }
-        })
-    : [];
+  let choices = (startswith.choice ?? {}).options ?? [];
+  if (factionId === "Deepwrought Scholarate") {
+    const factionPreReqs = getFactionPreReqs(
+      faction,
+      techs,
+      options,
+      /* planets= */ [],
+      /* relics= */ {}
+    );
+    choices = Object.values(techs)
+      .filter((tech) => {
+        return (
+          canResearchTech(
+            tech,
+            options,
+            factionPreReqs,
+            faction,
+            false,
+            techs
+          ) &&
+          (!tech.faction || tech.faction === faction.id)
+        );
+      })
+      .map((tech) => tech.id);
+  }
+  const orderedChoices = choices
+    .filter((tech) => {
+      return !(startswith.techs ?? []).includes(tech);
+    })
+    .filter((tech) => {
+      return !!techs[tech];
+    })
+    .filter((tech) => {
+      if (factionId !== "Edyn Mandate") {
+        return true;
+      }
+      const selectedTypes = (startswith.techs ?? []).map(
+        (tech) => techs[tech]?.type
+      );
+      return !selectedTypes.includes(techs[tech]?.type);
+    })
+    .map((tech) => {
+      return techs[tech] as Tech;
+    })
+    .filter((tech) => !tech.faction || tech.faction === factionId)
+    .sort((a, b) => {
+      const typeDiff = techOrder.indexOf(a.type) - techOrder.indexOf(b.type);
+      if (typeDiff !== 0) {
+        return typeDiff;
+      }
+      const prereqDiff: number = a.prereqs.length - b.prereqs.length;
+      if (prereqDiff !== 0) {
+        return prereqDiff;
+      }
+      if (a.name < b.name) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
 
   function selectSubFaction(subFaction: SubFaction) {
     if (factionId !== "Council Keleres") {
@@ -256,6 +291,24 @@ export default function StartingComponents({
               chooseStartingTechAsync(gameId, factionId, tech.id)
             }
           />
+        </div>
+      ) : null}
+      {factionId === "Crimson Rebellion" ? (
+        <div className="flexRow">
+          <div className="flexRow" style={{ gap: rem(2) }}>
+            <TechIcon
+              type={faction.breakthrough.synergy?.left ?? "RED"}
+              size={16}
+            />
+            <div className="flexRow" style={{ width: rem(24) }}>
+              <SynergySVG />
+            </div>
+            <TechIcon
+              type={faction.breakthrough.synergy?.right ?? "BLUE"}
+              size={16}
+            />
+          </div>
+          {faction.breakthrough.name}
         </div>
       ) : null}
       {/* Units */}

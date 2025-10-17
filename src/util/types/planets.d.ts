@@ -9,12 +9,17 @@ type PlanetAttribute =
   | "space-cannon"
   | "all-types"
   | "victory-point"
+  // Thunder's Edge
+  | "relic"
+  | "space-station"
+  | "ocean"
+  | "synthetic" // A planet that doesn't exist. Used for The Triad relic.
   // Discordant Stars
   | "extra-votes"
   | "production"
   | "infantry";
 
-type PlanetType = "INDUSTRIAL" | "CULTURAL" | "HAZARDOUS" | "ALL" | "NONE";
+type PlanetType = "INDUSTRIAL" | "CULTURAL" | "HAZARDOUS";
 
 type PlanetUpdateAction =
   | "ADD_PLANET"
@@ -43,10 +48,13 @@ interface BasePlanet {
   locked?: boolean;
   name: string;
   position?: { x: number; y: number };
+  omegas?: Omega<BasePlanet>[];
   resources: number;
   subFaction?: SubFaction;
   system?: SystemId;
-  type: PlanetType;
+  types: PlanetType[];
+  // Used to bypass normal system filtering.
+  alwaysInclude?: boolean;
 }
 
 interface GamePlanet {
@@ -54,6 +62,8 @@ interface GamePlanet {
   ready?: boolean;
   state?: PlanetState;
   attachments?: AttachmentId[];
+  // Manual adjustments
+  bastionSpaceDock?: boolean;
 }
 
 type Planet = BasePlanet & GamePlanet;
@@ -62,4 +72,5 @@ type PlanetId =
   | BaseGame.PlanetId
   | ProphecyOfKings.PlanetId
   | CodexThree.PlanetId
+  | ThundersEdge.PlanetId
   | DiscordantStars.PlanetId;

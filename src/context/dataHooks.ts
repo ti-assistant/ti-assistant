@@ -1,20 +1,22 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import stableHash from "stable-hash";
 import { BASE_OPTIONS } from "../../server/data/options";
-import { getLogEntries } from "../util/actionLog";
+import { getLogEntries, isPrimaryComplete } from "../util/actionLog";
 import { getCurrentTurnLogEntries } from "../util/api/actionLog";
 import { ActionLog, Optional } from "../util/types/types";
-import DataManager from "./DataManager";
+import { DataContext } from "./contexts";
+import { DataStore } from "./dataStore";
 
 export function useGameDataValue<Type>(path: string, defaultValue: Type): Type {
   const [value, setValue] = useState<Type>(
-    DataManager.getValue(path) ?? defaultValue
+    DataStore.getValue(path) ?? defaultValue
   );
+  const subscribe = use(DataContext);
 
   useEffect(() => {
-    setValue(DataManager.getValue(path) ?? defaultValue);
-    return DataManager.subscribe(setValue, path);
-  }, [path]);
+    setValue(DataStore.getValue(path) ?? defaultValue);
+    return subscribe(setValue, path);
+  }, [path, subscribe]);
 
   return value;
 }
@@ -24,21 +26,22 @@ export function useMemoizedGameDataValue<BaseType, Type>(
   defaultValue: Type,
   fn: (value: BaseType) => Type
 ) {
-  const initialValue = DataManager.getValue<BaseType>(path);
+  const initialValue = DataStore.getValue<BaseType>(path);
   const baseVal = initialValue ? fn(initialValue) : defaultValue;
   const [value, setValue] = useState<Type>(baseVal);
+  const subscribe = use(DataContext);
 
   const valueHash = stableHash(value);
 
   useEffect(() => {
-    const newVal = DataManager.getValue<BaseType>(path);
+    const newVal = DataStore.getValue<BaseType>(path);
     if (newVal) {
       const newValue = fn(newVal);
       if (valueHash !== stableHash(newValue)) {
         setValue(newValue);
       }
     }
-    return DataManager.subscribe((newVal) => {
+    return subscribe((newVal) => {
       if (!newVal) {
         return;
       }
@@ -48,7 +51,7 @@ export function useMemoizedGameDataValue<BaseType, Type>(
       }
       setValue(newValue);
     }, path);
-  }, [path, fn, valueHash]);
+  }, [path, fn, valueHash, subscribe]);
 
   return value;
 }
@@ -71,6 +74,13 @@ export function useCurrentTurn() {
     (log) => getCurrentTurnLogEntries(log)
   );
 }
+export function usePrimaryCompleted() {
+  return useMemoizedGameDataValue<ActionLog, boolean>(
+    "actionLog",
+    false,
+    (log) => isPrimaryComplete(getCurrentTurnLogEntries(log))
+  );
+}
 export function useLogEntries<DataType extends GameUpdateData>(
   type: DataType["action"],
   filters?: (type: ActionLogEntry<DataType>) => boolean
@@ -86,6 +96,16 @@ export function useLogEntries<DataType extends GameUpdateData>(
       }
       return entries;
     }
+  );
+}
+
+export function useActionCards() {
+  return useGameDataValue<ActionCards>("actionCards", {});
+}
+export function useActionCard(actionCardId: ActionCardId) {
+  return useGameDataValue<Optional<ActionCard>>(
+    `actionCards.${actionCardId}`,
+    undefined
   );
 }
 
@@ -110,6 +130,9 @@ export function useComponents() {
 type Leaders = Partial<Record<LeaderId, Leader>>;
 export function useLeaders() {
   return useGameDataValue<Leaders>("leaders", {});
+}
+export function useLeader(leaderId: LeaderId) {
+  return useGameDataValue<Optional<Leader>>(`leaders.${leaderId}`, undefined);
 }
 
 export function useOptions() {
@@ -152,7 +175,14 @@ export function useTechs() {
   return useGameDataValue<Techs>("techs", {});
 }
 
-type Timers = Record<string, number>;
+export function useTech(techId: TechId) {
+  return useGameDataValue<Optional<Tech>>(`techs.${techId}`, undefined);
+}
+
 export function useTimers() {
   return useGameDataValue<Timers>("timers", {});
+}
+
+export function useExpedition() {
+  return useGameDataValue<Expedition>("expedition", {});
 }

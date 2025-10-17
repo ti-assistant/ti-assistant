@@ -15,8 +15,13 @@ import {
 } from "../model/chooseStartingTech";
 import { ChooseSubFactionHandler } from "../model/chooseSubFaction";
 import { ClaimPlanetHandler, UnclaimPlanetHandler } from "../model/claimPlanet";
+import { CommitToExpeditionHandler } from "../model/commitToExpedition";
 import { ContinueGameHandler, EndGameHandler } from "../model/endGame";
 import { EndTurnHandler, UnendTurnHandler } from "../model/endTurn";
+import {
+  GainAllianceHandler,
+  LoseAllianceHandler,
+} from "../model/gainAlliance";
 import { GainRelicHandler, LoseRelicHandler } from "../model/gainRelic";
 import { GiftOfPrescienceHandler } from "../model/giftOfPrescience";
 import { ManualVPUpdateHandler } from "../model/manualVPUpdate";
@@ -69,6 +74,7 @@ import {
   SwapStrategyCardsHandler,
   UnswapStrategyCardsHandler,
 } from "../model/swapStrategyCards";
+import { UpdateBreakthroughStateHandler } from "../model/updateBreakthroughState";
 import { UpdateLeaderStateHandler } from "../model/updateLeaderState";
 import { UpdatePlanetStateHandler } from "../model/updatePlanetState";
 import { getOppositeHandler } from "./opposite";
@@ -97,6 +103,8 @@ export function getHandler(gameData: StoredGameData, data: GameUpdateData) {
       return new EndGameHandler(gameData, data);
     case "END_TURN":
       return new EndTurnHandler(gameData, data);
+    case "GAIN_ALLIANCE":
+      return new GainAllianceHandler(gameData, data);
     case "GAIN_RELIC":
       return new GainRelicHandler(gameData, data);
     case "GIFT_OF_PRESCIENCE":
@@ -105,6 +113,8 @@ export function getHandler(gameData: StoredGameData, data: GameUpdateData) {
       return new HideAgendaHandler(gameData, data);
     case "HIDE_OBJECTIVE":
       return new HideObjectiveHandler(gameData, data);
+    case "LOSE_ALLIANCE":
+      return new LoseAllianceHandler(gameData, data);
     case "LOSE_RELIC":
       return new LoseRelicHandler(gameData, data);
     case "MANUAL_VP_UPDATE":
@@ -193,5 +203,9 @@ export function getHandler(gameData: StoredGameData, data: GameUpdateData) {
       return new PlayAdjudicatorBaalHandler(gameData, data);
     case "SWAP_MAP_TILES":
       return new SwapMapTilesHandler(gameData, data);
+    case "COMMIT_TO_EXPEDITION":
+      return new CommitToExpeditionHandler(gameData, data);
+    case "UPDATE_BREAKTHROUGH_STATE":
+      return new UpdateBreakthroughStateHandler(gameData, data);
   }
 }

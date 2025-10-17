@@ -19,8 +19,12 @@ export class ChooseStartingTechHandler implements Handler {
     if (!faction || !tech) {
       return false;
     }
-    if (hasTech(faction, this.data.event.tech)) {
+    if (hasTech(faction, tech)) {
       return false;
+    }
+
+    if (faction.id === "Deepwrought Scholarate") {
+      return true;
     }
 
     if (
@@ -93,7 +97,7 @@ export class RemoveStartingTechHandler implements Handler {
     if (!faction || !tech) {
       return false;
     }
-    if (!hasTech(faction, this.data.event.tech)) {
+    if (!hasTech(faction, tech)) {
       return false;
     }
 

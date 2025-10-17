@@ -7,8 +7,7 @@ import {
   usePlanets,
   useViewOnly,
 } from "../context/dataHooks";
-import { useFaction } from "../context/factionDataHooks";
-import { useFactions } from "../context/factionDataHooks";
+import { useFaction, useFactions } from "../context/factionDataHooks";
 import { claimPlanetAsync, unclaimPlanetAsync } from "../dynamic/api";
 import { getFactionColor, getFactionName } from "../util/factions";
 import {
@@ -145,6 +144,10 @@ function UnclaimedPlanetSection() {
           style={{ position: "relative" }}
         >
           {unownedPlanets.map((planet) => {
+            let possibleFactions = objectKeys(factions);
+            if (planet.attributes.includes("ocean")) {
+              possibleFactions = ["Deepwrought Scholarate"];
+            }
             return (
               <div
                 key={planet.id}
@@ -153,12 +156,12 @@ function UnclaimedPlanetSection() {
                   justifyContent: "flex-start",
                   alignItems: "center",
                   width: "100%",
-                  gap: 0,
+                  gap: rem(4),
                 }}
               >
                 {viewOnly ? null : (
                   <FactionSelectHoverMenu
-                    options={objectKeys(factions)}
+                    options={possibleFactions}
                     onSelect={(factionId) => {
                       if (!gameId || !factionId) {
                         return;

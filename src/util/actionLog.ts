@@ -26,6 +26,16 @@ export function getResearchedTechs(actionLog: ActionLog, factionId: FactionId) {
     .map((logEntry) => (logEntry.data as AddTechData).event.tech);
 }
 
+export function isPrimaryComplete(currentTurn: ActionLog) {
+  return getLogEntries<MarkPrimaryData>(currentTurn, "MARK_PRIMARY").length > 0;
+}
+
+export function getAddTechEvents(actionLog: ActionLog) {
+  return getLogEntries<AddTechData>(actionLog, "ADD_TECH").filter(
+    (logEntry) => !logEntry.data.event.researchAgreement
+  );
+}
+
 export function getRevealedObjectives(actionLog: ActionLog) {
   return getLogEntries<RevealObjectiveData>(actionLog, "REVEAL_OBJECTIVE").map(
     (logEntry) => logEntry.data.event.objective
@@ -36,6 +46,12 @@ export function getReplacedTechs(actionLog: ActionLog, factionId: FactionId) {
   return getLogEntries<RemoveTechData>(actionLog, "REMOVE_TECH")
     .filter((logEntry) => logEntry.data.event.faction === factionId)
     .map((logEntry) => logEntry.data.event.tech);
+}
+
+export function getPurgedTechs(actionLog: ActionLog) {
+  return getLogEntries<PurgeTechData>(actionLog, "PURGE_TECH").map(
+    (logEntry) => logEntry.data.event.techId
+  );
 }
 
 export function getClaimedPlanets(actionLog: ActionLog, factionId: FactionId) {
@@ -107,10 +123,12 @@ export function getPromissoryTargets(actionLog: ActionLog, card: string) {
     .map((logEntry) => logEntry.data.event.target);
 }
 
-export function getGainedRelic(actionLog: ActionLog) {
-  return getLogEntries<GainRelicData>(actionLog, "GAIN_RELIC").map(
-    (logEntry) => logEntry.data.event.relic
-  )[0];
+export function getGainedRelic(actionLog: ActionLog, planet?: PlanetId) {
+  return getLogEntries<GainRelicData>(actionLog, "GAIN_RELIC")
+    .filter((logEntry) => {
+      return !planet || logEntry.data.event.planet === planet;
+    })
+    .map((logEntry) => logEntry.data.event.relic)[0];
 }
 
 export function getPurgedPlanet(actionLog: ActionLog) {
@@ -193,4 +211,16 @@ export function getResearchAgreementFaction(
         logEntry.data.event.researchAgreement
     )
     .map((logEntry) => logEntry.data.event.faction)[0];
+}
+
+export function getLatestExpedition(
+  actionLog: ActionLog,
+  factionId: FactionId
+) {
+  return getLogEntries<CommitToExpeditionData>(
+    actionLog,
+    "COMMIT_TO_EXPEDITION"
+  )
+    .filter((logEntry) => logEntry.data.event.factionId === factionId)
+    .map((logEntry) => logEntry.data.event)[0];
 }

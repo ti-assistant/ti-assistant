@@ -16,7 +16,7 @@ export class AddTechHandler implements Handler {
     if (!faction || !tech) {
       return false;
     }
-    if (hasTech(faction, this.data.event.tech)) {
+    if (hasTech(faction, tech)) {
       return false;
     }
 
@@ -38,6 +38,17 @@ export class AddTechHandler implements Handler {
       [`factions.${this.data.event.faction}.techs.${this.data.event.tech}.ready`]:
         true,
     };
+
+    for (const factionId of this.data.event.additionalFactions ?? []) {
+      updates[`factions.${factionId}.techs.${this.data.event.tech}.ready`] =
+        true;
+    }
+
+    if (this.data.event.shareKnowledge) {
+      updates[
+        `factions.${this.data.event.faction}.techs.${this.data.event.tech}.shareKnowledge`
+      ] = true;
+    }
 
     if (this.data.event.tech === "IIHQ Modernization") {
       updates[`planets.Custodia Vigilia.owner`] = "Council Keleres";
@@ -79,7 +90,7 @@ export class RemoveTechHandler implements Handler {
     if (!faction || !tech) {
       return false;
     }
-    if (!hasTech(faction, this.data.event.tech)) {
+    if (!hasTech(faction, tech)) {
       return false;
     }
 
@@ -101,6 +112,10 @@ export class RemoveTechHandler implements Handler {
       [`factions.${this.data.event.faction}.techs.${this.data.event.tech}`]:
         "DELETE",
     };
+
+    for (const factionId of this.data.event.additionalFactions ?? []) {
+      updates[`factions.${factionId}.techs.${this.data.event.tech}`] = "DELETE";
+    }
 
     if (this.data.event.tech === "IIHQ Modernization") {
       updates[`planets.Custodia Vigilia.owner`] = "DELETE";

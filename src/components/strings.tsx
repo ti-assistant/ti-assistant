@@ -157,6 +157,14 @@ export namespace Strings {
             defaultMessage="Codex IV"
           />
         );
+      case "THUNDERS EDGE":
+        return (
+          <FormattedMessage
+            id="SpNTY7"
+            defaultMessage="Thunder's Edge"
+            description="Text on a button that will enable/disable the Thunder's Edge expansion."
+          />
+        );
       case "DISCORDANT STARS":
         return (
           <FormattedMessage

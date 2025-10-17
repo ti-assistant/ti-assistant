@@ -1,8 +1,5 @@
-import DataManager from "../../context/DataManager";
 import { ChooseSubFactionHandler } from "../model/chooseSubFaction";
-import { updateGameData } from "./handler";
-import { updateActionLog } from "./update";
-import { poster } from "./util";
+import dataUpdate from "./dataUpdate";
 
 export function chooseSubFaction(
   gameId: string,
@@ -17,26 +14,5 @@ export function chooseSubFaction(
     },
   };
 
-  const now = Date.now();
-
-  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
-
-  DataManager.update((storedGameData) => {
-    const handler = new ChooseSubFactionHandler(storedGameData, data);
-
-    if (!handler.validate()) {
-      return storedGameData;
-    }
-
-    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
-    updateGameData(storedGameData, handler.getUpdates());
-
-    storedGameData.lastUpdate = now;
-
-    return storedGameData;
-  });
-
-  return updatePromise.catch((_) => {
-    DataManager.reset();
-  });
+  return dataUpdate(gameId, data, ChooseSubFactionHandler);
 }

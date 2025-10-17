@@ -27,6 +27,25 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Arborec.Breakthrough.Psychospore.Title",
+          description: "Title of Faction Breakthrough: Psychospore",
+          defaultMessage: "Psychospore",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Arborec.Breakthrough.Psychospore.Description",
+            description: "Description of Faction Breakthrough: Psychospore",
+            defaultMessage:
+              "ACTION: Exhaust this card to remove a command token from a system that contains 1 or more of your infantry and return it to your reinforcements.{br}Then, place 1 infantry in that system.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Psychospore",
+        synergy: { left: "RED", right: "GREEN" },
+        timing: "COMPONENT_ACTION",
+      },
       colors: {
         Black: 0.1,
         Blue: 0.1,
@@ -67,20 +86,22 @@ export default function getBaseFactions(
             },
             { br: "\n\n" }
           ),
-          omega: {
-            name: intl.formatMessage({
-              id: "Arborec.Promissories.Stymie.Omega.Title",
-              description: "Title of Faction Promissory: Stymie Ω",
-              defaultMessage: "Stymie Ω",
-            }),
-            description: intl.formatMessage({
-              id: "Arborec.Promissories.Stymie.Omega.Description",
-              description: "Description for Faction Promissory: Stymie Ω",
-              defaultMessage:
-                "After another player moves ships into a system that contains 1 or more of your units:\n\nYou may place 1 command token from that player's reinforcements in any non-home system.\n\nThen, return this card to the Arborec player.",
-            }),
-            expansion: "CODEX ONE",
-          },
+          omegas: [
+            {
+              name: intl.formatMessage({
+                id: "Arborec.Promissories.Stymie.Omega.Title",
+                description: "Title of Faction Promissory: Stymie Ω",
+                defaultMessage: "Stymie Ω",
+              }),
+              description: intl.formatMessage({
+                id: "Arborec.Promissories.Stymie.Omega.Description",
+                description: "Description for Faction Promissory: Stymie Ω",
+                defaultMessage:
+                  "After another player moves ships into a system that contains 1 or more of your units:\n\nYou may place 1 command token from that player's reinforcements in any non-home system.\n\nThen, return this card to the Arborec player.",
+              }),
+              expansion: "CODEX ONE",
+            },
+          ],
         },
       ],
       shortname: intl.formatMessage({
@@ -193,6 +214,26 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Barony of Letnev.Breakthrough.Gravleash Maneuvers.Title",
+          description: "Title of Faction Breakthrough: Gravleash Maneuvers",
+          defaultMessage: "Gravleash Maneuvers",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Barony of Letnev.Breakthrough.Gravleash Maneuvers.Description",
+            description:
+              "Description of Faction Breakthrough: Gravleash Maneuvers",
+            defaultMessage:
+              "Before you roll dice during space combat, apply +1 to the results of 1 of your ship's rolls, where X is the number of ship types you have in the combat.{br}During movement, your non-fighter ships' move values are equal to the highest move value amongst moving ships in the system they started in.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Gravleash Maneuvers",
+        synergy: { left: "BLUE", right: "RED" },
+        timing: "TACTICAL_ACTION",
+      },
       colors: {
         Black: 0.8,
         Blue: 0.1,
@@ -232,24 +273,26 @@ export default function getBaseFactions(
             },
             { br: "\n\n" }
           ),
-          omega: {
-            name: intl.formatMessage({
-              id: "Barony of Letnev.Promissories.War Funding.Omega.Title",
-              description: "Title of Faction Promissory: War Funding Ω",
-              defaultMessage: "War Funding Ω",
-            }),
-            description: intl.formatMessage(
-              {
-                id: "Barony of Letnev.Promissories.War Funding.Omega.Description",
-                description:
-                  "Description for Faction Promissory: War Funding Ω",
-                defaultMessage:
-                  "After you and your opponent roll dice during space combat:{br}You may reroll all of your opponent's dice. You may reroll any number of your dice.{br}Then, return this card to the Letnev player.",
-              },
-              { br: "\n\n" }
-            ),
-            expansion: "CODEX ONE",
-          },
+          omegas: [
+            {
+              name: intl.formatMessage({
+                id: "Barony of Letnev.Promissories.War Funding.Omega.Title",
+                description: "Title of Faction Promissory: War Funding Ω",
+                defaultMessage: "War Funding Ω",
+              }),
+              description: intl.formatMessage(
+                {
+                  id: "Barony of Letnev.Promissories.War Funding.Omega.Description",
+                  description:
+                    "Description for Faction Promissory: War Funding Ω",
+                  defaultMessage:
+                    "After you and your opponent roll dice during space combat:{br}You may reroll all of your opponent's dice. You may reroll any number of your dice.{br}Then, return this card to the Letnev player.",
+                },
+                { br: "\n\n" }
+              ),
+              expansion: "CODEX ONE",
+            },
+          ],
         },
       ],
       shortname: intl.formatMessage({
@@ -343,6 +386,25 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Clan of Saar.Breakthrough.Deorbit Barrage.Title",
+          description: "Title of Faction Breakthrough: Deorbit Barrage",
+          defaultMessage: "Deorbit Barrage",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Clan of Saar.Breakthrough.Deorbit Barrage.Description",
+            description: "Description of Faction Breakthrough: Deorbit Barrage",
+            defaultMessage:
+              "ACTION: Exhaust this card and spend any amount of resources to choose a planet up to 2 systems away from an asteroid field that contains your ships; roll a number of dice equal to the amount spent and assign 1 hit to a ground force on that planet for each roll of 4 or greater.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Deorbit Barrage",
+        synergy: { left: "BLUE", right: "RED" },
+        timing: "COMPONENT_ACTION",
+      },
       colors: {
         Green: 0.5,
         Orange: 0.85,
@@ -488,6 +550,25 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Embers of Muaat.Breakthrough.Stellar Genesis.Title",
+          description: "Title of Faction Breakthrough: Stellar Genesis",
+          defaultMessage: "Stellar Genesis",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Embers of Muaat.Breakthrough.Stellar Genesis.Description",
+            description: "Description of Faction Breakthrough: Stellar Genesis",
+            defaultMessage:
+              "When you gain this card, place the Avernus planet token into a non-home system that is adjacent to a planet you control; gain control of and ready it.{br}After you move 1 of your War Suns out of or through Avernus's system and into a non-home system, you may move the Avernus token with it.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Stellar Genesis",
+        synergy: { left: "RED", right: "YELLOW" },
+        timing: "PASSIVE",
+      },
       colors: {
         Orange: 0.65,
         Red: 1.25,
@@ -651,6 +732,25 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Emirates of Hacan.Breakthrough.Auto-Factories.Title",
+          description: "Title of Faction Breakthrough: Auto-Factories",
+          defaultMessage: "Auto-Factories",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Emirates of Hacan.Breakthrough.Auto-Factories.Description",
+            description: "Description of Faction Breakthrough: Auto-Factories",
+            defaultMessage:
+              "When you produce 3 or more non-fighter ships, place 1 command token from your reinforcements into your fleet pool.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Auto-Factories",
+        synergy: { left: "RED", right: "YELLOW" },
+        timing: "TACTICAL_ACTION",
+      },
       colors: {
         Orange: 0.7,
         Yellow: 1.2,
@@ -781,6 +881,26 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Federation of Sol.Breakthrough.Bellum Gloriosum.Title",
+          description: "Title of Faction Breakthrough: Bellum Gloriosum",
+          defaultMessage: "Bellum Gloriosum",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Federation of Sol.Breakthrough.Bellum Gloriosum.Description",
+            description:
+              "Description of Faction Breakthrough: Bellum Gloriosum",
+            defaultMessage:
+              "When you produce a ship that has capacity, you may also produce any combination of ground forces or fighters up to that ship's capacity; they do not count against your PRODUCTION limit.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Bellum Gloriosum",
+        synergy: { left: "YELLOW", right: "GREEN" },
+        timing: "TACTICAL_ACTION",
+      },
       colors: {
         Blue: 1.15,
         Yellow: 0.75,
@@ -884,21 +1004,6 @@ export default function getBaseFactions(
         {
           abilities: [],
           name: intl.formatMessage({
-            id: "Federation of Sol.Units.Spec Ops I.Title",
-            description: "Title of Faction Unit: Spec Ops I",
-            defaultMessage: "Spec Ops I",
-          }),
-          expansion: "BASE",
-          stats: {
-            cost: "1(x2)",
-            combat: 7,
-          },
-          type: "Infantry",
-          upgrade: "Spec Ops II",
-        },
-        {
-          abilities: [],
-          name: intl.formatMessage({
             id: "Federation of Sol.Units.Advanced Carrier I.Title",
             description: "Title of Faction Unit: Advanced Carrier I",
             defaultMessage: "Advanced Carrier I",
@@ -912,6 +1017,21 @@ export default function getBaseFactions(
           },
           type: "Carrier",
           upgrade: "Advanced Carrier II",
+        },
+        {
+          abilities: [],
+          name: intl.formatMessage({
+            id: "Federation of Sol.Units.Spec Ops I.Title",
+            description: "Title of Faction Unit: Spec Ops I",
+            defaultMessage: "Spec Ops I",
+          }),
+          expansion: "BASE",
+          stats: {
+            cost: "1(x2)",
+            combat: 7,
+          },
+          type: "Infantry",
+          upgrade: "Spec Ops II",
         },
       ],
     },
@@ -958,6 +1078,26 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Ghosts of Creuss.Breakthrough.Particle Synthesis.Title",
+          description: "Title of Faction Breakthrough: Particle Synthesis",
+          defaultMessage: "Particle Synthesis",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Ghosts of Creuss.Breakthrough.Particle Synthesis.Description",
+            description:
+              "Description of Faction Breakthrough: Particle Synthesis",
+            defaultMessage:
+              "Each wormhole in a system that contains your ships gains PRODUCTION 1 as if it were a unit you control.{br}Reduce the combined cost of units you produce in systems that contain wormholes by 1 for each wormhole in that system.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Particle Synthesis",
+        synergy: { left: "BLUE", right: "YELLOW" },
+        timing: "TACTICAL_ACTION",
+      },
       colors: {
         Black: 0.1,
         Blue: 1.7,
@@ -1089,6 +1229,25 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "L1Z1X Mindnet.Breakthrough.Fealty Uplink.Title",
+          description: "Title of Faction Breakthrough: Fealty Uplink",
+          defaultMessage: "Fealty Uplink",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "L1Z1X Mindnet.Breakthrough.Fealty Uplink.Description",
+            description: "Description of Faction Breakthrough: Fealty Uplink",
+            defaultMessage:
+              "When you gain control of a planet, place infantry from your reinforcements equal to that planet's influence value onto that planet.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Fealty Uplink",
+        synergy: { left: "RED", right: "GREEN" },
+        timing: "TACTICAL_ACTION",
+      },
       colors: {
         Black: 0.7,
         Blue: 0.6,
@@ -1129,25 +1288,27 @@ export default function getBaseFactions(
             },
             { br: "\n\n" }
           ),
-          omega: {
-            name: intl.formatMessage({
-              id: "L1Z1X Mindnet.Promissories.Cybernetic Enhancements.Omega.Title",
-              description:
-                "Title of Faction Promissory: Cybernetic Enhancements Ω",
-              defaultMessage: "Cybernetic Enhancements Ω",
-            }),
-            description: intl.formatMessage(
-              {
-                id: "L1Z1X Mindnet.Promissories.Cybernetic Enhancements.Omega.Description",
+          omegas: [
+            {
+              name: intl.formatMessage({
+                id: "L1Z1X Mindnet.Promissories.Cybernetic Enhancements.Omega.Title",
                 description:
-                  "Description for Faction Promissory: Cybernetic Enhancements Ω",
-                defaultMessage:
-                  "When you gain command tokens during the status phase:{br}Gain 1 additional command token.{br}Then, return this card to the L1Z1X player.",
-              },
-              { br: "\n\n" }
-            ),
-            expansion: "CODEX ONE",
-          },
+                  "Title of Faction Promissory: Cybernetic Enhancements Ω",
+                defaultMessage: "Cybernetic Enhancements Ω",
+              }),
+              description: intl.formatMessage(
+                {
+                  id: "L1Z1X Mindnet.Promissories.Cybernetic Enhancements.Omega.Description",
+                  description:
+                    "Description for Faction Promissory: Cybernetic Enhancements Ω",
+                  defaultMessage:
+                    "When you gain command tokens during the status phase:{br}Gain 1 additional command token.{br}Then, return this card to the L1Z1X player.",
+                },
+                { br: "\n\n" }
+              ),
+              expansion: "CODEX ONE",
+            },
+          ],
         },
       ],
       shortname: intl.formatMessage({
@@ -1258,6 +1419,48 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Mentak Coalition.Breakthrough.The Table's Grace.Title",
+          description: "Title of Faction Breakthrough: The Table's Grace",
+          defaultMessage: "The Table's Grace",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Mentak Coalition.Breakthrough.The Table's Grace.Description",
+            description:
+              "Description of Faction Breakthrough: The Table's Grace",
+            defaultMessage:
+              "If you have the Cruiser II unit upgrade technology, flip this card and place it on top of Cruiser II.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "The Table's Grace",
+        synergy: { left: "YELLOW", right: "GREEN" },
+        timing: "PASSIVE",
+        reverse: {
+          abilities: [],
+          description: intl.formatMessage({
+            id: "Mentak Coalition.Units.Corsair.Description",
+            description: "Description for Faction Unit: Corsair",
+            defaultMessage:
+              "If the active system contains another player's non-fighter ships, this unit can move through systems that contain other players' ships.",
+          }),
+          expansion: "THUNDERS EDGE",
+          name: intl.formatMessage({
+            id: "Mentak Coalition.Units.Corsair.Title",
+            description: "Title of Faction Unit: Corsair",
+            defaultMessage: "Corsair",
+          }),
+          stats: {
+            cost: 2,
+            combat: 6,
+            move: 3,
+            capacity: 2,
+          },
+          type: "Cruiser",
+        },
+      },
       colors: {
         Black: 0.5,
         Orange: 0.95,
@@ -1391,6 +1594,25 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Naalu Collective.Breakthrough.Mindsieve.Title",
+          description: "Title of Faction Breakthrough: Mindsieve",
+          defaultMessage: "Mindsieve",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Naalu Collective.Breakthrough.Mindsieve.Description",
+            description: "Description of Faction Breakthrough: Mindsieve",
+            defaultMessage:
+              "When you would resolve the secondary ability of another player's strategy card, you may give them a promissory note to resolve it without spending a command token.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Mindsieve",
+        synergy: { left: "RED", right: "GREEN" },
+        timing: "PASSIVE",
+      },
       colors: {
         Green: 1.15,
         Orange: 0.3,
@@ -1488,20 +1710,22 @@ export default function getBaseFactions(
             description: "Title of Faction Unit: Iconoclast",
             defaultMessage: "Iconoclast",
           }),
-          omega: {
-            name: intl.formatMessage({
-              id: "Naalu Collective.Units.Iconoclast.Omega.Title",
-              description: "Title of Faction Unit: Iconoclast Ω",
-              defaultMessage: "Iconoclast Ω",
-            }),
-            description: intl.formatMessage({
-              id: "Naalu Collective.Units.Iconoclast.Omega.Description",
-              description: "Description for Faction Unit: Iconoclast Ω",
-              defaultMessage:
-                "Other players cannot use ANTI-FIGHTER BARRAGE against your units in this system.",
-            }),
-            expansion: "CODEX THREE",
-          },
+          omegas: [
+            {
+              name: intl.formatMessage({
+                id: "Naalu Collective.Units.Iconoclast.Omega.Title",
+                description: "Title of Faction Unit: Iconoclast Ω",
+                defaultMessage: "Iconoclast Ω",
+              }),
+              description: intl.formatMessage({
+                id: "Naalu Collective.Units.Iconoclast.Omega.Description",
+                description: "Description for Faction Unit: Iconoclast Ω",
+                defaultMessage:
+                  "Other players cannot use ANTI-FIGHTER BARRAGE against your units in this system.",
+              }),
+              expansion: "CODEX THREE",
+            },
+          ],
           stats: {
             cost: 2,
             combat: 6,
@@ -1567,6 +1791,25 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Nekro Virus.Breakthrough.Valefar Assimilator Z.Title",
+          description: "Title of Faction Breakthrough: Valefar Assimilator Z",
+          defaultMessage: "Valefar Assimilator Z",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Nekro Virus.Breakthrough.Valefar Assimilator Z.Description",
+            description:
+              "Description of Faction Breakthrough: Valefar Assimilator Z",
+            defaultMessage:
+              "When you would gain another player's technology using one of your faction abilities, you may instead place one of your \"Z\" assimilator tokens on that player's faction sheet. Your flagship gains the text abilities of that faction's flagship in addition to its own.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Valefar Assimilator Z",
+        timing: "PASSIVE",
+      },
       colors: {
         Black: 0.15,
         Red: 1.75,
@@ -1685,6 +1928,25 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Sardakk N'orr.Breakthrough.N'orr Supremacy.Title",
+          description: "Title of Faction Breakthrough: N'orr Supremacy",
+          defaultMessage: "N'orr Supremacy",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Sardakk N'orr.Breakthrough.N'orr Supremacy.Description",
+            description: "Description of Faction Breakthrough: N'orr Supremacy",
+            defaultMessage:
+              "After you win a combat, either gain 1 command token or research a unit upgrade technology.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "N'orr Supremacy",
+        synergy: { left: "BLUE", right: "RED" },
+        timing: "TACTICAL_ACTION",
+      },
       colors: {
         Black: 1,
         Red: 0.9,
@@ -1845,6 +2107,26 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Universities of Jol-Nar.Breakthrough.Specialized Compounds.Title",
+          description: "Title of Faction Breakthrough: Specialized Compounds",
+          defaultMessage: "Specialized Compounds",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Universities of Jol-Nar.Breakthrough.Specialized Compounds.Description",
+            description:
+              "Description of Faction Breakthrough: Specialized Compounds",
+            defaultMessage:
+              'When you research technology using the "Technology" strategy card, you may exhaust a planet that has a technology specialty instead of spending resources; if you do, you must research a technology of that color.',
+          },
+          { br: "\n\n" }
+        ),
+        id: "Specialized Compounds",
+        synergy: { left: "YELLOW", right: "GREEN" },
+        timing: "PASSIVE",
+      },
       colors: {
         Blue: 1.6,
         Purple: 0.3,
@@ -1983,6 +2265,25 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Winnu.Breakthrough.Imperator.Title",
+          description: "Title of Faction Breakthrough: Imperator",
+          defaultMessage: "Imperator",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Winnu.Breakthrough.Imperator.Description",
+            description: "Description of Faction Breakthrough: Imperator",
+            defaultMessage:
+              "Apply +1 to the results of each of your unit's combat rolls for each \"Support for the Throne\" in your opponent's play area.{br}After you activate a system that contains a legendary planet, apply +1 to the move value of 1 of your ships during the tactical action.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Imperator",
+        synergy: { left: "BLUE", right: "RED" },
+        timing: "TACTICAL_ACTION",
+      },
       colors: {
         Orange: 0.75,
         Purple: 0.6,
@@ -2022,23 +2323,26 @@ export default function getBaseFactions(
             },
             { br: "\n\n" }
           ),
-          omega: {
-            name: intl.formatMessage({
-              id: "Winnu.Promissories.Acquiescence.Omega.Title",
-              description: "Title of Faction Ability: Acquiescence Ω",
-              defaultMessage: "Acquiescence Ω",
-            }),
-            description: intl.formatMessage(
-              {
-                id: "Winnu.Promissories.Acquiescence.Omega.Description",
-                description: "Description for Faction Ability: Acquiescence Ω",
-                defaultMessage:
-                  "When the Winnu player resolves a strategic action:{br}You do not have to spend or place a command token to resolve the secondary ability of that strategy card.{br}Then, return this card to the Winnu player.",
-              },
-              { br: "\n\n" }
-            ),
-            expansion: "CODEX ONE",
-          },
+          omegas: [
+            {
+              name: intl.formatMessage({
+                id: "Winnu.Promissories.Acquiescence.Omega.Title",
+                description: "Title of Faction Ability: Acquiescence Ω",
+                defaultMessage: "Acquiescence Ω",
+              }),
+              description: intl.formatMessage(
+                {
+                  id: "Winnu.Promissories.Acquiescence.Omega.Description",
+                  description:
+                    "Description for Faction Ability: Acquiescence Ω",
+                  defaultMessage:
+                    "When the Winnu player resolves a strategic action:{br}You do not have to spend or place a command token to resolve the secondary ability of that strategy card.{br}Then, return this card to the Winnu player.",
+                },
+                { br: "\n\n" }
+              ),
+              expansion: "CODEX ONE",
+            },
+          ],
         },
       ],
       shortname: intl.formatMessage({
@@ -2144,6 +2448,25 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Xxcha Kingdom.Breakthrough.Archon's Gift.Title",
+          description: "Title of Faction Breakthrough: Archon's Gift",
+          defaultMessage: "Archon's Gift",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Xxcha Kingdom.Breakthrough.Archon's Gift.Description",
+            description: "Description of Faction Breakthrough: Archon's Gift",
+            defaultMessage:
+              "You can spend influence as if it were resources.{br}You can spend resources as if it were influence.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Archon's Gift",
+        synergy: { left: "YELLOW", right: "GREEN" },
+        timing: "PASSIVE",
+      },
       colors: {
         Blue: 0.8,
         Green: 1.1,
@@ -2276,6 +2599,25 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Yin Brotherhood.Breakthrough.Yin Ascendant.Title",
+          description: "Title of Faction Breakthrough: Yin Ascendant",
+          defaultMessage: "Yin Ascendant",
+        }),
+        id: "Yin Ascendant",
+        description: intl.formatMessage({
+          id: "Yin Brotherhood.Breakthrough.Yin Ascendant.Description",
+          description: "Description for Faction Breakthrough: Yin Ascendant",
+          defaultMessage:
+            "When you gain this card or score a public objective, gain the alliance ability of a random, unused faction.",
+        }),
+        synergy: {
+          left: "GREEN",
+          right: "YELLOW",
+        },
+        timing: "PASSIVE",
+      },
       colors: {
         Black: 0.6,
         Purple: 1.05,
@@ -2316,24 +2658,26 @@ export default function getBaseFactions(
             },
             { br: "\n\n" }
           ),
-          omega: {
-            name: intl.formatMessage({
-              id: "Yin Brotherhood.Promissories.Greyfire Mutagen.Omega.Title",
-              description: "Title of Faction Promissory: Greyfire Mutagen Ω",
-              defaultMessage: "Greyfire Mutagen Ω",
-            }),
-            description: intl.formatMessage(
-              {
-                id: "Yin Brotherhood.Promissories.Greyfire Mutagen.Omega.Description",
-                description:
-                  "Description for Faction Promissory: Greyfire Mutagen Ω",
-                defaultMessage:
-                  "At the start of a ground combat against 2 or more ground forces that are not controlled by the Yin player:{br}Replace 1 of your opponent's infantry with 1 infantry from your reinforcements.{br}Then, return this card to the Yin player.",
-              },
-              { br: "\n\n" }
-            ),
-            expansion: "CODEX ONE",
-          },
+          omegas: [
+            {
+              name: intl.formatMessage({
+                id: "Yin Brotherhood.Promissories.Greyfire Mutagen.Omega.Title",
+                description: "Title of Faction Promissory: Greyfire Mutagen Ω",
+                defaultMessage: "Greyfire Mutagen Ω",
+              }),
+              description: intl.formatMessage(
+                {
+                  id: "Yin Brotherhood.Promissories.Greyfire Mutagen.Omega.Description",
+                  description:
+                    "Description for Faction Promissory: Greyfire Mutagen Ω",
+                  defaultMessage:
+                    "At the start of a ground combat against 2 or more ground forces that are not controlled by the Yin player:{br}Replace 1 of your opponent's infantry with 1 infantry from your reinforcements.{br}Then, return this card to the Yin player.",
+                },
+                { br: "\n\n" }
+              ),
+              expansion: "CODEX ONE",
+            },
+          ],
         },
       ],
       shortname: intl.formatMessage({
@@ -2438,6 +2782,26 @@ export default function getBaseFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Yssaril Tribes.Breakthrough.Deepgloom Executable.Title",
+          description: "Title of Faction Breakthrough: Deepgloom Executable",
+          defaultMessage: "Deepgloom Executable",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Yssaril Tribes.Breakthrough.Deepgloom Executable.Description",
+            description:
+              "Description of Faction Breakthrough: Deepgloom Executable",
+            defaultMessage:
+              "You can allow other players to use your STALL TACTICS or SCHEMING faction abilities; when you do, you may resolve a transaction with that player. During the action phase, that transaction does not count against the once per player transaction limit for that turn.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Deepgloom Executable",
+        synergy: { left: "YELLOW", right: "GREEN" },
+        timing: "PASSIVE",
+      },
       colors: {
         Black: 0.1,
         Green: 0.93,

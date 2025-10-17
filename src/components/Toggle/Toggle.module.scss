@@ -66,3 +66,20 @@
 .ToggleContainer.disabled * {
   cursor: default;
 }
+
+.ToggleInfo {
+  font-family: "Myriad Pro";
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 20rem;
+  padding: 0.25rem;
+  white-space: pre-line;
+  text-align: center;
+  font-size: 2rem;
+}
+
+@media only screen and (max-width: 56.25rem) {
+  .ToggleInfo {
+    font-size: 1.25rem;
+  }
+}

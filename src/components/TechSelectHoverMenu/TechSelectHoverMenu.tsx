@@ -10,8 +10,7 @@ import {
   useTechs,
   useViewOnly,
 } from "../../context/dataHooks";
-import { useFaction } from "../../context/factionDataHooks";
-import { useFactions } from "../../context/factionDataHooks";
+import { useFaction, useFactions } from "../../context/factionDataHooks";
 import { applyAllPlanetAttachments } from "../../util/planets";
 import {
   canResearchTech,
@@ -20,9 +19,9 @@ import {
   sortTechsByName,
   sortTechsByPreReqAndExpansion,
 } from "../../util/techs";
-import styles from "./TechSelectHoverMenu.module.scss";
 import { rem } from "../../util/util";
 import UnitIcon from "../Units/Icons";
+import styles from "./TechSelectHoverMenu.module.scss";
 
 interface InnerTechSelectHoverMenuProps {
   factionId: FactionId;
@@ -45,6 +44,7 @@ function InnerTechSelectHoverMenu({
 }: InnerTechSelectHoverMenuProps) {
   const faction = useFaction(factionId);
   const factions = useFactions();
+  const techObjs = useTechs();
   const options = useOptions();
   const viewOnly = useViewOnly();
 
@@ -75,7 +75,8 @@ function InnerTechSelectHoverMenu({
               options,
               prereqs,
               faction,
-              isTechOwned
+              isTechOwned,
+              techObjs
             );
             return (
               <button
@@ -165,6 +166,10 @@ export default function TechSelectHoverMenu({
     return tech.type === "UPGRADE";
   });
   sortTechsByName(unitUpgrades);
+
+  if (techs.length === 0) {
+    return <div>No techs available.</div>;
+  }
 
   return (
     <ClientOnlyHoverMenu

@@ -28,10 +28,7 @@ interface BaseAgenda {
   expansion: Expansion;
   id: AgendaId;
   name: string;
-  omega?: {
-    description: string;
-    expansion: Expansion;
-  };
+  omegas?: Omega<BaseAgenda>[];
   passedText?: string;
   failedText?: string;
   type: AgendaType;

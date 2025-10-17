@@ -10,6 +10,11 @@
   font-family: Source Sans;
 }
 
+.FilterContent > :global(.flexRow) {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
 .DataSection {
   display: flex;
   flex-direction: row;
@@ -42,7 +47,7 @@
   .FilterContent > :global(.flexRow) {
     overflow-y: scroll;
     width: 100%;
-    justify-content: flex-start;
+    flex-wrap: nowrap;
   }
 
   .DataSection {

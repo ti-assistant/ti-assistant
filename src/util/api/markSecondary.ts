@@ -1,8 +1,8 @@
-import DataManager from "../../context/DataManager";
-import { MarkSecondaryHandler } from "../model/markSecondary";
-import { updateGameData } from "./handler";
-import { updateActionLog } from "./update";
-import { poster } from "./util";
+import {
+  MarkPrimaryHandler,
+  MarkSecondaryHandler,
+} from "../model/markSecondary";
+import dataUpdate from "./dataUpdate";
 
 export function markSecondary(
   gameId: string,
@@ -17,26 +17,14 @@ export function markSecondary(
     },
   };
 
-  const now = Date.now();
+  dataUpdate(gameId, data, MarkSecondaryHandler);
+}
 
-  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
+export function markPrimary(gameId: string, completed: boolean) {
+  const data: GameUpdateData = {
+    action: "MARK_PRIMARY",
+    event: { completed },
+  };
 
-  DataManager.update((storedGameData) => {
-    const handler = new MarkSecondaryHandler(storedGameData, data);
-
-    if (!handler.validate()) {
-      return storedGameData;
-    }
-
-    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
-    updateGameData(storedGameData, handler.getUpdates());
-
-    storedGameData.lastUpdate = now;
-
-    return storedGameData;
-  });
-
-  return updatePromise.catch((_) => {
-    DataManager.reset();
-  });
+  dataUpdate(gameId, data, MarkPrimaryHandler);
 }

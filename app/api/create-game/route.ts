@@ -65,12 +65,36 @@ export async function POST(req: Request) {
 
     // Get starting techs for each faction.
     const baseFaction = BASE_FACTIONS[faction.id];
-    const startingTechs: Partial<Record<TechId, { ready: boolean }>> = {};
+    const startingTechs: Partial<Record<TechId, GameTech>> = {};
     (baseFaction.startswith.techs ?? []).forEach((tech) => {
       startingTechs[tech] = {
+        state: "ready",
         ready: true,
       };
     });
+
+    const events = options.events ?? [];
+    if (events.includes("Advent of the War Sun")) {
+      if (faction.id !== "Embers of Muaat") {
+        startingTechs["War Sun"] = {
+          ready: true,
+          state: "ready",
+        };
+      }
+    }
+    if (events.includes("Age of Fighters")) {
+      if (faction.id === "Naalu Collective") {
+        startingTechs["Hybrid Crystal Fighter II"] = {
+          ready: true,
+          state: "ready",
+        };
+      } else {
+        startingTechs["Fighter II"] = {
+          ready: true,
+          state: "ready",
+        };
+      }
+    }
 
     const gameFaction: GameFaction = {
       // Client specified values
@@ -88,6 +112,18 @@ export async function POST(req: Request) {
         ? "readied"
         : "locked",
     };
+
+    if (faction.id === "Crimson Rebellion") {
+      gameFaction.breakthrough = {
+        state: "readied",
+      };
+    }
+
+    if (events.includes("Rapid Mobilization")) {
+      gameFaction.breakthrough = {
+        state: "readied",
+      };
+    }
 
     if (faction.playerName) {
       gameFaction.playerName = faction.playerName;
@@ -185,7 +221,7 @@ export async function POST(req: Request) {
       deleteAt: deleteDate,
     });
 
-    let sessionId = getSessionIdFromCookie();
+    let sessionId = await getSessionIdFromCookie();
     let session: Optional<TIASession>;
     if (sessionId) {
       session = await getSession(sessionId);

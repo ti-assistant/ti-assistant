@@ -11,10 +11,13 @@ import { ChooseSubFactionHandler } from "../model/chooseSubFaction";
 import { UnclaimPlanetHandler, ClaimPlanetHandler } from "../model/claimPlanet";
 import { ContinueGameHandler } from "../model/endGame";
 import { UnendTurnHandler } from "../model/endTurn";
-import { LoseRelicHandler } from "../model/gainRelic";
+import { GainRelicHandler, LoseRelicHandler } from "../model/gainRelic";
 import { GiftOfPrescienceHandler } from "../model/giftOfPrescience";
 import { ManualVPUpdateHandler } from "../model/manualVPUpdate";
-import { MarkSecondaryHandler } from "../model/markSecondary";
+import {
+  MarkPrimaryHandler,
+  MarkSecondaryHandler,
+} from "../model/markSecondary";
 import { UnplayActionCardHandler } from "../model/playActionCard";
 import { UnplayComponentHandler } from "../model/playComponent";
 import { UnplayPromissoryNoteHandler } from "../model/playPromissoryNote";
@@ -47,6 +50,14 @@ import { UpdateLeaderStateHandler } from "../model/updateLeaderState";
 import { UpdatePlanetStateHandler } from "../model/updatePlanetState";
 import { UndoAdjudicatorBaalHandler } from "../model/playAdjudicatorBaal";
 import { SwapMapTilesHandler } from "../model/swapMapTiles";
+import { UpdateBreakthroughStateHandler } from "../model/updateBreakthroughState";
+import { CommitToExpeditionHandler } from "../model/commitToExpedition";
+import {
+  GainAllianceHandler,
+  LoseAllianceHandler,
+} from "../model/gainAlliance";
+import { PurgeTechHandler, UnpurgeTechHandler } from "../model/purgeTech";
+import { PassHandler, UnpassHandler } from "../model/unpass";
 
 export function getOppositeHandler(
   gameData: StoredGameData,
@@ -161,6 +172,15 @@ export function getOppositeHandler(
         },
       };
       return new MarkSecondaryHandler(gameData, markSecondaryData);
+    }
+    case "MARK_PRIMARY": {
+      const markPrimaryData: MarkPrimaryData = {
+        action: "MARK_PRIMARY",
+        event: {
+          completed: !data.event.completed,
+        },
+      };
+      return new MarkPrimaryHandler(gameData, markPrimaryData);
     }
     case "SCORE_OBJECTIVE": {
       const unscoreObjectiveData: UnscoreObjectiveData = {
@@ -324,7 +344,47 @@ export function getOppositeHandler(
       });
     }
     case "LOSE_RELIC": {
-      throw new Error("LOSE_RELIC should not be in log");
+      return new GainRelicHandler(gameData, {
+        action: "GAIN_RELIC",
+        event: data.event,
+      });
+    }
+    case "GAIN_ALLIANCE": {
+      if (data.event.prevFaction) {
+        return new GainAllianceHandler(gameData, {
+          action: "GAIN_ALLIANCE",
+          event: {
+            faction: data.event.prevFaction,
+            fromFaction: data.event.fromFaction,
+          },
+        });
+      }
+      return new LoseAllianceHandler(gameData, {
+        action: "LOSE_ALLIANCE",
+        event: {
+          faction: data.event.faction,
+          fromFaction: data.event.fromFaction,
+        },
+      });
+    }
+    case "LOSE_ALLIANCE": {
+      return new GainAllianceHandler(gameData, {
+        action: "GAIN_ALLIANCE",
+        event: {
+          faction: data.event.faction,
+          fromFaction: data.event.fromFaction,
+        },
+      });
+    }
+    case "UPDATE_BREAKTHROUGH_STATE": {
+      return new UpdateBreakthroughStateHandler(gameData, {
+        action: "UPDATE_BREAKTHROUGH_STATE",
+        event: {
+          factionId: data.event.factionId,
+          state: data.event.prevState ?? "locked",
+          prevState: data.event.state,
+        },
+      });
     }
     case "UPDATE_LEADER_STATE": {
       return new UpdateLeaderStateHandler(gameData, {
@@ -435,6 +495,34 @@ export function getOppositeHandler(
             index: data.event.newItem.index,
           },
         },
+      });
+    case "COMMIT_TO_EXPEDITION":
+      return new CommitToExpeditionHandler(gameData, {
+        action: "COMMIT_TO_EXPEDITION",
+        event: {
+          factionId: data.event.prevFaction,
+          expedition: data.event.expedition,
+        },
+      });
+    case "PURGE_TECH":
+      return new UnpurgeTechHandler(gameData, {
+        action: "UNPURGE_TECH",
+        event: data.event,
+      });
+    case "UNPURGE_TECH":
+      return new PurgeTechHandler(gameData, {
+        action: "PURGE_TECH",
+        event: data.event,
+      });
+    case "UNPASS":
+      return new PassHandler(gameData, {
+        action: "PASS",
+        event: data.event,
+      });
+    case "PASS":
+      return new UnpassHandler(gameData, {
+        action: "UNPASS",
+        event: data.event,
       });
   }
 }

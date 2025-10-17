@@ -24,8 +24,8 @@ export default function getCodexThreePlanets(
       position: TOP_LEFT,
       resources: 2,
       subFaction: "Xxcha Kingdom",
-      system: 100,
-      type: "NONE",
+      system: 200,
+      types: [],
     },
     "Archon Tau Keleres": {
       attributes: [],
@@ -38,8 +38,8 @@ export default function getCodexThreePlanets(
       position: HOME_BOTTOM_RIGHT,
       resources: 1,
       subFaction: "Xxcha Kingdom",
-      system: 100,
-      type: "NONE",
+      system: 200,
+      types: [],
     },
     "Avar Keleres": {
       attributes: [],
@@ -52,8 +52,8 @@ export default function getCodexThreePlanets(
       position: FAR_BOTTOM_RIGHT,
       resources: 1,
       subFaction: "Argent Flight",
-      system: 101,
-      type: "NONE",
+      system: 201,
+      types: [],
     },
     "Custodia Vigilia": {
       ability:
@@ -66,7 +66,7 @@ export default function getCodexThreePlanets(
       id: "Custodia Vigilia",
       name: "Custodia Vigilia",
       resources: 2,
-      type: "NONE",
+      types: [],
     },
     "Moll Primus Keleres": {
       attributes: [],
@@ -78,9 +78,9 @@ export default function getCodexThreePlanets(
       name: "Moll Primus",
       position: HOME_MIDDLE,
       resources: 4,
-      system: 102,
+      system: 202,
       subFaction: "Mentak Coalition",
-      type: "NONE",
+      types: [],
     },
     "Valk Keleres": {
       attributes: [],
@@ -93,8 +93,8 @@ export default function getCodexThreePlanets(
       position: MIDDLE_LEFT,
       resources: 2,
       subFaction: "Argent Flight",
-      system: 101,
-      type: "NONE",
+      system: 201,
+      types: [],
     },
     "Ylir Keleres": {
       attributes: [],
@@ -107,8 +107,8 @@ export default function getCodexThreePlanets(
       position: TOP_RIGHT,
       resources: 0,
       subFaction: "Argent Flight",
-      system: 101,
-      type: "NONE",
+      system: 201,
+      types: [],
     },
   };
 }

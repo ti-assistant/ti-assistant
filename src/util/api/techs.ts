@@ -3,11 +3,29 @@ import { Optional } from "../types/types";
 /**
  * Checks whether a faction has unlocked a specific tech.
  */
-export function hasTech(faction: Faction, techId: TechId) {
+export function hasTech(faction: Faction, tech: Optional<Tech>) {
+  if (!tech) {
+    return false;
+  }
   if (!faction.techs) {
     return false;
   }
-  return !!faction.techs[techId];
+  if (tech.state === "purged") {
+    return false;
+  }
+  const factionTech = faction.techs[tech.id];
+  return !!factionTech && factionTech.state !== "purged";
+}
+
+export function isTechPurged(faction: Faction, tech: Tech) {
+  if (tech.state === "purged") {
+    return true;
+  }
+  const factionTech = (faction.techs ?? {})[tech.id];
+  if (!factionTech) {
+    return false;
+  }
+  return factionTech.state === "purged";
 }
 
 export function isTechReplaced(factionId: FactionId, techId: TechId) {

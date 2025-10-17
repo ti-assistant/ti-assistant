@@ -1,4 +1,4 @@
-import DataManager from "../../context/DataManager";
+import { DataStore } from "../../context/dataStore";
 import { poster } from "./util";
 
 interface EnterPasswordData {
@@ -16,9 +16,9 @@ export function enterPassword(gameId: string, password: string) {
 
   return updatePromise
     .then((_) => {
-      DataManager.setViewOnly(false);
+      DataStore.setViewOnly(false);
     })
     .catch((error) => {
-      DataManager.reset();
+      DataStore.reset();
     });
 }

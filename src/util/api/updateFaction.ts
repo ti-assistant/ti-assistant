@@ -1,5 +1,6 @@
-import DataManager from "../../context/DataManager";
+import { DataStore } from "../../context/dataStore";
 import { Optional } from "../types/types";
+import dataUpdate from "./dataUpdate";
 import { poster } from "./util";
 
 interface UpdateFactionData {
@@ -23,7 +24,7 @@ export function updateFaction(
 
   const updatePromise = poster(`/api/${gameId}/updateFaction`, data, now);
 
-  DataManager.update((storedGameData) => {
+  DataStore.update((storedGameData) => {
     const faction = storedGameData.factions[factionId];
     if (!faction) {
       return storedGameData;
@@ -52,9 +53,9 @@ export function updateFaction(
     }
 
     return storedGameData;
-  });
+  }, "CLIENT");
 
   return updatePromise.catch((_) => {
-    DataManager.reset();
+    DataStore.reset();
   });
 }

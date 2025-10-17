@@ -280,7 +280,7 @@ export function SystemImage({
         }}
       >
         <NextImage
-          src={`/images/systems/ST_92.png`}
+          src={`/images/systems/ST_299.png`}
           alt={`Player Home System`}
           sizes={rem(256)}
           fill

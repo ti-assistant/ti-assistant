@@ -10,13 +10,14 @@ import {
 import { FormattedMessage, useIntl } from "react-intl";
 import Chip from "../../src/components/Chip/Chip";
 import LabeledDiv from "../../src/components/LabeledDiv/LabeledDiv";
+import MultiStateToggle from "../../src/components/MultiStateToggle/MultiStateToggle";
 import NonGameHeader from "../../src/components/NonGameHeader/NonGameHeader";
 import { Strings } from "../../src/components/strings";
 import TimerDisplay from "../../src/components/TimerDisplay/TimerDisplay";
 import Toggle from "../../src/components/Toggle/Toggle";
 import { Loader } from "../../src/Loader";
 import { Optional } from "../../src/util/types/types";
-import { objectEntries, rem } from "../../src/util/util";
+import { objectEntries, objectKeys, rem } from "../../src/util/util";
 import { ProcessedGame } from "./processor";
 import FactionsSection from "./sections/FactionsSection";
 import { FactionHistogram, PointsHistogram } from "./sections/Histogram";
@@ -57,25 +58,48 @@ function FilterButton<T extends string | number>({
   );
 }
 
-function CountButton<T extends string | number>({
+function ThreeWayFilterButton<T extends string | number>({
   filter,
   filters,
   setFilters,
+  text,
 }: {
   filter: T;
-  filters: T;
-  setFilters: (value: T) => void;
+  filters: IncludeExclude<T>;
+  setFilters: Dispatch<SetStateAction<IncludeExclude<T>>>;
+  text?: ReactNode;
 }) {
+  let value: Optional<"Positive" | "Negative">;
+  if (filters.include.has(filter)) {
+    value = "Positive";
+  }
+  if (filters.exclude.has(filter)) {
+    value = "Negative";
+  }
   return (
-    <Chip
-      selected={filters === filter}
-      toggleFn={(prevValue) => {
-        setFilters(filter);
+    <MultiStateToggle
+      selected={value}
+      toggleFn={(newValue) => {
+        setFilters((filters) => {
+          const newInclude = new Set(filters.include);
+          const newExclude = new Set(filters.exclude);
+          newInclude.delete(filter);
+          newExclude.delete(filter);
+          if (newValue === "Positive") {
+            newInclude.add(filter);
+          }
+          if (newValue === "Negative") {
+            newExclude.add(filter);
+          }
+          return {
+            include: newInclude,
+            exclude: newExclude,
+          };
+        });
       }}
-      fontSize={14}
     >
-      {filter}
-    </Chip>
+      {text ?? filter}
+    </MultiStateToggle>
   );
 }
 
@@ -109,7 +133,8 @@ export interface ProcessedLog {
 function applyFilters(
   games: Record<string, ProcessedGame>,
   filters: {
-    expansions: Set<Expansion>;
+    events: IncludeExclude<EventId>;
+    expansions: IncludeExclude<Expansion>;
     playerCounts: Set<number>;
     victoryPoints: Set<number>;
   }
@@ -117,20 +142,31 @@ function applyFilters(
   const filteredGames: Record<string, ProcessedGame> = {};
 
   objectEntries(games).forEach(([id, game]) => {
-    // Expansion Filter
-    if (filters.expansions.size > 1) {
-      for (const expansion of game.expansions) {
-        if (!filters.expansions.has(expansion)) {
-          return;
-        }
+    // Event Filter
+    const gameEvents = game.events ?? [];
+    for (const event of gameEvents) {
+      if (filters.events.exclude.has(event)) {
+        return;
       }
-      for (const expansion of Array.from(filters.expansions)) {
-        if (expansion === "BASE" || expansion === "BASE ONLY") {
-          continue;
-        }
-        if (!game.expansions.includes(expansion)) {
-          return;
-        }
+    }
+    for (const event of Array.from(filters.events.include)) {
+      if (!gameEvents.includes(event)) {
+        return;
+      }
+    }
+
+    // Expansion filter
+    for (const expansion of game.expansions) {
+      if (filters.expansions.exclude.has(expansion)) {
+        return;
+      }
+    }
+    for (const expansion of Array.from(filters.expansions.include)) {
+      if (expansion === "BASE" || expansion === "BASE ONLY") {
+        continue;
+      }
+      if (!game.expansions.includes(expansion)) {
+        return;
       }
     }
 
@@ -156,6 +192,11 @@ function applyFilters(
   return filteredGames;
 }
 
+interface IncludeExclude<T> {
+  include: Set<T>;
+  exclude: Set<T>;
+}
+
 export default function StatsPage({
   processedGames,
   baseData,
@@ -166,9 +207,14 @@ export default function StatsPage({
   loading?: boolean;
 }) {
   const intl = useIntl();
-  const [expansions, setExpansions] = useState<Set<Expansion>>(
-    new Set(["BASE", "POK", "CODEX ONE", "CODEX TWO", "CODEX THREE"])
-  );
+  const [expansions, setExpansions] = useState<IncludeExclude<Expansion>>({
+    include: new Set(["BASE", "POK", "CODEX ONE", "CODEX TWO", "CODEX THREE"]),
+    exclude: new Set(["DISCORDANT STARS"]),
+  });
+  const [events, setEvents] = useState<IncludeExclude<EventId>>({
+    include: new Set(),
+    exclude: new Set(objectKeys(baseData.events)),
+  });
 
   const [victoryPoints, setVictoryPoints] = useState<Set<number>>(
     new Set([10])
@@ -177,6 +223,7 @@ export default function StatsPage({
 
   const [localGames, setLocalGames] = useState(
     applyFilters(processedGames, {
+      events,
       expansions,
       playerCounts,
       victoryPoints,
@@ -186,12 +233,13 @@ export default function StatsPage({
   useEffect(() => {
     setLocalGames(
       applyFilters(processedGames, {
+        events,
         expansions,
         playerCounts,
         victoryPoints,
       })
     );
-  }, [processedGames, expansions, playerCounts, victoryPoints]);
+  }, [processedGames, events, expansions, playerCounts, victoryPoints]);
 
   let points = Array.from(victoryPoints).reduce(
     (max, curr) => Math.max(max, curr),
@@ -200,6 +248,13 @@ export default function StatsPage({
   if (points === 0) {
     points = 14;
   }
+
+  const baseEvents = objectEntries(baseData.events).sort(([_, a], [__, b]) => {
+    if (a.name > b.name) {
+      return 1;
+    }
+    return -1;
+  });
 
   return (
     <>
@@ -234,37 +289,43 @@ export default function StatsPage({
                 defaultMessage="Expansions:"
                 description="A label for a selector specifying which expansions should be enabled."
               />
-              <FilterButton
+              <ThreeWayFilterButton
                 filters={expansions}
                 filter="POK"
                 setFilters={setExpansions}
                 text={<Strings.Expansion expansion="POK" />}
               />
-              <FilterButton
+              <ThreeWayFilterButton
                 filters={expansions}
                 filter="CODEX ONE"
                 setFilters={setExpansions}
                 text={<Strings.Expansion expansion="CODEX ONE" />}
               />
-              <FilterButton
+              <ThreeWayFilterButton
                 filters={expansions}
                 filter="CODEX TWO"
                 setFilters={setExpansions}
                 text={<Strings.Expansion expansion="CODEX TWO" />}
               />
-              <FilterButton
+              <ThreeWayFilterButton
                 filters={expansions}
                 filter="CODEX THREE"
                 setFilters={setExpansions}
                 text={<Strings.Expansion expansion="CODEX THREE" />}
               />
-              <FilterButton
+              <ThreeWayFilterButton
                 filters={expansions}
                 filter="CODEX FOUR"
                 setFilters={setExpansions}
                 text={<Strings.Expansion expansion="CODEX FOUR" />}
               />
-              <FilterButton
+              <ThreeWayFilterButton
+                filters={expansions}
+                filter="THUNDERS EDGE"
+                setFilters={setExpansions}
+                text={<Strings.Expansion expansion="THUNDERS EDGE" />}
+              />
+              <ThreeWayFilterButton
                 filters={expansions}
                 filter="DISCORDANT STARS"
                 setFilters={setExpansions}
@@ -332,6 +393,34 @@ export default function StatsPage({
                 setFilters={setVictoryPoints}
               />
             </div>
+            {expansions.exclude.has("CODEX FOUR") &&
+            expansions.exclude.has("THUNDERS EDGE") ? null : (
+              <div
+                className="flexRow"
+                style={{
+                  fontSize: rem(12),
+                  gap: rem(4),
+                }}
+              >
+                <FormattedMessage
+                  id="WVs5Hr"
+                  defaultMessage="Events"
+                  description="Event actions."
+                />
+                :
+                {baseEvents.map(([eventId, event]) => {
+                  return (
+                    <ThreeWayFilterButton
+                      key={eventId}
+                      filters={events}
+                      filter={eventId}
+                      setFilters={setEvents}
+                      text={event.name}
+                    />
+                  );
+                })}
+              </div>
+            )}
           </LabeledDiv>
           <div className={styles.DataSection}>
             {loading ? (

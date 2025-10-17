@@ -1,8 +1,9 @@
 import { IntlShape } from "react-intl";
 
-export default function getCodexTwoRelics(intl: IntlShape): Record<CodexTwo.RelicId, BaseRelic> {
+export default function getCodexTwoRelics(
+  intl: IntlShape
+): Record<CodexTwo.RelicId, BaseRelic> {
   return {
-    
     "Dynamis Core": {
       description: intl.formatMessage(
         {
@@ -54,5 +55,5 @@ export default function getCodexTwoRelics(intl: IntlShape): Record<CodexTwo.Reli
       }),
       timing: "COMPONENT_ACTION",
     },
-  }
+  };
 }

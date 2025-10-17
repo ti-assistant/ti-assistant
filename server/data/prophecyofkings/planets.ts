@@ -22,7 +22,7 @@ export default function getProphecyOfKingsPlanets(
       position: TOP_RIGHT,
       resources: 1,
       system: 75,
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
     Accoen: {
       attributes: [],
@@ -33,7 +33,7 @@ export default function getProphecyOfKingsPlanets(
       position: TOP_LEFT,
       resources: 2,
       system: 69,
-      type: "INDUSTRIAL",
+      types: ["INDUSTRIAL"],
     },
     Acheron: {
       attributes: [],
@@ -46,7 +46,7 @@ export default function getProphecyOfKingsPlanets(
       position: HOME_MIDDLE,
       resources: 4,
       system: 54,
-      type: "NONE",
+      types: [],
     },
     "Alio Prima": {
       attributes: [],
@@ -57,7 +57,7 @@ export default function getProphecyOfKingsPlanets(
       position: BOTTOM_RIGHT,
       resources: 1,
       system: 71,
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
     Ang: {
       attributes: ["red-skip"],
@@ -68,7 +68,7 @@ export default function getProphecyOfKingsPlanets(
       position: MIDDLE,
       resources: 2,
       system: 61,
-      type: "INDUSTRIAL",
+      types: ["INDUSTRIAL"],
     },
     "Archon Vail": {
       attributes: ["blue-skip"],
@@ -79,7 +79,7 @@ export default function getProphecyOfKingsPlanets(
       position: MIDDLE,
       resources: 1,
       system: 59,
-      type: "HAZARDOUS",
+      types: ["HAZARDOUS"],
     },
     Arcturus: {
       attributes: [],
@@ -92,7 +92,7 @@ export default function getProphecyOfKingsPlanets(
       position: HOME_MIDDLE,
       resources: 4,
       system: 53,
-      type: "NONE",
+      types: [],
     },
     Ashtroth: {
       attributes: [],
@@ -103,7 +103,7 @@ export default function getProphecyOfKingsPlanets(
       position: FAR_BOTTOM_RIGHT,
       resources: 2,
       system: 75,
-      type: "HAZARDOUS",
+      types: ["HAZARDOUS"],
     },
     Atlas: {
       attributes: [],
@@ -114,7 +114,7 @@ export default function getProphecyOfKingsPlanets(
       position: TOP_LEFT,
       resources: 3,
       system: 64,
-      type: "HAZARDOUS",
+      types: ["HAZARDOUS"],
     },
     Avar: {
       attributes: [],
@@ -127,7 +127,7 @@ export default function getProphecyOfKingsPlanets(
       position: FAR_BOTTOM_RIGHT,
       resources: 1,
       system: 58,
-      type: "NONE",
+      types: [],
     },
     "Ba'kal": {
       attributes: [],
@@ -138,7 +138,7 @@ export default function getProphecyOfKingsPlanets(
       position: TOP_LEFT,
       resources: 3,
       system: 71,
-      type: "INDUSTRIAL",
+      types: ["INDUSTRIAL"],
     },
     Cealdri: {
       attributes: ["yellow-skip"],
@@ -149,7 +149,7 @@ export default function getProphecyOfKingsPlanets(
       position: TOP_LEFT,
       resources: 0,
       system: 73,
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
     Cormund: {
       attributes: [],
@@ -160,7 +160,7 @@ export default function getProphecyOfKingsPlanets(
       position: { x: -14, y: -10 },
       resources: 2,
       system: 67,
-      type: "HAZARDOUS",
+      types: ["HAZARDOUS"],
     },
     Elysium: {
       attributes: [],
@@ -173,7 +173,7 @@ export default function getProphecyOfKingsPlanets(
       position: HOME_MIDDLE,
       resources: 4,
       system: 55,
-      type: "NONE",
+      types: [],
     },
     Everra: {
       attributes: [],
@@ -184,7 +184,7 @@ export default function getProphecyOfKingsPlanets(
       position: { x: -14, y: -10 },
       resources: 3,
       system: 68,
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
     "Hope's End": {
       ability:
@@ -197,7 +197,7 @@ export default function getProphecyOfKingsPlanets(
       position: MIDDLE,
       resources: 3,
       system: 66,
-      type: "HAZARDOUS",
+      types: ["HAZARDOUS"],
     },
     Ixth: {
       attributes: [],
@@ -210,7 +210,7 @@ export default function getProphecyOfKingsPlanets(
       position: HOME_MIDDLE,
       resources: 3,
       system: 52,
-      type: "NONE",
+      types: [],
     },
     "Jeol Ir": {
       attributes: [],
@@ -221,7 +221,7 @@ export default function getProphecyOfKingsPlanets(
       position: BOTTOM_RIGHT,
       resources: 2,
       system: 69,
-      type: "INDUSTRIAL",
+      types: ["INDUSTRIAL"],
     },
     Kraag: {
       attributes: [],
@@ -232,7 +232,7 @@ export default function getProphecyOfKingsPlanets(
       position: TOP_LEFT,
       resources: 2,
       system: 70,
-      type: "HAZARDOUS",
+      types: ["HAZARDOUS"],
     },
     Lisis: {
       attributes: [],
@@ -243,7 +243,7 @@ export default function getProphecyOfKingsPlanets(
       position: TOP_LEFT,
       resources: 2,
       system: 72,
-      type: "INDUSTRIAL",
+      types: ["INDUSTRIAL"],
     },
     Loki: {
       attributes: [],
@@ -254,11 +254,12 @@ export default function getProphecyOfKingsPlanets(
       position: MIDDLE_LEFT,
       resources: 1,
       system: 75,
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
     Mallice: {
       ability:
         "You may exhaust this card at the end of your turn to gain 2 trade goods or convert all of your commodities into trade goods",
+      alwaysInclude: true,
       attributes: ["legendary"],
       expansion: "POK",
       influence: 3,
@@ -267,18 +268,19 @@ export default function getProphecyOfKingsPlanets(
       position: { x: 16, y: -18 },
       resources: 0,
       system: "82B",
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
     Mirage: {
       ability:
         "You may exhaust this card at the end of your turn to place up to 2 fighters from your reinforcements in any system that contains 1 or more of your ships",
+      alwaysInclude: true,
       attributes: ["legendary"],
       expansion: "POK",
       influence: 2,
       id: "Mirage",
       name: "Mirage",
       resources: 1,
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
     Naazir: {
       attributes: [],
@@ -291,7 +293,7 @@ export default function getProphecyOfKingsPlanets(
       position: TOP_LEFT,
       resources: 2,
       system: 57,
-      type: "NONE",
+      types: [],
     },
     Perimeter: {
       attributes: [],
@@ -302,7 +304,7 @@ export default function getProphecyOfKingsPlanets(
       position: MIDDLE,
       resources: 2,
       system: 60,
-      type: "INDUSTRIAL",
+      types: ["INDUSTRIAL"],
     },
     Primor: {
       ability:
@@ -315,7 +317,7 @@ export default function getProphecyOfKingsPlanets(
       position: MIDDLE,
       resources: 2,
       system: 65,
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
     "Rigel I": {
       attributes: [],
@@ -326,7 +328,7 @@ export default function getProphecyOfKingsPlanets(
       position: FAR_BOTTOM_RIGHT,
       resources: 0,
       system: 76,
-      type: "HAZARDOUS",
+      types: ["HAZARDOUS"],
     },
     "Rigel II": {
       attributes: [],
@@ -337,7 +339,7 @@ export default function getProphecyOfKingsPlanets(
       position: TOP_RIGHT,
       resources: 1,
       system: 76,
-      type: "INDUSTRIAL",
+      types: ["INDUSTRIAL"],
     },
     "Rigel III": {
       attributes: ["green-skip"],
@@ -348,7 +350,7 @@ export default function getProphecyOfKingsPlanets(
       position: MIDDLE_LEFT,
       resources: 1,
       system: 76,
-      type: "INDUSTRIAL",
+      types: ["INDUSTRIAL"],
     },
     Rokha: {
       attributes: [],
@@ -361,7 +363,7 @@ export default function getProphecyOfKingsPlanets(
       position: HOME_BOTTOM_RIGHT,
       resources: 1,
       system: 57,
-      type: "NONE",
+      types: [],
     },
     "Sem-Lore": {
       attributes: ["yellow-skip"],
@@ -372,7 +374,7 @@ export default function getProphecyOfKingsPlanets(
       position: MIDDLE,
       resources: 3,
       system: 62,
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
     Siig: {
       attributes: [],
@@ -383,7 +385,7 @@ export default function getProphecyOfKingsPlanets(
       position: BOTTOM_RIGHT,
       resources: 0,
       system: 70,
-      type: "HAZARDOUS",
+      types: ["HAZARDOUS"],
     },
     "The Dark": {
       attributes: [],
@@ -396,7 +398,7 @@ export default function getProphecyOfKingsPlanets(
       position: HOME_MIDDLE,
       resources: 3,
       system: 56,
-      type: "NONE",
+      types: [],
     },
     Valk: {
       attributes: [],
@@ -409,7 +411,7 @@ export default function getProphecyOfKingsPlanets(
       position: MIDDLE_LEFT,
       resources: 2,
       system: 58,
-      type: "NONE",
+      types: [],
     },
     "Vega Major": {
       attributes: [],
@@ -420,7 +422,7 @@ export default function getProphecyOfKingsPlanets(
       position: TOP_LEFT,
       resources: 2,
       system: 74,
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
     "Vega Minor": {
       attributes: ["blue-skip"],
@@ -431,7 +433,7 @@ export default function getProphecyOfKingsPlanets(
       position: BOTTOM_RIGHT,
       resources: 1,
       system: 74,
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
     Velnor: {
       attributes: ["red-skip"],
@@ -442,7 +444,7 @@ export default function getProphecyOfKingsPlanets(
       position: BOTTOM_RIGHT,
       resources: 2,
       system: 72,
-      type: "INDUSTRIAL",
+      types: ["INDUSTRIAL"],
     },
     Vorhal: {
       attributes: ["green-skip"],
@@ -453,7 +455,7 @@ export default function getProphecyOfKingsPlanets(
       position: MIDDLE,
       resources: 0,
       system: 63,
-      type: "CULTURAL",
+      types: ["CULTURAL"],
     },
     Xanhact: {
       attributes: [],
@@ -464,7 +466,7 @@ export default function getProphecyOfKingsPlanets(
       position: BOTTOM_RIGHT,
       resources: 0,
       system: 73,
-      type: "HAZARDOUS",
+      types: ["HAZARDOUS"],
     },
     Ylir: {
       attributes: [],
@@ -477,7 +479,7 @@ export default function getProphecyOfKingsPlanets(
       position: TOP_RIGHT,
       resources: 0,
       system: 58,
-      type: "NONE",
+      types: [],
     },
   };
 }

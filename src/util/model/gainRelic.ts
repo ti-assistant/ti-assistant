@@ -1,7 +1,9 @@
+import { ClaimPlanetHandler, UnclaimPlanetHandler } from "./claimPlanet";
 import {
   ScoreObjectiveHandler,
   UnscoreObjectiveHandler,
 } from "./scoreObjective";
+import { UpdateBreakthroughStateHandler } from "./updateBreakthroughState";
 
 export class GainRelicHandler implements Handler {
   constructor(public gameData: StoredGameData, public data: GainRelicData) {}
@@ -32,6 +34,38 @@ export class GainRelicHandler implements Handler {
       };
     }
 
+    if (this.data.event.relic === "The Triad") {
+      const planetHandler = new ClaimPlanetHandler(this.gameData, {
+        action: "CLAIM_PLANET",
+        event: {
+          faction: this.data.event.faction,
+          planet: "The Triad",
+        },
+      });
+
+      updates = {
+        ...updates,
+        ...planetHandler.getUpdates(),
+      };
+    }
+    if (this.data.event.relic === "The Quantumcore") {
+      const breakthroughHandler = new UpdateBreakthroughStateHandler(
+        this.gameData,
+        {
+          action: "UPDATE_BREAKTHROUGH_STATE",
+          event: {
+            factionId: this.data.event.faction,
+            state: "readied",
+          },
+        }
+      );
+
+      updates = {
+        ...updates,
+        ...breakthroughHandler.getUpdates(),
+      };
+    }
+
     return updates;
   }
 
@@ -43,6 +77,14 @@ export class GainRelicHandler implements Handler {
   }
 
   getActionLogAction(entry: ActionLogEntry<GameUpdateData>): ActionLogAction {
+    if (
+      entry.data.action === "LOSE_RELIC" &&
+      entry.data.event.faction === this.data.event.faction &&
+      entry.data.event.relic === this.data.event.relic
+    ) {
+      return "DELETE";
+    }
+
     return "IGNORE";
   }
 }
@@ -76,6 +118,21 @@ export class LoseRelicHandler implements Handler {
       };
     }
 
+    if (this.data.event.relic === "The Triad") {
+      const planetHandler = new UnclaimPlanetHandler(this.gameData, {
+        action: "UNCLAIM_PLANET",
+        event: {
+          faction: this.data.event.faction,
+          planet: "The Triad",
+        },
+      });
+
+      updates = {
+        ...updates,
+        ...planetHandler.getUpdates(),
+      };
+    }
+
     return updates;
   }
 
@@ -87,12 +144,15 @@ export class LoseRelicHandler implements Handler {
   }
 
   getActionLogAction(entry: ActionLogEntry<GameUpdateData>): ActionLogAction {
-    // Note: There should only ever be 1 gained relic, so no need to check any fields.
     if (
       entry.data.action === "GAIN_RELIC" &&
       entry.data.event.faction === this.data.event.faction &&
       entry.data.event.relic === this.data.event.relic
     ) {
+      // Book of Latvinia has an effect on gain, so need to remove it.
+      if (entry.data.event.relic === "Book of Latvinia") {
+        return "REWIND_AND_DELETE";
+      }
       return "DELETE";
     }
 

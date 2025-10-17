@@ -18,9 +18,9 @@ interface EnterPasswordData {
 
 export async function POST(
   req: Request,
-  { params }: { params: { gameId: string } }
+  { params }: { params: Promise<{ gameId: string }> }
 ) {
-  const gameId = params.gameId;
+  const { gameId } = await params;
 
   const data = (await req.json()) as EnterPasswordData;
   const password = data.password;
@@ -43,7 +43,7 @@ export async function POST(
 
   const db = getFirestore();
 
-  let sessionId = getSessionIdFromCookie();
+  let sessionId = await getSessionIdFromCookie();
   let session: Optional<TIASession>;
   if (sessionId) {
     session = await getSession(sessionId);

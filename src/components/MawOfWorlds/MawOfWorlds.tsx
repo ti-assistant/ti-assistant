@@ -87,7 +87,7 @@ export default function MawOfWorlds({}) {
 
   const availableTechs = Object.values(techs).filter((tech) => {
     const canResearch = !tech.faction || tech.faction === owner.id;
-    return canResearch && !hasTech(owner, tech.id);
+    return canResearch && !hasTech(owner, tech);
   });
 
   return (

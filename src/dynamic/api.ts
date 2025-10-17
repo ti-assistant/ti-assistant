@@ -1,3 +1,5 @@
+import { Optional } from "../util/types/types";
+
 const addAttachmentFn = import("../util/api/addAttachment").then(
   (mod) => mod.addAttachment
 );
@@ -23,11 +25,12 @@ const chooseSubFactionFn = import("../util/api/chooseSubFaction").then(
 const claimPlanetFn = import("../util/api/claimPlanet").then(
   (mod) => mod.claimPlanet
 );
+const commitToExpeditionModule = import("../util/api/commitToExpedition");
 const continueGameFn = import("../util/api/endGame").then(
   (mod) => mod.continueGame
 );
 const endGameFn = import("../util/api/endGame").then((mod) => mod.endGame);
-const endTurnFn = import("../util/api/endTurn").then((mod) => mod.endTurn);
+const endTurnMod = import("../util/api/endTurn");
 const gainRelicFn = import("../util/api/gainRelic").then(
   (mod) => mod.gainRelic
 );
@@ -46,9 +49,7 @@ const loseRelicFn = import("../util/api/gainRelic").then(
 const manualVPUpdateFn = import("../util/api/manualVPUpdate").then(
   (mod) => mod.manualVPUpdate
 );
-const markSecondaryFn = import("../util/api/markSecondary").then(
-  (mod) => mod.markSecondary
-);
+const markSecondaryMod = import("../util/api/markSecondary");
 const playActionCardFn = import("../util/api/playActionCard").then(
   (mod) => mod.playActionCard
 );
@@ -64,6 +65,7 @@ const playRelicFn = import("../util/api/playRelic").then(
 const playRiderFn = import("../util/api/playRider").then(
   (mod) => mod.playRider
 );
+const purgeTechMod = import("../util/api/purgeTech");
 const removeAttachmentFn = import("../util/api/addAttachment").then(
   (mod) => mod.removeAttachment
 );
@@ -147,6 +149,9 @@ const unscoreObjectiveFn = import("../util/api/scoreObjective").then(
   (mod) => mod.unscoreObjective
 );
 const updateFactionModule = import("../util/api/updateFaction");
+const updateBreakthroughStateModule = import(
+  "../util/api/updateBreakthroughState"
+);
 const updateLeaderStateFn = import("../util/api/updateLeaderState").then(
   (mod) => mod.updateLeaderState
 );
@@ -155,6 +160,7 @@ const updatePlanetStateFn = import("../util/api/updatePlanetState").then(
 );
 const playAdjudicatorBaalModule = import("../util/api/playAdjudicatorBaal");
 const swapMapTilesModule = import("../util/api/swapMapTiles");
+const gainAllianceModule = import("../util/api/gainAlliance");
 
 export async function addAttachmentAsync(
   gameId: string,
@@ -169,10 +175,19 @@ export async function addTechAsync(
   gameId: string,
   faction: FactionId,
   techId: TechId,
-  researchAgreement?: boolean
+  additionalFactions?: FactionId[],
+  researchAgreement?: boolean,
+  shareKnowledge?: boolean
 ) {
   const addTech = await addTechFn;
-  addTech(gameId, faction, techId, researchAgreement);
+  addTech(
+    gameId,
+    faction,
+    techId,
+    additionalFactions,
+    researchAgreement,
+    shareKnowledge
+  );
 }
 
 export async function advancePhaseAsync(
@@ -240,6 +255,15 @@ export async function claimPlanetAsync(
   claimPlanet(gameId, faction, planet);
 }
 
+export async function commitToExpeditionAsync(
+  gameId: string,
+  expedition: keyof Expedition,
+  factionId: Optional<FactionId>
+) {
+  const mod = await commitToExpeditionModule;
+  return mod.commitToExpedition(gameId, expedition, factionId);
+}
+
 export async function continueGameAsync(gameId: string) {
   const continueGame = await continueGameFn;
   continueGame(gameId);
@@ -250,18 +274,37 @@ export async function endGameAsync(gameId: string) {
   endGame(gameId);
 }
 
-export async function endTurnAsync(gameId: string, samePlayer?: boolean) {
-  const endTurn = await endTurnFn;
-  endTurn(gameId, samePlayer);
+export async function endTurnAsync(
+  gameId: string,
+  samePlayer?: boolean,
+  jumpToPlayer?: FactionId
+) {
+  const mod = await endTurnMod;
+  mod.endTurn(gameId, samePlayer, jumpToPlayer);
+}
+
+export async function unpassAsync(gameId: string, factionId: FactionId) {
+  const mod = await endTurnMod;
+  mod.unpass(gameId, factionId);
 }
 
 export async function gainRelicAsync(
   gameId: string,
   faction: FactionId,
-  relic: RelicId
+  relic: RelicId,
+  planet?: PlanetId
 ) {
   const gainRelic = await gainRelicFn;
-  gainRelic(gameId, faction, relic);
+  gainRelic(gameId, faction, relic, planet);
+}
+
+export async function gainAllianceAsync(
+  gameId: string,
+  faction: FactionId,
+  fromFaction: FactionId
+) {
+  const mod = await gainAllianceModule;
+  return mod.gainAlliance(gameId, faction, fromFaction);
 }
 
 export async function giftOfPrescienceAsync(
@@ -298,6 +341,15 @@ export async function loseRelicAsync(
   loseRelic(gameId, faction, relic);
 }
 
+export async function loseAllianceAsync(
+  gameId: string,
+  faction: FactionId,
+  fromFaction: FactionId
+) {
+  const mod = await gainAllianceModule;
+  return mod.loseAlliance(gameId, faction, fromFaction);
+}
+
 export async function manualVPUpdateAsync(
   gameId: string,
   faction: FactionId,
@@ -312,8 +364,13 @@ export async function markSecondaryAsync(
   faction: FactionId,
   state: Secondary
 ) {
-  const markSecondary = await markSecondaryFn;
+  const markSecondary = (await markSecondaryMod).markSecondary;
   markSecondary(gameId, faction, state);
+}
+
+export async function markPrimaryAsync(gameId: string, completed: boolean) {
+  const markPrimary = (await markSecondaryMod).markPrimary;
+  markPrimary(gameId, completed);
 }
 
 export async function playActionCardAsync(
@@ -358,6 +415,24 @@ export async function playRiderAsync(
   playRider(gameId, rider, faction, outcome);
 }
 
+export async function purgeTechAsync(
+  gameId: string,
+  techId: TechId,
+  factionId?: FactionId
+) {
+  const mod = await purgeTechMod;
+  mod.purgeTech(gameId, techId, factionId);
+}
+
+export async function unpurgeTechAsync(
+  gameId: string,
+  techId: TechId,
+  factionId?: FactionId
+) {
+  const mod = await purgeTechMod;
+  mod.unpurgeTech(gameId, techId, factionId);
+}
+
 export async function removeAttachmentAsync(
   gameId: string,
   planet: PlanetId,
@@ -379,10 +454,11 @@ export async function removeStartingTechAsync(
 export async function removeTechAsync(
   gameId: string,
   faction: FactionId,
-  techId: TechId
+  techId: TechId,
+  additionalFactions?: FactionId[]
 ) {
   const removeTech = await removeTechFn;
-  removeTech(gameId, faction, techId);
+  removeTech(gameId, faction, techId, additionalFactions);
 }
 
 export async function repealAgendaAsync(
@@ -598,6 +674,15 @@ export async function updateFactionAsync(
 ) {
   const mod = await updateFactionModule;
   mod.updateFaction(gameId, factionId, { playerName, color });
+}
+
+export async function updateBreakthroughStateAsync(
+  gameId: string,
+  factionId: FactionId,
+  state: ComponentState
+) {
+  const mod = await updateBreakthroughStateModule;
+  mod.updateBreakthroughState(gameId, factionId, state);
 }
 
 export async function updateLeaderStateAsync(

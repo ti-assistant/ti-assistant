@@ -714,19 +714,21 @@ export default function getBaseAgendas(
         description: "Title of Agenda Card: Representative Government",
         defaultMessage: "Representative Government",
       }),
-      omega: {
-        expansion: "POK",
-        description: intl.formatMessage(
-          {
-            id: "Agendas.Representative Government.Omega.Description",
-            description:
-              "Omega description for Agenda Card: Representative Government",
-            defaultMessage:
-              'For: Players cannot exhaust planets to cast votes during the agenda phase; each player may cast 1 vote on each agenda instead. Players cannot cast additional votes.{br}Against: At the start of the next strategy phase, each player that voted "Against" exhausts all of their cultural planets.',
-          },
-          { br: "\n\n" }
-        ),
-      },
+      omegas: [
+        {
+          expansion: "POK",
+          description: intl.formatMessage(
+            {
+              id: "Agendas.Representative Government.Omega.Description",
+              description:
+                "Omega description for Agenda Card: Representative Government",
+              defaultMessage:
+                'For: Players cannot exhaust planets to cast votes during the agenda phase; each player may cast 1 vote on each agenda instead. Players cannot cast additional votes.{br}Against: At the start of the next strategy phase, each player that voted "Against" exhausts all of their cultural planets.',
+            },
+            { br: "\n\n" }
+          ),
+        },
+      ],
       type: "LAW",
     },
     "Research Team: Biotic": {

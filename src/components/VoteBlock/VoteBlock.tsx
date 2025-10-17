@@ -11,6 +11,7 @@ import {
   usePlanets,
   useRelics,
   useStrategyCards,
+  useTechs,
   useViewOnly,
 } from "../../context/dataHooks";
 import { useObjectives } from "../../context/objectiveDataHooks";
@@ -53,6 +54,8 @@ import NumberInput from "../NumberInput/NumberInput";
 import { Selector } from "../Selector/Selector";
 import Toggle from "../Toggle/Toggle";
 import styles from "./VoteBlock.module.scss";
+import InfluenceSVG from "../../icons/planets/Influence";
+import { Techs } from "../../context/techDataHooks";
 
 // Checks whether or not a faction can use Blood Pact.
 function canUseBloodPact(currentTurn: ActionLog, factionId: FactionId) {
@@ -152,13 +155,18 @@ export function getTargets(
     case "Planet":
       const ownedPlanetNames = Object.values(planets)
         .filter((planet) => !!planet.owner)
+        .filter(
+          (planet) =>
+            !planet.attributes.includes("ocean") &&
+            !planet.attributes.includes("space-station")
+        )
         .map((planet) => {
           return { id: planet.id, name: planet.name };
         });
       return [...ownedPlanetNames, abstain];
     case "Cultural Planet":
       const culturalPlanets = Object.values(planets)
-        .filter((planet) => planet.type === "CULTURAL")
+        .filter((planet) => planet.types.includes("CULTURAL"))
         .filter((planet) => !!planet.owner)
         .map((planet) => {
           return { id: planet.id, name: planet.name };
@@ -166,7 +174,7 @@ export function getTargets(
       return [...culturalPlanets, abstain];
     case "Hazardous Planet":
       const hazardousPlanets = Object.values(planets)
-        .filter((planet) => planet.type === "HAZARDOUS")
+        .filter((planet) => planet.types.includes("HAZARDOUS"))
         .filter((planet) => !!planet.owner)
         .map((planet) => {
           return { id: planet.id, name: planet.name };
@@ -174,7 +182,7 @@ export function getTargets(
       return [...hazardousPlanets, abstain];
     case "Industrial Planet":
       const industrialPlanets = Object.values(planets)
-        .filter((planet) => planet.type === "INDUSTRIAL")
+        .filter((planet) => planet.types.includes("INDUSTRIAL"))
         .filter((planet) => !!planet.owner)
         .map((planet) => {
           return { id: planet.id, name: planet.name };
@@ -184,6 +192,11 @@ export function getTargets(
       const electablePlanets = Object.values(planets)
         .filter((planet) => !planet.home && planet.name !== "Mecatol Rex")
         .filter((planet) => !!planet.owner)
+        .filter(
+          (planet) =>
+            !planet.attributes.includes("ocean") &&
+            !planet.attributes.includes("space-station")
+        )
         .map((planet) => {
           return { id: planet.id, name: planet.name };
         });
@@ -356,7 +369,8 @@ export function computeRemainingVotes(
   options: Options,
   state: GameState,
   currentPhasePrevious: ActionLog,
-  leaders: Partial<Record<LeaderId, Leader>>
+  leaders: Partial<Record<LeaderId, Leader>>,
+  techs: Techs
 ) {
   const representativeGovernment = agendas["Representative Government"];
 
@@ -374,7 +388,8 @@ export function computeRemainingVotes(
       return true;
     }
     return (
-      planet.type !== "CULTURAL" && !planet.attributes.includes("all-types")
+      !planet.types.includes("CULTURAL") &&
+      !planet.attributes.includes("all-types")
     );
   });
 
@@ -444,7 +459,10 @@ export function computeRemainingVotes(
   if (factionId === "Xxcha Kingdom" && hasXxchaCommander) {
     extraVotes += planetCount;
   }
-  const hasPredictiveIntelligence = hasTech(faction, "Predictive Intelligence");
+  const hasPredictiveIntelligence = hasTech(
+    faction,
+    techs["Predictive Intelligence"]
+  );
   if (hasPredictiveIntelligence) {
     extraVotes += 3;
   }
@@ -775,6 +793,7 @@ function VotingSection({
   const relics = useRelics();
   const state = useGameState();
   const strategyCards = useStrategyCards();
+  const techs = useTechs();
   const viewOnly = useViewOnly();
 
   const intl = useIntl();
@@ -827,7 +846,8 @@ function VotingSection({
     options,
     state,
     getCurrentPhasePreviousLogEntries(actionLog ?? []),
-    leaders
+    leaders,
+    techs
   );
 
   const mawOfWorlds = relics["Maw of Worlds"];
@@ -954,7 +974,7 @@ function VotingSection({
                 />
               </Toggle>
             ) : null}
-            {hasTech(faction, "Predictive Intelligence") ? (
+            {hasTech(faction, techs["Predictive Intelligence"]) ? (
               <button
                 className={
                   usingPredictive.includes(factionId) ? "selected" : ""
@@ -1091,6 +1111,7 @@ function AvailableVotes({ factionId }: { factionId: FactionId }) {
   const planets = usePlanets();
   const relics = useRelics();
   const state = useGameState();
+  const techs = useTechs();
 
   let { influence, extraVotes } = computeRemainingVotes(
     factionId,
@@ -1101,7 +1122,8 @@ function AvailableVotes({ factionId }: { factionId: FactionId }) {
     options,
     state,
     getCurrentPhasePreviousLogEntries(actionLog),
-    leaders
+    leaders,
+    techs
   );
   const mawOfWorlds = relics["Maw of Worlds"];
   if (mawOfWorlds && mawOfWorlds.owner === factionId) {
@@ -1125,8 +1147,9 @@ function AvailableVotes({ factionId }: { factionId: FactionId }) {
 
   return (
     <div className={styles.AvailableVotes} style={availableVotesStyle}>
-      <div className={styles.InfluenceIcon}>&#x2B21;</div>
-      <div className={styles.InfluenceText}>{influence}</div>
+      <div className={styles.InfluenceIcon}>
+        <InfluenceSVG influence={influence} />
+      </div>
       <div className="flexRow" style={{ gap: 0 }}>
         {hasHacanCommander ? (
           <>

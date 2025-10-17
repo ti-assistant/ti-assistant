@@ -32,6 +32,7 @@ export interface ProcessedGame {
   victoryPoints: number;
   playerCount: number;
   expansions: Expansion[];
+  events?: EventId[];
 
   winner: FactionId;
   rounds: ProcessedRound[];
@@ -150,7 +151,7 @@ async function getJSONFileFromStorage(
 }
 
 export async function rewriteProcessedGames() {
-  const locale = getLocale();
+  const locale = await getLocale();
   const messages = await getMessages(locale);
   const cache = createIntlCache();
   const intl = createIntl({ locale, messages }, cache);
@@ -242,7 +243,7 @@ export async function maybeUpdateProcessedGames(
 }
 
 export async function reprocessGames() {
-  const locale = getLocale();
+  const locale = await getLocale();
   const messages = await getMessages(locale);
   const cache = createIntlCache();
   const intl = createIntl({ locale, messages }, cache);
@@ -354,6 +355,7 @@ function processGame(
     victoryPoints: fixedGame.options["victory-points"],
     playerCount: Object.keys(fixedGame.factions).length,
     expansions: fixedGame.options.expansions,
+    events: fixedGame.options.events ?? [],
 
     winner,
     rounds: processLog(fixedGame, baseData, fixedActionLog),

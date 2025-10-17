@@ -515,21 +515,23 @@ export default function getBaseObjectives(
         description: "Title of Objective: Make an Example of Their World",
         defaultMessage: "Make an Example of Their World",
       }),
-      omega: {
-        description: intl.formatMessage({
-          id: "Objectives.Make an Example of Their World.Omega.Description",
-          description:
-            "Description for Objective: Make an Example of Their World Ω",
-          defaultMessage:
-            "Destroy the last of a player's ground forces on a planet during the bombardment step",
-        }),
-        expansion: "CODEX THREE",
-        name: intl.formatMessage({
-          id: "Objectives.Make an Example of Their World.Omega.Title",
-          description: "Title of Objective: Make an Example of Their World Ω",
-          defaultMessage: "Make an Example of Their World Ω",
-        }),
-      },
+      omegas: [
+        {
+          description: intl.formatMessage({
+            id: "Objectives.Make an Example of Their World.Omega.Description",
+            description:
+              "Description for Objective: Make an Example of Their World Ω",
+            defaultMessage:
+              "Destroy the last of a player's ground forces on a planet during the bombardment step",
+          }),
+          expansion: "CODEX THREE",
+          name: intl.formatMessage({
+            id: "Objectives.Make an Example of Their World.Omega.Title",
+            description: "Title of Objective: Make an Example of Their World Ω",
+            defaultMessage: "Make an Example of Their World Ω",
+          }),
+        },
+      ],
       phase: "ACTION",
       points: 1,
       type: "SECRET",
@@ -823,20 +825,23 @@ export default function getBaseObjectives(
         description: "Title of Objective: Turn Their Fleets to Dust",
         defaultMessage: "Turn Their Fleets to Dust",
       }),
-      omega: {
-        description: intl.formatMessage({
-          id: "Objectives.Turn Their Fleets to Dust.Omega.Description",
-          description: "Description for Objective: Turn Their Fleets to Dust Ω",
-          defaultMessage:
-            "Destroy the last of a player's non-fighter ships in the active system during the space cannon offense step.",
-        }),
-        expansion: "CODEX THREE",
-        name: intl.formatMessage({
-          id: "Objectives.Turn Their Fleets to Dust.Omega.Title",
-          description: "Title of Objective: Turn Their Fleets to Dust Ω",
-          defaultMessage: "Turn Their Fleets to Dust Ω",
-        }),
-      },
+      omegas: [
+        {
+          description: intl.formatMessage({
+            id: "Objectives.Turn Their Fleets to Dust.Omega.Description",
+            description:
+              "Description for Objective: Turn Their Fleets to Dust Ω",
+            defaultMessage:
+              "Destroy the last of a player's non-fighter ships in the active system during the space cannon offense step.",
+          }),
+          expansion: "CODEX THREE",
+          name: intl.formatMessage({
+            id: "Objectives.Turn Their Fleets to Dust.Omega.Title",
+            description: "Title of Objective: Turn Their Fleets to Dust Ω",
+            defaultMessage: "Turn Their Fleets to Dust Ω",
+          }),
+        },
+      ],
       phase: "ACTION",
       points: 1,
       type: "SECRET",

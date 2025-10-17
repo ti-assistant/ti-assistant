@@ -10,12 +10,16 @@ import { getRelics } from "../../server/data/relics";
 import { getStrategyCards } from "../../server/data/strategyCards";
 import { getSystems } from "../../server/data/systems";
 import { getTechs } from "../../server/data/techs";
+import { getEvents } from "../../server/data/events";
+import { getActionCards } from "../../server/data/actionCards";
 
 export function getBaseData(intl: IntlShape): BaseData {
   return {
+    actionCards: getActionCards(intl),
     agendas: getAgendas(intl),
     attachments: getAttachments(intl),
     components: getComponents(intl),
+    events: getEvents(intl),
     factions: getFactions(intl),
     leaders: getLeaders(intl),
     objectives: getObjectives(intl),

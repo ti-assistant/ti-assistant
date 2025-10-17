@@ -69,7 +69,7 @@ input {
 .icon {
   display: flex;
   align-items: center;
-  margin-right: 0.5rem;
+  margin-right: 0.5em;
   box-sizing: border-box;
 }
 
@@ -149,11 +149,10 @@ button:focus-visible {
   border: 1px solid var(--neutral-border);
 }
 
-
 button.faded {
   background-color: var(--disabled-bg);
   color: #555;
-  box-sizing: border-box;
+  /* box-sizing: border-box; */
   border: 1px solid #333;
 }
 

@@ -32,6 +32,9 @@ export default function Timers({
       }}
     >
       {objectEntries(timers).map(([key, val]) => {
+        if (typeof key !== "string") {
+          return;
+        }
         if (!isFactionId(key)) {
           return null;
         }

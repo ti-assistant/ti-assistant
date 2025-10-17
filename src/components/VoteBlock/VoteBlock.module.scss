@@ -15,16 +15,9 @@
   width: var(--width);
   height: var(--height);
 
-  color: #72d4f7;
-  text-shadow: 0 0 4px #72d4f7;
-
-  line-height: var(--height);
-  font-size: var(--height);
-
   display: flex;
   align-items: center;
   justify-content: center;
-  user-select: none;
 }
 
 .InfluenceText {

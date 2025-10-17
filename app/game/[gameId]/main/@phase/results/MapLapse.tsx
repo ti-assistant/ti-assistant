@@ -6,6 +6,7 @@ import { useFactions } from "../../../../../../src/context/factionDataHooks";
 import { useGameState } from "../../../../../../src/context/stateDataHooks";
 import { getWormholeNexusSystemNumber } from "../../../../../../src/util/map";
 import { objectKeys, rem } from "../../../../../../src/util/util";
+import { fracturePlanetsOwned } from "../../../../../../src/util/planets";
 
 interface RoundInfo {
   planets: Partial<Record<PlanetId, Planet>>;
@@ -33,18 +34,24 @@ export default function MapLapse({
   if (!planets) {
     return null;
   }
+
+  const hasFracture = options.expansions.includes("THUNDERS EDGE");
+
+  const height = hasFracture ? rem(470) : rem(512);
+
   return (
     <div
-      className="flexRow"
+      className={hasFracture ? "flexColumn" : "flexRow"}
       style={{
         width: rem(620),
-        height: rem(500),
+        height: hasFracture ? rem(490) : rem(500),
         justifyContent: "flex-start",
         alignItems: "center",
         position: "relative",
+        gap: 0,
       }}
     >
-      <div className="flexColumn" style={{ alignItems: "flex-start" }}>
+      <div className="flexRow" style={{ alignItems: "flex-start" }}>
         {objectKeys(rounds).map((roundNum) => {
           return (
             <Chip
@@ -63,21 +70,31 @@ export default function MapLapse({
       </div>
       <div
         className="flexColumn"
-        style={{ position: "relative", height: rem(512), aspectRatio: "1/1" }}
+        style={{
+          width: "100%",
+          alignItems: hasFracture ? "flex-start" : "center",
+        }}
       >
-        <GameMap
-          defaultOverlay="OWNERS"
-          factions={mapOrderedFactions}
-          mapString={planets.mapString ?? ""}
-          mapStyle={options ? options["map-style"] ?? "standard" : "standard"}
-          wormholeNexus={getWormholeNexusSystemNumber(
-            options,
-            planets.planets,
-            factions
-          )}
-          planets={planets.planets}
-          hideLegend
-        />
+        <div
+          className="flexColumn"
+          style={{ position: "relative", height: height, aspectRatio: "1/1" }}
+        >
+          <GameMap
+            defaultOverlay="OWNERS"
+            factions={mapOrderedFactions}
+            mapString={planets.mapString ?? ""}
+            mapStyle={options ? options["map-style"] ?? "standard" : "standard"}
+            wormholeNexus={getWormholeNexusSystemNumber(
+              options,
+              planets.planets,
+              factions
+            )}
+            planets={planets.planets}
+            expansions={options.expansions}
+            hideLegend
+            hideFracture={!fracturePlanetsOwned(planets.planets)}
+          />
+        </div>
       </div>
     </div>
   );

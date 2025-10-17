@@ -14,10 +14,12 @@ interface OmegaTech {
 }
 
 interface BaseNormalTech {
+  deprecates?: TechId;
   description: string;
   expansion: Expansion;
   faction?: FactionId;
   id: TechId;
+  locked?: boolean;
   name: string;
   omegas?: OmegaTech[];
   prereqs: TechType[];
@@ -30,6 +32,7 @@ interface BaseUpgradeTech {
   expansion: Expansion;
   faction?: FactionId;
   id: TechId;
+  locked?: boolean;
   name: string;
   omegas?: OmegaTech[];
   prereqs: TechType[];
@@ -41,8 +44,12 @@ interface BaseUpgradeTech {
 
 type BaseTech = BaseNormalTech | BaseUpgradeTech;
 
+type TechState = "ready" | "exhausted" | "purged";
+
 interface GameTech {
   ready?: boolean;
+  shareKnowledge?: boolean;
+  state?: TechState;
 }
 
 type Tech = BaseTech & GameTech;
@@ -51,4 +58,5 @@ type TechId =
   | BaseGame.TechId
   | ProphecyOfKings.TechId
   | CodexThree.TechId
+  | ThundersEdge.TechId
   | DiscordantStars.TechId;

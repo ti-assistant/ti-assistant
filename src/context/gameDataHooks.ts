@@ -116,6 +116,12 @@ function buildSortFn(
         if (b.id === "Argent Flight") {
           return { a: 1, b: 0 };
         }
+        if (a.order === 1) {
+          return { a: 1, b: 0 };
+        }
+        if (b.order === 1) {
+          return { a: 0, b: 1 };
+        }
         return getSortValues(a, b, "SPEAKER");
     }
   }

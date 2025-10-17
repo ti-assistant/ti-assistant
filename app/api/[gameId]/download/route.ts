@@ -41,9 +41,9 @@ function buildSetupGameData(gameData: StoredGameData): {
 
 export async function GET(
   _: Request,
-  { params }: { params: { gameId: string } }
+  { params }: { params: Promise<{ gameId: string }> }
 ) {
-  const gameId = params.gameId;
+  const { gameId } = await params;
 
   const fullActionLog = await getFullActionLog(gameId);
 

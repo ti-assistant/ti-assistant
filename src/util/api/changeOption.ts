@@ -1,4 +1,4 @@
-import DataManager from "../../context/DataManager";
+import { DataStore } from "../../context/dataStore";
 import { poster } from "./util";
 
 interface ChangeOptionData {
@@ -16,14 +16,16 @@ export function changeOption(gameId: string, option: string, value: any) {
 
   const updatePromise = poster(`/api/${gameId}/changeOption`, data, now);
 
-  DataManager.update((storedGameData) => {
+  DataStore.update((storedGameData) => {
     storedGameData.options[option] = value;
-    storedGameData.lastUpdate = now;
+    if (storedGameData.timers) {
+      storedGameData.timers.paused = false;
+    }
 
     return storedGameData;
-  });
+  }, "CLIENT");
 
   return updatePromise.catch((_) => {
-    DataManager.reset();
+    DataStore.reset();
   });
 }

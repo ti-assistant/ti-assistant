@@ -5,14 +5,9 @@ type Expansion =
   | "CODEX TWO"
   | "CODEX THREE"
   | "CODEX FOUR"
+  | "THUNDERS EDGE"
   | "DISCORDANT STARS"
   | "BASE ONLY";
-
-type EventId =
-  | "Age of Commerce"
-  | "Age of Exploration"
-  | "Minor Factions"
-  | "Total War";
 
 type OptionUpdateAction = "SET_OPTION";
 

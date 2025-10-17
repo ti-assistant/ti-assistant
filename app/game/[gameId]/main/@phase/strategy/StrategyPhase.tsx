@@ -1,18 +1,21 @@
-import React, { PropsWithChildren, useState } from "react";
+import React, { PropsWithChildren, use, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ClientOnlyHoverMenu } from "../../../../../../src/HoverMenu";
 import { NumberedItem } from "../../../../../../src/NumberedItem";
 import { FactionTimer, StaticFactionTimer } from "../../../../../../src/Timer";
 import FactionCard from "../../../../../../src/components/FactionCard/FactionCard";
 import FactionSelectRadialMenu from "../../../../../../src/components/FactionSelectRadialMenu/FactionSelectRadialMenu";
+import FormattedDescription from "../../../../../../src/components/FormattedDescription/FormattedDescription";
 import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
 import { ModalContent } from "../../../../../../src/components/Modal/Modal";
 import { Selector } from "../../../../../../src/components/Selector/Selector";
 import { StrategyCardElement } from "../../../../../../src/components/StrategyCardElement/StrategyCardElement";
+import { ModalContext } from "../../../../../../src/context/contexts";
 import {
   useAgenda,
   useGameId,
   useStrategyCards,
+  useTech,
   useViewOnly,
 } from "../../../../../../src/context/dataHooks";
 import { useFactions } from "../../../../../../src/context/factionDataHooks";
@@ -21,7 +24,6 @@ import {
   useOnDeckFaction,
 } from "../../../../../../src/context/gameDataHooks";
 import { useRound } from "../../../../../../src/context/stateDataHooks";
-import { useSharedModal } from "../../../../../../src/data/SharedModal";
 import {
   advancePhaseAsync,
   assignStrategyCardAsync,
@@ -37,7 +39,6 @@ import { phaseString } from "../../../../../../src/util/strings";
 import { Optional } from "../../../../../../src/util/types/types";
 import { rem } from "../../../../../../src/util/util";
 import styles from "./StrategyPhase.module.scss";
-import FormattedDescription from "../../../../../../src/components/FormattedDescription/FormattedDescription";
 
 function ChecksAndBalancesMenu({
   faction,
@@ -119,6 +120,7 @@ function QuantumDatahubNode({
   strategyCards: StrategyCard[];
 }) {
   const gameId = useGameId();
+  const quantumTech = useTech("Quantum Datahub Node");
   const viewOnly = useViewOnly();
   const [quantum, setQuantum] = useState<{
     mainCard: Optional<StrategyCardId>;
@@ -142,7 +144,7 @@ function QuantumDatahubNode({
     swapStrategyCardsAsync(gameId, quantum.mainCard, quantum.otherCard);
   }
 
-  if (!faction || !hasTech(faction, "Quantum Datahub Node")) {
+  if (!faction || !hasTech(faction, quantumTech)) {
     return null;
   }
 
@@ -517,6 +519,9 @@ export default function StrategyPhase() {
   const imperialArbiter = useAgenda("Imperial Arbiter");
   const newConstitution = useAgenda("New Constitution");
 
+  // Techs
+  const quantumDatahubNode = useTech("Quantum Datahub Node");
+
   const factions = useFactions();
   const strategyCards = useStrategyCards();
   const intl = useIntl();
@@ -526,7 +531,7 @@ export default function StrategyPhase() {
   const onDeckFaction = useOnDeckFaction();
   const round = useRound();
 
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   interface Ability {
     name: string;
@@ -622,11 +627,11 @@ export default function StrategyPhase() {
       return true;
     }
     const hacan = factions["Emirates of Hacan"];
-    if (hacan && hasTech(hacan, "Quantum Datahub Node")) {
+    if (hacan && hasTech(hacan, quantumDatahubNode)) {
       return true;
     }
     const nekro = factions["Nekro Virus"];
-    if (nekro && hasTech(nekro, "Quantum Datahub Node")) {
+    if (nekro && hasTech(nekro, quantumDatahubNode)) {
       return true;
     }
     if (imperialArbiter && imperialArbiter.resolved && imperialArbiter.target) {
@@ -821,6 +826,7 @@ export default function StrategyPhase() {
                   }}
                 >
                   <FactionTimer
+                    active
                     factionId={activeFaction.id}
                     style={{ fontSize: rem(28) }}
                   />
@@ -864,6 +870,7 @@ export default function StrategyPhase() {
                   }}
                 >
                   <StaticFactionTimer
+                    active={false}
                     factionId={onDeckFaction.id}
                     style={{
                       fontSize: rem(18),

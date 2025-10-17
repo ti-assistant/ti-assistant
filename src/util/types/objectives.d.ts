@@ -3,17 +3,14 @@ type ObjectiveType = "STAGE ONE" | "STAGE TWO" | "SECRET" | "OTHER";
 interface BaseObjective {
   description: string;
   expansion: Expansion;
+  event?: EventId;
   id: ObjectiveId;
   name: string;
   points: number;
   type: ObjectiveType;
   // Optional
   max?: number;
-  omega?: {
-    description: string;
-    expansion: Expansion;
-    name: string;
-  };
+  omegas?: Omega<BaseObjective>[];
   phase?: Phase;
   repeatable?: boolean;
   replaces?: ObjectiveId;
@@ -33,4 +30,5 @@ type Objective = BaseObjective & GameObjective;
 type ObjectiveId =
   | BaseGame.ObjectiveId
   | ProphecyOfKings.ObjectiveId
-  | CodexFour.ObjectiveId;
+  | CodexFour.ObjectiveId
+  | ThundersEdge.ObjectiveId;

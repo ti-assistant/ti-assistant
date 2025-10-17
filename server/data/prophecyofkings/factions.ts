@@ -41,6 +41,25 @@ export default function getProphecyOfKingsFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Argent Flight.Breakthrough.Wing Transfer.Title",
+          description: "Title of Faction Breakthrough: Wing Transfer",
+          defaultMessage: "Wing Transfer",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Argent Flight.Breakthrough.Wing Transfer.Description",
+            description: "Description of Faction Breakthrough: Wing Transfer",
+            defaultMessage:
+              "When you activate a system that contains only your units, you may place command tokens from your reinforcements into any systems adjacent to that system that contain only your units; at the end of this action, you may move ships among the active system and systems adjacent to it that contain your command tokens.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Wing Transfer",
+        synergy: { left: "BLUE", right: "YELLOW" },
+        timing: "PASSIVE",
+      },
       colors: {
         Blue: 0.15,
         Green: 0.15,
@@ -206,6 +225,25 @@ export default function getProphecyOfKingsFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Empyrean.Breakthrough.Void Tether.Title",
+          description: "Title of Faction Breakthrough: Void Tether",
+          defaultMessage: "Void Tether",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Empyrean.Breakthrough.Void Tether.Description",
+            description: "Description of Faction Breakthrough: Void Tether",
+            defaultMessage:
+              "When you activate a system that contains or is adjacent to a unit or planet you control, you may place or move 1 of your void tether tokens onto a border that system shares with another system; other players do not treat those systems as adjacent to each other unless you allow it.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Void Tether",
+        synergy: { left: "GREEN", right: "BLUE" },
+        timing: "TACTICAL_ACTION",
+      },
       colors: {
         Magenta: 0.15,
         Purple: 1.6,
@@ -366,6 +404,26 @@ export default function getProphecyOfKingsFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Mahact Gene-Sorcerers.Breakthrough.Vaults of the Heir.Title",
+          description: "Title of Faction Breakthrough: Vaults of the Heir",
+          defaultMessage: "Vaults of the Heir",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Mahact Gene-Sorcerers.Breakthrough.Vaults of the Heir.Description",
+            description:
+              "Description of Faction Breakthrough: Vaults of the Heir",
+            defaultMessage:
+              "ACTION: Exhaust this card and purge 1 of your technologies to gain 1 relic.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Vaults of the Heir",
+        synergy: { left: "YELLOW", right: "GREEN" },
+        timing: "COMPONENT_ACTION",
+      },
       colors: {
         Purple: 0.3,
         Yellow: 1.6,
@@ -518,6 +576,48 @@ export default function getProphecyOfKingsFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Naaz-Rokha Alliance.Breakthrough.Absolute Synergy.Title",
+          description: "Title of Faction Breakthrough: Absolute Synergy",
+          defaultMessage: "Absolute Synergy",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Naaz-Rokha Alliance.Breakthrough.Absolute Synergy.Description",
+            description:
+              "Description of Faction Breakthrough: Absolute Synergy",
+            defaultMessage:
+              "When you have 4 mechs in the same system, you may return 3 of those mechs to your reinforcements to flip this card and place it on top of your mech card.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Absolute Synergy",
+        synergy: { left: "GREEN", right: "BLUE" },
+        timing: "OTHER",
+        reverse: {
+          description: intl.formatMessage(
+            {
+              id: "Naaz-Rokha Alliance.Units.Eidolon Maximum.Description",
+              description: "Description for Faction Unit: Eidolon Maximum",
+              defaultMessage:
+                "This unit is both a ship and a ground force. It cannot be assigned hits from unit abilities. Repair it at the start of every combat round. Game effects cannot place or produce your mechs. When this unit is destroyed or removed, flip this card and return it to your play area.",
+            },
+            { br: "\n\n" }
+          ),
+          expansion: "THUNDERS EDGE",
+          name: intl.formatMessage({
+            id: "Naaz-Rokha Alliance.Units.Eidolon Maximum.Title",
+            description: "Title of Faction Unit: Eidolon Maximum",
+            defaultMessage: "Eidolon Maximum",
+          }),
+          stats: {
+            combat: "4(x4)",
+            move: 3,
+          },
+          type: "Mech",
+        },
+      },
       colors: {
         Green: 1.6,
         Yellow: 0.3,
@@ -621,28 +721,28 @@ export default function getProphecyOfKingsFactions(
             combat: "6(x2)",
           },
           type: "Mech",
-        },
-        {
-          description: intl.formatMessage(
-            {
-              id: "Naaz-Rokha Alliance.Units.Z-Grav Eidolon.Description",
-              description: "Description for Faction Unit: Z-Grav Eidolon",
-              defaultMessage:
-                "If this unit is in the space area of the active system, it is also a ship. At the end of a space battle in the active system, flip this card.{br}(This card begins the game with this side face down)",
+          reverse: {
+            description: intl.formatMessage(
+              {
+                id: "Naaz-Rokha Alliance.Units.Z-Grav Eidolon.Description",
+                description: "Description for Faction Unit: Z-Grav Eidolon",
+                defaultMessage:
+                  "If this unit is in the space area of the active system, it is also a ship. At the end of a space battle in the active system, flip this card.{br}(This card begins the game with this side face down)",
+              },
+              { br: "\n\n" }
+            ),
+            expansion: "POK",
+            name: intl.formatMessage({
+              id: "Naaz-Rokha Alliance.Units.Z-Grav Eidolon.Title",
+              description: "Title of Faction Unit: Z-Grav Eidolon",
+              defaultMessage: "Z-Grav Eidolon",
+            }),
+            stats: {
+              cost: 2,
+              combat: "8(x2)",
             },
-            { br: "\n\n" }
-          ),
-          expansion: "POK",
-          name: intl.formatMessage({
-            id: "Naaz-Rokha Alliance.Units.Z-Grav Eidolon.Title",
-            description: "Title of Faction Unit: Z-Grav Eidolon",
-            defaultMessage: "Z-Grav Eidolon",
-          }),
-          stats: {
-            cost: 2,
-            combat: "8(x2)",
+            type: "Mech",
           },
-          type: "Mech",
         },
       ],
     },
@@ -675,6 +775,26 @@ export default function getProphecyOfKingsFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Nomad.Breakthrough.Thunder's Paradox.Title",
+          description: "Title of Faction Breakthrough: Thunder's Paradox",
+          defaultMessage: "Thunder's Paradox",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Nomad.Breakthrough.Thunder's Paradox.Description",
+            description:
+              "Description of Faction Breakthrough: Thunder's Paradox",
+            defaultMessage:
+              "At the start of any player's turn, you may exhaust 1 of your agents to ready any other agent.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Thunder's Paradox",
+        synergy: { left: "YELLOW", right: "GREEN" },
+        timing: "OTHER",
+      },
       colors: {
         Blue: 1.25,
         Purple: 0.65,
@@ -820,6 +940,26 @@ export default function getProphecyOfKingsFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Titans of Ul.Breakthrough.Slumberstate Computing.Title",
+          description: "Title of Faction Breakthrough: Slumberstate Computing",
+          defaultMessage: "Slumberstate Computing",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Titans of Ul.Breakthrough.Slumberstate Computing.Description",
+            description:
+              "Description of Faction Breakthrough: Slumberstate Computing",
+            defaultMessage:
+              "When COALESCENCE results in a ground combat, if you commit no other units, you may choose for your units to coexist instead. During the status phase, for each player you are coexisting with, you and that player each draw 1 additional action card.{br}Other players may allow you to place a sleeper token on a planet they control.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Slumberstate Computing",
+        synergy: { left: "YELLOW", right: "GREEN" },
+        timing: "OTHER",
+      },
       colors: {
         Magenta: 1.9,
       },
@@ -919,22 +1059,6 @@ export default function getProphecyOfKingsFactions(
           type: "Mech",
         },
         {
-          expansion: "POK",
-          name: intl.formatMessage({
-            id: "Titans of Ul.Units.Saturn Engine I.Title",
-            description: "Title of Faction Unit: Saturn Engine I",
-            defaultMessage: "Saturn Engine I",
-          }),
-          stats: {
-            cost: 2,
-            combat: 7,
-            move: 2,
-            capacity: 1,
-          },
-          type: "Cruiser",
-          upgrade: "Saturn Engine II",
-        },
-        {
           abilities: [
             planetaryShield(intl),
             sustainDamage(intl),
@@ -958,6 +1082,22 @@ export default function getProphecyOfKingsFactions(
           },
           type: "PDS",
           upgrade: "Hel Titan II",
+        },
+        {
+          expansion: "POK",
+          name: intl.formatMessage({
+            id: "Titans of Ul.Units.Saturn Engine I.Title",
+            description: "Title of Faction Unit: Saturn Engine I",
+            defaultMessage: "Saturn Engine I",
+          }),
+          stats: {
+            cost: 2,
+            combat: 7,
+            move: 2,
+            capacity: 1,
+          },
+          type: "Cruiser",
+          upgrade: "Saturn Engine II",
         },
       ],
     },
@@ -1003,6 +1143,26 @@ export default function getProphecyOfKingsFactions(
           }),
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Vuil'raith Cabal.Breakthrough.Al'raith Ix Ianovar.Title",
+          description: "Title of Faction Breakthrough: Al'raith Ix Ianovar",
+          defaultMessage: "Al'raith Ix Ianovar",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Vuil'raith Cabal.Breakthrough.Al'raith Ix Ianovar.Description",
+            description:
+              "Description of Faction Breakthrough: Al'raith Ix Ianovar",
+            defaultMessage:
+              "This breakthrough causes The Fracture to enter play without a roll, if it is not already in play. After this card enters play, move up to 2 ingress tokens into systems that contain gravity rifts.{br}Apply +1 to the MOVE value of each of your ships that start their movement in The Fracture.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "Al'raith Ix Ianovar",
+        synergy: { left: "RED", right: "GREEN" },
+        timing: "TACTICAL_ACTION",
+      },
       colors: {
         Black: 0.4,
         Magenta: 0.1,

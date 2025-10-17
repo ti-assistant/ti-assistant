@@ -15,4 +15,5 @@ type SystemId =
   | BaseGame.SystemId
   | ProphecyOfKings.SystemId
   | CodexThree.SystemId
+  | ThundersEdge.SystemId
   | DiscordantStars.SystemId;

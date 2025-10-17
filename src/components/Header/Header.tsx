@@ -1,10 +1,11 @@
 "use client";
 
 import QRCode from "qrcode";
-import React, { useRef, useState } from "react";
+import React, { use, useRef, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { AgendaRow } from "../../AgendaRow";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
+import { ModalContext } from "../../context/contexts";
 import {
   useAgendas,
   useAllPlanets,
@@ -16,21 +17,21 @@ import {
 import { useFactions } from "../../context/factionDataHooks";
 import { useObjectives } from "../../context/objectiveDataHooks";
 import { useGameState } from "../../context/stateDataHooks";
-import { useSharedModal } from "../../data/SharedModal";
 import {
   continueGameAsync,
   endGameAsync,
   repealAgendaAsync,
 } from "../../dynamic/api";
+import { enterPassword } from "../../util/api/enterPassword";
 import { computeVPs } from "../../util/factions";
 import { getWormholeNexusSystemNumber } from "../../util/map";
 import { getMapString } from "../../util/options";
+import { fracturePlanetsOwned } from "../../util/planets";
 import { rem } from "../../util/util";
 import GameTimer from "../GameTimer/GameTimer";
 import GameMap from "../Map/GameMap";
 import UndoButton from "../UndoButton/UndoButton";
 import styles from "./Header.module.scss";
-import { enterPassword } from "../../util/api/enterPassword";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
@@ -53,7 +54,7 @@ export default function Header({ archive }: { archive?: boolean }) {
 
   const [qrCode, setQrCode] = useState<string>();
 
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   if (!qrCode && gameId) {
     QRCode.toDataURL(
@@ -154,6 +155,8 @@ export default function Header({ archive }: { archive?: boolean }) {
                     factions
                   )}
                   planets={allPlanets}
+                  expansions={options.expansions}
+                  hideFracture={!fracturePlanetsOwned(allPlanets)}
                 />
               </div>
             )

@@ -2,15 +2,17 @@
 
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { getFactions } from "../../server/data/factions";
 import { ClientOnlyHoverMenu } from "../../src/HoverMenu";
 import { InfoRow } from "../../src/InfoRow";
 import { SelectableRow } from "../../src/SelectableRow";
 import Chip from "../../src/components/Chip/Chip";
+import ExpansionIcon from "../../src/components/ExpansionIcon/ExpansionIcon";
 import FactionIcon from "../../src/components/FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../../src/components/FactionSelectRadialMenu/FactionSelectRadialMenu";
+import FormattedDescription from "../../src/components/FormattedDescription/FormattedDescription";
 import LabeledDiv from "../../src/components/LabeledDiv/LabeledDiv";
 import GameMap from "../../src/components/Map/GameMap";
 import NonGameHeader from "../../src/components/NonGameHeader/NonGameHeader";
@@ -18,11 +20,16 @@ import NumberInput from "../../src/components/NumberInput/NumberInput";
 import SiteLogo from "../../src/components/SiteLogo/SiteLogo";
 import Toggle from "../../src/components/Toggle/Toggle";
 import { Strings } from "../../src/components/strings";
+import { ModalContext } from "../../src/context/contexts";
+import CodexSVG from "../../src/icons/ui/Codex";
+import ProphecyofKingsSVG from "../../src/icons/ui/ProphecyOfKings";
+import ThundersEdgeMenuSVG from "../../src/icons/ui/ThundersEdgeMenu";
+import { buildMergeFunction } from "../../src/util/expansions";
 import { convertToFactionColor } from "../../src/util/factions";
 import { extractFactionIds, processMapString } from "../../src/util/map";
 import { mapStyleString } from "../../src/util/strings";
 import { Optional } from "../../src/util/types/types";
-import { rem } from "../../src/util/util";
+import { objectEntries, rem } from "../../src/util/util";
 import ColorPicker from "./components/ColorPicker";
 import PlayerNameInput from "./components/PlayerNameInput";
 import styles from "./setup.module.scss";
@@ -56,6 +63,7 @@ interface OptionsProps {
   options: SetupOptions;
   numFactions: number;
   maxFactions: number;
+  events: Record<EventId, TIEvent>;
 }
 
 function createOptions(setupOptions: SetupOptions) {
@@ -103,6 +111,7 @@ function MobileOptions({
   numFactions,
   maxFactions,
   reset,
+  events,
 }: OptionsProps & { reset: () => void }) {
   const mapStringRef = useRef<HTMLInputElement>(null);
   const intl = useIntl();
@@ -139,6 +148,17 @@ function MobileOptions({
       mapStyles = ["standard", "warp"];
       break;
   }
+
+  const filteredEvents = objectEntries(events)
+    .filter(([_, event]) => {
+      return options.expansions.has(event.expansion);
+    })
+    .sort(([_, a], [__, b]) => {
+      if (a.name > b.name) {
+        return 1;
+      }
+      return -1;
+    });
 
   return (
     <div className="flexColumn" style={{ width: "100%" }}>
@@ -217,49 +237,64 @@ function MobileOptions({
               description="Text on a button that will enable/disable the Prophecy of Kings expansion."
               defaultMessage="Prophecy of Kings"
             />
+            <ProphecyofKingsSVG />
           </Toggle>
-          <div
-            className="flexRow"
-            style={{
-              justifyContent: "flex-start",
-              fontFamily: "Myriad Pro",
-              gap: rem(4),
+          <Toggle
+            selected={options.expansions.has("THUNDERS EDGE")}
+            toggleFn={(prevValue) => {
+              toggleExpansion(!prevValue, "THUNDERS EDGE");
             }}
           >
-            Codices:
-            <Toggle
-              selected={options.expansions.has("CODEX ONE")}
-              toggleFn={(prevValue) => {
-                toggleExpansion(!prevValue, "CODEX ONE");
+            <FormattedMessage
+              id="SpNTY7"
+              description="Text on a button that will enable/disable the Thunder's Edge expansion."
+              defaultMessage="Thunder's Edge"
+            />
+          </Toggle>
+          {!options.expansions.has("THUNDERS EDGE") ? (
+            <div
+              className="flexRow"
+              style={{
+                justifyContent: "flex-start",
+                fontFamily: "Myriad Pro",
+                gap: rem(4),
               }}
             >
-              I
-            </Toggle>
-            <Toggle
-              selected={options.expansions.has("CODEX TWO")}
-              toggleFn={(prevValue) => {
-                toggleExpansion(!prevValue, "CODEX TWO");
-              }}
-            >
-              II
-            </Toggle>
-            <Toggle
-              selected={options.expansions.has("CODEX THREE")}
-              toggleFn={(prevValue) => {
-                toggleExpansion(!prevValue, "CODEX THREE");
-              }}
-            >
-              III
-            </Toggle>
-            <Toggle
-              selected={options.expansions.has("CODEX FOUR")}
-              toggleFn={(prevValue) => {
-                toggleExpansion(!prevValue, "CODEX FOUR");
-              }}
-            >
-              IV
-            </Toggle>
-          </div>
+              Codices:
+              <Toggle
+                selected={options.expansions.has("CODEX ONE")}
+                toggleFn={(prevValue) => {
+                  toggleExpansion(!prevValue, "CODEX ONE");
+                }}
+              >
+                I
+              </Toggle>
+              <Toggle
+                selected={options.expansions.has("CODEX TWO")}
+                toggleFn={(prevValue) => {
+                  toggleExpansion(!prevValue, "CODEX TWO");
+                }}
+              >
+                II
+              </Toggle>
+              <Toggle
+                selected={options.expansions.has("CODEX THREE")}
+                toggleFn={(prevValue) => {
+                  toggleExpansion(!prevValue, "CODEX THREE");
+                }}
+              >
+                III
+              </Toggle>
+              <Toggle
+                selected={options.expansions.has("CODEX FOUR")}
+                toggleFn={(prevValue) => {
+                  toggleExpansion(!prevValue, "CODEX FOUR");
+                }}
+              >
+                IV
+              </Toggle>
+            </div>
+          ) : null}
         </div>
       </LabeledDiv>
       <div
@@ -307,6 +342,57 @@ function MobileOptions({
                   </Toggle>
                 </div>
               </div>
+
+              {filteredEvents.length > 0 ? (
+                <div
+                  className="flexColumn"
+                  style={{ alignItems: "flex-start", maxWidth: "86vw" }}
+                >
+                  <FormattedMessage
+                    id="WVs5Hr"
+                    description="Event actions."
+                    defaultMessage="Events"
+                  />
+                  :
+                  <div
+                    style={{
+                      display: "grid",
+                      gridAutoFlow: "column",
+                      gridTemplateRows: "repeat(5, 1fr)",
+                      gridTemplateColumns: "repeat(5, 1fr)",
+                      justifyContent: "flex-start",
+                      alignContent: "flex-start",
+                      fontFamily: "Myriad Pro",
+                      gap: rem(4),
+                      overflowX: "scroll",
+                      width: "100%",
+                    }}
+                  >
+                    {filteredEvents.map(([eventId, event]) => {
+                      return (
+                        <Toggle
+                          key={eventId}
+                          selected={options.events.has(eventId)}
+                          toggleFn={(prevValue) =>
+                            toggleEvent(!prevValue, eventId)
+                          }
+                          style={{ justifyContent: "space-between" }}
+                          info={{
+                            title: event.name,
+                            description: (
+                              <FormattedDescription
+                                description={event.description}
+                              />
+                            ),
+                          }}
+                        >
+                          {event.name}
+                        </Toggle>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : null}
               <div>
                 <FormattedMessage
                   id="46dzNs"
@@ -393,93 +479,6 @@ function MobileOptions({
                   ></input>
                 </div>
               </div>
-              {options.expansions.has("CODEX FOUR") ? (
-                <div
-                  className="flexColumn"
-                  style={{ alignItems: "flex-start" }}
-                >
-                  <FormattedMessage
-                    id="WVs5Hr"
-                    description="Event actions."
-                    defaultMessage="Events"
-                  />
-                  :
-                  <div
-                    className="flexRow"
-                    style={{
-                      alignItems: "flex-start",
-                      padding: `0 ${rem(20)}`,
-                      fontFamily: "Myriad Pro",
-                      gap: rem(4),
-                    }}
-                  >
-                    <Toggle
-                      selected={options.events.has("Age of Commerce")}
-                      toggleFn={(prevValue) => {
-                        if (prevValue) {
-                          toggleEvent(false, "Age of Commerce");
-                        } else {
-                          toggleEvent(true, "Age of Commerce");
-                        }
-                      }}
-                    >
-                      <FormattedMessage
-                        id="GaVWfk"
-                        defaultMessage="Age of Commerce"
-                        description="Name of event in which players can trade more."
-                      />
-                    </Toggle>
-                    <Toggle
-                      selected={options.events.has("Age of Exploration")}
-                      toggleFn={(prevValue) => {
-                        if (prevValue) {
-                          toggleEvent(false, "Age of Exploration");
-                        } else {
-                          toggleEvent(true, "Age of Exploration");
-                        }
-                      }}
-                    >
-                      <FormattedMessage
-                        id="sZua2x"
-                        defaultMessage="Age of Exploration"
-                        description="Name of event in which players can add new tiles to the map."
-                      />
-                    </Toggle>
-                    <Toggle
-                      selected={options.events.has("Minor Factions")}
-                      toggleFn={(prevValue) => {
-                        if (prevValue) {
-                          toggleEvent(false, "Minor Factions");
-                        } else {
-                          toggleEvent(true, "Minor Factions");
-                        }
-                      }}
-                    >
-                      <FormattedMessage
-                        id="hxXb/S"
-                        defaultMessage="Minor Factions"
-                        description="Name of event in which other factions' home planets are on the board."
-                      />
-                    </Toggle>
-                    <Toggle
-                      selected={options.events.has("Total War")}
-                      toggleFn={(prevValue) => {
-                        if (prevValue) {
-                          toggleEvent(false, "Total War");
-                        } else {
-                          toggleEvent(true, "Total War");
-                        }
-                      }}
-                    >
-                      <FormattedMessage
-                        id="YcYpgP"
-                        defaultMessage="Total War"
-                        description="Name of event in which combat can be used to gain VPs."
-                      />
-                    </Toggle>
-                  </div>
-                </div>
-              ) : null}
             </div>
           </div>
         </ClientOnlyHoverMenu>
@@ -497,7 +496,10 @@ function Options({
   options,
   numFactions,
   maxFactions,
+  events,
 }: OptionsProps) {
+  const { openModal } = use(ModalContext);
+
   let variants: GameVariant[] = [];
   switch (numFactions) {
     case 3:
@@ -519,6 +521,17 @@ function Options({
       variants = ["normal", "alliance-separate", "alliance-combined"];
       break;
   }
+
+  const filteredEvents = objectEntries(events)
+    .filter(([_, event]) => {
+      return options.expansions.has(event.expansion);
+    })
+    .sort(([_, a], [__, b]) => {
+      if (a.name > b.name) {
+        return 1;
+      }
+      return -1;
+    });
 
   return (
     <div className="flexColumn" style={{ justifyContent: "flex-start" }}>
@@ -586,60 +599,86 @@ function Options({
         }
       >
         <div className="flexColumn" style={{ alignItems: "center" }}>
-          <Toggle
-            selected={options.expansions.has("POK")}
-            toggleFn={(prevValue) => {
-              toggleExpansion(!prevValue, "POK");
-            }}
-          >
-            <FormattedMessage
-              id="p9XVGB"
-              description="Text on a button that will enable/disable the Prophecy of Kings expansion."
-              defaultMessage="Prophecy of Kings"
-            />
-          </Toggle>
-          <div
-            className="flexRow"
-            style={{
-              justifyContent: "flex-start",
-              fontFamily: "Myriad Pro",
-              gap: rem(4),
-            }}
-          >
-            Codices:
+          <div className="flexRow">
             <Toggle
-              selected={options.expansions.has("CODEX ONE")}
+              selected={options.expansions.has("POK")}
               toggleFn={(prevValue) => {
-                toggleExpansion(!prevValue, "CODEX ONE");
+                toggleExpansion(!prevValue, "POK");
               }}
             >
-              I
+              <FormattedMessage
+                id="p9XVGB"
+                description="Text on a button that will enable/disable the Prophecy of Kings expansion."
+                defaultMessage="Prophecy of Kings"
+              />
+              <div style={{ width: rem(12), marginLeft: rem(4) }}>
+                <ProphecyofKingsSVG />
+              </div>
             </Toggle>
             <Toggle
-              selected={options.expansions.has("CODEX TWO")}
+              selected={options.expansions.has("THUNDERS EDGE")}
               toggleFn={(prevValue) => {
-                toggleExpansion(!prevValue, "CODEX TWO");
+                toggleExpansion(!prevValue, "THUNDERS EDGE");
               }}
             >
-              II
-            </Toggle>
-            <Toggle
-              selected={options.expansions.has("CODEX THREE")}
-              toggleFn={(prevValue) => {
-                toggleExpansion(!prevValue, "CODEX THREE");
-              }}
-            >
-              III
-            </Toggle>
-            <Toggle
-              selected={options.expansions.has("CODEX FOUR")}
-              toggleFn={(prevValue) => {
-                toggleExpansion(!prevValue, "CODEX FOUR");
-              }}
-            >
-              IV
+              <FormattedMessage
+                id="SpNTY7"
+                description="Text on a button that will enable/disable the Thunder's Edge expansion."
+                defaultMessage="Thunder's Edge"
+              />
+              <div style={{ width: rem(14), marginLeft: rem(4) }}>
+                <ThundersEdgeMenuSVG />
+              </div>
             </Toggle>
           </div>
+          {!options.expansions.has("THUNDERS EDGE") ? (
+            <div
+              className="flexRow"
+              style={{
+                justifyContent: "flex-start",
+                fontFamily: "Myriad Pro",
+                gap: rem(4),
+              }}
+            >
+              Codices{" "}
+              <div style={{ width: rem(12) }}>
+                <CodexSVG />
+              </div>
+              :
+              <Toggle
+                selected={options.expansions.has("CODEX ONE")}
+                toggleFn={(prevValue) => {
+                  toggleExpansion(!prevValue, "CODEX ONE");
+                }}
+              >
+                I
+              </Toggle>
+              <Toggle
+                selected={options.expansions.has("CODEX TWO")}
+                toggleFn={(prevValue) => {
+                  toggleExpansion(!prevValue, "CODEX TWO");
+                }}
+              >
+                II
+              </Toggle>
+              <Toggle
+                selected={options.expansions.has("CODEX THREE")}
+                toggleFn={(prevValue) => {
+                  toggleExpansion(!prevValue, "CODEX THREE");
+                }}
+              >
+                III
+              </Toggle>
+              <Toggle
+                selected={options.expansions.has("CODEX FOUR")}
+                toggleFn={(prevValue) => {
+                  toggleExpansion(!prevValue, "CODEX FOUR");
+                }}
+              >
+                IV
+              </Toggle>
+            </div>
+          ) : null}
         </div>
       </LabeledDiv>
       <ClientOnlyHoverMenu
@@ -687,7 +726,7 @@ function Options({
                 </Toggle>
               </div>
             </div>
-            {options.expansions.has("CODEX FOUR") ? (
+            {filteredEvents.length > 0 ? (
               <div className="flexColumn" style={{ alignItems: "flex-start" }}>
                 <FormattedMessage
                   id="WVs5Hr"
@@ -696,78 +735,40 @@ function Options({
                 />
                 :
                 <div
-                  className="flexRow"
                   style={{
-                    alignItems: "flex-start",
+                    display: "grid",
+                    gridAutoFlow: "column",
+                    gridTemplateRows: "repeat(5, 1fr)",
+                    gridTemplateColumns: "repeat(5, 1fr)",
+                    justifyContent: "flex-start",
+                    alignContent: "flex-start",
                     padding: `0 ${rem(20)}`,
                     fontFamily: "Myriad Pro",
                     gap: rem(4),
                   }}
                 >
-                  <Toggle
-                    selected={options.events.has("Age of Commerce")}
-                    toggleFn={(prevValue) => {
-                      if (prevValue) {
-                        toggleEvent(false, "Age of Commerce");
-                      } else {
-                        toggleEvent(true, "Age of Commerce");
-                      }
-                    }}
-                  >
-                    <FormattedMessage
-                      id="GaVWfk"
-                      defaultMessage="Age of Commerce"
-                      description="Name of event in which players can trade more."
-                    />
-                  </Toggle>
-                  <Toggle
-                    selected={options.events.has("Age of Exploration")}
-                    toggleFn={(prevValue) => {
-                      if (prevValue) {
-                        toggleEvent(false, "Age of Exploration");
-                      } else {
-                        toggleEvent(true, "Age of Exploration");
-                      }
-                    }}
-                  >
-                    <FormattedMessage
-                      id="sZua2x"
-                      defaultMessage="Age of Exploration"
-                      description="Name of event in which players can add new tiles to the map."
-                    />
-                  </Toggle>
-                  <Toggle
-                    selected={options.events.has("Minor Factions")}
-                    toggleFn={(prevValue) => {
-                      if (prevValue) {
-                        toggleEvent(false, "Minor Factions");
-                      } else {
-                        toggleEvent(true, "Minor Factions");
-                      }
-                    }}
-                  >
-                    <FormattedMessage
-                      id="hxXb/S"
-                      defaultMessage="Minor Factions"
-                      description="Name of event in which other factions' home planets are on the board."
-                    />
-                  </Toggle>
-                  <Toggle
-                    selected={options.events.has("Total War")}
-                    toggleFn={(prevValue) => {
-                      if (prevValue) {
-                        toggleEvent(false, "Total War");
-                      } else {
-                        toggleEvent(true, "Total War");
-                      }
-                    }}
-                  >
-                    <FormattedMessage
-                      id="YcYpgP"
-                      defaultMessage="Total War"
-                      description="Name of event in which combat can be used to gain VPs."
-                    />
-                  </Toggle>
+                  {filteredEvents.map(([eventId, event]) => {
+                    return (
+                      <Toggle
+                        key={eventId}
+                        selected={options.events.has(eventId)}
+                        toggleFn={(prevValue) =>
+                          toggleEvent(!prevValue, eventId)
+                        }
+                        style={{ justifyContent: "space-between" }}
+                        info={{
+                          title: event.name,
+                          description: (
+                            <FormattedDescription
+                              description={event.description}
+                            />
+                          ),
+                        }}
+                      >
+                        {event.name}
+                      </Toggle>
+                    );
+                  })}
                 </div>
               </div>
             ) : null}
@@ -960,17 +961,34 @@ function FactionSelect({
 
   const isSpeaker = speaker === factionIndex;
 
-  const filteredFactions = Object.values(availableFactions ?? {}).filter(
-    (faction) => {
-      if (faction.expansion === "BASE") {
-        return true;
-      }
-      if (!options.expansions.has(faction.expansion)) {
-        return false;
-      }
+  const omegaMergeFn = buildMergeFunction(Array.from(options.expansions));
+
+  const updatedFactions: Record<FactionId, BaseFaction> = {} as Record<
+    FactionId,
+    BaseFaction
+  >;
+  for (const [factionId, faction] of objectEntries(availableFactions)) {
+    const updatedFaction = omegaMergeFn(faction);
+
+    updatedFaction.abilities = updatedFaction.abilities.map(omegaMergeFn);
+    updatedFaction.promissories = updatedFaction.promissories.map(omegaMergeFn);
+    updatedFaction.units = updatedFaction.units.map(omegaMergeFn);
+
+    updatedFactions[factionId] = updatedFaction;
+  }
+
+  const filteredFactions = Object.values(updatedFactions).filter((faction) => {
+    if (faction.locked) {
+      return false;
+    }
+    if (faction.expansion === "BASE") {
       return true;
     }
-  );
+    if (!options.expansions.has(faction.expansion)) {
+      return false;
+    }
+    return true;
+  });
   filteredFactions.sort((a, b) => {
     if (a.name > b.name) {
       return 1;
@@ -1078,14 +1096,19 @@ function FactionSelect({
             {faction.id ? (
               <>
                 <SelectableRow
-                  itemId={availableFactions[faction.id].name}
+                  itemId={updatedFactions[faction.id].name}
                   removeItem={() => selectFaction(undefined)}
                   style={{ height: rem(32.67) }}
                 >
-                  {availableFactions[faction.id].name}
+                  {updatedFactions[faction.id].name}
                   <SetupFactionPanel
-                    faction={availableFactions[faction.id]}
+                    faction={updatedFactions[faction.id]}
                     options={createOptions(options)}
+                    altFaction={
+                      faction.id === "Firmament"
+                        ? updatedFactions["Obsidian"]
+                        : undefined
+                    }
                   />
                 </SelectableRow>
                 <ColorPicker
@@ -1111,18 +1134,18 @@ function FactionSelect({
                     gridTemplateRows: "repeat(10, minmax(0, 1fr))",
                     gap: rem(4),
                     padding: rem(8),
-                    maxWidth: `min(80vw, ${rem(600)})`,
+                    maxWidth: `min(80vw, ${rem(700)})`,
                     overflowX: "auto",
                   }}
                 >
                   {filteredFactions.map((faction) => {
+                    const faded = selectedFactions.includes(faction.id);
                     return (
                       <button
                         key={faction.id}
-                        className={`flexRow ${
-                          selectedFactions.includes(faction.id) ? "faded" : ""
-                        }`}
+                        className={`flexRow ${faded ? "faded" : ""}`}
                         style={{
+                          position: "relative",
                           justifyContent: "flex-start",
                           alignItems: "center",
                           fontSize: rem(16),
@@ -1131,6 +1154,24 @@ function FactionSelect({
                       >
                         <FactionIcon factionId={faction.id} size={20} />
                         {faction.name}
+                        {faction.expansion !== "BASE" ? (
+                          <>
+                            <div style={{ width: rem(4) }}></div>
+                            <div
+                              style={{
+                                position: "absolute",
+                                bottom: rem(4),
+                                right: rem(4),
+                              }}
+                            >
+                              <ExpansionIcon
+                                expansion={faction.expansion}
+                                size={8}
+                                color={faded ? "#555" : undefined}
+                              />
+                            </div>
+                          </>
+                        ) : null}
                       </button>
                     );
                   })}
@@ -1185,6 +1226,7 @@ const INITIAL_OPTIONS: SetupOptions = {
     "CODEX TWO",
     "CODEX THREE",
     "CODEX FOUR",
+    "THUNDERS EDGE",
   ]),
   events: new Set<EventId>(),
   "game-variant": "normal",
@@ -1200,9 +1242,11 @@ const INITIAL_OPTIONS: SetupOptions = {
 export default function SetupPage({
   factions,
   colors,
+  events,
 }: {
   factions: Record<FactionId, BaseFaction>;
   colors: string[];
+  events: Record<EventId, TIEvent>;
 }) {
   const [speaker, setSpeaker] = useState(0);
   const [setupFactions, setFactions] = useState([...INITIAL_FACTIONS]);
@@ -1413,6 +1457,9 @@ export default function SetupPage({
         if (!options.expansions.has(faction.expansion)) {
           return false;
         }
+        if (faction.locked) {
+          return false;
+        }
         return true;
       }
     );
@@ -1554,6 +1601,14 @@ export default function SetupPage({
     const currentOptions = { ...options };
     if (value) {
       currentOptions.expansions.add(expansion);
+
+      // Add codices if using Thunder's Edge. Some components will not be usable otherwise.
+      if (expansion === "THUNDERS EDGE") {
+        currentOptions.expansions.add("CODEX ONE");
+        currentOptions.expansions.add("CODEX TWO");
+        currentOptions.expansions.add("CODEX THREE");
+        currentOptions.expansions.add("CODEX FOUR");
+      }
     } else {
       currentOptions.expansions.delete(expansion);
       setFactions(
@@ -1628,6 +1683,7 @@ export default function SetupPage({
             options={options}
             numFactions={numFactions}
             maxFactions={maxFactions}
+            events={events}
           />
         </div>
         <div
@@ -1839,6 +1895,8 @@ export default function SetupPage({
                 }
                 factions={activeFactions}
                 hideLegend
+                hideFracture
+                expansions={Array.from(options.expansions)}
               />
             </div>
           </div>
@@ -2114,6 +2172,7 @@ export default function SetupPage({
             numFactions={numFactions}
             maxFactions={maxFactions}
             reset={reset}
+            events={events}
           />
           {setupFactions.map((_, index) => {
             if (index >= numFactions) {

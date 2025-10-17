@@ -1,0 +1,13 @@
+.OptionalLineContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.OptionalLineContainer:has(.OptionalLine:only-child) {
+  display: none;
+}
+
+.OptionalLine:only-child {
+  display: none;
+}

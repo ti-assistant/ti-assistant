@@ -5,6 +5,7 @@ interface TimerDisplayProps {
   time: number;
   width?: number;
   label?: string;
+  hideHours?: boolean;
   style?: CSSProperties;
 }
 
@@ -12,6 +13,7 @@ export default function TimerDisplay({
   time,
   width = 152,
   label,
+  hideHours = false,
   style = {},
 }: TimerDisplayProps) {
   let hours = Math.min(Math.floor(time / 3600), 99);
@@ -27,6 +29,11 @@ export default function TimerDisplay({
     template =
       "minmax(0, 2fr) minmax(0, 1fr) repeat(2, minmax(0, 2fr)) minmax(0, 1fr) repeat(2, minmax(0, 2fr))";
     width = Math.floor((width * 9) / 10);
+  }
+  if (hideHours && hours === 0) {
+    template =
+      "repeat(2, minmax(0, 2fr)) minmax(0, 1fr) repeat(2, minmax(0, 2fr))";
+    width = Math.floor((width * 6) / 10);
   }
 
   const timerStyle: CSSProperties = {
@@ -65,8 +72,10 @@ export default function TimerDisplay({
         </div>
       ) : null}
       {tenHours > 0 ? <span style={numberStyle}>{tenHours}</span> : null}
-      <span style={numberStyle}>{oneHours}</span>
-      <span style={numberStyle}>:</span>
+      {!hideHours || hours > 0 ? (
+        <span style={numberStyle}>{oneHours}</span>
+      ) : null}
+      {!hideHours || hours > 0 ? <span style={numberStyle}>:</span> : null}
       <span style={numberStyle}>{tenMinutes}</span>
       <span style={numberStyle}>{oneMinutes}</span>
       <span style={numberStyle}>:</span>

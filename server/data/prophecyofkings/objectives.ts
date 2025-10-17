@@ -354,20 +354,22 @@ export default function getProphecyOfKingsObjectives(
         description: "Title of Objective: Fight With Precision",
         defaultMessage: "Fight With Precision",
       }),
-      omega: {
-        description: intl.formatMessage({
-          id: "Objectives.Fight With Precision.Omega.Description",
-          description: "Description for Objective: Fight With Precision Ω",
-          defaultMessage:
-            "Destroy the last of a player's fighters in the active system during the anti-fighter barrage step",
-        }),
-        name: intl.formatMessage({
-          id: "Objectives.Fight With Precision.Omega.Title",
-          description: "Title of Objective: Fight With Precision Ω",
-          defaultMessage: "Fight With Precision Ω",
-        }),
-        expansion: "CODEX THREE",
-      },
+      omegas: [
+        {
+          description: intl.formatMessage({
+            id: "Objectives.Fight With Precision.Omega.Description",
+            description: "Description for Objective: Fight With Precision Ω",
+            defaultMessage:
+              "Destroy the last of a player's fighters in the active system during the anti-fighter barrage step",
+          }),
+          name: intl.formatMessage({
+            id: "Objectives.Fight With Precision.Omega.Title",
+            description: "Title of Objective: Fight With Precision Ω",
+            defaultMessage: "Fight With Precision Ω",
+          }),
+          expansion: "CODEX THREE",
+        },
+      ],
       phase: "ACTION",
       points: 1,
       type: "SECRET",
@@ -726,7 +728,7 @@ export default function getProphecyOfKingsObjectives(
       name: intl.formatMessage({
         id: "Objectives.Tomb + Crown of Emphidia.Title",
         description: "Title of Objective: Tomb + Crown of Emphidia",
-        defaultMessage: "Tomb + Crown of Emphidia",
+        defaultMessage: "Crown of Emphidia",
       }),
       points: 1,
       replaces: "The Crown of Emphidia",

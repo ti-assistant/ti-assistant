@@ -1,16 +1,16 @@
-import { FieldValue, getFirestore } from "firebase-admin/firestore";
+import { getFirestore } from "firebase-admin/firestore";
+import { NextResponse } from "next/server";
 import {
   canEditGame,
   getTimers,
   getTimersInTransaction,
 } from "../../../../server/util/fetch";
-import { NextResponse } from "next/server";
 
 export async function POST(
   req: Request,
-  { params }: { params: { gameId: string } }
+  { params }: { params: Promise<{ gameId: string }> }
 ) {
-  const gameId = params.gameId;
+  const { gameId } = await params;
 
   const canEdit = await canEditGame(gameId);
   if (!canEdit) {
@@ -35,63 +35,14 @@ export async function POST(
         });
       }
 
-      switch (data.action) {
-        case "SET_GAME_TIMER": {
-          if (data.timer == undefined) {
-            return new Response("Missing info", {
-              status: 422,
-            });
-          }
-          const timer = timers.game ?? 0;
-          if (data.timer > timer) {
-            t.update(timersRef, {
-              game: data.timer,
-              lastUpdate: data.timestamp,
-            });
-          }
-          break;
-        }
-        case "SAVE_FACTION_TIMER": {
-          if (data.timer == undefined || !data.faction) {
-            return new Response("Missing info", {
-              status: 422,
-            });
-          }
-          const timer = timers[data.faction] ?? 0;
-          if (data.timer > timer) {
-            t.update(timersRef, {
-              [data.faction]: data.timer,
-              lastUpdate: data.timestamp,
-            });
-          }
-          break;
-        }
-        case "SAVE_AGENDA_TIMER": {
-          if (data.timer == undefined) {
-            return new Response("Missing info", {
-              status: 422,
-            });
-          }
-          const timerName =
-            (data.agendaNum ?? 1) === 1 ? "firstAgenda" : "secondAgenda";
-          const timer = timers[timerName] ?? 0;
-          if (data.timer > timer) {
-            t.update(timersRef, {
-              [timerName]: data.timer,
-              lastUpdate: data.timestamp,
-            });
-          }
-          break;
-        }
-        case "RESET_AGENDA_TIMERS": {
-          t.update(timersRef, {
-            firstAgenda: FieldValue.delete(),
-            secondAgenda: FieldValue.delete(),
-            lastUpdate: data.timestamp,
-          });
-          break;
-        }
+      if ((timers.game ?? 0) > (data.timers.game ?? 0)) {
+        return NextResponse.json(timers);
       }
+
+      // Paused should be set elsewhere.
+      delete data.timers.paused;
+
+      t.update(timersRef, data.timers);
     });
   } catch (e) {
     console.log("Transaction failed", e);

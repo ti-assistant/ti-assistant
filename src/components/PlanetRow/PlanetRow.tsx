@@ -1,6 +1,6 @@
-import Image from "next/image";
+import { use } from "react";
 import { FormattedMessage } from "react-intl";
-import { SelectableRow } from "../../SelectableRow";
+import { ModalContext } from "../../context/contexts";
 import {
   useAttachments,
   useGameId,
@@ -8,26 +8,28 @@ import {
   useViewOnly,
 } from "../../context/dataHooks";
 import { useFactions } from "../../context/factionDataHooks";
-import { useSharedModal } from "../../data/SharedModal";
 import { addAttachmentAsync, removeAttachmentAsync } from "../../dynamic/api";
+import ArcaneCitadelSVG from "../../icons/attachments/ArcaneCitadel";
+import CouncilPreserveSVG from "../../icons/attachments/CouncilPreserve";
+import DemilitarizedZoneSVG from "../../icons/attachments/DemilitarizedZone";
+import OrbitalFoundriesSVG from "../../icons/attachments/OrbitalFoundries";
+import TombOfEmphidiaSVG from "../../icons/attachments/TombOfEmphidia";
+import BlueTechSVG from "../../icons/techs/BlueTech";
+import GreenTechSVG from "../../icons/techs/GreenTech";
+import RedTechSVG from "../../icons/techs/RedTech";
+import YellowTechSVG from "../../icons/techs/YellowTech";
+import HitSVG from "../../icons/ui/Hit";
+import { SelectableRow } from "../../SelectableRow";
 import { getFactionColor } from "../../util/factions";
+import { applyPlanetAttachments } from "../../util/planets";
 import { Optional } from "../../util/types/types";
 import { rem } from "../../util/util";
 import LegendaryPlanetIcon from "../LegendaryPlanetIcon/LegendaryPlanetIcon";
+import RelicPlanetIcon from "../LegendaryPlanetIcon/RelicPlanetIcon";
 import { ModalContent } from "../Modal/Modal";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 import Toggle from "../Toggle/Toggle";
-import DemilitarizedZoneSVG from "../../icons/attachments/DemilitarizedZone";
-import GreenTechSVG from "../../icons/techs/GreenTech";
-import BlueTechSVG from "../../icons/techs/BlueTech";
-import YellowTechSVG from "../../icons/techs/YellowTech";
-import RedTechSVG from "../../icons/techs/RedTech";
-import TombOfEmphidiaSVG from "../../icons/attachments/TombOfEmphidia";
-import { applyPlanetAttachments } from "../../util/planets";
-import CouncilPreserveSVG from "../../icons/attachments/CouncilPreserve";
-import ArcaneCitadelSVG from "../../icons/attachments/ArcaneCitadel";
-import OrbitalFoundriesSVG from "../../icons/attachments/OrbitalFoundries";
 
 interface PlanetRowOpts {
   hideAttachButton?: boolean;
@@ -56,7 +58,7 @@ export default function PlanetRow({
   const factions = useFactions();
   const viewOnly = useViewOnly();
 
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   function canAttach() {
     return (
@@ -75,17 +77,17 @@ export default function PlanetRow({
         if (planetAttachments.includes(attachment.id)) {
           return true;
         }
+        if (planet.locked) {
+          return false;
+        }
         if (planet.id === "Mecatol Rex" && attachment.id !== "Nano-Forge") {
           return false;
         }
         if (attachment.id === "Terraform" && factionId === "Titans of Ul") {
           return false;
         }
-        if (attachment.required.type !== undefined) {
-          if (
-            attachment.required.type !== planet.type &&
-            planet.type !== "ALL"
-          ) {
+        if (attachment.required.type) {
+          if (!planet.types.includes(attachment.required.type)) {
             return false;
           }
         }
@@ -190,9 +192,10 @@ export default function PlanetRow({
             }}
           >
             <PlanetIcon
-              type={planet.type}
+              types={planet.types}
               factionId={planet.faction}
               size={28}
+              relic={planet.id === "The Triad"}
             />
           </div>
         </div>
@@ -215,6 +218,16 @@ export default function PlanetRow({
             ) : null}
           </div>
         ) : null}
+        {/* 
+        TODO: Add ability to mark bastion space docks and adjust The Triad.
+        {factionId === "Last Bastion" || previousOwner === "Last Bastion" ? (
+          <Toggle
+            selected={!!planet.bastionSpaceDock}
+            toggleFn={(prevValue: boolean) => {}}
+          >
+            <UnitIcon type="Space Dock" />
+          </Toggle>
+        ) : null} */}
         <ResourcesIcon
           resources={planet.resources}
           influence={planet.influence}
@@ -222,7 +235,7 @@ export default function PlanetRow({
         />
         <div
           style={{
-            margin: `0 ${rem(4)} ${rem(8)}`,
+            // margin: `0 ${rem(4)} ${rem(8)}`,
             width: rem(24),
           }}
         >
@@ -295,18 +308,25 @@ function PlanetAttributes({
       case "space-cannon":
         return (
           <div
+            className="flexRow"
             style={{
+              gap: 0,
               width: rem(36),
               height: rem(22),
             }}
           >
-            ✹✹✹
+            <HitSVG />
+            <HitSVG />
+            <HitSVG />
           </div>
         );
+      case "relic":
+        return <RelicPlanetIcon />;
       default:
         return null;
     }
   }
+
   return (
     <div
       style={{
@@ -371,10 +391,7 @@ function AttachMenu({ planetId }: AttachMenuProps) {
           return false;
         }
         if (attachment.required.type !== undefined) {
-          if (
-            attachment.required.type !== updatedPlanet.type &&
-            updatedPlanet.type !== "ALL"
-          ) {
+          if (!updatedPlanet.types.includes(attachment.required.type)) {
             return false;
           }
         }

@@ -1,0 +1,117 @@
+.hoverParent {
+  position: relative;
+}
+
+.hoverParent.hover {
+  z-index: 1005;
+}
+
+.hoverRadial {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  justify-content: center;
+  white-space: nowrap;
+  z-index: 1;
+
+  top: calc(var(--size) * -1);
+  left: calc(var(--size) * -1);
+  width: calc(var(--size) * 3);
+  height: calc(var(--size) * 3);
+
+  clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
+
+  transition: z-index 200ms, width 200ms, height 200ms, top 200ms, left 200ms;
+}
+
+.hoverBackground {
+  position: absolute;
+  border-radius: 100%;
+  border: round(calc(0.5 * var(--border-size)), 0.5px) solid var(--border-color);
+  background-color: var(--light-bg);
+  top: 0;
+  left: 0;
+  width: calc(var(--size) * 1);
+  height: calc(var(--size) * 1);
+  // z-index: -1;
+  transition: top 100ms linear, left 100ms linear, width 100ms linear,
+    height 100ms linear, opacity 0ms linear 100ms;
+  opacity: 0;
+}
+
+.hoverParent.hover > .hoverRadial {
+  // clip-path: circle(100%);
+  // clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%);
+  top: calc(var(--size) * -1);
+  left: calc(var(--size) * -1);
+  width: calc(var(--size) * 3);
+  height: calc(var(--size) * 3);
+  padding-left: 0;
+  padding-top: 0;
+  clip-path: polygon(0% 0%, 0% 101%, 101% 101%, 101% 0%);
+}
+
+.hoverParent.hover > .hoverBackground {
+  top: calc(var(--size) * -1);
+  left: calc(var(--size) * -1);
+  width: calc(var(--size) * 3);
+  height: calc(var(--size) * 3);
+  opacity: 1;
+  transition: top 250ms, left 250ms, width 250ms, height 250ms;
+}
+
+.faded {
+  opacity: 0.25;
+}
+
+.tag {
+  position: absolute;
+  background-color: var(--light-bg);
+  border-radius: 100%;
+  margin-top: 58%;
+  margin-left: 60%;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.factionSelect {
+  position: absolute;
+  cursor: pointer;
+  border-radius: 100%;
+  transition: top 250ms, left 250ms, opacity 150ms;
+
+  top: calc(var(--initial-y) * 1);
+  left: calc(var(--initial-x) * 1);
+  opacity: 0;
+
+  font-size: 1.125rem;
+}
+
+.factionSelect > div {
+  position: relative;
+}
+
+.hoverParent.hover > .hoverRadial > .factionSelect {
+  top: calc(var(--y-pos) * 1);
+  left: calc(var(--x-pos) * 1);
+  opacity: var(--opacity);
+  transition: top 300ms, left 300ms;
+}
+
+.factionSelect:hover {
+  background-color: var(--hovered-bg);
+}
+
+.centerCircle {
+  position: relative;
+  border-radius: 100%;
+  border: round(calc(0.5 * var(--border-size)), 0.5px) solid var(--border-color);
+  box-shadow: 0px 0px 8px black;
+  background-color: var(--light-bg);
+}
+
+.centerCircle > div {
+  position: relative;
+}

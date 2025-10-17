@@ -1,5 +1,7 @@
+import { Techs } from "../context/techDataHooks";
 import { hasTech } from "./api/techs";
 import { Optional } from "./types/types";
+import { objectEntries } from "./util";
 
 export function getTechColor(tech: Tech) {
   return getTechTypeColor(tech.type);
@@ -27,7 +29,7 @@ export function filterToOwnedTechs(
   faction: Faction
 ) {
   return Object.values(techs).filter((tech) => {
-    return !!hasTech(faction, tech.id);
+    return !!hasTech(faction, tech);
   });
 }
 
@@ -39,7 +41,7 @@ export function filterToUnownedTechs(
   faction: Faction
 ) {
   return Object.values(techs).filter((tech) => {
-    return !hasTech(faction, tech.id);
+    return !hasTech(faction, tech);
   });
 }
 
@@ -104,9 +106,12 @@ export function getFactionPreReqs(
     return prereqs;
   }
 
-  for (const ownedTech of Object.keys(faction.techs)) {
-    const tech = techs[ownedTech as TechId];
-    if (!tech) {
+  for (const [techId, factionTech] of objectEntries(faction.techs)) {
+    if (factionTech.state === "purged") {
+      continue;
+    }
+    const tech = techs[techId];
+    if (!tech || tech.state === "purged") {
       continue;
     }
     prereqs[tech.type] += 1;
@@ -156,17 +161,18 @@ export function canResearchTech(
   options: Options,
   prereqs: Record<TechType, number>,
   faction: Optional<Faction>,
-  isTechOwned: boolean
+  isTechOwned: boolean,
+  techs: Techs
 ) {
   const localPrereqs = structuredClone(prereqs);
 
   let usedAida = true;
   let usedJolNar = true;
   if (faction) {
-    if (hasTech(faction, "Inheritance Systems")) {
+    if (hasTech(faction, techs["Inheritance Systems"])) {
       return true;
     }
-    if (hasTech(faction, "AI Development Algorithm")) {
+    if (hasTech(faction, techs["AI Development Algorithm"])) {
       usedAida = false;
     }
     switch (faction.id) {
@@ -185,8 +191,27 @@ export function canResearchTech(
     }
   }
 
+  const synergy = faction?.breakthrough?.synergy;
+
   for (const req of tech.prereqs) {
     if (localPrereqs[req] === 0) {
+      if (
+        faction?.breakthrough.state &&
+        faction.breakthrough.state !== "locked"
+      ) {
+        if (synergy && synergy.left === req) {
+          if (localPrereqs[synergy.right] > 0) {
+            localPrereqs[synergy.right] -= 1;
+            continue;
+          }
+        }
+        if (synergy && synergy.right === req) {
+          if (localPrereqs[synergy.left] > 0) {
+            localPrereqs[synergy.left] -= 1;
+            continue;
+          }
+        }
+      }
       if (!usedAida && tech.type === "UPGRADE") {
         usedAida = true;
         continue;
@@ -205,6 +230,9 @@ export function canResearchTech(
 export function sortTechsByPreReqAndExpansion(techs: Tech[]) {
   techs.sort((a, b) => {
     if (a.prereqs.length === b.prereqs.length) {
+      if (a.expansion === b.expansion) {
+        return a.name > b.name ? 1 : -1;
+      }
       if (a.expansion > b.expansion) {
         return 1;
       }

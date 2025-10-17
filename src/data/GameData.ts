@@ -12,6 +12,7 @@ import { getSystems } from "../../server/data/systems";
 import { getTechs } from "../../server/data/techs";
 import { objectEntries } from "../util/util";
 import {
+  buildCompleteActionCards,
   buildCompleteAgendas,
   buildCompleteAttachments,
   buildCompleteComponents,
@@ -26,6 +27,9 @@ import {
   buildCompleteSystems,
   buildCompleteTechs,
 } from "./gameDataBuilder";
+import { getEvents } from "../../server/data/events";
+import { getActionCards } from "../../server/data/actionCards";
+import { buildMergeFunction } from "../util/expansions";
 
 // let getBaseAgendas: DataFunction<AgendaId, BaseAgenda> = () => {
 //   return {};
@@ -106,11 +110,13 @@ import {
 //   getBaseTechs = module.getBaseTechs;
 // });
 
-function buildBaseData(intl: IntlShape): BaseData {
+export function buildBaseData(intl: IntlShape): BaseData {
   return {
+    actionCards: getActionCards(intl),
     agendas: getAgendas(intl),
     attachments: getAttachments(intl),
     components: getComponents(intl),
+    events: getEvents(intl),
     factions: getFactions(intl),
     leaders: getLeaders(intl),
     objectives: getObjectives(intl),
@@ -126,6 +132,15 @@ export function buildGameData(storedGameData: StoredGameData, intl: IntlShape) {
   const baseData = buildBaseData(intl);
 
   return buildCompleteGameData(storedGameData, baseData);
+}
+
+export function buildActionCards(
+  storedGameData: StoredGameData,
+  intl: IntlShape
+) {
+  const baseData = buildBaseData(intl);
+
+  return buildCompleteActionCards(baseData, storedGameData);
 }
 
 export function buildAgendas(storedGameData: StoredGameData, intl: IntlShape) {
@@ -214,50 +229,38 @@ export function buildLeaders(storedGameData: StoredGameData, intl: IntlShape) {
 
 export function buildBaseTechs(options: Options, intl: IntlShape) {
   const techs: Partial<Record<TechId, Tech>> = {};
+
+  const omegaMergeFn = buildMergeFunction(options.expansions);
+
   Object.values(getTechs(intl)).forEach((tech) => {
     // Maybe filter out PoK technologies.
     if (!options.expansions.includes("POK") && tech.expansion === "POK") {
       return;
     }
-    const techCopy = { ...tech };
 
-    // Maybe update techs for codices.
-    const omegas = tech.omegas ?? [];
-    for (const omega of omegas) {
-      if (!options.expansions.includes(omega.expansion)) {
-        continue;
-      }
-      techCopy.name = omega.name;
-      techCopy.description = omega.description;
-    }
-
-    techs[tech.id] = techCopy;
+    techs[tech.id] = omegaMergeFn(tech);
   });
+
+  // Handle replacement.
+  for (const tech of Object.values(techs)) {
+    if (tech.type !== "UPGRADE" && tech.deprecates) {
+      delete techs[tech.deprecates];
+    }
+  }
 
   return techs;
 }
 
 export function buildBaseLeaders(options: Options, intl: IntlShape) {
   const leaders: Record<string, BaseLeader> = {};
+  const omegaMergeFn = buildMergeFunction(options.expansions);
   objectEntries(getLeaders(intl)).forEach(([leaderId, leader]) => {
     // Maybe filter out PoK technologies.
     if (!options.expansions.includes("POK") && leader.expansion === "POK") {
       return;
     }
-    const leaderCopy = { ...leader };
 
-    // Maybe update techs for codices.
-    if (leader.omega && options.expansions.includes(leader.omega.expansion)) {
-      leaderCopy.abilityName =
-        leader.omega.abilityName ?? leaderCopy.abilityName;
-      leaderCopy.name = leader.omega.name ?? leaderCopy.name;
-      leaderCopy.description =
-        leader.omega.description ?? leaderCopy.description;
-      leaderCopy.unlock = leader.omega.unlock ?? leaderCopy.unlock;
-      leaderCopy.timing = leader.omega.timing ?? leaderCopy.timing;
-    }
-
-    leaders[leaderId] = leaderCopy;
+    leaders[leaderId] = omegaMergeFn(leader);
   });
 
   return leaders;

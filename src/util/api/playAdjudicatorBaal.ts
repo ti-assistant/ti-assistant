@@ -1,11 +1,8 @@
-import DataManager from "../../context/DataManager";
 import {
   PlayAdjudicatorBaalHandler,
   UndoAdjudicatorBaalHandler,
 } from "../model/playAdjudicatorBaal";
-import { updateGameData } from "./handler";
-import { updateActionLog } from "./update";
-import { poster } from "./util";
+import dataUpdate from "./dataUpdate";
 
 export function playAdjudicatorBaal(gameId: string, systemId: SystemId) {
   const data: GameUpdateData = {
@@ -15,28 +12,7 @@ export function playAdjudicatorBaal(gameId: string, systemId: SystemId) {
     },
   };
 
-  const now = Date.now();
-
-  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
-
-  DataManager.update((storedGameData) => {
-    const handler = new PlayAdjudicatorBaalHandler(storedGameData, data);
-
-    if (!handler.validate()) {
-      return storedGameData;
-    }
-
-    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
-    updateGameData(storedGameData, handler.getUpdates());
-
-    storedGameData.lastUpdate = now;
-
-    return storedGameData;
-  });
-
-  return updatePromise.catch((_) => {
-    DataManager.reset();
-  });
+  return dataUpdate(gameId, data, PlayAdjudicatorBaalHandler);
 }
 
 export function undoAdjudicatorBaal(gameId: string, systemId: SystemId) {
@@ -47,26 +23,5 @@ export function undoAdjudicatorBaal(gameId: string, systemId: SystemId) {
     },
   };
 
-  const now = Date.now();
-
-  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
-
-  DataManager.update((storedGameData) => {
-    const handler = new UndoAdjudicatorBaalHandler(storedGameData, data);
-
-    if (!handler.validate()) {
-      return storedGameData;
-    }
-
-    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
-    updateGameData(storedGameData, handler.getUpdates());
-
-    storedGameData.lastUpdate = now;
-
-    return storedGameData;
-  });
-
-  return updatePromise.catch((_) => {
-    DataManager.reset();
-  });
+  return dataUpdate(gameId, data, UndoAdjudicatorBaalHandler);
 }

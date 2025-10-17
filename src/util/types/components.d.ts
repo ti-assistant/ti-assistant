@@ -1,21 +1,17 @@
 type ComponentType =
   | "ABILITY"
+  | "BREAKTHROUGH"
   | "CARD"
   | "EVENT"
   | "EXPLORATION"
   | "FLAGSHIP"
   | "LEADER"
+  | "PLANET"
   | "PROMISSORY"
   | "RELIC"
   | "TECH";
 
-type ComponentState =
-  | "exhausted"
-  | "purged"
-  | "used"
-  | "one-left"
-  | "readied"
-  | "locked";
+type ComponentState = "exhausted" | "purged" | "used" | "readied" | "locked";
 
 type Timing =
   | "AGENDA_PHASE"
@@ -36,14 +32,7 @@ interface BaseLeader {
   faction?: FactionId;
   id: LeaderId;
   name: string;
-  omega?: {
-    abilityName?: string;
-    description: string;
-    expansion: Expansion;
-    name: string;
-    timing?: Timing;
-    unlock?: string;
-  };
+  omegas?: Omega<BaseLeader>[];
   replaces?: string;
   subFaction?: FactionId;
   timing: Timing;
@@ -74,10 +63,11 @@ interface BaseComponent {
   expansion: Expansion;
   event?: EventId;
   faction?: FactionId;
-  id: ComponentId | RelicId | TechId | LeaderId | EventId;
+  id: BreakthroughId | ComponentId | RelicId | TechId | LeaderId | EventId;
   leader?: LeaderType;
   name: string;
   replaces?: string;
+  requiresTech?: TechId;
   subFaction?: FactionId;
   type: Exclude<ComponentType, "TECH">;
   unlock?: string;
@@ -89,13 +79,10 @@ interface GameComponent {
 
 type Component = (BaseComponent | BaseTechComponent) & GameComponent;
 
-namespace DiscordantStars {
-  type ComponentId = "Emergency Deployment";
-}
-
 type ComponentId =
   | BaseGame.ComponentId
   | ProphecyOfKings.ComponentId
+  | ThundersEdge.ComponentId
   | CodexOne.ComponentId
   | CodexFour.ComponentId
   | DiscordantStars.ComponentId;

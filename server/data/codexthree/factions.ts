@@ -19,6 +19,17 @@ export default function getCodexThreeFactions(
             defaultMessage:
               "During setup, choose an unplayed faction from among the Mentak, the Xxcha and the Argent Flight; take that faction's home system, command tokens and control markers. Additionally, take the Keleres Hero that corresponds to that faction.",
           }),
+          omegas: [
+            {
+              description: intl.formatMessage({
+                id: "Council Keleres.Abilities.The Tribunii.Thunder's Edge.Description.",
+                description: "Description for Faction Ability: The Tribunii",
+                defaultMessage:
+                  "During setup, choose a Keleres hero that corresponds to an unused faction; take that faction's home system, command tokens and control tokens. The unchosen Keleres heroes are not used.",
+              }),
+              expansion: "THUNDERS EDGE",
+            },
+          ],
         },
         {
           name: intl.formatMessage({
@@ -45,8 +56,39 @@ export default function getCodexThreeFactions(
             defaultMessage:
               "You may spend 1 influence at the start of your turn to treat all laws as blank until the end of your turn.",
           }),
+          omegas: [
+            {
+              description: intl.formatMessage({
+                id: "Council Keleres.Abilities.Law's Order.Thunder's Edge.Description",
+                description: "Description for Faction Ability: Law's Order",
+                defaultMessage:
+                  "You may spend 1 trade good or 1 commodity at the start of any player's turn to treat all laws as blank until the end of that turn.",
+              }),
+              expansion: "THUNDERS EDGE",
+            },
+          ],
         },
       ],
+      breakthrough: {
+        name: intl.formatMessage({
+          id: "Council Keleres.Breakthrough.IIHQ Modernization.Title",
+          description: "Title of Faction Breakthrough: IIHQ Modernization",
+          defaultMessage: "I.I.H.Q. Modernization",
+        }),
+        description: intl.formatMessage(
+          {
+            id: "Council Keleres.Breakthrough.IIHQ Modernization.Description",
+            description:
+              "Description of Faction Breakthrough: IIHQ Modernization",
+            defaultMessage:
+              "When you gain this card, gain the Custodia Vigilia planet card and its legendary planet ability card.{br}You are neighbors with all players that have units or control planets in or adjacent to the Mecatol Rex system.",
+          },
+          { br: "\n\n" }
+        ),
+        id: "IIHQ Modernization",
+        synergy: { left: "YELLOW", right: "GREEN" },
+        timing: "PASSIVE",
+      },
       colors: {
         Blue: 0.5,
         Orange: 0.35,
@@ -71,6 +113,11 @@ export default function getCodexThreeFactions(
         description: "Name of Faction: Council Keleres",
         defaultMessage: "Council Keleres",
       }),
+      omegas: [
+        {
+          expansion: "THUNDERS EDGE",
+        },
+      ],
       promissories: [
         {
           name: intl.formatMessage({
@@ -125,6 +172,17 @@ export default function getCodexThreeFactions(
             description: "Title of Faction Unit: Artemiris",
             defaultMessage: "Artemiris",
           }),
+          omegas: [
+            {
+              expansion: "THUNDERS EDGE",
+              description: intl.formatMessage({
+                id: "Council Keleres.Units.Artemiris.Omega.Description",
+                description: "Description for Faction Unit: Artemiris",
+                defaultMessage:
+                  "Other players must spend 2 influence to activate this system.",
+              }),
+            },
+          ],
           stats: {
             cost: 8,
             combat: "7(x2)",

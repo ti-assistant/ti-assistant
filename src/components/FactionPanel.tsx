@@ -1,6 +1,6 @@
-import { PropsWithChildren, ReactNode } from "react";
+import { PropsWithChildren, ReactNode, use, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { UnitStat } from "../TechRow";
+import { ModalContext } from "../context/contexts";
 import {
   useGameId,
   useLeaders,
@@ -8,16 +8,20 @@ import {
   useViewOnly,
 } from "../context/dataHooks";
 import { useFaction } from "../context/factionDataHooks";
-import { useSharedModal } from "../data/SharedModal";
 import {
   addTechAsync,
   removeTechAsync,
+  updateBreakthroughStateAsync,
   updateLeaderStateAsync,
 } from "../dynamic/api";
+import FlipSVG from "../icons/ui/Flip";
+import HitSVG from "../icons/ui/Hit";
+import SynergySVG from "../icons/ui/Synergy";
 import { hasTech } from "../util/api/techs";
 import { getFactionColor, getFactionName } from "../util/factions";
 import { leaderTypeString } from "../util/strings";
 import { sortTechs } from "../util/techs";
+import { Optional } from "../util/types/types";
 import { rem } from "../util/util";
 import { CollapsibleSection } from "./CollapsibleSection";
 import FactionIcon from "./FactionIcon/FactionIcon";
@@ -26,6 +30,119 @@ import FormattedDescription from "./FormattedDescription/FormattedDescription";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import TechIcon from "./TechIcon/TechIcon";
 import UnitIcon from "./Units/Icons";
+import UnitStats from "./UnitStats/UnitStats";
+
+export function UnitStat({
+  name,
+  stat,
+}: {
+  name: ReactNode;
+  stat: number | string | ReactNode;
+}) {
+  return (
+    <div
+      className="centered"
+      style={{
+        width: rem(82),
+        boxSizing: "border-box",
+        border: "1px solid #eee",
+        borderRadius: rem(10),
+      }}
+    >
+      <div
+        style={{
+          fontSize: rem(24),
+          borderBottom: "1px solid #eee",
+        }}
+      >
+        {stat}
+      </div>
+      <div
+        style={{
+          lineHeight: rem(18),
+          fontSize: rem(11),
+          padding: `0 ${rem(6)}`,
+        }}
+      >
+        {name}
+      </div>
+    </div>
+  );
+}
+
+function UnitCost({
+  cost,
+  type,
+}: {
+  cost: Optional<string | number>;
+  type: UnitType;
+}) {
+  if (typeof cost === "string") {
+    if (cost.includes("(x2)")) {
+      return (
+        <div
+          className="flexRow"
+          style={{ gap: rem(12), justifyContent: "center" }}
+        >
+          {cost.replace("(x2)", "")}
+          <div className="flexColumn" style={{ gap: 0 }}>
+            <UnitIcon type={type} size={12} />
+            <UnitIcon type={type} size={12} />
+          </div>
+        </div>
+      );
+    }
+  }
+  return cost;
+}
+
+function UnitCombat({ combat }: { combat: Optional<string | number> }) {
+  if (typeof combat === "string") {
+    if (combat.includes("(x2)")) {
+      return (
+        <div
+          className="flexRow"
+          style={{ gap: rem(8), justifyContent: "center" }}
+        >
+          {combat.replace("(x2)", "")}
+          <div className="flexColumn" style={{ gap: 0, width: rem(12) }}>
+            <HitSVG />
+            <HitSVG />
+          </div>
+        </div>
+      );
+    } else if (combat.includes("(x3)")) {
+      return (
+        <div
+          className="flexRow"
+          style={{ gap: rem(4), justifyContent: "center" }}
+        >
+          {combat.replace("(x3)", "")}
+          <div
+            className="flexColumn"
+            style={{
+              gap: 0,
+              width: rem(24),
+              flexWrap: "wrap",
+              height: rem(24),
+            }}
+          >
+            <span style={{ width: rem(12) }}>
+              <HitSVG />
+            </span>
+            <span style={{ width: rem(12) }}>
+              <HitSVG />
+            </span>
+            <span style={{ width: rem(12) }}>
+              <HitSVG />
+            </span>
+          </div>
+        </div>
+      );
+    }
+  }
+  return combat;
+}
 
 function AbilitySection({
   leftLabel,
@@ -120,7 +237,7 @@ function FactionTech({
               })}
             </div>
           ) : null}
-          <UnitStatBlock stats={tech.stats} />
+          <UnitStats stats={tech.stats} type={tech.unitType} size={rem(82)} />
           {!viewOnly ? (
             <div className="flexRow" style={{ width: "100%" }}>
               <button
@@ -154,6 +271,8 @@ function FactionUnit({
   viewUpgrade: boolean;
   viewOnly?: boolean;
 }) {
+  const [reverse, setReverse] = useState(false);
+
   const gameId = useGameId();
   const techs = useTechs();
   const abilities = unit.abilities ?? [];
@@ -164,12 +283,16 @@ function FactionUnit({
       <FactionTech tech={upgradeTech} faction={faction} viewOnly={viewOnly} />
     );
   }
+  let localUnit = unit;
+  if (reverse && unit.reverse) {
+    localUnit = unit.reverse;
+  }
   return (
     <AbilitySection
-      key={unit.name}
+      key={localUnit.name}
       leftLabel={
         <div className="flexRow" style={{ height: "100%" }}>
-          {unit.name}
+          {localUnit.name}
           {upgradeTech ? (
             <div className="flexRow" style={{ gap: rem(2) }}>
               {upgradeTech.prereqs.map((prereq, index) => {
@@ -180,10 +303,14 @@ function FactionUnit({
         </div>
       }
       rightLabel={
-        <UnitIcon type={unit.type} color="var(--neutral-border)" size={18} />
+        <UnitIcon
+          type={localUnit.type}
+          color="var(--neutral-border)"
+          size={18}
+        />
       }
     >
-      <FormattedDescription description={unit.description} />
+      <FormattedDescription description={localUnit.description} />
       {abilities.length > 0 ? (
         <div
           style={{
@@ -202,7 +329,7 @@ function FactionUnit({
           })}
         </div>
       ) : null}
-      <UnitStatBlock stats={unit.stats} />
+      <UnitStats stats={localUnit.stats} type={localUnit.type} size={rem(82)} />
       {!viewOnly && upgradeTech ? (
         <div className="flexRow" style={{ width: "100%" }}>
           <button
@@ -219,11 +346,26 @@ function FactionUnit({
           </button>
         </div>
       ) : null}
+      {unit.reverse ? (
+        <div
+          className="flexRow"
+          style={{
+            position: "absolute",
+            right: rem(4),
+            bottom: 0,
+            width: rem(24),
+            cursor: "pointer",
+          }}
+          onClick={() => setReverse(!reverse)}
+        >
+          <FlipSVG />
+        </div>
+      ) : null}
     </AbilitySection>
   );
 }
 
-function UnitStatBlock({ stats }: { stats?: UnitStats }) {
+function UnitStatBlock({ stats, type }: { stats?: UnitStats; type: UnitType }) {
   if (!stats) {
     return null;
   }
@@ -250,7 +392,7 @@ function UnitStatBlock({ stats }: { stats?: UnitStats }) {
                 description="Label for unit stat block - cost of the unit."
               />
             }
-            stat={stats.cost ?? "-"}
+            stat={stats.cost ? <UnitCost cost={stats.cost} type={type} /> : "-"}
           />
         ) : (
           <div></div>
@@ -264,7 +406,7 @@ function UnitStatBlock({ stats }: { stats?: UnitStats }) {
                 description="Label for unit stat block - combat value of the unit."
               />
             }
-            stat={stats.combat ?? "-"}
+            stat={stats.combat ? <UnitCombat combat={stats.combat} /> : "-"}
           />
         ) : (
           <div></div>
@@ -308,7 +450,6 @@ function FactionPanelContent({
 }: {
   faction: Faction;
   options: Options;
-  viewOnly?: boolean;
 }) {
   const intl = useIntl();
   const innerFaction = useFaction(faction.id);
@@ -317,6 +458,10 @@ function FactionPanelContent({
   const leaders = useLeaders();
   const techs = useTechs();
   const viewOnly = useViewOnly();
+
+  if (!innerFaction) {
+    return null;
+  }
 
   if (!innerFaction) {
     return null;
@@ -567,9 +712,14 @@ function FactionPanelContent({
         <CollapsibleSection
           title={
             <FormattedMessage
-              id="2dmEIv"
-              defaultMessage="Abilities"
+              id="I54oy6"
+              defaultMessage="{count, plural, one {Ability} other {Abilities}}"
               description="Header for a section listing out abilities."
+              values={{
+                count:
+                  faction.abilities.length +
+                  (options.expansions.includes("THUNDERS EDGE") ? 1 : 0),
+              }}
             />
           }
           style={{ width: "100%" }}
@@ -579,7 +729,7 @@ function FactionPanelContent({
             style={{
               width: "100%",
               gap: rem(4),
-              padding: rem(4),
+              padding: `0 ${rem(4)} ${rem(4)}`,
               fontSize: rem(14),
             }}
           >
@@ -593,6 +743,9 @@ function FactionPanelContent({
                 </AbilitySection>
               );
             })}
+            {options.expansions.includes("THUNDERS EDGE") ? (
+              <FactionBreakthrough faction={faction} />
+            ) : null}
           </div>
         </CollapsibleSection>
         <CollapsibleSection
@@ -610,7 +763,7 @@ function FactionPanelContent({
             className="flexColumn"
             style={{
               gap: rem(4),
-              padding: rem(4),
+              padding: `0 ${rem(4)} ${rem(4)}`,
               fontSize: rem(14),
               width: "100%",
             }}
@@ -641,7 +794,7 @@ function FactionPanelContent({
               className="flexColumn"
               style={{
                 gap: rem(4),
-                padding: rem(4),
+                padding: `0 ${rem(4)} ${rem(4)}`,
                 fontSize: rem(14),
               }}
             >
@@ -677,13 +830,17 @@ function FactionPanelContent({
             className="flexColumn"
             style={{
               gap: rem(4),
-              padding: rem(4),
+              padding: `0 ${rem(4)} ${rem(4)}`,
               fontSize: rem(14),
             }}
           >
             {faction.units.map((unit, index) => {
+              const unitUpgradeTech = unit.upgrade
+                ? techs[unit.upgrade]
+                : undefined;
               const showUpgrade =
-                (unit.upgrade && hasTech(innerFaction, unit.upgrade)) ?? false;
+                (unit.upgrade && hasTech(innerFaction, unitUpgradeTech)) ??
+                false;
               return (
                 <FactionUnit
                   key={unit.name}
@@ -701,14 +858,129 @@ function FactionPanelContent({
   );
 }
 
+function FactionBreakthrough({ faction }: { faction: Faction }) {
+  const [reverse, setReverse] = useState(false);
+  const gameId = useGameId();
+  const viewOnly = useViewOnly();
+
+  if (!faction.breakthrough.name) {
+    return null;
+  }
+
+  let name = faction.breakthrough.name.toUpperCase();
+  let description: Optional<string> = faction.breakthrough.description;
+  let abilities: string[] = [];
+  if (reverse && faction.breakthrough.reverse) {
+    name = faction.breakthrough.reverse.name;
+    description = faction.breakthrough.reverse.description;
+    abilities = faction.breakthrough.reverse.abilities ?? [];
+  }
+
+  return (
+    <AbilitySection
+      leftLabel={
+        <div className="flexRow">
+          {name}
+          {!viewOnly ? (
+            <div
+              className="flexRow"
+              onClick={() => {
+                const state: ComponentState =
+                  !faction.breakthrough.state ||
+                  faction.breakthrough.state === "locked"
+                    ? "readied"
+                    : "locked";
+                updateBreakthroughStateAsync(gameId, faction.id, state);
+              }}
+              style={{
+                gap: rem(4),
+                cursor: "pointer",
+              }}
+            >
+              {!faction.breakthrough.state ||
+              faction.breakthrough.state === "locked" ? (
+                <>&#128274;</>
+              ) : (
+                <>&#128275;</>
+              )}
+            </div>
+          ) : null}
+        </div>
+      }
+      rightLabel={
+        faction.breakthrough.synergy ? (
+          <div className="flexRow" style={{ gap: rem(2) }}>
+            <TechIcon type={faction.breakthrough.synergy.left} size={16} />
+            <div className="flexRow" style={{ width: rem(24) }}>
+              <SynergySVG />
+            </div>
+            <TechIcon type={faction.breakthrough.synergy.right} size={16} />
+          </div>
+        ) : null
+      }
+      label={
+        reverse && faction.breakthrough.reverse ? (
+          <UnitIcon
+            type={faction.breakthrough.reverse.type}
+            color="var(--neutral-border)"
+            size={18}
+          />
+        ) : undefined
+      }
+    >
+      <FormattedDescription description={description} />
+      {abilities.length > 0 ? (
+        <div
+          style={{
+            display: "grid",
+            gridAutoFlow: "row",
+            whiteSpace: "nowrap",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            fontFamily: "Slider",
+            paddingLeft: rem(8),
+            rowGap: rem(2),
+            width: "100%",
+          }}
+        >
+          {abilities.map((ability) => {
+            return <div key={ability}>{ability.toUpperCase()}</div>;
+          })}
+        </div>
+      ) : null}
+      {reverse && faction.breakthrough.reverse ? (
+        <UnitStats
+          stats={faction.breakthrough.reverse.stats}
+          type={faction.breakthrough.reverse.type}
+          size={rem(82)}
+        />
+      ) : null}
+      {faction.breakthrough.reverse ? (
+        <div
+          className="flexRow"
+          style={{
+            position: "absolute",
+            right: rem(4),
+            bottom: 0,
+            width: rem(24),
+            cursor: "pointer",
+          }}
+          onClick={() => setReverse(!reverse)}
+        >
+          <FlipSVG />
+        </div>
+      ) : null}
+    </AbilitySection>
+  );
+}
+
 export default function FactionPanel({
-  faction,
+  factionId,
   options,
 }: {
-  faction: Faction;
+  factionId: FactionId;
   options: Options;
 }) {
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   return (
     <>
@@ -719,7 +991,9 @@ export default function FactionPanel({
           zIndex: 1,
         }}
         onClick={() =>
-          openModal(<FactionPanelModal faction={faction} options={options} />)
+          openModal(
+            <FactionPanelModal factionId={factionId} options={options} />
+          )
         }
       >
         &#x24D8;
@@ -729,12 +1003,16 @@ export default function FactionPanel({
 }
 
 function FactionPanelModal({
-  faction,
+  factionId,
   options,
 }: {
-  faction: Faction;
+  factionId: FactionId;
   options: Options;
 }) {
+  const faction = useFaction(factionId);
+  if (!faction) {
+    return null;
+  }
   return (
     <div
       className="flexColumn"

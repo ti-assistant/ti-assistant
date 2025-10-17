@@ -1,0 +1,114 @@
+.ThundersEdgeGrid {
+  width: 100%;
+  height: 100%;
+  min-height: calc(50dvh);
+  display: grid;
+  gap: 0.5rem;
+
+  padding-bottom: 1.2rem;
+
+  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+
+  grid-template-areas:
+    "left expedition right"
+    "left other right";
+}
+
+.factionIconRow {
+  --num-factions: 6;
+  display: grid;
+  width: 100%;
+  grid-auto-flow: row;
+  grid-template-columns: repeat(var(--num-factions), 1fr);
+  justify-content: center;
+  align-content: center;
+  // height: 1.25rem;
+}
+@media (hover: hover) and (pointer: fine) {
+  .factionTechRow:not(.viewOnly):not(.selected):hover {
+    opacity: 0.6;
+  }
+  .factionTechRow:not(.viewOnly).selected:hover {
+    opacity: 0.8;
+  }
+}
+
+.factionTechRow.selected {
+  opacity: 1;
+}
+
+.factionIcon.selected {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.factionIconWrapper {
+  width: 100%;
+  height: 1.5rem;
+}
+
+.factionTechWrapper:not(.viewOnly) {
+  cursor: pointer;
+}
+
+.factionIcon {
+  position: relative;
+  opacity: 0.2;
+
+  width: 1rem;
+  height: 1rem;
+  border-radius: 100%;
+  transition: width 50ms, height 50ms, opacity 50ms;
+}
+
+.factionIcon:not(.viewOnly) {
+  cursor: pointer;
+}
+
+.factionIcon.selected {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .factionIcon:not(.viewOnly):not(.selected):hover {
+    opacity: 0.75;
+    width: 1.375rem;
+    height: 1.375rem;
+  }
+}
+
+.factionIcon::before {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: calc(50%);
+  top: calc(50%);
+  // background-color: #eee;
+  box-shadow: 0px 0px 12px 8px var(--color);
+  opacity: 0;
+  transition: opacity 250ms;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .factionIcon:not(.viewOnly):hover::before {
+    opacity: 1;
+  }
+}
+
+.selected {
+  opacity: 1;
+}
+
+@media only screen and (max-width: 56.25rem) {
+  .ThundersEdgeGrid {
+    display: flex;
+    flex-direction: column;
+    grid-auto-flow: row;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+
+    padding-bottom: 1rem;
+  }
+}

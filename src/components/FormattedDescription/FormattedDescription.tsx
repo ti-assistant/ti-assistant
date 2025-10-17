@@ -34,10 +34,16 @@ const ABILITY_REGEX_LIST = [
   // PLANETARY SHIELD
   /PLANETARY SHIELD/gi,
   /PLANETARER SCHILD/gi,
+  // Unit values
+  /MOVE/gi,
+  /COMBAT/gi,
+  /CAPACITY/gi,
+  /COST/gi,
   // Faction specific keywords
   /MITOSIS/gi,
   /ZELLTEILUNG/gi,
   /AWAKEN/gi,
+  /COALESCENCE/gi,
   /ERWECKEN/gi,
   /STAR FORGE/gi,
   /STERNENSCHMIEDE/gi,
@@ -53,12 +59,20 @@ const ABILITY_REGEX_LIST = [
   /ZERBRECHLICH/gi,
   /INDOCTRINATION/gi,
   /MISSIONIEREN/gi,
+  /SCHEMING/gi,
   /STALL TACTICS/gi,
   /VERZÖGERUNGSTAKTIK/gi,
+  /FABRICATION/gi,
+  /BLACK MARKET FORGERY/gi,
+  // Tech specific keywords
+  /DARK ENERGY TAP/gi,
+  /X-89 BACTERIAL WEAPON/gi,
   // DS Faction specific keywords
   /RALLY TO THE CAUSE/gi,
   /RECYCLED MATERIALS/gi,
   /AUTONETIC MEMORY/gi,
+  // Other
+  /SYNERGY/gi,
 ];
 
 const FULL_REGEX_LIST = [...KEYWORDS_REGEX_LIST, ...ABILITY_REGEX_LIST];

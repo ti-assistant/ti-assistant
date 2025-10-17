@@ -12,19 +12,6 @@ type FactionUpdateAction =
 
 type SubFaction = "Argent Flight" | "Mentak Coalition" | "Xxcha Kingdom";
 
-interface FactionUpdateData {
-  action?: FactionUpdateAction;
-  faction?: string;
-  factions?: Record<string, { votes: number }>;
-  planet?: string;
-  planets?: string[];
-  ready?: boolean;
-  subFaction?: SubFaction;
-  tech?: string;
-  timestamp?: number;
-  vps?: number;
-}
-
 type UnitType =
   | "Carrier"
   | "Cruiser"
@@ -59,14 +46,13 @@ interface StartsWith {
 interface Ability {
   name: string;
   description: string;
+  omegas?: Omega<Ability>[];
 }
 
 interface PromissoryNote {
   name: string;
   description: string;
-  omega?: {
-    expansion: Expansion;
-  } & Partial<PromissoryNote>;
+  omegas?: Omega<PromissoryNote>[];
 }
 
 interface Unit {
@@ -76,20 +62,35 @@ interface Unit {
   name: string;
   stats: UnitStats;
   type: UnitType;
-  omega?: {
-    expansion: Expansion;
-  } & Partial<Unit>;
+  omegas?: Omega<Unit>[];
   upgrade?: TechId;
+  reverse?: Unit;
+}
+
+interface Breakthrough {
+  description: string;
+  id: BreakthroughId;
+  name: string;
+  synergy?: {
+    left: TechType;
+    right: TechType;
+  };
+  timing: Timing;
+  state?: ComponentState;
+  reverse?: Unit;
 }
 
 interface BaseFaction {
   abilities: Ability[];
+  breakthrough: Breakthrough;
   colors: Record<string, number>;
   colorList?: string[];
   commodities: number;
   expansion: Expansion;
   id: FactionId;
+  locked?: boolean; // Prevents a faction from being selected.
   name: string;
+  omegas?: Omega<BaseFaction>[];
   promissories: PromissoryNote[];
   shortname: string;
   startswith: StartsWith;
@@ -98,6 +99,8 @@ interface BaseFaction {
 
 interface GameFaction {
   alliancePartner?: FactionId;
+  alliances?: FactionId[];
+  breakthrough?: Partial<Breakthrough>;
   color: string;
   commander: LeaderState;
   hero: LeaderState;
@@ -121,4 +124,7 @@ type FactionId =
   | BaseGame.FactionId
   | ProphecyOfKings.FactionId
   | CodexThree.FactionId
+  | ThundersEdge.FactionId
   | DiscordantStars.FactionId;
+
+type BreakthroughId = ThundersEdge.BreakthroughId;

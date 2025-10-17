@@ -1,10 +1,12 @@
 export default function YellowTechSVG({
+  color = "#eee",
   outline = false,
 }: {
+  color?: string;
   outline?: boolean;
 }) {
   const fill = outline ? "none" : "#757700";
-  const stroke = outline ? "#eee" : "#f3e739";
+  const stroke = outline ? color : "#f3e739";
   return (
     <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
       <g transform="translate(-120.95 -105.13)" fill={fill} stroke={stroke}>

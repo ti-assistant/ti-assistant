@@ -1,11 +1,11 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { CSSProperties, useContext, useEffect, useState } from "react";
+import { CSSProperties, use, useContext, useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { FactionSummary } from "../../FactionSummary";
 import { Loader } from "../../Loader";
-import { SettingsContext } from "../../context/contexts";
+import { ModalContext, SettingsContext } from "../../context/contexts";
 import {
   useAllPlanets,
   useGameId,
@@ -16,14 +16,17 @@ import {
 } from "../../context/dataHooks";
 import { useFactions } from "../../context/factionDataHooks";
 import { useGameState } from "../../context/stateDataHooks";
-import { useSharedModal } from "../../data/SharedModal";
 import { setSpeakerAsync } from "../../dynamic/api";
 import MapMenuSVG from "../../icons/ui/MapMenu";
 import ObjectivesMenuSVG from "../../icons/ui/ObjectivesMenu";
 import PlanetMenuSVG from "../../icons/ui/PlanetMenu";
+import PromissoryMenuSVG from "../../icons/ui/PromissoryMenu";
+import RelicMenuSVG from "../../icons/ui/RelicMenu";
+import ThundersEdgeMenuSVG from "../../icons/ui/ThundersEdgeMenu";
 import { getFactionColor, getFactionName } from "../../util/factions";
 import { getWormholeNexusSystemNumber } from "../../util/map";
 import { getMapString } from "../../util/options";
+import { fracturePlanetsOwned } from "../../util/planets";
 import { Optional } from "../../util/types/types";
 import { rem } from "../../util/util";
 import Chip from "../Chip/Chip";
@@ -32,6 +35,7 @@ import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRad
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import GameMap from "../Map/GameMap";
 import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
+import ThundersEdgePanel from "../ThundersEdgePanel";
 import { Strings } from "../strings";
 import styles from "./Footer.module.scss";
 
@@ -61,6 +65,42 @@ const FactionPanel = dynamic(() => import("../FactionPanel"), {
   ssr: false,
 });
 
+function shouldBlockSpeakerUpdates(
+  phase: Phase,
+  strategyCards: Partial<Record<StrategyCardId, StrategyCard>>
+) {
+  if (phase === "END") {
+    return true;
+  }
+  if (phase !== "STRATEGY") {
+    return false;
+  }
+
+  const selectedCards = Object.values(strategyCards).filter(
+    (card) => !!card.faction
+  );
+
+  return selectedCards.length !== 0;
+}
+
+function getNumButtons(
+  phase: Phase,
+  strategyCards: Partial<Record<StrategyCardId, StrategyCard>>,
+  options: Options
+) {
+  let buttons = 3;
+  if (!shouldBlockSpeakerUpdates(phase, strategyCards)) {
+    buttons++;
+  }
+  if (
+    options.expansions.includes("POK") ||
+    options.expansions.includes("THUNDERS EDGE")
+  ) {
+    buttons++;
+  }
+  return buttons;
+}
+
 export default function Footer() {
   const allPlanets = useAllPlanets();
   const factions = useFactions();
@@ -73,7 +113,7 @@ export default function Footer() {
 
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
-  const { openModal } = useSharedModal();
+  const { openModal } = use(ModalContext);
 
   const [selectedFaction, setSelectedFaction] =
     useState<Optional<FactionId>>(undefined);
@@ -88,10 +128,10 @@ export default function Footer() {
   }, [factions]);
 
   function shouldBlockSpeakerUpdates() {
-    if (state?.phase === "END") {
+    if (state.phase === "END") {
       return true;
     }
-    if (state?.phase !== "STRATEGY") {
+    if (state.phase !== "STRATEGY") {
       return false;
     }
 
@@ -144,7 +184,7 @@ export default function Footer() {
 
   const mapString = getMapString(options, mapOrderedFactions.length);
 
-  const numButtons = shouldBlockSpeakerUpdates() ? 3 : 4;
+  const numButtons = getNumButtons(state.phase, strategyCards, options);
   return (
     <>
       <button
@@ -212,6 +252,8 @@ export default function Footer() {
                       mapString={mapString ?? ""}
                       mapStyle={options["map-style"] ?? "standard"}
                       planets={allPlanets}
+                      expansions={options.expansions}
+                      hideFracture={!fracturePlanetsOwned(allPlanets)}
                     />
                   </div>
                 </div>
@@ -283,7 +325,7 @@ export default function Footer() {
         </div>
         <div
           className="flexRow"
-          onClick={() => openModal(<PlanetModalContent viewOnly={viewOnly} />)}
+          onClick={() => openModal(<PlanetModalContent />)}
         >
           <button>
             <div
@@ -303,6 +345,33 @@ export default function Footer() {
             defaultMessage="Update Planets"
           />
         </div>
+        {options.expansions.includes("THUNDERS EDGE") ||
+        options.expansions.includes("POK") ? (
+          <div
+            className="flexRow"
+            onClick={() => openModal(<ThundersEdgeModalContent />)}
+          >
+            <button>
+              <div
+                className="flexRow"
+                style={{
+                  position: "relative",
+                  width: "60%",
+                  height: "60%",
+                }}
+              >
+                <ThundersEdgeMenuSVG />
+              </div>
+            </button>
+            <span style={{ whiteSpace: "nowrap" }}>
+              <FormattedMessage
+                id="sgqLYB"
+                defaultMessage="Other"
+                description="Text on a button used to select a non-listed value"
+              />
+            </span>
+          </div>
+        ) : null}
       </div>
       <LabeledDiv
         className={styles.UpdateBox}
@@ -393,9 +462,7 @@ export default function Footer() {
         </div>
         <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
           <button
-            onClick={() =>
-              openModal(<PlanetModalContent viewOnly={viewOnly} />)
-            }
+            onClick={() => openModal(<PlanetModalContent />)}
             style={{
               position: "relative",
               width: rem(34),
@@ -417,6 +484,67 @@ export default function Footer() {
           </button>
           <span className={styles.ButtonLabel}>Planets</span>
         </div>
+        {options.expansions.includes("THUNDERS EDGE") ||
+        options.expansions.includes("POK") ? (
+          <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
+            <button
+              onClick={() => openModal(<ThundersEdgeModalContent />)}
+              style={{
+                display: "flex",
+                position: "relative",
+                width: rem(34),
+                height: rem(34),
+                padding: rem(2),
+                borderRadius: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <div
+                className="flexRow"
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(4, 1fr)",
+                  gridAutoFlow: "row",
+                  position: "relative",
+                  width: rem(30),
+                  height: rem(30),
+                  gap: rem(1),
+                }}
+              >
+                <div
+                  style={{
+                    width: "calc(1.875rem / 2)",
+                    height: "100%",
+                    gridColumn: "2 / 4",
+                  }}
+                >
+                  <RelicMenuSVG />
+                </div>
+                <div
+                  style={{
+                    width: "calc(1.875rem / 2)",
+                    height: "100%",
+                    gridColumn: "3 / 4",
+                  }}
+                >
+                  {options.expansions.includes("THUNDERS EDGE") ? (
+                    <ThundersEdgeMenuSVG />
+                  ) : (
+                    <PromissoryMenuSVG />
+                  )}
+                </div>
+              </div>
+            </button>
+            <span className={styles.ButtonLabel} style={{ whiteSpace: "wrap" }}>
+              <FormattedMessage
+                id="sgqLYB"
+                defaultMessage="Other"
+                description="Text on a button used to select a non-listed value"
+              />
+            </span>
+          </div>
+        ) : null}
       </LabeledDiv>
       <div className={styles.FactionBox}>
         <LabeledDiv
@@ -429,10 +557,7 @@ export default function Footer() {
               selectedFaction ? (
                 <div className="flexRow" style={{ gap: 0 }}>
                   {getFactionName(factions[selectedFaction])}
-                  <FactionPanel
-                    faction={factions[selectedFaction] as Faction}
-                    options={options}
-                  />
+                  <FactionPanel factionId={selectedFaction} options={options} />
                 </div>
               ) : (
                 "Loading..."
@@ -587,7 +712,7 @@ function TechModalContent({ viewOnly }: { viewOnly?: boolean }) {
   );
 }
 
-function PlanetModalContent({ viewOnly }: { viewOnly?: boolean }) {
+function PlanetModalContent() {
   return (
     <div
       className="flexColumn"
@@ -623,6 +748,47 @@ function PlanetModalContent({ viewOnly }: { viewOnly?: boolean }) {
         }}
       >
         <PlanetPanel />
+      </div>
+    </div>
+  );
+}
+
+function ThundersEdgeModalContent() {
+  return (
+    <div
+      className="flexColumn"
+      style={{
+        justifyContent: "flex-start",
+        maxHeight: `calc(100dvh - ${rem(24)})`,
+      }}
+    >
+      <div
+        className="centered extraLargeFont"
+        style={{
+          backgroundColor: "var(--background-color)",
+          border: "1px solid var(--neutral-border)",
+          padding: `${rem(4)} ${rem(8)}`,
+          borderRadius: rem(4),
+          width: "min-content",
+        }}
+      >
+        <FormattedMessage
+          id="sgqLYB"
+          defaultMessage="Other"
+          description="Text on a button used to select a non-listed value"
+        />
+      </div>
+      <div
+        className="flexColumn largeFont"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          width: `clamp(80vw, 75rem, calc(100vw - ${rem(24)}))`,
+          justifyContent: "flex-start",
+          overflow: "auto",
+          height: "100%",
+        }}
+      >
+        <ThundersEdgePanel />
       </div>
     </div>
   );

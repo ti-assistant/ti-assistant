@@ -12,6 +12,7 @@ import {
   getCurrentTurnLogEntriesInTransaction,
   getGameData,
   getGameDataInTransaction,
+  getTimersInTransaction,
 } from "../../../../server/util/fetch";
 import { TURN_BOUNDARIES } from "../../../../src/util/api/actionLog";
 import { getOppositeHandler } from "../../../../src/util/api/opposite";
@@ -46,7 +47,10 @@ import {
 } from "../../../../src/util/model/gainRelic";
 import { GiftOfPrescienceHandler } from "../../../../src/util/model/giftOfPrescience";
 import { ManualVPUpdateHandler } from "../../../../src/util/model/manualVPUpdate";
-import { MarkSecondaryHandler } from "../../../../src/util/model/markSecondary";
+import {
+  MarkPrimaryHandler,
+  MarkSecondaryHandler,
+} from "../../../../src/util/model/markSecondary";
 import {
   PlayActionCardHandler,
   UnplayActionCardHandler,
@@ -104,12 +108,23 @@ import { SwapStrategyCardsHandler } from "../../../../src/util/model/swapStrateg
 import { UpdateLeaderStateHandler } from "../../../../src/util/model/updateLeaderState";
 import { UpdatePlanetStateHandler } from "../../../../src/util/model/updatePlanetState";
 import { Optional } from "../../../../src/util/types/types";
+import { UpdateBreakthroughStateHandler } from "../../../../src/util/model/updateBreakthroughState";
+import { CommitToExpeditionHandler } from "../../../../src/util/model/commitToExpedition";
+import {
+  GainAllianceHandler,
+  LoseAllianceHandler,
+} from "../../../../src/util/model/gainAlliance";
+import {
+  PurgeTechHandler,
+  UnpurgeTechHandler,
+} from "../../../../src/util/model/purgeTech";
+import { PassHandler, UnpassHandler } from "../../../../src/util/model/unpass";
 
 export async function POST(
   req: Request,
-  { params }: { params: { gameId: string } }
+  { params }: { params: Promise<{ gameId: string }> }
 ) {
-  const gameId = params.gameId;
+  const { gameId } = await params;
 
   const canEdit = await canEditGame(gameId);
   if (!canEdit) {
@@ -125,15 +140,26 @@ export async function POST(
   //   new Promise((resolve) => setTimeout(resolve, ms));
   // await delay(1000);
 
-  const timerDoc = await db.collection("timers").doc(gameId).get();
+  const timerRef = db.collection("timers").doc(gameId);
+  const timerDoc = await timerRef.get();
 
   const timers = timerDoc.data() as Record<string, number>;
 
-  const gameTime = timers.game ?? 0;
+  const serverGameTime = timers.game ?? 0;
 
   const gameRef = db.collection("games").doc(gameId);
 
-  const data = (await req.json()) as GameUpdateData & { timestamp: number };
+  const data = (await req.json()) as GameUpdateData & {
+    timestamp: number;
+    gameTime: number;
+  };
+
+  let gameTime = data.gameTime;
+  // Use the later time, unless the passed in time is more than 20 seconds after the server time.
+  if (gameTime < serverGameTime || gameTime - 20 > serverGameTime) {
+    gameTime = serverGameTime;
+  }
+
   try {
     let numAttempts = 3;
     let shouldRetry = true;
@@ -144,7 +170,13 @@ export async function POST(
         });
       }
 
-      shouldRetry = await updateInTransaction(db, gameRef, data, gameTime);
+      shouldRetry = await updateInTransaction(
+        db,
+        gameRef,
+        timerRef,
+        data,
+        gameTime
+      );
       if (shouldRetry) {
         // Backoff after failures to potentially allow other updates to complete.
         await new Promise((r) => setTimeout(r, 100));
@@ -301,6 +333,7 @@ function insertLogEntry(
 function updateInTransaction(
   db: Firestore,
   gameRef: DocumentReference<DocumentData>,
+  timerRef: DocumentReference<DocumentData>,
   data: GameUpdateData & { timestamp: number },
   gameTime: number
 ) {
@@ -310,6 +343,7 @@ function updateInTransaction(
       gameRef,
       t
     );
+    const timers = await getTimersInTransaction(timerRef, t);
 
     // TODO: Validate actions.
     let handler: Optional<Handler>;
@@ -366,6 +400,10 @@ function updateInTransaction(
       }
       case "MARK_SECONDARY": {
         handler = new MarkSecondaryHandler(gameData, data);
+        break;
+      }
+      case "MARK_PRIMARY": {
+        handler = new MarkPrimaryHandler(gameData, data);
         break;
       }
       case "SCORE_OBJECTIVE": {
@@ -472,6 +510,14 @@ function updateInTransaction(
         handler = new LoseRelicHandler(gameData, data);
         break;
       }
+      case "GAIN_ALLIANCE": {
+        handler = new GainAllianceHandler(gameData, data);
+        break;
+      }
+      case "LOSE_ALLIANCE": {
+        handler = new LoseAllianceHandler(gameData, data);
+        break;
+      }
       case "UPDATE_PLANET_STATE": {
         handler = new UpdatePlanetStateHandler(gameData, data);
         break;
@@ -533,6 +579,25 @@ function updateInTransaction(
       case "SWAP_MAP_TILES":
         handler = new SwapMapTilesHandler(gameData, data);
         break;
+      case "UPDATE_BREAKTHROUGH_STATE":
+        handler = new UpdateBreakthroughStateHandler(gameData, data);
+        break;
+      case "COMMIT_TO_EXPEDITION":
+        handler = new CommitToExpeditionHandler(gameData, data);
+        break;
+      case "PURGE_TECH":
+        handler = new PurgeTechHandler(gameData, data);
+        break;
+      case "UNPURGE_TECH":
+        handler = new UnpurgeTechHandler(gameData, data);
+        break;
+      case "UNPASS":
+        handler = new UnpassHandler(gameData, data);
+        break;
+      case "PASS":
+        handler = new PassHandler(gameData, data);
+        break;
+
       case "UNDO": {
         const actionToUndo = (gameData.actionLog ?? [])[0];
 
@@ -563,6 +628,29 @@ function updateInTransaction(
     if (Object.keys(updates).length > 0) {
       t.update(gameRef, updates);
     }
+    const timerUpdates: Record<string, any> = {
+      paused: "DELETE",
+    };
+    if (
+      data.action === "PLAY_COMPONENT" &&
+      data.event.name === "Puppets of the Blade"
+    ) {
+      timerUpdates["Obsidian"] = timers["Firmament"] ?? 0;
+      timerUpdates["Firmament"] = "DELETE";
+    }
+    if (
+      data.action === "UNPLAY_COMPONENT" &&
+      data.event.name === "Puppets of the Blade"
+    ) {
+      timerUpdates["Firmament"] = timers["Obsidian"] ?? 0;
+      timerUpdates["Obsidian"] = "DELETE";
+    }
+    t.update(
+      timerRef,
+      convertToServerUpdates({
+        paused: "DELETE",
+      })
+    );
 
     return false;
   });

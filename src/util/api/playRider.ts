@@ -1,8 +1,5 @@
-import DataManager from "../../context/DataManager";
 import { PlayRiderHandler, UnplayRiderHandler } from "../model/playRider";
-import { updateGameData } from "./handler";
-import { updateActionLog } from "./update";
-import { poster } from "./util";
+import dataUpdate from "./dataUpdate";
 
 export function playRider(
   gameId: string,
@@ -19,28 +16,7 @@ export function playRider(
     },
   };
 
-  const now = Date.now();
-
-  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
-
-  DataManager.update((storedGameData) => {
-    const handler = new PlayRiderHandler(storedGameData, data);
-
-    if (!handler.validate()) {
-      return storedGameData;
-    }
-
-    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
-    updateGameData(storedGameData, handler.getUpdates());
-
-    storedGameData.lastUpdate = now;
-
-    return storedGameData;
-  });
-
-  return updatePromise.catch((_) => {
-    DataManager.reset();
-  });
+  return dataUpdate(gameId, data, PlayRiderHandler);
 }
 
 export function unplayRider(gameId: string, rider: string) {
@@ -51,26 +27,5 @@ export function unplayRider(gameId: string, rider: string) {
     },
   };
 
-  const now = Date.now();
-
-  const updatePromise = poster(`/api/${gameId}/dataUpdate`, data, now);
-
-  DataManager.update((storedGameData) => {
-    const handler = new UnplayRiderHandler(storedGameData, data);
-
-    if (!handler.validate()) {
-      return storedGameData;
-    }
-
-    updateActionLog(storedGameData, handler, now, storedGameData.timers.game);
-    updateGameData(storedGameData, handler.getUpdates());
-
-    storedGameData.lastUpdate = now;
-
-    return storedGameData;
-  });
-
-  return updatePromise.catch((_) => {
-    DataManager.reset();
-  });
+  return dataUpdate(gameId, data, UnplayRiderHandler);
 }

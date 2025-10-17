@@ -1,0 +1,401 @@
+declare namespace DiscordantStars {
+  type ActionCardId =
+    | "Free Trade Initiative"
+    | "Micrometeoroid Storm"
+    | "Neural Hammer"
+    | "Personnel Writ"
+    | "Planetary Rigs"
+    | "Preparation"
+    | "Professional Archaeologists"
+    | "Remnant Collection"
+    | "Secured Trove";
+
+  type AttachmentId =
+    | "Council Preserve"
+    | "Orbital Foundries"
+    | "Arcane Citadel"
+    // | "Encryption Key"
+    | "Gledge Base"
+    // | "Core Token"
+    | "Branch Office - Tax Haven"
+    | "Branch Office - Broadcast Hub"
+    | "Branch Office - Reserve Bank"
+    | "Branch Office - Orbital Shipyard";
+
+  type ComponentId =
+    | "Algorithmic Replication"
+    | "Emergency Deployment"
+    | "Impressment Programs"
+    | "Gledge Base"
+    | "Read the Fates"
+    | "Seeker Drones"
+    | "Blessing of the Queens"
+    | "Gift of Insight"
+    | "Incite Revolution"
+    | "Star Chart";
+
+  type FactionId =
+    | "Augurs of Ilyxum"
+    | "Bentor Conglomerate"
+    | "Berserkers of Kjalengard"
+    | "Celdauri Trade Confederation"
+    | "Cheiran Hordes"
+    | "Dih-Mohn Flotilla"
+    | "Edyn Mandate"
+    | "Florzen Profiteers"
+    | "Free Systems Compact"
+    | "Ghemina Raiders"
+    | "Ghoti Wayfarers"
+    | "Gledge Union"
+    | "Glimmer of Mortheus"
+    | "Kollecc Society"
+    | "Kortali Tribunal"
+    | "Kyro Sodality"
+    | "Lanefir Remnants"
+    | "Li-Zho Dynasty"
+    | "L'tokk Khrask"
+    | "Mirveda Protectorate"
+    | "Monks of Kolume"
+    | "Myko-Mentori"
+    | "Nivyn Star Kings"
+    | "Nokar Sellships"
+    | "Olradin League"
+    | "Roh'Dhna Mechatronics"
+    | "Savages of Cymiae"
+    | "Shipwrights of Axis"
+    | "Tnelis Syndicate"
+    | "Vaden Banking Clans"
+    | "Vaylerian Scourge"
+    | "Veldyr Sovereignty"
+    | "Zealots of Rhodun"
+    | "Zelian Purifier";
+
+  type LeaderId =
+    | "Clodho"
+    | "Lachis"
+    | "Atropha"
+    | "George Nobin"
+    | "Henry Storcher"
+    | "Titus Flavius"
+    | "Jgin Faru"
+    | "Clona Bathru"
+    | "Verrisus Ypru"
+    | "Sal Gavda"
+    | "Quaxdol Junitas"
+    | "Banua Gowen"
+    | "Cordo Haved"
+    | "President Cyhn"
+    | "Count Otto Pmay"
+    | "Skarvald & Torvar"
+    | "Jarl Vel & Jarl Jotrun"
+    | "Korela"
+    | "Kantrus"
+    | "Walik"
+    | "Komat"
+    | "Bayan"
+    | "Captain Dust"
+    | "Kado Smah-Qar"
+    | "Dorrahn Griphyn"
+    | "Queen Lucreia"
+    | "Queen Lorena"
+    | "Queen Nadalia"
+    | "Vasra Ivo"
+    | "Dhume Tathu"
+    | "Khaz-Rin Li-Zho"
+    | "Udosh Brtul"
+    | "Hkot Tokal"
+    | "Vehl-Tikar"
+    | "Logic Machina"
+    | "Assault Machina"
+    | "Wrath Machina"
+    | "Lactarius Indigo"
+    | "Amanita Muscaria"
+    | "Coprinus Comatus"
+    | "Suldhan Wraeg"
+    | "Thussad Krath"
+    | "Krill Drakkon"
+    | "Baggil Wildpaw"
+    | "Knak Halfear"
+    | "Pahn Silverfur"
+    | "Rond Briay"
+    | "B-Unit 205643a"
+    | "RohVhin Dhna mk4"
+    | "Skhot Unit X-12"
+    | "Koryl Ferax"
+    | "The Voice United"
+    | "Shipmonger Zsknck"
+    | "Designer TckVsk"
+    | "Demi-Queen Mdcksssk"
+    | "Davish SNorri"
+    | "Fillipo Rois"
+    | "Turra Sveyar"
+    | "Yudri Sukhov"
+    | "Komdar Borodin"
+    | "Putriv Sirvonsk"
+    | "Yvin Korduul"
+    | "Pyndil Gonsuul"
+    | "Dyln Harthuul"
+    | "Solis Morden"
+    | "Vera Khage"
+    | "Auberon Elyrin"
+    | "Priestess Tuh"
+    | "Bishop Ulin"
+    | "Saint Binal"
+    | "Zelian A"
+    | "Zelian B"
+    | "Zelian R"
+    | "COO Mgur"
+    | "CMO Ranc"
+    | "CEO Ken Tucc"
+    | "Operator Kkavras"
+    | "Spc Phquaiset"
+    | "Thakt Clqua"
+    | "Allant"
+    | "Kadryn"
+    | "Midir"
+    | "Becece"
+    | "Ceie Doleegueaunm"
+    | "Nmenmede"
+    | "Durran"
+    | "Voldun"
+    | "Gorthrim"
+    | "Merkismathr Asvand"
+    | "Sdallari Tvungovot"
+    | "Ygegnad The Thunder"
+    | "Disciple Fran"
+    | "Issac of Sinci"
+    | "Wonell the Silent"
+    | "Tox"
+    | "Silas Deriga"
+    | "Speygh"
+    | "Vassa Hagi"
+    | "Master Halbert"
+    | "The Venerable"
+    | "Sal Sparrow"
+    | "Jack Hallard"
+    | "Starsails";
+
+  type PlanetId =
+    | "Auldane"
+    | "Avicenna"
+    | "Axis"
+    | "Benc"
+    | "Hau"
+    | "Louk"
+    | "Gghurn Theta"
+    | "Arche"
+    | "Cymiae"
+    | "Abyssus"
+    | "Edyn"
+    | "Ekko"
+    | "Okke"
+    | "Delmor"
+    | "Kyd"
+    | "Idyn"
+    | "Kroll"
+    | "Cyrra"
+    | "Drah"
+    | "Trykk"
+    | "Ghoti"
+    | "Last Stop"
+    | "Chrion"
+    | "Demis"
+    | "Kjalengard"
+    | "Hulgade"
+    | "Susuros"
+    | "Alesna"
+    | "Azle"
+    | "Ogdun"
+    | "Brthkul"
+    | "Aysis Rest"
+    | "Solitude"
+    | "Pax"
+    | "Vess"
+    | "Kyr"
+    | "Bohl-Dhur"
+    | "Aldra"
+    | "Beata"
+    | "Biaheo"
+    | "Empero"
+    | "Shi-Halaum"
+    | "Ellas"
+    | "Zarr"
+    | "Nokk"
+    | "Sanctuary"
+    | "Poh"
+    | "Orad"
+    | "Prind"
+    | "Discordia"
+    | "Vadarian"
+    | "Norvus"
+    | "Vaylar"
+    | "Rhune"
+    | "Zelian"
+    | "Gen"
+    | "Silence"
+    | "Echo"
+    | "Tarrock"
+    | "Prism"
+    | "Troac"
+    | "Etir V"
+    | "Vioss"
+    | "Fakrenn"
+    | "San-Vit"
+    | "Lodran"
+    | "Dorvok"
+    | "Derbrae"
+    | "Rysaa"
+    | "Moln"
+    | "Salin"
+    | "Gwiyun"
+    | "Inan"
+    | "Swog"
+    | "Detic"
+    | "Lliot"
+    | "Qaak"
+    | "Larred"
+    | "Nairb"
+    | "Sierpin"
+    | "Mandle"
+    | "Regnem"
+    | "Domna";
+
+  type SystemId =
+    | 1001
+    | 1002
+    | 1003
+    | 1004
+    | 1005
+    | 1006
+    | 1007
+    | 1008
+    | 1009
+    | 1010
+    | 1011
+    | 1012
+    | 1013
+    | 1014
+    | 1015
+    | 1016
+    | 1017
+    | 1018
+    | 1019
+    | 1020
+    | 1021
+    | 1022
+    | 1023
+    | 1024
+    | 1025
+    | 1026
+    | 1027
+    | 1028
+    | 1029
+    | 1030
+    | 1031
+    | 1032
+    | 1033
+    | 1034
+    | 4253
+    | 4254
+    | 4255
+    | 4256
+    | 4257
+    | 4258
+    | 4259
+    | 4260
+    | 4261
+    | 4262
+    | 4263
+    | 4264
+    | 4265
+    | 4266
+    | 4267
+    | 4268
+    | 4269
+    | 4270
+    | 4271
+    | 4272
+    | 4273
+    | 4274
+    | 4275
+    | 4276;
+
+  type TechId =
+    | "Rift Engines"
+    | "Emergency Deployment"
+    | "Broker Network"
+    | "Merged Replicators"
+    | "Emergency Mobilization Protocols"
+    | "Trade Port II"
+    | "Chitin Hulk II"
+    | "Brood Pod"
+    | "Unholy Abomination II"
+    | "Recursive Worm"
+    | "Impressment Programs"
+    | "Aegis II"
+    | "Unity Algorithm"
+    | "Encrypted Trade Hub"
+    | "Blackmail Programs"
+    | "Corsair II"
+    | "Envoy Network"
+    | "Covert Strike Teams"
+    | "War Song Implants"
+    | "Combat Transport II"
+    | "Networked Command"
+    | "Parallel Production"
+    | "Orion Platform II"
+    | "Lightning Drives"
+    | "Psychographics"
+    | "Sentient Datapool"
+    | "Star Dragon II"
+    | "Zhrgar Stimulants"
+    | "Seeker Drones"
+    | "Shrouded Skirmishers"
+    | "Applied Biothermics"
+    | "Omniscience Field"
+    | "Tempest Drive"
+    | "Deliverance Engine"
+    | "Indoctrination Team"
+    | "Vector Program"
+    | "Spark Thrusters"
+    | "ATS Armaments"
+    | "Heavy Bomber II"
+    | "Wraith Engine"
+    | "Stone's Embrace"
+    | "Shattered Sky II"
+    | "Gauss Cannon II"
+    | "Orbital Defense Grid"
+    | "Fractal Plating"
+    | "Fabrication Grid"
+    | "Mycelium Ring II"
+    | "Psychoactive Armaments"
+    | "Voidwake Missiles"
+    | "Voidflare Warden II"
+    | "Sabre II"
+    | "Local Contracts"
+    | "False Flag Operations"
+    | "Geosympathic Impeller"
+    | "Sanctification Field"
+    | "Pilgrimage Beacons"
+    | "Contractual Obligations"
+    | "Terrafactory II"
+    | "Blockade Runner II"
+    | "Daedalon Flight System"
+    | "Midas Turbine"
+    | "Krovoz Strike Teams"
+    | "Scavenger Exos"
+    | "Raider II"
+    | "Lancer Dreadnought II"
+    | "SEIDR Project"
+    | "Shard Volley"
+    | "Impactor II";
+
+  type RelicId =
+    | "Accretion Engine"
+    | "Azdel's Key"
+    | "E6-G0 Network"
+    | "Eye of Vogul"
+    | "Starfall Array"
+    | "Forgotten Throne"
+    | "Twilight Mirror";
+}

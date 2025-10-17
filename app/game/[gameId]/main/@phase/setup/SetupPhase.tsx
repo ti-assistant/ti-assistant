@@ -39,8 +39,12 @@ function factionTechChoicesComplete(
   Object.values(factions).forEach((faction) => {
     if (faction.startswith.choice) {
       const numSelected = (faction.startswith.techs ?? []).length;
-      const numRequired = faction.startswith.choice.select;
-      const numAvailable = faction.startswith.choice.options.length;
+      let numRequired = faction.startswith.choice.select;
+      let numAvailable = faction.startswith.choice.options.length;
+      if (faction.id === "Deepwrought Scholarate") {
+        numRequired = 2;
+        numAvailable = 2;
+      }
       if (numSelected !== numRequired && numSelected !== numAvailable) {
         complete = false;
       }

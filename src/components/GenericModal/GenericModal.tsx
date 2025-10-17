@@ -14,8 +14,9 @@ export default function GenericModal({
   level,
   visible,
 }: PropsWithChildren<ModalProps>) {
-  const zIndex = 900 * (level ?? 1);
+  const zIndex = 1200 * (level ?? 1);
   const nodeRef = useRef<HTMLDivElement>(null);
+  const innerNodeRef = useRef<HTMLDivElement>(null);
 
   function onExited() {
     if (!nodeRef.current) {
@@ -46,8 +47,17 @@ export default function GenericModal({
         }}
       >
         <div className={styles.Overlay} onClick={closeMenu}></div>
-        <CSSTransition in={visible} timeout={300} classNames="modal">
-          <div className={styles.Content} onClick={closeMenu}>
+        <CSSTransition
+          in={visible}
+          timeout={300}
+          classNames="modal"
+          nodeRef={innerNodeRef}
+        >
+          <div
+            className={styles.Content}
+            onClick={closeMenu}
+            ref={innerNodeRef}
+          >
             <div className={styles.Button} onClick={closeMenu}>
               <div>&#x2715;</div>
             </div>

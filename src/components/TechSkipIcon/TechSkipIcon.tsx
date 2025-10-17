@@ -9,9 +9,11 @@ interface TechSkipIconCSS extends CSSProperties {
 
 export default function TechSkipIcon({
   size,
+  color = "#eee",
   outline,
 }: {
   size: number;
+  color?: string;
   outline?: boolean;
 }) {
   const techSkipIconCSS: TechSkipIconCSS = {
@@ -20,10 +22,10 @@ export default function TechSkipIcon({
 
   return (
     <div className={styles.TechSkipIcon} style={techSkipIconCSS}>
-      <TechIcon type="RED" size={size / 2} outline={outline} />
-      <TechIcon type="GREEN" size={size / 2} outline={outline} />
-      <TechIcon type="BLUE" size={size / 2} outline={outline} />
-      <TechIcon type="YELLOW" size={size / 2} outline={outline} />
+      <TechIcon type="RED" size={size / 2} outline={outline} color={color} />
+      <TechIcon type="GREEN" size={size / 2} outline={outline} color={color} />
+      <TechIcon type="BLUE" size={size / 2} outline={outline} color={color} />
+      <TechIcon type="YELLOW" size={size / 2} outline={outline} color={color} />
     </div>
   );
 }
