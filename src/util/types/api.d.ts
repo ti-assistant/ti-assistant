@@ -61,6 +61,7 @@ type GameUpdateData =
   | CommitToExpeditionData
   | (GainAllianceData | LoseAllianceData)
   | (PassData | UnpassData)
+  | (PurgeSystemData | UnpurgeSystemData)
   | UndoData;
 
 type Secondary = "PENDING" | "DONE" | "SKIPPED";
@@ -334,6 +335,20 @@ interface UnpassData {
 interface PassData {
   action: "PASS";
   event: UnpassEvent;
+}
+
+interface PurgeSystemEvent {
+  systemId: SystemId;
+}
+
+interface PurgeSystemData {
+  action: "PURGE_SYSTEM";
+  event: PurgeSystemEvent;
+}
+
+interface UnpurgeSystemData {
+  action: "UNPURGE_SYSTEM";
+  event: PurgeSystemEvent;
 }
 
 interface GainRelicEvent {

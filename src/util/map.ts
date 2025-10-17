@@ -496,6 +496,92 @@ export function getFactionSystemNumber(
   return FACTION_TO_SYSTEM_NUMBER[faction.id] ?? "299";
 }
 
+const FACTION_TO_SYSTEM_ID: Record<
+  Exclude<FactionId, "Council Keleres">,
+  SystemId
+> = {
+  "Federation of Sol": 1,
+  "Mentak Coalition": 2,
+  "Yin Brotherhood": 3,
+  "Embers of Muaat": 4,
+  Arborec: 5,
+  "L1Z1X Mindnet": 6,
+  Winnu: 7,
+  "Nekro Virus": 8,
+  "Naalu Collective": 9,
+  "Barony of Letnev": 10,
+  "Clan of Saar": 11,
+  "Universities of Jol-Nar": 12,
+  "Sardakk N'orr": 13,
+  "Xxcha Kingdom": 14,
+  "Yssaril Tribes": 15,
+  "Emirates of Hacan": 16,
+  "Ghosts of Creuss": 17,
+  "Mahact Gene-Sorcerers": 52,
+  Nomad: 53,
+  "Vuil'raith Cabal": 54,
+  "Titans of Ul": 55,
+  Empyrean: 56,
+  "Naaz-Rokha Alliance": 57,
+  "Argent Flight": 58,
+  "Last Bastion": 92,
+  "Ral Nel Consortium": 93,
+  "Crimson Rebellion": 94,
+  "Deepwrought Scholarate": 95,
+  Firmament: "96A",
+  Obsidian: "96B",
+  // Discordant Stars
+  "Augurs of Ilyxum": 1001,
+  "Bentor Conglomerate": 1002,
+  "Berserkers of Kjalengard": 1003,
+  "Celdauri Trade Confederation": 1004,
+  "Cheiran Hordes": 1005,
+  "Dih-Mohn Flotilla": 1006,
+  "Edyn Mandate": 1007,
+  "Florzen Profiteers": 1008,
+  "Free Systems Compact": 1009,
+  "Ghemina Raiders": 1010,
+  "Ghoti Wayfarers": 1011,
+  "Gledge Union": 1012,
+  "Glimmer of Mortheus": 1013,
+  "Kollecc Society": 1014,
+  "Kortali Tribunal": 1015,
+  "Kyro Sodality": 1016,
+  "Lanefir Remnants": 1017,
+  "Li-Zho Dynasty": 1018,
+  "L'tokk Khrask": 1019,
+  "Mirveda Protectorate": 1020,
+  "Monks of Kolume": 1021,
+  "Myko-Mentori": 1022,
+  "Nivyn Star Kings": 1023,
+  "Nokar Sellships": 1024,
+  "Olradin League": 1025,
+  "Roh'Dhna Mechatronics": 1026,
+  "Savages of Cymiae": 1027,
+  "Shipwrights of Axis": 1028,
+  "Tnelis Syndicate": 1029,
+  "Vaden Banking Clans": 1030,
+  "Vaylerian Scourge": 1031,
+  "Veldyr Sovereignty": 1032,
+  "Zealots of Rhodun": 1033,
+  "Zelian Purifier": 1034,
+} as const;
+
+export function getFactionSystemId(faction: Faction): Optional<SystemId> {
+  if (faction.id === "Council Keleres") {
+    switch (faction.startswith?.faction) {
+      case "Argent Flight":
+        return 201;
+      case "Xxcha Kingdom":
+        return 200;
+      case "Mentak Coalition":
+        return 202;
+    }
+    return;
+  }
+  return FACTION_TO_SYSTEM_ID[faction.id];
+}
+
 export function extractFactionIds(
   mapString: string,
   mapStyle: MapStyle,

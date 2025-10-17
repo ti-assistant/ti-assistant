@@ -538,6 +538,7 @@ export function buildCompleteSystems(
   baseData: BaseData,
   storedGameData: StoredGameData
 ) {
+  const storedSystems = storedGameData.systems ?? {};
   const systems: Partial<Record<SystemId, BaseSystem>> = {};
   objectEntries(baseData.systems).forEach(([systemId, system]) => {
     if (
@@ -549,6 +550,7 @@ export function buildCompleteSystems(
 
     systems[systemId] = {
       ...system,
+      ...(storedSystems[systemId] ?? {}),
     };
   });
 

@@ -59,6 +59,7 @@ export class PlayComponentHandler implements Handler {
           case "Stellar Converter":
           case "The Codex":
           case "Book of Latvinia":
+          case "The Silver Flame":
             updates[`relics.${this.data.event.name}.state`] = "purged";
             break;
           case "JR-XS455-O":
@@ -86,6 +87,7 @@ export class PlayComponentHandler implements Handler {
           case "Stellar Converter":
           case "The Codex":
           case "Book of Latvinia":
+          case "The Silver Flame":
             updates[`components.${this.data.event.name}.state`] = "purged";
             break;
           case "JR-XS455-O":
