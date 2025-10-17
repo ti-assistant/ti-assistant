@@ -186,6 +186,7 @@ export default function getThundersEdgeTechs(
         { br: "\n\n" }
       ),
       expansion: "THUNDERS EDGE",
+      faction: "Last Bastion",
       id: "4X4IC Helios VI II",
       name: intl.formatMessage({
         id: "Techs.4X4IC Helios VI II.Title",
