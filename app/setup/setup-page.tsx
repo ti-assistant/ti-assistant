@@ -294,7 +294,20 @@ function MobileOptions({
                 IV
               </Toggle>
             </div>
-          ) : null}
+          ) : (
+            <Toggle
+              selected={options.expansions.has("TWILIGHTS FALL")}
+              toggleFn={(prevValue) => {
+                toggleExpansion(!prevValue, "TWILIGHTS FALL");
+              }}
+            >
+              <FormattedMessage
+                id="X+daca"
+                description="Text on a button that will enable/disable the Twilight's Fall gamemode."
+                defaultMessage="Twilight's Fall"
+              />
+            </Toggle>
+          )}
         </div>
       </LabeledDiv>
       <div
@@ -680,7 +693,20 @@ function Options({
                 IV
               </Toggle>
             </div>
-          ) : null}
+          ) : (
+            <Toggle
+              selected={options.expansions.has("TWILIGHTS FALL")}
+              toggleFn={(prevValue) => {
+                toggleExpansion(!prevValue, "TWILIGHTS FALL");
+              }}
+            >
+              <FormattedMessage
+                id="X+daca"
+                description="Text on a button that will enable/disable the Twilight's Fall gamemode."
+                defaultMessage="Twilight's Fall"
+              />
+            </Toggle>
+          )}
         </div>
       </LabeledDiv>
       <ClientOnlyHoverMenu
@@ -972,8 +998,13 @@ function FactionSelect({
   for (const [factionId, faction] of objectEntries(availableFactions)) {
     const updatedFaction = omegaMergeFn(faction);
 
-    updatedFaction.abilities = updatedFaction.abilities.map(omegaMergeFn);
-    updatedFaction.promissories = updatedFaction.promissories.map(omegaMergeFn);
+    if (updatedFaction.abilities) {
+      updatedFaction.abilities = updatedFaction.abilities.map(omegaMergeFn);
+    }
+    if (updatedFaction.promissories) {
+      updatedFaction.promissories =
+        updatedFaction.promissories.map(omegaMergeFn);
+    }
     updatedFaction.units = updatedFaction.units.map(omegaMergeFn);
 
     updatedFactions[factionId] = updatedFaction;
@@ -981,6 +1012,9 @@ function FactionSelect({
 
   const filteredFactions = Object.values(updatedFactions).filter((faction) => {
     if (faction.locked) {
+      return false;
+    }
+    if (faction.removedIn && options.expansions.has(faction.removedIn)) {
       return false;
     }
     if (faction.expansion === "BASE") {
@@ -1133,7 +1167,10 @@ function FactionSelect({
                   style={{
                     display: "grid",
                     gridAutoFlow: "column",
-                    gridTemplateRows: "repeat(10, minmax(0, 1fr))",
+                    gridTemplateRows: `repeat(${Math.min(
+                      filteredFactions.length,
+                      10
+                    )}, minmax(0, 1fr))`,
                     gap: rem(4),
                     padding: rem(8),
                     maxWidth: `min(80vw, ${rem(700)})`,
@@ -1305,6 +1342,12 @@ export default function SetupPage({
     factionId: FactionId,
     usedColors: Set<string>
   ) {
+    const color = factions[factionId].color;
+    if (color) {
+      if (!usedColors.has(color)) {
+        return color;
+      }
+    }
     const colorList = factions[factionId].colorList;
     if (!colorList) {
       return;
@@ -1458,13 +1501,16 @@ export default function SetupPage({
     }
     const filteredFactions = Object.values(availableFactions ?? {}).filter(
       (faction) => {
+        if (faction.locked) {
+          return false;
+        }
+        if (faction.removedIn && options.expansions.has(faction.removedIn)) {
+          return false;
+        }
         if (faction.expansion === "BASE") {
           return true;
         }
         if (!options.expansions.has(faction.expansion)) {
-          return false;
-        }
-        if (faction.locked) {
           return false;
         }
         return true;
@@ -1616,8 +1662,37 @@ export default function SetupPage({
         currentOptions.expansions.add("CODEX THREE");
         currentOptions.expansions.add("CODEX FOUR");
       }
+      setFactions(
+        setupFactions.map((faction, _) => {
+          const tempFaction: SetupFaction = { ...faction };
+          const currFaction = tempFaction.id
+            ? availableFactions[tempFaction.id]
+            : undefined;
+          if (!currFaction) {
+            return tempFaction;
+          }
+          if (
+            currFaction.removedIn &&
+            currentOptions.expansions.has(currFaction.removedIn)
+          ) {
+            delete tempFaction.id;
+            delete tempFaction.name;
+            delete tempFaction.color;
+          }
+          if (!currentOptions.expansions.has(currFaction.expansion)) {
+            delete tempFaction.id;
+            delete tempFaction.name;
+            delete tempFaction.color;
+          }
+          return tempFaction;
+        })
+      );
     } else {
       currentOptions.expansions.delete(expansion);
+      if (expansion === "THUNDERS EDGE") {
+        // Cannot play Twilight's Fall without Thunder's Edge.
+        currentOptions.expansions.delete("TWILIGHTS FALL");
+      }
       setFactions(
         setupFactions.map((faction, _) => {
           const tempFaction: SetupFaction = { ...faction };
@@ -1630,8 +1705,16 @@ export default function SetupPage({
           const currFaction = tempFaction.id
             ? (availableFactions ?? {})[tempFaction.id]
             : undefined;
-          if (!currFaction || currFaction.expansion === "BASE") {
+          if (!currFaction) {
             return tempFaction;
+          }
+          if (
+            currFaction.removedIn &&
+            currentOptions.expansions.has(currFaction.removedIn)
+          ) {
+            delete tempFaction.id;
+            delete tempFaction.name;
+            delete tempFaction.color;
           }
           if (!currentOptions.expansions.has(currFaction.expansion)) {
             delete tempFaction.id;

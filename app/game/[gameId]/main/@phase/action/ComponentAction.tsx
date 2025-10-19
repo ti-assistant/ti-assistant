@@ -940,7 +940,7 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
       if (
         "subFaction" in component &&
         component.subFaction &&
-        component.subFaction !== faction.startswith.faction
+        component.subFaction !== faction.startswith?.faction
       ) {
         return false;
       }

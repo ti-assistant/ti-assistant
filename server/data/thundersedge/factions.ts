@@ -71,11 +71,6 @@ export default function getThundersEdgeFactions(
         synergy: { left: "BLUE", right: "RED" },
         timing: "COMPONENT_ACTION",
       },
-      colors: {
-        Red: 1.6,
-        Purple: 0.9,
-        Black: 0.8,
-      },
       colorList: [
         "Red",
         "Purple",
@@ -112,6 +107,7 @@ export default function getThundersEdgeFactions(
           ),
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Crimson Rebellion.Shortname",
         description: "Shortened version of Faction name: Crimson Rebellion",
@@ -253,11 +249,6 @@ export default function getThundersEdgeFactions(
         synergy: { left: "YELLOW", right: "GREEN" },
         timing: "COMPONENT_ACTION",
       },
-      colors: {
-        Black: 1,
-        Blue: 0.9,
-        Purple: 0.8,
-      },
       colorList: [
         "Blue",
         "Black",
@@ -295,6 +286,7 @@ export default function getThundersEdgeFactions(
           ),
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Deepwrought Scholarate.Shortname",
         description:
@@ -412,9 +404,6 @@ export default function getThundersEdgeFactions(
         synergy: { left: "YELLOW", right: "GREEN" },
         timing: "OTHER",
       },
-      colors: {
-        Purple: 1.6,
-      },
       colorList: [
         "Purple",
         "Black",
@@ -451,6 +440,7 @@ export default function getThundersEdgeFactions(
           ),
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Firmament.Shortname",
         description: "Shortened version of Faction name: Firmament",
@@ -582,9 +572,6 @@ export default function getThundersEdgeFactions(
         synergy: { left: "RED", right: "YELLOW" },
         timing: "TACTICAL_ACTION",
       },
-      colors: {
-        Orange: 1.6,
-      },
       colorList: [
         "Orange",
         "Black",
@@ -622,6 +609,7 @@ export default function getThundersEdgeFactions(
           ),
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Last Bastion.Shortname",
         description: "Shortened version of Faction name: Last Bastion",
@@ -780,9 +768,6 @@ export default function getThundersEdgeFactions(
         synergy: { left: "YELLOW", right: "GREEN" },
         timing: "OTHER",
       },
-      colors: {
-        Red: 1.6,
-      },
       colorList: [
         "Red",
         "Black",
@@ -820,6 +805,7 @@ export default function getThundersEdgeFactions(
           ),
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Obsidian.Shortname",
         description: "Shortened version of Faction name: Obsidian",
@@ -916,9 +902,6 @@ export default function getThundersEdgeFactions(
         synergy: { left: "YELLOW", right: "GREEN" },
         timing: "PASSIVE",
       },
-      colors: {
-        Green: 1.6,
-      },
       colorList: [
         "Green",
         "Yellow",
@@ -956,6 +939,7 @@ export default function getThundersEdgeFactions(
           ),
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Ral Nel Consortium.Shortname",
         description: "Shortened version of Faction name: Ral Nel Consortium",

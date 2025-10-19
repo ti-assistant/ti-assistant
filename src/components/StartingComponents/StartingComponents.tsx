@@ -75,6 +75,9 @@ export default function StartingComponents({
   }
 
   const startswith = faction.startswith;
+  if (!startswith) {
+    return null;
+  }
 
   const orderedUnits = objectEntries(startswith.units).sort(
     (a, b) => unitOrder.indexOf(a[0]) - unitOrder.indexOf(b[0])
@@ -297,18 +300,18 @@ export default function StartingComponents({
         <div className="flexRow">
           <div className="flexRow" style={{ gap: rem(2) }}>
             <TechIcon
-              type={faction.breakthrough.synergy?.left ?? "RED"}
+              type={faction.breakthrough?.synergy?.left ?? "RED"}
               size={16}
             />
             <div className="flexRow" style={{ width: rem(24) }}>
               <SynergySVG />
             </div>
             <TechIcon
-              type={faction.breakthrough.synergy?.right ?? "BLUE"}
+              type={faction.breakthrough?.synergy?.right ?? "BLUE"}
               size={16}
             />
           </div>
-          {faction.breakthrough.name}
+          {faction.breakthrough?.name}
         </div>
       ) : null}
       {/* Units */}

@@ -275,6 +275,30 @@
     "defaultMessage": "{count} {count, plural, one {Law} other {Laws}} in Effect",
     "description": "Text on a hover menu that will display the current laws that have been passed."
   },
+  "A Sickening Lurch.Name": {
+    "defaultMessage": "A Sickening Lurch",
+    "description": "Name of Faction: A Sickening Lurch"
+  },
+  "A Sickening Lurch.Shortname": {
+    "defaultMessage": "Lurch",
+    "description": "Shortened version of Faction name: A Sickening Lurch"
+  },
+  "A Sickening Lurch.Units.A Strangled Whisper.Description": {
+    "defaultMessage": "This ship can transport any number of infantry and fighters, and they do not count against this ship's capacity.",
+    "description": "Description for Faction Unit: A Strangled Whisper"
+  },
+  "A Sickening Lurch.Units.A Strangled Whisper.Title": {
+    "defaultMessage": "A Strangled Whisper",
+    "description": "Title of Faction Unit: A Strangled Whisper"
+  },
+  "A Sickening Lurch.Units.Bone Picked Clean.Description": {
+    "defaultMessage": "When you splice, capture 1 infantry from the reinforcements of any player with adjacent units; you can spend 1 captured infantry after rolling during combat to reroll this unit's dice.",
+    "description": "Description for Faction Unit: Bone Picked Clean"
+  },
+  "A Sickening Lurch.Units.Bone Picked Clean.Title": {
+    "defaultMessage": "Bone Picked Clean",
+    "description": "Title of Faction Unit: Bone Picked Clean"
+  },
   "A5p5qF": {
     "defaultMessage": "Report Issue",
     "description": "A button that will open the Github issues page."
@@ -1991,6 +2015,30 @@
     "defaultMessage": "Warfare Research Facility",
     "description": "Title of Attachment: Warfare Research Facility"
   },
+  "Avarice Rex.Name": {
+    "defaultMessage": "Avarice Rex",
+    "description": "Name of Faction: Avarice Rex"
+  },
+  "Avarice Rex.Shortname": {
+    "defaultMessage": "Avarice",
+    "description": "Shortened version of Faction name: Avarice Rex"
+  },
+  "Avarice Rex.Units.Delver.Description": {
+    "defaultMessage": "When you splice, gain 1 commodity or convert 1 of your commodities to a trade good.",
+    "description": "Description for Faction Unit: Delver"
+  },
+  "Avarice Rex.Units.Delver.Title": {
+    "defaultMessage": "Delver",
+    "description": "Title of Faction Unit: Delver"
+  },
+  "Avarice Rex.Units.Scintilla.Description": {
+    "defaultMessage": "When you splice, gain 2 commodities or convert up to 2 of your commodities to trade goods.",
+    "description": "Description for Faction Unit: Scintilla"
+  },
+  "Avarice Rex.Units.Scintilla.Title": {
+    "defaultMessage": "Scintilla",
+    "description": "Title of Faction Unit: Scintilla"
+  },
   "Barony of Letnev.Abilities.Armada.Description": {
     "defaultMessage": "The maximum number of non-fighter ships you can have in each system is equal to 2 more than the number of tokens in your fleet pool.",
     "description": "Description for Faction Ability: Armada"
@@ -2911,6 +2959,30 @@
     "defaultMessage": "Skinny",
     "description": "Text on a button specifying that the map style should be skinny."
   },
+  "El Nen Janovet.Name": {
+    "defaultMessage": "El Nen Janovet",
+    "description": "Name of Faction: El Nen Janovet"
+  },
+  "El Nen Janovet.Shortname": {
+    "defaultMessage": "Janovet",
+    "description": "Shortened version of Faction name: El Nen Janovet"
+  },
+  "El Nen Janovet.Units.Analyzer.Description": {
+    "defaultMessage": "After you win a ground combat in which this unit participated, you may return this unit to your reinforcements to draw 1 unit upgrade.",
+    "description": "Description for Faction Unit: Analyzer"
+  },
+  "El Nen Janovet.Units.Analyzer.Title": {
+    "defaultMessage": "Analyzer",
+    "description": "Title of Faction Unit: Analyzer"
+  },
+  "El Nen Janovet.Units.The Faces of Janovet.Description": {
+    "defaultMessage": "This unit gains the unit abilities and text abilities of your destroyer, cruiser, and dreadnought unit upgrade technologies.",
+    "description": "Description for Faction Unit: The Faces of Janovet"
+  },
+  "El Nen Janovet.Units.The Faces of Janovet.Title": {
+    "defaultMessage": "The Faces of Janovet",
+    "description": "Title of Faction Unit: The Faces of Janovet"
+  },
   "Embers of Muaat.Abilities.Gashlai Physiology.Description": {
     "defaultMessage": "Your ships can move through supernovas.",
     "description": "Description for Faction Ability: Gashlai Physiology"
@@ -3806,6 +3878,54 @@
   "IfyaDZ": {
     "defaultMessage": "Revealed {type} {count, plural, one {Objective} other {Objectives}}",
     "description": "A label for revealed objectives."
+  },
+  "Il Na Viroset.Name": {
+    "defaultMessage": "Il Na Viroset",
+    "description": "Name of Faction: Il Na Viroset"
+  },
+  "Il Na Viroset.Shortname": {
+    "defaultMessage": "Viroset",
+    "description": "Shortened version of Faction name: Il Na Viroset"
+  },
+  "Il Na Viroset.Units.Enigma.Description": {
+    "defaultMessage": "This unit ignores the effects of all anomalies. Its MOVE value is reduced by 1 for each unit it would transport.",
+    "description": "Description for Faction Unit: Enigma"
+  },
+  "Il Na Viroset.Units.Enigma.Title": {
+    "defaultMessage": "Enigma",
+    "description": "Title of Faction Unit: Enigma"
+  },
+  "Il Na Viroset.Units.Starlancer XI.Description": {
+    "defaultMessage": "This unit participates in space combat as if it were a ship. For each anomaly this unit is in or adjacent to, apply +1 to this unit's combat rolls.",
+    "description": "Description for Faction Unit: Starlancer XI"
+  },
+  "Il Na Viroset.Units.Starlancer XI.Title": {
+    "defaultMessage": "Starlancer XI",
+    "description": "Title of Faction Unit: Starlancer XI"
+  },
+  "Il Sai Lakoe.Name": {
+    "defaultMessage": "Il Sai Lakoe, Herald of Thorns",
+    "description": "Name of Faction: Il Sai Lakoe"
+  },
+  "Il Sai Lakoe.Shortname": {
+    "defaultMessage": "Lakoe",
+    "description": "Shortened version of Faction name: Il Sai Lakoe"
+  },
+  "Il Sai Lakoe.Units.Lakoe's Roots.Description": {
+    "defaultMessage": "When this unit is produced, place it on any planet you control.",
+    "description": "Description for Faction Unit: Lakoe's Roots"
+  },
+  "Il Sai Lakoe.Units.Lakoe's Roots.Title": {
+    "defaultMessage": "Lakoe's Roots",
+    "description": "Title of Faction Unit: Lakoe's Roots"
+  },
+  "Il Sai Lakoe.Units.Nightbloom.Description": {
+    "defaultMessage": "When this unit moves, you may resolve the PRODUCTION abilities of your units in the system it started in and each system it moved through.",
+    "description": "Description for Faction Unit: Nightbloom"
+  },
+  "Il Sai Lakoe.Units.Nightbloom.Title": {
+    "defaultMessage": "Nightbloom",
+    "description": "Title of Faction Unit: Nightbloom"
   },
   "Irm2+w": {
     "defaultMessage": "{phase} Phase",
@@ -5939,6 +6059,30 @@
     "defaultMessage": "Revealed stage I {count, plural, one {objective} other {objectives}}",
     "description": "A label for the stage I objectives that have been revealed"
   },
+  "Radiant Aur.Name": {
+    "defaultMessage": "Radiant Aur",
+    "description": "Name of Faction: Radiant Aur"
+  },
+  "Radiant Aur.Shortname": {
+    "defaultMessage": "Aur",
+    "description": "Shortened version of Faction name: Radiant Aur"
+  },
+  "Radiant Aur.Units.Airo Shir Rex.Description": {
+    "defaultMessage": "At the start of the edict phase, if this unit is on the game board, draw and resolve 1 edict.",
+    "description": "Description for Faction Unit: Airo Shir Rex"
+  },
+  "Radiant Aur.Units.Airo Shir Rex.Title": {
+    "defaultMessage": "Airo Shir Rex",
+    "description": "Title of Faction Unit: Airo Shir Rex"
+  },
+  "Radiant Aur.Units.Starlancer II.Description": {
+    "defaultMessage": "At the start of each round of ground combat, you may spend 1 token from your strategy pool to repair all of your mechs.",
+    "description": "Description for Faction Unit: Starlancer II"
+  },
+  "Radiant Aur.Units.Starlancer II.Title": {
+    "defaultMessage": "Starlancer II",
+    "description": "Title of Faction Unit: Starlancer II"
+  },
   "Ral Nel Consortium.Abilities.Miniaturization.Description": {
     "defaultMessage": "Your structures can be transported by any ship; this does not require or count against capacity. While your structures are in the space area, they cannot use their unit abilities. At the end of your tactical actions, you may place your structures that are in space areas onto planets you control in their respective systems.",
     "description": "Description for Faction Ability: Miniaturization"
@@ -6451,6 +6595,54 @@
     "defaultMessage": "Thunder's Edge",
     "description": "Text on a button that will enable/disable the Thunder's Edge expansion."
   },
+  "Strategy Cards.Aeterna.Primary": {
+    "defaultMessage": "Immediately score 1 public objective if you fulfill its requirements; otherwise, draw 1 paradigm.{br}Gain 1 victory point if you control Mecatol Rex; otherwise, draw 1 secret objective.",
+    "description": "Primary of Strategy Card: Aeterna"
+  },
+  "Strategy Cards.Aeterna.Secondary": {
+    "defaultMessage": "Spend 1 token from your strategy pool to draw 1 secret objective or 1 paradigm.",
+    "description": "Secondary of Strategy Card: Aeterna"
+  },
+  "Strategy Cards.Aeterna.Title": {
+    "defaultMessage": "Aeterna",
+    "description": "Title of Strategy Card: Aeterna"
+  },
+  "Strategy Cards.Amicus.Primary": {
+    "defaultMessage": "Gain 3 trade goods.{br}Replenish commodities.{br}Choose any number of other players. Those players use the secondary ability of this strategy card without spending a command token.",
+    "description": "Primary of Strategy Card: Amicus"
+  },
+  "Strategy Cards.Amicus.Secondary": {
+    "defaultMessage": "Spend 1 token from your strategy pool to replenish your commodities.",
+    "description": "Secondary of Strategy Card: Amicus"
+  },
+  "Strategy Cards.Amicus.Title": {
+    "defaultMessage": "Amicus",
+    "description": "Title of Strategy Card: Amicus"
+  },
+  "Strategy Cards.Calamitas.Primary": {
+    "defaultMessage": "Initiate a unit upgrade splice.{br}Resolve the PRODUCTION abilities of your units in 1 system.",
+    "description": "Primary of Strategy Card: Calamitas"
+  },
+  "Strategy Cards.Calamitas.Secondary": {
+    "defaultMessage": "Spend 1 token from your strategy pool and 4 resources to either participate in the unit upgrade splice or use the PRODUCTION abilities of the units in your home system.",
+    "description": "Secondary of Strategy Card: Calamitas"
+  },
+  "Strategy Cards.Calamitas.Title": {
+    "defaultMessage": "Calamitas",
+    "description": "Title of Strategy Card: Calamitas"
+  },
+  "Strategy Cards.Civitas.Primary": {
+    "defaultMessage": "Either place 1 structure on a planet you control or use the PRODUCTION ability of 1 of your space docks.{br}Place 1 structure on a planet you control.",
+    "description": "Primary of Strategy Card: Civitas"
+  },
+  "Strategy Cards.Civitas.Secondary": {
+    "defaultMessage": "Spend 1 token from your strategy pool to place 1 structure on a planet you control.",
+    "description": "Secondary of Strategy Card: Civitas"
+  },
+  "Strategy Cards.Civitas.Title": {
+    "defaultMessage": "Civitas",
+    "description": "Title of Strategy Card: Civitas"
+  },
   "Strategy Cards.Construction.POK.Secondary": {
     "defaultMessage": "Spend 1 token from your strategy pool and place it in any system; you may place either 1 space dock or 1 PDS on a planet you control in that system.",
     "description": "Secondary of Strategy Card: Construction"
@@ -6523,6 +6715,42 @@
     "defaultMessage": "Leadership",
     "description": "Title of Strategy Card: Leadership"
   },
+  "Strategy Cards.Lux.Primary": {
+    "defaultMessage": "Gain 3 command tokens.{br}Spend any amount of influence to gain 1 command token for every 3 influence spent.",
+    "description": "Primary of Strategy Card: Lux"
+  },
+  "Strategy Cards.Lux.Secondary": {
+    "defaultMessage": "Spend any amount of influence to gain 1 command token for every 3 influence spent.",
+    "description": "Secondary of Strategy Card: Lux"
+  },
+  "Strategy Cards.Lux.Title": {
+    "defaultMessage": "Lux",
+    "description": "Title of Strategy Card: Lux"
+  },
+  "Strategy Cards.Magus.Primary": {
+    "defaultMessage": "Initiate an ability splice. You may spend 3 resources and 3 influence to add 1 additional ability to the pool; if you do, after each player has chosen, it passes back to you and you take an additional ability.",
+    "description": "Primary of Strategy Card: Magus"
+  },
+  "Strategy Cards.Magus.Secondary": {
+    "defaultMessage": "Spend 1 token from your strategy pool and 3 resources or 3 influence to participate in the ability splice.",
+    "description": "Secondary of Strategy Card: Magus"
+  },
+  "Strategy Cards.Magus.Title": {
+    "defaultMessage": "Magus",
+    "description": "Title of Strategy Card: Magus"
+  },
+  "Strategy Cards.Noctis.Primary": {
+    "defaultMessage": "Initiate a genome splice.{br}Ready up to 2 planets.",
+    "description": "Primary of Strategy Card: Noctis"
+  },
+  "Strategy Cards.Noctis.Secondary": {
+    "defaultMessage": "Spend 1 token from your strategy pool to participate in the genome splice.",
+    "description": "Secondary of Strategy Card: Noctis"
+  },
+  "Strategy Cards.Noctis.Title": {
+    "defaultMessage": "Noctis",
+    "description": "Title of Strategy Card: Noctis"
+  },
   "Strategy Cards.Politics.Primary": {
     "defaultMessage": "Choose a player other than the speaker. That player gains the speaker token.{br}Draw 2 action cards.{br}Look at the top 2 cards of the agenda deck. Place each card on the top or bottom of the deck in any order.",
     "description": "Primary of Strategy Card: Politics"
@@ -6558,6 +6786,18 @@
   "Strategy Cards.Trade.Title": {
     "defaultMessage": "Trade",
     "description": "Title of Strategy Card: Trade"
+  },
+  "Strategy Cards.Tyrannus.Primary": {
+    "defaultMessage": "Choose a player other than the speaker. That player gains the speaker token.{br}Choose a player other than the speaker or tyrant. That player gainst the benediction token.{br}Draw 2 action cards.",
+    "description": "Primary of Strategy Card: Tyrannus"
+  },
+  "Strategy Cards.Tyrannus.Secondary": {
+    "defaultMessage": "Spend 1 token from your strategy pool to draw 2 action cards.",
+    "description": "Secondary of Strategy Card: Tyrannus"
+  },
+  "Strategy Cards.Tyrannus.Title": {
+    "defaultMessage": "Tyrannus",
+    "description": "Title of Strategy Card: Tyrannus"
   },
   "Strategy Cards.Warfare.Primary": {
     "defaultMessage": "Remove 1 of your command tokens from the game board; then, gain 1 command token.{br}Redistribute any number of the command tokens on your command sheet.",
@@ -6874,6 +7114,54 @@
   "Techs.X-89 Bacterial Weapon.Title": {
     "defaultMessage": "X-89 Bacterial Weapon",
     "description": "Title of Tech: X-89 Bacterial Weapon"
+  },
+  "The Ruby Monarch.Name": {
+    "defaultMessage": "The Ruby Monarch",
+    "description": "Name of Faction: The Ruby Monarch"
+  },
+  "The Ruby Monarch.Shortname": {
+    "defaultMessage": "Monarch",
+    "description": "Shortened version of Faction name: The Ruby Monarch"
+  },
+  "The Ruby Monarch.Units.The Scarlet Knife.Description": {
+    "defaultMessage": "DEPLOY: At the start of your turn, you may discard 1 of your abilities or genomes to place this unit from your reinforcements into a system that contains your ships.",
+    "description": "Description for Faction Unit: The Scarlet Knife"
+  },
+  "The Ruby Monarch.Units.The Scarlet Knife.Title": {
+    "defaultMessage": "The Scarlet Knife",
+    "description": "Title of Faction Unit: The Scarlet Knife"
+  },
+  "The Ruby Monarch.Units.The Sharpened Edge.Description": {
+    "defaultMessage": "DEPLOY: When your flagship is placed, you may place 1 mech into your flagship's space area.",
+    "description": "Description for Faction Unit: The Sharpened Edge"
+  },
+  "The Ruby Monarch.Units.The Sharpened Edge.Title": {
+    "defaultMessage": "The Sharpened Edge",
+    "description": "Title of Faction Unit: The Sharpened Edge"
+  },
+  "The Saint of Swords.Name": {
+    "defaultMessage": "The Saint of Swords",
+    "description": "Name of Faction: The Saint of Swords"
+  },
+  "The Saint of Swords.Shortname": {
+    "defaultMessage": "Saint",
+    "description": "Shortened version of Faction name: The Saint of Swords"
+  },
+  "The Saint of Swords.Units.Colada.Description": {
+    "defaultMessage": "While this unit is being transported, choose 1 unit in its system that has a capacity value to roll 1 additional die on its combat rolls.",
+    "description": "Description for Faction Unit: Colada"
+  },
+  "The Saint of Swords.Units.Colada.Title": {
+    "defaultMessage": "Colada",
+    "description": "Title of Faction Unit: Colada"
+  },
+  "The Saint of Swords.Units.Tizona.Description": {
+    "defaultMessage": "Apply +1 to the MOVE value of this ship if it would transport 4 units.",
+    "description": "Description for Faction Unit: Tizona"
+  },
+  "The Saint of Swords.Units.Tizona.Title": {
+    "defaultMessage": "Tizona",
+    "description": "Title of Faction Unit: Tizona"
   },
   "Titans of Ul.Abilities.Awaken.Description": {
     "defaultMessage": "After you activate a system that contains 1 or more of your sleeper tokens, you may replace each of those tokens with 1 PDS from your reinforcements.",
@@ -7446,6 +7734,10 @@
   "WvbM4Q": {
     "defaultMessage": "Group by",
     "description": "Label for a group of buttons for selecting which option to group by."
+  },
+  "X+daca": {
+    "defaultMessage": "Twilight's Fall",
+    "description": "Text on a button that will enable/disable the Twilight's Fall gamemode."
   },
   "X3Nzbr": {
     "defaultMessage": "Patrons",

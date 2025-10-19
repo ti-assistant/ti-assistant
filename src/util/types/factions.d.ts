@@ -81,19 +81,29 @@ interface Breakthrough {
 }
 
 interface BaseFaction {
-  abilities: Ability[];
-  breakthrough: Breakthrough;
-  colors: Record<string, number>;
+  abilities?: Ability[];
+  breakthrough?: Breakthrough;
+  color?: string;
   colorList?: string[];
   commodities: number;
   expansion: Expansion;
+  removedIn?: Expansion; // Used to remove factions if they do not apply.
   id: FactionId;
   locked?: boolean; // Prevents a faction from being selected.
   name: string;
   omegas?: Omega<BaseFaction>[];
-  promissories: PromissoryNote[];
+  promissories?: PromissoryNote[];
   shortname: string;
-  startswith: StartsWith;
+  startswith?: StartsWith;
+  units: Unit[];
+}
+
+interface TFFaction {
+  color: string;
+  commodities: number;
+  id: TwilightsFall.FactionId;
+  name: string;
+  shortname: string;
   units: Unit[];
 }
 
@@ -110,7 +120,7 @@ interface GameFaction {
   secondary?: Secondary;
   planets: Partial<Record<PlanetId, { ready: boolean }>>;
   playerName?: string;
-  startswith: StartsWith;
+  startswith?: StartsWith;
   techs: Partial<Record<TechId, GameTech>>;
   castVotes?: number;
   passed?: boolean;
@@ -125,6 +135,7 @@ type FactionId =
   | ProphecyOfKings.FactionId
   | CodexThree.FactionId
   | ThundersEdge.FactionId
+  | TwilightsFall.FactionId
   | DiscordantStars.FactionId;
 
 type BreakthroughId = ThundersEdge.BreakthroughId;

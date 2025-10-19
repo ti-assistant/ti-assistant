@@ -81,7 +81,7 @@ function FactionPanelContent({
   const factionLeaders = Object.values(leaders)
     .filter((leader) => leader.faction === faction.id)
     .filter((leader) =>
-      faction.startswith.faction && leader.subFaction
+      faction.startswith?.faction && leader.subFaction
         ? leader.subFaction === faction.startswith.faction
         : true
     )
@@ -320,80 +320,86 @@ function FactionPanelContent({
         className="flexColumn"
         style={{ width: "100%", justifyContent: "flex-start" }}
       >
-        <CollapsibleSection
-          title={
-            <FormattedMessage
-              id="I54oy6"
-              defaultMessage="{count, plural, one {Ability} other {Abilities}}"
-              description="Header for a section listing out abilities."
-              values={{
-                count:
-                  faction.abilities.length +
-                  (options.expansions.includes("THUNDERS EDGE") ? 1 : 0),
+        {faction.abilities ? (
+          <CollapsibleSection
+            title={
+              <FormattedMessage
+                id="I54oy6"
+                defaultMessage="{count, plural, one {Ability} other {Abilities}}"
+                description="Header for a section listing out abilities."
+                values={{
+                  count:
+                    faction.abilities.length +
+                    (options.expansions.includes("THUNDERS EDGE") ? 1 : 0),
+                }}
+              />
+            }
+            style={{ width: "100%" }}
+          >
+            <div
+              className="flexColumn"
+              style={{
+                width: "100%",
+                // display: "grid",
+                // gridAutoFlow: "row",
+                // gridTemplateRows: `repeat(${faction.abilities.length}, 1fr)`,
+                gap: rem(4),
+                padding: `0 ${rem(4)} ${rem(4)}`,
+                fontSize: rem(14),
               }}
-            />
-          }
-          style={{ width: "100%" }}
-        >
-          <div
-            className="flexColumn"
-            style={{
-              width: "100%",
-              // display: "grid",
-              // gridAutoFlow: "row",
-              // gridTemplateRows: `repeat(${faction.abilities.length}, 1fr)`,
-              gap: rem(4),
-              padding: `0 ${rem(4)} ${rem(4)}`,
-              fontSize: rem(14),
-            }}
+            >
+              {faction.abilities.map((ability) => {
+                return (
+                  <AbilitySection
+                    key={ability.name}
+                    leftLabel={ability.name.toUpperCase()}
+                  >
+                    <FormattedDescription description={ability.description} />
+                  </AbilitySection>
+                );
+              })}
+              {options.expansions.includes("THUNDERS EDGE") ? (
+                <FactionBreakthrough faction={faction} />
+              ) : null}
+            </div>
+          </CollapsibleSection>
+        ) : null}
+        {faction.promissories ? (
+          <CollapsibleSection
+            title={
+              <FormattedMessage
+                id="yXj5iL"
+                defaultMessage="Promissory {count, plural, one {Note} other {Notes}}"
+                description="Header for a section listing out promissory notes."
+                values={{ count: faction.promissories.length }}
+              />
+            }
+            style={{ width: "100%" }}
           >
-            {faction.abilities.map((ability) => {
-              return (
-                <AbilitySection
-                  key={ability.name}
-                  leftLabel={ability.name.toUpperCase()}
-                >
-                  <FormattedDescription description={ability.description} />
-                </AbilitySection>
-              );
-            })}
-            {options.expansions.includes("THUNDERS EDGE") ? (
-              <FactionBreakthrough faction={faction} />
-            ) : null}
-          </div>
-        </CollapsibleSection>
-        <CollapsibleSection
-          title={
-            <FormattedMessage
-              id="yXj5iL"
-              defaultMessage="Promissory {count, plural, one {Note} other {Notes}}"
-              description="Header for a section listing out promissory notes."
-              values={{ count: faction.promissories.length }}
-            />
-          }
-          style={{ width: "100%" }}
-        >
-          <div
-            className="flexColumn"
-            style={{
-              gap: rem(4),
-              padding: `0 ${rem(4)} ${rem(4)}`,
-              fontSize: rem(14),
-              width: "100%",
-            }}
-          >
-            {faction.promissories.map((promissory) => {
-              return (
-                <AbilitySection
-                  key={promissory.name}
-                  leftLabel={promissory.name}
-                >
-                  <FormattedDescription description={promissory.description} />
-                </AbilitySection>
-              );
-            })}
-          </div>
-        </CollapsibleSection>
+            <div
+              className="flexColumn"
+              style={{
+                gap: rem(4),
+                padding: `0 ${rem(4)} ${rem(4)}`,
+                fontSize: rem(14),
+                width: "100%",
+              }}
+            >
+              {faction.promissories.map((promissory) => {
+                return (
+                  <AbilitySection
+                    key={promissory.name}
+                    leftLabel={promissory.name}
+                  >
+                    <FormattedDescription
+                      description={promissory.description}
+                    />
+                  </AbilitySection>
+                );
+              })}
+            </div>
+          </CollapsibleSection>
+        ) : null}
       </div>
       <CollapsibleSection
         title={
@@ -489,7 +495,7 @@ function FactionPanelContent({
 function FactionBreakthrough({ faction }: { faction: BaseFaction }) {
   const [reverse, setReverse] = useState(false);
 
-  if (!faction.breakthrough.name) {
+  if (!faction.breakthrough?.name) {
     return null;
   }
 

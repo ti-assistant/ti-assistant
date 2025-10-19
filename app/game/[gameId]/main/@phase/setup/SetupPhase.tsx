@@ -37,7 +37,7 @@ function factionTechChoicesComplete(
 ): boolean {
   let complete = true;
   Object.values(factions).forEach((faction) => {
-    if (faction.startswith.choice) {
+    if (faction.startswith?.choice) {
       const numSelected = (faction.startswith.techs ?? []).length;
       let numRequired = faction.startswith.choice.select;
       let numAvailable = faction.startswith.choice.options.length;
@@ -59,7 +59,7 @@ function factionSubFactionChoicesComplete(
   if (!factions["Council Keleres"]) {
     return true;
   }
-  return (factions["Council Keleres"].startswith.planets ?? []).length !== 0;
+  return (factions["Council Keleres"].startswith?.planets ?? []).length !== 0;
 }
 
 export function setupPhaseComplete(

@@ -580,7 +580,7 @@ interface UnscoreObjectiveData {
   event: ScoreObjectiveEvent;
 }
 
-type Action = StrategyCardName | "Tactical" | "Component" | "Pass";
+type Action = StrategyCardId | "Tactical" | "Component" | "Pass";
 
 interface SelectActionEvent {
   action: Action;

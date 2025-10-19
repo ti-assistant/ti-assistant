@@ -46,12 +46,6 @@ export default function getBaseFactions(
         synergy: { left: "RED", right: "GREEN" },
         timing: "COMPONENT_ACTION",
       },
-      colors: {
-        Black: 0.1,
-        Blue: 0.1,
-        Green: 1.6,
-        Yellow: 0.1,
-      },
       colorList: [
         "Green",
         "Black",
@@ -115,6 +109,7 @@ export default function getBaseFactions(
           ],
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Arborec.Shortname",
         description: "Shortened version of Faction name: Arborec",
@@ -245,11 +240,6 @@ export default function getBaseFactions(
         synergy: { left: "BLUE", right: "RED" },
         timing: "TACTICAL_ACTION",
       },
-      colors: {
-        Black: 0.8,
-        Blue: 0.1,
-        Red: 0.95,
-      },
       colorList: [
         "Black",
         "Red",
@@ -314,6 +304,7 @@ export default function getBaseFactions(
           ],
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Barony of Letnev.Shortname",
         description: "Shortened version of Faction name: Barony of Letnev",
@@ -424,11 +415,6 @@ export default function getBaseFactions(
         synergy: { left: "BLUE", right: "RED" },
         timing: "COMPONENT_ACTION",
       },
-      colors: {
-        Green: 0.5,
-        Orange: 0.85,
-        Yellow: 0.4,
-      },
       colorList: [
         "Orange",
         "Green",
@@ -465,6 +451,7 @@ export default function getBaseFactions(
           ),
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Clan of Saar.Shortname",
         description: "Shortened version of Faction name: Clan of Saar",
@@ -588,10 +575,6 @@ export default function getBaseFactions(
         synergy: { left: "RED", right: "YELLOW" },
         timing: "PASSIVE",
       },
-      colors: {
-        Orange: 0.65,
-        Red: 1.25,
-      },
       colorList: [
         "Red",
         "Orange",
@@ -626,6 +609,7 @@ export default function getBaseFactions(
           }),
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Embers of Muaat.Shortname",
         description: "Shortened version of Faction name: Embers of Muaat",
@@ -770,10 +754,6 @@ export default function getBaseFactions(
         synergy: { left: "RED", right: "YELLOW" },
         timing: "TACTICAL_ACTION",
       },
-      colors: {
-        Orange: 0.7,
-        Yellow: 1.2,
-      },
       colorList: [
         "Yellow",
         "Orange",
@@ -810,6 +790,7 @@ export default function getBaseFactions(
           ),
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Emirates of Hacan.Shortname",
         description: "Shortened version of Faction name: Emirates of Hacan",
@@ -920,10 +901,6 @@ export default function getBaseFactions(
         synergy: { left: "YELLOW", right: "GREEN" },
         timing: "TACTICAL_ACTION",
       },
-      colors: {
-        Blue: 1.15,
-        Yellow: 0.75,
-      },
       colorList: [
         "Blue",
         "Yellow",
@@ -961,6 +938,7 @@ export default function getBaseFactions(
           ),
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Federation of Sol.Shortname",
         description: "Shortened version of Faction name: Federation of Sol",
@@ -1117,11 +1095,6 @@ export default function getBaseFactions(
         synergy: { left: "BLUE", right: "YELLOW" },
         timing: "TACTICAL_ACTION",
       },
-      colors: {
-        Black: 0.1,
-        Blue: 1.7,
-        Purple: 0.1,
-      },
       colorList: [
         "Blue",
         "Purple",
@@ -1158,6 +1131,7 @@ export default function getBaseFactions(
           ),
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Ghosts of Creuss.Shortname",
         description: "Shortened version of Faction name: Ghosts of Creuss",
@@ -1267,11 +1241,6 @@ export default function getBaseFactions(
         synergy: { left: "RED", right: "GREEN" },
         timing: "TACTICAL_ACTION",
       },
-      colors: {
-        Black: 0.7,
-        Blue: 0.6,
-        Red: 0.6,
-      },
       colorList: [
         "Black",
         "Red",
@@ -1339,6 +1308,7 @@ export default function getBaseFactions(
           ],
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "L1Z1X Mindnet.Shortname",
         description: "Shortened version of Faction name: L1Z1X Mindnet",
@@ -1489,11 +1459,6 @@ export default function getBaseFactions(
           type: "Cruiser",
         },
       },
-      colors: {
-        Black: 0.5,
-        Orange: 0.95,
-        Yellow: 0.45,
-      },
       colorList: [
         "Orange",
         "Black",
@@ -1531,6 +1496,7 @@ export default function getBaseFactions(
           ),
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Mentak Coalition.Shortname",
         description: "Shortened version of Faction name: Mentak Coalition",
@@ -1641,11 +1607,6 @@ export default function getBaseFactions(
         synergy: { left: "RED", right: "GREEN" },
         timing: "PASSIVE",
       },
-      colors: {
-        Green: 1.15,
-        Orange: 0.3,
-        Yellow: 0.45,
-      },
       colorList: [
         "Green",
         "Yellow",
@@ -1683,6 +1644,7 @@ export default function getBaseFactions(
           ),
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Naalu Collective.Shortname",
         description: "Shortened version of Faction name: Naalu Collective",
@@ -1852,10 +1814,6 @@ export default function getBaseFactions(
         id: "Valefar Assimilator Z",
         timing: "PASSIVE",
       },
-      colors: {
-        Black: 0.15,
-        Red: 1.75,
-      },
       colorList: [
         "Red",
         "Black",
@@ -1892,6 +1850,7 @@ export default function getBaseFactions(
           ),
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Nekro Virus.Shortname",
         description: "Shortened version of Faction name: Nekro Virus",
@@ -1989,10 +1948,6 @@ export default function getBaseFactions(
         synergy: { left: "BLUE", right: "RED" },
         timing: "TACTICAL_ACTION",
       },
-      colors: {
-        Black: 1,
-        Red: 0.9,
-      },
       colorList: [
         "Black",
         "Red",
@@ -2029,6 +1984,7 @@ export default function getBaseFactions(
           ),
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Sardakk N'orr.Shortname",
         description: "Shortened version of Faction name: Sardakk N'orr",
@@ -2169,10 +2125,6 @@ export default function getBaseFactions(
         synergy: { left: "YELLOW", right: "GREEN" },
         timing: "PASSIVE",
       },
-      colors: {
-        Blue: 1.6,
-        Purple: 0.3,
-      },
       colorList: [
         "Purple",
         "Blue",
@@ -2210,6 +2162,7 @@ export default function getBaseFactions(
           ),
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Universities of Jol-Nar.Shortname",
         description:
@@ -2326,11 +2279,6 @@ export default function getBaseFactions(
         synergy: { left: "BLUE", right: "RED" },
         timing: "TACTICAL_ACTION",
       },
-      colors: {
-        Orange: 0.75,
-        Purple: 0.6,
-        Yellow: 0.55,
-      },
       colorList: [
         "Orange",
         "Purple",
@@ -2404,6 +2352,7 @@ export default function getBaseFactions(
           ],
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Winnu.Shortname",
         description: "Shortened version of Faction name: Winnu",
@@ -2526,10 +2475,6 @@ export default function getBaseFactions(
         synergy: { left: "YELLOW", right: "GREEN" },
         timing: "PASSIVE",
       },
-      colors: {
-        Blue: 0.8,
-        Green: 1.1,
-      },
       colorList: [
         "Green",
         "Blue",
@@ -2567,6 +2512,7 @@ export default function getBaseFactions(
           ),
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Xxcha Kingdom.Shortname",
         description: "Shortened version of Faction name: Xxcha Kingdom",
@@ -2677,11 +2623,6 @@ export default function getBaseFactions(
         },
         timing: "PASSIVE",
       },
-      colors: {
-        Black: 0.6,
-        Purple: 1.05,
-        Yellow: 0.25,
-      },
       colorList: [
         "Purple",
         "Black",
@@ -2747,6 +2688,7 @@ export default function getBaseFactions(
           ],
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Yin Brotherhood.Shortname",
         description: "Shortened version of Faction name: Yin Brotherhood",
@@ -2869,12 +2811,6 @@ export default function getBaseFactions(
         synergy: { left: "YELLOW", right: "GREEN" },
         timing: "PASSIVE",
       },
-      colors: {
-        Black: 0.1,
-        Green: 0.93,
-        Red: 0.25,
-        Yellow: 0.63,
-      },
       colorList: [
         "Green",
         "Yellow",
@@ -2911,6 +2847,7 @@ export default function getBaseFactions(
           ),
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Yssaril Tribes.Shortname",
         description: "Shortened version of Faction name: Yssaril Tribes",

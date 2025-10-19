@@ -245,14 +245,21 @@ export function buildCompleteFactions(
 
     let updatedFaction = omegaMergeFn(baseFaction);
 
-    updatedFaction.abilities = updatedFaction.abilities.map(omegaMergeFn);
-    updatedFaction.promissories = updatedFaction.promissories.map(omegaMergeFn);
+    if (updatedFaction.abilities) {
+      updatedFaction.abilities = updatedFaction.abilities.map(omegaMergeFn);
+    }
+    if (updatedFaction.promissories) {
+      updatedFaction.promissories =
+        updatedFaction.promissories.map(omegaMergeFn);
+    }
     updatedFaction.units = updatedFaction.units.map(omegaMergeFn);
 
-    const breakthrough = {
-      ...updatedFaction.breakthrough,
-      ...faction.breakthrough,
-    };
+    const breakthrough = updatedFaction.breakthrough
+      ? {
+          ...updatedFaction.breakthrough,
+          ...faction.breakthrough,
+        }
+      : undefined;
     factions[factionId] = {
       ...updatedFaction,
       ...faction,
@@ -263,12 +270,12 @@ export function buildCompleteFactions(
   if (Object.keys(factions).includes("Council Keleres")) {
     const councilChoice = new Set<TechId>();
     Object.values(factions).forEach((faction) => {
-      (faction.startswith.techs ?? []).forEach((tech) => {
+      (faction.startswith?.techs ?? []).forEach((tech) => {
         councilChoice.add(tech);
       });
     });
     const council = factions["Council Keleres"];
-    if (council?.startswith.choice) {
+    if (council?.startswith?.choice) {
       council.startswith.choice.options = Array.from(councilChoice);
     }
   }
@@ -358,7 +365,9 @@ export function buildCompletePlanets(
         return;
       }
       if (
-        !gameFactions["Council Keleres"].startswith.planets?.includes(planet.id)
+        !gameFactions["Council Keleres"].startswith?.planets?.includes(
+          planet.id
+        )
       ) {
         return;
       }
@@ -366,7 +375,7 @@ export function buildCompletePlanets(
     if (
       planet.faction &&
       planet.subFaction &&
-      gameFactions[planet.faction]?.startswith.faction !== planet.subFaction
+      gameFactions[planet.faction]?.startswith?.faction !== planet.subFaction
     ) {
       return;
     }
@@ -500,10 +509,23 @@ export function buildCompleteStrategyCards(
   objectEntries(baseData.strategycards).forEach(([cardId, card]) => {
     const updatedCard = omegaMergeFn(card);
 
+    if (
+      updatedCard.expansion &&
+      !storedGameData.options.expansions.includes(updatedCard.expansion)
+    ) {
+      return;
+    }
+
     cards[cardId] = {
       ...updatedCard,
       ...(strategyCards[cardId] ?? {}),
     };
+  });
+
+  Object.values(cards).forEach((card) => {
+    if (card.replaces) {
+      delete cards[card.replaces];
+    }
   });
 
   return cards;
@@ -591,7 +613,7 @@ export function buildCompleteLeaders(
 
     if (
       leader.subFaction &&
-      factions["Council Keleres"]?.startswith.faction !== leader.subFaction
+      factions["Council Keleres"]?.startswith?.faction !== leader.subFaction
     ) {
       return;
     }
