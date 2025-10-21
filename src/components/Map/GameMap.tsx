@@ -345,14 +345,9 @@ export default function GameMap({
     }
   }
 
+  const fractureVisible = !hideFracture && expansions.includes("THUNDERS EDGE");
   return (
-    <div
-      className={`${styles.Map} ${
-        !hideFracture && expansions.includes("THUNDERS EDGE")
-          ? styles.Fracture
-          : ""
-      }`}
-    >
+    <div className={`${styles.Map} ${fractureVisible ? styles.Fracture : ""}`}>
       {hideLegend ? null : (
         <OverlayLegend
           overlayDetails={overlayDetails}
@@ -398,6 +393,7 @@ export default function GameMap({
             position={ghostsCorner}
             tilePercentage={tilePercentage}
             hexRatio={HEX_RATIO}
+            fractureVisible={fractureVisible}
           />
         ) : null}
         {rebellion && rebellionCorner ? (
@@ -410,6 +406,7 @@ export default function GameMap({
             position={rebellionCorner}
             tilePercentage={tilePercentage}
             hexRatio={HEX_RATIO}
+            fractureVisible={fractureVisible}
           />
         ) : null}
         {wormholeNexus ? (
@@ -428,6 +425,7 @@ export default function GameMap({
             position={nexusCorner}
             tilePercentage={tilePercentage}
             hexRatio={HEX_RATIO}
+            fractureVisible={fractureVisible}
           />
         ) : null}
         {hideFracture ? null : (
@@ -435,7 +433,6 @@ export default function GameMap({
             tilePercentage={tilePercentage}
             overlayDetails={overlayDetails}
             planetInfo={planetInfo}
-            numRings={numRings}
             expansions={expansions}
             mapStyle={mapStyle}
             numFactions={factions.length}
@@ -520,7 +517,6 @@ function Fracture({
   tilePercentage,
   overlayDetails,
   planetInfo,
-  numRings,
   expansions,
   numFactions,
   mapStyle,
@@ -528,7 +524,6 @@ function Fracture({
   tilePercentage: number;
   overlayDetails: OverlayDetails;
   planetInfo: Partial<Record<PlanetId, Planet>>;
-  numRings: number;
   expansions: Expansion[];
   numFactions: number;
   mapStyle: MapStyle;

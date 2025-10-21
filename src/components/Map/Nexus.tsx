@@ -16,6 +16,7 @@ export default function Nexus({
   onClick,
   tilePercentage,
   hexRatio,
+  fractureVisible,
 }: {
   systemNumber: string;
   position: NexusPosition;
@@ -25,10 +26,15 @@ export default function Nexus({
   onClick?: (systemId: string) => void;
   tilePercentage: number;
   hexRatio: number;
+  fractureVisible: boolean;
 }) {
   const right = position.includes("right") ? 0 : undefined;
   const left = position.includes("left") ? 0 : undefined;
-  const top = position.includes("top") ? 0 : undefined;
+  const top = position.includes("top")
+    ? fractureVisible
+      ? "-10%"
+      : 0
+    : undefined;
   const bottom = position.includes("bottom") ? 0 : undefined;
   return (
     <div

@@ -38,6 +38,7 @@ export default function Timers({
         if (!isFactionId(key)) {
           return null;
         }
+        const secondary = timers[`${key}-secondary`];
         const data = timerData[key];
         if (!data) {
           return null;
@@ -69,6 +70,12 @@ export default function Timers({
                   width={100}
                 />
               </div>
+              {secondary ? (
+                <div className="flexRow">
+                  Secondary:
+                  <TimerDisplay time={secondary} width={100} />
+                </div>
+              ) : null}
             </div>
           </LabeledDiv>
         );
