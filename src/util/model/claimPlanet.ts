@@ -44,6 +44,7 @@ export class ClaimPlanetHandler implements Handler {
       [`state.paused`]: false,
       [`sequenceNum`]: "INCREMENT",
       [`planets.${this.data.event.planet}.owner`]: this.data.event.faction,
+      [`planets.${this.data.event.planet}.spaceDock`]: "DELETE",
     };
 
     if (
@@ -151,6 +152,7 @@ export class UnclaimPlanetHandler implements Handler {
       [`state.paused`]: false,
       [`sequenceNum`]: "INCREMENT",
       [`planets.${this.data.event.planet}.owner`]: prevOwner ?? "DELETE",
+      [`planets.${this.data.event.planet}.spaceDock`]: "DELETE",
     };
 
     if (

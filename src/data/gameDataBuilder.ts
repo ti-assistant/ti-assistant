@@ -465,6 +465,17 @@ export function buildCompletePlanets(
       ...(gamePlanets[planet.id] ?? {}),
     };
 
+    const gamePlanet = gamePlanets[planet.id];
+    if (gamePlanet?.owner && gamePlanet.spaceDock) {
+      const owner = gameFactions[gamePlanet.owner];
+      if (owner) {
+        if (owner.techs["4X4IC Helios VI II"]?.ready) {
+          planet.resources += 2;
+        } else if (gamePlanet.owner === "Last Bastion") {
+          planet.resources += 1;
+        }
+      }
+    }
     if (planet.faction && isPlanetInMap && !gameFactions[planet.faction]) {
       const attributes = new Set(planet.attributes);
       attributes.add("all-types");

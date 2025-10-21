@@ -123,6 +123,7 @@ import { UpdateBreakthroughStateHandler } from "../../../../src/util/model/updat
 import { UpdateLeaderStateHandler } from "../../../../src/util/model/updateLeaderState";
 import { UpdatePlanetStateHandler } from "../../../../src/util/model/updatePlanetState";
 import { Optional } from "../../../../src/util/types/types";
+import { ToggleStructureHandler } from "../../../../src/util/model/toggleSpaceDock";
 
 export async function POST(
   req: Request,
@@ -606,6 +607,9 @@ function updateInTransaction(
         break;
       case "UNPURGE_SYSTEM":
         handler = new UnpurgeSystemHandler(gameData, data);
+        break;
+      case "TOGGLE_STRUCTURE":
+        handler = new ToggleStructureHandler(gameData, data);
         break;
 
       case "UNDO": {

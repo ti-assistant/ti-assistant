@@ -161,10 +161,11 @@ export async function POST(req: Request) {
     }
     baseFactions[faction.id] = localFaction;
     objectEntries(faction.planets).forEach(([name, planet]) => {
-      basePlanets[name] = {
-        ...planet,
-        owner: baseFaction.id,
-      };
+      const basePlanet: GamePlanet = { ...planet, owner: baseFaction.id };
+      if (baseFaction.id === "Last Bastion" && name === "Ordinian") {
+        basePlanet.spaceDock = true;
+      }
+      basePlanets[name] = basePlanet;
     });
   });
 

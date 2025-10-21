@@ -63,7 +63,7 @@ interface GamePlanet {
   state?: PlanetState;
   attachments?: AttachmentId[];
   // Manual adjustments
-  bastionSpaceDock?: boolean;
+  spaceDock?: boolean;
 }
 
 type Planet = BasePlanet & GamePlanet;

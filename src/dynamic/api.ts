@@ -162,6 +162,7 @@ const playAdjudicatorBaalModule = import("../util/api/playAdjudicatorBaal");
 const swapMapTilesModule = import("../util/api/swapMapTiles");
 const gainAllianceModule = import("../util/api/gainAlliance");
 const purgeSystemModule = import("../util/api/purgeSystem");
+const toggleStructureModule = import("../util/api/toggleStructure");
 
 export async function addAttachmentAsync(
   gameId: string,
@@ -720,4 +721,14 @@ export async function purgeSystemAsync(gameId: string, systemId: SystemId) {
 export async function unpurgeSystemAsync(gameId: string, systemId: SystemId) {
   const mod = await purgeSystemModule;
   mod.unpurgeSystem(gameId, systemId);
+}
+
+export async function toggleStructureAsync(
+  gameId: string,
+  planetId: PlanetId,
+  structure: "Space Dock" | "PDS",
+  change: "Add" | "Remove"
+) {
+  const mod = await toggleStructureModule;
+  mod.toggleStructure(gameId, planetId, structure, change);
 }

@@ -5,10 +5,15 @@ import {
   useAttachments,
   useGameId,
   usePlanet,
+  useTechs,
   useViewOnly,
 } from "../../context/dataHooks";
 import { useFactions } from "../../context/factionDataHooks";
-import { addAttachmentAsync, removeAttachmentAsync } from "../../dynamic/api";
+import {
+  addAttachmentAsync,
+  removeAttachmentAsync,
+  toggleStructureAsync,
+} from "../../dynamic/api";
 import ArcaneCitadelSVG from "../../icons/attachments/ArcaneCitadel";
 import CouncilPreserveSVG from "../../icons/attachments/CouncilPreserve";
 import DemilitarizedZoneSVG from "../../icons/attachments/DemilitarizedZone";
@@ -20,6 +25,7 @@ import RedTechSVG from "../../icons/techs/RedTech";
 import YellowTechSVG from "../../icons/techs/YellowTech";
 import HitSVG from "../../icons/ui/Hit";
 import { SelectableRow } from "../../SelectableRow";
+import { hasTech } from "../../util/api/techs";
 import { getFactionColor } from "../../util/factions";
 import { applyPlanetAttachments } from "../../util/planets";
 import { Optional } from "../../util/types/types";
@@ -30,6 +36,7 @@ import { ModalContent } from "../Modal/Modal";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 import Toggle from "../Toggle/Toggle";
+import UnitIcon from "../Units/Icons";
 
 interface PlanetRowOpts {
   hideAttachButton?: boolean;
@@ -56,6 +63,8 @@ export default function PlanetRow({
 }: PlanetRowProps) {
   const attachments = useAttachments();
   const factions = useFactions();
+  const gameId = useGameId();
+  const techs = useTechs();
   const viewOnly = useViewOnly();
 
   const { openModal } = use(ModalContext);
@@ -132,6 +141,24 @@ export default function PlanetRow({
     claimedColor = "#999";
   }
 
+  function showSpaceDockToggle() {
+    if (planet.attributes.includes("space-station")) {
+      return false;
+    }
+    if (!planet.owner) {
+      return false;
+    }
+    if (planet.owner === "Last Bastion") {
+      return true;
+    }
+    const owner = factions[planet.owner];
+    if (!owner) {
+      return false;
+    }
+    const bastionSpaceDock = techs["4X4IC Helios VI II"];
+    return hasTech(owner, bastionSpaceDock);
+  }
+
   return (
     <SelectableRow
       itemId={planet.id}
@@ -199,21 +226,46 @@ export default function PlanetRow({
             />
           </div>
         </div>
+        {showSpaceDockToggle() ? (
+          <Toggle
+            selected={!!planet.spaceDock}
+            toggleFn={(prevValue) =>
+              toggleStructureAsync(
+                gameId,
+                planet.id,
+                "Space Dock",
+                prevValue ? "Remove" : "Add"
+              )
+            }
+          >
+            <UnitIcon type="Space Dock" size={14} />
+          </Toggle>
+        ) : null}
         {!opts.showAttachButton ? (
           <div
             className="flexRow"
             style={{
-              width: rem(40),
+              width: showSpaceDockToggle() ? "fit-content" : rem(40),
+              paddingLeft: showSpaceDockToggle() ? rem(2) : undefined,
               paddingRight: rem(6),
             }}
           >
             {canAttach() ? (
               <button
-                style={{ fontSize: rem(10) }}
+                style={{
+                  fontSize: rem(16),
+                  width: rem(16),
+                  height: rem(16),
+                  padding: rem(2),
+                  borderRadius: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
                 className="hiddenButton"
                 onClick={() => openModal(<AttachMenu planetId={planet.id} />)}
               >
-                Attach
+                ⎗
               </button>
             ) : null}
           </div>
@@ -228,11 +280,13 @@ export default function PlanetRow({
             <UnitIcon type="Space Dock" />
           </Toggle>
         ) : null} */}
-        <ResourcesIcon
-          resources={planet.resources}
-          influence={planet.influence}
-          height={36}
-        />
+        <div style={{ flexShrink: 0 }}>
+          <ResourcesIcon
+            resources={planet.resources}
+            influence={planet.influence}
+            height={36}
+          />
+        </div>
         <div
           style={{
             // margin: `0 ${rem(4)} ${rem(8)}`,
