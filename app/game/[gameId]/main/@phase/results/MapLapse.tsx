@@ -5,8 +5,8 @@ import { useOptions } from "../../../../../../src/context/dataHooks";
 import { useFactions } from "../../../../../../src/context/factionDataHooks";
 import { useGameState } from "../../../../../../src/context/stateDataHooks";
 import { getWormholeNexusSystemNumber } from "../../../../../../src/util/map";
-import { objectKeys, rem } from "../../../../../../src/util/util";
 import { fracturePlanetsOwned } from "../../../../../../src/util/planets";
+import { objectKeys, rem } from "../../../../../../src/util/util";
 
 interface RoundInfo {
   planets: Partial<Record<PlanetId, Planet>>;
@@ -37,21 +37,21 @@ export default function MapLapse({
 
   const hasFracture = options.expansions.includes("THUNDERS EDGE");
 
-  const height = hasFracture ? rem(470) : rem(512);
+  const height = rem(512);
 
   return (
     <div
-      className={hasFracture ? "flexColumn" : "flexRow"}
+      className={"flexRow"}
       style={{
         width: rem(620),
-        height: hasFracture ? rem(490) : rem(500),
+        height: rem(500),
         justifyContent: "flex-start",
         alignItems: "center",
         position: "relative",
         gap: 0,
       }}
     >
-      <div className="flexRow" style={{ alignItems: "flex-start" }}>
+      <div className="flexColumn" style={{ alignItems: "flex-start" }}>
         {objectKeys(rounds).map((roundNum) => {
           return (
             <Chip
@@ -72,7 +72,7 @@ export default function MapLapse({
         className="flexColumn"
         style={{
           width: "100%",
-          alignItems: hasFracture ? "flex-start" : "center",
+          alignItems: "center",
         }}
       >
         <div
