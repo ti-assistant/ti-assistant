@@ -59,6 +59,7 @@ import {
 import { PurgeTechHandler, UnpurgeTechHandler } from "../model/purgeTech";
 import { PassHandler, UnpassHandler } from "../model/unpass";
 import { PurgeSystemHandler, UnpurgeSystemHandler } from "../model/purgeSystem";
+import { ToggleStructureHandler } from "../model/toggleSpaceDock";
 
 export function getOppositeHandler(
   gameData: StoredGameData,
@@ -534,6 +535,15 @@ export function getOppositeHandler(
       return new PurgeSystemHandler(gameData, {
         action: "PURGE_SYSTEM",
         event: data.event,
+      });
+    case "TOGGLE_STRUCTURE":
+      const change = data.event.change === "Add" ? "Remove" : "Add";
+      return new ToggleStructureHandler(gameData, {
+        action: "TOGGLE_STRUCTURE",
+        event: {
+          ...data.event,
+          change,
+        },
       });
   }
 }

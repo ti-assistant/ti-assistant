@@ -17,7 +17,7 @@ import {
   getClaimedPlanets,
   getGainedRelic,
 } from "../../util/actionLog";
-import { applyPlanetAttachments } from "../../util/planets";
+import { applyBastionDock, applyPlanetAttachments } from "../../util/planets";
 import GainRelic from "../Actions/GainRelic";
 import AttachmentSelectRadialMenu from "../AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";

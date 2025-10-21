@@ -62,6 +62,7 @@ type GameUpdateData =
   | (GainAllianceData | LoseAllianceData)
   | (PassData | UnpassData)
   | (PurgeSystemData | UnpurgeSystemData)
+  | ToggleStructureData
   | UndoData;
 
 type Secondary = "PENDING" | "DONE" | "SKIPPED";
@@ -349,6 +350,17 @@ interface PurgeSystemData {
 interface UnpurgeSystemData {
   action: "UNPURGE_SYSTEM";
   event: PurgeSystemEvent;
+}
+
+interface ToggleStructureEvent {
+  planetId: PlanetId;
+  structure: "Space Dock" | "PDS";
+  change: "Add" | "Remove";
+}
+
+interface ToggleStructureData {
+  action: "TOGGLE_STRUCTURE";
+  event: ToggleStructureEvent;
 }
 
 interface GainRelicEvent {

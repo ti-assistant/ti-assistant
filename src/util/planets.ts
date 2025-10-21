@@ -1,3 +1,4 @@
+import { hasTech } from "./api/techs";
 import { Optional } from "./types/types";
 
 /**
