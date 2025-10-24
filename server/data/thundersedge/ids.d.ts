@@ -1,7 +1,10 @@
 namespace ThundersEdge {
   type ActionCardId =
+    | "Black Market Dealings"
+    | "Brilliance"
     | "Crash Landing"
     | "Crisis"
+    | "Exchange Program"
     | "Extreme Duress"
     | "Lie in Wait"
     | "Mercenary Contract"

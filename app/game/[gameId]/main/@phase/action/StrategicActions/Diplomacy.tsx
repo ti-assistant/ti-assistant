@@ -31,10 +31,7 @@ import {
   getFactionColor,
   getFactionName,
 } from "../../../../../../../src/util/factions";
-import {
-  applyBastionDock,
-  applyPlanetAttachments,
-} from "../../../../../../../src/util/planets";
+import { applyPlanetAttachments } from "../../../../../../../src/util/planets";
 import { rem } from "../../../../../../../src/util/util";
 
 const Diplomacy = {
