@@ -1,6 +1,7 @@
 import React, { CSSProperties, useRef } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
+import { InfoRow } from "../../../../../../src/InfoRow";
 import { LockedButtons } from "../../../../../../src/LockedButton";
 import { SmallStrategyCard } from "../../../../../../src/StrategyCard";
 import {
@@ -13,20 +14,19 @@ import ExpeditionSelector from "../../../../../../src/components/Expedition/Expe
 import FactionCard from "../../../../../../src/components/FactionCard/FactionCard";
 import FactionCircle from "../../../../../../src/components/FactionCircle/FactionCircle";
 import FactionIcon from "../../../../../../src/components/FactionIcon/FactionIcon";
+import FormattedDescription from "../../../../../../src/components/FormattedDescription/FormattedDescription";
 import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
 import LabeledLine from "../../../../../../src/components/LabeledLine/LabeledLine";
+import MultiStateToggle from "../../../../../../src/components/MultiStateToggle/MultiStateToggle";
 import PromissoryMenu from "../../../../../../src/components/PromissoryMenu/PromissoryMenu";
 import { TacticalAction } from "../../../../../../src/components/TacticalAction";
 import TechResearchSection from "../../../../../../src/components/TechResearchSection/TechResearchSection";
-import ThreeWayToggle from "../../../../../../src/components/ThreeWayToggle/ThreeWayToggle";
 import Toggle from "../../../../../../src/components/Toggle/Toggle";
 import {
   useActionCard,
-  useActionCards,
   useCurrentTurn,
   useGameId,
   useLeader,
-  useLeaders,
   usePlanets,
   usePrimaryCompleted,
   useStrategyCards,
@@ -69,6 +69,7 @@ import {
 } from "../../../../../../src/util/factions";
 import { getStrategyCardsForFaction } from "../../../../../../src/util/helpers";
 import { phaseString } from "../../../../../../src/util/strings";
+import { Optional } from "../../../../../../src/util/types/types";
 import { rem } from "../../../../../../src/util/util";
 import styles from "./ActionPhase.module.scss";
 import { ComponentAction } from "./ComponentAction";
@@ -77,11 +78,6 @@ import Imperial from "./StrategicActions/Imperial";
 import Politics from "./StrategicActions/Politics";
 import Technology from "./StrategicActions/Technology";
 import Warfare from "./StrategicActions/Warfare";
-import MultiStateToggle from "../../../../../../src/components/MultiStateToggle/MultiStateToggle";
-import { InfoRow } from "../../../../../../src/InfoRow";
-import FormattedDescription from "../../../../../../src/components/FormattedDescription/FormattedDescription";
-import IconDiv from "../../../../../../src/components/LabeledDiv/IconDiv";
-import { Optional } from "../../../../../../src/util/types/types";
 
 interface FactionActionButtonsProps {
   factionId: FactionId;
@@ -1060,108 +1056,86 @@ export function NextPlayerButtons({
   const selectedAction = getSelectedActionFromLog(currentTurn);
   const newSpeaker = getNewSpeakerEventFromLog(currentTurn);
 
-  async function completeActions() {
-    if (!gameId || selectedAction === null) {
-      return;
-    }
-
-    endTurnAsync(gameId);
+  if (!selectedAction) {
+    return null;
   }
 
-  async function finalizeAction() {
-    if (!gameId || selectedAction === null) {
-      return;
-    }
-    endTurnAsync(gameId, true);
-  }
-
-  function isTurnComplete() {
-    switch (selectedAction) {
-      case "Politics":
-        return !!newSpeaker;
-    }
-    return !!selectedAction;
+  if (selectedAction === "Politics" && !newSpeaker) {
+    return null;
   }
 
   const passedFactions = Object.values(factions).filter(
     (faction) => faction.passed && faction.id !== state.activeplayer
   );
 
-  if (!isTurnComplete()) {
-    return null;
-  } else {
-    return (
-      <div className="flexColumn">
-        <div className="flexRow" style={{ gap: rem(16) }}>
-          <button
-            onClick={completeActions}
-            className={styles.EndTurnButton}
-            style={buttonStyle}
-            disabled={viewOnly}
-          >
-            <FormattedMessage
-              id="NxpzKH"
-              description="Text on a button that will end the player's turn."
-              defaultMessage="End Turn"
-            />
-          </button>
-          {selectedAction !== "Pass" ? (
-            <React.Fragment>
-              <div style={{ fontSize: rem(16) }}>
-                <FormattedMessage
-                  id="PnNSxg"
-                  description="Text between two fields linking them together."
-                  defaultMessage="OR"
-                />
-              </div>
-              <button
-                onClick={finalizeAction}
-                className={styles.EndTurnButton}
-                style={buttonStyle}
-                disabled={viewOnly}
-              >
-                <FormattedMessage
-                  id="5ChhqO"
-                  description="Text on a button that will let the player take another action."
-                  defaultMessage="Take Another Action"
-                />
-              </button>
-            </React.Fragment>
-          ) : null}
-        </div>
-        {puppets && passedFactions.length > 0 ? (
-          <LabeledDiv
-            label={
-              <InfoRow
-                infoTitle={puppets.name}
-                infoContent={puppets.description}
-              >
-                Puppets on a String
-              </InfoRow>
-            }
-            style={{ width: "min-content" }}
-            innerStyle={{
-              flexDirection: "row",
-              gap: rem(2),
-              justifyContent: "center",
-            }}
-          >
-            {passedFactions.map((faction) => {
-              return (
-                <button
-                  key={faction.id}
-                  style={{ borderRadius: "100%", padding: rem(2) }}
-                  onClick={() => endTurnAsync(gameId, false, faction.id)}
-                >
-                  <FactionIcon factionId={faction.id} size={20} />
-                </button>
-              );
-            })}
-          </LabeledDiv>
+  return (
+    <div className="flexColumn">
+      <div className="flexRow" style={{ gap: rem(16) }}>
+        <button
+          onClick={() => endTurnAsync(gameId)}
+          className={styles.EndTurnButton}
+          style={buttonStyle}
+          disabled={viewOnly}
+        >
+          <FormattedMessage
+            id="NxpzKH"
+            description="Text on a button that will end the player's turn."
+            defaultMessage="End Turn"
+          />
+        </button>
+        {selectedAction !== "Pass" ? (
+          <React.Fragment>
+            <div style={{ fontSize: rem(16) }}>
+              <FormattedMessage
+                id="PnNSxg"
+                description="Text between two fields linking them together."
+                defaultMessage="OR"
+              />
+            </div>
+            <button
+              onClick={() => endTurnAsync(gameId, /* samePlayer= */ true)}
+              className={styles.EndTurnButton}
+              style={buttonStyle}
+              disabled={viewOnly}
+            >
+              <FormattedMessage
+                id="5ChhqO"
+                description="Text on a button that will let the player take another action."
+                defaultMessage="Take Another Action"
+              />
+            </button>
+          </React.Fragment>
         ) : null}
       </div>
-    );
-  }
+      {puppets && passedFactions.length > 0 ? (
+        <LabeledDiv
+          label={
+            <InfoRow infoTitle={puppets.name} infoContent={puppets.description}>
+              Puppets on a String
+            </InfoRow>
+          }
+          style={{ width: "min-content" }}
+          innerStyle={{
+            flexDirection: "row",
+            gap: rem(2),
+            justifyContent: "center",
+          }}
+        >
+          {passedFactions.map((faction) => {
+            return (
+              <button
+                key={faction.id}
+                style={{ borderRadius: "100%", padding: rem(2) }}
+                onClick={() => endTurnAsync(gameId, false, faction.id)}
+              >
+                <FactionIcon factionId={faction.id} size={20} />
+              </button>
+            );
+          })}
+        </LabeledDiv>
+      ) : null}
+    </div>
+  );
 }
 
 interface ActivePlayerColumnProps {
@@ -1319,8 +1293,11 @@ function ActivePlayerColumn({
 
 type CardWithFaction = StrategyCard & { faction: FactionId };
 
-function StrategyCardColumn() {
-  const activeFaction = useActiveFaction();
+function StrategyCardColumn({
+  activeFactionId,
+}: {
+  activeFactionId: Optional<FactionId>;
+}) {
   const strategyCards = useStrategyCards();
 
   const orderedStrategyCards = Object.values(strategyCards).sort(
@@ -1346,7 +1323,7 @@ function StrategyCardColumn() {
         if (!primaryCard) {
           return null;
         }
-        const isActivePlayer = primaryCard.faction === activeFaction?.id;
+        const isActivePlayer = primaryCard.faction === activeFactionId;
         return (
           <div
             key={primaryCard.id}
@@ -1366,9 +1343,7 @@ function StrategyCardColumn() {
 
 export default function ActionPhase() {
   const gameId = useGameId();
-  const ralNel = useFaction("Ral Nel Consortium");
   const intl = useIntl();
-  const ralNelLeader = useLeader("TODO: Name");
   const viewOnly = useViewOnly();
 
   const activeFaction = useActiveFaction();
@@ -1376,7 +1351,7 @@ export default function ActionPhase() {
 
   return (
     <>
-      <StrategyCardColumn />
+      <StrategyCardColumn activeFactionId={activeFaction?.id} />
       <div className="flexColumn" style={{ gap: rem(16) }}>
         <div className="flexColumn" style={{ width: "100%" }}>
           {activeFaction ? (
@@ -1404,19 +1379,7 @@ export default function ActionPhase() {
                   values={{ phase: phaseString("ACTION", intl) }}
                 />
               </div>
-              {ralNelLeader?.state === "readied" ? (
-                <LabeledDiv
-                  label={getFactionName(ralNel)}
-                  color={getFactionColor(ralNel)}
-                  style={{ width: "min-content" }}
-                >
-                  <button
-                    onClick={() => unpassAsync(gameId, "Ral Nel Consortium")}
-                  >
-                    Use Hero to Unpass
-                  </button>
-                </LabeledDiv>
-              ) : undefined}
+              <UnpassSection />
               <LockedButtons
                 unlocked={true}
                 buttons={[
@@ -1442,5 +1405,31 @@ export default function ActionPhase() {
         </div>
       </div>
     </>
+  );
+}
+
+function UnpassSection() {
+  const gameId = useGameId();
+  const ralNel = useFaction("Ral Nel Consortium");
+  const ralNelLeader = useLeader("TODO: Name");
+
+  if (!ralNel || !ralNelLeader) {
+    return null;
+  }
+
+  if (ralNelLeader.state !== "readied") {
+    return null;
+  }
+
+  return (
+    <LabeledDiv
+      label={getFactionName(ralNel)}
+      color={getFactionColor(ralNel)}
+      style={{ width: "min-content" }}
+    >
+      <button onClick={() => unpassAsync(gameId, "Ral Nel Consortium")}>
+        Use Hero to Unpass
+      </button>
+    </LabeledDiv>
   );
 }

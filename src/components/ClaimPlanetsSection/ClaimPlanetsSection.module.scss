@@ -1,0 +1,15 @@
+div.ClaimedPlanetsSection {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  width: 100%;
+  row-gap: 0.25rem;
+}
+
+.ClaimedPlanetRow {
+  width: 100%;
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: span 2;
+  gap: 0.25rem;
+  padding-left: 0.25rem;
+}
