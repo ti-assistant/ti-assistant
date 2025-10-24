@@ -1725,6 +1725,20 @@ export default function getBaseFactions(
               }),
               expansion: "CODEX THREE",
             },
+            {
+              name: intl.formatMessage({
+                id: "Naalu Collective.Units.Iconoclast.Title",
+                description: "Title of Faction Unit: Iconoclast",
+                defaultMessage: "Iconoclast",
+              }),
+              description: intl.formatMessage({
+                id: "Naalu Collective.Units.Iconoclast.TE.Description",
+                description: "Description for Faction Unit from TE: Iconoclast",
+                defaultMessage:
+                  "DEPLOY: When another player gains a relic, place 1 mech on any planet you control.",
+              }),
+              expansion: "THUNDERS EDGE",
+            },
           ],
           stats: {
             cost: 2,
