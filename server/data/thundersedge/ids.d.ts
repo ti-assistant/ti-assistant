@@ -53,6 +53,7 @@ namespace ThundersEdge {
     | "Avernus"
     | "Conventions of War Abandoned"
     | "Mercenaries for Hire"
+    | "Nanomachines"
     | "Share Knowledge"
     | "Stellar Atomics"
     | "Puppets of the Blade";
@@ -69,7 +70,7 @@ namespace ThundersEdge {
     // Crimson Rebellion
     | "Ahk Ravin"
     | "Ahk Siever"
-    | "TODO: Fragment Reality"
+    | "Homesick Phantom"
     // Deepwrought Scholarate
     | "Doctor Carrina"
     | "Aello"
@@ -81,7 +82,7 @@ namespace ThundersEdge {
     // Last Bastion
     | "Dame Briar"
     | "Nip and Tuck"
-    | "Entity 4X41A Apollo"
+    | "Lyra Keen"
     // Obsidian
     | "Vos Hollow"
     | "Aroz Hollow"
@@ -89,7 +90,7 @@ namespace ThundersEdge {
     // Ral Nel Consortium
     | "Kan Kip Rel"
     | "Watchful Ojz"
-    | "TODO: Name";
+    | "Director Nel";
 
   type PlanetId =
     // 97
@@ -239,7 +240,7 @@ namespace ThundersEdge {
     | "Planesplitter"
     // Last Bastion
     | "Proxima Targeting VI"
-    | "4X4IC Helios VI II"
+    | "4X4IC Helios V2"
     // Obsidian
     | "Planesplitter (Obsidian)"
     | "Neural Parasite (Obsidian)"

@@ -111,7 +111,7 @@ export default function getThundersEdgeActionCards(
         {
           id: "Action Cards.Extreme Duress.Description",
           defaultMessage:
-            "At the start of another player's turn, if they have a readied strategy card:{br}If that player's next action is not a strategic action, they discard all of action cards, give you all of their trade goods, and show you all of their secret objectives.",
+            "At the start of another player's turn, if they have a readied strategy card:{br}If that player's next action is not a strategic action, they discard all of their action cards, give you all of their trade goods, and show you all of their secret objectives.",
           description: "Description of action card: Extreme Duress",
         },
         { br: "\n\n" }
@@ -131,7 +131,7 @@ export default function getThundersEdgeActionCards(
         {
           id: "Action Cards.Lie in Wait.Description",
           defaultMessage:
-            "After 2 of your neighbors resolve a transaction:{br}Look at each of those player's hands of action cards, then choose and take 1 action card from each.",
+            "After 2 of your neighbors resolve a transaction:{br}Look at each of those players' hands of action cards, then choose and take 1 action card from each.",
           description: "Description of action card: Lie in Wait",
         },
         { br: "\n\n" }
@@ -145,14 +145,14 @@ export default function getThundersEdgeActionCards(
       }),
       timing: "OTHER",
     },
-    // TODO: Fix description
+    // TODO: Add details
     "Mercenary Contract": {
       count: 1,
       description: intl.formatMessage(
         {
           id: "Action Cards.Mercenary Contract.Description",
           defaultMessage:
-            "ACTION: Place (ground forces ???) on a non-home planet that contains no non-neutral units.",
+            "ACTION: Spend 2 trade goods to place 2 neutral infantry on any non-home planet that contains no units; if that planet was owned by another player, they return its planet card to the planet card deck.",
           description: "Description of action card: Mercenary Contract",
         },
         { br: "\n\n" }
@@ -212,7 +212,7 @@ export default function getThundersEdgeActionCards(
         {
           id: "Action Cards.Pirate Fleet.Description",
           defaultMessage:
-            "ACTION: Spend 3 resources to place 1 neutral carrier, 1 neutral cruiser, 1 neutral destroyer, and 2 neutral fighters in a non-home system that contains no ships.",
+            "ACTION: Spend 3 resources to place 1 neutral carrier, 1 neutral cruiser, 1 neutral destroyer, and 2 neutral fighters in a non-home system that contains no non-neutral ships.",
           description: "Description of action card: Pirate Fleet",
         },
         { br: "\n\n" }

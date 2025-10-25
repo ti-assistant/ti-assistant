@@ -1411,7 +1411,7 @@ export default function ActionPhase() {
 function UnpassSection() {
   const gameId = useGameId();
   const ralNel = useFaction("Ral Nel Consortium");
-  const ralNelLeader = useLeader("TODO: Name");
+  const ralNelLeader = useLeader("Director Nel");
 
   if (!ralNel || !ralNelLeader) {
     return null;

@@ -289,7 +289,7 @@ export default function getThundersEdgeFactions(
               description:
                 "Description for Faction Promissory: Share Knowledge",
               defaultMessage:
-                "ACTION: Place this card faceup in your play area and gain 1 non-faction, non-unit upgrade technology that the Deepwrought player owns; place this technology on this card.{br}Return that technology to the deck and this card to the Deepwrought player at the end of the status phase.",
+                "ACTION: Place this card faceup in your play area and gain 1 non-faction, non-unit upgrade technology that the Deepwrought player owns; place that technology on this card.{br}Return that technology to the deck and this card to the Deepwrought player at the end of the status phase.",
             },
             { br: "\n\n" }
           ),
@@ -344,7 +344,7 @@ export default function getThundersEdgeFactions(
             id: "Deepwrought Scholarate.Units.Eanautic.Description",
             description: "Description for Faction Unit: Eanautic",
             defaultMessage:
-              "When another player activates this system, if this unit is coexisting, you may move it and any infantry on its planet to a planet you control in your home system.",
+              "When another player activates this system, if this unit is coexisting, you may move it and any of your infantry on its planet to a planet you control in your home system.",
           }),
           expansion: "POK",
           name: intl.formatMessage({
@@ -676,7 +676,7 @@ export default function getThundersEdgeFactions(
             id: "Last Bastion.Units.A3 Valiance.Description",
             description: "Description for Faction Unit: A3 Valiance",
             defaultMessage:
-              "When this unit is destroyed, if it was galvanized, galvanize up to 3 of your Infantry in its system.",
+              "When this unit is destroyed, if it was galvanized, galvanize up to 3 of your infantry in its system.",
           }),
           expansion: "POK",
           name: intl.formatMessage({
@@ -709,7 +709,7 @@ export default function getThundersEdgeFactions(
           }),
           stats: {},
           type: "Space Dock",
-          upgrade: "4X4IC Helios VI II",
+          upgrade: "4X4IC Helios V2",
         },
       ],
     },

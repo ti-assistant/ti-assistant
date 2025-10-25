@@ -721,7 +721,7 @@ export default function getBaseTechs(
               id: "Embers of Muaat.Techs.Magmus Reactor.Omega.Description",
               description: "Description for Tech: Magmus Reactor Ω",
               defaultMessage:
-                "Your ships can move into supernovas.{br}Each supernova that contains 1 or more of your units gains the PRODUCTION 5 ability as if it were 1 of your units.",
+                "Your ships can move into supernovas.{br}Each supernova that contains 1 or more of your units gains the PRODUCTION 5 ability as if it were one of your units.",
             },
             { br: "\n\n" }
           ),
@@ -730,6 +730,14 @@ export default function getBaseTechs(
             id: "Embers of Muaat.Techs.Magmus Reactor.Omega.Title",
             description: "Title of Tech: Magmus Reactor Ω",
             defaultMessage: "Magmus Reactor Ω",
+          }),
+        },
+        {
+          expansion: "THUNDERS EDGE",
+          name: intl.formatMessage({
+            id: "Embers of Muaat.Techs.Magmus Reactor.Title",
+            description: "Title of Tech: Magmus Reactor",
+            defaultMessage: "Magmus Reactor",
           }),
         },
       ],
@@ -1161,6 +1169,14 @@ export default function getBaseTechs(
             defaultMessage: "Wormhole Generator Ω",
           }),
         },
+        {
+          expansion: "THUNDERS EDGE",
+          name: intl.formatMessage({
+            id: "Ghosts of Creuss.Techs.Wormhole Generator.Title",
+            description: "Title of Tech: Wormhole Generator",
+            defaultMessage: "Wormhole Generator",
+          }),
+        },
       ],
       prereqs: ["BLUE", "BLUE"],
       type: "BLUE",
@@ -1244,6 +1260,14 @@ export default function getBaseTechs(
             id: "Yin Brotherhood.Techs.Yin Spinner.Omega.Title",
             description: "Title of Tech: Yin Spinner Ω",
             defaultMessage: "Yin Spinner Ω",
+          }),
+        },
+        {
+          expansion: "THUNDERS EDGE",
+          name: intl.formatMessage({
+            id: "Yin Brotherhood.Techs.Yin Spinner.Title",
+            description: "Title of Tech: Yin Spinner",
+            defaultMessage: "Yin Spinner",
           }),
         },
       ],

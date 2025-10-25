@@ -369,6 +369,14 @@ export default function getProphecyOfKingsObjectives(
           }),
           expansion: "CODEX THREE",
         },
+        {
+          expansion: "THUNDERS EDGE",
+          name: intl.formatMessage({
+            id: "Objectives.Fight With Precision.Title",
+            description: "Title of Objective: Fight With Precision",
+            defaultMessage: "Fight With Precision",
+          }),
+        },
       ],
       phase: "ACTION",
       points: 1,

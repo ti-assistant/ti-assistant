@@ -204,6 +204,23 @@ export default function getProphecyOfKingsLeaders(
             defaultMessage: "Brother Milor Ω",
           }),
         },
+        {
+          description: intl.formatMessage(
+            {
+              id: "Yin Brotherhood.Leaders.Brother Milor.TE.Description",
+              description: "Description for Yin Agent: Brother Milor",
+              defaultMessage:
+                "After a player's unit is destroyed during combat:{br}You may exhaust this card to allow that player to place 2 fighters in the destroyed unit's system if it was a ship, or 2 infantry on its planet if it was a ground force.",
+            },
+            { br: "\n\n" }
+          ),
+          name: intl.formatMessage({
+            id: "Yin Brotherhood.Leaders.Brother Milor.Name",
+            description: "Name of Yin Agent: Brother Milor",
+            defaultMessage: "Brother Milor",
+          }),
+          expansion: "THUNDERS EDGE",
+        },
       ],
       timing: "TACTICAL_ACTION",
       type: "AGENT",
@@ -233,7 +250,7 @@ export default function getProphecyOfKingsLeaders(
               id: "Yin Brotherhood.Leaders.Brother Omar.Omega.Description",
               description: "Description for Yin Commander: Brother Omar Ω",
               defaultMessage:
-                "This card satisfies a green technology prerequisite.{br}When you research a technology owned by another player, you may return 1 of your infantry to reinforcements to ignore its prerequisites.",
+                "This card satisfies a green technology prerequisite.{br}When you research technology owned by another player, you may return 1 of your infantry to reinforcements to ignore all prerequisites.",
             },
             { br: "\n\n" }
           ),
@@ -248,6 +265,14 @@ export default function getProphecyOfKingsLeaders(
             description: "Unlock condition for Yin Commander: Brother Omar Ω",
             defaultMessage: "Use one of your faction abilities.",
           }),
+        },
+        {
+          name: intl.formatMessage({
+            id: "Yin Brotherhood.Leaders.Brother Omar.Name",
+            description: "Name of Yin Commander: Brother Omar",
+            defaultMessage: "Brother Omar",
+          }),
+          expansion: "THUNDERS EDGE",
         },
       ],
       timing: "PASSIVE",
@@ -388,7 +413,7 @@ export default function getProphecyOfKingsLeaders(
               id: "Yin Brotherhood.Leaders.Dannel of the Tenth.Omega.Description",
               description: "Description for Yin Hero: Dannel of the Tenth Ω",
               defaultMessage:
-                "ACTION: Commit up to 3 infantry from your reinforcements to any non-home planets and resolve invasions on those planets; players cannot use SPACE CANNON against those units.{br}Then, purge this card.",
+                "ACTION: Commit up to 3 infantry from your reinforcements to any non-home planets and resolve ground combats on those planets; players cannot use SPACE CANNON against these units.{br}Then, purge this card.",
             },
             { br: "\n\n" }
           ),
@@ -398,6 +423,19 @@ export default function getProphecyOfKingsLeaders(
             description: "Name of Yin Hero: Dannel of the Tenth Ω",
             defaultMessage: "Dannel of the Tenth Ω",
           }),
+        },
+        {
+          abilityName: intl.formatMessage({
+            id: "Yin Brotherhood.Leaders.Dannel of the Tenth.TE.AbilityName",
+            description: "Ability name for Yin Hero: Dannel of the Tenth",
+            defaultMessage: "QUANTUM DISSEMINATION",
+          }),
+          name: intl.formatMessage({
+            id: "Yin Brotherhood.Leaders.Dannel of the Tenth.Name",
+            description: "Name of Yin Hero: Dannel of the Tenth",
+            defaultMessage: "Dannel of the Tenth",
+          }),
+          expansion: "THUNDERS EDGE",
         },
       ],
       timing: "COMPONENT_ACTION",
@@ -995,7 +1033,7 @@ export default function getProphecyOfKingsLeaders(
               id: "Naalu Collective.Leaders.M'aban.Omega.Description",
               description: "Description for Naalu Commander: M'aban Ω",
               defaultMessage:
-                "At any time:{br}You may look at your neighbours' hand of promissory notes and the top and bottom card of the agenda deck.",
+                "At any time:{br}You may look at your neighbors' hand of promissory notes and the top and bottom cards of the agenda deck.",
             },
             { br: "\n\n" }
           ),
@@ -1011,6 +1049,14 @@ export default function getProphecyOfKingsLeaders(
             defaultMessage:
               "Have ground forces in or adjacent to the Mecatol Rex system.",
           }),
+        },
+        {
+          name: intl.formatMessage({
+            id: "Naalu Collective.Leaders.M'aban.Name",
+            description: "Name of Naalu Commander: M'aban",
+            defaultMessage: "M'aban",
+          }),
+          expansion: "THUNDERS EDGE",
         },
       ],
       timing: "PASSIVE",
@@ -1461,6 +1507,16 @@ export default function getProphecyOfKingsLeaders(
         description: "Name of Jol-Nar Commander: Ta Zern",
         defaultMessage: "Ta Zern",
       }),
+      omegas: [
+        {
+          expansion: "THUNDERS EDGE",
+          name: intl.formatMessage({
+            id: "Universities of Jol-Nar.Leaders.Agnlan Oln.Name",
+            description: "Name of Jol-Nar Commander: Agnlan Oln",
+            defaultMessage: "Agnlan Oln",
+          }),
+        },
+      ],
       timing: "PASSIVE",
       type: "COMMANDER",
       unlock: intl.formatMessage({
@@ -1926,6 +1982,23 @@ export default function getProphecyOfKingsLeaders(
             defaultMessage: "Z'eu Ω",
           }),
           timing: "COMPONENT_ACTION",
+        },
+        {
+          description: intl.formatMessage(
+            {
+              id: "Naalu Collective.Leaders.Z'eu.TE.Description",
+              description: "Description for Naalu Agent: Z'eu",
+              defaultMessage:
+                "After any player's command token is placed in a system:{br}You may exhaust this card to return that token to that player's reinforcements.",
+            },
+            { br: "\n\n" }
+          ),
+          name: intl.formatMessage({
+            id: "Naalu Collective.Leaders.Z'eu.Name",
+            description: "Name of Naalu Agent: Z'eu",
+            defaultMessage: "Z'eu",
+          }),
+          expansion: "THUNDERS EDGE",
         },
       ],
       timing: "AGENDA_PHASE",

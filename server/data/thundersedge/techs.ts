@@ -44,14 +44,13 @@ export default function getThundersEdgeTechs(
       prereqs: ["YELLOW"],
       type: "YELLOW",
     },
-    // TODO: Confirm tech.
     "Exile II": {
       abilities: [antiFighterBarrage("6 (x3)", intl)],
       description: intl.formatMessage({
         id: "Crimson Rebellion.Techs.Exile II.Description",
         description: "Description for Tech: Exile II",
         defaultMessage:
-          "At the end of any player's combat in this unit's system or up to 2 systems away, you may place one active or inactive breach in the system.",
+          "At the end of any player's combat in this unit's system or up to 2 systems away, you may place 1 active or inactive breach in that system.",
       }),
       expansion: "THUNDERS EDGE",
       faction: "Crimson Rebellion",
@@ -173,13 +172,12 @@ export default function getThundersEdgeTechs(
       prereqs: ["RED"],
       type: "RED",
     },
-    // TODO: Confirm tech.
-    "4X4IC Helios VI II": {
+    "4X4IC Helios V2": {
       abilities: [production("X", intl)],
       description: intl.formatMessage(
         {
-          id: "Techs.4X4IC Helios VI II.Description",
-          description: "Description for Tech: 4X4IC Helios VI II",
+          id: "Techs.4X4IC Helios V2.Description",
+          description: "Description for Tech: 4X4IC Helios V2",
           defaultMessage:
             "This unit's PRODUCTION value is equal to 4 more than the resource value of this planet.{br}The resource value of this planet is increased by 2.{br}Up to 3 fighters in this system do not count against your ships' capacity.",
         },
@@ -187,11 +185,11 @@ export default function getThundersEdgeTechs(
       ),
       expansion: "THUNDERS EDGE",
       faction: "Last Bastion",
-      id: "4X4IC Helios VI II",
+      id: "4X4IC Helios V2",
       name: intl.formatMessage({
-        id: "Techs.4X4IC Helios VI II.Title",
-        description: "Title of Tech: 4X4IC Helios VI II",
-        defaultMessage: '4X4IC "Helios" VI II',
+        id: "Techs.4X4IC Helios V2.Title",
+        description: "Title of Tech: 4X4IC Helios V2",
+        defaultMessage: '4X4IC "Helios" V2',
       }),
       prereqs: ["YELLOW", "YELLOW"],
       replaces: "Space Dock II",
@@ -219,7 +217,7 @@ export default function getThundersEdgeTechs(
         description: "Title of Tech: Neural Parasite (Obsidian)",
         defaultMessage: "Neural Parasite",
       }),
-      prereqs: ["GREEN", "GREEN"],
+      prereqs: [],
       type: "GREEN",
     },
     "Planesplitter (Obsidian)": {
@@ -241,7 +239,7 @@ export default function getThundersEdgeTechs(
         description: "Title of Tech: Planesplitter (Obsidian)",
         defaultMessage: "Planesplitter",
       }),
-      prereqs: ["YELLOW", "YELLOW"],
+      prereqs: [],
       type: "YELLOW",
     },
     // Ral Nel Consortium

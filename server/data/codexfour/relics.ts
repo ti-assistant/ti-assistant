@@ -56,7 +56,7 @@ export default function getCodexFourRelics(
         description: "Title of Relic: Neuraloop",
         defaultMessage: "Neuraloop",
       }),
-      timing: "COMPONENT_ACTION",
+      timing: "OTHER",
     },
   };
 }

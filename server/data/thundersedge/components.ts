@@ -42,6 +42,25 @@ export default function getThundersEdgeComponents(
       requiresTech: "X-89 Bacterial Weapon",
       type: "EVENT",
     },
+    Nanomachines: {
+      description: intl.formatMessage(
+        {
+          id: "Components.Nanomachines.Description",
+          description: "Description for Component: Nanomachines",
+          defaultMessage:
+            "ACTION: Exhaust this card to place 1 PDS on a planet you control.{br}ACTION: Exhaust this card to repair all of your damaged units.{br}ACTION: Exhaust this card and discard 1 action card to draw 1 action card.",
+        },
+        { br: "\n\n" }
+      ),
+      expansion: "POK",
+      id: "Nanomachines",
+      name: intl.formatMessage({
+        id: "Components.Nanomachines.Title",
+        description: "Title of Component: Nanomachines",
+        defaultMessage: "Nanomachines",
+      }),
+      type: "TECH",
+    },
     "Mercenaries for Hire": {
       description: intl.formatMessage({
         id: "Components.Mercenaries for Hire.Description",

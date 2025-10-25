@@ -155,7 +155,7 @@ export default function PlanetRow({
     if (!owner) {
       return false;
     }
-    const bastionSpaceDock = techs["4X4IC Helios VI II"];
+    const bastionSpaceDock = techs["4X4IC Helios V2"];
     return hasTech(owner, bastionSpaceDock);
   }
 

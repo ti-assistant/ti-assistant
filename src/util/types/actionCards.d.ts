@@ -4,6 +4,7 @@ interface BaseActionCard {
   expansion: Expansion;
   id: ActionCardId;
   name: string;
+  omegas?: Omega<BaseActionCard>[];
   timing: Timing;
 }
 
