@@ -10,7 +10,7 @@ export default function getCodexOneActionCards(
         {
           id: "Action Cards.Blitz.Description",
           defaultMessage:
-            "At the start of an invasion:{br}Each of your non-fighter ships in the active system that do not have BOMBARDMENT gain BOMBARDMENT 6 until the end of the invasion.",
+            "At the start of an invasion:{br}Each of your non-fighter ships in the active system that does not have BOMBARDMENT gains BOMBARDMENT 6 until the end of the invasion.",
           description: "Description of action card: Blitz",
         },
         { br: "\n\n" }
@@ -30,7 +30,7 @@ export default function getCodexOneActionCards(
         {
           id: "Action Cards.Counterstroke.Description",
           defaultMessage:
-            "After a player activates a system that contains 1 of your command tokens:{br}Return that command token to your tactic pool.",
+            "After another player activates a system that contains 1 of your command tokens:{br}Return that command token to your tactic pool.",
           description: "Description of action card: Counterstroke",
         },
         { br: "\n\n" }
@@ -50,7 +50,7 @@ export default function getCodexOneActionCards(
         {
           id: "Action Cards.Fighter Conscription.Description",
           defaultMessage:
-            "ACTION: Place 1 fighter from your reinforcements in each system that contains 1 or more of your space docks or units that have capacity; they cannot be placed in systems that contain other players' ships.",
+            "ACTION: Place 1 fighter from your reinforcements into each system that contains 1 or more of your space docks or ships that have a capacity value; they cannot be placed in systems that contain other players' ships.",
           description: "Description of action card: Fighter Conscription",
         },
         { br: "\n\n" }
@@ -122,6 +122,21 @@ export default function getCodexOneActionCards(
         defaultMessage: "Hack Election",
         description: "Name of action card: Hack Election",
       }),
+      omegas: [
+        // TODO: Fix this.
+        {
+          description: intl.formatMessage(
+            {
+              id: "Action Cards.Hack Election.TE.Description",
+              defaultMessage:
+                "After an agenda is revealed:{br}During this agenda, you vote last.",
+              description: "Description of action card: Hack Election",
+            },
+            { br: "\n\n" }
+          ),
+          expansion: "THUNDERS EDGE",
+        },
+      ],
       timing: "AGENDA_PHASE",
     },
     "Harness Energy": {
@@ -182,6 +197,20 @@ export default function getCodexOneActionCards(
         defaultMessage: "Insider Information",
         description: "Name of action card: Insider Information",
       }),
+      omegas: [
+        {
+          description: intl.formatMessage(
+            {
+              id: "Action Cards.Insider Information.TE.Description",
+              defaultMessage:
+                "After an agenda is revealed:{br}Look at the top 3 cards of the agenda deck.",
+              description: "Description of action card: Insider Information",
+            },
+            { br: "\n\n" }
+          ),
+          expansion: "THUNDERS EDGE",
+        },
+      ],
       timing: "AGENDA_PHASE",
     },
     "Master Plan": {
@@ -190,7 +219,7 @@ export default function getCodexOneActionCards(
         {
           id: "Action Cards.Master Plan.Description",
           defaultMessage:
-            "After you perform an action:{br}You may perform an additional action this turn.",
+            "After you perform an action:{br}Perform an additional action.",
           description: "Description of action card: Master Plan",
         },
         { br: "\n\n" }
@@ -210,7 +239,7 @@ export default function getCodexOneActionCards(
         {
           id: "Action Cards.Plagiarize.Description",
           defaultMessage:
-            "ACTION: Spend 5 influence and choose a non-faction technology owned by 1 of your neighbors; gain that technology.",
+            "ACTION: Spend 5 influence and choose a non-faction technology owned by one of your neighbors; gain that technology.",
           description: "Description of action card: Plagiarize",
         },
         { br: "\n\n" }
@@ -310,7 +339,7 @@ export default function getCodexOneActionCards(
         {
           id: "Action Cards.Solar Flare.Description",
           defaultMessage:
-            "After you activate a system:{br}During this movement, other players cannot use SPACE CANNON against your ships.",
+            'After you activate a system:{br}During the "Movement" step of this tactical action, other players cannot use SPACE CANNON against your ships.',
           description: "Description of action card: Solar Flare",
         },
         { br: "\n\n" }
@@ -330,7 +359,7 @@ export default function getCodexOneActionCards(
         {
           id: "Action Cards.War Machine.Description",
           defaultMessage:
-            "When 1 or more of your units use PRODUCTION:{br}Apply +4 to the total PRODUCTION value of your units and reduce the combined cost of the produced units by 1.",
+            "When 1 or more of your units use PRODUCTION:{br}Apply +4 to the total PRODUCTION value of those units and reduce the combined cost of the produced units by 1.",
           description: "Description of action card: War Machine",
         },
         { br: "\n\n" }

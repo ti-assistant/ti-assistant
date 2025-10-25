@@ -10,7 +10,7 @@ export default function getCodexTwoRelics(
           id: "Relics.Dynamis Core.Description",
           description: "Description for Relic: Dynamis Core",
           defaultMessage:
-            "While this card is in your play area, your commodity value is increased by 2.{br}ACTION: Purge this card to gain trade goods equal to your printed commodity value +2.",
+            "While this card is in your play area, your commodity value is increased by 2.{br}ACTION: Gain trade goods equal to your commodity value, then purge this card.",
         },
         { br: "\n\n" }
       ),
@@ -44,7 +44,7 @@ export default function getCodexTwoRelics(
         id: "Relics.Nano-Forge.Description",
         description: "Description for Relic: Nano-Forge",
         defaultMessage:
-          "ACTION: Attach this card to a non-legendary, non-home planet you control; its resource and influence values are increased by 2 and it is a legendary planet.",
+          "ACTION: Attach this card to a non-legendary, non-home planet you control; its resource and influence values are increased by 2 and it is a legendary planet. This action cannot be performed once attached.",
       }),
       expansion: "CODEX TWO",
       id: "Nano-Forge",

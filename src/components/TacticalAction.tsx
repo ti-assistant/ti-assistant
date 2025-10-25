@@ -1,7 +1,6 @@
 import React, { CSSProperties, PropsWithChildren } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import {
-  useAttachments,
   useCurrentTurn,
   useGameId,
   useLeaders,
@@ -15,12 +14,8 @@ import {
 import { useFactions } from "../context/factionDataHooks";
 import { useObjectives } from "../context/objectiveDataHooks";
 import {
-  addAttachmentAsync,
-  claimPlanetAsync,
   playAdjudicatorBaalAsync,
-  removeAttachmentAsync,
   scoreObjectiveAsync,
-  unclaimPlanetAsync,
   undoAdjudicatorBaalAsync,
   unscoreObjectiveAsync,
 } from "../dynamic/api";
@@ -28,18 +23,16 @@ import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { SelectableRow } from "../SelectableRow";
 import {
   getAdjudicatorBaalSystem,
-  getAttachments,
   getGainedRelic,
   getLogEntries,
   getResearchedTechs,
 } from "../util/actionLog";
-import { hasTech, isTechPurged } from "../util/api/techs";
+import { hasTech } from "../util/api/techs";
 import { getWormholeNexusSystemNumber } from "../util/map";
 import { getMapString } from "../util/options";
-import { applyPlanetAttachments } from "../util/planets";
 import { objectKeys, rem } from "../util/util";
 import GainRelic from "./Actions/GainRelic";
-import AttachmentSelectRadialMenu from "./AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
+import ClaimPlanetsSection from "./ClaimPlanetsSection/ClaimPlanetsSection";
 import FrontierExploration from "./FrontierExploration/FrontierExploration";
 import LabeledDiv from "./LabeledDiv/LabeledDiv";
 import LabeledLine from "./LabeledLine/LabeledLine";
@@ -47,8 +40,6 @@ import GameMap from "./Map/GameMap";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 import ScoreObjectiveRow from "./ObjectiveRow/ScoreObjectiveRow";
 import ObjectiveSelectHoverMenu from "./ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
-import PlanetIcon from "./PlanetIcon/PlanetIcon";
-import PlanetRow from "./PlanetRow/PlanetRow";
 import styles from "./TacticalAction.module.scss";
 import TechResearchSection from "./TechResearchSection/TechResearchSection";
 
@@ -69,17 +60,13 @@ export function TacticalAction({
   scoredObjectives: ObjectiveId[];
   style?: CSSProperties;
 }) {
-  const attachments = useAttachments();
   const currentTurn = useCurrentTurn();
   const factions = useFactions();
   const gameId = useGameId();
-  const leaders = useLeaders();
   const objectives = useObjectives();
-  const planets = usePlanets();
   const relics = useRelics();
   const techs = useTechs();
   const nekroTechs = getResearchedTechs(currentTurn, "Nekro Virus");
-  const viewOnly = useViewOnly();
 
   claimablePlanets.sort((a, b) => {
     if (a.name > b.name) {
@@ -99,81 +86,6 @@ export function TacticalAction({
     const event = mecatolConquerers[0].data.event;
     if (event.faction === activeFactionId && !event.prevOwner) {
       hasCustodiansPoint = true;
-    }
-  }
-
-  const maxPlanets = claimablePlanets.length > 50 ? 15 : 12;
-  const targetButtonStyle: CSSProperties = {
-    fontFamily: "Myriad Pro",
-    padding: rem(8),
-    display: "grid",
-    gridAutoFlow: "column",
-    gridTemplateRows: `repeat(${Math.min(
-      maxPlanets,
-      claimablePlanets.length
-    )}, auto)`,
-    gap: rem(4),
-    justifyContent: "flex-start",
-    overflowX: "auto",
-    maxWidth: "85vw",
-  };
-
-  function getResearchableTechs(factionId: FactionId) {
-    const faction = factions[factionId];
-    if (!faction) {
-      return [];
-    }
-    if (factionId === "Nekro Virus") {
-      const addedTechs = getResearchedTechs(currentTurn, "Nekro Virus");
-      const nekroTechs = new Set<TechId>();
-      Object.values(factions).forEach((otherFaction) => {
-        objectKeys(otherFaction.techs).forEach((id) => {
-          const techId = id;
-          const tech = techs[id];
-          if (
-            hasTech(otherFaction, tech) &&
-            !hasTech(faction, tech) &&
-            !addedTechs.includes(techId)
-          ) {
-            nekroTechs.add(techId);
-          }
-        });
-      });
-      return Array.from(nekroTechs).map((techId) => techs[techId] as Tech);
-    }
-    const replaces: TechId[] = [];
-    const availableTechs = Object.values(techs ?? {}).filter((tech) => {
-      if (hasTech(faction, tech)) {
-        return false;
-      }
-      if (
-        faction.id !== "Nekro Virus" &&
-        tech.faction &&
-        faction.id !== tech.faction
-      ) {
-        return false;
-      }
-      const researchedTechs = getResearchedTechs(currentTurn, faction.id);
-      if (researchedTechs.includes(tech.id)) {
-        return false;
-      }
-      if (tech.type === "UPGRADE" && tech.replaces) {
-        replaces.push(tech.replaces);
-      }
-      return true;
-    });
-    if (faction.id !== "Nekro Virus") {
-      return availableTechs.filter((tech) => !replaces.includes(tech.id));
-    }
-    return availableTechs;
-  }
-
-  const researchableTechs = getResearchableTechs(activeFactionId);
-
-  const claimedAttachments = new Set<AttachmentId>();
-  for (const planet of Object.values(planets)) {
-    for (const attachment of planet.attachments ?? []) {
-      claimedAttachments.add(attachment);
     }
   }
 
@@ -200,209 +112,10 @@ export function TacticalAction({
       className={`flexColumn largeFont ${styles.TacticalAction}`}
       style={{ ...style }}
     >
-      {conqueredPlanets.length > 0 ? (
-        <LabeledDiv
-          label={
-            <FormattedMessage
-              id="E9UhAA"
-              description="Label for section of newly controlled planets."
-              defaultMessage="Newly Controlled {count, plural, one {Planet} other {Planets}}"
-              values={{ count: conqueredPlanets.length }}
-            />
-          }
-          blur
-        >
-          {/* <React.Fragment> */}
-          <div
-            className="flexColumn"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr auto",
-              width: "100%",
-              rowGap: rem(4),
-            }}
-            // style={{ alignItems: "stretch", width: "100%" }}
-          >
-            {conqueredPlanets.map((planet) => {
-              const planetObj = planets[planet.planet];
-              if (!planetObj) {
-                return null;
-              }
-              const adjustedPlanet = applyPlanetAttachments(
-                planetObj,
-                attachments ?? {}
-              );
-              const currentAttachment = getAttachments(
-                currentTurn,
-                planet.planet
-              )[0];
-              const availableAttachments = Object.values(attachments)
-                .filter(
-                  (attachment) =>
-                    attachment.required.type &&
-                    adjustedPlanet.types.includes(attachment.required.type) &&
-                    (attachment.id === currentAttachment ||
-                      !claimedAttachments.has(attachment.id))
-                )
-                .map((attachment) => attachment.id);
-              const hasNRACommander =
-                activeFactionId === "Naaz-Rokha Alliance" &&
-                leaders["Dart and Tai"]?.state === "readied";
-              return (
-                <div
-                  key={planet.planet}
-                  className="flexColumn"
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "subgrid",
-                    gridColumn: "span 2",
-                    gap: rem(4),
-                    paddingLeft: rem(4),
-                  }}
-                >
-                  <div
-                    key={planet.planet}
-                    className="flexRow"
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "subgrid",
-                      gridColumn: "span 2",
-                      justifyItems: "flex-start",
-                      alignItems: "flex-start",
-                    }}
-                  >
-                    <div style={{ width: "100%" }}>
-                      <PlanetRow
-                        key={planet.planet}
-                        factionId={activeFactionId}
-                        planet={adjustedPlanet}
-                        removePlanet={() =>
-                          unclaimPlanetAsync(
-                            gameId,
-                            activeFactionId,
-                            planet.planet
-                          )
-                        }
-                        prevOwner={planet.prevOwner}
-                        opts={{
-                          hideAttachButton: true,
-                        }}
-                      />
-                    </div>
-                    {availableAttachments.length > 0 &&
-                    (!planet.prevOwner || hasNRACommander) ? (
-                      <div
-                        className="flexRow"
-                        style={{ justifyContent: "center" }}
-                      >
-                        <AttachmentSelectRadialMenu
-                          attachments={availableAttachments}
-                          size={40}
-                          hasSkip={adjustedPlanet.attributes.reduce(
-                            (hasSkip, attribute) => {
-                              if (attribute.includes("skip")) {
-                                if (
-                                  currentAttachment &&
-                                  attachments[currentAttachment]?.attribute ===
-                                    attribute
-                                ) {
-                                  return planetObj.attributes.reduce(
-                                    (hasSkip, attribute) => {
-                                      if (attribute.includes("skip")) {
-                                        return true;
-                                      }
-                                      return hasSkip;
-                                    },
-                                    false
-                                  );
-                                }
-                                return true;
-                              }
-                              return hasSkip;
-                            },
-                            false
-                          )}
-                          onSelect={(attachmentId, prevAttachment) => {
-                            if (prevAttachment) {
-                              removeAttachmentAsync(
-                                gameId,
-                                planet.planet,
-                                prevAttachment
-                              );
-                            }
-                            if (attachmentId) {
-                              addAttachmentAsync(
-                                gameId,
-                                planet.planet,
-                                attachmentId
-                              );
-                            }
-                          }}
-                          selectedAttachment={currentAttachment}
-                          tag={
-                            <PlanetIcon
-                              types={adjustedPlanet.types}
-                              size="75%"
-                            />
-                          }
-                        />
-                      </div>
-                    ) : null}
-                  </div>
-                  {!planet.prevOwner &&
-                  adjustedPlanet.attributes.includes("relic") ? (
-                    <div style={{ marginLeft: rem(16) }}>
-                      <GainRelic
-                        factionId={activeFactionId}
-                        planetId={planet.planet}
-                        style={{ fontSize: rem(12) }}
-                      />
-                    </div>
-                  ) : null}
-                </div>
-              );
-            })}
-          </div>
-          {/* </React.Fragment> */}
-        </LabeledDiv>
-      ) : null}
-      {claimablePlanets.length > 0 ? (
-        <ClientOnlyHoverMenu
-          label={
-            <FormattedMessage
-              id="+8kwFc"
-              description="Text on a hover menu allowing a player to take control of planets."
-              defaultMessage="Take Control of Planet"
-            />
-          }
-          renderProps={(closeFn) => (
-            <div className="flexRow" style={targetButtonStyle}>
-              {claimablePlanets.map((planet) => {
-                return (
-                  <button
-                    key={planet.id}
-                    style={{
-                      minWidth:
-                        claimablePlanets.length > 50 ? rem(72) : rem(90),
-                      fontSize:
-                        claimablePlanets.length > 50 ? rem(14) : undefined,
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                    }}
-                    onClick={() => {
-                      closeFn();
-                      claimPlanetAsync(gameId, activeFactionId, planet.id);
-                    }}
-                    disabled={viewOnly}
-                  >
-                    {planet.name}
-                  </button>
-                );
-              })}
-            </div>
-          )}
-        ></ClientOnlyHoverMenu>
-      ) : null}
+      <ClaimPlanetsSection
+        availablePlanets={claimablePlanets}
+        factionId={activeFactionId}
+      />
       {hasCustodiansPoint ? (
         <FormattedMessage
           id="64NLXu"

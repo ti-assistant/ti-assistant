@@ -531,6 +531,14 @@ export default function getBaseObjectives(
             defaultMessage: "Make an Example of Their World Ω",
           }),
         },
+        {
+          expansion: "THUNDERS EDGE",
+          name: intl.formatMessage({
+            id: "Objectives.Make an Example of Their World.Title",
+            description: "Title of Objective: Make an Example of Their World",
+            defaultMessage: "Make an Example of Their World",
+          }),
+        },
       ],
       phase: "ACTION",
       points: 1,
@@ -839,6 +847,14 @@ export default function getBaseObjectives(
             id: "Objectives.Turn Their Fleets to Dust.Omega.Title",
             description: "Title of Objective: Turn Their Fleets to Dust Ω",
             defaultMessage: "Turn Their Fleets to Dust Ω",
+          }),
+        },
+        {
+          expansion: "THUNDERS EDGE",
+          name: intl.formatMessage({
+            id: "Objectives.Turn Their Fleets to Dust.Title",
+            description: "Title of Objective: Turn Their Fleets to Dust",
+            defaultMessage: "Turn Their Fleets to Dust",
           }),
         },
       ],

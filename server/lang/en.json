@@ -315,8 +315,16 @@
     "defaultMessage": "Assassinate Representative",
     "description": "Name of action card: Assassinate Representative"
   },
+  "Action Cards.Black Market Dealings.Description": {
+    "defaultMessage": "When you are negotiating a transaction:{br}You and the other player can include relics, action cards, and unscored secret objectives as part of the transaction. This card cannot be cancelled.",
+    "description": "Description of action card: Black Market Dealings"
+  },
+  "Action Cards.Black Market Dealings.Name": {
+    "defaultMessage": "Black Market Dealings",
+    "description": "Name of action card: Black Market Dealings"
+  },
   "Action Cards.Blitz.Description": {
-    "defaultMessage": "At the start of an invasion:{br}Each of your non-fighter ships in the active system that do not have BOMBARDMENT gain BOMBARDMENT 6 until the end of the invasion.",
+    "defaultMessage": "At the start of an invasion:{br}Each of your non-fighter ships in the active system that does not have BOMBARDMENT gains BOMBARDMENT 6 until the end of the invasion.",
     "description": "Description of action card: Blitz"
   },
   "Action Cards.Blitz.Name": {
@@ -330,6 +338,14 @@
   "Action Cards.Bribery.Name": {
     "defaultMessage": "Bribery",
     "description": "Name of action card: Bribery"
+  },
+  "Action Cards.Brilliance.Description": {
+    "defaultMessage": "ACTION: Ready 1 of your planets that has a technology speciality or choose 1 player to gain their breakthrough.",
+    "description": "Description of action card: Brilliance"
+  },
+  "Action Cards.Brilliance.Name": {
+    "defaultMessage": "Brilliance",
+    "description": "Name of action card: Brilliance"
   },
   "Action Cards.Bunker.Description": {
     "defaultMessage": "At the start of an invasion:{br}During this invasion, apply -4 to the result of each BOMBARDMENT roll against planets you control.",
@@ -364,7 +380,7 @@
     "description": "Name of action card: Construction Rider"
   },
   "Action Cards.Counterstroke.Description": {
-    "defaultMessage": "After a player activates a system that contains 1 of your command tokens:{br}Return that command token to your tactic pool.",
+    "defaultMessage": "After another player activates a system that contains 1 of your command tokens:{br}Return that command token to your tactic pool.",
     "description": "Description of action card: Counterstroke"
   },
   "Action Cards.Counterstroke.Name": {
@@ -491,6 +507,14 @@
     "defaultMessage": "Emergency Repairs",
     "description": "Name of action card: Emergency Repairs"
   },
+  "Action Cards.Exchange Program.Description": {
+    "defaultMessage": "ACTION: Choose another player. You and the planet may agree to place 1 infantry from each of your reinforcements into coexistence on a planet the other player controls that contains their ground forces; if no agreement is reached, you each discard 1 token from your fleet pool.",
+    "description": "Description of action card: Exchange Program"
+  },
+  "Action Cards.Exchange Program.Name": {
+    "defaultMessage": "Exchange Program",
+    "description": "Name of action card: Exchange Program"
+  },
   "Action Cards.Experimental Battlestation.Description": {
     "defaultMessage": "After another player moves ships into a system during a tactical action:{br}Choose 1 of your space docks that is either in or adjacent to that system. That space dock uses SPACE CANNON 5 (x3) against ships in the active system.",
     "description": "Description of action card: Experimental Battlestation"
@@ -508,7 +532,7 @@
     "description": "Name of action card: Exploration Probe"
   },
   "Action Cards.Extreme Duress.Description": {
-    "defaultMessage": "At the start of another player's turn, if they have a readied strategy card:{br}If that player's next action is not a strategic action, they discard all of action cards, give you all of their trade goods, and show you all of their secret objectives.",
+    "defaultMessage": "At the start of another player's turn, if they have a readied strategy card:{br}If that player's next action is not a strategic action, they discard all of their action cards, give you all of their trade goods, and show you all of their secret objectives.",
     "description": "Description of action card: Extreme Duress"
   },
   "Action Cards.Extreme Duress.Name": {
@@ -516,7 +540,7 @@
     "description": "Name of action card: Extreme Duress"
   },
   "Action Cards.Fighter Conscription.Description": {
-    "defaultMessage": "ACTION: Place 1 fighter from your reinforcements in each system that contains 1 or more of your space docks or units that have capacity; they cannot be placed in systems that contain other players' ships.",
+    "defaultMessage": "ACTION: Place 1 fighter from your reinforcements into each system that contains 1 or more of your space docks or ships that have a capacity value; they cannot be placed in systems that contain other players' ships.",
     "description": "Description of action card: Fighter Conscription"
   },
   "Action Cards.Fighter Conscription.Name": {
@@ -595,6 +619,10 @@
     "defaultMessage": "Hack Election",
     "description": "Name of action card: Hack Election"
   },
+  "Action Cards.Hack Election.TE.Description": {
+    "defaultMessage": "After an agenda is revealed:{br}During this agenda, you vote last.",
+    "description": "Description of action card: Hack Election"
+  },
   "Action Cards.Harness Energy.Description": {
     "defaultMessage": "After you activate an anomaly:{br}Replenish your commodities.",
     "description": "Description of action card: Harness Energy"
@@ -651,6 +679,10 @@
     "defaultMessage": "Insider Information",
     "description": "Name of action card: Insider Information"
   },
+  "Action Cards.Insider Information.TE.Description": {
+    "defaultMessage": "After an agenda is revealed:{br}Look at the top 3 cards of the agenda deck.",
+    "description": "Description of action card: Insider Information"
+  },
   "Action Cards.Insubordination.Description": {
     "defaultMessage": "ACTION: Remove 1 token from another player's tactic pool and return it to their reinforcements.",
     "description": "Description of action card: Insubordination"
@@ -676,7 +708,7 @@
     "description": "Name of action card: Leadership Rider"
   },
   "Action Cards.Lie in Wait.Description": {
-    "defaultMessage": "After 2 of your neighbors resolve a transaction:{br}Look at each of those player's hands of action cards, then choose and take 1 action card from each.",
+    "defaultMessage": "After 2 of your neighbors resolve a transaction:{br}Look at each of those players' hands of action cards, then choose and take 1 action card from each.",
     "description": "Description of action card: Lie in Wait"
   },
   "Action Cards.Lie in Wait.Name": {
@@ -716,7 +748,7 @@
     "description": "Name of action card: Manipulate Investments"
   },
   "Action Cards.Master Plan.Description": {
-    "defaultMessage": "After you perform an action:{br}You may perform an additional action this turn.",
+    "defaultMessage": "After you perform an action:{br}Perform an additional action.",
     "description": "Description of action card: Master Plan"
   },
   "Action Cards.Master Plan.Name": {
@@ -724,7 +756,7 @@
     "description": "Name of action card: Master Plan"
   },
   "Action Cards.Mercenary Contract.Description": {
-    "defaultMessage": "ACTION: Place (ground forces ???) on a non-home planet that contains no non-neutral units.",
+    "defaultMessage": "ACTION: Spend 2 trade goods to place 2 neutral infantry on any non-home planet that contains no units; if that planet was owned by another player, they return its planet card to the planet card deck.",
     "description": "Description of action card: Mercenary Contract"
   },
   "Action Cards.Mercenary Contract.Name": {
@@ -780,7 +812,7 @@
     "description": "Name of action card: Pirate Contract"
   },
   "Action Cards.Pirate Fleet.Description": {
-    "defaultMessage": "ACTION: Spend 3 resources to place 1 neutral carrier, 1 neutral cruiser, 1 neutral destroyer, and 2 neutral fighters in a non-home system that contains no ships.",
+    "defaultMessage": "ACTION: Spend 3 resources to place 1 neutral carrier, 1 neutral cruiser, 1 neutral destroyer, and 2 neutral fighters in a non-home system that contains no non-neutral ships.",
     "description": "Description of action card: Pirate Fleet"
   },
   "Action Cards.Pirate Fleet.Name": {
@@ -788,7 +820,7 @@
     "description": "Name of action card: Pirate Fleet"
   },
   "Action Cards.Plagiarize.Description": {
-    "defaultMessage": "ACTION: Spend 5 influence and choose a non-faction technology owned by 1 of your neighbors; gain that technology.",
+    "defaultMessage": "ACTION: Spend 5 influence and choose a non-faction technology owned by one of your neighbors; gain that technology.",
     "description": "Description of action card: Plagiarize"
   },
   "Action Cards.Plagiarize.Name": {
@@ -996,7 +1028,7 @@
     "description": "Name of action card: Skilled Retreat"
   },
   "Action Cards.Solar Flare.Description": {
-    "defaultMessage": "After you activate a system:{br}During this movement, other players cannot use SPACE CANNON against your ships.",
+    "defaultMessage": "After you activate a system:{br}During the \"Movement\" step of this tactical action, other players cannot use SPACE CANNON against your ships.",
     "description": "Description of action card: Solar Flare"
   },
   "Action Cards.Solar Flare.Name": {
@@ -1100,7 +1132,7 @@
     "description": "Name of action card: War Effort"
   },
   "Action Cards.War Machine.Description": {
-    "defaultMessage": "When 1 or more of your units use PRODUCTION:{br}Apply +4 to the total PRODUCTION value of your units and reduce the combined cost of the produced units by 1.",
+    "defaultMessage": "When 1 or more of your units use PRODUCTION:{br}Apply +4 to the total PRODUCTION value of those units and reduce the combined cost of the produced units by 1.",
     "description": "Description of action card: War Machine"
   },
   "Action Cards.War Machine.Name": {
@@ -1684,7 +1716,7 @@
     "description": "Description for Faction Promissory: Stymie"
   },
   "Arborec.Promissories.Stymie.Omega.Description": {
-    "defaultMessage": "After another player moves ships into a system that contains 1 or more of your units: You may place 1 command token from that player's reinforcements in any non-home system. Then, return this card to the Arborec player.",
+    "defaultMessage": "After another player moves ships into a system that contains 1 or more of your units:{br}You may place 1 command token from that player's reinforcements in any non-home system.{br}Then, return this card to the Arborec player.",
     "description": "Description for Faction Promissory: Stymie Ω"
   },
   "Arborec.Promissories.Stymie.Omega.Title": {
@@ -2028,7 +2060,7 @@
     "description": "Description for Faction Promissory: War Funding"
   },
   "Barony of Letnev.Promissories.War Funding.Omega.Description": {
-    "defaultMessage": "After you and your opponent roll dice during space combat:{br}You may reroll all of your opponent's dice. You may reroll any number of your dice.{br}Then, return this card to the Letnev player.",
+    "defaultMessage": "After you and your opponent roll dice during space combat:{br}You may reroll all of your opponent's dice.{br}You may reroll any number of your dice.{br}Then, return this card to the Letnev player.",
     "description": "Description for Faction Promissory: War Funding Ω"
   },
   "Barony of Letnev.Promissories.War Funding.Omega.Title": {
@@ -2327,6 +2359,14 @@
     "defaultMessage": "Mercenaries for Hire",
     "description": "Title of Component: Mercenaries for Hire"
   },
+  "Components.Nanomachines.Description": {
+    "defaultMessage": "ACTION: Exhaust this card to place 1 PDS on a planet you control.{br}ACTION: Exhaust this card to repair all of your damaged units.{br}ACTION: Exhaust this card and discard 1 action card to draw 1 action card.",
+    "description": "Description for Component: Nanomachines"
+  },
+  "Components.Nanomachines.Title": {
+    "defaultMessage": "Nanomachines",
+    "description": "Title of Component: Nanomachines"
+  },
   "Components.Orbital Drop.Description": {
     "defaultMessage": "ACTION: Spend 1 token from your strategy pool to place 2 infantry from your reinforcements on 1 planet you control.",
     "description": "Description for Component: Orbital Drop"
@@ -2512,7 +2552,7 @@
     "description": "Ability name for Keleres Hero: Harka Leeds"
   },
   "Council Keleres.Leaders.Harka Leeds.Description": {
-    "defaultMessage": "ACTION: Reveal cards from the action card deck until you reveal 3 action cards that have component actions. Draw those cards and shuffle the rest back into the action card deck{br}Then, purge this card",
+    "defaultMessage": "ACTION: Reveal cards from the action card deck until you reveal 3 action cards that have component actions. Draw those cards and shuffle the rest back into the action card deck.{br}Then, purge this card",
     "description": "Description for Keleres Hero: Harka Leeds"
   },
   "Council Keleres.Leaders.Harka Leeds.Name": {
@@ -2524,7 +2564,7 @@
     "description": "Ability name for Keleres Hero: Kuuasi Aun Jalatai"
   },
   "Council Keleres.Leaders.Kuuasi Aun Jalatai.Description": {
-    "defaultMessage": "At the start of a round of space combat in a system that contains a planet you control: Place your flagship and up to a total of 2 cruisers and/or destroyers from your reinforcements in the active system.{br}Then, purge this card.",
+    "defaultMessage": "At the start of a round of space combat in a system that contains a planet you control:{br}Place your flagship and any combination of up to 2 cruisers or destroyers from your reinforcements into the active system.{br}Then, purge this card.",
     "description": "Description for Keleres Hero: Kuuasi Aun Jalatai"
   },
   "Council Keleres.Leaders.Kuuasi Aun Jalatai.Name": {
@@ -2536,7 +2576,7 @@
     "description": "Ability name for Keleres Hero: Odlynn Myrr"
   },
   "Council Keleres.Leaders.Odlynn Myrr.Description": {
-    "defaultMessage": "After an agenda is revealed:{br}You may cast up to 6 additional votes on this agenda. Predict aloud an outcome for this agenda. For each player that votes for another outcome, gain 1 trade good and 1 command token.{br}Then, purge this card.",
+    "defaultMessage": "After an agenda is revealed:{br}You may cast up to 6 additional votes on this agenda. Predict aloud an outcome of this agenda. For each player that abstains or votes for another outcome, gain 1 trade good and 1 command token.{br}Then, purge this card.",
     "description": "Description for Keleres Hero: Odlynn Myrr"
   },
   "Council Keleres.Leaders.Odlynn Myrr.Name": {
@@ -2672,20 +2712,20 @@
     "description": "Name of Rebellion Commander: Ahk Siever"
   },
   "Crimson Rebellion.Leaders.Ahk Siever.Unlock": {
-    "defaultMessage": "Resolve a combat with another player.",
+    "defaultMessage": "Place a breach token in a system that contains another player's unit.",
     "description": "Unlock condition for Rebellion Commander: Ahk Siever"
   },
-  "Crimson Rebellion.Leaders.TODO: Fragment Reality.AbilityName": {
+  "Crimson Rebellion.Leaders.Homesick Phantom.AbilityName": {
     "defaultMessage": "FRAGMENT REALITY",
-    "description": "Ability name for Rebellion Hero: TODO: Fragment Reality"
+    "description": "Ability name for Rebellion Hero: Homesick Phantom"
   },
-  "Crimson Rebellion.Leaders.TODO: Fragment Reality.Description": {
+  "Crimson Rebellion.Leaders.Homesick Phantom.Description": {
     "defaultMessage": "When you produce ships:{br}You may place any of those ships onto this card.{br}At the start of a space combat, you may purge this card to place all ships from this card into the active system.",
-    "description": "Description for Rebellion Hero: TODO: Fragment Reality"
+    "description": "Description for Rebellion Hero: Homesick Phantom"
   },
-  "Crimson Rebellion.Leaders.TODO: Fragment Reality.Name": {
-    "defaultMessage": "TODO: Fragment Reality",
-    "description": "Name of Rebellion Hero: TODO: Fragment Reality"
+  "Crimson Rebellion.Leaders.Homesick Phantom.Name": {
+    "defaultMessage": "Homesick Phantom",
+    "description": "Name of Rebellion Hero: Homesick Phantom"
   },
   "Crimson Rebellion.Name": {
     "defaultMessage": "Crimson Rebellion",
@@ -2704,7 +2744,7 @@
     "description": "Shortened version of Faction name: Crimson Rebellion"
   },
   "Crimson Rebellion.Techs.Exile II.Description": {
-    "defaultMessage": "At the end of any player's combat in this unit's system or up to 2 systems away, you may place one active or inactive breach in the system.",
+    "defaultMessage": "At the end of any player's combat in this unit's system or up to 2 systems away, you may place 1 active or inactive breach in that system.",
     "description": "Description for Tech: Exile II"
   },
   "Crimson Rebellion.Techs.Exile II.Title": {
@@ -2816,7 +2856,7 @@
     "description": "Name of Faction: Deepwrought Scholarate"
   },
   "Deepwrought Scholarate.Promissories.Share Knowledge.Description": {
-    "defaultMessage": "ACTION: Place this card faceup in your play area and gain 1 non-faction, non-unit upgrade technology that the Deepwrought player owns; place this technology on this card.{br}Return that technology to the deck and this card to the Deepwrought player at the end of the status phase.",
+    "defaultMessage": "ACTION: Place this card faceup in your play area and gain 1 non-faction, non-unit upgrade technology that the Deepwrought player owns; place that technology on this card.{br}Return that technology to the deck and this card to the Deepwrought player at the end of the status phase.",
     "description": "Description for Faction Promissory: Share Knowledge"
   },
   "Deepwrought Scholarate.Promissories.Share Knowledge.Title": {
@@ -2852,7 +2892,7 @@
     "description": "Title of Faction Unit: D.W.S Luminous"
   },
   "Deepwrought Scholarate.Units.Eanautic.Description": {
-    "defaultMessage": "When another player activates this system, if this unit is coexisting, you may move it and any infantry on its planet to a planet you control in your home system.",
+    "defaultMessage": "When another player activates this system, if this unit is coexisting, you may move it and any of your infantry on its planet to a planet you control in your home system.",
     "description": "Description for Faction Unit: Eanautic"
   },
   "Deepwrought Scholarate.Units.Eanautic.Title": {
@@ -2952,7 +2992,7 @@
     "description": "Description for Tech: Magmus Reactor"
   },
   "Embers of Muaat.Techs.Magmus Reactor.Omega.Description": {
-    "defaultMessage": "Your ships can move into supernovas.{br}Each supernova that contains 1 or more of your units gains the PRODUCTION 5 ability as if it were 1 of your units.",
+    "defaultMessage": "Your ships can move into supernovas.{br}Each supernova that contains 1 or more of your units gains the PRODUCTION 5 ability as if it were one of your units.",
     "description": "Description for Tech: Magmus Reactor Ω"
   },
   "Embers of Muaat.Techs.Magmus Reactor.Omega.Title": {
@@ -3536,7 +3576,7 @@
     "description": "Name of Firmament Commander: Captain Aroz"
   },
   "Firmament.Leaders.Captain Aroz.Unlock": {
-    "defaultMessage": "Have one plot card in play.",
+    "defaultMessage": "Have a plot card in play.",
     "description": "Unlock condition for Firmament Commander: Captain Aroz"
   },
   "Firmament.Leaders.Myru Vos.Description": {
@@ -3987,17 +4027,17 @@
     "defaultMessage": "Dame Briar",
     "description": "Name of Last Bastion Agent: Dame Briar"
   },
-  "Last Bastion.Leaders.Entity 4X41A Apollo.AbilityName": {
-    "defaultMessage": "INTELLIGENCE UNCHAINED",
-    "description": "Ability name for Last Bastion Hero: Entity 4X41A Apollo"
+  "Last Bastion.Leaders.Lyra Keen.AbilityName": {
+    "defaultMessage": "ENTITY 4X41A \"APOLLO\"",
+    "description": "Ability name for Last Bastion Hero: Lyra Keen"
   },
-  "Last Bastion.Leaders.Entity 4X41A Apollo.Description": {
+  "Last Bastion.Leaders.Lyra Keen.Description": {
     "defaultMessage": "When one of your galvanized units is destroyed:{br}You may purge this card to roll 1 die for each unit in its system that belongs to another player; if the result is equal to or greater than the galvanized unit's combat value, destroy that unit.",
-    "description": "Description for Last Bastion Hero: Entity 4X41A Apollo"
+    "description": "Description for Last Bastion Hero: Lyra Keen"
   },
-  "Last Bastion.Leaders.Entity 4X41A Apollo.Name": {
+  "Last Bastion.Leaders.Lyra Keen.Name": {
     "defaultMessage": "Entity 4X41A \"Apollo\"",
-    "description": "Name of Last Bastion Hero: Entity 4X41A Apollo"
+    "description": "Name of Last Bastion Hero: Lyra Keen"
   },
   "Last Bastion.Leaders.Nip and Tuck.Description": {
     "defaultMessage": "Your action cards cannot be canceled by \"Sabotage\" action cards.{br}The Nekro Virus cannot place assimilator tokens on your components.",
@@ -4008,7 +4048,7 @@
     "description": "Name of Last Bastion Commander: Nip and Tuck"
   },
   "Last Bastion.Leaders.Nip and Tuck.Unlock": {
-    "defaultMessage": "TODO: Add unlock criteria.",
+    "defaultMessage": "There are 3 galvanized units on the game board.",
     "description": "Unlock condition for Last Bastion Commander: Nip and Tuck"
   },
   "Last Bastion.Name": {
@@ -4044,7 +4084,7 @@
     "description": "Title of Faction Unit: 4X41C \"Helios\" VI"
   },
   "Last Bastion.Units.A3 Valiance.Description": {
-    "defaultMessage": "When this unit is destroyed, if it was galvanized, galvanize up to 3 of your Infantry in its system.",
+    "defaultMessage": "When this unit is destroyed, if it was galvanized, galvanize up to 3 of your infantry in its system.",
     "description": "Description for Faction Unit: A3 Valiance"
   },
   "Last Bastion.Units.A3 Valiance.Title": {
@@ -4360,7 +4400,7 @@
     "description": "Name of Naalu Commander: M'aban"
   },
   "Naalu Collective.Leaders.M'aban.Omega.Description": {
-    "defaultMessage": "At any time:{br}You may look at your neighbours' hand of promissory notes and the top and bottom card of the agenda deck.",
+    "defaultMessage": "At any time:{br}You may look at your neighbors' hand of promissory notes and the top and bottom cards of the agenda deck.",
     "description": "Description for Naalu Commander: M'aban Ω"
   },
   "Naalu Collective.Leaders.M'aban.Omega.Name": {
@@ -4402,6 +4442,10 @@
   "Naalu Collective.Leaders.Z'eu.Omega.Name": {
     "defaultMessage": "Z'eu Ω",
     "description": "Name of Naalu Agent: Z'eu Ω"
+  },
+  "Naalu Collective.Leaders.Z'eu.TE.Description": {
+    "defaultMessage": "After any player's command token is placed in a system:{br}You may exhaust this card to return that token to that player's reinforcements.",
+    "description": "Description for Naalu Agent: Z'eu"
   },
   "Naalu Collective.Name": {
     "defaultMessage": "Naalu Collective",
@@ -4450,6 +4494,10 @@
   "Naalu Collective.Units.Iconoclast.Omega.Title": {
     "defaultMessage": "Iconoclast Ω",
     "description": "Title of Faction Unit: Iconoclast Ω"
+  },
+  "Naalu Collective.Units.Iconoclast.TE.Description": {
+    "defaultMessage": "DEPLOY: When another player gains a relic, place 1 mech on any planet you control.",
+    "description": "Description for Faction Unit from TE: Iconoclast"
   },
   "Naalu Collective.Units.Iconoclast.Title": {
     "defaultMessage": "Iconoclast",
@@ -5911,6 +5959,18 @@
     "defaultMessage": "Data Skimmer",
     "description": "Title of Faction Breakthrough: Data Skimmer"
   },
+  "Ral Nel Consortium.Leaders.Director Nel.AbilityName": {
+    "defaultMessage": "SIGNAL INTRUSION",
+    "description": "Ability name for Ral Nel Consortium Hero: Director Nel"
+  },
+  "Ral Nel Consortium.Leaders.Director Nel.Description": {
+    "defaultMessage": "After the last player passes:{br}You may choose to no longer be passed; if you do, gain 2 command tokens, draw 1 action card, and purge this card.",
+    "description": "Description for Ral Nel Consortium Hero: Director Nel"
+  },
+  "Ral Nel Consortium.Leaders.Director Nel.Name": {
+    "defaultMessage": "Director Nel",
+    "description": "Name of Ral Nel Consortium Hero: Director Nel"
+  },
   "Ral Nel Consortium.Leaders.Kan Kip Rel.Description": {
     "defaultMessage": "ACTION: Exhaust this card to draw 2 action cards; give 1 of those cards to another player.",
     "description": "Description for Ral Nel Agent: Kan Kip Rel"
@@ -5918,18 +5978,6 @@
   "Ral Nel Consortium.Leaders.Kan Kip Rel.Name": {
     "defaultMessage": "Kan Kip Rel",
     "description": "Name of Ral Nel Agent: Kan Kip Rel"
-  },
-  "Ral Nel Consortium.Leaders.TODO: Name.AbilityName": {
-    "defaultMessage": "SIGNAL INTRUSION",
-    "description": "Ability name for Ral Nel Consortium Hero: TODO: Name"
-  },
-  "Ral Nel Consortium.Leaders.TODO: Name.Description": {
-    "defaultMessage": "After the last player passes:{br}You may choose to no longer be passed; if you do, gain 2 command tokens, draw 1 action card, and purge this card.",
-    "description": "Description for Ral Nel Consortium Hero: TODO: Name"
-  },
-  "Ral Nel Consortium.Leaders.TODO: Name.Name": {
-    "defaultMessage": "TODO: Name",
-    "description": "Name of Ral Nel Consortium Hero: TODO: Name"
   },
   "Ral Nel Consortium.Leaders.Watchful Ojz.Description": {
     "defaultMessage": "When you declare a retreat:{br}Immediately retreat up to 2 of your ships from the active system to an adjacent system that does not contain another player's ships. Place a command token from your reinforcements into that system.",
@@ -5940,7 +5988,7 @@
     "description": "Name of Ral Nel Commander: Watchful Ojz"
   },
   "Ral Nel Consortium.Leaders.Watchful Ojz.Unlock": {
-    "defaultMessage": "TODO: Add unlock criteria.",
+    "defaultMessage": "Be the last player to pass during the action phase.",
     "description": "Unlock condition for Ral Nel Commander: Watchful Ojz"
   },
   "Ral Nel Consortium.Name": {
@@ -6040,7 +6088,7 @@
     "description": "Title of Relic: Dominus Orb"
   },
   "Relics.Dynamis Core.Description": {
-    "defaultMessage": "While this card is in your play area, your commodity value is increased by 2.{br}ACTION: Purge this card to gain trade goods equal to your printed commodity value +2.",
+    "defaultMessage": "While this card is in your play area, your commodity value is increased by 2.{br}ACTION: Gain trade goods equal to your commodity value, then purge this card.",
     "description": "Description for Relic: Dynamis Core"
   },
   "Relics.Dynamis Core.Title": {
@@ -6120,7 +6168,7 @@
     "description": "Title of Relic: Metali Void Shielding"
   },
   "Relics.Nano-Forge.Description": {
-    "defaultMessage": "ACTION: Attach this card to a non-legendary, non-home planet you control; its resource and influence values are increased by 2 and it is a legendary planet.",
+    "defaultMessage": "ACTION: Attach this card to a non-legendary, non-home planet you control; its resource and influence values are increased by 2 and it is a legendary planet. This action cannot be performed once attached.",
     "description": "Description for Relic: Nano-Forge"
   },
   "Relics.Nano-Forge.Title": {
@@ -6535,13 +6583,13 @@
     "defaultMessage": "{count} {count, plural, one {Dreadnought} other {Dreadnoughts}}",
     "description": "A number of Dreadnought units."
   },
-  "Techs.4X4IC Helios VI II.Description": {
+  "Techs.4X4IC Helios V2.Description": {
     "defaultMessage": "This unit's PRODUCTION value is equal to 4 more than the resource value of this planet.{br}The resource value of this planet is increased by 2.{br}Up to 3 fighters in this system do not count against your ships' capacity.",
-    "description": "Description for Tech: 4X4IC Helios VI II"
+    "description": "Description for Tech: 4X4IC Helios V2"
   },
-  "Techs.4X4IC Helios VI II.Title": {
-    "defaultMessage": "4X4IC \"Helios\" VI II",
-    "description": "Title of Tech: 4X4IC Helios VI II"
+  "Techs.4X4IC Helios V2.Title": {
+    "defaultMessage": "4X4IC \"Helios\" V2",
+    "description": "Title of Tech: 4X4IC Helios V2"
   },
   "Techs.AI Development Algorithm.Description": {
     "defaultMessage": "When you research a unit upgrade technology, you may exhaust this card to ignore any 1 prerequisite.{br}When 1 or more of your units use PRODUCTION, you may exhaust this card to reduce the combined cost of the produced units by the number of unit upgrade technologies that you own.",
@@ -6947,10 +6995,6 @@
     "defaultMessage": "Map String",
     "description": "Label for a textbox used to specify the map string."
   },
-  "UJs3kj": {
-    "defaultMessage": "Claim Empty Planet",
-    "description": "Text on a hover menu for claiming an empty planet."
-  },
   "USnh0f": {
     "defaultMessage": "Update Techs",
     "description": "Text shown on a button that opens the update techs panel."
@@ -7046,6 +7090,10 @@
   "Universities of Jol-Nar.Breakthrough.Specialized Compounds.Title": {
     "defaultMessage": "Specialized Compounds",
     "description": "Title of Faction Breakthrough: Specialized Compounds"
+  },
+  "Universities of Jol-Nar.Leaders.Agnlan Oln.Name": {
+    "defaultMessage": "Agnlan Oln",
+    "description": "Name of Jol-Nar Commander: Agnlan Oln"
   },
   "Universities of Jol-Nar.Leaders.Doctor Sucaban.Description": {
     "defaultMessage": "When a player spends resources to research:{br}You may exhaust this card to allow that player to remove any number of their infantry from the game board. For each unit removed, reduce the resources spent by 1.",
@@ -7343,6 +7391,10 @@
     "defaultMessage": "Acquiescence Ω",
     "description": "Title of Faction Ability: Acquiescence Ω"
   },
+  "Winnu.Promissories.Acquiescence.TE.Description": {
+    "defaultMessage": "When the Winnu player resolves a strategic action:{br}You do not have to spend a command token to resolve the secondary ability of that strategy card.{br}Then, return this card to the Winnu player.",
+    "description": "Description for Faction Ability: Acquiescence"
+  },
   "Winnu.Promissories.Acquiescence.Title": {
     "defaultMessage": "Acquiescence",
     "description": "Title of Faction Ability: Acquiescence"
@@ -7583,6 +7635,10 @@
     "defaultMessage": "Brother Milor Ω",
     "description": "Name of Yin Agent: Brother Milor Ω"
   },
+  "Yin Brotherhood.Leaders.Brother Milor.TE.Description": {
+    "defaultMessage": "After a player's unit is destroyed during combat:{br}You may exhaust this card to allow that player to place 2 fighters in the destroyed unit's system if it was a ship, or 2 infantry on its planet if it was a ground force.",
+    "description": "Description for Yin Agent: Brother Milor"
+  },
   "Yin Brotherhood.Leaders.Brother Omar.Description": {
     "defaultMessage": "This card satisfies a green technology prerequisite.{br}You may produce 1 additional infantry for their cost. These infantry do not count against your production limit.",
     "description": "Description for Yin Commander: Brother Omar"
@@ -7592,7 +7648,7 @@
     "description": "Name of Yin Commander: Brother Omar"
   },
   "Yin Brotherhood.Leaders.Brother Omar.Omega.Description": {
-    "defaultMessage": "This card satisfies a green technology prerequisite.{br}When you research a technology owned by another player, you may return 1 of your infantry to reinforcements to ignore its prerequisites.",
+    "defaultMessage": "This card satisfies a green technology prerequisite.{br}When you research technology owned by another player, you may return 1 of your infantry to reinforcements to ignore all prerequisites.",
     "description": "Description for Yin Commander: Brother Omar Ω"
   },
   "Yin Brotherhood.Leaders.Brother Omar.Omega.Name": {
@@ -7624,12 +7680,16 @@
     "description": "Ability name for Yin Hero: Dannel of the Tenth Ω"
   },
   "Yin Brotherhood.Leaders.Dannel of the Tenth.Omega.Description": {
-    "defaultMessage": "ACTION: Commit up to 3 infantry from your reinforcements to any non-home planets and resolve invasions on those planets; players cannot use SPACE CANNON against those units.{br}Then, purge this card.",
+    "defaultMessage": "ACTION: Commit up to 3 infantry from your reinforcements to any non-home planets and resolve ground combats on those planets; players cannot use SPACE CANNON against these units.{br}Then, purge this card.",
     "description": "Description for Yin Hero: Dannel of the Tenth Ω"
   },
   "Yin Brotherhood.Leaders.Dannel of the Tenth.Omega.Name": {
     "defaultMessage": "Dannel of the Tenth Ω",
     "description": "Name of Yin Hero: Dannel of the Tenth Ω"
+  },
+  "Yin Brotherhood.Leaders.Dannel of the Tenth.TE.AbilityName": {
+    "defaultMessage": "QUANTUM DISSEMINATION",
+    "description": "Ability name for Yin Hero: Dannel of the Tenth"
   },
   "Yin Brotherhood.Name": {
     "defaultMessage": "Yin Brotherhood",

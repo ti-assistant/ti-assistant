@@ -46,23 +46,23 @@ export default function getThundersEdgeLeaders(
       }),
       timing: "PASSIVE",
       type: "COMMANDER",
-      // TODO: Confirm unlock condition.
       unlock: intl.formatMessage({
         id: "Crimson Rebellion.Leaders.Ahk Siever.Unlock",
         description: "Unlock condition for Rebellion Commander: Ahk Siever",
-        defaultMessage: "Resolve a combat with another player.",
+        defaultMessage:
+          "Place a breach token in a system that contains another player's unit.",
       }),
     },
-    "TODO: Fragment Reality": {
+    "Homesick Phantom": {
       abilityName: intl.formatMessage({
-        id: "Crimson Rebellion.Leaders.TODO: Fragment Reality.AbilityName",
-        description: "Ability name for Rebellion Hero: TODO: Fragment Reality",
+        id: "Crimson Rebellion.Leaders.Homesick Phantom.AbilityName",
+        description: "Ability name for Rebellion Hero: Homesick Phantom",
         defaultMessage: "FRAGMENT REALITY",
       }),
       description: intl.formatMessage(
         {
-          id: "Crimson Rebellion.Leaders.TODO: Fragment Reality.Description",
-          description: "Description for Rebellion Hero: TODO: Fragment Reality",
+          id: "Crimson Rebellion.Leaders.Homesick Phantom.Description",
+          description: "Description for Rebellion Hero: Homesick Phantom",
           defaultMessage:
             "When you produce ships:{br}You may place any of those ships onto this card.{br}At the start of a space combat, you may purge this card to place all ships from this card into the active system.",
         },
@@ -70,11 +70,11 @@ export default function getThundersEdgeLeaders(
       ),
       expansion: "POK",
       faction: "Crimson Rebellion",
-      id: "TODO: Fragment Reality",
+      id: "Homesick Phantom",
       name: intl.formatMessage({
-        id: "Crimson Rebellion.Leaders.TODO: Fragment Reality.Name",
-        description: "Name of Rebellion Hero: TODO: Fragment Reality",
-        defaultMessage: "TODO: Fragment Reality",
+        id: "Crimson Rebellion.Leaders.Homesick Phantom.Name",
+        description: "Name of Rebellion Hero: Homesick Phantom",
+        defaultMessage: "Homesick Phantom",
       }),
       timing: "TACTICAL_ACTION",
       type: "HERO",
@@ -195,11 +195,10 @@ export default function getThundersEdgeLeaders(
       }),
       timing: "PASSIVE",
       type: "COMMANDER",
-      // TODO: Confirm unlock condition.
       unlock: intl.formatMessage({
         id: "Firmament.Leaders.Captain Aroz.Unlock",
         description: "Unlock condition for Firmament Commander: Captain Aroz",
-        defaultMessage: "Have one plot card in play.",
+        defaultMessage: "Have a plot card in play.",
       }),
     },
     Sharsiss: {
@@ -274,19 +273,19 @@ export default function getThundersEdgeLeaders(
         id: "Last Bastion.Leaders.Nip and Tuck.Unlock",
         description:
           "Unlock condition for Last Bastion Commander: Nip and Tuck",
-        defaultMessage: "TODO: Add unlock criteria.",
+        defaultMessage: "There are 3 galvanized units on the game board.",
       }),
     },
-    "Entity 4X41A Apollo": {
+    "Lyra Keen": {
       abilityName: intl.formatMessage({
-        id: "Last Bastion.Leaders.Entity 4X41A Apollo.AbilityName",
-        description: "Ability name for Last Bastion Hero: Entity 4X41A Apollo",
-        defaultMessage: "INTELLIGENCE UNCHAINED", // TODO: Confirm
+        id: "Last Bastion.Leaders.Lyra Keen.AbilityName",
+        description: "Ability name for Last Bastion Hero: Lyra Keen",
+        defaultMessage: 'ENTITY 4X41A "APOLLO"',
       }),
       description: intl.formatMessage(
         {
-          id: "Last Bastion.Leaders.Entity 4X41A Apollo.Description",
-          description: "Description for Last Bastion Hero: Entity 4X41A Apollo",
+          id: "Last Bastion.Leaders.Lyra Keen.Description",
+          description: "Description for Last Bastion Hero: Lyra Keen",
           defaultMessage:
             "When one of your galvanized units is destroyed:{br}You may purge this card to roll 1 die for each unit in its system that belongs to another player; if the result is equal to or greater than the galvanized unit's combat value, destroy that unit.",
         },
@@ -294,10 +293,10 @@ export default function getThundersEdgeLeaders(
       ),
       expansion: "POK",
       faction: "Last Bastion",
-      id: "Entity 4X41A Apollo",
+      id: "Lyra Keen",
       name: intl.formatMessage({
-        id: "Last Bastion.Leaders.Entity 4X41A Apollo.Name",
-        description: "Name of Last Bastion Hero: Entity 4X41A Apollo",
+        id: "Last Bastion.Leaders.Lyra Keen.Name",
+        description: "Name of Last Bastion Hero: Lyra Keen",
         defaultMessage: 'Entity 4X41A "Apollo"',
       }),
       timing: "TACTICAL_ACTION",
@@ -345,7 +344,6 @@ export default function getThundersEdgeLeaders(
       }),
       timing: "PASSIVE",
       type: "COMMANDER",
-      // TODO: Confirm unlock condition.
       unlock: intl.formatMessage({
         id: "Obsidian.Leaders.Aroz Hollow.Unlock",
         description: "Unlock condition for Obsidian Commander: Aroz Hollow",
@@ -420,19 +418,19 @@ export default function getThundersEdgeLeaders(
       unlock: intl.formatMessage({
         id: "Ral Nel Consortium.Leaders.Watchful Ojz.Unlock",
         description: "Unlock condition for Ral Nel Commander: Watchful Ojz",
-        defaultMessage: "TODO: Add unlock criteria.",
+        defaultMessage: "Be the last player to pass during the action phase.",
       }),
     },
-    "TODO: Name": {
+    "Director Nel": {
       abilityName: intl.formatMessage({
-        id: "Ral Nel Consortium.Leaders.TODO: Name.AbilityName",
-        description: "Ability name for Ral Nel Consortium Hero: TODO: Name",
-        defaultMessage: "SIGNAL INTRUSION", // TODO: Confirm
+        id: "Ral Nel Consortium.Leaders.Director Nel.AbilityName",
+        description: "Ability name for Ral Nel Consortium Hero: Director Nel",
+        defaultMessage: "SIGNAL INTRUSION",
       }),
       description: intl.formatMessage(
         {
-          id: "Ral Nel Consortium.Leaders.TODO: Name.Description",
-          description: "Description for Ral Nel Consortium Hero: TODO: Name",
+          id: "Ral Nel Consortium.Leaders.Director Nel.Description",
+          description: "Description for Ral Nel Consortium Hero: Director Nel",
           defaultMessage:
             "After the last player passes:{br}You may choose to no longer be passed; if you do, gain 2 command tokens, draw 1 action card, and purge this card.",
         },
@@ -440,11 +438,11 @@ export default function getThundersEdgeLeaders(
       ),
       expansion: "POK",
       faction: "Ral Nel Consortium",
-      id: "TODO: Name",
+      id: "Director Nel",
       name: intl.formatMessage({
-        id: "Ral Nel Consortium.Leaders.TODO: Name.Name",
-        description: "Name of Ral Nel Consortium Hero: TODO: Name",
-        defaultMessage: "TODO: Name",
+        id: "Ral Nel Consortium.Leaders.Director Nel.Name",
+        description: "Name of Ral Nel Consortium Hero: Director Nel",
+        defaultMessage: "Director Nel",
       }),
       timing: "OTHER",
       type: "HERO",

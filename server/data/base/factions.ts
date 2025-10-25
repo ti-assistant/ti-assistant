@@ -93,13 +93,24 @@ export default function getBaseFactions(
                 description: "Title of Faction Promissory: Stymie Ω",
                 defaultMessage: "Stymie Ω",
               }),
-              description: intl.formatMessage({
-                id: "Arborec.Promissories.Stymie.Omega.Description",
-                description: "Description for Faction Promissory: Stymie Ω",
-                defaultMessage:
-                  "After another player moves ships into a system that contains 1 or more of your units:\n\nYou may place 1 command token from that player's reinforcements in any non-home system.\n\nThen, return this card to the Arborec player.",
-              }),
+              description: intl.formatMessage(
+                {
+                  id: "Arborec.Promissories.Stymie.Omega.Description",
+                  description: "Description for Faction Promissory: Stymie Ω",
+                  defaultMessage:
+                    "After another player moves ships into a system that contains 1 or more of your units:{br}You may place 1 command token from that player's reinforcements in any non-home system.{br}Then, return this card to the Arborec player.",
+                },
+                { br: "\n\n" }
+              ),
               expansion: "CODEX ONE",
+            },
+            {
+              name: intl.formatMessage({
+                id: "Arborec.Promissories.Stymie.Title",
+                description: "Title of Faction Promissory: Stymie",
+                defaultMessage: "Stymie",
+              }),
+              expansion: "THUNDERS EDGE",
             },
           ],
         },
@@ -286,11 +297,19 @@ export default function getBaseFactions(
                   description:
                     "Description for Faction Promissory: War Funding Ω",
                   defaultMessage:
-                    "After you and your opponent roll dice during space combat:{br}You may reroll all of your opponent's dice. You may reroll any number of your dice.{br}Then, return this card to the Letnev player.",
+                    "After you and your opponent roll dice during space combat:{br}You may reroll all of your opponent's dice.{br}You may reroll any number of your dice.{br}Then, return this card to the Letnev player.",
                 },
                 { br: "\n\n" }
               ),
               expansion: "CODEX ONE",
+            },
+            {
+              name: intl.formatMessage({
+                id: "Barony of Letnev.Promissories.War Funding.Title",
+                description: "Title of Faction Promissory: War Funding",
+                defaultMessage: "War Funding",
+              }),
+              expansion: "THUNDERS EDGE",
             },
           ],
         },
@@ -1308,6 +1327,15 @@ export default function getBaseFactions(
               ),
               expansion: "CODEX ONE",
             },
+            {
+              name: intl.formatMessage({
+                id: "L1Z1X Mindnet.Promissories.Cybernetic Enhancements.Title",
+                description:
+                  "Title of Faction Promissory: Cybernetic Enhancements",
+                defaultMessage: "Cybernetic Enhancements",
+              }),
+              expansion: "THUNDERS EDGE",
+            },
           ],
         },
       ],
@@ -1724,6 +1752,20 @@ export default function getBaseFactions(
                   "Other players cannot use ANTI-FIGHTER BARRAGE against your units in this system.",
               }),
               expansion: "CODEX THREE",
+            },
+            {
+              name: intl.formatMessage({
+                id: "Naalu Collective.Units.Iconoclast.Title",
+                description: "Title of Faction Unit: Iconoclast",
+                defaultMessage: "Iconoclast",
+              }),
+              description: intl.formatMessage({
+                id: "Naalu Collective.Units.Iconoclast.TE.Description",
+                description: "Description for Faction Unit from TE: Iconoclast",
+                defaultMessage:
+                  "DEPLOY: When another player gains a relic, place 1 mech on any planet you control.",
+              }),
+              expansion: "THUNDERS EDGE",
             },
           ],
           stats: {
@@ -2342,6 +2384,23 @@ export default function getBaseFactions(
               ),
               expansion: "CODEX ONE",
             },
+            {
+              name: intl.formatMessage({
+                id: "Winnu.Promissories.Acquiescence.Title",
+                description: "Title of Faction Ability: Acquiescence",
+                defaultMessage: "Acquiescence",
+              }),
+              description: intl.formatMessage(
+                {
+                  id: "Winnu.Promissories.Acquiescence.TE.Description",
+                  description: "Description for Faction Ability: Acquiescence",
+                  defaultMessage:
+                    "When the Winnu player resolves a strategic action:{br}You do not have to spend a command token to resolve the secondary ability of that strategy card.{br}Then, return this card to the Winnu player.",
+                },
+                { br: "\n\n" }
+              ),
+              expansion: "THUNDERS EDGE",
+            },
           ],
         },
       ],
@@ -2676,6 +2735,14 @@ export default function getBaseFactions(
                 { br: "\n\n" }
               ),
               expansion: "CODEX ONE",
+            },
+            {
+              name: intl.formatMessage({
+                id: "Yin Brotherhood.Promissories.Greyfire Mutagen.Title",
+                description: "Title of Faction Promissory: Greyfire Mutagen",
+                defaultMessage: "Greyfire Mutagen",
+              }),
+              expansion: "THUNDERS EDGE",
             },
           ],
         },

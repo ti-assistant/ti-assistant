@@ -669,6 +669,26 @@
       "value": "Assassinate Representative"
     }
   ],
+  "Action Cards.Black Market Dealings.Description": [
+    {
+      "type": 0,
+      "value": "When you are negotiating a transaction:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "You and the other player can include relics, action cards, and unscored secret objectives as part of the transaction. This card cannot be cancelled."
+    }
+  ],
+  "Action Cards.Black Market Dealings.Name": [
+    {
+      "type": 0,
+      "value": "Black Market Dealings"
+    }
+  ],
   "Action Cards.Blitz.Description": [
     {
       "type": 0,
@@ -680,7 +700,7 @@
     },
     {
       "type": 0,
-      "value": "Each of your non-fighter ships in the active system that do not have BOMBARDMENT gain BOMBARDMENT 6 until the end of the invasion."
+      "value": "Each of your non-fighter ships in the active system that does not have BOMBARDMENT gains BOMBARDMENT 6 until the end of the invasion."
     }
   ],
   "Action Cards.Blitz.Name": [
@@ -707,6 +727,18 @@
     {
       "type": 0,
       "value": "Bribery"
+    }
+  ],
+  "Action Cards.Brilliance.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Ready 1 of your planets that has a technology speciality or choose 1 player to gain their breakthrough."
+    }
+  ],
+  "Action Cards.Brilliance.Name": [
+    {
+      "type": 0,
+      "value": "Brilliance"
     }
   ],
   "Action Cards.Bunker.Description": [
@@ -792,7 +824,7 @@
   "Action Cards.Counterstroke.Description": [
     {
       "type": 0,
-      "value": "After a player activates a system that contains 1 of your command tokens:"
+      "value": "After another player activates a system that contains 1 of your command tokens:"
     },
     {
       "type": 1,
@@ -1101,6 +1133,18 @@
       "value": "Emergency Repairs"
     }
   ],
+  "Action Cards.Exchange Program.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Choose another player. You and the planet may agree to place 1 infantry from each of your reinforcements into coexistence on a planet the other player controls that contains their ground forces; if no agreement is reached, you each discard 1 token from your fleet pool."
+    }
+  ],
+  "Action Cards.Exchange Program.Name": [
+    {
+      "type": 0,
+      "value": "Exchange Program"
+    }
+  ],
   "Action Cards.Experimental Battlestation.Description": [
     {
       "type": 0,
@@ -1144,7 +1188,7 @@
     },
     {
       "type": 0,
-      "value": "If that player's next action is not a strategic action, they discard all of action cards, give you all of their trade goods, and show you all of their secret objectives."
+      "value": "If that player's next action is not a strategic action, they discard all of their action cards, give you all of their trade goods, and show you all of their secret objectives."
     }
   ],
   "Action Cards.Extreme Duress.Name": [
@@ -1156,7 +1200,7 @@
   "Action Cards.Fighter Conscription.Description": [
     {
       "type": 0,
-      "value": "ACTION: Place 1 fighter from your reinforcements in each system that contains 1 or more of your space docks or units that have capacity; they cannot be placed in systems that contain other players' ships."
+      "value": "ACTION: Place 1 fighter from your reinforcements into each system that contains 1 or more of your space docks or ships that have a capacity value; they cannot be placed in systems that contain other players' ships."
     }
   ],
   "Action Cards.Fighter Conscription.Name": [
@@ -1321,6 +1365,20 @@
       "value": "Hack Election"
     }
   ],
+  "Action Cards.Hack Election.TE.Description": [
+    {
+      "type": 0,
+      "value": "After an agenda is revealed:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "During this agenda, you vote last."
+    }
+  ],
   "Action Cards.Harness Energy.Description": [
     {
       "type": 0,
@@ -1445,6 +1503,20 @@
       "value": "Insider Information"
     }
   ],
+  "Action Cards.Insider Information.TE.Description": [
+    {
+      "type": 0,
+      "value": "After an agenda is revealed:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Look at the top 3 cards of the agenda deck."
+    }
+  ],
   "Action Cards.Insubordination.Description": [
     {
       "type": 0,
@@ -1508,7 +1580,7 @@
     },
     {
       "type": 0,
-      "value": "Look at each of those player's hands of action cards, then choose and take 1 action card from each."
+      "value": "Look at each of those players' hands of action cards, then choose and take 1 action card from each."
     }
   ],
   "Action Cards.Lie in Wait.Name": [
@@ -1600,7 +1672,7 @@
     },
     {
       "type": 0,
-      "value": "You may perform an additional action this turn."
+      "value": "Perform an additional action."
     }
   ],
   "Action Cards.Master Plan.Name": [
@@ -1612,7 +1684,7 @@
   "Action Cards.Mercenary Contract.Description": [
     {
       "type": 0,
-      "value": "ACTION: Place (ground forces ???) on a non-home planet that contains no non-neutral units."
+      "value": "ACTION: Spend 2 trade goods to place 2 neutral infantry on any non-home planet that contains no units; if that planet was owned by another player, they return its planet card to the planet card deck."
     }
   ],
   "Action Cards.Mercenary Contract.Name": [
@@ -1720,7 +1792,7 @@
   "Action Cards.Pirate Fleet.Description": [
     {
       "type": 0,
-      "value": "ACTION: Spend 3 resources to place 1 neutral carrier, 1 neutral cruiser, 1 neutral destroyer, and 2 neutral fighters in a non-home system that contains no ships."
+      "value": "ACTION: Spend 3 resources to place 1 neutral carrier, 1 neutral cruiser, 1 neutral destroyer, and 2 neutral fighters in a non-home system that contains no non-neutral ships."
     }
   ],
   "Action Cards.Pirate Fleet.Name": [
@@ -1732,7 +1804,7 @@
   "Action Cards.Plagiarize.Description": [
     {
       "type": 0,
-      "value": "ACTION: Spend 5 influence and choose a non-faction technology owned by 1 of your neighbors; gain that technology."
+      "value": "ACTION: Spend 5 influence and choose a non-faction technology owned by one of your neighbors; gain that technology."
     }
   ],
   "Action Cards.Plagiarize.Name": [
@@ -2188,7 +2260,7 @@
     },
     {
       "type": 0,
-      "value": "During this movement, other players cannot use SPACE CANNON against your ships."
+      "value": "During the \"Movement\" step of this tactical action, other players cannot use SPACE CANNON against your ships."
     }
   ],
   "Action Cards.Solar Flare.Name": [
@@ -2392,7 +2464,7 @@
     },
     {
       "type": 0,
-      "value": "Apply +4 to the total PRODUCTION value of your units and reduce the combined cost of the produced units by 1."
+      "value": "Apply +4 to the total PRODUCTION value of those units and reduce the combined cost of the produced units by 1."
     }
   ],
   "Action Cards.War Machine.Name": [
@@ -3844,7 +3916,23 @@
   "Arborec.Promissories.Stymie.Omega.Description": [
     {
       "type": 0,
-      "value": "After another player moves ships into a system that contains 1 or more of your units: You may place 1 command token from that player's reinforcements in any non-home system. Then, return this card to the Arborec player."
+      "value": "After another player moves ships into a system that contains 1 or more of your units:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "You may place 1 command token from that player's reinforcements in any non-home system."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then, return this card to the Arborec player."
     }
   ],
   "Arborec.Promissories.Stymie.Omega.Title": [
@@ -4472,7 +4560,15 @@
     },
     {
       "type": 0,
-      "value": "You may reroll all of your opponent's dice. You may reroll any number of your dice."
+      "value": "You may reroll all of your opponent's dice."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "You may reroll any number of your dice."
     },
     {
       "type": 1,
@@ -5055,6 +5151,34 @@
       "value": "Mercenaries for Hire"
     }
   ],
+  "Components.Nanomachines.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Exhaust this card to place 1 PDS on a planet you control."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "ACTION: Exhaust this card to repair all of your damaged units."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "ACTION: Exhaust this card and discard 1 action card to draw 1 action card."
+    }
+  ],
+  "Components.Nanomachines.Title": [
+    {
+      "type": 0,
+      "value": "Nanomachines"
+    }
+  ],
   "Components.Orbital Drop.Description": [
     {
       "type": 0,
@@ -5414,7 +5538,7 @@
   "Council Keleres.Leaders.Harka Leeds.Description": [
     {
       "type": 0,
-      "value": "ACTION: Reveal cards from the action card deck until you reveal 3 action cards that have component actions. Draw those cards and shuffle the rest back into the action card deck"
+      "value": "ACTION: Reveal cards from the action card deck until you reveal 3 action cards that have component actions. Draw those cards and shuffle the rest back into the action card deck."
     },
     {
       "type": 1,
@@ -5440,7 +5564,15 @@
   "Council Keleres.Leaders.Kuuasi Aun Jalatai.Description": [
     {
       "type": 0,
-      "value": "At the start of a round of space combat in a system that contains a planet you control: Place your flagship and up to a total of 2 cruisers and/or destroyers from your reinforcements in the active system."
+      "value": "At the start of a round of space combat in a system that contains a planet you control:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Place your flagship and any combination of up to 2 cruisers or destroyers from your reinforcements into the active system."
     },
     {
       "type": 1,
@@ -5474,7 +5606,7 @@
     },
     {
       "type": 0,
-      "value": "You may cast up to 6 additional votes on this agenda. Predict aloud an outcome for this agenda. For each player that votes for another outcome, gain 1 trade good and 1 command token."
+      "value": "You may cast up to 6 additional votes on this agenda. Predict aloud an outcome of this agenda. For each player that abstains or votes for another outcome, gain 1 trade good and 1 command token."
     },
     {
       "type": 1,
@@ -5742,16 +5874,16 @@
   "Crimson Rebellion.Leaders.Ahk Siever.Unlock": [
     {
       "type": 0,
-      "value": "Resolve a combat with another player."
+      "value": "Place a breach token in a system that contains another player's unit."
     }
   ],
-  "Crimson Rebellion.Leaders.TODO: Fragment Reality.AbilityName": [
+  "Crimson Rebellion.Leaders.Homesick Phantom.AbilityName": [
     {
       "type": 0,
       "value": "FRAGMENT REALITY"
     }
   ],
-  "Crimson Rebellion.Leaders.TODO: Fragment Reality.Description": [
+  "Crimson Rebellion.Leaders.Homesick Phantom.Description": [
     {
       "type": 0,
       "value": "When you produce ships:"
@@ -5773,10 +5905,10 @@
       "value": "At the start of a space combat, you may purge this card to place all ships from this card into the active system."
     }
   ],
-  "Crimson Rebellion.Leaders.TODO: Fragment Reality.Name": [
+  "Crimson Rebellion.Leaders.Homesick Phantom.Name": [
     {
       "type": 0,
-      "value": "TODO: Fragment Reality"
+      "value": "Homesick Phantom"
     }
   ],
   "Crimson Rebellion.Name": [
@@ -5814,7 +5946,7 @@
   "Crimson Rebellion.Techs.Exile II.Description": [
     {
       "type": 0,
-      "value": "At the end of any player's combat in this unit's system or up to 2 systems away, you may place one active or inactive breach in the system."
+      "value": "At the end of any player's combat in this unit's system or up to 2 systems away, you may place 1 active or inactive breach in that system."
     }
   ],
   "Crimson Rebellion.Techs.Exile II.Title": [
@@ -6034,7 +6166,7 @@
   "Deepwrought Scholarate.Promissories.Share Knowledge.Description": [
     {
       "type": 0,
-      "value": "ACTION: Place this card faceup in your play area and gain 1 non-faction, non-unit upgrade technology that the Deepwrought player owns; place this technology on this card."
+      "value": "ACTION: Place this card faceup in your play area and gain 1 non-faction, non-unit upgrade technology that the Deepwrought player owns; place that technology on this card."
     },
     {
       "type": 1,
@@ -6096,7 +6228,7 @@
   "Deepwrought Scholarate.Units.Eanautic.Description": [
     {
       "type": 0,
-      "value": "When another player activates this system, if this unit is coexisting, you may move it and any infantry on its planet to a planet you control in your home system."
+      "value": "When another player activates this system, if this unit is coexisting, you may move it and any of your infantry on its planet to a planet you control in your home system."
     }
   ],
   "Deepwrought Scholarate.Units.Eanautic.Title": [
@@ -6314,7 +6446,7 @@
     },
     {
       "type": 0,
-      "value": "Each supernova that contains 1 or more of your units gains the PRODUCTION 5 ability as if it were 1 of your units."
+      "value": "Each supernova that contains 1 or more of your units gains the PRODUCTION 5 ability as if it were one of your units."
     }
   ],
   "Embers of Muaat.Techs.Magmus Reactor.Omega.Title": [
@@ -7790,7 +7922,7 @@
   "Firmament.Leaders.Captain Aroz.Unlock": [
     {
       "type": 0,
-      "value": "Have one plot card in play."
+      "value": "Have a plot card in play."
     }
   ],
   "Firmament.Leaders.Myru Vos.Description": [
@@ -8729,13 +8861,13 @@
       "value": "Dame Briar"
     }
   ],
-  "Last Bastion.Leaders.Entity 4X41A Apollo.AbilityName": [
+  "Last Bastion.Leaders.Lyra Keen.AbilityName": [
     {
       "type": 0,
-      "value": "INTELLIGENCE UNCHAINED"
+      "value": "ENTITY 4X41A \"APOLLO\""
     }
   ],
-  "Last Bastion.Leaders.Entity 4X41A Apollo.Description": [
+  "Last Bastion.Leaders.Lyra Keen.Description": [
     {
       "type": 0,
       "value": "When one of your galvanized units is destroyed:"
@@ -8749,7 +8881,7 @@
       "value": "You may purge this card to roll 1 die for each unit in its system that belongs to another player; if the result is equal to or greater than the galvanized unit's combat value, destroy that unit."
     }
   ],
-  "Last Bastion.Leaders.Entity 4X41A Apollo.Name": [
+  "Last Bastion.Leaders.Lyra Keen.Name": [
     {
       "type": 0,
       "value": "Entity 4X41A \"Apollo\""
@@ -8778,7 +8910,7 @@
   "Last Bastion.Leaders.Nip and Tuck.Unlock": [
     {
       "type": 0,
-      "value": "TODO: Add unlock criteria."
+      "value": "There are 3 galvanized units on the game board."
     }
   ],
   "Last Bastion.Name": [
@@ -8872,7 +9004,7 @@
   "Last Bastion.Units.A3 Valiance.Description": [
     {
       "type": 0,
-      "value": "When this unit is destroyed, if it was galvanized, galvanize up to 3 of your Infantry in its system."
+      "value": "When this unit is destroyed, if it was galvanized, galvanize up to 3 of your infantry in its system."
     }
   ],
   "Last Bastion.Units.A3 Valiance.Title": [
@@ -9490,7 +9622,7 @@
     },
     {
       "type": 0,
-      "value": "You may look at your neighbours' hand of promissory notes and the top and bottom card of the agenda deck."
+      "value": "You may look at your neighbors' hand of promissory notes and the top and bottom cards of the agenda deck."
     }
   ],
   "Naalu Collective.Leaders.M'aban.Omega.Name": [
@@ -9567,6 +9699,20 @@
     {
       "type": 0,
       "value": "Z'eu Ω"
+    }
+  ],
+  "Naalu Collective.Leaders.Z'eu.TE.Description": [
+    {
+      "type": 0,
+      "value": "After any player's command token is placed in a system:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "You may exhaust this card to return that token to that player's reinforcements."
     }
   ],
   "Naalu Collective.Name": [
@@ -9655,6 +9801,12 @@
     {
       "type": 0,
       "value": "Iconoclast Ω"
+    }
+  ],
+  "Naalu Collective.Units.Iconoclast.TE.Description": [
+    {
+      "type": 0,
+      "value": "DEPLOY: When another player gains a relic, place 1 mech on any planet you control."
     }
   ],
   "Naalu Collective.Units.Iconoclast.Title": [
@@ -12253,25 +12405,13 @@
       "value": "Data Skimmer"
     }
   ],
-  "Ral Nel Consortium.Leaders.Kan Kip Rel.Description": [
-    {
-      "type": 0,
-      "value": "ACTION: Exhaust this card to draw 2 action cards; give 1 of those cards to another player."
-    }
-  ],
-  "Ral Nel Consortium.Leaders.Kan Kip Rel.Name": [
-    {
-      "type": 0,
-      "value": "Kan Kip Rel"
-    }
-  ],
-  "Ral Nel Consortium.Leaders.TODO: Name.AbilityName": [
+  "Ral Nel Consortium.Leaders.Director Nel.AbilityName": [
     {
       "type": 0,
       "value": "SIGNAL INTRUSION"
     }
   ],
-  "Ral Nel Consortium.Leaders.TODO: Name.Description": [
+  "Ral Nel Consortium.Leaders.Director Nel.Description": [
     {
       "type": 0,
       "value": "After the last player passes:"
@@ -12285,10 +12425,22 @@
       "value": "You may choose to no longer be passed; if you do, gain 2 command tokens, draw 1 action card, and purge this card."
     }
   ],
-  "Ral Nel Consortium.Leaders.TODO: Name.Name": [
+  "Ral Nel Consortium.Leaders.Director Nel.Name": [
     {
       "type": 0,
-      "value": "TODO: Name"
+      "value": "Director Nel"
+    }
+  ],
+  "Ral Nel Consortium.Leaders.Kan Kip Rel.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Exhaust this card to draw 2 action cards; give 1 of those cards to another player."
+    }
+  ],
+  "Ral Nel Consortium.Leaders.Kan Kip Rel.Name": [
+    {
+      "type": 0,
+      "value": "Kan Kip Rel"
     }
   ],
   "Ral Nel Consortium.Leaders.Watchful Ojz.Description": [
@@ -12314,7 +12466,7 @@
   "Ral Nel Consortium.Leaders.Watchful Ojz.Unlock": [
     {
       "type": 0,
-      "value": "TODO: Add unlock criteria."
+      "value": "Be the last player to pass during the action phase."
     }
   ],
   "Ral Nel Consortium.Name": [
@@ -12520,7 +12672,7 @@
     },
     {
       "type": 0,
-      "value": "ACTION: Purge this card to gain trade goods equal to your printed commodity value +2."
+      "value": "ACTION: Gain trade goods equal to your commodity value, then purge this card."
     }
   ],
   "Relics.Dynamis Core.Title": [
@@ -12656,7 +12808,7 @@
   "Relics.Nano-Forge.Description": [
     {
       "type": 0,
-      "value": "ACTION: Attach this card to a non-legendary, non-home planet you control; its resource and influence values are increased by 2 and it is a legendary planet."
+      "value": "ACTION: Attach this card to a non-legendary, non-home planet you control; its resource and influence values are increased by 2 and it is a legendary planet. This action cannot be performed once attached."
     }
   ],
   "Relics.Nano-Forge.Title": [
@@ -13465,7 +13617,7 @@
       "value": "count"
     }
   ],
-  "Techs.4X4IC Helios VI II.Description": [
+  "Techs.4X4IC Helios V2.Description": [
     {
       "type": 0,
       "value": "This unit's PRODUCTION value is equal to 4 more than the resource value of this planet."
@@ -13487,10 +13639,10 @@
       "value": "Up to 3 fighters in this system do not count against your ships' capacity."
     }
   ],
-  "Techs.4X4IC Helios VI II.Title": [
+  "Techs.4X4IC Helios V2.Title": [
     {
       "type": 0,
-      "value": "4X4IC \"Helios\" VI II"
+      "value": "4X4IC \"Helios\" V2"
     }
   ],
   "Techs.AI Development Algorithm.Description": [
@@ -14203,12 +14355,6 @@
       "value": "Map String"
     }
   ],
-  "UJs3kj": [
-    {
-      "type": 0,
-      "value": "Claim Empty Planet"
-    }
-  ],
   "USnh0f": [
     {
       "type": 0,
@@ -14351,6 +14497,12 @@
     {
       "type": 0,
       "value": "Specialized Compounds"
+    }
+  ],
+  "Universities of Jol-Nar.Leaders.Agnlan Oln.Name": [
+    {
+      "type": 0,
+      "value": "Agnlan Oln"
     }
   ],
   "Universities of Jol-Nar.Leaders.Doctor Sucaban.Description": [
@@ -14973,6 +15125,28 @@
       "value": "Acquiescence Ω"
     }
   ],
+  "Winnu.Promissories.Acquiescence.TE.Description": [
+    {
+      "type": 0,
+      "value": "When the Winnu player resolves a strategic action:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "You do not have to spend a command token to resolve the secondary ability of that strategy card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then, return this card to the Winnu player."
+    }
+  ],
   "Winnu.Promissories.Acquiescence.Title": [
     {
       "type": 0,
@@ -15453,6 +15627,20 @@
       "value": "Brother Milor Ω"
     }
   ],
+  "Yin Brotherhood.Leaders.Brother Milor.TE.Description": [
+    {
+      "type": 0,
+      "value": "After a player's unit is destroyed during combat:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "You may exhaust this card to allow that player to place 2 fighters in the destroyed unit's system if it was a ship, or 2 infantry on its planet if it was a ground force."
+    }
+  ],
   "Yin Brotherhood.Leaders.Brother Omar.Description": [
     {
       "type": 0,
@@ -15484,7 +15672,7 @@
     },
     {
       "type": 0,
-      "value": "When you research a technology owned by another player, you may return 1 of your infantry to reinforcements to ignore its prerequisites."
+      "value": "When you research technology owned by another player, you may return 1 of your infantry to reinforcements to ignore all prerequisites."
     }
   ],
   "Yin Brotherhood.Leaders.Brother Omar.Omega.Name": [
@@ -15540,7 +15728,7 @@
   "Yin Brotherhood.Leaders.Dannel of the Tenth.Omega.Description": [
     {
       "type": 0,
-      "value": "ACTION: Commit up to 3 infantry from your reinforcements to any non-home planets and resolve invasions on those planets; players cannot use SPACE CANNON against those units."
+      "value": "ACTION: Commit up to 3 infantry from your reinforcements to any non-home planets and resolve ground combats on those planets; players cannot use SPACE CANNON against these units."
     },
     {
       "type": 1,
@@ -15555,6 +15743,12 @@
     {
       "type": 0,
       "value": "Dannel of the Tenth Ω"
+    }
+  ],
+  "Yin Brotherhood.Leaders.Dannel of the Tenth.TE.AbilityName": [
+    {
+      "type": 0,
+      "value": "QUANTUM DISSEMINATION"
     }
   ],
   "Yin Brotherhood.Name": [

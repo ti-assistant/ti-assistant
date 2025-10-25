@@ -16,7 +16,7 @@ export class UnpassHandler implements Handler {
       [`sequenceNum`]: "INCREMENT",
       [`factions.${this.data.event.factionId}.passed`]: "DELETE",
       [`state.activeplayer`]: this.data.event.factionId,
-      [`leaders.TODO: Name.state`]: "purged",
+      [`leaders.Director Nel.state`]: "purged",
     };
 
     return updates;
@@ -50,7 +50,7 @@ export class PassHandler implements Handler {
       [`sequenceNum`]: "INCREMENT",
       [`factions.${this.data.event.factionId}.passed`]: true,
       [`state.activeplayer`]: "None",
-      [`leaders.TODO: Name.state`]: "readied",
+      [`leaders.Director Nel.state`]: "readied",
     };
 
     return updates;

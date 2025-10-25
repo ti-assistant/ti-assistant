@@ -21,7 +21,7 @@ interface BaseNormalTech {
   id: TechId;
   locked?: boolean;
   name: string;
-  omegas?: OmegaTech[];
+  omegas?: Omega<BaseNormalTech>[];
   prereqs: TechType[];
   type: "RED" | "GREEN" | "BLUE" | "YELLOW";
 }
@@ -34,7 +34,7 @@ interface BaseUpgradeTech {
   id: TechId;
   locked?: boolean;
   name: string;
-  omegas?: OmegaTech[];
+  omegas?: Omega<BaseUpgradeTech>[];
   prereqs: TechType[];
   replaces?: TechId;
   stats: UnitStats;

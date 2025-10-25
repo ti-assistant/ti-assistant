@@ -15,7 +15,7 @@ export default function getCodexThreeLeaders(
           id: "Council Keleres.Leaders.Harka Leeds.Description",
           description: "Description for Keleres Hero: Harka Leeds",
           defaultMessage:
-            "ACTION: Reveal cards from the action card deck until you reveal 3 action cards that have component actions. Draw those cards and shuffle the rest back into the action card deck{br}Then, purge this card",
+            "ACTION: Reveal cards from the action card deck until you reveal 3 action cards that have component actions. Draw those cards and shuffle the rest back into the action card deck.{br}Then, purge this card",
         },
         { br: "\n\n" }
       ),
@@ -42,7 +42,7 @@ export default function getCodexThreeLeaders(
           id: "Council Keleres.Leaders.Kuuasi Aun Jalatai.Description",
           description: "Description for Keleres Hero: Kuuasi Aun Jalatai",
           defaultMessage:
-            "At the start of a round of space combat in a system that contains a planet you control: Place your flagship and up to a total of 2 cruisers and/or destroyers from your reinforcements in the active system.{br}Then, purge this card.",
+            "At the start of a round of space combat in a system that contains a planet you control:{br}Place your flagship and any combination of up to 2 cruisers or destroyers from your reinforcements into the active system.{br}Then, purge this card.",
         },
         { br: "\n\n" }
       ),
@@ -69,7 +69,7 @@ export default function getCodexThreeLeaders(
           id: "Council Keleres.Leaders.Odlynn Myrr.Description",
           description: "Description for Keleres Hero: Odlynn Myrr",
           defaultMessage:
-            "After an agenda is revealed:{br}You may cast up to 6 additional votes on this agenda. Predict aloud an outcome for this agenda. For each player that votes for another outcome, gain 1 trade good and 1 command token.{br}Then, purge this card.",
+            "After an agenda is revealed:{br}You may cast up to 6 additional votes on this agenda. Predict aloud an outcome of this agenda. For each player that abstains or votes for another outcome, gain 1 trade good and 1 command token.{br}Then, purge this card.",
         },
         { br: "\n\n" }
       ),

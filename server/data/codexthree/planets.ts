@@ -65,6 +65,14 @@ export default function getCodexThreePlanets(
       locked: true,
       id: "Custodia Vigilia",
       name: "Custodia Vigilia",
+      omegas: [
+        {
+          ability:
+            'While you control Mecatol Rex, it gains SPACE CANNON 5 and PRODUCTION 3.\n\nGain 2 command tokens when another player gains a victory point using the second clause of "Imperial"',
+          expansion: "THUNDERS EDGE",
+          influence: 2,
+        },
+      ],
       resources: 2,
       types: [],
     },
