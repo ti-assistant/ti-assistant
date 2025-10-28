@@ -1,8 +1,10 @@
+import FactionName from "../../../../../../../src/components/FactionName/FactionName";
 import LabeledDiv from "../../../../../../../src/components/LabeledDiv/LabeledDiv";
 import TechResearchSection from "../../../../../../../src/components/TechResearchSection/TechResearchSection";
 import { useCurrentTurn } from "../../../../../../../src/context/dataHooks";
 import {
   useFaction,
+  useFactionColor,
   useFactions,
 } from "../../../../../../../src/context/factionDataHooks";
 import { getResearchedTechs } from "../../../../../../../src/util/actionLog";
@@ -21,13 +23,13 @@ const Technology = {
 export default Technology;
 
 function Primary({ factionId }: { factionId: FactionId }) {
-  const faction = useFaction(factionId);
+  const factionColor = useFactionColor(factionId);
 
   return (
     <div style={{ width: "fit-content" }}>
       <LabeledDiv
-        label={getFactionName(faction)}
-        color={getFactionColor(faction)}
+        label={<FactionName factionId={factionId} />}
+        color={factionColor}
         blur
       >
         <TechResearchSection factionId={factionId} numTechs={2} hideWrapper />

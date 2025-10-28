@@ -1,7 +1,9 @@
 import { IntlShape } from "react-intl";
+import { getActionCards } from "../../server/data/actionCards";
 import { getAgendas } from "../../server/data/agendas";
 import { getAttachments } from "../../server/data/attachments";
 import { getComponents } from "../../server/data/components";
+import { getEvents } from "../../server/data/events";
 import { getFactions } from "../../server/data/factions";
 import { getLeaders } from "../../server/data/leaders";
 import { getObjectives } from "../../server/data/objectives";
@@ -10,6 +12,7 @@ import { getRelics } from "../../server/data/relics";
 import { getStrategyCards } from "../../server/data/strategyCards";
 import { getSystems } from "../../server/data/systems";
 import { getTechs } from "../../server/data/techs";
+import { buildMergeFunction } from "../util/expansions";
 import { objectEntries } from "../util/util";
 import {
   buildCompleteActionCards,
@@ -27,88 +30,6 @@ import {
   buildCompleteSystems,
   buildCompleteTechs,
 } from "./gameDataBuilder";
-import { getEvents } from "../../server/data/events";
-import { getActionCards } from "../../server/data/actionCards";
-import { buildMergeFunction } from "../util/expansions";
-
-// let getBaseAgendas: DataFunction<AgendaId, BaseAgenda> = () => {
-//   return {};
-// };
-// import("../../server/data/agendas").then((module) => {
-//   getBaseAgendas = module.getBaseAgendas;
-// });
-
-// let getBaseAttachments: DataFunction<AttachmentId, BaseAttachment> = () => {
-//   return {};
-// };
-// import("../../server/data/attachments").then((module) => {
-//   getBaseAttachments = module.getBaseAttachments;
-// });
-
-// let getBaseComponents: DataFunction<
-//   ComponentId,
-//   BaseComponent | BaseTechComponent
-// > = () => {
-//   return {};
-// };
-// import("../../server/data/components").then((module) => {
-//   getBaseComponents = module.getBaseComponents;
-// });
-
-// let getBaseFactions: DataFunction<FactionId, BaseFaction> = () => {
-//   return {};
-// };
-// import("../../server/data/factions").then((module) => {
-//   getBaseFactions = module.getBaseFactions;
-// });
-
-// let getBaseLeaders: DataFunction<LeaderId, BaseLeader> = () => {
-//   return {};
-// };
-// import("../../server/data/leaders").then((module) => {
-//   getBaseLeaders = module.getBaseLeaders;
-// });
-
-// let getBaseObjectives: DataFunction<ObjectiveId, BaseObjective> = () => {
-//   return {};
-// };
-// import("../../server/data/objectives").then((module) => {
-//   getBaseObjectives = module.getBaseObjectives;
-// });
-
-// let BASE_PLANETS: Partial<Record<PlanetId, BasePlanet>> = {};
-// import("../../server/data/planets").then((module) => {
-//   BASE_PLANETS = module.BASE_PLANETS;
-// });
-
-// let getBaseRelics: DataFunction<RelicId, BaseRelic> = () => {
-//   return {};
-// };
-// import("../../server/data/relics").then((module) => {
-//   getBaseRelics = module.getBaseRelics;
-// });
-
-// let getBaseStrategyCards: DataFunction<
-//   StrategyCardId,
-//   BaseStrategyCard
-// > = () => {
-//   return {};
-// };
-// import("../../server/data/strategyCards").then((module) => {
-//   getBaseStrategyCards = module.getBaseStrategyCards;
-// });
-
-// let BASE_SYSTEMS: Partial<Record<SystemId, BaseSystem>> = {};
-// import("../../server/data/systems").then((module) => {
-//   BASE_SYSTEMS = module.BASE_SYSTEMS;
-// });
-
-// let getBaseTechs: DataFunction<TechId, BaseTech> = () => {
-//   return {};
-// };
-// import("../../server/data/techs").then((module) => {
-//   getBaseTechs = module.getBaseTechs;
-// });
 
 export function buildBaseData(intl: IntlShape): BaseData {
   return {

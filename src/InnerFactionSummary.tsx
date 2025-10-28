@@ -150,7 +150,11 @@ export default function DummyFactionSummary() {
         </div>
         {/* <ObjectiveDots /> */}
       </div>
-      <PlanetSummary planets={planets} hasXxchaHero={false} />
+      <PlanetSummary
+        factionId="Vuil'raith Cabal"
+        planets={planets}
+        hasXxchaHero={false}
+      />
     </div>
   );
 }

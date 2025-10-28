@@ -27,6 +27,20 @@ export function useGameData() {
   });
 }
 
+export function useActiveFactionId() {
+  return useMemoizedGameDataValue<GameData, Optional<FactionId>>(
+    "",
+    undefined,
+    (data) => {
+      const activePlayer = data.state.activeplayer;
+      if (!activePlayer || activePlayer === "None") {
+        return undefined;
+      }
+      return activePlayer;
+    }
+  );
+}
+
 export function useActiveFaction() {
   return useMemoizedGameDataValue<GameData, Optional<Faction>>(
     "",
@@ -37,6 +51,24 @@ export function useActiveFaction() {
         return undefined;
       }
       return data.factions[activePlayer];
+    }
+  );
+}
+
+export function useOnDeckFactionId() {
+  return useMemoizedGameDataValue<GameData, Optional<FactionId>>(
+    "",
+    undefined,
+    (data) => {
+      const onDeckFaction = getOnDeckFaction(
+        data.state,
+        data.factions,
+        data.strategycards ?? {}
+      );
+      if (!onDeckFaction) {
+        return undefined;
+      }
+      return onDeckFaction.id;
     }
   );
 }

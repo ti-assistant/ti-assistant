@@ -1,21 +1,30 @@
-import { useOptions } from "../../context/dataHooks";
+import { CSSProperties } from "react";
+import { useGameId, useOptions, useViewOnly } from "../../context/dataHooks";
+import { useOceans } from "../../context/planetDataHooks";
+import { claimPlanetAsync, unclaimPlanetAsync } from "../../dynamic/api";
 import LegendaryPlanetIcon from "../LegendaryPlanetIcon/LegendaryPlanetIcon";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
 import styles from "./PlanetSummary.module.scss";
+import { getRadialPosition, rem } from "../../util/util";
 
 interface PlanetSummaryProps {
+  factionId: FactionId;
   planets: Planet[];
   hasXxchaHero: boolean;
 }
 
 // TODO: Figure out how to display oceans.
 export default function PlanetSummary({
+  factionId,
   planets,
   hasXxchaHero,
 }: PlanetSummaryProps) {
+  const gameId = useGameId();
+  const oceans = useOceans();
   const options = useOptions();
+  const viewOnly = useViewOnly();
 
   let numPlanets = 0;
   let resources = 0;
@@ -83,12 +92,52 @@ export default function PlanetSummary({
   return (
     <div className={styles.PlanetSummary}>
       <div className={styles.ResourceSection}>
+        <div className={styles.PlanetTotal}>
+          {factionId === "Deepwrought Scholarate"
+            ? oceans.map((ocean, index) => {
+                const position: CSSProperties = getRadialPosition(
+                  index,
+                  /* numOptions= */ 9,
+                  /* offset= */ -0.3,
+                  /* circleSize= */ 26,
+                  /* size= */ 4
+                );
+                return (
+                  <div
+                    key={ocean.id}
+                    title={ocean.name}
+                    className={`${styles.OceanElement} ${
+                      viewOnly ? styles.viewOnly : ""
+                    }`}
+                    style={{
+                      border: `1px solid ${ocean.owner ? "#eee" : "#444"}`,
+                      backgroundColor: ocean.owner
+                        ? "#eee"
+                        : "var(--background-color)",
+                      ...position,
+                    }}
+                    onClick={
+                      viewOnly
+                        ? undefined
+                        : () => {
+                            if (ocean.owner) {
+                              unclaimPlanetAsync(gameId, factionId, ocean.id);
+                            } else {
+                              claimPlanetAsync(gameId, factionId, ocean.id);
+                            }
+                          }
+                    }
+                  ></div>
+                );
+              })
+            : null}
+          {numPlanets}
+        </div>
         <ResourcesIcon
           resources={resources}
           influence={influence}
           height={50}
         />
-        <div className={styles.PlanetTotal}>{numPlanets}</div>
       </div>
       <div className={styles.CountSection}>
         <div className={styles.PlanetTypeGrid}>

@@ -1,5 +1,7 @@
+import { hasTech } from "../util/api/techs";
 import { convertToFactionColor, getFactionName } from "../util/factions";
 import { Optional } from "../util/types/types";
+import { objectKeys } from "../util/util";
 import { useGameDataValue, useMemoizedGameDataValue } from "./dataHooks";
 
 export type Factions = Partial<Record<FactionId, Faction>>;
@@ -15,11 +17,36 @@ export function useFaction(factionId: FactionId) {
   );
 }
 
+export function useFactionTechs(factionId: FactionId) {
+  return useMemoizedGameDataValue<GameData, TechId[]>("", [], (gameData) => {
+    const faction = gameData.factions[factionId];
+    const techs = gameData.techs ?? {};
+    if (!faction) {
+      return [];
+    }
+    return objectKeys(faction.techs).filter((techId) => {
+      const tech = techs[techId];
+      return hasTech(faction, tech);
+    });
+  });
+}
+
 export function useNumFactions() {
   return useMemoizedGameDataValue<Factions, number>(
     "factions",
     6,
     (factions) => Object.values(factions).length
+  );
+}
+
+export function usePassedFactionIds() {
+  return useMemoizedGameDataValue<Factions, FactionId[]>(
+    "factions",
+    [],
+    (factions) =>
+      Object.values(factions)
+        .filter((faction) => faction.passed)
+        .map((faction) => faction.id)
   );
 }
 

@@ -339,7 +339,8 @@ function MiddleColumn() {
                   if (
                     planet.home &&
                     planet.faction === factionId &&
-                    planet.owner !== factionId
+                    planet.owner !== factionId &&
+                    !planet.attributes.includes("space-station")
                   ) {
                     return false;
                   }

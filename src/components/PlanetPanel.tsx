@@ -73,7 +73,11 @@ function PlanetSection({
           width: "100%",
         }}
       >
-        <PlanetSummary planets={updatedPlanets} hasXxchaHero={hasXxchaHero} />
+        <PlanetSummary
+          factionId={factionId}
+          planets={updatedPlanets}
+          hasXxchaHero={hasXxchaHero}
+        />
       </div>
       <div
         className={styles.planetList}

@@ -10,3 +10,14 @@ export function useClaimedPlanetEvents(factionId: FactionId) {
     (log) => getClaimedPlanets(getCurrentTurnLogEntries(log), factionId)
   );
 }
+
+export function useOceans() {
+  return useMemoizedGameDataValue<Partial<Record<PlanetId, Planet>>, Planet[]>(
+    "planets",
+    [],
+    (planets) =>
+      Object.values(planets).filter((planet) =>
+        planet.attributes.includes("ocean")
+      )
+  );
+}

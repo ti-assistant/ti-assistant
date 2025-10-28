@@ -542,7 +542,7 @@ function PhaseSection({ factionId }: { factionId: FactionId }) {
             </div>
             {selectedAction ? (
               <div className="flexRow" style={{ width: "100%" }}>
-                <NextPlayerButtons />
+                <NextPlayerButtons activeFactionId={factionId} />
               </div>
             ) : null}
           </React.Fragment>
@@ -1775,7 +1775,7 @@ export default function FactionPage({ factionId }: { factionId: FactionId }) {
     <>
       <div style={{ width: "100%", margin: rem(4) }}>
         <FactionCard
-          faction={faction}
+          factionId={faction.id}
           hideIcon
           style={{ width: "100%" }}
           rightLabel={
