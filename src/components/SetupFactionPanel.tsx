@@ -305,7 +305,7 @@ function FactionPanelContent({
                         <UnitStats
                           stats={tech.stats}
                           type={tech.unitType}
-                          size={rem(82)}
+                          className={styles.UnitStats}
                         />
                       </>
                     ) : null}
@@ -460,7 +460,7 @@ function FactionPanelContent({
                 <UnitStats
                   stats={localUnit.stats}
                   type={localUnit.type}
-                  size={rem(82)}
+                  className={styles.UnitStats}
                 />
                 {unit.reverse ? (
                   <div
@@ -549,7 +549,7 @@ function FactionBreakthrough({ faction }: { faction: BaseFaction }) {
         <UnitStats
           stats={faction.breakthrough.reverse.stats}
           type={faction.breakthrough.reverse.type}
-          size={rem(82)}
+          className={styles.UnitStats}
         />
       ) : null}
       {faction.breakthrough.reverse ? (

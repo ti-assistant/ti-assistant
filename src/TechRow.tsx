@@ -1,6 +1,7 @@
 import { ReactNode, use } from "react";
 import { FormattedMessage } from "react-intl";
 import { SelectableRow } from "./SelectableRow";
+import styles from "./TechRow.module.scss";
 import FactionIcon from "./components/FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "./components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import FormattedDescription from "./components/FormattedDescription/FormattedDescription";
@@ -35,11 +36,9 @@ function InfoContent({ tech }: { tech: Tech }) {
         <div className="flexColumn" style={{ width: "100%" }}>
           {tech.abilities.length > 0 ? (
             <div
+              className={styles.UpgradeTechAbilities}
               style={{
-                display: "grid",
-                gridAutoFlow: "row",
                 whiteSpace: "nowrap",
-                gridTemplateColumns: "repeat(2, 1fr)",
                 fontFamily: "Slider",
                 paddingLeft: rem(8),
                 rowGap: rem(2),
@@ -51,7 +50,11 @@ function InfoContent({ tech }: { tech: Tech }) {
               })}
             </div>
           ) : null}
-          <UnitStats stats={tech.stats} type={tech.unitType} size={rem(192)} />
+          <UnitStats
+            stats={tech.stats}
+            type={tech.unitType}
+            className={styles.UnitStats}
+          />
         </div>
       </div>
     );

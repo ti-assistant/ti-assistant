@@ -292,6 +292,7 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
   const intl = useIntl();
 
   const includesPoK = (options.expansions ?? []).includes("POK");
+  const includesTE = options.expansions.includes("THUNDERS EDGE");
   const totalWar = (options.events ?? []).includes("Total War");
 
   const revealOrder: Partial<Record<ObjectiveId, number>> = {};
@@ -414,6 +415,8 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
   const styx = objectives["Styx"];
 
   const seed = (objectives ?? {})["Seed of an Empire"];
+
+  const zealousOrthodoxy = objectives["Zealous Orthodoxy"];
 
   const mutiny = (objectives ?? {})["Mutiny"];
   const mutinyDirection = mutiny?.points === 1 ? "[For]" : "[Against]";
@@ -1096,7 +1099,7 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
                   gameId={gameId}
                   objective={imperialRider}
                   orderedFactionIds={orderedFactionIds}
-                  numScorers={includesPoK ? 2 : 1}
+                  numScorers={includesPoK || includesTE ? 2 : 1}
                   info="Can be scored 2x due to The Codex"
                 />
                 <SimpleScorable
@@ -1105,7 +1108,7 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
                   orderedFactionIds={orderedFactionIds}
                 />
               </div>
-              {includesPoK ? (
+              {includesPoK || includesTE ? (
                 <div
                   className="flexRow"
                   style={{
@@ -1888,16 +1891,30 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
               })}
             </div>
           </LabeledDiv>
-          <div className="flexColumn" style={{ gridColumn: "1 / 3" }}>
+          <div
+            className="flexRow"
+            style={{
+              gridColumn: "1 / 3",
+              fontSize: zealousOrthodoxy ? rem(12) : undefined,
+            }}
+          >
             <SimpleScorable
               gameId={gameId}
               objective={imperialRider}
               orderedFactionIds={orderedFactionIds}
-              numScorers={includesPoK ? 2 : 1}
-              info="Can be scored 2x due to The Codex"
+              numScorers={includesTE ? 4 : includesPoK ? 2 : 1}
+              size={(imperialRider?.scorers?.length ?? 0) > 0 ? 32 : undefined}
+              info="Can be scored multiple times via The Codex, Ral Nel's Breakthrough, and Garbozia's ability."
             />
+            {zealousOrthodoxy ? (
+              <SimpleScorable
+                gameId={gameId}
+                objective={zealousOrthodoxy}
+                orderedFactionIds={orderedFactionIds}
+              />
+            ) : null}
           </div>
-          {includesPoK ? (
+          {includesPoK || includesTE ? (
             <LabeledDiv
               label={
                 <FormattedMessage
@@ -1906,7 +1923,11 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
                   defaultMessage="Relics"
                 />
               }
-              style={{ width: "100%", height: "100%", gridColumn: "3 / 6" }}
+              style={{
+                width: "100%",
+                height: "100%",
+                gridColumn: includesPoK ? "3 / 6" : "3 / 5",
+              }}
             >
               <div
                 className="flexRow"
@@ -1918,16 +1939,20 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
                   fontSize: rem(12),
                 }}
               >
-                <SimpleScorable
-                  gameId={gameId}
-                  objective={shardOfTheThrone}
-                  orderedFactionIds={orderedFactionIds}
-                />
-                <SimpleScorable
-                  gameId={gameId}
-                  objective={tomb}
-                  orderedFactionIds={orderedFactionIds}
-                />
+                {includesPoK ? (
+                  <>
+                    <SimpleScorable
+                      gameId={gameId}
+                      objective={shardOfTheThrone}
+                      orderedFactionIds={orderedFactionIds}
+                    />
+                    <SimpleScorable
+                      gameId={gameId}
+                      objective={tomb}
+                      orderedFactionIds={orderedFactionIds}
+                    />
+                  </>
+                ) : null}
                 <SimpleScorable
                   gameId={gameId}
                   objective={book}
@@ -1950,12 +1975,13 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
               />
             }
             style={{
-              gridColumn: includesPoK ? "6/8" : "3/8",
+              gridColumn: includesPoK ? "6/8" : includesTE ? "5/8" : "3/8",
               width: "100%",
               height: "100%",
             }}
             innerStyle={{
               flexDirection: "row",
+              fontSize: !includesPoK ? rem(12) : undefined,
             }}
           >
             <SimpleScorable
@@ -2063,31 +2089,6 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
                         ]
                       </Chip>
                     </div>
-                    // <button
-                    //   style={{ fontSize: rem(14) }}
-                    //   onClick={() => {
-                    //     if (!gameId) {
-                    //       return;
-                    //     }
-                    //     if (mutinyDirection === "[For]") {
-                    //       setObjectivePointsAsync(gameId, "Mutiny", -1);
-                    //     } else {
-                    //       setObjectivePointsAsync(gameId, "Mutiny", 1);
-                    //     }
-                    //   }}
-                    // >
-                    //   {mutinyDirection === "[For]"
-                    //     ? `[${intl.formatMessage({
-                    //         id: "ymJxS0",
-                    //         defaultMessage: "For",
-                    //         description: "Outcome choosing to pass a law.",
-                    //       })}]`
-                    //     : `[${intl.formatMessage({
-                    //         id: "SOC2Bh",
-                    //         defaultMessage: "Against",
-                    //         description: "Outcome choosing to vote down a law.",
-                    //       })}]`}
-                    // </button>
                   )}
                 </div>
                 <div
@@ -2277,12 +2278,14 @@ function SimpleScorable({
   orderedFactionIds,
   numScorers = 1,
   info,
+  size,
 }: {
   gameId: string;
   objective: Optional<Objective>;
   orderedFactionIds: FactionId[];
   numScorers?: number;
   info?: string;
+  size?: number;
 }) {
   const factions = useFactions();
   const viewOnly = useViewOnly();
@@ -2294,6 +2297,7 @@ function SimpleScorable({
   }
   const objectiveScorers = objective.scorers ?? [];
 
+  const possibleScorers = new Array(numScorers).fill(0);
   return (
     <>
       <div
@@ -2306,31 +2310,77 @@ function SimpleScorable({
         }}
       >
         {objective.name}
-        <div className="flexRow">
-          <FactionSelectRadialMenu
-            selectedFaction={objectiveScorers[0] as Optional<FactionId>}
-            factions={orderedFactionIds}
-            onSelect={(factionId) => {
-              if (objectiveScorers[0]) {
-                unscoreObjectiveAsync(
-                  gameId,
-                  objectiveScorers[0],
-                  objective.id
-                );
-              }
-              if (factionId) {
-                scoreObjectiveAsync(gameId, factionId, objective.id);
-              }
-            }}
-            borderColor={
-              objectiveScorers[0]
-                ? getFactionColor(factions[objectiveScorers[0]])
-                : undefined
+        <div
+          className="flexRow"
+          style={{ flexWrap: "wrap", gap: rem(4), justifyContent: "center" }}
+        >
+          {possibleScorers.map((_, index) => {
+            const prevScored =
+              index === 0 ? true : !!objectiveScorers[index - 1];
+            if (!prevScored) {
+              return null;
             }
-            viewOnly={viewOnly}
-          />
+            const showTag = index > 0;
+            const scorer = objectiveScorers[index];
+            return (
+              <FactionSelectRadialMenu
+                selectedFaction={scorer}
+                factions={orderedFactionIds}
+                onSelect={(factionId) => {
+                  if (scorer) {
+                    unscoreObjectiveAsync(gameId, scorer, objective.id);
+                  }
+                  if (factionId) {
+                    scoreObjectiveAsync(gameId, factionId, objective.id);
+                  }
+                }}
+                borderColor={
+                  scorer ? getFactionColor(factions[scorer]) : undefined
+                }
+                size={size}
+                tag={
+                  showTag ? (
+                    <div
+                      className="popupIcon hoverParent"
+                      style={{ marginLeft: 0, color: "#999" }}
+                      onClick={() =>
+                        openModal(
+                          <ModalContent
+                            title={
+                              <div style={{ fontSize: rem(40) }}>
+                                {objective.name}
+                              </div>
+                            }
+                          >
+                            <div
+                              className="flexRow myriadPro"
+                              style={{
+                                boxSizing: "border-box",
+                                maxWidth: rem(800),
+                                width: "100%",
+                                minWidth: rem(320),
+                                padding: rem(4),
+                                whiteSpace: "pre-line",
+                                textAlign: "center",
+                                fontSize: rem(32),
+                              }}
+                            >
+                              {info}
+                            </div>
+                          </ModalContent>
+                        )
+                      }
+                    >
+                      &#x24D8;
+                    </div>
+                  ) : undefined
+                }
+                viewOnly={viewOnly}
+              />
+            );
+          })}
           {/* TODO: Only show this if The Codex has been gained */}
-          {numScorers > 1 && objectiveScorers[0] ? (
+          {/* {numScorers > 1 && objectiveScorers[0] ? (
             <FactionSelectRadialMenu
               selectedFaction={objectiveScorers[1] as Optional<FactionId>}
               factions={orderedFactionIds}
@@ -2388,7 +2438,7 @@ function SimpleScorable({
               }
               viewOnly={viewOnly}
             />
-          ) : null}
+          ) : null} */}
         </div>
       </div>
     </>
