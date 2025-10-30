@@ -2324,6 +2324,7 @@ function SimpleScorable({
             const scorer = objectiveScorers[index];
             return (
               <FactionSelectRadialMenu
+                key={index}
                 selectedFaction={scorer}
                 factions={orderedFactionIds}
                 onSelect={(factionId) => {
