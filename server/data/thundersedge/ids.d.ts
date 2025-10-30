@@ -172,7 +172,7 @@ namespace ThundersEdge {
     // Synthetic
     | "The Triad";
 
-  type ObjectiveId = "Styx" | "The Silver Flame";
+  type ObjectiveId = "Styx" | "The Silver Flame" | "Zealous Orthodoxy";
 
   type RelicId =
     | "Heart of Ixth"

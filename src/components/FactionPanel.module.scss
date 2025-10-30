@@ -7,6 +7,10 @@
   align-items: flex-start;
 }
 
+.UnitStats {
+  font-size: 5.125rem;
+}
+
 @media only screen and (max-width: 56.25rem) {
   .factionInfoGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

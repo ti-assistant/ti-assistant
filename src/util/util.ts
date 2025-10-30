@@ -63,3 +63,24 @@ export function objectEntries<T extends string | number, U>(
 ): [T, U][] {
   return Object.entries(obj) as [T, U][];
 }
+
+export function getRadialPosition(
+  index: number,
+  numOptions: number,
+  offset: number,
+  circleSize: number,
+  size: number
+) {
+  const radians = ((Math.PI * 2) / numOptions) * index + offset;
+
+  const center = circleSize / 2;
+  const pos = {
+    top: rem(
+      Math.round(100 * (center - center * Math.cos(radians) - size / 2)) / 100
+    ),
+    left: rem(
+      Math.round(100 * (center - center * -Math.sin(radians) - size / 2)) / 100
+    ),
+  };
+  return pos;
+}

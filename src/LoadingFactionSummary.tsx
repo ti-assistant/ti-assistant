@@ -75,7 +75,11 @@ export default function LoadingFactionSummary() {
         </div>
         <ObjectiveDots />
       </div>
-      <PlanetSummary planets={updatedPlanets} hasXxchaHero={false} />
+      <PlanetSummary
+        factionId="Vuil'raith Cabal"
+        planets={updatedPlanets}
+        hasXxchaHero={false}
+      />
     </div>
   );
 }

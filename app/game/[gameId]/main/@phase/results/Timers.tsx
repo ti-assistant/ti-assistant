@@ -16,6 +16,7 @@ export default function Timers({
   timerData: Partial<Record<FactionId, TimerData>>;
 }) {
   const timers = useTimers();
+  console.log("Timers", timers);
   const factions = useFactions();
   return (
     <div
@@ -91,11 +92,15 @@ function isFactionId(val: string): val is FactionId {
     case "Barony of Letnev":
     case "Clan of Saar":
     case "Council Keleres":
+    case "Crimson Rebellion":
+    case "Deepwrought Scholarate":
     case "Embers of Muaat":
     case "Emirates of Hacan":
     case "Empyrean":
     case "Federation of Sol":
+    case "Firmament":
     case "Ghosts of Creuss":
+    case "Last Bastion":
     case "L1Z1X Mindnet":
     case "Mahact Gene-Sorcerers":
     case "Mentak Coalition":
@@ -103,6 +108,8 @@ function isFactionId(val: string): val is FactionId {
     case "Naaz-Rokha Alliance":
     case "Nekro Virus":
     case "Nomad":
+    case "Obsidian":
+    case "Ral Nel Consortium":
     case "Sardakk N'orr":
     case "Titans of Ul":
     case "Universities of Jol-Nar":
@@ -111,6 +118,7 @@ function isFactionId(val: string): val is FactionId {
     case "Xxcha Kingdom":
     case "Yin Brotherhood":
     case "Yssaril Tribes":
+
     case "Augurs of Ilyxum":
     case "Bentor Conglomerate":
     case "Berserkers of Kjalengard":

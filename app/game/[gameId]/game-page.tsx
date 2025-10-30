@@ -6,16 +6,16 @@ import { useEffect, useRef } from "react";
 import { FormattedMessage } from "react-intl";
 import BorderedDiv from "../../../src/components/BorderedDiv/BorderedDiv";
 import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
+import FactionName from "../../../src/components/FactionName/FactionName";
 import { useGameId, useViewOnly } from "../../../src/context/dataHooks";
-import { useFaction } from "../../../src/context/factionDataHooks";
+import { useFactionColor } from "../../../src/context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../src/context/gameDataHooks";
 import { usePhase } from "../../../src/context/stateDataHooks";
+import { enterPassword } from "../../../src/util/api/enterPassword";
 import { setGameId } from "../../../src/util/api/util";
 import { BLACK_BORDER_GLOW } from "../../../src/util/borderGlow";
-import { getFactionColor, getFactionName } from "../../../src/util/factions";
 import { rem } from "../../../src/util/util";
 import styles from "./game-page.module.scss";
-import { enterPassword } from "../../../src/util/api/enterPassword";
 
 export default function SelectFactionPage() {
   const router = useRouter();
@@ -121,17 +121,14 @@ export default function SelectFactionPage() {
 
 function FactionLink({ factionId }: { factionId: FactionId }) {
   const gameId = useGameId();
-  const faction = useFaction(factionId);
+  const factionColor = useFactionColor(factionId);
 
   return (
     <Link href={`/game/${gameId}/${factionId}`}>
       <BorderedDiv
-        color={getFactionColor(faction)}
+        color={factionColor}
         style={{
-          boxShadow:
-            getFactionColor(faction) === "Black"
-              ? BLACK_BORDER_GLOW
-              : undefined,
+          boxShadow: factionColor === "Black" ? BLACK_BORDER_GLOW : undefined,
         }}
       >
         <div
@@ -156,7 +153,7 @@ function FactionLink({ factionId }: { factionId: FactionId }) {
             zIndex: 0,
           }}
         >
-          {getFactionName(faction)}
+          {<FactionName factionId={factionId} />}
         </div>
       </BorderedDiv>
     </Link>

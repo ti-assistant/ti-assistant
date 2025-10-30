@@ -37,5 +37,24 @@ export default function getThundersEdgeObjectives(
       points: 1,
       type: "OTHER",
     },
+    "Zealous Orthodoxy": {
+      description: intl.formatMessage({
+        id: "Objectives.Zealous Orthodoxy.Description",
+        description: "Description for Objective: Zealous Orthodoxy",
+        defaultMessage:
+          "The first player to score 2 secret objectives gains 1 victory point.",
+      }),
+      expansion: "THUNDERS EDGE",
+      event: "Zealous Orthodoxy",
+      id: "Zealous Orthodoxy",
+      name: intl.formatMessage({
+        id: "Objectives.Zealous Orthodoxy.Title",
+        description: "Title of Objective: Zealous Orthodoxy",
+        defaultMessage: "Zealous Orthodoxy",
+      }),
+      phase: "STATUS",
+      points: 1,
+      type: "OTHER",
+    },
   };
 }

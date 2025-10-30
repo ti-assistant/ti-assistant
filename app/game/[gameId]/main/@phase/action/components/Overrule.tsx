@@ -1,10 +1,12 @@
-import { useState } from "react";
 import { Selector } from "../../../../../../../src/components/Selector/Selector";
 import {
+  useCurrentTurn,
+  useGameId,
   useStrategyCards,
   useViewOnly,
 } from "../../../../../../../src/context/dataHooks";
-import { Optional } from "../../../../../../../src/util/types/types";
+import { selectSubComponentAsync } from "../../../../../../../src/dynamic/api";
+import { getSelectedSubComponent } from "../../../../../../../src/util/actionLog";
 import { rem } from "../../../../../../../src/util/util";
 import Diplomacy from "../StrategicActions/Diplomacy";
 import Imperial from "../StrategicActions/Imperial";
@@ -13,11 +15,13 @@ import Technology from "../StrategicActions/Technology";
 import Warfare from "../StrategicActions/Warfare";
 
 export default function Overrule({ factionId }: { factionId: FactionId }) {
-  // TODO: Switch to a server item.
-  const [selectedCard, setSelectedCard] = useState<Optional<StrategyCardId>>();
-
-  const viewOnly = useViewOnly();
+  const currentTurn = useCurrentTurn();
+  const gameId = useGameId();
   const strategyCards = useStrategyCards();
+  const viewOnly = useViewOnly();
+
+  const selectedCard = getSelectedSubComponent(currentTurn);
+
   const validStrategyCards = Object.values(strategyCards).filter(
     (card) => !card.used
   );
@@ -48,7 +52,9 @@ export default function Overrule({ factionId }: { factionId: FactionId }) {
         hoverMenuLabel="Select Strategy Card"
         hoverMenuStyle={{ fontSize: rem(12) }}
         selectedItem={selectedCard}
-        toggleItem={(item, add) => setSelectedCard(add ? item : undefined)}
+        toggleItem={(item, add) =>
+          selectSubComponentAsync(gameId, add ? item : "None")
+        }
         viewOnly={viewOnly}
         options={validStrategyCards}
       />

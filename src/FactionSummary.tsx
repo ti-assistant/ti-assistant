@@ -8,23 +8,26 @@ import {
   useActionLog,
   useAttachments,
   useGameId,
-  useLeaders,
+  useLeader,
   usePlanets,
   useTechs,
   useViewOnly,
 } from "./context/dataHooks";
-import { useFaction } from "./context/factionDataHooks";
+import { useFactionTechs } from "./context/factionDataHooks";
+import { useFactionVPs } from "./context/gameDataHooks";
 import { useObjectives } from "./context/objectiveDataHooks";
 import { useGameState } from "./context/stateDataHooks";
-import { manualVPUpdateAsync } from "./dynamic/api";
+import {
+  manualVPUpdateAsync,
+  scoreObjectiveAsync,
+  unscoreObjectiveAsync,
+} from "./dynamic/api";
 import { getLogEntries } from "./util/actionLog";
-import { computeScoredVPs } from "./util/factions";
 import {
   applyAllPlanetAttachments,
   filterToClaimedPlanets,
 } from "./util/planets";
 import { objectEntries, rem } from "./util/util";
-import { isTechPurged } from "./util/api/techs";
 
 interface FactionSummaryProps {
   factionId: FactionId;
@@ -39,39 +42,10 @@ export function FactionSummary({
   factionId,
   options = {},
 }: FactionSummaryProps) {
-  const attachments = useAttachments();
-  const faction = useFaction(factionId);
+  const VPs = useFactionVPs(factionId);
   const gameId = useGameId();
-  const leaders = useLeaders();
-  const objectives = useObjectives();
-  const planets = usePlanets();
   const state = useGameState();
-  const techs = useTechs();
   const viewOnly = useViewOnly();
-
-  let updatedPlanets: Planet[] = [];
-  let VPs = 0;
-
-  if (!faction) {
-    return null;
-  }
-
-  const ownedTechs = objectEntries(faction.techs ?? {})
-    .filter(([techId, _]) => {
-      const tech = techs[techId];
-      if (!tech) {
-        return false;
-      }
-      return !isTechPurged(faction, tech);
-    })
-    .map(([techId, _]) => techId);
-
-  const ownedPlanets = factionId
-    ? filterToClaimedPlanets(planets ?? {}, factionId)
-    : [];
-  updatedPlanets = applyAllPlanetAttachments(ownedPlanets, attachments);
-
-  VPs = computeScoredVPs(factionId, objectives) + (faction.vps ?? 0);
 
   function manualVpAdjust(increase: boolean) {
     if (!gameId || !factionId) {
@@ -83,19 +57,9 @@ export function FactionSummary({
 
   const editable = state?.phase !== "END" && !viewOnly;
 
-  const hasXxchaHero =
-    factionId === "Xxcha Kingdom" &&
-    leaders["Xxekir Grom"]?.state === "readied";
-
   return (
     <div className={styles.FactionSummary}>
-      {options.hideTechs ? null : (
-        <TechSummary
-          factionId={factionId}
-          techs={techs}
-          ownedTechs={ownedTechs}
-        />
-      )}
+      {options.hideTechs ? null : <FactionTechSummary factionId={factionId} />}
       <div className={styles.VPGrid}>
         {options.showIcon ? (
           <div
@@ -166,7 +130,7 @@ export function FactionSummary({
         <ObjectiveDots factionId={factionId} />
       </div>
       {options.hidePlanets ? null : (
-        <PlanetSummary planets={updatedPlanets} hasXxchaHero={hasXxchaHero} />
+        <FactionPlanetSummary factionId={factionId} />
       )}
     </div>
   );
@@ -174,7 +138,9 @@ export function FactionSummary({
 
 function ObjectiveDots({ factionId }: { factionId: FactionId }) {
   const actionLog = useActionLog();
+  const gameId = useGameId();
   const objectives = useObjectives();
+  const viewOnly = useViewOnly();
 
   const revealOrder: Partial<Record<ObjectiveId, number>> = {};
   let order = 1;
@@ -211,6 +177,54 @@ function ObjectiveDots({ factionId }: { factionId: FactionId }) {
       }
     });
 
+  const stageIs = Object.values(objectives).filter(
+    (obj) => obj.type === "STAGE ONE" && obj.selected
+  );
+  stageIs.sort((a, b) => {
+    const aRevealOrder = revealOrder[a.id];
+    const bRevealOrder = revealOrder[b.id];
+    if (!aRevealOrder && !bRevealOrder) {
+      if (a.name > b.name) {
+        return 1;
+      }
+      return -1;
+    }
+    if (!aRevealOrder) {
+      return -1;
+    }
+    if (!bRevealOrder) {
+      return 1;
+    }
+    if (aRevealOrder > bRevealOrder) {
+      return 1;
+    }
+    return -1;
+  });
+
+  const stageIIs = Object.values(objectives).filter(
+    (obj) => obj.type === "STAGE TWO" && obj.selected
+  );
+  stageIIs.sort((a, b) => {
+    const aRevealOrder = revealOrder[a.id];
+    const bRevealOrder = revealOrder[b.id];
+    if (!aRevealOrder && !bRevealOrder) {
+      if (a.name > b.name) {
+        return 1;
+      }
+      return -1;
+    }
+    if (!aRevealOrder) {
+      return -1;
+    }
+    if (!bRevealOrder) {
+      return 1;
+    }
+    if (aRevealOrder > bRevealOrder) {
+      return 1;
+    }
+    return -1;
+  });
+
   const secrets = Object.values(objectives).filter(
     (obj) => obj.type === "SECRET" && (obj.scorers ?? []).includes(factionId)
   );
@@ -230,42 +244,64 @@ function ObjectiveDots({ factionId }: { factionId: FactionId }) {
         }}
       >
         <div className="flexRow" style={{ gap: rem(2), height: rem(4) }}>
-          {Array(stageOnes.revealed)
-            .fill(0)
-            .map((_, index) => {
-              const scored = index < stageOnes.scored;
-              return (
-                <div
-                  key={index}
-                  style={{
-                    width: rem(4),
-                    height: rem(4),
-                    border: "1px solid orange",
-                    borderRadius: "100%",
-                    backgroundColor: scored ? "orange" : undefined,
-                  }}
-                ></div>
-              );
-            })}
+          {stageIs.map((obj) => {
+            const scored = obj.scorers?.includes(factionId);
+            return (
+              <div
+                key={obj.id}
+                title={obj.name}
+                style={{
+                  width: rem(4),
+                  height: rem(4),
+                  border: "1px solid orange",
+                  borderRadius: "100%",
+                  backgroundColor: scored ? "orange" : undefined,
+                  cursor: viewOnly ? undefined : "pointer",
+                }}
+                onClick={
+                  viewOnly
+                    ? undefined
+                    : () => {
+                        if (scored) {
+                          unscoreObjectiveAsync(gameId, factionId, obj.id);
+                        } else {
+                          scoreObjectiveAsync(gameId, factionId, obj.id);
+                        }
+                      }
+                }
+              ></div>
+            );
+          })}
         </div>
         <div className="flexRow" style={{ gap: rem(2), height: rem(4) }}>
-          {Array(stageTwos.revealed)
-            .fill(0)
-            .map((_, index) => {
-              const scored = index < stageTwos.scored;
-              return (
-                <div
-                  key={index}
-                  style={{
-                    width: rem(4),
-                    height: rem(4),
-                    border: "1px solid royalblue",
-                    borderRadius: "100%",
-                    backgroundColor: scored ? "royalblue" : undefined,
-                  }}
-                ></div>
-              );
-            })}
+          {stageIIs.map((obj) => {
+            const scored = obj.scorers?.includes(factionId);
+            return (
+              <div
+                key={obj.id}
+                title={obj.name}
+                style={{
+                  width: rem(4),
+                  height: rem(4),
+                  border: "1px solid royalblue",
+                  borderRadius: "100%",
+                  backgroundColor: scored ? "royalblue" : undefined,
+                  cursor: viewOnly ? undefined : "pointer",
+                }}
+                onClick={
+                  viewOnly
+                    ? undefined
+                    : () => {
+                        if (scored) {
+                          unscoreObjectiveAsync(gameId, factionId, obj.id);
+                        } else {
+                          scoreObjectiveAsync(gameId, factionId, obj.id);
+                        }
+                      }
+                }
+              ></div>
+            );
+          })}
         </div>
       </div>
       <div
@@ -356,5 +392,40 @@ function ObjectiveDots({ factionId }: { factionId: FactionId }) {
         </div>
       </div>
     </div>
+  );
+}
+
+function FactionPlanetSummary({ factionId }: { factionId: FactionId }) {
+  const attachments = useAttachments();
+  const xxekirGrom = useLeader("Xxekir Grom");
+  const planets = usePlanets();
+
+  const ownedPlanets = factionId
+    ? filterToClaimedPlanets(planets, factionId)
+    : [];
+  const updatedPlanets = applyAllPlanetAttachments(ownedPlanets, attachments);
+
+  const hasXxchaHero =
+    factionId === "Xxcha Kingdom" && xxekirGrom?.state === "readied";
+
+  return (
+    <PlanetSummary
+      factionId={factionId}
+      planets={updatedPlanets}
+      hasXxchaHero={hasXxchaHero}
+    />
+  );
+}
+
+function FactionTechSummary({ factionId }: { factionId: FactionId }) {
+  const factionTechs = useFactionTechs(factionId);
+  const techs = useTechs();
+
+  return (
+    <TechSummary
+      factionId={factionId}
+      techs={techs}
+      ownedTechs={factionTechs}
+    />
   );
 }

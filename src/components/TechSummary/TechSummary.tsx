@@ -1,13 +1,13 @@
 import { useContext } from "react";
 import { FormattedMessage } from "react-intl";
 import { SettingsContext } from "../../context/contexts";
+import { useViewOnly } from "../../context/dataHooks";
 import { Techs } from "../../context/techDataHooks";
 import { rem } from "../../util/util";
 import OptionalElement from "../OptionalElement/OptionalElement";
 import TechIcon from "../TechIcon/TechIcon";
 import TechTree from "../TechTree/TechTree";
 import styles from "./TechSummary.module.scss";
-import { useViewOnly } from "../../context/dataHooks";
 
 export function FullTechSummary({
   techs,

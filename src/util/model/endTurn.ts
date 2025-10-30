@@ -60,7 +60,12 @@ export class EndTurnHandler implements Handler {
 
     switch (this.data.event.selectedAction) {
       case "Pass": {
-        updates[`factions.${this.data.event.prevFaction}.passed`] = true;
+        if (
+          this.data.event.prevFaction &&
+          this.data.event.prevFaction !== "None"
+        ) {
+          updates[`factions.${this.data.event.prevFaction}.passed`] = true;
+        }
         break;
       }
       case "Leadership":

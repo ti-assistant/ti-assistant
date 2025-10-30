@@ -1,9 +1,10 @@
 import dynamic from "next/dynamic";
 import { CSSProperties, PropsWithChildren, ReactNode } from "react";
 import { useOptions } from "../../context/dataHooks";
-import { getFactionColor, getFactionName } from "../../util/factions";
+import { useFactionColor } from "../../context/factionDataHooks";
 import { rem } from "../../util/util";
 import FactionIcon from "../FactionIcon/FactionIcon";
+import FactionName from "../FactionName/FactionName";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import styles from "./FactionCard.module.scss";
 
@@ -27,7 +28,7 @@ interface FactionCardOpts {
 }
 
 interface FactionCardProps {
-  faction: Faction;
+  factionId: FactionId;
   hideIcon?: boolean;
   rightLabel?: ReactNode;
   opts?: FactionCardOpts;
@@ -37,7 +38,7 @@ interface FactionCardProps {
 
 export default function FactionCard({
   children,
-  faction,
+  factionId,
   hideIcon = false,
   rightLabel,
   style = {},
@@ -45,17 +46,18 @@ export default function FactionCard({
   viewOnly,
 }: PropsWithChildren<FactionCardProps>) {
   const options = useOptions();
+  const factionColor = useFactionColor(factionId);
 
   return (
     <LabeledDiv
       label={
         <div className="flexRow" style={{ gap: 0 }}>
-          {getFactionName(faction)}
-          <FactionPanel factionId={faction.id} options={options} />
+          {<FactionName factionId={factionId} />}
+          <FactionPanel factionId={factionId} options={options} />
         </div>
       }
       rightLabel={rightLabel}
-      color={getFactionColor(faction)}
+      color={factionColor}
       innerStyle={{ justifyContent: "flex-start", ...style }}
     >
       <div
@@ -86,7 +88,7 @@ export default function FactionCard({
                 userSelect: "none",
               }}
             >
-              <FactionIcon factionId={faction.id} size="100%" />
+              <FactionIcon factionId={factionId} size="100%" />
             </div>
           </div>
         )}

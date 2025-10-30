@@ -14,6 +14,7 @@ import ExpeditionSelector from "../../../../../../src/components/Expedition/Expe
 import FactionCard from "../../../../../../src/components/FactionCard/FactionCard";
 import FactionCircle from "../../../../../../src/components/FactionCircle/FactionCircle";
 import FactionIcon from "../../../../../../src/components/FactionIcon/FactionIcon";
+import FactionName from "../../../../../../src/components/FactionName/FactionName";
 import FormattedDescription from "../../../../../../src/components/FormattedDescription/FormattedDescription";
 import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
 import LabeledLine from "../../../../../../src/components/LabeledLine/LabeledLine";
@@ -22,6 +23,10 @@ import PromissoryMenu from "../../../../../../src/components/PromissoryMenu/Prom
 import { TacticalAction } from "../../../../../../src/components/TacticalAction";
 import TechResearchSection from "../../../../../../src/components/TechResearchSection/TechResearchSection";
 import Toggle from "../../../../../../src/components/Toggle/Toggle";
+import {
+  useNewSpeaker,
+  useSelectedAction,
+} from "../../../../../../src/context/actionLogDataHooks";
 import {
   useActionCard,
   useCurrentTurn,
@@ -35,11 +40,13 @@ import {
 import {
   useAllSecondariesCompleted,
   useFaction,
+  useFactionColor,
   useFactions,
+  usePassedFactionIds,
 } from "../../../../../../src/context/factionDataHooks";
 import {
-  useActiveFaction,
-  useOnDeckFaction,
+  useActiveFactionId,
+  useOnDeckFactionId,
 } from "../../../../../../src/context/gameDataHooks";
 import { useObjectives } from "../../../../../../src/context/objectiveDataHooks";
 import { useGameState } from "../../../../../../src/context/stateDataHooks";
@@ -59,10 +66,7 @@ import {
   getClaimedPlanets,
   isPrimaryComplete,
 } from "../../../../../../src/util/actionLog";
-import {
-  getNewSpeakerEventFromLog,
-  getSelectedActionFromLog,
-} from "../../../../../../src/util/api/data";
+import { getSelectedActionFromLog } from "../../../../../../src/util/api/data";
 import {
   getFactionColor,
   getFactionName,
@@ -1040,21 +1044,15 @@ export function AdditionalActions({
   return null;
 }
 
-interface NextPlayerButtonsProps {
-  buttonStyle?: CSSProperties;
-}
-
 export function NextPlayerButtons({
-  buttonStyle = {},
-}: NextPlayerButtonsProps) {
-  const puppets = useActionCard("Puppets on a String");
+  activeFactionId,
+}: {
+  activeFactionId: FactionId;
+}) {
   const gameId = useGameId();
-  const currentTurn = useCurrentTurn();
-  const factions = useFactions();
-  const state = useGameState();
+  const newSpeaker = useNewSpeaker();
+  const selectedAction = useSelectedAction();
   const viewOnly = useViewOnly();
-  const selectedAction = getSelectedActionFromLog(currentTurn);
-  const newSpeaker = getNewSpeakerEventFromLog(currentTurn);
 
   if (!selectedAction) {
     return null;
@@ -1064,17 +1062,12 @@ export function NextPlayerButtons({
     return null;
   }
 
-  const passedFactions = Object.values(factions).filter(
-    (faction) => faction.passed && faction.id !== state.activeplayer
-  );
-
   return (
     <div className="flexColumn">
-      <div className="flexRow" style={{ gap: rem(16) }}>
+      <div className="flexRow" style={{ gap: rem(8) }}>
         <button
           onClick={() => endTurnAsync(gameId)}
           className={styles.EndTurnButton}
-          style={buttonStyle}
           disabled={viewOnly}
         >
           <FormattedMessage
@@ -1095,7 +1088,7 @@ export function NextPlayerButtons({
             <button
               onClick={() => endTurnAsync(gameId, /* samePlayer= */ true)}
               className={styles.EndTurnButton}
-              style={buttonStyle}
+              style={{ fontSize: rem(16) }}
               disabled={viewOnly}
             >
               <FormattedMessage
@@ -1107,45 +1100,60 @@ export function NextPlayerButtons({
           </React.Fragment>
         ) : null}
       </div>
-      {puppets && passedFactions.length > 0 ? (
-        <LabeledDiv
-          label={
-            <InfoRow infoTitle={puppets.name} infoContent={puppets.description}>
-              Puppets on a String
-            </InfoRow>
-          }
-          style={{ width: "min-content" }}
-          innerStyle={{
-            flexDirection: "row",
-            gap: rem(2),
-            justifyContent: "center",
-          }}
-        >
-          {passedFactions.map((faction) => {
-            return (
-              <button
-                key={faction.id}
-                style={{ borderRadius: "100%", padding: rem(2) }}
-                onClick={() => endTurnAsync(gameId, false, faction.id)}
-              >
-                <FactionIcon factionId={faction.id} size={20} />
-              </button>
-            );
-          })}
-        </LabeledDiv>
-      ) : null}
+      <PuppetsOnAString activeFactionId={activeFactionId} />
     </div>
   );
 }
 
+function PuppetsOnAString({ activeFactionId }: { activeFactionId: FactionId }) {
+  const gameId = useGameId();
+  const passedFactions = usePassedFactionIds().filter(
+    (factionId) => factionId !== activeFactionId
+  );
+  const puppets = useActionCard("Puppets on a String");
+
+  if (!puppets || passedFactions.length === 0) {
+    return null;
+  }
+  return (
+    <LabeledDiv
+      label={
+        <InfoRow infoTitle={puppets.name} infoContent={puppets.description}>
+          Puppets on a String
+        </InfoRow>
+      }
+      style={{ width: "min-content" }}
+      innerStyle={{
+        flexDirection: "row",
+        gap: rem(2),
+        justifyContent: "center",
+      }}
+    >
+      {passedFactions.map((factionId) => {
+        return (
+          <button
+            key={factionId}
+            style={{ borderRadius: "100%", padding: rem(2) }}
+            onClick={() =>
+              endTurnAsync(gameId, /* samePlayer= */ false, factionId)
+            }
+          >
+            <FactionIcon factionId={factionId} size={20} />
+          </button>
+        );
+      })}
+    </LabeledDiv>
+  );
+}
+
 interface ActivePlayerColumnProps {
-  activeFaction: Faction;
-  onDeckFaction: Optional<Faction>;
+  activeFactionId: FactionId;
+  onDeckFactionId: Optional<FactionId>;
 }
 
 function ActivePlayerColumn({
-  activeFaction,
-  onDeckFaction,
+  activeFactionId,
+  onDeckFactionId,
 }: ActivePlayerColumnProps) {
   const allSecondariesCompleted = useAllSecondariesCompleted();
   const gameId = useGameId();
@@ -1156,6 +1164,10 @@ function ActivePlayerColumn({
   const primaryRef = useRef<HTMLDivElement>(null);
   const secondaryRef = useRef<HTMLDivElement>(null);
 
+  const onDeckFactionColor = useFactionColor(
+    onDeckFactionId ?? "Vuil'raith Cabal"
+  );
+
   return (
     <div className={styles.ActivePlayerColumn}>
       <FormattedMessage
@@ -1165,17 +1177,17 @@ function ActivePlayerColumn({
       />
       <SwitchTransition>
         <CSSTransition
-          key={activeFaction.id}
+          key={activeFactionId}
           timeout={120}
           classNames="fade"
           nodeRef={primaryRef}
         >
           <FactionCard
-            faction={activeFaction}
+            factionId={activeFactionId}
             rightLabel={
               <FactionTimer
                 active={!primaryCompleted || allSecondariesCompleted}
-                factionId={activeFaction.id}
+                factionId={activeFactionId}
                 style={{ fontSize: rem(16), width: "auto" }}
               />
             }
@@ -1186,27 +1198,27 @@ function ActivePlayerColumn({
           >
             <div ref={primaryRef} className={styles.ActivePlayerSection}>
               <div className={styles.PromissoryMenu}>
-                <PromissoryMenu factionId={activeFaction.id} />
+                <PromissoryMenu factionId={activeFactionId} />
               </div>
-              <FactionActions factionId={activeFaction.id} />
+              <FactionActions factionId={activeFactionId} />
               <AdditionalActions
-                factionId={activeFaction.id}
+                factionId={activeFactionId}
                 style={{ minWidth: rem(350) }}
               />
-              <ExpeditionSelector factionId={activeFaction.id} />
+              <ExpeditionSelector factionId={activeFactionId} />
             </div>
           </FactionCard>
         </CSSTransition>
       </SwitchTransition>
-      <NextPlayerButtons />
-      {onDeckFaction ? (
+      <NextPlayerButtons activeFactionId={activeFactionId} />
+      {onDeckFactionId ? (
         <div
           className="flexRow"
           style={{ width: "100%", justifyContent: "center" }}
         >
           <SwitchTransition>
             <CSSTransition
-              key={onDeckFaction.id}
+              key={onDeckFactionId}
               timeout={120}
               classNames="fade"
               nodeRef={secondaryRef}
@@ -1222,14 +1234,14 @@ function ActivePlayerColumn({
                 rightLabel={
                   <StaticFactionTimer
                     active={false}
-                    factionId={onDeckFaction.id}
+                    factionId={onDeckFactionId}
                     style={{
                       fontSize: rem(16),
                     }}
                     width={84}
                   />
                 }
-                color={getFactionColor(onDeckFaction)}
+                color={onDeckFactionColor}
                 style={{
                   width: "fit-content",
                   minWidth: rem(200),
@@ -1246,7 +1258,7 @@ function ActivePlayerColumn({
                     fontSize: rem(24),
                   }}
                 >
-                  {getFactionName(onDeckFaction)}
+                  {<FactionName factionId={onDeckFactionId} />}
                   <div
                     className="flexRow"
                     style={{
@@ -1258,7 +1270,7 @@ function ActivePlayerColumn({
                       userSelect: "none",
                     }}
                   >
-                    <FactionIcon factionId={onDeckFaction.id} size="100%" />
+                    <FactionIcon factionId={onDeckFactionId} size="100%" />
                   </div>
                 </div>
               </LabeledDiv>
@@ -1267,7 +1279,7 @@ function ActivePlayerColumn({
         </div>
       ) : null}
       <LockedButtons
-        unlocked={!activeFaction}
+        unlocked={!activeFactionId}
         style={{ marginTop: rem(12) }}
         buttons={[
           {
@@ -1346,18 +1358,18 @@ export default function ActionPhase() {
   const intl = useIntl();
   const viewOnly = useViewOnly();
 
-  const activeFaction = useActiveFaction();
-  const onDeckFaction = useOnDeckFaction();
+  const activeFactionId = useActiveFactionId();
+  const onDeckFactionId = useOnDeckFactionId();
 
   return (
     <>
-      <StrategyCardColumn activeFactionId={activeFaction?.id} />
+      <StrategyCardColumn activeFactionId={activeFactionId} />
       <div className="flexColumn" style={{ gap: rem(16) }}>
         <div className="flexColumn" style={{ width: "100%" }}>
-          {activeFaction ? (
+          {activeFactionId ? (
             <ActivePlayerColumn
-              activeFaction={activeFaction}
-              onDeckFaction={onDeckFaction}
+              activeFactionId={activeFactionId}
+              onDeckFactionId={onDeckFactionId}
             />
           ) : (
             <div

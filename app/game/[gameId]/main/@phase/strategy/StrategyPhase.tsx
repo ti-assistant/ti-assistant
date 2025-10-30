@@ -812,7 +812,7 @@ export default function StrategyPhase() {
                 defaultMessage="Active Player"
               />
               <FactionCard
-                faction={activeFaction}
+                factionId={activeFaction.id}
                 style={{ height: rem(80) }}
                 opts={{
                   iconSize: rem(60),
@@ -855,7 +855,7 @@ export default function StrategyPhase() {
                 defaultMessage="On Deck"
               />
               <FactionCard
-                faction={onDeckFaction}
+                factionId={onDeckFaction.id}
                 style={{ height: rem(64) }}
                 opts={{
                   iconSize: rem(44),

@@ -11,9 +11,14 @@ import FactionIcon from "./FactionIcon/FactionIcon";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 import TimerDisplay from "./TimerDisplay/TimerDisplay";
+import ExpeditionIcon from "./Expedition/ExpeditionIcon";
 
 function ColoredFactionName({ factionId }: { factionId: FactionId }) {
-  const faction = useFaction(factionId);
+  let faction = useFaction(factionId);
+  const altFaction = useFaction("Obsidian");
+  if (!faction && factionId === "Firmament") {
+    faction = altFaction;
+  }
   const color = getFactionColor(faction);
 
   return (
@@ -223,7 +228,7 @@ export function LogEntryElement({
         </div>
       );
     }
-    case "SELECT_SUB_COMPONENT":
+    case "SELECT_SUB_COMPONENT": {
       return (
         <div
           style={{
@@ -235,6 +240,7 @@ export function LogEntryElement({
           Used Ssruu as {logEntry.data.event.subComponent}
         </div>
       );
+    }
     case "SELECT_FACTION": {
       return (
         <div
@@ -677,8 +683,7 @@ export function LogEntryElement({
       // TODO: See if anything needs to be added.
       return null;
     }
-
-    case "UPDATE_PLANET_STATE":
+    case "UPDATE_PLANET_STATE": {
       return (
         <div
           className="flexRow"
@@ -690,6 +695,26 @@ export function LogEntryElement({
           Purged Planet: {logEntry.data.event.planet}
         </div>
       );
+    }
+    case "COMMIT_TO_EXPEDITION": {
+      if (!logEntry.data.event.factionId) {
+        return null;
+      }
+      return (
+        <div
+          className="flexRow"
+          style={{
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
+            fontFamily: "Myriad Pro",
+          }}
+        >
+          <ColoredFactionName factionId={logEntry.data.event.factionId} />
+          committed to the Expedition
+          <ExpeditionIcon expedition={logEntry.data.event.expedition} />
+        </div>
+      );
+    }
     case "END_TURN":
       return null;
   }

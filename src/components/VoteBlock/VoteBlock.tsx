@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { CSSProperties, useState } from "react";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 import {
@@ -14,9 +13,10 @@ import {
   useTechs,
   useViewOnly,
 } from "../../context/dataHooks";
-import { useObjectives } from "../../context/objectiveDataHooks";
 import { useFactions } from "../../context/factionDataHooks";
+import { useObjectives } from "../../context/objectiveDataHooks";
 import { useGameState } from "../../context/stateDataHooks";
+import { Techs } from "../../context/techDataHooks";
 import {
   castVotesAsync,
   playActionCardAsync,
@@ -27,6 +27,8 @@ import {
   unplayRiderAsync,
 } from "../../dynamic/api";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
+import InfluenceSVG from "../../icons/planets/Influence";
+import TradeGoodSVG from "../../icons/ui/TradeGood";
 import {
   getActionCardTargets,
   getAllVotes,
@@ -54,8 +56,6 @@ import NumberInput from "../NumberInput/NumberInput";
 import { Selector } from "../Selector/Selector";
 import Toggle from "../Toggle/Toggle";
 import styles from "./VoteBlock.module.scss";
-import InfluenceSVG from "../../icons/planets/Influence";
-import { Techs } from "../../context/techDataHooks";
 
 // Checks whether or not a faction can use Blood Pact.
 function canUseBloodPact(currentTurn: ActionLog, factionId: FactionId) {
@@ -431,6 +431,10 @@ export function computeRemainingVotes(
   let remainingVotes = 0;
   const hasXxchaHero = leaders["Xxekir Grom"]?.state === "readied";
   for (const planet of orderedPlanets) {
+    // Space Stations do not count for voting.
+    if (planet.attributes.includes("space-station")) {
+      continue;
+    }
     let planetInfluence = planet.influence;
     if (factionId === "Xxcha Kingdom") {
       if (options.expansions.includes("CODEX THREE") && hasXxchaHero) {
@@ -1173,12 +1177,7 @@ function AvailableVotes({ factionId }: { factionId: FactionId }) {
                     position: "relative",
                   }}
                 >
-                  <Image
-                    src="/images/trade_good.png"
-                    alt="TGs"
-                    fill
-                    style={{ objectFit: "contain" }}
-                  />
+                  <TradeGoodSVG />
                 </div>
               </div>
             </div>

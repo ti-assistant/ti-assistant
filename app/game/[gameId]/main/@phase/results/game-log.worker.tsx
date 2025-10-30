@@ -17,6 +17,7 @@ import {
   buildCompletePlanets,
   buildCompleteTechs,
 } from "../../../../../../src/data/gameDataBuilder";
+import { connectFirestoreEmulator } from "firebase/firestore";
 
 type WithKey<T> = T & { key: number };
 

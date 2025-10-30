@@ -237,7 +237,11 @@ function FactionTech({
               })}
             </div>
           ) : null}
-          <UnitStats stats={tech.stats} type={tech.unitType} size={rem(82)} />
+          <UnitStats
+            stats={tech.stats}
+            type={tech.unitType}
+            className={styles.UnitStats}
+          />
           {!viewOnly ? (
             <div className="flexRow" style={{ width: "100%" }}>
               <button
@@ -329,7 +333,11 @@ function FactionUnit({
           })}
         </div>
       ) : null}
-      <UnitStats stats={localUnit.stats} type={localUnit.type} size={rem(82)} />
+      <UnitStats
+        stats={localUnit.stats}
+        type={localUnit.type}
+        className={styles.UnitStats}
+      />
       {!viewOnly && upgradeTech ? (
         <div className="flexRow" style={{ width: "100%" }}>
           <button
@@ -951,7 +959,7 @@ function FactionBreakthrough({ faction }: { faction: Faction }) {
         <UnitStats
           stats={faction.breakthrough.reverse.stats}
           type={faction.breakthrough.reverse.type}
-          size={rem(82)}
+          className={styles.UnitStats}
         />
       ) : null}
       {faction.breakthrough.reverse ? (

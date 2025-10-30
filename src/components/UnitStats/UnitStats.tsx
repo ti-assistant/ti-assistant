@@ -6,16 +6,16 @@ import UnitIcon from "../Units/Icons";
 import styles from "./UnitStats.module.scss";
 
 export default function UnitStats({
-  size,
+  className,
   stats,
   type,
 }: {
-  size: string;
+  className?: string;
   stats: UnitStats;
   type: UnitType;
 }) {
   return (
-    <div className="flexRow" style={{ width: "100%", fontSize: size }}>
+    <div className={`${className ?? ""} flexRow`} style={{ width: "100%" }}>
       <div className={styles.UnitStatsGrid}>
         <UnitStat
           name={
