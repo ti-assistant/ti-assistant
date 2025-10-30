@@ -180,16 +180,50 @@ function ObjectiveDots({ factionId }: { factionId: FactionId }) {
   const stageIs = Object.values(objectives).filter(
     (obj) => obj.type === "STAGE ONE" && obj.selected
   );
-  stageIs.sort((a, b) =>
-    (revealOrder[a.id] ?? 0) > (revealOrder[b.id] ?? 0) ? 1 : -1
-  );
+  stageIs.sort((a, b) => {
+    const aRevealOrder = revealOrder[a.id];
+    const bRevealOrder = revealOrder[b.id];
+    if (!aRevealOrder && !bRevealOrder) {
+      if (a.name > b.name) {
+        return 1;
+      }
+      return -1;
+    }
+    if (!aRevealOrder) {
+      return -1;
+    }
+    if (!bRevealOrder) {
+      return 1;
+    }
+    if (aRevealOrder > bRevealOrder) {
+      return 1;
+    }
+    return -1;
+  });
 
   const stageIIs = Object.values(objectives).filter(
     (obj) => obj.type === "STAGE TWO" && obj.selected
   );
-  stageIIs.sort((a, b) =>
-    (revealOrder[a.id] ?? 0) > (revealOrder[b.id] ?? 0) ? 1 : -1
-  );
+  stageIIs.sort((a, b) => {
+    const aRevealOrder = revealOrder[a.id];
+    const bRevealOrder = revealOrder[b.id];
+    if (!aRevealOrder && !bRevealOrder) {
+      if (a.name > b.name) {
+        return 1;
+      }
+      return -1;
+    }
+    if (!aRevealOrder) {
+      return -1;
+    }
+    if (!bRevealOrder) {
+      return 1;
+    }
+    if (aRevealOrder > bRevealOrder) {
+      return 1;
+    }
+    return -1;
+  });
 
   const secrets = Object.values(objectives).filter(
     (obj) => obj.type === "SECRET" && (obj.scorers ?? []).includes(factionId)

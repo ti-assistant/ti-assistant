@@ -650,21 +650,20 @@ function updateInTransaction(
       data.event.name === "Puppets of the Blade"
     ) {
       timerUpdates["Obsidian"] = timers["Firmament"] ?? 0;
+      timerUpdates["Obsidian-secondary"] = timers["Firmament-secondary"] ?? 0;
       timerUpdates["Firmament"] = "DELETE";
+      timerUpdates["Firmament-secondary"] = "DELETE";
     }
     if (
       data.action === "UNPLAY_COMPONENT" &&
       data.event.name === "Puppets of the Blade"
     ) {
       timerUpdates["Firmament"] = timers["Obsidian"] ?? 0;
+      timerUpdates["Firmament-secondary"] = timers["Obsidian-secondary"] ?? 0;
       timerUpdates["Obsidian"] = "DELETE";
+      timerUpdates["Obsidian-secondary"] = "DELETE";
     }
-    t.update(
-      timerRef,
-      convertToServerUpdates({
-        paused: "DELETE",
-      })
-    );
+    t.update(timerRef, convertToServerUpdates(timerUpdates));
 
     return false;
   });

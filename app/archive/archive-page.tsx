@@ -11,10 +11,10 @@ import {
 import { FormattedMessage, useIntl } from "react-intl";
 import FactionIcon from "../../src/components/FactionIcon/FactionIcon";
 import LabeledDiv from "../../src/components/LabeledDiv/LabeledDiv";
+import MultiStateToggle from "../../src/components/MultiStateToggle/MultiStateToggle";
 import Sidebars from "../../src/components/Sidebars/Sidebars";
 import { Strings } from "../../src/components/strings";
 import TechSkipIcon from "../../src/components/TechSkipIcon/TechSkipIcon";
-import ThreeWayToggle from "../../src/components/ThreeWayToggle/ThreeWayToggle";
 import Toggle from "../../src/components/Toggle/Toggle";
 import MapMenuSVG from "../../src/icons/ui/MapMenu";
 import ObjectivesMenuSVG from "../../src/icons/ui/ObjectivesMenu";
@@ -24,7 +24,6 @@ import { Optional } from "../../src/util/types/types";
 import { objectEntries, rem } from "../../src/util/util";
 import { ProcessedGame } from "../stats/processor";
 import styles from "./game-page.module.scss";
-import MultiStateToggle from "../../src/components/MultiStateToggle/MultiStateToggle";
 
 function FilterButton<T extends string | number>({
   filter,

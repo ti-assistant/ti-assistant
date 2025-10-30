@@ -1,15 +1,11 @@
+import crypto from "crypto";
 import {
   DocumentData,
   DocumentReference,
   Transaction,
   getFirestore,
 } from "firebase-admin/firestore";
-
-import crypto from "crypto";
-import {
-  PHASE_BOUNDARIES,
-  TURN_BOUNDARIES,
-} from "../../src/util/api/actionLog";
+import { TURN_BOUNDARIES } from "../../src/util/api/actionLog";
 import { getSessionIdFromCookie } from "../../src/util/server";
 import { ActionLog, Optional } from "../../src/util/types/types";
 import { BASE_OPTIONS } from "../data/options";
@@ -40,28 +36,9 @@ export async function getGameData(gameId: string): Promise<StoredGameData> {
 
   const gameData = game.data() as StoredGameData;
 
-  const phaseOrTurnBoundaries =
-    gameData.state.phase === "AGENDA" || gameData.state.phase === "STRATEGY"
-      ? PHASE_BOUNDARIES
-      : TURN_BOUNDARIES;
-
-  const phaseBoundary = await gameRef
-    .collection("actionLog")
-    .orderBy("timestampMillis", "desc")
-    .where("data.action", "in", phaseOrTurnBoundaries)
-    .limit(1)
-    .get();
-
-  let firstTimestamp = 0;
-  phaseBoundary.forEach((logEntry) => {
-    firstTimestamp = (logEntry.data() as ActionLogEntry<GameUpdateData>)
-      .timestampMillis;
-  });
-
   const actionLog = await gameRef
     .collection("actionLog")
     .orderBy("timestampMillis", "desc")
-    .where("timestampMillis", ">=", firstTimestamp)
     .get();
 
   const actionLogEntries: ActionLog = [];
@@ -101,28 +78,9 @@ export async function getArchivedGameData(
 
   const gameData = game.data() as StoredGameData;
 
-  const phaseOrTurnBoundaries =
-    gameData.state.phase === "AGENDA" || gameData.state.phase === "STRATEGY"
-      ? PHASE_BOUNDARIES
-      : TURN_BOUNDARIES;
-
-  const phaseBoundary = await gameRef
-    .collection("actionLog")
-    .orderBy("timestampMillis", "desc")
-    .where("data.action", "in", phaseOrTurnBoundaries)
-    .limit(1)
-    .get();
-
-  let firstTimestamp = 0;
-  phaseBoundary.forEach((logEntry) => {
-    firstTimestamp = (logEntry.data() as ActionLogEntry<GameUpdateData>)
-      .timestampMillis;
-  });
-
   const actionLog = await gameRef
     .collection("actionLog")
     .orderBy("timestampMillis", "desc")
-    .where("timestampMillis", ">=", firstTimestamp)
     .get();
 
   const actionLogEntries: ActionLog = [];
