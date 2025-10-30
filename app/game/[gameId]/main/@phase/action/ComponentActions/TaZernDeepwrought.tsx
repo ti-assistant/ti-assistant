@@ -50,8 +50,9 @@ export default function TaZernDeepwrought({
       if (!purgedTech) {
         return false;
       }
-      const purgedTechObj = techs[purgedTech];
-      return hasTech(faction, purgedTechObj);
+
+      const factionTech = faction.techs[purgedTech];
+      return factionTech && factionTech.state !== "purged";
     })
     .sort((a, b) => {
       if (a.order === activeFaction.order) {
@@ -125,6 +126,7 @@ export default function TaZernDeepwrought({
             defaultMessage: "Purge Tech",
           })}
           selectTech={(tech) => purgeTechAsync(gameId, tech.id)}
+          ignorePrereqs
         />
       )}
     </div>

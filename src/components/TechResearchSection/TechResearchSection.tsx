@@ -32,6 +32,9 @@ function getResearchableTechs(
     if (hasTech(faction, tech)) {
       return false;
     }
+    if (tech.state === "purged") {
+      return false;
+    }
     const factionTech = (faction.techs ?? {})[tech.id];
     if (factionTech && factionTech.state === "purged") {
       return false;
