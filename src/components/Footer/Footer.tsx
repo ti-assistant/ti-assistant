@@ -571,10 +571,7 @@ export default function Footer() {
             style={{ width: "fit-content" }}
           >
             {selectedFaction ? (
-              <FactionSummary
-                factionId={selectedFaction}
-                options={{ showIcon: true }}
-              />
+              <FactionSummary factionId={selectedFaction} />
             ) : null}
           </LabeledDiv>
         </LabeledDiv>

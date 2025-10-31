@@ -1452,7 +1452,7 @@ function FactionContent({ factionId }: { factionId: FactionId }) {
 
   return (
     <div className="flexColumn" style={{ gap: rem(8), width: "100%" }}>
-      <FactionSummary factionId={factionId} options={{ showIcon: true }} />
+      <FactionSummary factionId={factionId} />
       <div
         style={{
           width: "100%",

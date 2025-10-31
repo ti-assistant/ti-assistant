@@ -31,17 +31,9 @@ import { objectEntries, rem } from "./util/util";
 
 interface FactionSummaryProps {
   factionId: FactionId;
-  options?: {
-    hidePlanets?: boolean;
-    hideTechs?: boolean;
-    showIcon?: boolean;
-  };
 }
 
-export function FactionSummary({
-  factionId,
-  options = {},
-}: FactionSummaryProps) {
+export function FactionSummary({ factionId }: FactionSummaryProps) {
   const VPs = useFactionVPs(factionId);
   const gameId = useGameId();
   const state = useGameState();
@@ -59,35 +51,33 @@ export function FactionSummary({
 
   return (
     <div className={styles.FactionSummary}>
-      {options.hideTechs ? null : <FactionTechSummary factionId={factionId} />}
+      <FactionTechSummary factionId={factionId} />
       <div className={styles.VPGrid}>
-        {options.showIcon ? (
+        <div
+          className="flexColumn"
+          style={{
+            position: "absolute",
+            zIndex: -1,
+            width: "100%",
+            height: "100%",
+            top: 0,
+            left: 0,
+          }}
+        >
           <div
             className="flexColumn"
             style={{
               position: "absolute",
               zIndex: -1,
-              width: "100%",
-              height: "100%",
-              top: 0,
-              left: 0,
+              opacity: 0.25,
+              width: rem(60),
+              height: rem(60),
+              userSelect: "none",
             }}
           >
-            <div
-              className="flexColumn"
-              style={{
-                position: "absolute",
-                zIndex: -1,
-                opacity: 0.25,
-                width: rem(60),
-                height: rem(60),
-                userSelect: "none",
-              }}
-            >
-              <FactionIcon factionId={factionId} size="100%" />
-            </div>
+            <FactionIcon factionId={factionId} size="100%" />
           </div>
-        ) : null}
+        </div>
         <div
           className="flexRow"
           style={{
@@ -129,9 +119,7 @@ export function FactionSummary({
         </div>
         <ObjectiveDots factionId={factionId} />
       </div>
-      {options.hidePlanets ? null : (
-        <FactionPlanetSummary factionId={factionId} />
-      )}
+      <FactionPlanetSummary factionId={factionId} />
     </div>
   );
 }

@@ -10,6 +10,7 @@ import Overrule from "./Overrule";
 import Plagiarize from "./Plagiarize";
 import PlanetaryRigs from "./PlanetaryRigs";
 import PurgePlanet from "./PurgePlanet";
+import RiftwalkerMeian from "./RiftwalkerMeian";
 import ShareKnowledge from "./ShareKnowledge";
 import SilverFlame from "./SilverFlame";
 import Strategize from "./Strategize";
@@ -31,6 +32,7 @@ const ComponentActions = {
   Plagiarize,
   PlanetaryRigs,
   PurgePlanet,
+  RiftwalkerMeian,
   ShareKnowledge,
   SilverFlame,
   Strategize,

@@ -58,6 +58,10 @@ export function useFactionColor(factionId: FactionId) {
   );
 }
 
+export function useIsFactionPassed(factionId: FactionId) {
+  return useGameDataValue<boolean>(`factions.${factionId}.passed`, false);
+}
+
 export function useFactionDisplayName(factionId: FactionId) {
   return useMemoizedGameDataValue<Optional<Faction>, string>(
     `factions.${factionId}`,

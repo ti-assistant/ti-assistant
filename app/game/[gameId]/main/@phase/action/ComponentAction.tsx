@@ -1,8 +1,6 @@
 "use client";
 
 import React, { CSSProperties, ReactNode, use } from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import { FormattedMessage } from "react-intl";
 import { ClientOnlyHoverMenu } from "../../../../../../src/HoverMenu";
 import { SelectableRow } from "../../../../../../src/SelectableRow";
@@ -11,8 +9,6 @@ import FormattedDescription from "../../../../../../src/components/FormattedDesc
 import FrontierExploration from "../../../../../../src/components/FrontierExploration/FrontierExploration";
 import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
 import LabeledLine from "../../../../../../src/components/LabeledLine/LabeledLine";
-import GameMap from "../../../../../../src/components/Map/GameMap";
-import MapBuilder from "../../../../../../src/components/MapBuilder/MapBuilder";
 import { ModalContent } from "../../../../../../src/components/Modal/Modal";
 import { Selector } from "../../../../../../src/components/Selector/Selector";
 import TechResearchSection from "../../../../../../src/components/TechResearchSection/TechResearchSection";
@@ -34,23 +30,16 @@ import { useFactions } from "../../../../../../src/context/factionDataHooks";
 import {
   playComponentAsync,
   selectSubComponentAsync,
-  swapMapTilesAsync,
   unplayComponentAsync,
 } from "../../../../../../src/dynamic/api";
 import RelicMenuSVG from "../../../../../../src/icons/ui/RelicMenu";
 import {
   getClaimedPlanets,
   getSelectedSubComponent,
-  wereTilesSwapped,
 } from "../../../../../../src/util/actionLog";
 import { getCurrentTurnLogEntries } from "../../../../../../src/util/api/actionLog";
 import { hasTech } from "../../../../../../src/util/api/techs";
 import { getFactionName } from "../../../../../../src/util/factions";
-import {
-  getFactionSystemNumber,
-  getWormholeNexusSystemNumber,
-} from "../../../../../../src/util/map";
-import { getMapString } from "../../../../../../src/util/options";
 import { Optional } from "../../../../../../src/util/types/types";
 import { rem } from "../../../../../../src/util/util";
 import ComponentActions from "./ComponentActions/ComponentActions";
@@ -675,7 +664,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       break;
     }
     case "Riftwalker Meian": {
-      innerContent = <RiftwalkerMeian />;
+      innerContent = <ComponentActions.RiftwalkerMeian />;
       break;
     }
     case "Z'eu": {
@@ -1096,92 +1085,4 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
   );
 
   return null;
-}
-
-function RiftwalkerMeian() {
-  const actionLog = useActionLog();
-  const factions = useFactions();
-  const gameId = useGameId();
-  const leaders = useLeaders();
-  const options = useOptions();
-  const planets = usePlanets();
-  const viewOnly = useViewOnly();
-
-  const mapString = getMapString(options, Object.keys(factions).length);
-  if (!mapString) {
-    return null;
-  }
-
-  const riftwalkerMeian = leaders["Riftwalker Meian"];
-  if (!riftwalkerMeian) {
-    return null;
-  }
-
-  const mapOrderedFactions = Object.values(factions).sort(
-    (a, b) => a.mapPosition - b.mapPosition
-  );
-  let updatedSystemTiles = mapString.split(" ");
-  updatedSystemTiles = updatedSystemTiles.map((tile, index) => {
-    const updatedTile = updatedSystemTiles[index];
-    if (tile === "0" && updatedTile && updatedTile !== "0") {
-      return updatedTile;
-    }
-    if (tile.startsWith("P")) {
-      const number = tile.at(tile.length - 1);
-      if (!number) {
-        return tile;
-      }
-      const factionIndex = parseInt(number);
-      return getFactionSystemNumber(mapOrderedFactions[factionIndex - 1]);
-    }
-    return tile;
-  });
-  const alreadyUsed = wereTilesSwapped(getCurrentTurnLogEntries(actionLog));
-  if (alreadyUsed) {
-    return (
-      <div style={{ position: "relative", width: "100%", aspectRatio: 1 }}>
-        <GameMap
-          mapString={updatedSystemTiles.join(" ")}
-          mapStyle={options["map-style"]}
-          factions={mapOrderedFactions}
-          wormholeNexus={getWormholeNexusSystemNumber(
-            options,
-            planets,
-            factions
-          )}
-          hideLegend
-          hideFracture
-          planets={planets}
-          expansions={options.expansions}
-        />
-      </div>
-    );
-  }
-  const mallice = getWormholeNexusSystemNumber(options, planets, factions);
-  return (
-    <div
-      className="flexColumn"
-      style={{ width: rem(320), height: rem(320), marginBottom: rem(16) }}
-    >
-      <div style={{ position: "relative", width: "100%" }}>
-        <DndProvider backend={HTML5Backend}>
-          <div style={{ width: "100%", aspectRatio: 1 }}>
-            <MapBuilder
-              mapString={updatedSystemTiles.join(" ")}
-              updateMapString={(dragItem, dropItem) => {
-                if (viewOnly || dragItem.index === dropItem.index) {
-                  return;
-                }
-                swapMapTilesAsync(gameId, dropItem, dragItem);
-              }}
-              riftWalker
-              mallice={
-                mallice === "PURGED" || mallice === "81" ? mallice : undefined
-              }
-            ></MapBuilder>
-          </div>
-        </DndProvider>
-      </div>
-    </div>
-  );
 }
