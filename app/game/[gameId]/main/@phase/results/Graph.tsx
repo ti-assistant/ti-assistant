@@ -44,8 +44,8 @@ export default function Graph({
           <Fragment key={index}>
             <text
               fill="#eee"
-              font-size="4"
-              font-family="Slider"
+              fontSize="4"
+              fontFamily="Slider"
               x={x}
               y="102"
               textAnchor="middle"
@@ -70,8 +70,8 @@ export default function Graph({
           <Fragment key={index}>
             <text
               fill="#eee"
-              font-size="4"
-              font-family="Slider"
+              fontSize="4"
+              fontFamily="Slider"
               x="0"
               y={y}
               textAnchor="middle"

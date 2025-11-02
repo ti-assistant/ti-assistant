@@ -93,6 +93,7 @@ export default function ResultsPhase() {
 
 interface RoundInfo {
   planets: Partial<Record<PlanetId, Planet>>;
+  systems: Partial<Record<SystemId, System>>;
   mapString?: string;
   techs: Partial<Record<FactionId, Record<TechType, number>>>;
   victoryPoints: Partial<Record<FactionId, Record<ObjectiveType, number>>>;

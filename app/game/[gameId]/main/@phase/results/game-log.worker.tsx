@@ -15,6 +15,7 @@ import { objectEntries, objectKeys } from "../../../../../../src/util/util";
 import {
   buildCompleteObjectives,
   buildCompletePlanets,
+  buildCompleteSystems,
   buildCompleteTechs,
 } from "../../../../../../src/data/gameDataBuilder";
 import { connectFirestoreEmulator } from "firebase/firestore";
@@ -23,6 +24,7 @@ type WithKey<T> = T & { key: number };
 
 interface RoundInfo {
   planets: Partial<Record<PlanetId, Planet>>;
+  systems: Partial<Record<SystemId, System>>;
   mapString?: string;
   techs: Partial<Record<FactionId, Record<TechType, number>>>;
   victoryPoints: Partial<Record<FactionId, Record<ObjectiveType, number>>>;
@@ -103,6 +105,7 @@ function buildGameLog(
           dynamicGameData,
           /* includePurged */ true
         ),
+        systems: buildCompleteSystems(baseData, dynamicGameData),
         mapString: getMapString(
           dynamicGameData.options,
           mapOrderedFactions.length
@@ -129,6 +132,8 @@ function buildGameLog(
         updateGameData(dynamicGameData, handler.getUpdates());
         updateActionLog(dynamicGameData, handler, Date.now(), startTimeSeconds);
         break;
+      case "PURGE_SYSTEM":
+        console.log("Made it");
       default:
         updateActionLog(dynamicGameData, handler, Date.now(), startTimeSeconds);
         updateGameData(dynamicGameData, handler.getUpdates());
@@ -243,6 +248,7 @@ function buildGameLog(
           dynamicGameData,
           /* includePurged */ true
         ),
+        systems: buildCompleteSystems(baseData, dynamicGameData),
         mapString: getMapString(
           dynamicGameData.options,
           mapOrderedFactions.length
@@ -277,6 +283,7 @@ function buildGameLog(
       dynamicGameData,
       /* includePurged */ true
     ),
+    systems: buildCompleteSystems(baseData, dynamicGameData),
     mapString: getMapString(dynamicGameData.options, mapOrderedFactions.length),
     techs: factionTechs,
     victoryPoints: points,

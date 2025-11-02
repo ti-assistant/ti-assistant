@@ -61,16 +61,21 @@ export default function SystemImage({
   onClick,
   overlayDetails,
   planets,
+  systems,
   selectable,
   systemNumber,
 }: {
   onClick?: (systemId: string) => void;
   overlayDetails: OverlayDetails;
   planets: Partial<Record<PlanetId, Planet>>;
+  systems?: Partial<Record<SystemId, System>>;
   selectable?: boolean;
   systemNumber: Optional<string>;
 }) {
-  const system = useSystem(systemNumber as SystemId);
+  let system = useSystem(systemNumber as SystemId);
+  if (systems) {
+    system = systems[systemNumber as SystemId];
+  }
   if (!systemNumber || systemNumber === "0") {
     return <EmptyHex />;
   }
