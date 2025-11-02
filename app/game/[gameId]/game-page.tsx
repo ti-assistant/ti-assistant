@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { FormattedMessage } from "react-intl";
 import BorderedDiv from "../../../src/components/BorderedDiv/BorderedDiv";
+import FactionComponents from "../../../src/components/FactionComponents/FactionComponents";
 import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
-import FactionName from "../../../src/components/FactionName/FactionName";
 import { useGameId, useViewOnly } from "../../../src/context/dataHooks";
 import { useFactionColor } from "../../../src/context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../src/context/gameDataHooks";
@@ -153,7 +153,7 @@ function FactionLink({ factionId }: { factionId: FactionId }) {
             zIndex: 0,
           }}
         >
-          {<FactionName factionId={factionId} />}
+          {<FactionComponents.Name factionId={factionId} />}
         </div>
       </BorderedDiv>
     </Link>

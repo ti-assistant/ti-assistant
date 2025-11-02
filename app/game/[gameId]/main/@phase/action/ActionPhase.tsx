@@ -13,8 +13,8 @@ import Chip from "../../../../../../src/components/Chip/Chip";
 import ExpeditionSelector from "../../../../../../src/components/Expedition/ExpeditionSelector";
 import FactionCard from "../../../../../../src/components/FactionCard/FactionCard";
 import FactionCircle from "../../../../../../src/components/FactionCircle/FactionCircle";
+import FactionComponents from "../../../../../../src/components/FactionComponents/FactionComponents";
 import FactionIcon from "../../../../../../src/components/FactionIcon/FactionIcon";
-import FactionName from "../../../../../../src/components/FactionName/FactionName";
 import FormattedDescription from "../../../../../../src/components/FormattedDescription/FormattedDescription";
 import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
 import LabeledLine from "../../../../../../src/components/LabeledLine/LabeledLine";
@@ -1258,7 +1258,7 @@ function ActivePlayerColumn({
                     fontSize: rem(24),
                   }}
                 >
-                  {<FactionName factionId={onDeckFactionId} />}
+                  {<FactionComponents.Name factionId={onDeckFactionId} />}
                   <div
                     className="flexRow"
                     style={{

@@ -1,5 +1,5 @@
 import { FormattedMessage } from "react-intl";
-import FactionName from "../../../../../../../src/components/FactionName/FactionName";
+import FactionComponents from "../../../../../../../src/components/FactionComponents/FactionComponents";
 import { useCurrentTurn } from "../../../../../../../src/context/dataHooks";
 import { getLogEntries } from "../../../../../../../src/util/actionLog";
 
@@ -22,7 +22,7 @@ export default function BookOfLatvinia({
           description="Label for a selector selecting a new speaker."
           defaultMessage="New Speaker"
         />
-        : <FactionName factionId={factionId} />
+        : <FactionComponents.Name factionId={factionId} />
       </div>
     );
   }

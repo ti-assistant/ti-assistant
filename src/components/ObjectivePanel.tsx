@@ -13,11 +13,6 @@ import {
   useOptions,
   useViewOnly,
 } from "../context/dataHooks";
-import {
-  useFaction,
-  useFactionColor,
-  useFactions,
-} from "../context/factionDataHooks";
 import { useFactionVPs, useOrderedFactionIds } from "../context/gameDataHooks";
 import { useObjective, useObjectives } from "../context/objectiveDataHooks";
 import {
@@ -30,17 +25,14 @@ import {
 } from "../dynamic/api";
 import { getLogEntries } from "../util/actionLog";
 import { BLACK_BORDER_GLOW } from "../util/borderGlow";
-import {
-  computeVPs,
-  convertToFactionColor,
-  getFactionColor,
-  getFactionName,
-} from "../util/factions";
+import { getColorForFaction } from "../util/factions";
 import { objectiveTypeString } from "../util/strings";
 import { Optional } from "../util/types/types";
 import { rem } from "../util/util";
 import Chip from "./Chip/Chip";
 import { CollapsibleSection } from "./CollapsibleSection";
+import FactionComponents from "./FactionComponents/FactionComponents";
+import FactionName from "./FactionComponents/FactionName";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "./FactionSelectRadialMenu/FactionSelectRadialMenu";
 import FormattedDescription from "./FormattedDescription/FormattedDescription";
@@ -276,7 +268,6 @@ interface ExtendedCSS extends CSSProperties {
 
 export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
   const actionLog = useActionLog();
-  const factions = useFactions();
   const gameId = useGameId();
   const objectives = useObjectives();
   const options = useOptions();
@@ -701,14 +692,16 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
                                 openModal(
                                   <ModalContent
                                     title={
-                                      getFactionName(factions[name]) +
-                                      " " +
-                                      intl.formatMessage({
-                                        id: "QrrIrN",
-                                        description:
-                                          "The title of secret objectives.",
-                                        defaultMessage: "Secrets",
-                                      })
+                                      <>
+                                        <FactionComponents.Name
+                                          factionId={name}
+                                        />{" "}
+                                        <FormattedMessage
+                                          id="QrrIrN"
+                                          description="The title of secret objectives."
+                                          defaultMessage="Secrets"
+                                        />
+                                      </>
                                     }
                                   >
                                     <SecretModalContent
@@ -1028,7 +1021,7 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
                 {orderedFactionIds.map((id) => {
                   const scorers =
                     (supportForTheThrone?.keyedScorers ?? {})[id] ?? [];
-                  const scorer = scorers[0] as Optional<FactionId>;
+                  const scorer = scorers[0];
                   return (
                     <div key={id}>
                       <FactionSelectRadialMenu
@@ -1055,9 +1048,9 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
                           }
                         }}
                         tag={<FactionIcon factionId={id} size="100%" />}
-                        tagBorderColor={getFactionColor(factions[id])}
+                        tagBorderColor={getColorForFaction(id)}
                         borderColor={
-                          scorer ? getFactionColor(factions[scorer]) : undefined
+                          scorer ? getColorForFaction(scorer) : undefined
                         }
                         viewOnly={viewOnly}
                       />
@@ -1331,6 +1324,7 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
             </Chip>
           </div>
           {orderedFactionIds.map((name, index) => {
+            const factionColor = getColorForFaction(name);
             return (
               <div
                 key={name}
@@ -1341,13 +1335,9 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
                   height: "100%",
                   position: "relative",
                   borderRadius: rem(3),
-                  border: `${"2px"} solid ${getFactionColor(
-                    (factions ?? {})[name]
-                  )}`,
+                  border: `${"2px"} solid ${factionColor}`,
                   boxShadow:
-                    getFactionColor((factions ?? {})[name]) === "Black"
-                      ? BLACK_BORDER_GLOW
-                      : undefined,
+                    factionColor === "Black" ? BLACK_BORDER_GLOW : undefined,
                   whiteSpace: "nowrap",
                   // overflow: "hidden",
                 }}
@@ -1378,7 +1368,7 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
                 >
                   <FactionIcon factionId={name} size="100%" />
                 </div>
-                {getFactionName((factions ?? {})[name])}
+                {<FactionComponents.Name factionId={name} />}
               </div>
             );
           })}
@@ -1409,7 +1399,7 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
                   fontSize: rem(24),
                 }}
               >
-                {computeVPs(factions ?? {}, name, objectives ?? {})}
+                {<FactionComponents.VPs factionId={name} />}
               </div>
             );
           })}
@@ -1641,13 +1631,14 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
                   openModal(
                     <ModalContent
                       title={
-                        getFactionName(factions[name]) +
-                        " " +
-                        intl.formatMessage({
-                          id: "QrrIrN",
-                          description: "The title of secret objectives.",
-                          defaultMessage: "Secrets",
-                        })
+                        <>
+                          <FactionComponents.Name factionId={name} />{" "}
+                          <FormattedMessage
+                            id="QrrIrN"
+                            description="The title of secret objectives."
+                            defaultMessage="Secrets"
+                          />
+                        </>
                       }
                     >
                       <SecretModalContent factionId={name} gameId={gameId} />
@@ -1739,11 +1730,7 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
                       factions={orderedFactionIds}
                       invalidFactions={orderedFactionIds.filter(
                         (destFactionId) => {
-                          const receivingFaction = factions[destFactionId];
-                          return (
-                            destFactionId === factionId ||
-                            receivingFaction?.alliancePartner === factionId
-                          );
+                          return destFactionId === factionId;
                         }
                       )}
                       selectedFaction={scorer}
@@ -1766,11 +1753,9 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
                         }
                       }}
                       tag={<FactionIcon factionId={factionId} size="100%" />}
-                      tagBorderColor={getFactionColor(factions[factionId])}
+                      tagBorderColor={getColorForFaction(factionId)}
                       borderColor={
-                        scorer
-                          ? getFactionColor((factions ?? {})[scorer])
-                          : undefined
+                        scorer ? getColorForFaction(scorer) : undefined
                       }
                       viewOnly={viewOnly}
                     />
@@ -2164,7 +2149,7 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
                   display: "grid",
                   gridAutoFlow: "row",
                   gridTemplateColumns: `repeat(${Math.ceil(
-                    Object.keys(factions).length / 2
+                    orderedFactionIds.length / 2
                   )}, 1fr)`,
                   alignItems: "center",
                   justifyItems: "center",
@@ -2287,7 +2272,6 @@ function SimpleScorable({
   info?: string;
   size?: number;
 }) {
-  const factions = useFactions();
   const viewOnly = useViewOnly();
 
   const { openModal } = use(ModalContext);
@@ -2335,9 +2319,7 @@ function SimpleScorable({
                     scoreObjectiveAsync(gameId, factionId, objective.id);
                   }
                 }}
-                borderColor={
-                  scorer ? getFactionColor(factions[scorer]) : undefined
-                }
+                borderColor={scorer ? getColorForFaction(scorer) : undefined}
                 size={size}
                 tag={
                   showTag ? (
@@ -2448,14 +2430,13 @@ function SimpleScorable({
 
 function FactionNameAndVPs({ factionId }: { factionId: FactionId }) {
   const gameId = useGameId();
-  const faction = useFaction(factionId);
   const VPs = useFactionVPs(factionId);
   const viewOnly = useViewOnly();
 
   return (
     <LabeledDiv
-      label={getFactionName(faction)}
-      color={getFactionColor(faction)}
+      label={<FactionName factionId={factionId} />}
+      color={getColorForFaction(factionId)}
       opts={{ fixedWidth: true }}
     >
       <div
@@ -2511,8 +2492,6 @@ function CustodiansToken({}) {
   const custodiansToken = useObjective("Custodians Token");
   const custodiansScorerId = (custodiansToken?.scorers ?? [])[0];
 
-  const scorerColor = useFactionColor(custodiansScorerId ?? "Vuil'raith Cabal");
-
   return (
     <div
       className="flexRow"
@@ -2554,7 +2533,9 @@ function CustodiansToken({}) {
             }
           }}
           borderColor={
-            custodiansScorerId ? convertToFactionColor(scorerColor) : undefined
+            custodiansScorerId
+              ? getColorForFaction(custodiansScorerId)
+              : undefined
           }
           viewOnly={viewOnly}
         />
@@ -2570,8 +2551,6 @@ function Styx({}) {
   const orderedFactionIds = useOrderedFactionIds("MAP");
   const styx = useObjective("Styx");
   const styxScorerId = (styx?.scorers ?? [])[0];
-
-  const scorerColor = useFactionColor(styxScorerId ?? "Vuil'raith Cabal");
 
   if (!options.expansions.includes("THUNDERS EDGE")) {
     return null;
@@ -2615,7 +2594,7 @@ function Styx({}) {
             }
           }}
           borderColor={
-            styxScorerId ? convertToFactionColor(scorerColor) : undefined
+            styxScorerId ? getColorForFaction(styxScorerId) : undefined
           }
           viewOnly={viewOnly}
         />
@@ -2634,7 +2613,6 @@ function ScorableFactionIcon({
   objectiveId: ObjectiveId;
 }) {
   const gameId = useGameId();
-  const faction = useFaction(factionId);
   const objective = useObjective(objectiveId);
   const viewOnly = useViewOnly();
 
@@ -2665,7 +2643,7 @@ function ScorableFactionIcon({
         } ${viewOnly ? styles.viewOnly : ""}`}
         style={
           {
-            "--color": getFactionColor(faction),
+            "--color": getColorForFaction(factionId),
           } as ExtendedCSS
         }
       >

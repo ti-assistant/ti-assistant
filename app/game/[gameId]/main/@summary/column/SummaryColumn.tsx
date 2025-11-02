@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { FormattedMessage } from "react-intl";
 import { FactionSummary } from "../../../../../../src/FactionSummary";
 import { StaticFactionTimer } from "../../../../../../src/Timer";
-import FactionName from "../../../../../../src/components/FactionName/FactionName";
+import FactionComponents from "../../../../../../src/components/FactionComponents/FactionComponents";
 import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
 import { useOptions } from "../../../../../../src/context/dataHooks";
 import {
@@ -100,7 +100,7 @@ function FactionDiv({ factionId }: { factionId: FactionId }) {
     <LabeledDiv
       label={
         <div className="flexRow" style={{ gap: 0 }}>
-          <FactionName factionId={factionId} />
+          <FactionComponents.Name factionId={factionId} />
           <FactionPanel factionId={factionId} options={options} />
         </div>
       }

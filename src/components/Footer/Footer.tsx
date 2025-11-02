@@ -38,6 +38,7 @@ import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
 import ThundersEdgePanel from "../ThundersEdgePanel";
 import { Strings } from "../strings";
 import styles from "./Footer.module.scss";
+import { useOrderedFactionIds } from "../../context/gameDataHooks";
 
 const ObjectivePanel = dynamic(() => import("../ObjectivePanel"), {
   loading: () => <Loader />,
@@ -111,6 +112,8 @@ export default function Footer() {
   const strategyCards = useStrategyCards();
   const viewOnly = useViewOnly();
 
+  const mapOrderedFactionIds = useOrderedFactionIds("MAP");
+
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   const { openModal } = use(ModalContext);
@@ -121,11 +124,11 @@ export default function Footer() {
   useEffect(() => {
     setSelectedFaction((faction) => {
       if (!faction) {
-        return Object.values(factions)[0]?.id;
+        return state.speaker;
       }
       return faction;
     });
-  }, [factions]);
+  }, [state]);
 
   function shouldBlockSpeakerUpdates() {
     if (state.phase === "END") {
@@ -178,11 +181,8 @@ export default function Footer() {
       );
       break;
   }
-  const mapOrderedFactions = Object.values(factions ?? {}).sort(
-    (a, b) => a.mapPosition - b.mapPosition
-  );
 
-  const mapString = getMapString(options, mapOrderedFactions.length);
+  const mapString = getMapString(options, orderedFactions.length);
 
   const numButtons = getNumButtons(state.phase, strategyCards, options);
   return (
@@ -243,7 +243,7 @@ export default function Footer() {
                     }}
                   >
                     <GameMap
-                      factions={mapOrderedFactions}
+                      factions={orderedFactions}
                       wormholeNexus={getWormholeNexusSystemNumber(
                         options,
                         planets,

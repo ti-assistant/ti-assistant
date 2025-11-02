@@ -3,8 +3,8 @@ import { CSSProperties, PropsWithChildren, ReactNode } from "react";
 import { useOptions } from "../../context/dataHooks";
 import { useFactionColor } from "../../context/factionDataHooks";
 import { rem } from "../../util/util";
+import FactionComponents from "../FactionComponents/FactionComponents";
 import FactionIcon from "../FactionIcon/FactionIcon";
-import FactionName from "../FactionName/FactionName";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import styles from "./FactionCard.module.scss";
 
@@ -52,7 +52,7 @@ export default function FactionCard({
     <LabeledDiv
       label={
         <div className="flexRow" style={{ gap: 0 }}>
-          {<FactionName factionId={factionId} />}
+          {<FactionComponents.Name factionId={factionId} />}
           <FactionPanel factionId={factionId} options={options} />
         </div>
       }

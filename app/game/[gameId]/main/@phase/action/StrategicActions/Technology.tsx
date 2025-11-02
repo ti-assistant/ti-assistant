@@ -1,4 +1,4 @@
-import FactionName from "../../../../../../../src/components/FactionName/FactionName";
+import FactionComponents from "../../../../../../../src/components/FactionComponents/FactionComponents";
 import LabeledDiv from "../../../../../../../src/components/LabeledDiv/LabeledDiv";
 import TechResearchSection from "../../../../../../../src/components/TechResearchSection/TechResearchSection";
 import { useCurrentTurn } from "../../../../../../../src/context/dataHooks";
@@ -28,7 +28,7 @@ function Primary({ factionId }: { factionId: FactionId }) {
   return (
     <div style={{ width: "fit-content" }}>
       <LabeledDiv
-        label={<FactionName factionId={factionId} />}
+        label={<FactionComponents.Name factionId={factionId} />}
         color={factionColor}
         blur
       >
