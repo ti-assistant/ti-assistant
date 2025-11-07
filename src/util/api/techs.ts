@@ -3,8 +3,8 @@ import { Optional } from "../types/types";
 /**
  * Checks whether a faction has unlocked a specific tech.
  */
-export function hasTech(faction: Faction, tech: Optional<Tech>) {
-  if (!tech) {
+export function hasTech(faction: Optional<Faction>, tech: Optional<Tech>) {
+  if (!tech || !faction) {
     return false;
   }
   if (!faction.techs) {
@@ -36,6 +36,7 @@ export function isTechReplaced(factionId: FactionId, techId: TechId) {
     case "Mahact Gene-Sorcerers":
       return techId === "Infantry II";
     case "Clan of Saar":
+    case "Last Bastion":
     case "Vuil'raith Cabal":
       return techId === "Space Dock II";
     case "L1Z1X Mindnet":
@@ -48,6 +49,8 @@ export function isTechReplaced(factionId: FactionId, techId: TechId) {
     case "Embers of Muaat":
       return techId === "War Sun";
     case "Argent Flight":
+    case "Crimson Rebellion":
+    case "Ral Nel Consortium":
       return techId === "Destroyer II";
   }
   return false;

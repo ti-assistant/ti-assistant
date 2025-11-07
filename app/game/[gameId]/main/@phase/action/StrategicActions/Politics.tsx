@@ -5,11 +5,11 @@ import {
   useGameId,
   useViewOnly,
 } from "../../../../../../../src/context/dataHooks";
-import { useFactions } from "../../../../../../../src/context/factionDataHooks";
+import { useOrderedFactionIds } from "../../../../../../../src/context/gameDataHooks";
 import { useSpeaker } from "../../../../../../../src/context/stateDataHooks";
 import { setSpeakerAsync } from "../../../../../../../src/dynamic/api";
 import { getNewSpeakerEventFromLog } from "../../../../../../../src/util/api/data";
-import { getFactionColor } from "../../../../../../../src/util/factions";
+import { getColorForFaction } from "../../../../../../../src/util/factions";
 import { rem } from "../../../../../../../src/util/util";
 
 const Politics = {
@@ -20,18 +20,11 @@ export default Politics;
 
 function Primary() {
   const currentTurn = useCurrentTurn();
-  const factions = useFactions();
   const gameId = useGameId();
+  const mapOrderedFactionIds = useOrderedFactionIds("MAP");
   const newSpeakerEvent = getNewSpeakerEventFromLog(currentTurn);
   const speaker = useSpeaker();
   const viewOnly = useViewOnly();
-
-  const selectedSpeaker = newSpeakerEvent?.newSpeaker
-    ? factions[newSpeakerEvent.newSpeaker]
-    : undefined;
-  const mapOrderedFactionIds = Object.values(factions)
-    .sort((a, b) => a.mapPosition - b.mapPosition)
-    .map((faction) => faction.id);
 
   return (
     <div
@@ -50,7 +43,9 @@ function Primary() {
       :
       <FactionSelectRadialMenu
         borderColor={
-          selectedSpeaker ? getFactionColor(selectedSpeaker) : undefined
+          newSpeakerEvent?.newSpeaker
+            ? getColorForFaction(newSpeakerEvent.newSpeaker)
+            : undefined
         }
         onSelect={(factionId, _) => {
           if (factionId) {
@@ -64,11 +59,9 @@ function Primary() {
         }}
         factions={mapOrderedFactionIds}
         invalidFactions={[
-          selectedSpeaker
-            ? (newSpeakerEvent?.prevSpeaker as FactionId)
-            : speaker,
+          newSpeakerEvent?.prevSpeaker ? newSpeakerEvent.prevSpeaker : speaker,
         ]}
-        selectedFaction={selectedSpeaker?.id}
+        selectedFaction={newSpeakerEvent?.newSpeaker}
         size={52}
         viewOnly={viewOnly}
       />

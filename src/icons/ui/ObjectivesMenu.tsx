@@ -1,8 +1,12 @@
-export default function ObjectivesMenuSVG() {
+export default function ObjectivesMenuSVG({
+  borderColor = "#eee",
+}: {
+  borderColor?: string;
+}) {
   return (
     <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
-        stroke="#eee"
+        stroke={borderColor}
         d="M 5.574685,16.954419 V 33.046151 L 16.95395,44.425318 H 33.045365 L 44.425313,33.045463 V 16.954419 L 33.045477,5.574685 H 16.954405 Z"
       />
       <path

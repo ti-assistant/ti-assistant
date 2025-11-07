@@ -17,6 +17,7 @@ interface ObjectiveSelectHoverMenuProps {
   label: ReactNode;
   objectives: Objective[];
   perColumn?: number;
+  buttonStyle?: CSSProperties;
 }
 
 export default function ObjectiveSelectHoverMenu({
@@ -25,6 +26,7 @@ export default function ObjectiveSelectHoverMenu({
   label,
   objectives,
   perColumn = 5,
+  buttonStyle = {},
 }: ObjectiveSelectHoverMenuProps) {
   const intl = useIntl();
   const gameId = useGameId();
@@ -83,6 +85,7 @@ export default function ObjectiveSelectHoverMenu({
           </div>
         </>
       )}
+      buttonStyle={buttonStyle}
       postContent={
         <div className={styles.Description} style={{ fontSize: fontSize }}>
           <FormattedDescription description={description} />

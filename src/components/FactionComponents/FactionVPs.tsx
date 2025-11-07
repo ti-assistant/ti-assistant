@@ -1,7 +1,11 @@
-import { useFactionVPs } from "../../context/gameDataHooks";
+import {
+  useManualFactionVPs,
+  useScoredFactionVPs,
+} from "../../context/gameDataHooks";
 
 export default function FactionVPs({ factionId }: { factionId: FactionId }) {
-  const VPs = useFactionVPs(factionId);
+  const manualVPs = useManualFactionVPs(factionId);
+  const scoredVPs = useScoredFactionVPs(factionId);
 
-  return <>{VPs}</>;
+  return <>{manualVPs + scoredVPs}</>;
 }

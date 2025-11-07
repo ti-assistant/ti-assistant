@@ -14,9 +14,15 @@ import {
   useViewOnly,
 } from "./context/dataHooks";
 import { useFactionTechs } from "./context/factionDataHooks";
-import { useFactionVPs } from "./context/gameDataHooks";
-import { useObjectives } from "./context/objectiveDataHooks";
-import { useGameState } from "./context/stateDataHooks";
+import {
+  useManualFactionVPs,
+  useScoredFactionVPs,
+} from "./context/gameDataHooks";
+import {
+  useObjectiveRevealOrder,
+  useObjectives,
+} from "./context/objectiveDataHooks";
+import { usePhase } from "./context/stateDataHooks";
 import {
   manualVPUpdateAsync,
   scoreObjectiveAsync,
@@ -34,10 +40,15 @@ interface FactionSummaryProps {
 }
 
 export function FactionSummary({ factionId }: FactionSummaryProps) {
-  const VPs = useFactionVPs(factionId);
+  const manualVPs = useManualFactionVPs(factionId);
+  const scoredVPs = useScoredFactionVPs(factionId);
   const gameId = useGameId();
-  const state = useGameState();
+  const phase = usePhase();
   const viewOnly = useViewOnly();
+
+  console.log("Manual", manualVPs);
+
+  const VPs = manualVPs + scoredVPs;
 
   function manualVpAdjust(increase: boolean) {
     if (!gameId || !factionId) {
@@ -47,7 +58,7 @@ export function FactionSummary({ factionId }: FactionSummaryProps) {
     manualVPUpdateAsync(gameId, factionId, value);
   }
 
-  const editable = state?.phase !== "END" && !viewOnly;
+  const editable = phase !== "END" && !viewOnly;
 
   return (
     <div className={styles.FactionSummary}>
@@ -125,45 +136,10 @@ export function FactionSummary({ factionId }: FactionSummaryProps) {
 }
 
 function ObjectiveDots({ factionId }: { factionId: FactionId }) {
-  const actionLog = useActionLog();
   const gameId = useGameId();
   const objectives = useObjectives();
+  const revealOrder = useObjectiveRevealOrder();
   const viewOnly = useViewOnly();
-
-  const revealOrder: Partial<Record<ObjectiveId, number>> = {};
-  let order = 1;
-  getLogEntries<RevealObjectiveData>(
-    [...actionLog].reverse(),
-    "REVEAL_OBJECTIVE"
-  ).forEach((logEntry) => {
-    const objectiveId = logEntry.data.event.objective;
-    revealOrder[objectiveId] = order;
-    ++order;
-  });
-
-  const stageOnes = {
-    scored: 0,
-    revealed: 0,
-  };
-  const stageTwos = {
-    scored: 0,
-    revealed: 0,
-  };
-  Object.values(objectives)
-    .filter((obj) => obj.selected)
-    .forEach((obj) => {
-      if (obj.type === "STAGE ONE") {
-        if (obj.scorers?.includes(factionId)) {
-          stageOnes.scored++;
-        }
-        stageOnes.revealed++;
-      } else if (obj.type === "STAGE TWO") {
-        if (obj.scorers?.includes(factionId)) {
-          stageTwos.scored++;
-        }
-        stageTwos.revealed++;
-      }
-    });
 
   const stageIs = Object.values(objectives).filter(
     (obj) => obj.type === "STAGE ONE" && obj.selected

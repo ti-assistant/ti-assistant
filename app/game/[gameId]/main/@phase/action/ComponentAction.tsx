@@ -5,6 +5,7 @@ import { FormattedMessage } from "react-intl";
 import { ClientOnlyHoverMenu } from "../../../../../../src/HoverMenu";
 import { SelectableRow } from "../../../../../../src/SelectableRow";
 import GainRelic from "../../../../../../src/components/Actions/GainRelic";
+import FactionComponents from "../../../../../../src/components/FactionComponents/FactionComponents";
 import FormattedDescription from "../../../../../../src/components/FormattedDescription/FormattedDescription";
 import FrontierExploration from "../../../../../../src/components/FrontierExploration/FrontierExploration";
 import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
@@ -39,9 +40,8 @@ import {
 } from "../../../../../../src/util/actionLog";
 import { getCurrentTurnLogEntries } from "../../../../../../src/util/api/actionLog";
 import { hasTech } from "../../../../../../src/util/api/techs";
-import { getFactionName } from "../../../../../../src/util/factions";
 import { Optional } from "../../../../../../src/util/types/types";
-import { rem } from "../../../../../../src/util/util";
+import { objectEntries, rem } from "../../../../../../src/util/util";
 import ComponentActions from "./ComponentActions/ComponentActions";
 
 function capitalizeFirstLetter(string: string) {
@@ -174,12 +174,13 @@ function ComponentSelect({
     )
     .sort((a, b) => (a.name > b.name ? 1 : -1));
 
+  const numRows = options.expansions.includes("THUNDERS EDGE") ? 12 : 10;
   const innerStyle: CSSProperties = {
     fontFamily: "Myriad Pro",
     padding: rem(8),
     display: "grid",
     gridAutoFlow: "column",
-    gridTemplateRows: "repeat(10, auto)",
+    gridTemplateRows: `repeat(${numRows}, auto)`,
     gap: rem(4),
     maxWidth: "85vw",
     overflowX: "auto",
@@ -408,19 +409,15 @@ function ComponentSelect({
             className="flexColumn"
             style={{ alignItems: "stretch", padding: rem(8), width: "100%" }}
           >
-            {Object.entries(promissoryByFaction).map(([id, components]) => {
-              const faction = factions[id as FactionId];
-              if (!faction) {
-                return null;
-              }
+            {objectEntries(promissoryByFaction).map(([id, components]) => {
               return (
                 <div
                   className="flexColumn"
-                  key={faction.id}
+                  key={id}
                   style={{ width: "100%", alignItems: "flex-start" }}
                 >
                   <LabeledLine
-                    leftLabel={getFactionName(faction)}
+                    leftLabel={<FactionComponents.Name factionId={id} />}
                     style={{ width: "100%" }}
                   />
                   {components.map((component) => {
@@ -910,7 +907,7 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
       if (component.type === "PROMISSORY") {
         if (
           component.faction &&
-          (!factions[component.faction] || component.faction === faction.id)
+          (!factions[component.faction] || component.faction === factionId)
         ) {
           return false;
         }
@@ -921,7 +918,7 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
         component.type !== "TECH" &&
         component.type !== "PLANET"
       ) {
-        if (component.faction !== faction.id) {
+        if (component.faction !== factionId) {
           return false;
         }
       }

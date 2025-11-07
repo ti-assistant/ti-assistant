@@ -5,10 +5,10 @@ import {
   useAttachments,
   useGameId,
   usePlanet,
-  useTechs,
+  useTech,
   useViewOnly,
 } from "../../context/dataHooks";
-import { useFactions } from "../../context/factionDataHooks";
+import { useFactionsWithTech } from "../../context/techDataHooks";
 import {
   addAttachmentAsync,
   removeAttachmentAsync,
@@ -25,8 +25,7 @@ import RedTechSVG from "../../icons/techs/RedTech";
 import YellowTechSVG from "../../icons/techs/YellowTech";
 import HitSVG from "../../icons/ui/Hit";
 import { SelectableRow } from "../../SelectableRow";
-import { hasTech } from "../../util/api/techs";
-import { getFactionColor } from "../../util/factions";
+import { getColorForFaction } from "../../util/factions";
 import { applyPlanetAttachments } from "../../util/planets";
 import { Optional } from "../../util/types/types";
 import { rem } from "../../util/util";
@@ -62,9 +61,8 @@ export default function PlanetRow({
   prevOwner,
 }: PlanetRowProps) {
   const attachments = useAttachments();
-  const factions = useFactions();
+  const factionsWithBastionSpaceDock = useFactionsWithTech("4X4IC Helios V2");
   const gameId = useGameId();
-  const techs = useTechs();
   const viewOnly = useViewOnly();
 
   const { openModal } = use(ModalContext);
@@ -76,9 +74,6 @@ export default function PlanetRow({
   }
 
   function availableAttachments() {
-    if (!attachments) {
-      return {};
-    }
     const planetAttachments = planet.attachments ?? [];
     let available = Object.values(attachments)
       .filter((attachment) => {
@@ -134,9 +129,7 @@ export default function PlanetRow({
     previousOwner !== factionId || opts.showSelfOwned
       ? previousOwner
       : undefined;
-  let claimedColor = getFactionColor(
-    previousOwner ? factions[previousOwner] : undefined
-  );
+  let claimedColor = previousOwner ? getColorForFaction(previousOwner) : "#999";
   if (claimedColor === "Black") {
     claimedColor = "#999";
   }
@@ -151,12 +144,7 @@ export default function PlanetRow({
     if (planet.owner === "Last Bastion") {
       return true;
     }
-    const owner = factions[planet.owner];
-    if (!owner) {
-      return false;
-    }
-    const bastionSpaceDock = techs["4X4IC Helios V2"];
-    return hasTech(owner, bastionSpaceDock);
+    return factionsWithBastionSpaceDock.has(planet.owner);
   }
 
   return (
@@ -237,6 +225,7 @@ export default function PlanetRow({
                 prevValue ? "Remove" : "Add"
               )
             }
+            disabled={viewOnly}
           >
             <UnitIcon type="Space Dock" size={14} />
           </Toggle>
@@ -270,16 +259,6 @@ export default function PlanetRow({
             ) : null}
           </div>
         ) : null}
-        {/* 
-        TODO: Add ability to mark bastion space docks and adjust The Triad.
-        {factionId === "Last Bastion" || previousOwner === "Last Bastion" ? (
-          <Toggle
-            selected={!!planet.bastionSpaceDock}
-            toggleFn={(prevValue: boolean) => {}}
-          >
-            <UnitIcon type="Space Dock" />
-          </Toggle>
-        ) : null} */}
         <div style={{ flexShrink: 0 }}>
           <ResourcesIcon
             resources={planet.resources}
@@ -289,7 +268,6 @@ export default function PlanetRow({
         </div>
         <div
           style={{
-            // margin: `0 ${rem(4)} ${rem(8)}`,
             width: rem(24),
           }}
         >

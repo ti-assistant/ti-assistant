@@ -1,12 +1,12 @@
 import { useActionLog, useGameId, useViewOnly } from "../../context/dataHooks";
-import { useObjectives } from "../../context/objectiveDataHooks";
-import { useFactions } from "../../context/factionDataHooks";
+import { useOrderedFactionIds } from "../../context/gameDataHooks";
+import { useObjective } from "../../context/objectiveDataHooks";
 import { scoreObjectiveAsync, unscoreObjectiveAsync } from "../../dynamic/api";
 import { SymbolX } from "../../icons/svgs";
 import { getObjectiveScorers } from "../../util/actionLog";
 import { getCurrentTurnLogEntries } from "../../util/api/actionLog";
 import { hasScoredObjective } from "../../util/api/util";
-import { getFactionColor } from "../../util/factions";
+import { getColorForFaction } from "../../util/factions";
 import { rem } from "../../util/util";
 import FactionCircle from "../FactionCircle/FactionCircle";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
@@ -17,16 +17,15 @@ export default function ScoreObjectiveRow({
   canScore,
 }: {
   objectiveId: ObjectiveId;
-  canScore: (faction: Faction) => boolean;
+  canScore: (factionId: FactionId) => boolean;
 }) {
   const actionLog = useActionLog();
   const currentTurn = getCurrentTurnLogEntries(actionLog);
-  const factions = useFactions();
   const gameId = useGameId();
-  const objectives = useObjectives();
+  const mapOrderedFactionIds = useOrderedFactionIds("MAP");
+  const objective = useObjective(objectiveId);
   const viewOnly = useViewOnly();
 
-  const objective = objectives[objectiveId];
   if (!objective) {
     return null;
   }
@@ -35,9 +34,7 @@ export default function ScoreObjectiveRow({
 
   const possibleScorers = new Set([
     ...currentScorers,
-    ...Object.values(factions)
-      .filter(canScore)
-      .map((faction) => faction.id),
+    ...mapOrderedFactionIds.filter(canScore),
   ]);
 
   if (possibleScorers.size === 0) {
@@ -68,9 +65,11 @@ export default function ScoreObjectiveRow({
               scoreObjectiveAsync(gameId, factionId, objectiveId);
             }
           }}
-          borderColor={getFactionColor(
-            currentScorers[0] ? factions[currentScorers[0]] : undefined
-          )}
+          borderColor={
+            currentScorers[0]
+              ? getColorForFaction(currentScorers[0])
+              : undefined
+          }
           selectedFaction={currentScorers[0]}
           factions={orderedScorers}
           viewOnly={viewOnly}
@@ -82,7 +81,7 @@ export default function ScoreObjectiveRow({
             <FactionCircle
               key={factionId}
               blur
-              borderColor={getFactionColor(factions[factionId])}
+              borderColor={getColorForFaction(factionId)}
               factionId={factionId}
               onClick={
                 viewOnly

@@ -1,24 +1,22 @@
 import { FormattedMessage, useIntl } from "react-intl";
+import FactionIcon from "../../../../../../../src/components/FactionIcon/FactionIcon";
+import IconDiv from "../../../../../../../src/components/LabeledDiv/IconDiv";
 import LabeledDiv from "../../../../../../../src/components/LabeledDiv/LabeledDiv";
+import TechResearchSection from "../../../../../../../src/components/TechResearchSection/TechResearchSection";
 import TechSelectHoverMenu from "../../../../../../../src/components/TechSelectHoverMenu/TechSelectHoverMenu";
 import {
   useCurrentTurn,
   useGameId,
   useTechs,
 } from "../../../../../../../src/context/dataHooks";
+import { useFactions } from "../../../../../../../src/context/factionDataHooks";
 import {
   purgeTechAsync,
   unpurgeTechAsync,
 } from "../../../../../../../src/dynamic/api";
 import { TechRow } from "../../../../../../../src/TechRow";
 import { getPurgedTechs } from "../../../../../../../src/util/actionLog";
-import { objectEntries } from "../../../../../../../src/util/util";
-import { useFactions } from "../../../../../../../src/context/factionDataHooks";
-import TechResearchSection from "../../../../../../../src/components/TechResearchSection/TechResearchSection";
-import IconDiv from "../../../../../../../src/components/LabeledDiv/IconDiv";
-import FactionIcon from "../../../../../../../src/components/FactionIcon/FactionIcon";
 import { getFactionColor } from "../../../../../../../src/util/factions";
-import { hasTech } from "../../../../../../../src/util/api/techs";
 
 export default function TaZernDeepwrought({
   factionId,
@@ -86,17 +84,13 @@ export default function TaZernDeepwrought({
               />
             }
           >
-            {purgedTechs.map((tech) => {
-              const techObj = techs[tech];
-              if (!techObj) {
-                return null;
-              }
+            {purgedTechs.map((techId) => {
               return (
                 <TechRow
-                  key={tech}
-                  tech={techObj}
+                  key={techId}
+                  techId={techId}
                   removeTech={() => {
-                    unpurgeTechAsync(gameId, tech);
+                    unpurgeTechAsync(gameId, techId);
                   }}
                   opts={{ hideSymbols: true }}
                 />

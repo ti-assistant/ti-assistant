@@ -139,7 +139,7 @@ function setMapString(
 }
 
 export default function SetupPhase() {
-  const factions = useFactions();
+  // const factions = useFactions();
   const gameId = useGameId();
   const objectives = useObjectives();
   const options = useOptions();
@@ -363,7 +363,8 @@ export default function SetupPhase() {
             </div>
           </NumberedItem>
 
-          <div className={`flexColumn ${styles.Embedded}`}>
+          <FinishPhaseButton embedded />
+          {/* <div className={`flexColumn ${styles.Embedded}`}>
             {!setupPhaseComplete(factions, revealedObjectives) ? (
               <div
                 style={{
@@ -395,7 +396,7 @@ export default function SetupPhase() {
               ]}
               viewOnly={viewOnly}
             />
-          </div>
+          </div> */}
         </ol>
       </div>
       <div className={`flexColumn ${styles.MainColumn}`}>
@@ -432,7 +433,8 @@ export default function SetupPhase() {
               );
             })}
           </div>
-          <div className="flexColumn">
+          <FinishPhaseButton />
+          {/* <div className="flexColumn">
             {!setupPhaseComplete(factions, revealedObjectives) ? (
               <div
                 style={{
@@ -464,7 +466,7 @@ export default function SetupPhase() {
               ]}
               viewOnly={viewOnly}
             />
-          </div>
+          </div> */}
         </div>
       </div>
     </>
@@ -485,5 +487,51 @@ function StartingComponentDiv({ factionId }: { factionId: FactionId }) {
         <StartingComponents factionId={factionId} showFactionIcon />
       </div>
     </FactionDiv>
+  );
+}
+
+function FinishPhaseButton({ embedded }: { embedded?: boolean }) {
+  const factions = useFactions();
+  const gameId = useGameId();
+  const intl = useIntl();
+  const viewOnly = useViewOnly();
+  const revealedObjectives = useLogEntries<RevealObjectiveData>(
+    "REVEAL_OBJECTIVE"
+  ).map((entry) => entry.data.event.objective);
+
+  return (
+    <div className={`flexColumn ${embedded ? styles.Embedded : ""}`}>
+      {!setupPhaseComplete(factions, revealedObjectives) ? (
+        <div
+          style={{
+            color: "firebrick",
+            fontFamily: "Myriad Pro",
+            fontWeight: "bold",
+          }}
+        >
+          {getSetupPhaseText(factions, revealedObjectives, intl)}
+        </div>
+      ) : null}
+      <LockedButtons
+        unlocked={setupPhaseComplete(factions, revealedObjectives)}
+        buttons={[
+          {
+            text: intl.formatMessage({
+              id: "lYD2yu",
+              description: "Text on a button that will start a game.",
+              defaultMessage: "Start Game",
+            }),
+            onClick: () => {
+              if (!gameId) {
+                return;
+              }
+              advancePhaseAsync(gameId);
+            },
+            style: { fontSize: rem(40) },
+          },
+        ]}
+        viewOnly={viewOnly}
+      />
+    </div>
   );
 }

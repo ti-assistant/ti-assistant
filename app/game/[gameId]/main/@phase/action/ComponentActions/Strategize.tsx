@@ -8,8 +8,7 @@ import {
 import { selectSubComponentAsync } from "../../../../../../../src/dynamic/api";
 import { getSelectedSubComponent } from "../../../../../../../src/util/actionLog";
 import { rem } from "../../../../../../../src/util/util";
-import Diplomacy from "../StrategicActions/Diplomacy";
-import Technology from "../StrategicActions/Technology";
+import StrategicActions from "../StrategicActions/StrategicActions";
 
 export default function Strategize({ factionId }: { factionId: FactionId }) {
   const currentTurn = useCurrentTurn();
@@ -26,10 +25,14 @@ export default function Strategize({ factionId }: { factionId: FactionId }) {
   let additionalActions;
   switch (selectedCard) {
     case "Diplomacy":
-      additionalActions = <Diplomacy.Secondary factionId={factionId} />;
+      additionalActions = (
+        <StrategicActions.Diplomacy.Secondary factionId={factionId} />
+      );
       break;
     case "Technology":
-      additionalActions = <Technology.Secondary factionId={factionId} />;
+      additionalActions = (
+        <StrategicActions.Technology.Secondary factionId={factionId} />
+      );
       break;
   }
 

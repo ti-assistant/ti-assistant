@@ -52,15 +52,7 @@ export default function InfluenceSVG({
           fontSize={fontSize}
           textAnchor="middle"
         >
-          {/* <tspan
-            x="140.481"
-            y="173.33505"
-            stroke-width=".2646"
-            text-align="center"
-            text-anchor="middle"
-          > */}
           {influence}
-          {/* </tspan> */}
         </text>
       </g>
     </svg>

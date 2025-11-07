@@ -1,18 +1,18 @@
 import { use } from "react";
 import { ModalContext } from "../../context/contexts";
 import { useGameId, useRelics, useViewOnly } from "../../context/dataHooks";
-import { useFactions } from "../../context/factionDataHooks";
+import { useOrderedFactionIds } from "../../context/gameDataHooks";
 import { gainRelicAsync, loseRelicAsync } from "../../dynamic/api";
 import { InfoRow } from "../../InfoRow";
-import { getFactionColor } from "../../util/factions";
+import { getColorForFaction } from "../../util/factions";
 import { CollapsibleSection } from "../CollapsibleSection";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import FormattedDescription from "../FormattedDescription/FormattedDescription";
 import styles from "./RelicPanel.module.scss";
 
 function RelicPanelContent({}) {
-  const factions = useFactions();
   const gameId = useGameId();
+  const mapOrderedFactionIds = useOrderedFactionIds("MAP");
   const relics = useRelics();
   const viewOnly = useViewOnly();
 
@@ -47,13 +47,9 @@ function RelicPanelContent({}) {
                 }}
               >
                 <FactionSelectRadialMenu
-                  factions={Object.values(factions).map(
-                    (faction) => faction.id
-                  )}
+                  factions={mapOrderedFactionIds}
                   borderColor={
-                    relic.owner
-                      ? getFactionColor(factions[relic.owner])
-                      : undefined
+                    relic.owner ? getColorForFaction(relic.owner) : undefined
                   }
                   size={36}
                   selectedFaction={relic.owner}
@@ -78,13 +74,6 @@ function RelicPanelContent({}) {
                 >
                   {relic.name}
                 </InfoRow>
-                {/* {relic.owner ? (
-                  <button onClick={() => {}}>
-                    {relic.state === "purged" ? "Unpurge" : "Purge"}
-                  </button>
-                ) : (
-                  <div></div>
-                )} */}
               </div>
             );
           })}

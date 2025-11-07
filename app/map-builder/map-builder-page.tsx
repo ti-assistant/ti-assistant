@@ -221,7 +221,7 @@ export default function MapBuilderPage() {
   }
   if (filters.has("HOME_SYSTEMS")) {
     if (filters.has("BASE_GAME")) {
-      for (let i = 1; i < 19; i++) {
+      for (let i = 1; i < 18; i++) {
         tileNumbers.push(i.toString());
       }
     }
@@ -265,6 +265,8 @@ export default function MapBuilderPage() {
         return filters.has("THREE_PLANETS");
     }
   });
+
+  console.log("Tile Numbers", tileNumbers);
 
   let mapStyles: MapStyle[] = [];
   switch (numFactions) {

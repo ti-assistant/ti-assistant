@@ -4,6 +4,7 @@ import { ClientOnlyHoverMenu } from "../../../../../../src/HoverMenu";
 import { NumberedItem } from "../../../../../../src/NumberedItem";
 import { FactionTimer, StaticFactionTimer } from "../../../../../../src/Timer";
 import FactionCard from "../../../../../../src/components/FactionCard/FactionCard";
+import FactionComponents from "../../../../../../src/components/FactionComponents/FactionComponents";
 import FactionSelectRadialMenu from "../../../../../../src/components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import FormattedDescription from "../../../../../../src/components/FormattedDescription/FormattedDescription";
 import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
@@ -15,13 +16,16 @@ import {
   useAgenda,
   useGameId,
   useStrategyCards,
-  useTech,
   useViewOnly,
 } from "../../../../../../src/context/dataHooks";
-import { useFactions } from "../../../../../../src/context/factionDataHooks";
 import {
-  useActiveFaction,
-  useOnDeckFaction,
+  useFactionColor,
+  useFactionHasTech,
+} from "../../../../../../src/context/factionDataHooks";
+import {
+  useActiveFactionId,
+  useOnDeckFactionId,
+  useOrderedFactionIds,
 } from "../../../../../../src/context/gameDataHooks";
 import { useRound } from "../../../../../../src/context/stateDataHooks";
 import {
@@ -30,34 +34,30 @@ import {
   giftOfPrescienceAsync,
   swapStrategyCardsAsync,
 } from "../../../../../../src/dynamic/api";
-import { hasTech } from "../../../../../../src/util/api/techs";
-import {
-  getFactionColor,
-  getFactionName,
-} from "../../../../../../src/util/factions";
+import { getColorForFaction } from "../../../../../../src/util/factions";
 import { phaseString } from "../../../../../../src/util/strings";
 import { Optional } from "../../../../../../src/util/types/types";
-import { rem } from "../../../../../../src/util/util";
+import { objectEntries, rem } from "../../../../../../src/util/util";
 import styles from "./StrategyPhase.module.scss";
 
 function ChecksAndBalancesMenu({
-  faction,
-  factions,
+  factionId,
   strategyCards,
   onSelect,
 }: {
-  faction: Optional<Faction>;
-  factions: Partial<Record<FactionId, Faction>>;
+  factionId: Optional<FactionId>;
   strategyCards: StrategyCard[];
   onSelect: (factionId: FactionId) => void;
 }) {
   const checksAndBalances = useAgenda("Checks and Balances");
+  const mapOrderedFactionIds = useOrderedFactionIds("MAP");
   const viewOnly = useViewOnly();
-  if (!faction || !checksAndBalances || !checksAndBalances.passed) {
+
+  if (!factionId || !checksAndBalances || !checksAndBalances.passed) {
     return null;
   }
 
-  const numPlayers = Object.keys(factions).length;
+  const numPlayers = mapOrderedFactionIds.length;
 
   const cardsPerFaction: Partial<Record<FactionId, number>> = {};
   strategyCards.forEach((card) => {
@@ -68,22 +68,20 @@ function ChecksAndBalancesMenu({
     cardCount++;
     cardsPerFaction[card.faction] = cardCount;
   });
-  const otherFactions = Object.values(factions)
-    .filter((otherFaction) => {
-      if (faction.id === otherFaction.id) {
-        return false;
-      }
-      const numCards = cardsPerFaction[otherFaction.id] ?? 0;
-      if (numPlayers > 4) {
-        return numCards < 1;
-      }
-      return numCards < 2;
-    })
-    .map((otherFaction) => otherFaction.id);
+  const otherFactions = mapOrderedFactionIds.filter((otherFactionId) => {
+    if (factionId === otherFactionId) {
+      return false;
+    }
+    const numCards = cardsPerFaction[otherFactionId] ?? 0;
+    if (numPlayers > 4) {
+      return numCards < 1;
+    }
+    return numCards < 2;
+  });
 
   // If no other factions remaining, allow picking it yourself
   if (otherFactions.length === 0) {
-    otherFactions.push(faction.id);
+    otherFactions.push(factionId);
   }
 
   return (
@@ -113,15 +111,17 @@ function ChecksAndBalancesMenu({
 }
 
 function QuantumDatahubNode({
-  faction,
+  factionId,
   strategyCards,
 }: {
-  faction: Optional<Faction>;
+  factionId: FactionId;
   strategyCards: StrategyCard[];
 }) {
+  const factionColor = useFactionColor(factionId);
   const gameId = useGameId();
-  const quantumTech = useTech("Quantum Datahub Node");
+  const hasQuantum = useFactionHasTech(factionId, "Quantum Datahub Node");
   const viewOnly = useViewOnly();
+
   const [quantum, setQuantum] = useState<{
     mainCard: Optional<StrategyCardId>;
     otherCard: Optional<StrategyCardId>;
@@ -130,8 +130,12 @@ function QuantumDatahubNode({
     otherCard: undefined,
   });
 
+  if (!hasQuantum) {
+    return null;
+  }
+
   function quantumDatahubNode() {
-    if (!gameId || !quantum.mainCard || !quantum.otherCard) {
+    if (!quantum.mainCard || !quantum.otherCard) {
       return;
     }
 
@@ -144,14 +148,10 @@ function QuantumDatahubNode({
     swapStrategyCardsAsync(gameId, quantum.mainCard, quantum.otherCard);
   }
 
-  if (!faction || !hasTech(faction, quantumTech)) {
-    return null;
-  }
-
   return (
     <LabeledDiv
-      label={getFactionName(faction)}
-      color={getFactionColor(faction)}
+      label={<FactionComponents.Name factionId={factionId} />}
+      color={factionColor}
     >
       <ClientOnlyHoverMenu
         label={
@@ -188,7 +188,7 @@ function QuantumDatahubNode({
                   }
                   autoSelect={true}
                   options={strategyCards
-                    .filter((card) => card.faction === faction.id)
+                    .filter((card) => card.faction === factionId)
                     .map((card) => {
                       return { id: card.id, name: card.name };
                     })}
@@ -213,7 +213,7 @@ function QuantumDatahubNode({
                   }
                   options={strategyCards
                     .filter(
-                      (card) => card.faction && card.faction !== faction.id
+                      (card) => card.faction && card.faction !== factionId
                     )
                     .map((card) => {
                       return { id: card.id, name: card.name };
@@ -264,7 +264,6 @@ function QuantumDatahubNode({
 function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
   const arbiter = useAgenda("Imperial Arbiter");
   const gameId = useGameId();
-  const factions = useFactions();
   const viewOnly = useViewOnly();
 
   const [quantum, setQuantum] = useState<{
@@ -283,22 +282,16 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
     swapStrategyCardsAsync(gameId, quantum.mainCard, quantum.otherCard, true);
   }
 
-  if (!arbiter || !arbiter.resolved || !arbiter.passed) {
+  if (!arbiter || !arbiter.resolved || !arbiter.passed || !arbiter.target) {
     return null;
   }
 
-  const faction = arbiter.target
-    ? factions[arbiter.target as FactionId]
-    : undefined;
-
-  if (!faction) {
-    return null;
-  }
+  const factionId = arbiter.target as FactionId;
 
   return (
     <LabeledDiv
-      label={getFactionName(faction)}
-      color={getFactionColor(faction)}
+      label={<FactionComponents.Name factionId={factionId} />}
+      color={getColorForFaction(factionId)}
     >
       <ClientOnlyHoverMenu
         label={
@@ -335,7 +328,7 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
                   }
                   autoSelect={true}
                   options={strategyCards
-                    .filter((card) => card.faction === faction.id)
+                    .filter((card) => card.faction === factionId)
                     .map((card) => {
                       return { id: card.id, name: card.name };
                     })}
@@ -360,7 +353,7 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
                   }
                   options={strategyCards
                     .filter(
-                      (card) => card.faction && card.faction !== faction.id
+                      (card) => card.faction && card.faction !== factionId
                     )
                     .map((card) => {
                       return { id: card.id, name: card.name };
@@ -439,27 +432,13 @@ const CARD_ORDER: Record<StrategyCardId, number> = {
 export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
   const gameId = useGameId();
   const checksAndBalancesAgenda = useAgenda("Checks and Balances");
-  const factions = useFactions();
+  const activeFactionId = useActiveFactionId();
   const strategyCards = useStrategyCards();
   const viewOnly = useViewOnly();
-
-  function pickStrategyCard(
-    card: StrategyCard,
-    faction: Faction,
-    pickedBy: FactionId
-  ) {
-    if (!gameId) {
-      return;
-    }
-
-    assignStrategyCardAsync(gameId, faction.id, card.id, pickedBy);
-  }
 
   const orderedStrategyCards = Object.values(strategyCards).sort(
     (a, b) => CARD_ORDER[a.id] - CARD_ORDER[b.id]
   );
-
-  const activeFaction = useActiveFaction();
 
   const checksAndBalances =
     !!checksAndBalancesAgenda && !!checksAndBalancesAgenda.passed;
@@ -479,29 +458,38 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
             key={card.id}
             card={card}
             active={
-              card.faction || !activeFaction || card.invalid ? false : true
+              card.faction || !activeFactionId || card.invalid ? false : true
             }
             onClick={
               checksAndBalances ||
               card.faction ||
-              !activeFaction ||
+              !activeFactionId ||
               card.invalid ||
               viewOnly
                 ? undefined
-                : () => pickStrategyCard(card, activeFaction, activeFaction.id)
+                : () =>
+                    assignStrategyCardAsync(
+                      gameId,
+                      activeFactionId,
+                      card.id,
+                      activeFactionId
+                    )
             }
             fontSize={mobile ? 20 : 24}
           >
             <ChecksAndBalancesMenu
-              faction={activeFaction}
-              factions={factions}
+              factionId={activeFactionId}
               strategyCards={orderedStrategyCards}
               onSelect={(factionId) => {
-                const faction = factions[factionId];
-                if (!faction || !activeFaction) {
+                if (!activeFactionId) {
                   return;
                 }
-                pickStrategyCard(card, faction, activeFaction.id);
+                assignStrategyCardAsync(
+                  gameId,
+                  factionId,
+                  card.id,
+                  activeFactionId
+                );
               }}
             />
           </StrategyCardElement>
@@ -520,15 +508,22 @@ export default function StrategyPhase() {
   const newConstitution = useAgenda("New Constitution");
 
   // Techs
-  const quantumDatahubNode = useTech("Quantum Datahub Node");
+  const hacanHasQuantum = useFactionHasTech(
+    "Emirates of Hacan",
+    "Quantum Datahub Node"
+  );
+  const nekroHasQuantum = useFactionHasTech(
+    "Nekro Virus",
+    "Quantum Datahub Node"
+  );
 
-  const factions = useFactions();
+  const mapOrderedFactionIds = useOrderedFactionIds("MAP");
   const strategyCards = useStrategyCards();
   const intl = useIntl();
   const viewOnly = useViewOnly();
 
-  const activeFaction = useActiveFaction();
-  const onDeckFaction = useOnDeckFaction();
+  const activeFactionId = useActiveFactionId();
+  const onDeckFactionId = useOnDeckFactionId();
   const round = useRound();
 
   const { openModal } = use(ModalContext);
@@ -589,9 +584,9 @@ export default function StrategyPhase() {
     if (abilities["Every Player"].length === 0) {
       delete abilities["Every Player"];
     }
-    for (const faction of Object.values(factions)) {
+    for (const factionId of mapOrderedFactionIds) {
       const factionAbilities: Ability[] = [];
-      if (faction.id === "Council Keleres") {
+      if (factionId === "Council Keleres") {
         factionAbilities.push({
           name: intl.formatMessage({
             id: "Council Keleres.Abilities.Council Patronage.Title",
@@ -607,7 +602,7 @@ export default function StrategyPhase() {
         });
       }
       if (factionAbilities.length > 0) {
-        abilities[faction.id] = factionAbilities;
+        abilities[factionId] = factionAbilities;
       }
     }
     return abilities;
@@ -623,15 +618,13 @@ export default function StrategyPhase() {
   }
 
   function hasEndOfStrategyPhaseAbilities() {
-    if (factions["Naalu Collective"]) {
+    if (mapOrderedFactionIds.includes("Naalu Collective")) {
       return true;
     }
-    const hacan = factions["Emirates of Hacan"];
-    if (hacan && hasTech(hacan, quantumDatahubNode)) {
+    if (hacanHasQuantum) {
       return true;
     }
-    const nekro = factions["Nekro Virus"];
-    if (nekro && hasTech(nekro, quantumDatahubNode)) {
+    if (nekroHasQuantum) {
       return true;
     }
     if (imperialArbiter && imperialArbiter.resolved && imperialArbiter.target) {
@@ -641,7 +634,7 @@ export default function StrategyPhase() {
   }
 
   function haveAllFactionsPicked() {
-    const numFactions = Object.keys(factions).length;
+    const numFactions = mapOrderedFactionIds.length;
     let numPicked = Object.values(strategyCards).reduce((num, card) => {
       if (card.faction) {
         return num + 1;
@@ -686,24 +679,26 @@ export default function StrategyPhase() {
               values={{ phase: phaseString("STRATEGY", intl) }}
             />
             <ol className="flexColumn" style={{ alignItems: "stretch" }}>
-              {Object.entries(getStartOfStrategyPhaseAbilities()).map(
+              {objectEntries(getStartOfStrategyPhaseAbilities()).map(
                 ([factionId, abilities]) => {
                   if (abilities.length === 0) {
                     return null;
                   }
                   const label =
-                    factionId !== "Every Player"
-                      ? getFactionName(factions[factionId as FactionId])
-                      : factionId;
+                    factionId !== "Every Player" ? (
+                      <FactionComponents.Name factionId={factionId} />
+                    ) : (
+                      factionId
+                    );
                   return (
                     <NumberedItem key={factionId}>
                       <LabeledDiv
                         label={label}
-                        color={getFactionColor(
+                        color={
                           factionId !== "Every Player"
-                            ? factions[factionId as FactionId]
-                            : undefined
-                        )}
+                            ? getColorForFaction(factionId)
+                            : "#555"
+                        }
                       >
                         <div
                           className="flexColumn"
@@ -755,7 +750,7 @@ export default function StrategyPhase() {
               defaultMessage="End of {phase} Phase"
               values={{ phase: phaseString("STRATEGY", intl) }}
             />
-            {factions["Naalu Collective"] ? (
+            {mapOrderedFactionIds.includes("Naalu Collective") ? (
               <Selector
                 hoverMenuLabel={
                   <FormattedMessage
@@ -771,10 +766,10 @@ export default function StrategyPhase() {
                     defaultMessage="Gift of Prescience"
                   />
                 }
-                options={Object.values(factions)
-                  .filter((faction) => faction.id !== "Naalu Collective")
-                  .map((faction) => {
-                    return { id: faction.id, name: faction.name };
+                options={mapOrderedFactionIds
+                  .filter((factionId) => factionId !== "Naalu Collective")
+                  .map((factionId) => {
+                    return { id: factionId, name: factionId };
                   })}
                 toggleItem={(factionId, add) => {
                   const newFaction = add ? factionId : undefined;
@@ -788,11 +783,11 @@ export default function StrategyPhase() {
               />
             ) : null}
             <QuantumDatahubNode
-              faction={factions["Emirates of Hacan"]}
+              factionId={"Emirates of Hacan"}
               strategyCards={orderedStrategyCards}
             />
             <QuantumDatahubNode
-              faction={factions["Nekro Virus"]}
+              factionId={"Nekro Virus"}
               strategyCards={orderedStrategyCards}
             />
             <ImperialArbiter strategyCards={orderedStrategyCards} />
@@ -804,7 +799,7 @@ export default function StrategyPhase() {
           className="flexRow"
           style={{ position: "relative", maxWidth: rem(420) }}
         >
-          {activeFaction ? (
+          {activeFactionId ? (
             <div className="flexColumn" style={{ alignItems: "center" }}>
               <FormattedMessage
                 id="vTtJ6S"
@@ -812,7 +807,7 @@ export default function StrategyPhase() {
                 defaultMessage="Active Player"
               />
               <FactionCard
-                factionId={activeFaction.id}
+                factionId={activeFactionId}
                 style={{ height: rem(80) }}
                 opts={{
                   iconSize: rem(60),
@@ -827,7 +822,7 @@ export default function StrategyPhase() {
                 >
                   <FactionTimer
                     active
-                    factionId={activeFaction.id}
+                    factionId={activeFactionId}
                     style={{ fontSize: rem(28) }}
                   />
                 </div>
@@ -847,7 +842,7 @@ export default function StrategyPhase() {
               />
             </div>
           )}
-          {onDeckFaction ? (
+          {onDeckFactionId ? (
             <div className="flexColumn" style={{ alignItems: "center" }}>
               <FormattedMessage
                 id="S0vXJt"
@@ -855,7 +850,7 @@ export default function StrategyPhase() {
                 defaultMessage="On Deck"
               />
               <FactionCard
-                factionId={onDeckFaction.id}
+                factionId={onDeckFactionId}
                 style={{ height: rem(64) }}
                 opts={{
                   iconSize: rem(44),
@@ -871,7 +866,7 @@ export default function StrategyPhase() {
                 >
                   <StaticFactionTimer
                     active={false}
-                    factionId={onDeckFaction.id}
+                    factionId={onDeckFactionId}
                     style={{
                       fontSize: rem(18),
                     }}
@@ -892,7 +887,7 @@ export default function StrategyPhase() {
         >
           <StrategyCardSelectList mobile={false} />
         </div>
-        {activeFaction ? null : (
+        {activeFactionId ? null : (
           <button
             style={{ fontSize: rem(20) }}
             onClick={() => advancePhaseAsync(gameId)}

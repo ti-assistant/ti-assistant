@@ -14,6 +14,7 @@ import {
 } from "../../../../../../src/context/factionDataHooks";
 import {
   FactionOrdering,
+  useCompleteOrderedFactionIds,
   useOrderedFactionIds,
 } from "../../../../../../src/context/gameDataHooks";
 import {
@@ -46,7 +47,7 @@ export default function SummaryColumn() {
         : "SPEAKER";
   }
 
-  const orderedFactionIds = useOrderedFactionIds(order, tieBreak);
+  const orderedFactionIds = useCompleteOrderedFactionIds(order, tieBreak);
 
   let title = (
     <FormattedMessage

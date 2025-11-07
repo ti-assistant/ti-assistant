@@ -9,11 +9,14 @@ export function getFactionColor(faction: Optional<Faction>) {
   return convertToFactionColor(faction.color);
 }
 
-export function getColorForFaction(factionId: FactionId) {
-  return (
-    DataStore.getValue<string>(`factions.${factionId}.color`) ??
-    "var(--neutral-border)"
+export function getColorForFaction(factionId: Optional<FactionId>) {
+  if (!factionId) {
+    return "var(--neutral-border)";
+  }
+  const factionColor = DataStore.getValue<string>(
+    `factions.${factionId}.color`
   );
+  return convertToFactionColor(factionColor);
 }
 
 export function convertToFactionColor(color: Optional<string>) {

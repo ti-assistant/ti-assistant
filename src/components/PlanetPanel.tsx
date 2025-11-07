@@ -1,22 +1,22 @@
-import { CSSProperties, useState } from "react";
+import { CSSProperties } from "react";
 import { FormattedMessage } from "react-intl";
 import {
   useAttachments,
   useGameId,
-  useLeaders,
+  useLeader,
   usePlanets,
   useViewOnly,
 } from "../context/dataHooks";
-import { useFaction, useFactions } from "../context/factionDataHooks";
+import { useFactionColor } from "../context/factionDataHooks";
+import { useOrderedFactionIds } from "../context/gameDataHooks";
 import { claimPlanetAsync, unclaimPlanetAsync } from "../dynamic/api";
-import { getFactionColor, getFactionName } from "../util/factions";
 import {
   applyAllPlanetAttachments,
   filterToClaimedPlanets,
 } from "../util/planets";
-import { objectKeys, rem } from "../util/util";
+import { rem } from "../util/util";
 import { CollapsibleSection } from "./CollapsibleSection";
-import FactionIcon from "./FactionIcon/FactionIcon";
+import FactionComponents from "./FactionComponents/FactionComponents";
 import { FactionSelectHoverMenu } from "./FactionSelect";
 import styles from "./PlanetPanel.module.scss";
 import PlanetRow from "./PlanetRow/PlanetRow";
@@ -30,11 +30,11 @@ function PlanetSection({
   openedByDefault: boolean;
 }) {
   const attachments = useAttachments();
-  const faction = useFaction(factionId);
+  const factionColor = useFactionColor(factionId);
   const gameId = useGameId();
-  const leaders = useLeaders();
   const planets = usePlanets();
   const viewOnly = useViewOnly();
+  const xxekirGrom = useLeader("Xxekir Grom");
 
   const ownedPlanets = filterToClaimedPlanets(planets, factionId);
 
@@ -47,18 +47,17 @@ function PlanetSection({
   });
 
   const hasXxchaHero =
-    factionId === "Xxcha Kingdom" &&
-    leaders["Xxekir Grom"]?.state === "readied";
+    factionId === "Xxcha Kingdom" && xxekirGrom?.state === "readied";
 
   return (
     <CollapsibleSection
-      color={getFactionColor(faction)}
+      color={factionColor}
       openedByDefault={openedByDefault}
       title={
         <div className={styles.planetTitle}>
-          <FactionIcon factionId={factionId} size={20} />
-          {getFactionName(faction)}
-          <FactionIcon factionId={factionId} size={20} />
+          <FactionComponents.Icon factionId={factionId} size={20} />
+          <FactionComponents.Name factionId={factionId} />
+          <FactionComponents.Icon factionId={factionId} size={20} />
         </div>
       }
     >
@@ -113,12 +112,10 @@ function PlanetSection({
 }
 
 function UnclaimedPlanetSection() {
-  const factions = useFactions();
   const gameId = useGameId();
+  const mapOrderedFactionIds = useOrderedFactionIds("MAP");
   const planets = usePlanets();
   const viewOnly = useViewOnly();
-
-  const [collapsed, setCollapsed] = useState(true);
 
   const unownedPlanets = Object.values(planets)
     .filter((planet) => !planet.owner && !planet.locked)
@@ -148,7 +145,7 @@ function UnclaimedPlanetSection() {
           style={{ position: "relative" }}
         >
           {unownedPlanets.map((planet) => {
-            let possibleFactions = objectKeys(factions);
+            let possibleFactions = mapOrderedFactionIds;
             if (planet.attributes.includes("ocean")) {
               possibleFactions = ["Deepwrought Scholarate"];
             }
@@ -167,7 +164,7 @@ function UnclaimedPlanetSection() {
                   <FactionSelectHoverMenu
                     options={possibleFactions}
                     onSelect={(factionId) => {
-                      if (!gameId || !factionId) {
+                      if (!factionId) {
                         return;
                       }
                       claimPlanetAsync(gameId, factionId, planet.id);
@@ -195,23 +192,19 @@ interface CSSWithNumColumns extends CSSProperties {
 }
 
 export default function PlanetPanel() {
-  const factions = useFactions();
-
-  const orderedFactionIds = Object.values(factions)
-    .sort((a, b) => a.mapPosition - b.mapPosition)
-    .map((faction) => faction.id);
+  const mapOrderedFactionIds = useOrderedFactionIds("MAP");
 
   return (
     <div
       className={styles.planetGrid}
       style={
         {
-          "--num-columns": Math.ceil(Object.keys(factions).length / 2) + 1,
-          "--num-factions": Object.keys(factions).length,
+          "--num-columns": Math.ceil(mapOrderedFactionIds.length / 2) + 1,
+          "--num-factions": mapOrderedFactionIds.length,
         } as CSSWithNumColumns
       }
     >
-      {orderedFactionIds.map((factionId) => {
+      {mapOrderedFactionIds.map((factionId) => {
         return (
           <PlanetSection
             key={factionId}

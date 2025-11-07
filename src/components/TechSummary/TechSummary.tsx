@@ -85,7 +85,7 @@ export function FullTechSummary({
           type="GREEN"
           factionId={factionId}
           techs={techs}
-          ownedTechs={ownedTechs}
+          ownedTechs={new Set(ownedTechs)}
           viewOnly={viewOnly}
         />
         <div>&nbsp;</div>
@@ -103,7 +103,7 @@ export function FullTechSummary({
           type="BLUE"
           factionId={factionId}
           techs={techs}
-          ownedTechs={ownedTechs}
+          ownedTechs={new Set(ownedTechs)}
           viewOnly={viewOnly}
         />
         <div>&nbsp;</div>
@@ -120,7 +120,7 @@ export function FullTechSummary({
           type="YELLOW"
           factionId={factionId}
           techs={techs}
-          ownedTechs={ownedTechs}
+          ownedTechs={new Set(ownedTechs)}
           viewOnly={viewOnly}
         />
         <div>&nbsp;</div>
@@ -137,7 +137,7 @@ export function FullTechSummary({
           type="RED"
           factionId={factionId}
           techs={techs}
-          ownedTechs={ownedTechs}
+          ownedTechs={new Set(ownedTechs)}
           viewOnly={viewOnly}
         />
         <div
@@ -157,7 +157,7 @@ export function FullTechSummary({
             type="UPGRADE"
             factionId={factionId}
             techs={techs}
-            ownedTechs={ownedTechs}
+            ownedTechs={new Set(ownedTechs)}
             viewOnly={viewOnly}
           />
         </div>
@@ -166,7 +166,7 @@ export function FullTechSummary({
             type="FACTION"
             factionId={factionId}
             techs={techs}
-            ownedTechs={ownedTechs}
+            ownedTechs={new Set(ownedTechs)}
             viewOnly={viewOnly}
           />
         </div>
@@ -182,7 +182,7 @@ export default function TechSummary({
 }: {
   factionId: FactionId;
   techs: Techs;
-  ownedTechs: TechId[];
+  ownedTechs: Set<TechId>;
 }) {
   const { settings } = useContext(SettingsContext);
   const viewOnly = useViewOnly();
@@ -197,7 +197,7 @@ export default function TechSummary({
   let redTechs = [];
   let upgradeTechs = [];
   for (const tech of Object.values(techs)) {
-    if (!ownedTechs.includes(tech.id)) {
+    if (tech.state === "purged" || !ownedTechs.has(tech.id)) {
       continue;
     }
     switch (tech.type) {

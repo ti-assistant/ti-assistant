@@ -1,21 +1,27 @@
+import {
+  useFactionColor,
+  useIsFactionPassed,
+} from "../../context/factionDataHooks";
 import { BLACK_BORDER_GLOW } from "../../util/borderGlow";
-import { getFactionColor, getFactionName } from "../../util/factions";
 import { rem } from "../../util/util";
-import FactionIcon from "../FactionIcon/FactionIcon";
+import FactionComponents from "../FactionComponents/FactionComponents";
 import styles from "./FactionTile.module.scss";
 
 interface FactionTileProps {
-  faction: Faction;
+  factionId: FactionId;
   fontSize: number;
   iconSize: number;
 }
 
 export default function FactionTile({
-  faction,
+  factionId,
   fontSize,
   iconSize,
 }: FactionTileProps) {
-  const color = faction.passed ? "#555" : getFactionColor(faction);
+  const factionColor = useFactionColor(factionId);
+  const isPassed = useIsFactionPassed(factionId);
+
+  const color = isPassed ? "#555" : factionColor;
 
   const factionTileCSS = {
     "--color": color,
@@ -40,9 +46,11 @@ export default function FactionTile({
             userSelect: "none",
           }}
         >
-          <FactionIcon factionId={faction.id} size="100%" />
+          <FactionComponents.Icon factionId={factionId} size="100%" />
         </div>
-        <div className={styles.Name}>{getFactionName(faction)}</div>
+        <div className={styles.Name}>
+          {<FactionComponents.Name factionId={factionId} />}
+        </div>
       </div>
     </div>
   );

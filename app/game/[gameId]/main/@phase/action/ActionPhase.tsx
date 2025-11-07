@@ -41,12 +41,14 @@ import {
   useAllSecondariesCompleted,
   useFaction,
   useFactionColor,
-  useFactions,
+  useFactionSecondary,
+  useIsFactionPassed,
   usePassedFactionIds,
 } from "../../../../../../src/context/factionDataHooks";
 import {
   useActiveFactionId,
   useOnDeckFactionId,
+  useOrderedFactionIds,
 } from "../../../../../../src/context/gameDataHooks";
 import { useObjectives } from "../../../../../../src/context/objectiveDataHooks";
 import { useGameState } from "../../../../../../src/context/stateDataHooks";
@@ -68,6 +70,7 @@ import {
 } from "../../../../../../src/util/actionLog";
 import { getSelectedActionFromLog } from "../../../../../../src/util/api/data";
 import {
+  getColorForFaction,
   getFactionColor,
   getFactionName,
 } from "../../../../../../src/util/factions";
@@ -77,29 +80,77 @@ import { Optional } from "../../../../../../src/util/types/types";
 import { rem } from "../../../../../../src/util/util";
 import styles from "./ActionPhase.module.scss";
 import { ComponentAction } from "./ComponentAction";
-import Diplomacy from "./StrategicActions/Diplomacy";
-import Imperial from "./StrategicActions/Imperial";
-import Politics from "./StrategicActions/Politics";
-import Technology from "./StrategicActions/Technology";
-import Warfare from "./StrategicActions/Warfare";
+import StrategicActions from "./StrategicActions/StrategicActions";
 
 interface FactionActionButtonsProps {
   factionId: FactionId;
 }
 
+function SecondaryFactionCheck({
+  factionId,
+  primaryCompleted,
+}: {
+  factionId: FactionId;
+  primaryCompleted: boolean;
+}) {
+  const gameId = useGameId();
+  const secondaryState = useFactionSecondary(factionId);
+  const viewOnly = useViewOnly();
+
+  return (
+    <div key={factionId} className="flexColumn" style={{ gap: rem(2) }}>
+      <MultiStateToggle
+        key={factionId}
+        selected={
+          secondaryState === "DONE"
+            ? "Positive"
+            : secondaryState === "SKIPPED"
+            ? "Negative"
+            : undefined
+        }
+        toggleFn={(nextVal) => {
+          if (viewOnly) {
+            return;
+          }
+          if (!nextVal) {
+            markSecondaryAsync(gameId, factionId, "PENDING");
+          }
+          switch (nextVal) {
+            case "Positive":
+              markSecondaryAsync(gameId, factionId, "DONE");
+              break;
+            case "Negative":
+              markSecondaryAsync(gameId, factionId, "SKIPPED");
+              break;
+          }
+        }}
+      >
+        <FactionIcon factionId={factionId} size={24} />
+      </MultiStateToggle>
+      <FactionSecondaryTimer
+        factionId={factionId}
+        active={primaryCompleted && secondaryState === "PENDING"}
+        style={{
+          fontSize: rem(16),
+          width: "auto",
+          color:
+            primaryCompleted && secondaryState === "PENDING" ? "#eee" : "#555",
+        }}
+      />
+    </div>
+  );
+}
+
 function SecondaryCheck({
   activeFactionId,
-  gameId,
   primaryCompleted,
-  orderedFactions,
+  orderedFactionIds,
 }: {
   activeFactionId: FactionId;
-  gameId: string;
   primaryCompleted: boolean;
-  orderedFactions: Faction[];
+  orderedFactionIds: FactionId[];
 }) {
   let allCompleted = true;
-  const viewOnly = useViewOnly();
   return (
     <div className="flexColumn hugeFont">
       <div
@@ -110,118 +161,15 @@ function SecondaryCheck({
           gap: rem(4),
         }}
       >
-        {orderedFactions.map((faction) => {
-          if (faction.id === activeFactionId) {
+        {orderedFactionIds.map((factionId) => {
+          if (factionId === activeFactionId) {
             return null;
           }
-          const secondaryState = faction.secondary ?? "PENDING";
-          const color = getFactionColor(faction);
-          if (secondaryState === "PENDING") {
-            allCompleted = false;
-          }
           return (
-            <div
-              key={faction.id}
-              className="flexColumn"
-              style={{ gap: rem(2) }}
-            >
-              <MultiStateToggle
-                key={faction.id}
-                selected={
-                  secondaryState === "DONE"
-                    ? "Positive"
-                    : secondaryState === "SKIPPED"
-                    ? "Negative"
-                    : undefined
-                }
-                toggleFn={(nextVal) => {
-                  if (!nextVal) {
-                    markSecondaryAsync(gameId, faction.id, "PENDING");
-                  }
-                  switch (nextVal) {
-                    case "Positive":
-                      markSecondaryAsync(gameId, faction.id, "DONE");
-                      break;
-                    case "Negative":
-                      markSecondaryAsync(gameId, faction.id, "SKIPPED");
-                      break;
-                  }
-                }}
-              >
-                <FactionIcon factionId={faction.id} size={24} />
-              </MultiStateToggle>
-              <FactionSecondaryTimer
-                factionId={faction.id}
-                active={primaryCompleted && secondaryState === "PENDING"}
-                style={{
-                  fontSize: rem(16),
-                  width: "auto",
-                  color:
-                    primaryCompleted && secondaryState === "PENDING"
-                      ? "#eee"
-                      : "#555",
-                }}
-              />
-            </div>
-          );
-          return (
-            <FactionCircle
-              key={faction.id}
-              blur
-              borderColor={color}
-              fade={secondaryState !== "PENDING"}
-              factionId={faction.id}
-              onClick={
-                viewOnly
-                  ? undefined
-                  : () => {
-                      if (!gameId) {
-                        return;
-                      }
-                      let nextState: Secondary = "DONE";
-                      switch (secondaryState) {
-                        case "DONE":
-                          nextState = "SKIPPED";
-                          break;
-                        case "PENDING":
-                          nextState = "DONE";
-                          break;
-                        case "SKIPPED":
-                          nextState = "PENDING";
-                          break;
-                      }
-                      markSecondaryAsync(gameId, faction.id, nextState);
-                    }
-              }
-              size={52}
-              tag={
-                secondaryState === "PENDING" ? undefined : (
-                  <div
-                    className="flexRow largeFont"
-                    style={{
-                      width: "80%",
-                      height: "80%",
-                      color: secondaryState === "DONE" ? "green" : "red",
-                      // fontWeight: "bold",
-                    }}
-                  >
-                    {secondaryState === "DONE" ? (
-                      <div
-                        className="symbol"
-                        style={{
-                          fontSize: rem(18),
-                          lineHeight: rem(18),
-                        }}
-                      >
-                        ✓
-                      </div>
-                    ) : (
-                      <SymbolX color="red" />
-                    )}
-                  </div>
-                )
-              }
-              tagBorderColor={secondaryState === "DONE" ? "green" : "red"}
+            <SecondaryFactionCheck
+              key={factionId}
+              factionId={factionId}
+              primaryCompleted={primaryCompleted}
             />
           );
         })}
@@ -233,14 +181,13 @@ function SecondaryCheck({
 
 export function FactionActionButtons({ factionId }: FactionActionButtonsProps) {
   const currentTurn = useCurrentTurn();
-  const factions = useFactions();
+  const isFactionPassed = useIsFactionPassed(factionId);
   const gameId = useGameId();
   const strategyCards = useStrategyCards();
   const viewOnly = useViewOnly();
 
   function canFactionPass(factionId: FactionId) {
-    const faction = factions[factionId];
-    if (faction?.passed) {
+    if (isFactionPassed) {
       return false;
     }
     for (const card of getStrategyCardsForFaction(strategyCards, factionId)) {
@@ -264,11 +211,6 @@ export function FactionActionButtons({ factionId }: FactionActionButtonsProps) {
     }
   }
 
-  const activeFaction = factions[factionId];
-  if (!activeFaction) {
-    return null;
-  }
-
   return (
     <div
       className="flexRow"
@@ -282,24 +224,22 @@ export function FactionActionButtons({ factionId }: FactionActionButtonsProps) {
         justifyContent: "center",
       }}
     >
-      {getStrategyCardsForFaction(strategyCards, activeFaction.id).map(
-        (card) => {
-          if (card.used) {
-            return null;
-          }
-          return (
-            <Chip
-              key={card.id}
-              selected={selectedAction === card.id}
-              fontSize={18}
-              toggleFn={() => toggleAction(card.id)}
-              disabled={viewOnly}
-            >
-              {card.name}
-            </Chip>
-          );
+      {getStrategyCardsForFaction(strategyCards, factionId).map((card) => {
+        if (card.used) {
+          return null;
         }
-      )}
+        return (
+          <Chip
+            key={card.id}
+            selected={selectedAction === card.id}
+            fontSize={18}
+            toggleFn={() => toggleAction(card.id)}
+            disabled={viewOnly}
+          >
+            {card.name}
+          </Chip>
+        );
+      })}
       <Chip
         selected={selectedAction === "Tactical"}
         fontSize={18}
@@ -324,7 +264,7 @@ export function FactionActionButtons({ factionId }: FactionActionButtonsProps) {
           defaultMessage="Component"
         />
       </Chip>
-      {canFactionPass(activeFaction.id) ? (
+      {canFactionPass(factionId) ? (
         <Chip
           selected={selectedAction === "Pass"}
           fontSize={18}
@@ -371,7 +311,6 @@ export function AdditionalActions({
   primaryOnly = false,
   secondaryOnly = false,
 }: AdditionalActionsProps) {
-  const factions = useFactions();
   const gameId = useGameId();
   const objectives = useObjectives();
   const planets = usePlanets();
@@ -380,29 +319,27 @@ export function AdditionalActions({
   const viewOnly = useViewOnly();
 
   const currentTurn = useCurrentTurn();
-
-  const activeFaction = factions[factionId];
-
-  if (!activeFaction) {
-    return null;
-  }
+  const orderedFactionIds = useOrderedFactionIds(
+    "SPEAKER",
+    undefined,
+    factionId
+  );
+  const passedFactionIds = usePassedFactionIds();
 
   function lastFaction() {
-    const numFactions = Object.keys(factions).length;
-    const numPassed = Object.values(factions).filter(
-      (faction) => faction.passed
-    ).length;
+    const numFactions = orderedFactionIds.length;
+    const numPassed = passedFactionIds.length;
     return numFactions - 1 === numPassed;
   }
 
   const primaryCompleted = isPrimaryComplete(currentTurn);
 
-  const claimedPlanets = getClaimedPlanets(currentTurn, activeFaction.id);
+  const claimedPlanets = getClaimedPlanets(currentTurn, factionId);
   const claimablePlanets = Object.values(planets).filter((planet) => {
     if (!planets) {
       return false;
     }
-    if (planet.owner === activeFaction.id) {
+    if (planet.owner === factionId) {
       return false;
     }
     if (planet.locked) {
@@ -444,7 +381,7 @@ export function AdditionalActions({
     .filter(
       (logEntry) =>
         logEntry.data.action === "SCORE_OBJECTIVE" &&
-        logEntry.data.event.faction === activeFaction.id
+        logEntry.data.event.faction === factionId
     )
     .map((logEntry) => (logEntry.data as ScoreObjectiveData).event.objective);
   const scoredActionPhaseObjectives = scoredObjectives.filter((objective) => {
@@ -453,25 +390,6 @@ export function AdditionalActions({
       return false;
     }
     return objectiveObj.phase === "ACTION";
-  });
-
-  const orderedFactions = Object.values(factions).sort((a, b) => {
-    if (a.order === activeFaction.order) {
-      return -1;
-    }
-    if (b.order === activeFaction.order) {
-      return 1;
-    }
-    if (a.order < activeFaction.order) {
-      if (b.order < activeFaction.order) {
-        return a.order - b.order;
-      }
-      return 1;
-    }
-    if (b.order > activeFaction.order) {
-      return a.order - b.order;
-    }
-    return -1;
   });
 
   const selectedAction = getSelectedActionFromLog(currentTurn);
@@ -483,7 +401,7 @@ export function AdditionalActions({
         const isActive = state?.activeplayer === factionId;
         const numTechs =
           isActive || factionId === "Universities of Jol-Nar" ? 2 : 1;
-        return activeFaction.id !== "Nekro Virus" ? (
+        return factionId !== "Nekro Virus" ? (
           <div className="flexColumn largeFont" style={{ width: "100%" }}>
             <LabeledLine
               leftLabel={
@@ -492,7 +410,7 @@ export function AdditionalActions({
             />
             <React.Fragment>
               <TechResearchSection
-                factionId={activeFaction.id}
+                factionId={factionId}
                 numTechs={numTechs}
                 hideWrapper
               />
@@ -508,10 +426,9 @@ export function AdditionalActions({
                     }
                   />
                   <SecondaryCheck
-                    activeFactionId={activeFaction.id}
-                    gameId={gameId}
+                    activeFactionId={factionId}
                     primaryCompleted={primaryCompleted}
-                    orderedFactions={orderedFactions}
+                    orderedFactionIds={orderedFactionIds}
                   />
                 </React.Fragment>
               ) : null}
@@ -521,7 +438,7 @@ export function AdditionalActions({
       }
       return (
         <div className="flexColumn largeFont" style={{ ...style, gap: rem(4) }}>
-          {activeFaction.id !== "Nekro Virus" ? (
+          {factionId !== "Nekro Virus" ? (
             <div className="flexColumn" style={{ gap: rem(4), width: "100%" }}>
               <LabeledLine
                 leftLabel={
@@ -553,7 +470,7 @@ export function AdditionalActions({
                   </Toggle>
                 }
               />
-              <Technology.Primary factionId={activeFaction.id} />
+              <StrategicActions.Technology.Primary factionId={factionId} />
             </div>
           ) : null}
           <div className="flexColumn" style={{ gap: rem(4), width: "100%" }}>
@@ -575,12 +492,13 @@ export function AdditionalActions({
                 </InfoRow>
               }
             />
-            <Technology.AllSecondaries activeFactionId={activeFaction.id} />
+            <StrategicActions.Technology.AllSecondaries
+              activeFactionId={factionId}
+            />
             <SecondaryCheck
-              activeFactionId={activeFaction.id}
-              gameId={gameId}
+              activeFactionId={factionId}
               primaryCompleted={primaryCompleted}
-              orderedFactions={orderedFactions}
+              orderedFactionIds={orderedFactionIds}
             />
           </div>
         </div>
@@ -621,7 +539,7 @@ export function AdditionalActions({
                 </Toggle>
               }
             />
-            <Politics.Primary />
+            <StrategicActions.Politics.Primary />
           </React.Fragment>
           <LabeledLine
             leftLabel={
@@ -640,10 +558,9 @@ export function AdditionalActions({
             }
           />
           <SecondaryCheck
-            activeFactionId={activeFaction.id}
-            gameId={gameId}
+            activeFactionId={factionId}
             primaryCompleted={primaryCompleted}
-            orderedFactions={orderedFactions}
+            orderedFactionIds={orderedFactionIds}
           />
         </div>
       );
@@ -682,7 +599,7 @@ export function AdditionalActions({
               </Toggle>
             }
           />
-          <Diplomacy.Primary factionId={activeFaction.id} />
+          <StrategicActions.Diplomacy.Primary factionId={factionId} />
           <LabeledLine
             leftLabel={
               <InfoRow
@@ -699,12 +616,13 @@ export function AdditionalActions({
               </InfoRow>
             }
           />
-          <Diplomacy.AllSecondaries activeFactionId={activeFaction.id} />
+          <StrategicActions.Diplomacy.AllSecondaries
+            activeFactionId={factionId}
+          />
           <SecondaryCheck
-            activeFactionId={activeFaction.id}
-            gameId={gameId}
+            activeFactionId={factionId}
             primaryCompleted={primaryCompleted}
-            orderedFactions={orderedFactions}
+            orderedFactionIds={orderedFactionIds}
           />
         </div>
       );
@@ -760,10 +678,9 @@ export function AdditionalActions({
             }
           />
           <SecondaryCheck
-            activeFactionId={activeFaction.id}
-            gameId={gameId}
+            activeFactionId={factionId}
             primaryCompleted={primaryCompleted}
-            orderedFactions={orderedFactions}
+            orderedFactionIds={orderedFactionIds}
           />
         </div>
       );
@@ -805,7 +722,7 @@ export function AdditionalActions({
               }
             />
             <div></div>
-            <Warfare.Primary factionId={activeFaction.id} />
+            <StrategicActions.Warfare.Primary factionId={factionId} />
           </React.Fragment>
           <LabeledLine
             leftLabel={
@@ -824,10 +741,9 @@ export function AdditionalActions({
             }
           />
           <SecondaryCheck
-            activeFactionId={activeFaction.id}
-            gameId={gameId}
+            activeFactionId={factionId}
             primaryCompleted={primaryCompleted}
-            orderedFactions={orderedFactions}
+            orderedFactionIds={orderedFactionIds}
           />
         </div>
       );
@@ -867,7 +783,7 @@ export function AdditionalActions({
               </Toggle>
             }
           />
-          <Imperial.Primary factionId={activeFaction.id} />
+          <StrategicActions.Imperial.Primary factionId={factionId} />
           <LabeledLine
             leftLabel={
               <InfoRow
@@ -885,16 +801,15 @@ export function AdditionalActions({
             }
           />
           <SecondaryCheck
-            activeFactionId={activeFaction.id}
-            gameId={gameId}
+            activeFactionId={factionId}
             primaryCompleted={primaryCompleted}
-            orderedFactions={orderedFactions}
+            orderedFactionIds={orderedFactionIds}
           />
         </div>
       );
     }
     case "Component":
-      return <ComponentAction factionId={activeFaction.id} />;
+      return <ComponentAction factionId={factionId} />;
     case "Pass":
       let hasProveEndurance = false;
       scoredActionPhaseObjectives.forEach((objective) => {
@@ -942,10 +857,10 @@ export function AdditionalActions({
           />
           :
           <FactionCircle
-            key={activeFaction.id}
+            key={factionId}
             blur
-            borderColor={getFactionColor(activeFaction)}
-            factionId={activeFaction.id}
+            borderColor={getColorForFaction(factionId)}
+            factionId={factionId}
             onClick={
               viewOnly
                 ? undefined
@@ -956,15 +871,11 @@ export function AdditionalActions({
                     if (hasProveEndurance) {
                       unscoreObjectiveAsync(
                         gameId,
-                        activeFaction.id,
+                        factionId,
                         "Prove Endurance"
                       );
                     } else {
-                      scoreObjectiveAsync(
-                        gameId,
-                        activeFaction.id,
-                        "Prove Endurance"
-                      );
+                      scoreObjectiveAsync(gameId, factionId, "Prove Endurance");
                     }
                   }
             }
@@ -1009,7 +920,7 @@ export function AdditionalActions({
       const scorableObjectives = Object.values(objectives).filter(
         (objective) => {
           const scorers = objective.scorers ?? [];
-          if (scorers.includes(activeFaction.id)) {
+          if (scorers.includes(factionId)) {
             return false;
           }
           if (scoredObjectives.includes(objective.id)) {
@@ -1032,7 +943,7 @@ export function AdditionalActions({
       );
       return (
         <TacticalAction
-          activeFactionId={activeFaction.id}
+          activeFactionId={factionId}
           claimablePlanets={claimablePlanets}
           conqueredPlanets={claimedPlanets}
           scorableObjectives={scorableObjectives}

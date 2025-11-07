@@ -2,16 +2,9 @@ import { use } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import FormattedDescription from "./components/FormattedDescription/FormattedDescription";
 import { ModalContent } from "./components/Modal/Modal";
-import { translateOutcome } from "./components/VoteBlock/VoteBlock";
+import { useOutcome } from "./context/agendaDataHooks";
 import { ModalContext } from "./context/contexts";
-import {
-  useAgendas,
-  usePlanets,
-  useStrategyCards,
-  useViewOnly,
-} from "./context/dataHooks";
-import { useFactions } from "./context/factionDataHooks";
-import { useObjectives } from "./context/objectiveDataHooks";
+import { useViewOnly } from "./context/dataHooks";
 import { SelectableRow } from "./SelectableRow";
 import { agendaTypeString, outcomeString } from "./util/strings";
 import { rem } from "./util/util";
@@ -60,16 +53,12 @@ export function AgendaRow({
   removeAgenda,
   hideOutcome,
 }: AgendaRowProps) {
-  const agendas = useAgendas();
-  const factions = useFactions();
-  const objectives = useObjectives();
-  const planets = usePlanets();
-  const strategyCards = useStrategyCards();
   const viewOnly = useViewOnly();
+  const intl = useIntl();
+
+  const outcome = useOutcome(agenda.id, intl);
 
   const { openModal } = use(ModalContext);
-
-  const intl = useIntl();
 
   const textColor = "#eee";
 
@@ -90,22 +79,7 @@ export function AgendaRow({
             }}
           >
             <div>{agenda.name}</div>
-            {agenda.target && !hideOutcome ? (
-              <div>
-                [
-                {translateOutcome(
-                  agenda.target,
-                  agenda.elect,
-                  planets,
-                  factions,
-                  objectives,
-                  agendas,
-                  strategyCards,
-                  intl
-                )}
-                ]
-              </div>
-            ) : null}
+            {agenda.target && !hideOutcome ? <div>[{outcome}]</div> : null}
           </div>
           <div
             className="popupIcon"

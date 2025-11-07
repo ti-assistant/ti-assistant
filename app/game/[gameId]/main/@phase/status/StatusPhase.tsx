@@ -4,6 +4,8 @@ import { ClientOnlyHoverMenu } from "../../../../../../src/HoverMenu";
 import { LockedButtons } from "../../../../../../src/LockedButton";
 import { NumberedItem } from "../../../../../../src/NumberedItem";
 import CrownOfEmphidia from "../../../../../../src/components/CrownOfEmphidia/CrownOfEmphidia";
+import FactionComponents from "../../../../../../src/components/FactionComponents/FactionComponents";
+import FactionName from "../../../../../../src/components/FactionComponents/FactionName";
 import FactionIcon from "../../../../../../src/components/FactionIcon/FactionIcon";
 import FormattedDescription from "../../../../../../src/components/FormattedDescription/FormattedDescription";
 import IconDiv from "../../../../../../src/components/LabeledDiv/IconDiv";
@@ -28,7 +30,13 @@ import {
   useTechs,
   useViewOnly,
 } from "../../../../../../src/context/dataHooks";
-import { useFactions } from "../../../../../../src/context/factionDataHooks";
+import {
+  useFaction,
+  useFactionColor,
+  useFactions,
+  useFactionTechs,
+} from "../../../../../../src/context/factionDataHooks";
+import { useCompleteOrderedFactionIds } from "../../../../../../src/context/gameDataHooks";
 import { useObjectives } from "../../../../../../src/context/objectiveDataHooks";
 import {
   useAgendaUnlocked,
@@ -36,8 +44,14 @@ import {
   useSpeaker,
 } from "../../../../../../src/context/stateDataHooks";
 import {
+  useFactionsWithTech,
+  useTechState,
+} from "../../../../../../src/context/techDataHooks";
+import {
+  addTechAsync,
   advancePhaseAsync,
   hideObjectiveAsync,
+  removeTechAsync,
   revealObjectiveAsync,
   scoreObjectiveAsync,
   unscoreObjectiveAsync,
@@ -45,26 +59,31 @@ import {
 import {
   getLogEntries,
   getPlayedRelic,
+  getReplacedTechs,
+  getResearchedTechs,
 } from "../../../../../../src/util/actionLog";
 import { getCurrentTurnLogEntries } from "../../../../../../src/util/api/actionLog";
 import { hasTech } from "../../../../../../src/util/api/techs";
-import {
-  getFactionColor,
-  getFactionName,
-} from "../../../../../../src/util/factions";
+import { getColorForFaction } from "../../../../../../src/util/factions";
 import { getInitiativeForFaction } from "../../../../../../src/util/helpers";
 import {
   objectiveTypeString,
   phaseString,
 } from "../../../../../../src/util/strings";
 import { ActionLog } from "../../../../../../src/util/types/types";
-import { objectKeys, rem } from "../../../../../../src/util/util";
+import {
+  objectEntries,
+  objectKeys,
+  rem,
+} from "../../../../../../src/util/util";
 import styles from "./StatusPhase.module.scss";
+import { TechRow } from "../../../../../../src/TechRow";
+import TechSelectHoverMenu from "../../../../../../src/components/TechSelectHoverMenu/TechSelectHoverMenu";
 
 function CommandTokenGains() {
-  const factions = useFactions();
+  const factionsWithHyper = useFactionsWithTech("Hyper Metabolism");
+  const hyperState = useTechState("Hyper Metabolism");
   const strategyCards = useStrategyCards();
-  const hyperMetabolism = useTech("Hyper Metabolism");
 
   const orderedStrategyCards = Object.values(strategyCards)
     .filter((card) => card.faction)
@@ -79,30 +98,26 @@ function CommandTokenGains() {
   });
 
   const numberOfCommandTokens: {
-    2: Faction[];
-    3: Faction[];
-    4: Faction[];
+    2: FactionId[];
+    3: FactionId[];
+    4: FactionId[];
   } = { 2: [], 3: [], 4: [] };
   Object.values(filteredStrategyCards).forEach((card) => {
     const factionId = card.faction;
     if (!factionId) {
       return;
     }
-    const faction = factions[factionId];
-    if (!faction) {
-      return;
-    }
     let number: 2 | 3 | 4 = 2;
     if (factionId === "Federation of Sol") {
-      if (hasTech(faction, hyperMetabolism)) {
+      if (factionsWithHyper.has(factionId) && hyperState !== "purged") {
         number = 4;
       } else {
         number = 3;
       }
-    } else if (hasTech(faction, hyperMetabolism)) {
+    } else if (factionsWithHyper.has(factionId) && hyperState !== "purged") {
       number = 3;
     }
-    numberOfCommandTokens[number].push(faction);
+    numberOfCommandTokens[number].push(factionId);
   });
 
   return (
@@ -123,56 +138,53 @@ function CommandTokenGains() {
           paddingTop: rem(2),
         }}
       >
-        {Object.entries(numberOfCommandTokens).map(
-          ([number, localFactions]) => {
-            const num = parseInt(number);
-            if (localFactions.length === 0) {
-              return null;
-            }
-            return (
-              <div
-                key={num}
-                className="flexColumn"
-                style={{ alignItems: "flex-start" }}
-              >
-                <LabeledDiv label={`${num}`}>
-                  <div
-                    className="flexRow"
-                    style={{
-                      flexWrap: "wrap",
-                      justifyContent: "flex-start",
-                    }}
-                  >
-                    {localFactions.map((faction) => {
-                      return (
-                        <div
-                          key={faction.id}
-                          className="flexRow"
-                          style={{
-                            position: "relative",
-                            width: rem(32),
-                            height: rem(32),
-                            userSelect: "none",
-                          }}
-                        >
-                          <FactionIcon factionId={faction.id} size="100%" />
-                        </div>
-                      );
-                    })}
-                  </div>
-                </LabeledDiv>
-              </div>
-            );
+        {objectEntries(numberOfCommandTokens).map(([number, localFactions]) => {
+          if (localFactions.length === 0) {
+            return null;
           }
-        )}
+          return (
+            <div
+              key={number}
+              className="flexColumn"
+              style={{ alignItems: "flex-start" }}
+            >
+              <LabeledDiv label={`${number}`}>
+                <div
+                  className="flexRow"
+                  style={{
+                    flexWrap: "wrap",
+                    justifyContent: "flex-start",
+                  }}
+                >
+                  {localFactions.map((factionId) => {
+                    return (
+                      <div
+                        key={factionId}
+                        className="flexRow"
+                        style={{
+                          position: "relative",
+                          width: rem(32),
+                          height: rem(32),
+                          userSelect: "none",
+                        }}
+                      >
+                        <FactionIcon factionId={factionId} size="100%" />
+                      </div>
+                    );
+                  })}
+                </div>
+              </LabeledDiv>
+            </div>
+          );
+        })}
       </div>
     </LabeledDiv>
   );
 }
 
 function ActionCardDraws() {
-  const factions = useFactions();
-  const neuralMotivator = useTech("Neural Motivator");
+  const factionsWithNeural = useFactionsWithTech("Neural Motivator");
+  const neuralState = useTechState("Neural Motivator");
   const strategyCards = useStrategyCards();
 
   const orderedStrategyCards = Object.values(strategyCards)
@@ -187,9 +199,9 @@ function ActionCardDraws() {
     );
   });
   const numberOfActionCards: {
-    1: Faction[];
-    2: Faction[];
-    3: Faction[];
+    1: FactionId[];
+    2: FactionId[];
+    3: FactionId[];
   } = { 1: [], 2: [], 3: [] };
   Object.values(filteredStrategyCards).forEach((card) => {
     const factionId = card.faction;
@@ -197,17 +209,13 @@ function ActionCardDraws() {
       return;
     }
     let number: 1 | 2 | 3 = 1;
-    const faction = factions[factionId];
-    if (!faction) {
-      return;
-    }
-    if (hasTech(faction, neuralMotivator)) {
+    if (factionsWithNeural.has(factionId) && neuralState !== "purged") {
       number = 2;
     }
     if (factionId === "Yssaril Tribes") {
       number = 3;
     }
-    numberOfActionCards[number].push(faction);
+    numberOfActionCards[number].push(factionId);
   });
 
   return (
@@ -229,38 +237,38 @@ function ActionCardDraws() {
           paddingTop: rem(2),
         }}
       >
-        {Object.entries(numberOfActionCards).map(([number, localFactions]) => {
-          const num = parseInt(number);
+        {objectEntries(numberOfActionCards).map(([number, localFactions]) => {
           if (localFactions.length === 0) {
             return null;
           }
-          let displayNum = num;
+          let displayNum = number;
           if (
-            num === 3 &&
-            factions["Yssaril Tribes"] &&
-            !hasTech(factions["Yssaril Tribes"], neuralMotivator)
+            number === 3 &&
+            localFactions.includes("Yssaril Tribes") &&
+            (!factionsWithNeural.has("Yssaril Tribes") ||
+              neuralState === "purged")
           ) {
             displayNum = 2;
           }
           return (
             <div
-              key={num}
+              key={number}
               className="flexColumn"
               style={{
                 alignItems: "flex-start",
               }}
             >
               <LabeledDiv
-                label={`${displayNum}${num === 3 ? " (Discard 1)" : ""}`}
+                label={`${displayNum}${number === 3 ? " (Discard 1)" : ""}`}
               >
                 <div
                   className="flexRow"
                   style={{ justifyContent: "flex-start" }}
                 >
-                  {localFactions.map((faction) => {
+                  {localFactions.map((factionId) => {
                     return (
                       <div
-                        key={faction.id}
+                        key={factionId}
                         className="flexRow"
                         style={{
                           position: "relative",
@@ -269,7 +277,7 @@ function ActionCardDraws() {
                           userSelect: "none",
                         }}
                       >
-                        <FactionIcon factionId={faction.id} size="100%" />
+                        <FactionIcon factionId={factionId} size="100%" />
                       </div>
                     );
                   })}
@@ -285,7 +293,6 @@ function ActionCardDraws() {
 
 function MiddleColumn() {
   const actionLog = useActionLog();
-  const factions = useFactions();
   const gameId = useGameId();
   const objectives = useObjectives();
   const planets = usePlanets();
@@ -305,7 +312,7 @@ function MiddleColumn() {
     );
   });
 
-  if (!objectives || !factions) {
+  if (!objectives) {
     return null;
   }
   const revealedObjectives = currentTurn
@@ -397,7 +404,6 @@ function MiddleColumn() {
                   objective.phase === "STATUS"
                 );
               });
-              const faction = factions[factionId];
               return (
                 <div
                   key={card.id}
@@ -406,8 +412,8 @@ function MiddleColumn() {
                 >
                   <div style={{ gridColumn: "1 / 4", width: "100%" }}>
                     <LabeledLine
-                      label={getFactionName(faction)}
-                      color={getFactionColor(faction)}
+                      label={<FactionComponents.Name factionId={factionId} />}
+                      color={getColorForFaction(factionId)}
                     />
                   </div>
                   {!canScoreObjectives ? (
@@ -507,9 +513,7 @@ function MiddleColumn() {
                         userSelect: "none",
                       }}
                     >
-                      {faction ? (
-                        <FactionIcon factionId={faction.id} size="100%" />
-                      ) : null}
+                      <FactionIcon factionId={factionId} size="100%" />
                     </div>
                   </div>
                   <div
@@ -600,16 +604,23 @@ export function statusPhaseComplete(currentTurn: ActionLog) {
 
 export default function StatusPhase() {
   const currentTurn = useCurrentTurn();
-  const factions = useFactions();
   const gameId = useGameId();
   const objectives = useObjectives();
   const options = useOptions();
   const planets = usePlanets();
   const relics = useRelics();
   const strategyCards = useStrategyCards();
-  const techs = useTechs();
+
+  const factionsWithBioplasmosis = useFactionsWithTech("Bioplasmosis");
+  const factionsWithWormholeGenerator =
+    useFactionsWithTech("Wormhole Generator");
+  const factionsWithHydrothermalMining = useFactionsWithTech(
+    "Hydrothermal Mining"
+  );
 
   const agendaUnlocked = useAgendaUnlocked();
+  const initiativeOrderedFactionIds =
+    useCompleteOrderedFactionIds("INITIATIVE");
   const round = useRound();
   const speaker = useSpeaker();
   const viewOnly = useViewOnly();
@@ -648,13 +659,10 @@ export default function StatusPhase() {
   function getStartOfStatusPhaseAbilities(): Partial<
     Record<FactionId, Ability[]>
   > {
-    if (!factions) {
-      return {};
-    }
     let abilities: Partial<Record<FactionId, Ability[]>> = {};
-    for (const faction of Object.values(factions ?? {})) {
+    for (const factionId of initiativeOrderedFactionIds) {
       const factionAbilities: Ability[] = [];
-      if (faction.id === "Arborec") {
+      if (factionId === "Arborec") {
         factionAbilities.push({
           name: intl.formatMessage({
             id: "Arborec.Abilities.Mitosis.Title",
@@ -670,8 +678,9 @@ export default function StatusPhase() {
         });
       }
       if (
-        !(options?.expansions ?? []).includes("POK") &&
-        hasTech(faction, techs["Wormhole Generator"])
+        !options.expansions.includes("CODEX ONE") &&
+        !options.expansions.includes("THUNDERS EDGE") &&
+        factionsWithWormholeGenerator.has(factionId)
       ) {
         factionAbilities.push({
           name: intl.formatMessage({
@@ -687,8 +696,23 @@ export default function StatusPhase() {
           }),
         });
       }
+      if (factionsWithHydrothermalMining.has(factionId)) {
+        factionAbilities.push({
+          name: intl.formatMessage({
+            id: "Deepwrought Scholarate.Techs.Hydrothermal Mining.Title",
+            description: "Title of Tech: Hydrothermal Mining",
+            defaultMessage: "Hydrothermal Mining",
+          }),
+          description: intl.formatMessage({
+            id: "Deepwrought Scholarate.Techs.Hydrothermal Mining.Description",
+            description: "Description for Tech: Hydrothermal Mining",
+            defaultMessage:
+              "At the start of the status phase, gain 1 trade good for each ocean card in play.",
+          }),
+        });
+      }
       if (factionAbilities.length > 0) {
-        abilities[faction.id] = factionAbilities;
+        abilities[factionId] = factionAbilities;
       }
     }
     return abilities;
@@ -727,9 +751,9 @@ export default function StatusPhase() {
 
   function getEndOfStatusPhaseAbilities() {
     let abilities: Partial<Record<FactionId, Ability[]>> = {};
-    for (const faction of Object.values(factions ?? {})) {
+    for (const factionId of initiativeOrderedFactionIds) {
       const factionAbilities: Ability[] = [];
-      if (faction.id === "Federation of Sol") {
+      if (factionId === "Federation of Sol") {
         factionAbilities.push({
           name: intl.formatMessage({
             id: "Federation of Sol.Units.Genesis.Title",
@@ -744,7 +768,7 @@ export default function StatusPhase() {
           }),
         });
       }
-      if (hasTech(faction, techs["Bioplasmosis"])) {
+      if (factionsWithBioplasmosis.has(factionId)) {
         factionAbilities.push({
           name: intl.formatMessage({
             id: "Arborec.Techs.Bioplasmosis.Title",
@@ -762,7 +786,7 @@ export default function StatusPhase() {
       if (
         ministerOfPolicy &&
         ministerOfPolicy.resolved &&
-        ministerOfPolicy.target == faction.id
+        ministerOfPolicy.target == factionId
       ) {
         factionAbilities.push({
           name: intl.formatMessage({
@@ -775,15 +799,11 @@ export default function StatusPhase() {
         });
       }
       if (factionAbilities.length > 0) {
-        abilities[faction.id] = factionAbilities;
+        abilities[factionId] = factionAbilities;
       }
     }
     return abilities;
   }
-
-  const orderedFactions = Object.values(factions).sort((a, b) =>
-    a.order > b.order ? 1 : -1
-  );
 
   const revealedObjectives = currentTurn
     .filter((logEntry) => logEntry.data.action === "REVEAL_OBJECTIVE")
@@ -822,7 +842,7 @@ export default function StatusPhase() {
   });
 
   return (
-    <React.Fragment>
+    <>
       <ol className={`largeFont ${styles.LeftColumn}`}>
         {!hasStartOfStatusPhaseAbilities() ? null : (
           <NumberedItem>
@@ -836,77 +856,76 @@ export default function StatusPhase() {
                 />
               }
             >
-              <div className="flexColumn" style={{ padding: rem(8) }}>
-                {Object.entries(getStartOfStatusPhaseAbilities())
-                  .sort((a, b) => {
-                    if (!factions) {
-                      return 0;
-                    }
-                    const initiativeA = getInitiativeForFaction(
-                      strategyCards,
-                      a[0] as FactionId
-                    );
-                    const initiativeB = getInitiativeForFaction(
-                      strategyCards,
-                      b[0] as FactionId
-                    );
-                    if (initiativeA > initiativeB) {
-                      return 1;
-                    }
-                    return -1;
-                  })
-                  .map(([factionId, abilities]) => {
-                    if (!factions) {
-                      return null;
-                    }
-                    return (
-                      <LabeledDiv
-                        key={factionId}
-                        label={getFactionName(factions[factionId as FactionId])}
-                        color={getFactionColor(
-                          factions[factionId as FactionId]
-                        )}
-                      >
-                        <div
-                          className="flexColumn"
-                          style={{ alignItems: "flex-start" }}
+              <div
+                className="flexRow"
+                style={{ padding: rem(8), alignItems: "flex-start" }}
+              >
+                <div className="flexColumn">
+                  {objectEntries(getStartOfStatusPhaseAbilities())
+                    .sort((a, b) => {
+                      const initiativeA = getInitiativeForFaction(
+                        strategyCards,
+                        a[0] as FactionId
+                      );
+                      const initiativeB = getInitiativeForFaction(
+                        strategyCards,
+                        b[0] as FactionId
+                      );
+                      if (initiativeA > initiativeB) {
+                        return 1;
+                      }
+                      return -1;
+                    })
+                    .map(([factionId, abilities]) => {
+                      return (
+                        <LabeledDiv
+                          key={factionId}
+                          label={
+                            <FactionComponents.Name factionId={factionId} />
+                          }
+                          color={getColorForFaction(factionId)}
                         >
-                          {abilities.map((ability) => {
-                            return (
-                              <div key={ability.name} className="flexRow">
-                                {ability.name}
-                                <div
-                                  className="popupIcon"
-                                  onClick={() =>
-                                    openModal(
-                                      <ModalContent title={ability.name}>
-                                        <div
-                                          className="myriadPro"
-                                          style={{
-                                            width: "100%",
-                                            padding: rem(4),
-                                            whiteSpace: "pre-line",
-                                            textAlign: "center",
-                                            fontSize: rem(32),
-                                          }}
-                                        >
-                                          <FormattedDescription
-                                            description={ability.description}
-                                          />
-                                        </div>
-                                      </ModalContent>
-                                    )
-                                  }
-                                >
-                                  &#x24D8;
+                          <div
+                            className="flexColumn"
+                            style={{ alignItems: "flex-start" }}
+                          >
+                            {abilities.map((ability) => {
+                              return (
+                                <div key={ability.name} className="flexRow">
+                                  {ability.name}
+                                  <div
+                                    className="popupIcon"
+                                    onClick={() =>
+                                      openModal(
+                                        <ModalContent title={ability.name}>
+                                          <div
+                                            className="myriadPro"
+                                            style={{
+                                              width: "100%",
+                                              padding: rem(4),
+                                              whiteSpace: "pre-line",
+                                              textAlign: "center",
+                                              fontSize: rem(32),
+                                            }}
+                                          >
+                                            <FormattedDescription
+                                              description={ability.description}
+                                            />
+                                          </div>
+                                        </ModalContent>
+                                      )
+                                    }
+                                  >
+                                    &#x24D8;
+                                  </div>
                                 </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </LabeledDiv>
-                    );
-                  })}
+                              );
+                            })}
+                          </div>
+                        </LabeledDiv>
+                      );
+                    })}
+                </div>
                 {options.expansions.includes("THUNDERS EDGE") ? (
                   <LabeledDiv
                     label={
@@ -917,51 +936,17 @@ export default function StatusPhase() {
                       />
                     }
                   >
-                    {orderedFactions.map((faction) => {
-                      if (faction.id === "Nekro Virus") {
-                        return null;
-                      }
-                      const numFactionTechs = objectKeys(faction.techs).reduce(
-                        (count, techId) => {
-                          const tech = techs[techId];
-                          if (!tech) {
-                            return count;
-                          }
-                          if (!!tech.faction) {
-                            return count + 1;
-                          }
-                          return count;
-                        },
-                        0
-                      );
-                      if (numFactionTechs === 2) {
-                        return null;
-                      }
+                    {initiativeOrderedFactionIds.map((factionId) => {
                       return (
-                        <IconDiv
-                          key={faction.id}
-                          color={getFactionColor(faction)}
-                          icon={
-                            <FactionIcon factionId={faction.id} size={24} />
-                          }
-                          iconSize={24}
-                        >
-                          <TechResearchSection
-                            label={intl.formatMessage({
-                              id: "P/Y6Fo",
-                              description:
-                                "Message shown when a faction can gain a faction tech.",
-                              defaultMessage: "Gain Faction Tech",
-                            })}
-                            filter={(tech) => !!tech.faction}
-                            factionId={faction.id}
-                            gain
-                          />
-                        </IconDiv>
+                        <EntropicScarResearch
+                          key={factionId}
+                          factionId={factionId}
+                        />
                       );
                     })}
                   </LabeledDiv>
                 ) : null}
+                <RadicalAdvancement />
               </div>
             </ClientOnlyHoverMenu>
           </NumberedItem>
@@ -1007,8 +992,8 @@ export default function StatusPhase() {
               </LabeledDiv>
             ) : (
               <LabeledDiv
-                label={getFactionName(factions[speaker])}
-                color={getFactionColor(factions[speaker])}
+                label={<FactionComponents.Name factionId={speaker} />}
+                color={getColorForFaction(speaker)}
                 style={{ width: "100%" }}
               >
                 <div className="flexRow" style={{ whiteSpace: "nowrap" }}>
@@ -1109,11 +1094,8 @@ export default function StatusPhase() {
               }
             >
               <div className="flexColumn" style={{ padding: rem(8) }}>
-                {Object.entries(getEndOfStatusPhaseAbilities())
+                {objectEntries(getEndOfStatusPhaseAbilities())
                   .sort((a, b) => {
-                    if (!factions) {
-                      return 0;
-                    }
                     const initiativeA = getInitiativeForFaction(
                       strategyCards,
                       a[0] as FactionId
@@ -1128,16 +1110,11 @@ export default function StatusPhase() {
                     return -1;
                   })
                   .map(([factionId, abilities]) => {
-                    if (!factions) {
-                      return null;
-                    }
                     return (
                       <LabeledDiv
                         key={factionId}
-                        label={getFactionName(factions[factionId as FactionId])}
-                        color={getFactionColor(
-                          factions[factionId as FactionId]
-                        )}
+                        label={<FactionComponents.Name factionId={factionId} />}
+                        color={getColorForFaction(factionId)}
                       >
                         <div
                           className="flexColumn"
@@ -1189,6 +1166,174 @@ export default function StatusPhase() {
           viewOnly={viewOnly}
         />
       </div>
-    </React.Fragment>
+    </>
+  );
+}
+
+function EntropicScarResearch({ factionId }: { factionId: FactionId }) {
+  const currentTurn = useCurrentTurn();
+  const factionColor = useFactionColor(factionId);
+  const factionTechs = useFactionTechs(factionId);
+  const intl = useIntl();
+  const techs = useTechs();
+
+  if (factionId === "Nekro Virus") {
+    return null;
+  }
+  const numFactionTechs = Array.from(factionTechs).reduce((count, techId) => {
+    const tech = techs[techId];
+    if (!tech) {
+      return count;
+    }
+    if (!!tech.faction) {
+      return count + 1;
+    }
+    return count;
+  }, 0);
+  const researchedTechs = getResearchedTechs(currentTurn, factionId);
+  const hasResearchedFactionTech = researchedTechs.reduce((result, techId) => {
+    const techObj = techs[techId];
+    if (!techObj) {
+      return result;
+    }
+    return result || !!techObj.faction;
+  }, false);
+  if (numFactionTechs === 2 && !hasResearchedFactionTech) {
+    return null;
+  }
+  return (
+    <IconDiv
+      key={factionId}
+      color={factionColor}
+      icon={<FactionIcon factionId={factionId} size={24} />}
+      iconSize={24}
+    >
+      <TechResearchSection
+        label={intl.formatMessage({
+          id: "P/Y6Fo",
+          description: "Message shown when a faction can gain a faction tech.",
+          defaultMessage: "Gain Faction Tech",
+        })}
+        filter={(tech) => !!tech.faction}
+        factionId={factionId}
+        gain
+      />
+    </IconDiv>
+  );
+}
+
+function RadicalAdvancement() {
+  const currentTurn = useCurrentTurn();
+  const factions = useFactions();
+  const gameId = useGameId();
+  const techs = useTechs();
+
+  const factionsWithRadicalAdvancement = useFactionsWithTech(
+    "Radical Advancement"
+  );
+  const localFactions = new Set(factionsWithRadicalAdvancement);
+  const radicalAdvancement = useTech("Radical Advancement");
+
+  const deepwroughtTechs = getReplacedTechs(
+    currentTurn,
+    "Deepwrought Scholarate"
+  );
+  const nekroTechs = getReplacedTechs(currentTurn, "Nekro Virus");
+
+  if (deepwroughtTechs.includes("Radical Advancement")) {
+    localFactions.add("Deepwrought Scholarate");
+  }
+  if (nekroTechs.includes("Radical Advancement")) {
+    localFactions.add("Nekro Virus");
+  }
+
+  if (
+    localFactions.size === 0 ||
+    !radicalAdvancement ||
+    radicalAdvancement.state === "purged"
+  ) {
+    return null;
+  }
+
+  return (
+    <div className="flexColumn">
+      {Array.from(localFactions).map((factionId) => {
+        const faction = factions[factionId];
+        if (!faction) {
+          return null;
+        }
+        const returnedTech = getReplacedTechs(currentTurn, factionId)[0];
+        const returnedTechObj = returnedTech ? techs[returnedTech] : null;
+        const canReturnTechs = objectKeys(faction.techs)
+          .filter((techId) => {
+            const techObj = techs[techId];
+            if (!techObj) {
+              return false;
+            }
+            if (!hasTech(faction, techObj)) {
+              return false;
+            }
+            return techObj.type !== "UPGRADE";
+          })
+          .map((techId) => techs[techId])
+          .filter((tech) => !!tech);
+        const researchedTech = getResearchedTechs(currentTurn, factionId);
+        return (
+          <LabeledDiv
+            key={factionId}
+            label={<FactionName factionId={factionId} />}
+            color={getColorForFaction(factionId)}
+          >
+            <div
+              className="flexColumn"
+              style={{ width: "100%", fontSize: rem(14) }}
+            >
+              {returnedTech && returnedTechObj ? (
+                <>
+                  <LabeledDiv
+                    label={
+                      <FormattedMessage
+                        id="sngfoO"
+                        description="Label for a section listing returned techs."
+                        defaultMessage="Returned {count, plural, one {Tech} other {Techs}}"
+                        values={{ count: 1 }}
+                      />
+                    }
+                  >
+                    <TechRow
+                      techId={returnedTech}
+                      removeTech={() => {
+                        researchedTech.forEach((techId) => {
+                          removeTechAsync(gameId, factionId, techId);
+                        });
+                        addTechAsync(gameId, factionId, returnedTech);
+                      }}
+                    />
+                  </LabeledDiv>
+                  <TechResearchSection
+                    factionId={factionId}
+                    label={radicalAdvancement.name}
+                    gain
+                    filter={(tech) =>
+                      tech.type === returnedTechObj.type &&
+                      tech.prereqs.length - 1 === returnedTechObj.prereqs.length
+                    }
+                  />
+                </>
+              ) : (
+                <TechSelectHoverMenu
+                  factionId={factionId}
+                  techs={canReturnTechs}
+                  label={radicalAdvancement.name}
+                  selectTech={(tech) =>
+                    removeTechAsync(gameId, factionId, tech.id)
+                  }
+                />
+              )}
+            </div>
+          </LabeledDiv>
+        );
+      })}
+    </div>
   );
 }

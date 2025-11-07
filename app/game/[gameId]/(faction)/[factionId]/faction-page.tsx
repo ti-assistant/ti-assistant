@@ -41,7 +41,10 @@ import {
   useTechs,
   useViewOnly,
 } from "../../../../../src/context/dataHooks";
-import { useFactions } from "../../../../../src/context/factionDataHooks";
+import {
+  useFactions,
+  useFactionTechs,
+} from "../../../../../src/context/factionDataHooks";
 import { useObjectives } from "../../../../../src/context/objectiveDataHooks";
 import { useGameState } from "../../../../../src/context/stateDataHooks";
 import {
@@ -87,10 +90,7 @@ import {
   objectiveTypeString,
   phaseString,
 } from "../../../../../src/util/strings";
-import {
-  filterToOwnedTechs,
-  filterToUnownedTechs,
-} from "../../../../../src/util/techs";
+import { filterToUnownedTechs } from "../../../../../src/util/techs";
 import { Optional } from "../../../../../src/util/types/types";
 import { rem } from "../../../../../src/util/util";
 import {
@@ -1366,6 +1366,8 @@ function FactionContent({ factionId }: { factionId: FactionId }) {
   const techs = useTechs();
   const viewOnly = useViewOnly();
 
+  const factionTechs = useFactionTechs(factionId);
+
   const { openModal } = use(ModalContext);
 
   const [tabShown, setTabShown] = useState<string>("");
@@ -1422,22 +1424,22 @@ function FactionContent({ factionId }: { factionId: FactionId }) {
     });
   }
 
-  const ownedTechs = filterToOwnedTechs(techsObj, faction);
-  ownedTechs.sort((a, b) => {
-    const typeDiff = techOrder.indexOf(a.type) - techOrder.indexOf(b.type);
-    if (typeDiff !== 0) {
-      return typeDiff;
-    }
-    const prereqDiff = a.prereqs.length - b.prereqs.length;
-    if (prereqDiff !== 0) {
-      return prereqDiff;
-    }
-    if (a.name < b.name) {
-      return -1;
-    } else {
-      return 1;
-    }
-  });
+  // const ownedTechs = filterToOwnedTechs(techsObj, faction);
+  // ownedTechs.sort((a, b) => {
+  //   const typeDiff = techOrder.indexOf(a.type) - techOrder.indexOf(b.type);
+  //   if (typeDiff !== 0) {
+  //     return typeDiff;
+  //   }
+  //   const prereqDiff = a.prereqs.length - b.prereqs.length;
+  //   if (prereqDiff !== 0) {
+  //     return prereqDiff;
+  //   }
+  //   if (a.name < b.name) {
+  //     return -1;
+  //   } else {
+  //     return 1;
+  //   }
+  // });
   const remainingTechs = filterToUnownedTechs(techsObj, faction);
 
   const claimedPlanets = filterToClaimedPlanets(planets, factionId);
@@ -1573,11 +1575,11 @@ function FactionContent({ factionId }: { factionId: FactionId }) {
                       alignItems: "stretch",
                     }}
                   >
-                    {ownedTechs.map((tech) => {
+                    {Array.from(factionTechs).map((techId) => {
                       return (
                         <TechRow
-                          key={tech.id}
-                          tech={tech}
+                          key={techId}
+                          techId={techId}
                           removeTech={removeTechLocal}
                         />
                       );

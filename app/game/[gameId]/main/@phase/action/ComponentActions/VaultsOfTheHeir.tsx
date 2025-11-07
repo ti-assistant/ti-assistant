@@ -14,8 +14,8 @@ import {
 } from "../../../../../../../src/dynamic/api";
 import { TechRow } from "../../../../../../../src/TechRow";
 import { getPurgedTechs } from "../../../../../../../src/util/actionLog";
-import { objectKeys } from "../../../../../../../src/util/util";
 import { hasTech } from "../../../../../../../src/util/api/techs";
+import { objectKeys } from "../../../../../../../src/util/util";
 
 export default function VaultsOfTheHeir({
   factionId,
@@ -51,17 +51,13 @@ export default function VaultsOfTheHeir({
               />
             }
           >
-            {purgedTechs.map((tech) => {
-              const techObj = techs[tech];
-              if (!techObj) {
-                return null;
-              }
+            {purgedTechs.map((techId) => {
               return (
                 <TechRow
-                  key={tech}
-                  tech={techObj}
+                  key={techId}
+                  techId={techId}
                   removeTech={() => {
-                    unpurgeTechAsync(gameId, tech, factionId);
+                    unpurgeTechAsync(gameId, techId, factionId);
                   }}
                   opts={{ hideSymbols: true }}
                 />

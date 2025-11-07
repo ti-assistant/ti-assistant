@@ -18,12 +18,13 @@ import FlipSVG from "../icons/ui/Flip";
 import HitSVG from "../icons/ui/Hit";
 import SynergySVG from "../icons/ui/Synergy";
 import { hasTech } from "../util/api/techs";
-import { getFactionColor, getFactionName } from "../util/factions";
+import { getColorForFaction } from "../util/factions";
 import { leaderTypeString } from "../util/strings";
 import { sortTechs } from "../util/techs";
 import { Optional } from "../util/types/types";
 import { rem } from "../util/util";
 import { CollapsibleSection } from "./CollapsibleSection";
+import FactionComponents from "./FactionComponents/FactionComponents";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import styles from "./FactionPanel.module.scss";
 import FormattedDescription from "./FormattedDescription/FormattedDescription";
@@ -453,25 +454,21 @@ function UnitStatBlock({ stats, type }: { stats?: UnitStats; type: UnitType }) {
 }
 
 function FactionPanelContent({
-  faction,
+  factionId,
   options,
 }: {
-  faction: Faction;
+  factionId: FactionId;
   options: Options;
 }) {
   const intl = useIntl();
-  const innerFaction = useFaction(faction.id);
+  const faction = useFaction(factionId);
   // let faction: BaseFaction | Faction = buildFaction(factionId, options, intl);
   const gameId = useGameId();
   const leaders = useLeaders();
   const techs = useTechs();
   const viewOnly = useViewOnly();
 
-  if (!innerFaction) {
-    return null;
-  }
-
-  if (!innerFaction) {
+  if (!faction) {
     return null;
   }
 
@@ -553,12 +550,13 @@ function FactionPanelContent({
                     className="flexColumn"
                     style={{
                       gap: 0,
-                      justifyContent: "flex-start",
+                      justifyContent: "center",
                       alignItems: "flex-start",
                       width: "100%",
+                      minHeight: rem(24),
                     }}
                   >
-                    {leader.type !== "AGENT" ? (
+                    {leader.type !== "AGENT" && state === "locked" ? (
                       <>
                         <FormattedDescription
                           description={`${intl.formatMessage({
@@ -575,27 +573,24 @@ function FactionPanelContent({
                             })
                           }`}
                         />
-                        <hr
-                          style={{
-                            width: "100%",
-                            borderColor: "#555",
-                            margin: `${rem(4)} 0`,
-                          }}
-                        />
                       </>
-                    ) : null}
-                    <div
-                      className="flexColumn"
-                      style={{
-                        justifyContent: "flex-start",
-                        alignItems: "flex-start",
-                      }}
-                    >
-                      <FormattedDescription description={leader.description} />
-                    </div>
+                    ) : (
+                      <div
+                        className="flexColumn"
+                        style={{
+                          justifyContent: "flex-start",
+                          alignItems: "flex-start",
+                        }}
+                      >
+                        <FormattedDescription
+                          description={leader.description}
+                        />
+                      </div>
+                    )}
                   </div>
                 );
                 let leftLabel = undefined;
+                let label = undefined;
                 switch (state) {
                   case "readied":
                   case "exhausted":
@@ -617,7 +612,7 @@ function FactionPanelContent({
                             [Exhausted]
                           </span>
                         ) : null}
-                        {gameId && !viewOnly && leader.type !== "AGENT" ? (
+                        {/* {gameId && !viewOnly && leader.type !== "AGENT" ? (
                           <div
                             className="flexRow"
                             style={{
@@ -634,15 +629,30 @@ function FactionPanelContent({
                           >
                             &#128275;
                           </div>
-                        ) : null}
+                        ) : null} */}
                       </div>
                     );
+                    label =
+                      gameId && !viewOnly && leader.type !== "AGENT" ? (
+                        <div
+                          className="flexRow"
+                          style={{
+                            gap: rem(4),
+                            cursor: "pointer",
+                          }}
+                          onClick={() => {
+                            updateLeaderStateAsync(gameId, leader.id, "locked");
+                          }}
+                        >
+                          &#128275;
+                        </div>
+                      ) : undefined;
                     break;
                   case "locked":
                     leftLabel = (
                       <div className="flexRow">
                         {leader.name}
-                        {viewOnly ? null : (
+                        {/* {viewOnly ? null : (
                           <div
                             className="flexRow"
                             style={{
@@ -659,38 +669,50 @@ function FactionPanelContent({
                           >
                             &#128274;
                           </div>
-                        )}
+                        )} */}
+                      </div>
+                    );
+                    label = viewOnly ? undefined : (
+                      <div
+                        className="flexRow"
+                        style={{
+                          gap: "4px",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => {
+                          updateLeaderStateAsync(gameId, leader.id, "readied");
+                        }}
+                      >
+                        &#128274;
                       </div>
                     );
                     break;
                   case "purged":
-                    leftLabel = (
-                      <div className="flexRow">
-                        {leader.name}
-                        <div className="flexRow" style={{ gap: "4px" }}>
-                          <div
-                            style={{
-                              fontSize: rem(8),
-                              color: "#eee",
-                              border: "1px solid #eee",
-                              padding: rem(2),
-                              borderRadius: rem(2),
-                              cursor: viewOnly ? "default" : "pointer",
-                            }}
-                            onClick={
-                              viewOnly
-                                ? undefined
-                                : () => {
-                                    updateLeaderStateAsync(
-                                      gameId,
-                                      leader.id,
-                                      "readied"
-                                    );
-                                  }
-                            }
-                          >
-                            UNPURGE
-                          </div>
+                    leftLabel = <div className="flexRow">{leader.name}</div>;
+                    label = (
+                      <div className="flexRow" style={{ gap: "4px" }}>
+                        <div
+                          style={{
+                            fontSize: rem(8),
+                            color: "#eee",
+                            border: "1px solid #eee",
+                            padding: rem(2),
+                            borderRadius: rem(2),
+                            cursor: viewOnly ? "default" : "pointer",
+                          }}
+                          onClick={
+                            viewOnly
+                              ? undefined
+                              : () => {
+                                  updateLeaderStateAsync(
+                                    gameId,
+                                    leader.id,
+                                    "readied"
+                                  );
+                                }
+                          }
+                        >
+                          UNPURGE
                         </div>
                       </div>
                     );
@@ -700,6 +722,7 @@ function FactionPanelContent({
                   <AbilitySection
                     key={leader.name}
                     leftLabel={leftLabel}
+                    label={label}
                     rightLabel={leaderTypeString(
                       leader.type,
                       intl
@@ -707,6 +730,37 @@ function FactionPanelContent({
                   >
                     {innerContent}
                   </AbilitySection>
+                );
+              })}
+            </div>
+          </CollapsibleSection>
+        ) : null}
+        {factionTechs.length > 0 ? (
+          <CollapsibleSection
+            title={
+              <FormattedMessage
+                id="yctdL8"
+                defaultMessage="Faction Techs"
+                description="Header for a section listing out various faction technologies."
+              />
+            }
+          >
+            <div
+              className="flexColumn"
+              style={{
+                gap: rem(4),
+                padding: `0 ${rem(4)} ${rem(4)}`,
+                fontSize: rem(14),
+              }}
+            >
+              {factionTechs.map((tech) => {
+                return (
+                  <FactionTech
+                    key={tech.id}
+                    tech={tech}
+                    faction={faction}
+                    viewOnly={viewOnly}
+                  />
                 );
               })}
             </div>
@@ -788,37 +842,6 @@ function FactionPanelContent({
             })}
           </div>
         </CollapsibleSection>
-        {factionTechs.length > 0 ? (
-          <CollapsibleSection
-            title={
-              <FormattedMessage
-                id="yctdL8"
-                defaultMessage="Faction Techs"
-                description="Header for a section listing out various faction technologies."
-              />
-            }
-          >
-            <div
-              className="flexColumn"
-              style={{
-                gap: rem(4),
-                padding: `0 ${rem(4)} ${rem(4)}`,
-                fontSize: rem(14),
-              }}
-            >
-              {factionTechs.map((tech) => {
-                return (
-                  <FactionTech
-                    key={tech.id}
-                    tech={tech}
-                    faction={innerFaction}
-                    viewOnly={viewOnly}
-                  />
-                );
-              })}
-            </div>
-          </CollapsibleSection>
-        ) : null}
       </div>
       <div
         className="flexColumn"
@@ -842,13 +865,12 @@ function FactionPanelContent({
               fontSize: rem(14),
             }}
           >
-            {faction.units.map((unit, index) => {
+            {faction.units.map((unit) => {
               const unitUpgradeTech = unit.upgrade
                 ? techs[unit.upgrade]
                 : undefined;
               const showUpgrade =
-                (unit.upgrade && hasTech(innerFaction, unitUpgradeTech)) ??
-                false;
+                (unit.upgrade && hasTech(faction, unitUpgradeTech)) ?? false;
               return (
                 <FactionUnit
                   key={unit.name}
@@ -1017,10 +1039,6 @@ function FactionPanelModal({
   factionId: FactionId;
   options: Options;
 }) {
-  const faction = useFaction(factionId);
-  if (!faction) {
-    return null;
-  }
   return (
     <div
       className="flexColumn"
@@ -1036,14 +1054,14 @@ function FactionPanelModal({
         className="flexRow centered extraLargeFont"
         style={{
           backgroundColor: "var(--background-color)",
-          border: `1px solid ${getFactionColor(faction)}`,
+          border: `1px solid ${getColorForFaction(factionId)}`,
           padding: `${rem(4)} ${rem(8)}`,
           borderRadius: rem(4),
         }}
       >
-        <FactionIcon factionId={faction.id} size={36} />
-        {getFactionName(faction)}
-        <FactionIcon factionId={faction.id} size={36} />
+        <FactionComponents.Icon factionId={factionId} size={36} />
+        <FactionComponents.Name factionId={factionId} />
+        <FactionComponents.Icon factionId={factionId} size={36} />
       </div>
       <div
         className="flexColumn largeFont"
@@ -1055,7 +1073,7 @@ function FactionPanelModal({
           height: "fit-content",
         }}
       >
-        <FactionPanelContent faction={faction} options={options} />
+        <FactionPanelContent factionId={factionId} options={options} />
       </div>
     </div>
   );

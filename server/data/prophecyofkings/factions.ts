@@ -596,6 +596,7 @@ export default function getProphecyOfKingsFactions(
         synergy: { left: "GREEN", right: "BLUE" },
         timing: "OTHER",
         reverse: {
+          abilities: [sustainDamage(intl)],
           description: intl.formatMessage(
             {
               id: "Naaz-Rokha Alliance.Units.Eidolon Maximum.Description",

@@ -10,7 +10,12 @@ import TechIcon from "./components/TechIcon/TechIcon";
 import UnitStats from "./components/UnitStats/UnitStats";
 import UnitIcon from "./components/Units/Icons";
 import { ModalContext } from "./context/contexts";
-import { useGameId, useLogEntries, useViewOnly } from "./context/dataHooks";
+import {
+  useGameId,
+  useLogEntries,
+  useTech,
+  useViewOnly,
+} from "./context/dataHooks";
 import { useFactions } from "./context/factionDataHooks";
 import { addTechAsync, removeTechAsync } from "./dynamic/api";
 import { hasTech } from "./util/api/techs";
@@ -78,7 +83,7 @@ function InfoContent({ tech }: { tech: Tech }) {
 
 interface TechRowProps {
   className?: string;
-  tech: Tech;
+  techId: TechId;
   removeTech?: (techId: TechId) => void;
   addTech?: (techId: TechId) => void;
   leftContent?: ReactNode;
@@ -95,13 +100,17 @@ interface TechRowOptions {
 
 export function TechRow({
   className = "",
-  tech,
+  techId,
   removeTech,
   addTech,
   leftContent,
   researchAgreement,
   opts = {},
 }: TechRowProps) {
+  const tech = useTech(techId);
+  if (!tech) {
+    return null;
+  }
   const viewOnly = useViewOnly();
   const { openModal } = use(ModalContext);
 
@@ -230,6 +239,9 @@ function ResearchAgreement({ tech }: { tech: Tech }) {
   const orderedFactionIds = getMapOrderedFactionIds(factions);
   const fadedFactions = objectEntries(factions)
     .filter(([factionId, faction]) => {
+      if (tech.faction && factionId !== tech.faction) {
+        return true;
+      }
       return hasTech(faction, tech) && factionId !== selectedFaction;
     })
     .map(([factionId, _]) => factionId);

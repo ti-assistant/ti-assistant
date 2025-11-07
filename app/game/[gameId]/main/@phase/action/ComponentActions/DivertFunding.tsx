@@ -62,14 +62,10 @@ export default function DivertFunding({ factionId }: { factionId: FactionId }) {
             }
           >
             {returnedTechs.map((tech) => {
-              const techObj = techs[tech];
-              if (!techObj) {
-                return null;
-              }
               return (
                 <TechRow
                   key={tech}
-                  tech={techObj}
+                  techId={tech}
                   removeTech={() => {
                     researchedTech.forEach((techId) => {
                       removeTechAsync(gameId, factionId, techId);

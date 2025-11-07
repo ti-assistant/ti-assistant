@@ -14,7 +14,12 @@ export default function ShareKnowledge({
   return (
     <TechResearchSection
       factionId={factionId}
-      filter={(tech) => hasTech(deepwrought, tech)}
+      filter={(tech) =>
+        hasTech(deepwrought, tech) &&
+        tech.type !== "UPGRADE" &&
+        !tech.faction &&
+        tech.state !== "purged"
+      }
       gain
       shareKnowledge
     />

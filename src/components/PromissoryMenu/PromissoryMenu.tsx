@@ -1,9 +1,9 @@
-import Image from "next/image";
 import { CSSProperties } from "react";
 import { FormattedMessage } from "react-intl";
 import { useGameId, useViewOnly } from "../../context/dataHooks";
-import { useObjectives } from "../../context/objectiveDataHooks";
-import { useFactions } from "../../context/factionDataHooks";
+import { useAllFactionAlliances } from "../../context/factionDataHooks";
+import { useOrderedFactionIds } from "../../context/gameDataHooks";
+import { useObjective } from "../../context/objectiveDataHooks";
 import {
   gainAllianceAsync,
   loseAllianceAsync,
@@ -11,14 +11,14 @@ import {
   unscoreObjectiveAsync,
 } from "../../dynamic/api";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
-import { getFactionColor } from "../../util/factions";
-import { rem } from "../../util/util";
+import PromissoryMenuSVG from "../../icons/ui/PromissoryMenu";
+import { getColorForFaction } from "../../util/factions";
+import { Optional } from "../../util/types/types";
+import { objectEntries, rem } from "../../util/util";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledLine from "../LabeledLine/LabeledLine";
 import styles from "./PromissoryMenu.module.scss";
-import PromissoryMenuSVG from "../../icons/ui/PromissoryMenu";
-import { Optional } from "../../util/types/types";
 
 interface NumFactionsCSS extends CSSProperties {
   "--num-factions": number;
@@ -58,31 +58,38 @@ function getAllianceHolder(
   );
 }
 
+function getAlliancePartner(
+  factionId: FactionId,
+  allAlliances: Partial<Record<FactionId, FactionId[]>>
+) {
+  for (const [id, alliances] of objectEntries(allAlliances)) {
+    if (factionId === id || id === "Mahact Gene-Sorcerers") {
+      continue;
+    }
+    if (alliances.includes(factionId)) {
+      return id;
+    }
+  }
+  return;
+}
+
 export default function PromissoryMenu({
   factionId,
 }: {
   factionId: FactionId;
 }) {
-  const factions = useFactions();
+  const factionAlliances = useAllFactionAlliances();
   const gameId = useGameId();
-  const objectives = useObjectives();
+  const mapOrderedFactionIds = useOrderedFactionIds("MAP");
+  const supportForTheThrone = useObjective("Support for the Throne");
   const viewOnly = useViewOnly();
 
-  let orderedFactions = Object.values(factions).sort((a, b) => {
-    if (a.mapPosition < b.mapPosition) {
-      return -1;
-    }
-    return 1;
-  });
-  const orderedFactionIds = orderedFactions.map((faction) => faction.id);
-
-  const supportForTheThrone = objectives["Support for the Throne"];
   if (!supportForTheThrone) {
     return null;
   }
 
   const supportGivenTo = getSupportScorer(factionId, supportForTheThrone);
-  const allianceGivenTo = getAllianceHolder(factionId, factions);
+  const allianceGivenTo = getAlliancePartner(factionId, factionAlliances);
 
   return (
     <ClientOnlyHoverMenu
@@ -114,7 +121,7 @@ export default function PromissoryMenu({
           />
           :{" "}
           <FactionSelectRadialMenu
-            factions={orderedFactionIds}
+            factions={mapOrderedFactionIds}
             invalidFactions={[factionId]}
             selectedFaction={supportGivenTo}
             size={32}
@@ -137,11 +144,9 @@ export default function PromissoryMenu({
               }
             }}
             tag={<FactionIcon factionId={factionId} size="100%" />}
-            tagBorderColor={getFactionColor(factions[factionId])}
+            tagBorderColor={getColorForFaction(factionId)}
             borderColor={
-              supportGivenTo
-                ? getFactionColor(factions[supportGivenTo])
-                : undefined
+              supportGivenTo ? getColorForFaction(supportGivenTo) : undefined
             }
             viewOnly={viewOnly}
           />
@@ -153,7 +158,7 @@ export default function PromissoryMenu({
           >
             Alliance:{" "}
             <FactionSelectRadialMenu
-              factions={orderedFactionIds}
+              factions={mapOrderedFactionIds}
               invalidFactions={[factionId, "Mahact Gene-Sorcerers"]}
               selectedFaction={allianceGivenTo}
               size={32}
@@ -165,10 +170,10 @@ export default function PromissoryMenu({
                 }
               }}
               tag={<FactionIcon factionId={factionId} size="100%" />}
-              tagBorderColor={getFactionColor(factions[factionId])}
+              tagBorderColor={getColorForFaction(factionId)}
               borderColor={
                 allianceGivenTo
-                  ? getFactionColor(factions[allianceGivenTo])
+                  ? getColorForFaction(allianceGivenTo)
                   : undefined
               }
               viewOnly={viewOnly}
@@ -188,11 +193,11 @@ export default function PromissoryMenu({
             className={styles.factionIconRow}
             style={
               {
-                "--num-factions": orderedFactionIds.length - 1,
+                "--num-factions": mapOrderedFactionIds.length - 1,
               } as NumFactionsCSS
             }
           >
-            {orderedFactionIds.map((id) => {
+            {mapOrderedFactionIds.map((id) => {
               if (id === factionId) {
                 return null;
               }
@@ -232,7 +237,7 @@ export default function PromissoryMenu({
                     }  ${viewOnly ? styles.viewOnly : ""}`}
                     style={
                       {
-                        "--color": getFactionColor(factions[id]),
+                        "--color": getColorForFaction(id),
                       } as ExtendedCSS
                     }
                   >
@@ -249,15 +254,16 @@ export default function PromissoryMenu({
             className={styles.factionIconRow}
             style={
               {
-                "--num-factions": orderedFactionIds.length - 1,
+                "--num-factions": mapOrderedFactionIds.length - 1,
               } as NumFactionsCSS
             }
           >
-            {orderedFactionIds.map((id) => {
+            {mapOrderedFactionIds.map((id) => {
               if (id === factionId || id === "Mahact Gene-Sorcerers") {
                 return null;
               }
-              const owned = getAllianceHolder(id, factions) === factionId;
+              const owned =
+                getAlliancePartner(id, factionAlliances) === factionId;
               return (
                 <div
                   key={id}
@@ -282,7 +288,7 @@ export default function PromissoryMenu({
                     }  ${viewOnly ? styles.viewOnly : ""}`}
                     style={
                       {
-                        "--color": getFactionColor(factions[id]),
+                        "--color": getColorForFaction(id),
                       } as ExtendedCSS
                     }
                   >

@@ -1,5 +1,6 @@
 import { FormattedMessage } from "react-intl";
 import FactionSelectRadialMenu from "../../../../../../../src/components/FactionSelectRadialMenu/FactionSelectRadialMenu";
+import { TacticalAction } from "../../../../../../../src/components/TacticalAction";
 import {
   useCurrentTurn,
   useGameId,
@@ -7,6 +8,7 @@ import {
   useViewOnly,
 } from "../../../../../../../src/context/dataHooks";
 import { useOrderedFactionIds } from "../../../../../../../src/context/gameDataHooks";
+import { useObjectives } from "../../../../../../../src/context/objectiveDataHooks";
 import { selectFactionAsync } from "../../../../../../../src/dynamic/api";
 import {
   getClaimedPlanets,
@@ -15,8 +17,6 @@ import {
 } from "../../../../../../../src/util/actionLog";
 import { getColorForFaction } from "../../../../../../../src/util/factions";
 import { rem } from "../../../../../../../src/util/util";
-import { TacticalAction } from "../../../../../../../src/components/TacticalAction";
-import { useObjectives } from "../../../../../../../src/context/objectiveDataHooks";
 
 const Zeu = {
   Label,
