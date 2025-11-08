@@ -500,7 +500,7 @@ export default function getThundersEdgePlanets(
       influence: 2,
       id: "Ahk Creuxx",
       name: "Ahk Creuxx",
-      position: MIDDLE,
+      position: HOME_MIDDLE,
       resources: 4,
       system: 118,
       types: [],
