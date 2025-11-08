@@ -125,7 +125,12 @@ export default function GameMap({
 
   const updatedMapString =
     mapString === ""
-      ? updateMapString(mapString, mapStyle, factions.length)
+      ? updateMapString(
+          mapString,
+          mapStyle,
+          factions.length,
+          expansions.includes("THUNDERS EDGE")
+        )
       : mapString;
   let updatedSystemTiles = updatedMapString.split(" ");
   updatedSystemTiles = updatedSystemTiles.map((tile, index) => {

@@ -156,7 +156,7 @@ function mapValuePriority(a?: string, b?: string) {
 export default function MapBuilderPage() {
   const intl = useIntl();
   const [mapString, setMapString] = useState(
-    getDefaultMapString(6, "standard")
+    getDefaultMapString(6, "standard", true)
   );
   const [mapStyle, setMapStyle] = useState<MapStyle>("standard");
   const [numFactions, setNumFactions] = useState(6);
@@ -509,7 +509,8 @@ export default function MapBuilderPage() {
                       toggleFn={() => {
                         const prevDefault = getDefaultMapString(
                           numFactions,
-                          mapStyle
+                          mapStyle,
+                          true
                         );
                         if (
                           mapString !== prevDefault &&
@@ -521,7 +522,9 @@ export default function MapBuilderPage() {
                         }
                         setNumFactions(number);
                         setMapStyle("standard");
-                        setMapString(getDefaultMapString(number, "standard"));
+                        setMapString(
+                          getDefaultMapString(number, "standard", true)
+                        );
                       }}
                       selected={numFactions === number}
                       fontSize={16}
@@ -564,7 +567,8 @@ export default function MapBuilderPage() {
                           toggleFn={() => {
                             const prevDefault = getDefaultMapString(
                               numFactions,
-                              mapStyle
+                              mapStyle,
+                              true
                             );
                             if (
                               mapString !== prevDefault &&
@@ -576,7 +580,7 @@ export default function MapBuilderPage() {
                             }
                             setMapStyle(style);
                             setMapString(
-                              getDefaultMapString(numFactions, style)
+                              getDefaultMapString(numFactions, style, true)
                             );
                           }}
                           fontSize={16}
@@ -625,7 +629,9 @@ export default function MapBuilderPage() {
             >
               <button
                 onClick={() => {
-                  setMapString(getDefaultMapString(numFactions, mapStyle));
+                  setMapString(
+                    getDefaultMapString(numFactions, mapStyle, true)
+                  );
                 }}
               >
                 Reset Map
@@ -644,7 +650,7 @@ export default function MapBuilderPage() {
         value={mapString}
         onChange={(element) => {
           setMapString(
-            processMapString(element.target.value, mapStyle, numFactions)
+            processMapString(element.target.value, mapStyle, numFactions, false)
           );
         }}
       ></input>

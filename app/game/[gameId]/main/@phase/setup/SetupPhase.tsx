@@ -123,7 +123,8 @@ function setMapString(
   gameId: string,
   mapString: string,
   mapStyle: MapStyle,
-  numFactions: number
+  numFactions: number,
+  thundersEdge: boolean
 ) {
   changeOptionAsync(gameId, "map-string", mapString);
   if (mapString === "") {
@@ -134,7 +135,7 @@ function setMapString(
   changeOptionAsync(
     gameId,
     "processed-map-string",
-    processMapString(mapString, mapStyle, numFactions)
+    processMapString(mapString, mapStyle, numFactions, thundersEdge)
   );
 }
 
@@ -224,7 +225,8 @@ export default function SetupPhase() {
                     gameId,
                     event.currentTarget.value,
                     options["map-style"],
-                    numFactions
+                    numFactions,
+                    options.expansions.includes("THUNDERS EDGE")
                   )
                 }
               ></input>

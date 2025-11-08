@@ -266,7 +266,8 @@ export default function PlanetOverlay({
           </div>
         );
       })}
-      {systemNumber === "18" && !systemPlanets[0]?.owner ? (
+      {(systemNumber === "18" || systemNumber === "112") &&
+      !systemPlanets[0]?.owner ? (
         <div
           className="flexRow"
           style={{

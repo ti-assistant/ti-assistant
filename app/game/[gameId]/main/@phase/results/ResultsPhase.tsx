@@ -386,7 +386,8 @@ function buildSetupGameData(gameData: GameData): {
   options["processed-map-string"] = processMapString(
     options["map-string"] ?? "",
     options["map-style"],
-    factions.length
+    factions.length,
+    options.expansions.includes("THUNDERS EDGE")
   );
 
   return {
