@@ -15,7 +15,6 @@ import { ActionLog, Optional } from "../../util/types/types";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
 import styles from "./TechResearchSection.module.scss";
-import { flattenDiagnosticMessageText } from "typescript";
 
 function getResearchableTechs(
   currentTurn: ActionLog,
@@ -30,6 +29,9 @@ function getResearchableTechs(
   const replaces: TechId[] = [];
   const availableTechs = Object.values(techs).filter((tech) => {
     if (hasTech(faction, tech)) {
+      return false;
+    }
+    if (tech.state === "purged") {
       return false;
     }
     const factionTech = (faction.techs ?? {})[tech.id];
@@ -101,14 +103,24 @@ export default function TechResearchSection({
     factions,
     filter
   );
-  const researchedTechs = getResearchedTechs(currentTurn, factionId);
+  const researchedTechs = getResearchedTechs(currentTurn, factionId).filter(
+    (techId) => {
+      if (!filter) {
+        return true;
+      }
+      const tech = techs[techId];
+      if (!tech) {
+        return false;
+      }
+      return filter(tech);
+    }
+  );
   const addTechEvents = getAddTechEvents(currentTurn);
 
   return (
     <div className={styles.TechResearchSection} style={style}>
       <ResearchedTechsSection
         factionId={factionId}
-        duplicateToFaction={duplicateToFaction}
         gain={gain}
         hideWrapper={hideWrapper}
         researchedTechs={researchedTechs}
@@ -167,21 +179,18 @@ export default function TechResearchSection({
 
 function ResearchedTechsSection({
   factionId,
-  duplicateToFaction,
   researchedTechs,
   gain = false,
   hideWrapper = false,
   addTechEvents,
 }: {
   factionId: FactionId;
-  duplicateToFaction?: FactionId;
   gain?: boolean;
   researchedTechs: TechId[];
   hideWrapper?: boolean;
   addTechEvents?: ActionLogEntry<AddTechData>[];
 }) {
   const gameId = useGameId();
-  const techs = useTechs();
 
   if (researchedTechs.length === 0) {
     return null;
@@ -189,14 +198,10 @@ function ResearchedTechsSection({
   const innerContent = (
     <>
       {researchedTechs.map((techId) => {
-        const tech = techs[techId];
-        if (!tech) {
-          return null;
-        }
         return (
           <TechRow
             key={techId}
-            tech={tech}
+            techId={techId}
             removeTech={() => {
               const { techCount, hadTech } = (addTechEvents ?? []).reduce(
                 (result, event) => {
@@ -230,10 +235,6 @@ function ResearchedTechsSection({
   if (hideWrapper) {
     return innerContent;
   }
-
-  // return (
-  //   <IconDiv icon={<TechSkipIcon size={16} outline />}>{innerContent}</IconDiv>
-  // );
 
   return (
     <LabeledDiv

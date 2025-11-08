@@ -2,9 +2,9 @@
 
 import { PropsWithChildren, useEffect } from "react";
 import stableHash from "stable-hash";
-import { DataStore } from "./dataStore";
 import { objectEntries } from "../util/util";
 import { DataContext } from "./contexts";
+import { DataStore } from "./dataStore";
 
 type CallbackFn<DataType> = (data: DataType) => void;
 
@@ -48,7 +48,8 @@ export default function DataPubSubProvider({ children }: PropsWithChildren) {
     subscribers[path] = subscribersPerPath;
 
     if (!hashes[path]) {
-      hashes[path] = stableHash(DataStore.getValue(path));
+      const value: any = DataStore.getValue(path);
+      hashes[path] = stableHash(value);
     }
 
     return () => {
@@ -65,7 +66,7 @@ export default function DataPubSubProvider({ children }: PropsWithChildren) {
   function publish() {
     const updatedHashes = structuredClone(hashes);
     for (const [path, subscribersPerPath] of objectEntries(subscribers)) {
-      const value = DataStore.getValue(path);
+      const value: any = DataStore.getValue(path);
 
       const valueHash = stableHash(value);
       const storedHash = hashes[path];
@@ -74,7 +75,6 @@ export default function DataPubSubProvider({ children }: PropsWithChildren) {
         continue;
       }
       updatedHashes[path] = valueHash;
-
       for (const subscriber of Object.values(subscribersPerPath)) {
         subscriber.callbackFn(structuredClone(value));
       }

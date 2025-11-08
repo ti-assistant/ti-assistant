@@ -251,12 +251,6 @@
       "value": "Home"
     }
   ],
-  "2HJ0k5": [
-    {
-      "type": 0,
-      "value": "S"
-    }
-  ],
   "2I5JBO": [
     {
       "type": 0,
@@ -6064,7 +6058,7 @@
   "Deepwrought Scholarate.Abilities.Research Team.Description": [
     {
       "type": 0,
-      "value": "When ground forces are committed, if your units on the planet are already not coexisting, you may choose for your units to coexist."
+      "value": "When ground forces are committed, if your units on the planet are not already coexisting, you may choose for your units to coexist."
     }
   ],
   "Deepwrought Scholarate.Abilities.Research Team.Title": [
@@ -11711,6 +11705,18 @@
     {
       "type": 0,
       "value": "Unveil Flagship"
+    }
+  ],
+  "Objectives.Zealous Orthodoxy.Description": [
+    {
+      "type": 0,
+      "value": "The first player to score 2 secret objectives gains 1 victory point."
+    }
+  ],
+  "Objectives.Zealous Orthodoxy.Title": [
+    {
+      "type": 0,
+      "value": "Zealous Orthodoxy"
     }
   ],
   "Obsidian.Abilities.Marionettes.Description": [

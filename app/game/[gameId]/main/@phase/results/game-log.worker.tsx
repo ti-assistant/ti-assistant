@@ -15,6 +15,7 @@ import { objectEntries, objectKeys } from "../../../../../../src/util/util";
 import {
   buildCompleteObjectives,
   buildCompletePlanets,
+  buildCompleteSystems,
   buildCompleteTechs,
 } from "../../../../../../src/data/gameDataBuilder";
 import { connectFirestoreEmulator } from "firebase/firestore";
@@ -23,6 +24,7 @@ type WithKey<T> = T & { key: number };
 
 interface RoundInfo {
   planets: Partial<Record<PlanetId, Planet>>;
+  systems: Partial<Record<SystemId, System>>;
   mapString?: string;
   techs: Partial<Record<FactionId, Record<TechType, number>>>;
   victoryPoints: Partial<Record<FactionId, Record<ObjectiveType, number>>>;
@@ -103,6 +105,7 @@ function buildGameLog(
           dynamicGameData,
           /* includePurged */ true
         ),
+        systems: buildCompleteSystems(baseData, dynamicGameData),
         mapString: getMapString(
           dynamicGameData.options,
           mapOrderedFactions.length
@@ -243,6 +246,7 @@ function buildGameLog(
           dynamicGameData,
           /* includePurged */ true
         ),
+        systems: buildCompleteSystems(baseData, dynamicGameData),
         mapString: getMapString(
           dynamicGameData.options,
           mapOrderedFactions.length
@@ -277,6 +281,7 @@ function buildGameLog(
       dynamicGameData,
       /* includePurged */ true
     ),
+    systems: buildCompleteSystems(baseData, dynamicGameData),
     mapString: getMapString(dynamicGameData.options, mapOrderedFactions.length),
     techs: factionTechs,
     victoryPoints: points,

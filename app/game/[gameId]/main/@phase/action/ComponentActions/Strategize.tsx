@@ -8,13 +8,9 @@ import {
 import { selectSubComponentAsync } from "../../../../../../../src/dynamic/api";
 import { getSelectedSubComponent } from "../../../../../../../src/util/actionLog";
 import { rem } from "../../../../../../../src/util/util";
-import Diplomacy from "../StrategicActions/Diplomacy";
-import Imperial from "../StrategicActions/Imperial";
-import Politics from "../StrategicActions/Politics";
-import Technology from "../StrategicActions/Technology";
-import Warfare from "../StrategicActions/Warfare";
+import StrategicActions from "../StrategicActions/StrategicActions";
 
-export default function Overrule({ factionId }: { factionId: FactionId }) {
+export default function Strategize({ factionId }: { factionId: FactionId }) {
   const currentTurn = useCurrentTurn();
   const gameId = useGameId();
   const strategyCards = useStrategyCards();
@@ -29,19 +25,14 @@ export default function Overrule({ factionId }: { factionId: FactionId }) {
   let additionalActions;
   switch (selectedCard) {
     case "Diplomacy":
-      additionalActions = <Diplomacy.Primary factionId={factionId} />;
-      break;
-    case "Politics":
-      additionalActions = <Politics.Primary />;
-      break;
-    case "Warfare":
-      additionalActions = <Warfare.Primary factionId={factionId} />;
+      additionalActions = (
+        <StrategicActions.Diplomacy.Secondary factionId={factionId} />
+      );
       break;
     case "Technology":
-      additionalActions = <Technology.Primary factionId={factionId} />;
-      break;
-    case "Imperial":
-      additionalActions = <Imperial.Primary factionId={factionId} />;
+      additionalActions = (
+        <StrategicActions.Technology.Secondary factionId={factionId} />
+      );
       break;
   }
 

@@ -37,7 +37,7 @@ export default function TechTree({
 }: {
   factionId: FactionId;
   techs: Techs;
-  ownedTechs: TechId[];
+  ownedTechs: Set<TechId>;
   type: TechType | "FACTION";
   viewOnly?: boolean;
 }) {
@@ -57,7 +57,7 @@ export default function TechTree({
         .filter(
           (tech) =>
             tech.faction &&
-            (tech.faction === factionId || ownedTechs.includes(tech.id))
+            (tech.faction === factionId || ownedTechs.has(tech.id))
         )
         .sort((a, b) => {
           if (a.type === b.type) {
@@ -74,7 +74,7 @@ export default function TechTree({
           {
             id: tech.id,
             name: tech.name,
-            filled: ownedTechs.includes(tech.id),
+            filled: ownedTechs.has(tech.id),
             color: isPurged ? "#555" : getTechTypeColor(tech.type),
             purged: isPurged,
           },
@@ -107,8 +107,8 @@ export default function TechTree({
         const replacement = getReplacementTech(factionId, upgrade.id);
         const replacementTech = replacement ? techs[replacement] : undefined;
         let filled = replacement
-          ? ownedTechs.includes(replacement)
-          : ownedTechs.includes(upgrade.id);
+          ? ownedTechs.has(replacement)
+          : ownedTechs.has(upgrade.id);
         const isPurged = faction
           ? replacementTech
             ? isTechPurged(faction, replacementTech)
@@ -141,7 +141,7 @@ export default function TechTree({
           const element: TechTreeElement = {
             id: tech.id,
             name: tech.name,
-            filled: ownedTechs.includes(tech.id),
+            filled: ownedTechs.has(tech.id),
             color: isPurged ? "#555" : getTechTypeColor(tech.type),
             purged: isPurged,
           };

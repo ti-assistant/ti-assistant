@@ -1,12 +1,10 @@
-import Image from "next/image";
 import React, { CSSProperties, PropsWithChildren } from "react";
-import { useFactions } from "../../context/factionDataHooks";
-import { getFactionColor } from "../../util/factions";
+import TradeGoodSVG from "../../icons/ui/TradeGood";
+import { getColorForFaction } from "../../util/factions";
 import { rem } from "../../util/util";
 import FactionCircle from "../FactionCircle/FactionCircle";
 import FactionTile from "../FactionTile/FactionTile";
 import styles from "./StrategyCardElement.module.scss";
-import TradeGoodSVG from "../../icons/ui/TradeGood";
 
 interface StrategyCardProps {
   active?: boolean;
@@ -27,10 +25,6 @@ export function StrategyCardElement({
   fontSize,
   onClick,
 }: PropsWithChildren<StrategyCardProps>) {
-  const factions = useFactions();
-
-  const faction = card.faction ? factions[card.faction] : undefined;
-
   const color = active ? card.color : "#555";
   const textColor = active ? "#eee" : "#555";
 
@@ -56,7 +50,7 @@ export function StrategyCardElement({
         {card.order}
       </div>
       <div style={{ color: textColor }}>{card.name}</div>
-      {faction ? (
+      {card.faction ? (
         <>
           <div
             className={styles.FactionTile}
@@ -67,12 +61,12 @@ export function StrategyCardElement({
               paddingRight: rem(3),
             }}
           >
-            <FactionTile faction={faction} fontSize={16} iconSize={32} />
+            <FactionTile factionId={card.faction} fontSize={16} iconSize={32} />
           </div>
           <div className={styles.FactionCircle}>
             <FactionCircle
-              factionId={faction.id}
-              borderColor={getFactionColor(faction)}
+              factionId={card.faction}
+              borderColor={getColorForFaction(card.faction)}
               size={36}
             />
           </div>

@@ -1,7 +1,6 @@
-import { hasTech } from "../util/api/techs";
 import { convertToFactionColor, getFactionName } from "../util/factions";
 import { Optional } from "../util/types/types";
-import { objectKeys } from "../util/util";
+import { objectEntries } from "../util/util";
 import { useGameDataValue, useMemoizedGameDataValue } from "./dataHooks";
 
 export type Factions = Partial<Record<FactionId, Faction>>;
@@ -18,17 +17,20 @@ export function useFaction(factionId: FactionId) {
 }
 
 export function useFactionTechs(factionId: FactionId) {
-  return useMemoizedGameDataValue<GameData, TechId[]>("", [], (gameData) => {
-    const faction = gameData.factions[factionId];
-    const techs = gameData.techs ?? {};
-    if (!faction) {
-      return [];
+  return useMemoizedGameDataValue<Optional<Faction>, Set<TechId>>(
+    `factions.${factionId}`,
+    new Set(),
+    (faction) => {
+      if (!faction) {
+        return new Set();
+      }
+      return new Set(
+        objectEntries(faction.techs)
+          .filter(([_, tech]) => tech.state !== "purged")
+          .map(([techId, _]) => techId)
+      );
     }
-    return objectKeys(faction.techs).filter((techId) => {
-      const tech = techs[techId];
-      return hasTech(faction, tech);
-    });
-  });
+  );
 }
 
 export function useNumFactions() {
@@ -58,6 +60,10 @@ export function useFactionColor(factionId: FactionId) {
   );
 }
 
+export function useIsFactionPassed(factionId: FactionId) {
+  return useGameDataValue<boolean>(`factions.${factionId}.passed`, false);
+}
+
 export function useFactionDisplayName(factionId: FactionId) {
   return useMemoizedGameDataValue<Optional<Faction>, string>(
     `factions.${factionId}`,
@@ -80,4 +86,35 @@ export function useAllSecondariesCompleted() {
       return count === Object.values(factions).length - 1;
     }
   );
+}
+
+export function useFactionHasTech(factionId: FactionId, techId: TechId) {
+  return useMemoizedGameDataValue<Partial<Record<TechId, GameTech>>, boolean>(
+    `factions.${factionId}.techs`,
+    false,
+    (factionTechs) => {
+      const tech = factionTechs[techId];
+      return !!tech && tech.state !== "purged";
+    }
+  );
+}
+
+export function useFactionSecondary(factionId: FactionId) {
+  return useGameDataValue<Secondary>(
+    `factions.${factionId}.secondary`,
+    "PENDING"
+  );
+}
+
+export function useAllFactionAlliances() {
+  return useMemoizedGameDataValue<
+    GameData,
+    Partial<Record<FactionId, FactionId[]>>
+  >("", {}, (gameData) => {
+    const alliances: Partial<Record<FactionId, FactionId[]>> = {};
+    for (const faction of Object.values(gameData.factions)) {
+      alliances[faction.id] = faction.alliances ?? [];
+    }
+    return alliances;
+  });
 }

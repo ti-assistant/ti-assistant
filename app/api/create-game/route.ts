@@ -3,11 +3,7 @@ import { NextResponse } from "next/server";
 import { createIntl } from "react-intl";
 import { getFactions } from "../../../server/data/factions";
 import { getPlanets } from "../../../server/data/planets";
-import {
-  generateSessionId,
-  getSession,
-  TIASession,
-} from "../../../server/util/fetch";
+import { getSession, TIASession } from "../../../server/util/fetch";
 import {
   getSessionIdFromCookie,
   hashPassword,

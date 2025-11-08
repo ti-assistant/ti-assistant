@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { Tab, TabBody } from "./Tab";
-import LabeledLine from "./components/LabeledLine/LabeledLine";
-import ObjectiveRow from "./components/ObjectiveRow/ObjectiveRow";
-import { useGameId } from "./context/dataHooks";
-import { useObjectives } from "./context/objectiveDataHooks";
+import { Tab, TabBody } from "../../../../../../src/Tab";
+import LabeledLine from "../../../../../../src/components/LabeledLine/LabeledLine";
+import ObjectiveRow from "../../../../../../src/components/ObjectiveRow/ObjectiveRow";
+import { useGameId } from "../../../../../../src/context/dataHooks";
+import { useObjectives } from "../../../../../../src/context/objectiveDataHooks";
 import {
   hideObjectiveAsync,
   revealObjectiveAsync,
   scoreObjectiveAsync,
   unscoreObjectiveAsync,
-} from "./dynamic/api";
-import { objectiveTypeString } from "./util/strings";
-import { rem } from "./util/util";
+} from "../../../../../../src/dynamic/api";
+import { objectiveTypeString } from "../../../../../../src/util/strings";
+import { rem } from "../../../../../../src/util/util";
 
 function sortObjectivesByName(objectives: Objective[]) {
   objectives.sort((a, b) => {
@@ -142,7 +142,7 @@ function SecretTab({ factionId }: { factionId: FactionId }) {
 }
 
 // TODO: Rename to Objective Tab
-export function ObjectiveList({ factionId }: { factionId: FactionId }) {
+export default function ObjectiveTab({ factionId }: { factionId: FactionId }) {
   const gameId = useGameId();
   const objectives = useObjectives();
 

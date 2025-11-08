@@ -1,17 +1,14 @@
-import FactionName from "../../../../../../../src/components/FactionName/FactionName";
+import FactionComponents from "../../../../../../../src/components/FactionComponents/FactionComponents";
 import LabeledDiv from "../../../../../../../src/components/LabeledDiv/LabeledDiv";
 import TechResearchSection from "../../../../../../../src/components/TechResearchSection/TechResearchSection";
 import { useCurrentTurn } from "../../../../../../../src/context/dataHooks";
 import {
   useFaction,
   useFactionColor,
-  useFactions,
 } from "../../../../../../../src/context/factionDataHooks";
+import { useOrderedFactionIds } from "../../../../../../../src/context/gameDataHooks";
 import { getResearchedTechs } from "../../../../../../../src/util/actionLog";
-import {
-  getFactionColor,
-  getFactionName,
-} from "../../../../../../../src/util/factions";
+import { getFactionColor } from "../../../../../../../src/util/factions";
 import { rem } from "../../../../../../../src/util/util";
 
 const Technology = {
@@ -28,7 +25,7 @@ function Primary({ factionId }: { factionId: FactionId }) {
   return (
     <div style={{ width: "fit-content" }}>
       <LabeledDiv
-        label={<FactionName factionId={factionId} />}
+        label={<FactionComponents.Name factionId={factionId} />}
         color={factionColor}
         blur
       >
@@ -48,22 +45,22 @@ function Secondary({ factionId }: { factionId: FactionId }) {
   if (factionId === "Universities of Jol-Nar") {
     maxTechs = 2;
   }
-  const researchedTechs = getResearchedTechs(currentTurn, faction.id);
+  const researchedTechs = getResearchedTechs(currentTurn, factionId);
   const secondaryState = faction?.secondary ?? "PENDING";
   if (researchedTechs.length === 0 && secondaryState === "SKIPPED") {
     return null;
   }
   return (
     <LabeledDiv
-      key={faction.id}
-      label={getFactionName(faction)}
+      key={factionId}
+      label={<FactionComponents.Name factionId={factionId} />}
       color={getFactionColor(faction)}
       opts={{ fixedWidth: true }}
       blur
     >
       <>
         <TechResearchSection
-          factionId={faction.id}
+          factionId={factionId}
           numTechs={maxTechs}
           hideWrapper
         />
@@ -73,31 +70,12 @@ function Secondary({ factionId }: { factionId: FactionId }) {
 }
 
 function AllSecondaries({ activeFactionId }: { activeFactionId: FactionId }) {
-  const factions = useFactions();
+  const orderedFactionIds = useOrderedFactionIds(
+    "SPEAKER",
+    undefined,
+    activeFactionId
+  );
 
-  const activeFaction = factions[activeFactionId];
-  if (!activeFaction) {
-    return null;
-  }
-
-  const orderedFactions = Object.values(factions).sort((a, b) => {
-    if (a.order === activeFaction.order) {
-      return -1;
-    }
-    if (b.order === activeFaction.order) {
-      return 1;
-    }
-    if (a.order < activeFaction.order) {
-      if (b.order < activeFaction.order) {
-        return a.order - b.order;
-      }
-      return 1;
-    }
-    if (b.order > activeFaction.order) {
-      return a.order - b.order;
-    }
-    return -1;
-  });
   return (
     <div
       className="flexRow mediumFont"
@@ -107,13 +85,13 @@ function AllSecondaries({ activeFactionId }: { activeFactionId: FactionId }) {
         flexWrap: "wrap",
       }}
     >
-      {orderedFactions.map((faction) => {
-        if (faction.id === activeFactionId || faction.id === "Nekro Virus") {
+      {orderedFactionIds.map((factionId) => {
+        if (factionId === activeFactionId || factionId === "Nekro Virus") {
           return null;
         }
         return (
-          <div key={faction.id} style={{ width: "48%" }}>
-            <Secondary factionId={faction.id} />
+          <div key={factionId} style={{ width: "48%" }}>
+            <Secondary factionId={factionId} />
           </div>
         );
       })}

@@ -15,7 +15,8 @@ import {
   useViewOnly,
 } from "../../context/dataHooks";
 import { useFactions } from "../../context/factionDataHooks";
-import { useGameState } from "../../context/stateDataHooks";
+import { useOrderedFactionIds } from "../../context/gameDataHooks";
+import { usePhase, useSpeaker } from "../../context/stateDataHooks";
 import { setSpeakerAsync } from "../../dynamic/api";
 import MapMenuSVG from "../../icons/ui/MapMenu";
 import ObjectivesMenuSVG from "../../icons/ui/ObjectivesMenu";
@@ -23,13 +24,14 @@ import PlanetMenuSVG from "../../icons/ui/PlanetMenu";
 import PromissoryMenuSVG from "../../icons/ui/PromissoryMenu";
 import RelicMenuSVG from "../../icons/ui/RelicMenu";
 import ThundersEdgeMenuSVG from "../../icons/ui/ThundersEdgeMenu";
-import { getFactionColor, getFactionName } from "../../util/factions";
+import { getColorForFaction } from "../../util/factions";
 import { getWormholeNexusSystemNumber } from "../../util/map";
 import { getMapString } from "../../util/options";
 import { fracturePlanetsOwned } from "../../util/planets";
 import { Optional } from "../../util/types/types";
 import { rem } from "../../util/util";
 import Chip from "../Chip/Chip";
+import FactionName from "../FactionComponents/FactionName";
 import FactionRow from "../FactionRow/FactionRow";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
@@ -39,10 +41,13 @@ import ThundersEdgePanel from "../ThundersEdgePanel";
 import { Strings } from "../strings";
 import styles from "./Footer.module.scss";
 
-const ObjectivePanel = dynamic(() => import("../ObjectivePanel"), {
-  loading: () => <Loader />,
-  ssr: false,
-});
+const ObjectivePanel = dynamic(
+  () => import("../ObjectivePanel/ObjectivePanel"),
+  {
+    loading: () => <Loader />,
+    ssr: false,
+  }
+);
 const TechPanel = dynamic(() => import("../TechPanel"), {
   loading: () => <Loader />,
   ssr: false,
@@ -102,12 +107,11 @@ function getNumButtons(
 }
 
 export default function Footer() {
-  const allPlanets = useAllPlanets();
-  const factions = useFactions();
   const gameId = useGameId();
   const options = useOptions();
-  const planets = usePlanets();
-  const state = useGameState();
+  const orderedFactionIds = useOrderedFactionIds("MAP");
+  const phase = usePhase();
+  const speaker = useSpeaker();
   const strategyCards = useStrategyCards();
   const viewOnly = useViewOnly();
 
@@ -121,17 +125,17 @@ export default function Footer() {
   useEffect(() => {
     setSelectedFaction((faction) => {
       if (!faction) {
-        return Object.values(factions)[0]?.id;
+        return speaker;
       }
       return faction;
     });
-  }, [factions]);
+  }, [speaker]);
 
   function shouldBlockSpeakerUpdates() {
-    if (state.phase === "END") {
+    if (phase === "END") {
       return true;
     }
-    if (state.phase !== "STRATEGY") {
+    if (phase !== "STRATEGY") {
       return false;
     }
 
@@ -142,12 +146,8 @@ export default function Footer() {
     return selectedCards.length !== 0;
   }
 
-  const orderedFactions = Object.values(factions ?? {}).sort(
-    (a, b) => a.mapPosition - b.mapPosition
-  );
-
   let orderTitle = <></>;
-  switch (state?.phase) {
+  switch (phase) {
     case "SETUP":
     case "STRATEGY":
       orderTitle = (
@@ -178,13 +178,8 @@ export default function Footer() {
       );
       break;
   }
-  const mapOrderedFactions = Object.values(factions ?? {}).sort(
-    (a, b) => a.mapPosition - b.mapPosition
-  );
 
-  const mapString = getMapString(options, mapOrderedFactions.length);
-
-  const numButtons = getNumButtons(state.phase, strategyCards, options);
+  const numButtons = getNumButtons(phase, strategyCards, options);
   return (
     <>
       <button
@@ -207,14 +202,10 @@ export default function Footer() {
           <div className="flexRow">
             <Strings.Speaker />:
             <FactionSelectRadialMenu
-              borderColor={
-                state?.speaker
-                  ? getFactionColor(factions[state.speaker])
-                  : undefined
-              }
-              selectedFaction={state.speaker}
-              factions={orderedFactions.map((faction) => faction.id)}
-              invalidFactions={[state.speaker]}
+              borderColor={getColorForFaction(speaker)}
+              selectedFaction={speaker}
+              factions={orderedFactionIds}
+              invalidFactions={[speaker]}
               size={30}
               onSelect={async (factionId, _) => {
                 if (!factionId) {
@@ -226,59 +217,7 @@ export default function Footer() {
             />
           </div>
         ) : null}
-        {mapString ? (
-          <div
-            className="flexRow"
-            onClick={() =>
-              openModal(
-                <div
-                  className="flexRow"
-                  style={{ height: `calc(100dvh - ${rem(16)})` }}
-                >
-                  <div
-                    style={{
-                      position: "relative",
-                      width: "min(100dvh, 100dvw)",
-                      height: "min(100dvh, 100dvw)",
-                    }}
-                  >
-                    <GameMap
-                      factions={mapOrderedFactions}
-                      wormholeNexus={getWormholeNexusSystemNumber(
-                        options,
-                        planets,
-                        factions
-                      )}
-                      mapString={mapString ?? ""}
-                      mapStyle={options["map-style"] ?? "standard"}
-                      planets={allPlanets}
-                      expansions={options.expansions}
-                      hideFracture={!fracturePlanetsOwned(allPlanets)}
-                    />
-                  </div>
-                </div>
-              )
-            }
-          >
-            <button>
-              <div
-                className="flexRow"
-                style={{
-                  position: "relative",
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <MapMenuSVG />
-              </div>
-            </button>
-            <FormattedMessage
-              id="xDzJ9/"
-              description="Text shown on a button that opens the map."
-              defaultMessage="View Map"
-            />
-          </div>
-        ) : null}
+        <MapWrapper />
         <div
           className="flexRow"
           onClick={() => openModal(<TechModalContent viewOnly={viewOnly} />)}
@@ -388,14 +327,10 @@ export default function Footer() {
         {!shouldBlockSpeakerUpdates() ? (
           <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
             <FactionSelectRadialMenu
-              borderColor={
-                state?.speaker
-                  ? getFactionColor((factions ?? {})[state.speaker])
-                  : undefined
-              }
-              selectedFaction={state.speaker}
-              factions={orderedFactions.map((faction) => faction.id)}
-              invalidFactions={[state.speaker]}
+              borderColor={getColorForFaction(speaker)}
+              selectedFaction={speaker}
+              factions={orderedFactionIds}
+              invalidFactions={[speaker]}
               size={40}
               onSelect={async (factionId, _) => {
                 if (!factionId) {
@@ -556,7 +491,7 @@ export default function Footer() {
             label={
               selectedFaction ? (
                 <div className="flexRow" style={{ gap: 0 }}>
-                  {getFactionName(factions[selectedFaction])}
+                  <FactionName factionId={selectedFaction} />
                   <FactionPanel factionId={selectedFaction} options={options} />
                 </div>
               ) : (
@@ -564,17 +499,12 @@ export default function Footer() {
               )
             }
             color={
-              selectedFaction
-                ? getFactionColor(factions[selectedFaction])
-                : undefined
+              selectedFaction ? getColorForFaction(selectedFaction) : undefined
             }
             style={{ width: "fit-content" }}
           >
             {selectedFaction ? (
-              <FactionSummary
-                factionId={selectedFaction}
-                options={{ showIcon: true }}
-              />
+              <FactionSummary factionId={selectedFaction} />
             ) : null}
           </LabeledDiv>
         </LabeledDiv>
@@ -790,6 +720,79 @@ function ThundersEdgeModalContent() {
       >
         <ThundersEdgePanel />
       </div>
+    </div>
+  );
+}
+
+function MapWrapper() {
+  const allPlanets = useAllPlanets();
+  const factions = useFactions();
+  const options = useOptions();
+  const planets = usePlanets();
+
+  const { openModal } = use(ModalContext);
+
+  const orderedFactions = Object.values(factions).sort((a, b) =>
+    a.mapPosition > b.mapPosition ? 1 : -1
+  );
+
+  const mapString = getMapString(options, orderedFactions.length);
+
+  if (!mapString) {
+    return null;
+  }
+
+  return (
+    <div
+      className="flexRow"
+      onClick={() =>
+        openModal(
+          <div
+            className="flexRow"
+            style={{ height: `calc(100dvh - ${rem(16)})` }}
+          >
+            <div
+              style={{
+                position: "relative",
+                width: "min(100dvh, 100dvw)",
+                height: "min(100dvh, 100dvw)",
+              }}
+            >
+              <GameMap
+                factions={orderedFactions}
+                wormholeNexus={getWormholeNexusSystemNumber(
+                  options,
+                  planets,
+                  factions
+                )}
+                mapString={mapString ?? ""}
+                mapStyle={options["map-style"] ?? "standard"}
+                planets={allPlanets}
+                expansions={options.expansions}
+                hideFracture={!fracturePlanetsOwned(allPlanets)}
+              />
+            </div>
+          </div>
+        )
+      }
+    >
+      <button>
+        <div
+          className="flexRow"
+          style={{
+            position: "relative",
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          <MapMenuSVG />
+        </div>
+      </button>
+      <FormattedMessage
+        id="xDzJ9/"
+        description="Text shown on a button that opens the map."
+        defaultMessage="View Map"
+      />
     </div>
   );
 }

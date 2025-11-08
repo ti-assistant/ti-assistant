@@ -1,5 +1,12 @@
 import { AgendaRow } from "../AgendaRow";
-import { useAgendas, useRelics, useTechs } from "../context/dataHooks";
+import {
+  useAgendas,
+  useAllPlanets,
+  usePlanet,
+  usePlanets,
+  useRelics,
+  useTechs,
+} from "../context/dataHooks";
 import { useObjectives } from "../context/objectiveDataHooks";
 import { useFaction } from "../context/factionDataHooks";
 import { useFactions } from "../context/factionDataHooks";
@@ -51,13 +58,11 @@ export function LogEntryElement({
   const agendas = useAgendas();
   const factions = useFactions();
   const objectives = useObjectives();
+  const planets = useAllPlanets();
   const relics = useRelics();
   const techs = useTechs();
 
   switch (logEntry.data.action) {
-    case "START_VOTING": {
-      return null;
-    }
     case "ADD_ATTACHMENT": {
       return (
         <div
@@ -168,10 +173,13 @@ export function LogEntryElement({
       );
     }
     case "SELECT_ACTION": {
-      const faction =
+      let faction =
         activePlayer && activePlayer !== "None"
           ? factions[activePlayer]
           : undefined;
+      if (!faction && activePlayer === "Firmament") {
+        faction = factions["Obsidian"];
+      }
       return (
         <LabeledLine
           color={getFactionColor(faction)}
@@ -200,6 +208,21 @@ export function LogEntryElement({
           }}
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} /> gained
+          relic : {logEntry.data.event.relic}
+        </div>
+      );
+    }
+    case "LOSE_RELIC": {
+      return (
+        <div
+          className="flexRow"
+          style={{
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
+            fontFamily: "Myriad Pro",
+          }}
+        >
+          <ColoredFactionName factionId={logEntry.data.event.faction} /> lost
           relic : {logEntry.data.event.relic}
         </div>
       );
@@ -253,10 +276,6 @@ export function LogEntryElement({
           Used Z&apos;eu Ω on {logEntry.data.event.faction}
         </div>
       );
-    }
-    case "MARK_SECONDARY": {
-      // TODO: Display for all but Technology
-      return null;
     }
     case "SET_SPEAKER": {
       return (
@@ -392,9 +411,6 @@ export function LogEntryElement({
         </div>
       );
     }
-    case "END_GAME": {
-      return null;
-    }
     case "CHOOSE_STARTING_TECH": {
       const tech = techs[logEntry.data.event.tech];
       if (!tech) {
@@ -451,9 +467,7 @@ export function LogEntryElement({
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} />
           researched
-          <span style={{ color: getTechColor(tech) }}>
-            {logEntry.data.event.tech}
-          </span>
+          <span style={{ color: getTechColor(tech) }}>{tech.name}</span>
         </div>
       );
     }
@@ -473,13 +487,15 @@ export function LogEntryElement({
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} />
           returned
-          <span style={{ color: getTechColor(tech) }}>
-            {logEntry.data.event.tech}
-          </span>
+          <span style={{ color: getTechColor(tech) }}>{tech.name}</span>
         </div>
       );
     }
     case "CLAIM_PLANET": {
+      const planet = planets[logEntry.data.event.planet];
+      if (!planet) {
+        return null;
+      }
       return (
         <div
           className="flexRow"
@@ -490,7 +506,7 @@ export function LogEntryElement({
           }}
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} /> took
-          control of {logEntry.data.event.planet}
+          control of {planet.name}
           {logEntry.data.event.prevOwner ? (
             <>
               {" "}
@@ -580,9 +596,6 @@ export function LogEntryElement({
         />
       );
     }
-    case "PLAY_ACTION_CARD": {
-      return null;
-    }
     case "PLAY_RELIC": {
       const relicOwner = relics[logEntry.data.event.relic]?.owner;
       if (!relicOwner) {
@@ -605,9 +618,7 @@ export function LogEntryElement({
             >
               <ColoredFactionName factionId={relicOwner} />
               purged Maw of Worlds to gain
-              <span style={{ color: getTechColor(tech) }}>
-                {logEntry.data.event.tech}
-              </span>
+              <span style={{ color: getTechColor(tech) }}>{tech.name}</span>
             </div>
           );
         }
@@ -679,10 +690,6 @@ export function LogEntryElement({
         </div>
       );
     }
-    case "RESOLVE_AGENDA": {
-      // TODO: See if anything needs to be added.
-      return null;
-    }
     case "UPDATE_PLANET_STATE": {
       return (
         <div
@@ -696,6 +703,47 @@ export function LogEntryElement({
         </div>
       );
     }
+    case "PURGE_SYSTEM": {
+      return (
+        <div
+          className="flexRow"
+          style={{
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
+            fontFamily: "Myriad Pro",
+          }}
+        >
+          Purged System: {logEntry.data.event.systemId}
+        </div>
+      );
+    }
+    case "PURGE_TECH": {
+      const tech = techs[logEntry.data.event.techId];
+      if (!tech) {
+        return null;
+      }
+      return (
+        <div
+          className="flexRow"
+          style={{
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
+            fontFamily: "Myriad Pro",
+          }}
+        >
+          {logEntry.data.event.factionId ? (
+            <>
+              <ColoredFactionName factionId={logEntry.data.event.factionId} />{" "}
+              purged{" "}
+            </>
+          ) : (
+            <>All players purged </>
+          )}
+          <span style={{ color: getTechColor(tech) }}>{tech.name}</span>
+        </div>
+      );
+    }
+
     case "COMMIT_TO_EXPEDITION": {
       if (!logEntry.data.event.factionId) {
         return null;
@@ -715,7 +763,28 @@ export function LogEntryElement({
         </div>
       );
     }
+    case "UNPASS": {
+      return (
+        <div
+          className="flexRow"
+          style={{
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
+            fontFamily: "Myriad Pro",
+          }}
+        >
+          <ColoredFactionName factionId={logEntry.data.event.factionId} />
+          chose to no longer be passed
+        </div>
+      );
+    }
+    case "RESOLVE_AGENDA":
+    case "PLAY_ACTION_CARD":
+    case "START_VOTING":
+    case "MARK_PRIMARY":
+    case "MARK_SECONDARY":
     case "END_TURN":
+    case "END_GAME":
       return null;
   }
   return (

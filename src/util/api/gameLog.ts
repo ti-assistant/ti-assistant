@@ -25,7 +25,10 @@ import {
 import { GainRelicHandler, LoseRelicHandler } from "../model/gainRelic";
 import { GiftOfPrescienceHandler } from "../model/giftOfPrescience";
 import { ManualVPUpdateHandler } from "../model/manualVPUpdate";
-import { MarkSecondaryHandler } from "../model/markSecondary";
+import {
+  MarkPrimaryHandler,
+  MarkSecondaryHandler,
+} from "../model/markSecondary";
 import {
   PlayActionCardHandler,
   UnplayActionCardHandler,
@@ -44,6 +47,8 @@ import {
 } from "../model/playPromissoryNote";
 import { PlayRelicHandler, UnplayRelicHandler } from "../model/playRelic";
 import { PlayRiderHandler, UnplayRiderHandler } from "../model/playRider";
+import { PurgeSystemHandler, UnpurgeSystemHandler } from "../model/purgeSystem";
+import { PurgeTechHandler, UnpurgeTechHandler } from "../model/purgeTech";
 import {
   RepealAgendaHandler,
   ResolveAgendaHandler,
@@ -74,6 +79,8 @@ import {
   SwapStrategyCardsHandler,
   UnswapStrategyCardsHandler,
 } from "../model/swapStrategyCards";
+import { ToggleStructureHandler } from "../model/toggleSpaceDock";
+import { PassHandler, UnpassHandler } from "../model/unpass";
 import { UpdateBreakthroughStateHandler } from "../model/updateBreakthroughState";
 import { UpdateLeaderStateHandler } from "../model/updateLeaderState";
 import { UpdatePlanetStateHandler } from "../model/updatePlanetState";
@@ -207,5 +214,21 @@ export function getHandler(gameData: StoredGameData, data: GameUpdateData) {
       return new CommitToExpeditionHandler(gameData, data);
     case "UPDATE_BREAKTHROUGH_STATE":
       return new UpdateBreakthroughStateHandler(gameData, data);
+    case "PURGE_TECH":
+      return new PurgeTechHandler(gameData, data);
+    case "UNPURGE_TECH":
+      return new UnpurgeTechHandler(gameData, data);
+    case "MARK_PRIMARY":
+      return new MarkPrimaryHandler(gameData, data);
+    case "PASS":
+      return new PassHandler(gameData, data);
+    case "UNPASS":
+      return new UnpassHandler(gameData, data);
+    case "PURGE_SYSTEM":
+      return new PurgeSystemHandler(gameData, data);
+    case "UNPURGE_SYSTEM":
+      return new UnpurgeSystemHandler(gameData, data);
+    case "TOGGLE_STRUCTURE":
+      return new ToggleStructureHandler(gameData, data);
   }
 }

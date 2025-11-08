@@ -10,6 +10,7 @@ import { objectKeys, rem } from "../../../../../../src/util/util";
 
 interface RoundInfo {
   planets: Partial<Record<PlanetId, Planet>>;
+  systems: Partial<Record<SystemId, System>>;
   mapString?: string;
   techs: Partial<Record<FactionId, Record<TechType, number>>>;
   victoryPoints: Partial<Record<FactionId, Record<ObjectiveType, number>>>;
@@ -90,6 +91,7 @@ export default function MapLapse({
               factions
             )}
             planets={planets.planets}
+            systems={planets.systems}
             expansions={options.expansions}
             hideLegend
             hideFracture={!fracturePlanetsOwned(planets.planets)}

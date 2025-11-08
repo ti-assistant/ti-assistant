@@ -375,7 +375,7 @@ function BecomeAMartyr({
 }) {
   const planets = usePlanets();
 
-  function canScore(faction: Faction) {
+  function canScore(factionId: FactionId) {
     for (const conqueredPlanet of conqueredPlanets) {
       const planet = planets[conqueredPlanet.planet];
       const prevOwner = conqueredPlanet.prevOwner;
@@ -387,7 +387,7 @@ function BecomeAMartyr({
       ) {
         continue;
       }
-      if (faction.id === prevOwner) {
+      if (factionId === prevOwner) {
         return true;
       }
     }

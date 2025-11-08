@@ -1,8 +1,10 @@
 import { BASE_OPTIONS } from "../../server/data/options";
-import { computeVPs } from "../util/factions";
+import { computeScoredVPs, computeVPs } from "../util/factions";
 import { getInitiativeForFaction, getOnDeckFaction } from "../util/helpers";
 import { Optional } from "../util/types/types";
 import { useGameDataValue, useMemoizedGameDataValue } from "./dataHooks";
+import { Factions } from "./factionDataHooks";
+import { Objectives } from "./objectiveDataHooks";
 
 export type FactionOrdering =
   | "VICTORY_POINTS"
@@ -11,6 +13,8 @@ export type FactionOrdering =
   | "INITIATIVE"
   | "ALLIANCE"
   | "VOTING";
+
+export type FactionOnlyOrdering = "MAP" | "SPEAKER" | "ALLIANCE" | "VOTING";
 
 export function useGameData() {
   return useGameDataValue<GameData>("", {
@@ -28,29 +32,15 @@ export function useGameData() {
 }
 
 export function useActiveFactionId() {
-  return useMemoizedGameDataValue<GameData, Optional<FactionId>>(
-    "",
+  return useMemoizedGameDataValue<GameState, Optional<FactionId>>(
+    "state",
     undefined,
-    (data) => {
-      const activePlayer = data.state.activeplayer;
+    (state) => {
+      const activePlayer = state.activeplayer;
       if (!activePlayer || activePlayer === "None") {
         return undefined;
       }
       return activePlayer;
-    }
-  );
-}
-
-export function useActiveFaction() {
-  return useMemoizedGameDataValue<GameData, Optional<Faction>>(
-    "",
-    undefined,
-    (data) => {
-      const activePlayer = data.state.activeplayer;
-      if (!activePlayer || activePlayer === "None") {
-        return undefined;
-      }
-      return data.factions[activePlayer];
     }
   );
 }
@@ -73,19 +63,11 @@ export function useOnDeckFactionId() {
   );
 }
 
-export function useOnDeckFaction() {
-  return useMemoizedGameDataValue<GameData, Optional<Faction>>(
-    "",
-    undefined,
-    (data) =>
-      getOnDeckFaction(data.state, data.factions, data.strategycards ?? {})
-  );
-}
-
 function buildSortFn(
   data: GameData,
   order: FactionOrdering,
-  tieBreak?: FactionOrdering
+  tieBreak?: FactionOrdering,
+  offsetValue?: number
 ) {
   function getSortValues(a: Faction, b: Faction, ordering: FactionOrdering) {
     switch (ordering) {
@@ -98,7 +80,25 @@ function buildSortFn(
           b: getInitiativeForFaction(strategyCards, b.id),
         };
       case "SPEAKER":
-        return { a: a.order, b: b.order };
+        if (!offsetValue) {
+          return { a: a.order, b: b.order };
+        }
+        if (a.order === offsetValue) {
+          return { a: -1, b: 1 };
+        }
+        if (b.order === offsetValue) {
+          return { a: 1, b: -1 };
+        }
+        if (a.order < offsetValue) {
+          if (b.order < offsetValue) {
+            return { a: a.order, b: b.order };
+          }
+          return { a: 1, b: -1 };
+        }
+        if (b.order > offsetValue) {
+          return { a: a.order, b: b.order };
+        }
+        return { a: -1, b: 1 };
       case "VICTORY_POINTS":
         const objectives = data.objectives ?? {};
         let aValue = computeVPs(data.factions, a.id, objectives);
@@ -167,20 +167,134 @@ function buildSortFn(
   };
 }
 
-export function useOrderedFactionIds(
+function buildFactionSortFn(
+  factions: Factions,
+  order: FactionOnlyOrdering,
+  tieBreak?: FactionOnlyOrdering,
+  offsetValue?: number
+) {
+  function getSortValues(
+    a: Faction,
+    b: Faction,
+    ordering: FactionOnlyOrdering
+  ) {
+    switch (ordering) {
+      case "MAP":
+        return { a: a.mapPosition, b: b.mapPosition };
+      case "SPEAKER":
+        if (!offsetValue) {
+          return { a: a.order, b: b.order };
+        }
+        if (a.order === offsetValue) {
+          return { a: -1, b: 1 };
+        }
+        if (b.order === offsetValue) {
+          return { a: 1, b: -1 };
+        }
+        if (a.order < offsetValue) {
+          if (b.order < offsetValue) {
+            return { a: a.order, b: b.order };
+          }
+          return { a: 1, b: -1 };
+        }
+        if (b.order > offsetValue) {
+          return { a: a.order, b: b.order };
+        }
+        return { a: -1, b: 1 };
+      case "ALLIANCE":
+        if (!a.alliancePartner || !b.alliancePartner) {
+          return getSortValues(a, b, "MAP");
+        }
+        // If same alliance, sort normally.
+        if (a.alliancePartner === b.id || b.alliancePartner === a.id) {
+          return getSortValues(a, b, "MAP");
+        }
+
+        // If different alliance, sort by earliest partner.
+        const aPartner = factions[a.alliancePartner];
+        const bPartner = factions[b.alliancePartner];
+        if (!aPartner || !bPartner) {
+          return getSortValues(a, b, "MAP");
+        }
+
+        const aValues = getSortValues(a, aPartner, "MAP");
+        const bValues = getSortValues(b, bPartner, "MAP");
+        const lowerA = aValues.a < aValues.b ? a : aPartner;
+        const lowerB = bValues.a < bValues.b ? b : bPartner;
+
+        return getSortValues(lowerA, lowerB, "MAP");
+      case "VOTING":
+        if (a.id === "Argent Flight") {
+          return { a: 0, b: 1 };
+        }
+        if (b.id === "Argent Flight") {
+          return { a: 1, b: 0 };
+        }
+        if (a.order === 1) {
+          return { a: 1, b: 0 };
+        }
+        if (b.order === 1) {
+          return { a: 0, b: 1 };
+        }
+        return getSortValues(a, b, "SPEAKER");
+    }
+  }
+
+  return (a: Faction, b: Faction) => {
+    let values = getSortValues(a, b, order);
+    if (tieBreak && values.a === values.b) {
+      values = getSortValues(a, b, tieBreak);
+    }
+    return values.a - values.b;
+  };
+}
+
+export function useCompleteOrderedFactionIds(
   ordering: FactionOrdering,
-  tieBreak?: FactionOrdering
+  tieBreak?: FactionOrdering,
+  speakerOffset?: FactionId
 ) {
   return useMemoizedGameDataValue<GameData, FactionId[]>("", [], (data) => {
+    let offsetValue: Optional<number>;
+    if (speakerOffset) {
+      offsetValue = data.factions[speakerOffset]?.order ?? 0;
+    }
     const orderedFactions = Object.values(data.factions).sort(
-      buildSortFn(data, ordering, tieBreak)
+      buildSortFn(data, ordering, tieBreak, offsetValue)
     );
     return orderedFactions.map((faction) => faction.id);
   });
 }
 
-export function useFactionVPs(factionId: FactionId) {
-  return useMemoizedGameDataValue<GameData, number>("", 0, (data) =>
-    computeVPs(data.factions, factionId, data.objectives ?? {})
+export function useOrderedFactionIds(
+  ordering: FactionOnlyOrdering,
+  tieBreak?: FactionOnlyOrdering,
+  speakerOffset?: FactionId
+) {
+  return useMemoizedGameDataValue<Factions, FactionId[]>(
+    "factions",
+    [],
+    (factions) => {
+      let offsetValue: Optional<number>;
+      if (speakerOffset) {
+        offsetValue = factions[speakerOffset]?.order ?? 0;
+      }
+      const orderedFactions = Object.values(factions).sort(
+        buildFactionSortFn(factions, ordering, tieBreak, offsetValue)
+      );
+      return orderedFactions.map((faction) => faction.id);
+    }
   );
+}
+
+export function useScoredFactionVPs(factionId: FactionId) {
+  return useMemoizedGameDataValue<Objectives, number>(
+    "objectives",
+    0,
+    (objectives) => computeScoredVPs(factionId, objectives)
+  );
+}
+
+export function useManualFactionVPs(factionId: FactionId) {
+  return useGameDataValue(`factions.${factionId}.vps`, 0);
 }

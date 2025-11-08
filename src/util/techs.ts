@@ -1,5 +1,5 @@
 import { Techs } from "../context/techDataHooks";
-import { hasTech } from "./api/techs";
+import { hasTech, isTechPurged, isTechReplaced } from "./api/techs";
 import { Optional } from "./types/types";
 import { objectEntries } from "./util";
 
@@ -154,6 +154,36 @@ export function getFactionPreReqs(
   }
 
   return prereqs;
+}
+
+export function ableToResearchTech(
+  tech: Optional<Tech>,
+  faction: Optional<Faction>,
+  factionIds: FactionId[]
+) {
+  if (!tech || !faction) {
+    return false;
+  }
+  if (isTechPurged(faction, tech)) {
+    return false;
+  }
+  if (hasTech(faction, tech)) {
+    return false;
+  }
+  if (tech.faction && !factionIds.includes(tech.faction)) {
+    return false;
+  }
+  if (
+    faction.id !== "Nekro Virus" &&
+    tech.faction &&
+    tech.faction !== faction.id
+  ) {
+    return false;
+  }
+  if (isTechReplaced(faction.id, tech.id)) {
+    return false;
+  }
+  return true;
 }
 
 export function canResearchTech(

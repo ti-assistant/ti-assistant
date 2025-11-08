@@ -216,7 +216,7 @@ export default function getThundersEdgeFactions(
             id: "Deepwrought Scholarate.Abilities.Research Team.Description",
             description: "Description for Faction Ability: Research Team",
             defaultMessage:
-              "When ground forces are committed, if your units on the planet are already not coexisting, you may choose for your units to coexist.",
+              "When ground forces are committed, if your units on the planet are not already coexisting, you may choose for your units to coexist.",
           }),
         },
         {

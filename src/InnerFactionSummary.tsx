@@ -15,18 +15,7 @@ export default function DummyFactionSummary() {
 
   const [VPs, setVPs] = useState(0);
 
-  // const techs: Techs = {
-  //   "Sarween Tools": {
-  //     description: "",
-  //     id: "Sarween Tools",
-  //     expansion: "BASE",
-  //     name: "Sarween Tools",
-  //     prereqs: [],
-  //     type: "YELLOW",
-  //   },
-  // };
-
-  const ownedTechs: TechId[] = ["Sarween Tools"];
+  const ownedTechs: Set<TechId> = new Set(["Sarween Tools"]);
 
   const planets: Planet[] = [
     {

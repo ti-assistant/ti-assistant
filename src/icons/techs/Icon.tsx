@@ -1,7 +1,7 @@
 export default function TechSVG() {
   return (
     <svg version="1.1" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-      <g fill="none" stroke="#eee" stroke-width="3.1059">
+      <g fill="none" stroke="#eee" strokeWidth="3.1059">
         <circle cx="14.906" cy="8.6941" r="4.1412" />
         <circle cx="14.906" cy="30.953" r="4.1412" />
         <circle cx="35.094" cy="19.254" r="4.1412" />

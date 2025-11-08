@@ -431,7 +431,8 @@ function MobileOptions({
                                   processMapString(
                                     options["map-string"],
                                     style,
-                                    numFactions
+                                    numFactions,
+                                    options.expansions.has("THUNDERS EDGE")
                                   ),
                                   "processed-map-string"
                                 );
@@ -471,7 +472,8 @@ function MobileOptions({
                         processMapString(
                           event.currentTarget.value,
                           options["map-style"],
-                          numFactions
+                          numFactions,
+                          options.expansions.has("THUNDERS EDGE")
                         ),
                         "processed-map-string"
                       );
@@ -1285,7 +1287,12 @@ export default function SetupPage({
       toggleOption("normal", "game-variant");
     }
     toggleOption(
-      processMapString(options["map-string"], "standard", count),
+      processMapString(
+        options["map-string"],
+        "standard",
+        count,
+        options.expansions.has("THUNDERS EDGE")
+      ),
       "processed-map-string"
     );
 
@@ -1822,14 +1829,16 @@ export default function SetupPage({
                               processMapString(
                                 options["map-string"],
                                 style,
-                                numFactions
+                                numFactions,
+                                options.expansions.has("THUNDERS EDGE")
                               ),
                               "processed-map-string"
                             );
                             const factionIds = extractFactionIds(
                               options["map-string"],
                               style,
-                              numFactions
+                              numFactions,
+                              options.expansions.has("THUNDERS EDGE")
                             );
                             if (factionIds) {
                               updateAllPlayerFactions(factionIds);
@@ -1869,14 +1878,16 @@ export default function SetupPage({
                     processMapString(
                       event.currentTarget.value,
                       options["map-style"],
-                      numFactions
+                      numFactions,
+                      options.expansions.has("THUNDERS EDGE")
                     ),
                     "processed-map-string"
                   );
                   const factionIds = extractFactionIds(
                     event.currentTarget.value,
                     options["map-style"],
-                    numFactions
+                    numFactions,
+                    options.expansions.has("THUNDERS EDGE")
                   );
                   if (factionIds) {
                     updateAllPlayerFactions(factionIds);

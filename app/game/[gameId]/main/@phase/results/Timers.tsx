@@ -16,7 +16,6 @@ export default function Timers({
   timerData: Partial<Record<FactionId, TimerData>>;
 }) {
   const timers = useTimers();
-  console.log("Timers", timers);
   const factions = useFactions();
   return (
     <div
@@ -34,16 +33,36 @@ export default function Timers({
     >
       {objectEntries(timers).map(([key, val]) => {
         if (typeof key !== "string") {
-          return;
+          return null;
         }
         if (!isFactionId(key)) {
           return null;
         }
-        const secondary = timers[`${key}-secondary`];
+
+        if (key === "Firmament" && !!timers["Obsidian"]) {
+          return null;
+        }
+
         const data = timerData[key];
         if (!data) {
           return null;
         }
+
+        let time = val;
+        let secondary = timers[`${key}-secondary`];
+        let numTurns = data.numTurns;
+        let longestTurn = data.longestTurn;
+
+        if (key === "Obsidian") {
+          numTurns += timerData["Firmament"]?.numTurns ?? 0;
+          longestTurn = Math.max(
+            longestTurn,
+            timerData["Firmament"]?.longestTurn ?? 0
+          );
+          time += timers["Firmament"] ?? 0;
+          secondary += timers["Firmament-secondary"] ?? 0;
+        }
+
         return (
           <LabeledDiv
             key={key}
@@ -56,20 +75,17 @@ export default function Timers({
             >
               <div className="flexRow">
                 Total Time:
-                <TimerDisplay time={val} width={100} />
+                <TimerDisplay time={time} width={100} />
               </div>
-              <div className="flexRow">Turns Taken: {data.numTurns}</div>
+              <div className="flexRow">Turns Taken: {numTurns}</div>
 
               <div className="flexRow">
                 Longest Turn:
-                <TimerDisplay time={data.longestTurn} width={100} />
+                <TimerDisplay time={longestTurn} width={100} />
               </div>
               <div className="flexRow">
                 Average per Turn:
-                <TimerDisplay
-                  time={Math.floor(val / data.numTurns)}
-                  width={100}
-                />
+                <TimerDisplay time={Math.floor(time / numTurns)} width={100} />
               </div>
               {secondary ? (
                 <div className="flexRow">

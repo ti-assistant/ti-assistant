@@ -28,11 +28,16 @@ export function isFactionHomeSystem(systemNumber: string) {
   return false;
 }
 
-export function getDefaultMapString(numFactions: number, mapStyle: MapStyle) {
+export function getDefaultMapString(
+  numFactions: number,
+  mapStyle: MapStyle,
+  thundersEdge: boolean
+) {
+  const mecatolSystem = thundersEdge ? "112 " : "18 ";
   switch (numFactions) {
     case 3:
       return (
-        "18 " +
+        mecatolSystem +
         "0 0 0 0 0 0 " +
         "0 0 0 0 0 0 0 0 0 0 0 0 " +
         "-1 -1 0 P1 0 -1 -1 -1 0 P2 0 -1 -1 -1 0 P3 0 -1"
@@ -41,21 +46,21 @@ export function getDefaultMapString(numFactions: number, mapStyle: MapStyle) {
       switch (mapStyle) {
         case "standard":
           return (
-            "18 " +
+            mecatolSystem +
             "0 0 0 0 0 0 " +
             "0 0 0 0 0 0 0 0 0 0 0 0 " +
             "0 0 0 0 P1 0 0 0 P2 0 0 0 0 P3 0 0 0 P4"
           );
         case "skinny":
           return (
-            "18 " +
+            mecatolSystem +
             "0 0 0 0 0 0 " +
             "0 0 0 0 0 0 0 0 0 0 0 0 " +
             "-1 0 P1 -1 -1 -1 -1 P2 0 -1 0 P3 -1 -1 -1 -1 P4 0"
           );
         case "warp":
           return (
-            "18 " +
+            mecatolSystem +
             "85A3 0 0 85A 0 0 " +
             "0 87A3 0 0 0 88A 0 87A 0 0 0 88A3 " +
             "86A3 84A3 0 P1 0 0 P2 0 83A 86A 84A 0 P3 0 0 P4 0 83A3"
@@ -66,21 +71,21 @@ export function getDefaultMapString(numFactions: number, mapStyle: MapStyle) {
       switch (mapStyle) {
         case "standard":
           return (
-            "18 " +
+            mecatolSystem +
             "0 0 0 0 0 0 " +
             "0 0 0 0 0 0 0 0 0 0 0 0 " +
             "0 0 P1 0 0 0 P2 0 0 P3 0 0 P4 0 0 0 P5 0"
           );
         case "skinny":
           return (
-            "18 " +
+            mecatolSystem +
             "0 0 0 0 0 0 " +
             "0 0 0 0 0 0 0 0 0 0 0 0 " +
             "0 0 P1 -1 0 P2 -1 -1 0 P3 0 -1 -1 P4 0 -1 P5 0"
           );
         case "warp":
           return (
-            "18 " +
+            mecatolSystem +
             "0 0 0 85A 0 0 " +
             "0 0 0 0 0 88A 0 87A 0 0 0 0 " +
             "P1 0 0 P2 0 0 P3 0 83A 86A 84A 0 P4 0 0 P5 0 0"
@@ -91,14 +96,14 @@ export function getDefaultMapString(numFactions: number, mapStyle: MapStyle) {
       switch (mapStyle) {
         case "standard":
           return (
-            "18 " +
+            mecatolSystem +
             "0 0 0 0 0 0 " +
             "0 0 0 0 0 0 0 0 0 0 0 0 " +
             "P1 0 0 P2 0 0 P3 0 0 P4 0 0 P5 0 0 P6 0 0"
           );
         case "large":
           return (
-            "18 " +
+            mecatolSystem +
             "0 0 0 0 0 0 " +
             "0 0 0 0 0 0 0 0 0 0 0 0 " +
             "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 " +
@@ -110,7 +115,7 @@ export function getDefaultMapString(numFactions: number, mapStyle: MapStyle) {
       switch (mapStyle) {
         case "standard":
           return (
-            "18 " +
+            mecatolSystem +
             "0 0 0 0 0 0 " +
             "0 0 0 0 0 0 85A 0 0 0 0 0 " +
             "0 0 0 0 0 0 0 0 88A 0 87A 0 0 0 0 0 0 0 " +
@@ -118,7 +123,7 @@ export function getDefaultMapString(numFactions: number, mapStyle: MapStyle) {
           );
         case "warp":
           return (
-            "18 " +
+            mecatolSystem +
             "85B 0 0 84B 90B 0 " +
             "0 0 0 0 0 0 0 0 0 0 0 0 " +
             "0 88B3 0 P2 0 0 P3 0 86B 0 0 0 0 0 83B2 0 0 0 " +
@@ -130,7 +135,7 @@ export function getDefaultMapString(numFactions: number, mapStyle: MapStyle) {
       switch (mapStyle) {
         case "standard":
           return (
-            "18 " +
+            mecatolSystem +
             "0 0 0 0 0 0 " +
             "0 0 0 0 0 0 0 0 0 0 0 0 " +
             "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 " +
@@ -138,7 +143,7 @@ export function getDefaultMapString(numFactions: number, mapStyle: MapStyle) {
           );
         case "warp":
           return (
-            "18 " +
+            mecatolSystem +
             "87A1 90B3 0 88A2 89B 0 " +
             "0 0 0 0 0 0 0 0 0 0 0 0 " +
             "0 0 0 0 0 85B2 0 0 0 0 0 0 0 0 83B2 0 0 0 " +
@@ -148,7 +153,7 @@ export function getDefaultMapString(numFactions: number, mapStyle: MapStyle) {
       break;
   }
   return (
-    "18 " +
+    mecatolSystem +
     "0 0 0 0 0 0 " +
     "0 0 0 0 0 0 0 0 0 0 0 0 " +
     "P1 0 0 P2 0 0 P3 0 0 P4 0 0 P5 0 0 P6 0 0"
@@ -222,9 +227,14 @@ export function validSystemNumber(number: string) {
 export function updateMapString(
   mapString: string,
   mapStyle: MapStyle,
-  numFactions: number
+  numFactions: number,
+  thundersEdge: boolean
 ) {
-  const defaultMapString = getDefaultMapString(numFactions, mapStyle);
+  const defaultMapString = getDefaultMapString(
+    numFactions,
+    mapStyle,
+    thundersEdge
+  );
   let updatedMapString =
     mapString !== ""
       ? mergeMapStrings(mapString, defaultMapString)
@@ -284,27 +294,38 @@ function mapValuePriority(a?: string, b?: string) {
 export function processMapString(
   mapString: string,
   mapStyle: MapStyle,
-  numFactions: number
+  numFactions: number,
+  thundersEdge: boolean
 ) {
   if (!allSystemsValid(mapString)) {
-    return getDefaultMapString(numFactions, mapStyle);
+    return getDefaultMapString(numFactions, mapStyle, thundersEdge);
   }
   if (allSystemsValid(mapString) && hasHomeSystems(mapString, numFactions)) {
-    return makeHomeSystemsExplicit(maybeAddMecatol(mapString), numFactions);
+    return makeHomeSystemsExplicit(
+      maybeAddMecatol(mapString, thundersEdge),
+      numFactions
+    );
   }
   const updated = updateMapString(
-    maybeAddMecatol(mapString),
+    maybeAddMecatol(mapString, thundersEdge),
     mapStyle,
-    numFactions
+    numFactions,
+    thundersEdge
   );
   return updated;
 }
 
-function maybeAddMecatol(mapString: string) {
-  if (mapString.startsWith("18 ") || mapString.includes(" 18 ")) {
+function maybeAddMecatol(mapString: string, thundersEdge: boolean) {
+  if (
+    mapString.startsWith("112 ") ||
+    mapString.startsWith("18 ") ||
+    mapString.includes(" 112 ") ||
+    mapString.includes(" 18 ")
+  ) {
     return mapString;
   }
-  return "18 " + mapString;
+  const mecatolSystem = thundersEdge ? "112" : "18";
+  return `${mecatolSystem} ${mapString}`;
 }
 
 function makeHomeSystemsExplicit(mapString: string, numFactions: number) {
@@ -585,11 +606,12 @@ export function getFactionSystemId(faction: Faction): Optional<SystemId> {
 export function extractFactionIds(
   mapString: string,
   mapStyle: MapStyle,
-  numFactions: number
+  numFactions: number,
+  thundersEdge: boolean
 ) {
   const newSystems = mapString.split(" ");
   newSystems.unshift("18");
-  const defaultMap = getDefaultMapString(numFactions, mapStyle);
+  const defaultMap = getDefaultMapString(numFactions, mapStyle, thundersEdge);
 
   const SYSTEMS_TO_FACTIONS: Record<string, FactionId> = {};
   objectKeys(FACTION_TO_SYSTEM_NUMBER).forEach((key) => {

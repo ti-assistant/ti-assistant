@@ -14,9 +14,15 @@ import {
   useViewOnly,
 } from "./context/dataHooks";
 import { useFactionTechs } from "./context/factionDataHooks";
-import { useFactionVPs } from "./context/gameDataHooks";
-import { useObjectives } from "./context/objectiveDataHooks";
-import { useGameState } from "./context/stateDataHooks";
+import {
+  useManualFactionVPs,
+  useScoredFactionVPs,
+} from "./context/gameDataHooks";
+import {
+  useObjectiveRevealOrder,
+  useObjectives,
+} from "./context/objectiveDataHooks";
+import { usePhase } from "./context/stateDataHooks";
 import {
   manualVPUpdateAsync,
   scoreObjectiveAsync,
@@ -31,21 +37,16 @@ import { objectEntries, rem } from "./util/util";
 
 interface FactionSummaryProps {
   factionId: FactionId;
-  options?: {
-    hidePlanets?: boolean;
-    hideTechs?: boolean;
-    showIcon?: boolean;
-  };
 }
 
-export function FactionSummary({
-  factionId,
-  options = {},
-}: FactionSummaryProps) {
-  const VPs = useFactionVPs(factionId);
+export function FactionSummary({ factionId }: FactionSummaryProps) {
+  const manualVPs = useManualFactionVPs(factionId);
+  const scoredVPs = useScoredFactionVPs(factionId);
   const gameId = useGameId();
-  const state = useGameState();
+  const phase = usePhase();
   const viewOnly = useViewOnly();
+
+  const VPs = manualVPs + scoredVPs;
 
   function manualVpAdjust(increase: boolean) {
     if (!gameId || !factionId) {
@@ -55,39 +56,37 @@ export function FactionSummary({
     manualVPUpdateAsync(gameId, factionId, value);
   }
 
-  const editable = state?.phase !== "END" && !viewOnly;
+  const editable = phase !== "END" && !viewOnly;
 
   return (
     <div className={styles.FactionSummary}>
-      {options.hideTechs ? null : <FactionTechSummary factionId={factionId} />}
+      <FactionTechSummary factionId={factionId} />
       <div className={styles.VPGrid}>
-        {options.showIcon ? (
+        <div
+          className="flexColumn"
+          style={{
+            position: "absolute",
+            zIndex: -1,
+            width: "100%",
+            height: "100%",
+            top: 0,
+            left: 0,
+          }}
+        >
           <div
             className="flexColumn"
             style={{
               position: "absolute",
               zIndex: -1,
-              width: "100%",
-              height: "100%",
-              top: 0,
-              left: 0,
+              opacity: 0.25,
+              width: rem(60),
+              height: rem(60),
+              userSelect: "none",
             }}
           >
-            <div
-              className="flexColumn"
-              style={{
-                position: "absolute",
-                zIndex: -1,
-                opacity: 0.25,
-                width: rem(60),
-                height: rem(60),
-                userSelect: "none",
-              }}
-            >
-              <FactionIcon factionId={factionId} size="100%" />
-            </div>
+            <FactionIcon factionId={factionId} size="100%" />
           </div>
-        ) : null}
+        </div>
         <div
           className="flexRow"
           style={{
@@ -129,53 +128,16 @@ export function FactionSummary({
         </div>
         <ObjectiveDots factionId={factionId} />
       </div>
-      {options.hidePlanets ? null : (
-        <FactionPlanetSummary factionId={factionId} />
-      )}
+      <FactionPlanetSummary factionId={factionId} />
     </div>
   );
 }
 
 function ObjectiveDots({ factionId }: { factionId: FactionId }) {
-  const actionLog = useActionLog();
   const gameId = useGameId();
   const objectives = useObjectives();
+  const revealOrder = useObjectiveRevealOrder();
   const viewOnly = useViewOnly();
-
-  const revealOrder: Partial<Record<ObjectiveId, number>> = {};
-  let order = 1;
-  getLogEntries<RevealObjectiveData>(
-    [...actionLog].reverse(),
-    "REVEAL_OBJECTIVE"
-  ).forEach((logEntry) => {
-    const objectiveId = logEntry.data.event.objective;
-    revealOrder[objectiveId] = order;
-    ++order;
-  });
-
-  const stageOnes = {
-    scored: 0,
-    revealed: 0,
-  };
-  const stageTwos = {
-    scored: 0,
-    revealed: 0,
-  };
-  Object.values(objectives)
-    .filter((obj) => obj.selected)
-    .forEach((obj) => {
-      if (obj.type === "STAGE ONE") {
-        if (obj.scorers?.includes(factionId)) {
-          stageOnes.scored++;
-        }
-        stageOnes.revealed++;
-      } else if (obj.type === "STAGE TWO") {
-        if (obj.scorers?.includes(factionId)) {
-          stageTwos.scored++;
-        }
-        stageTwos.revealed++;
-      }
-    });
 
   const stageIs = Object.values(objectives).filter(
     (obj) => obj.type === "STAGE ONE" && obj.selected

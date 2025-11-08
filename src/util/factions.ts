@@ -1,3 +1,4 @@
+import { DataStore } from "../context/dataStore";
 import { Optional } from "./types/types";
 import { objectEntries } from "./util";
 
@@ -6,6 +7,16 @@ export function getFactionColor(faction: Optional<Faction>) {
     return "var(--neutral-border)";
   }
   return convertToFactionColor(faction.color);
+}
+
+export function getColorForFaction(factionId: Optional<FactionId>) {
+  if (!factionId) {
+    return "var(--neutral-border)";
+  }
+  const factionColor = DataStore.getValue<string>(
+    `factions.${factionId}.color`
+  );
+  return convertToFactionColor(factionColor);
 }
 
 export function convertToFactionColor(color: Optional<string>) {

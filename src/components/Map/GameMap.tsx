@@ -96,6 +96,7 @@ interface MapProps {
     };
   }[];
   planets?: Partial<Record<PlanetId, Planet>>;
+  systems?: Partial<Record<SystemId, System>>;
   hideLegend?: boolean;
   hideFracture?: boolean;
   expansions: Expansion[];
@@ -112,6 +113,7 @@ export default function GameMap({
   factions,
   hideLegend,
   planets,
+  systems,
   canSelectSystem,
   onSelect,
   hideFracture,
@@ -123,7 +125,12 @@ export default function GameMap({
 
   const updatedMapString =
     mapString === ""
-      ? updateMapString(mapString, mapStyle, factions.length)
+      ? updateMapString(
+          mapString,
+          mapStyle,
+          factions.length,
+          expansions.includes("THUNDERS EDGE")
+        )
       : mapString;
   let updatedSystemTiles = updatedMapString.split(" ");
   updatedSystemTiles = updatedSystemTiles.map((tile, index) => {
@@ -376,6 +383,7 @@ export default function GameMap({
               <SystemImage
                 overlayDetails={overlayDetails}
                 planets={planetInfo}
+                systems={systems}
                 systemNumber={tile}
                 selectable={canSelectSystem ? canSelectSystem(tile) : false}
                 onClick={onSelect}
@@ -388,6 +396,7 @@ export default function GameMap({
             systemNumber="51"
             overlayDetails={overlayDetails}
             planetInfo={planetInfo}
+            systems={systems}
             selectable={false}
             onClick={onSelect}
             position={ghostsCorner}
@@ -401,6 +410,7 @@ export default function GameMap({
             systemNumber="118"
             overlayDetails={overlayDetails}
             planetInfo={planetInfo}
+            systems={systems}
             selectable={false}
             onClick={onSelect}
             position={rebellionCorner}
@@ -414,6 +424,7 @@ export default function GameMap({
             systemNumber={getWormholeNexusSystemNum(wormholeNexus)}
             overlayDetails={overlayDetails}
             planetInfo={planetInfo}
+            systems={systems}
             selectable={
               canSelectSystem
                 ? canSelectSystem(

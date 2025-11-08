@@ -355,6 +355,7 @@ export default function getBasePlanets(
             "You may exhaust this card and discard 1 secret objective at the end of your turn to draw 1 secret objective.",
           attributes: ["legendary"],
           expansion: "THUNDERS EDGE",
+          system: 112,
         },
       ],
     },

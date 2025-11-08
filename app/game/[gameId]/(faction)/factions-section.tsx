@@ -15,24 +15,24 @@ import {
   useFactions,
 } from "../../../../src/context/factionDataHooks";
 import {
+  FactionOrdering,
+  useActiveFactionId,
+  useCompleteOrderedFactionIds,
+} from "../../../../src/context/gameDataHooks";
+import {
   useFinalPhase,
   useGameState,
   usePhase,
 } from "../../../../src/context/stateDataHooks";
 import { advancePhaseAsync } from "../../../../src/dynamic/api";
-import { statusPhaseComplete } from "../main/@phase/status/StatusPhase";
 import { getLogEntries } from "../../../../src/util/actionLog";
 import { getFactionColor } from "../../../../src/util/factions";
 import { getStrategyCardsForFaction } from "../../../../src/util/helpers";
 import { phaseString } from "../../../../src/util/strings";
+import { Optional } from "../../../../src/util/types/types";
 import { rem } from "../../../../src/util/util";
 import { setupPhaseComplete } from "../main/@phase/setup/SetupPhase";
-import {
-  FactionOrdering,
-  useActiveFaction,
-  useOrderedFactionIds,
-} from "../../../../src/context/gameDataHooks";
-import { Optional } from "../../../../src/util/types/types";
+import { statusPhaseComplete } from "../main/@phase/status/StatusPhase";
 
 function NextPhaseButtons({}) {
   const currentTurn = useCurrentTurn();
@@ -248,7 +248,7 @@ export default function FactionsSection({}) {
       break;
   }
 
-  const orderedFactionIds = useOrderedFactionIds(ordering, tieBreak);
+  const orderedFactionIds = useCompleteOrderedFactionIds(ordering, tieBreak);
 
   return (
     <div
@@ -274,7 +274,7 @@ export default function FactionsSection({}) {
 }
 
 function LocalFactionCircle({ factionId }: { factionId: FactionId }) {
-  const activeFaction = useActiveFaction();
+  const activeFactionId = useActiveFactionId();
 
   const faction = useFaction(factionId);
   const gameId = useGameId();
@@ -289,7 +289,7 @@ function LocalFactionCircle({ factionId }: { factionId: FactionId }) {
 
   const isActive =
     (phase === "ACTION" || phase === "STRATEGY") &&
-    activeFaction?.id === factionId;
+    activeFactionId === factionId;
   const color = faction.passed ? "#555" : getFactionColor(faction);
   const cards = getStrategyCardsForFaction(strategyCards, factionId);
   return (

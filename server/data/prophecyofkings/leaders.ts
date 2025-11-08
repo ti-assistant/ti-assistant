@@ -1999,6 +1999,7 @@ export default function getProphecyOfKingsLeaders(
             defaultMessage: "Z'eu",
           }),
           expansion: "THUNDERS EDGE",
+          timing: "OTHER",
         },
       ],
       timing: "AGENDA_PHASE",

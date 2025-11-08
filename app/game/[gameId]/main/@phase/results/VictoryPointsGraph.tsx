@@ -62,18 +62,30 @@ export function VictoryPointsGraph({
     const factionLines: Partial<Record<FactionId, Line>> = {};
     for (const [roundNum, round] of objectEntries(rounds)) {
       for (const [factionId, vps] of objectEntries(round.victoryPoints)) {
-        const line = factionLines[factionId] ?? {
-          color: getFactionColor(factions[factionId]),
+        let id = factionId;
+        if (factionId === "Firmament" && !!factions["Obsidian"]) {
+          id = "Obsidian";
+        }
+        const line = factionLines[id] ?? {
+          color: getFactionColor(factions[id]),
           points: [],
         };
-        const points = objectEntries(vps).reduce((total, [type, num]) => {
+        let points = objectEntries(vps).reduce((total, [type, num]) => {
           if (!types.has(type)) {
             return total;
           }
           return total + num;
         }, 0);
+        if (id === "Obsidian") {
+          for (const point of line.points) {
+            if (point.x === roundNum) {
+              points += point.y;
+              line.points.pop();
+            }
+          }
+        }
         line.points.push({ x: roundNum, y: points });
-        factionLines[factionId] = line;
+        factionLines[id] = line;
       }
     }
     return Object.values(factionLines);

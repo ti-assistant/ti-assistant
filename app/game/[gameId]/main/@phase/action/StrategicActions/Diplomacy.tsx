@@ -1,15 +1,10 @@
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import ClaimPlanetsSection from "../../../../../../../src/components/ClaimPlanetsSection/ClaimPlanetsSection";
+import FactionComponents from "../../../../../../../src/components/FactionComponents/FactionComponents";
 import LabeledDiv from "../../../../../../../src/components/LabeledDiv/LabeledDiv";
 import { usePlanets } from "../../../../../../../src/context/dataHooks";
-import {
-  useFaction,
-  useFactions,
-} from "../../../../../../../src/context/factionDataHooks";
-import {
-  getFactionColor,
-  getFactionName,
-} from "../../../../../../../src/util/factions";
+import { useOrderedFactionIds } from "../../../../../../../src/context/gameDataHooks";
+import { getColorForFaction } from "../../../../../../../src/util/factions";
 
 const Diplomacy = {
   Primary,
@@ -56,14 +51,13 @@ function Primary({ factionId }: { factionId: FactionId }) {
         availablePlanets={peaceAccordsPlanets}
         factionId="Xxcha Kingdom"
         numPlanets={1}
+        hideWrapper
       />
     </LabeledDiv>
   );
 }
 
 function Secondary({ factionId }: { factionId: FactionId }) {
-  const faction = useFaction(factionId);
-  const intl = useIntl();
   const planets = usePlanets();
 
   if (factionId !== "Xxcha Kingdom") {
@@ -87,12 +81,15 @@ function Secondary({ factionId }: { factionId: FactionId }) {
 
   return (
     <LabeledDiv
-      label={`${getFactionName(faction)} - ${intl.formatMessage({
-        id: "Xxcha Kingdom.Abilities.Peace Accords.Title",
-        defaultMessage: "Peace Accords",
-        description: "Title of Faction Ability: Peace Accords",
-      })}`}
-      color={getFactionColor(faction)}
+      label={`${(<FactionComponents.Name factionId={factionId} />)} - ${(
+        <FormattedMessage
+          id="Xxcha Kingdom.Abilities.Peace Accords.Title"
+          defaultMessage="Peace Accords"
+          description="Title of Faction Ability: Peace Accords"
+        />
+      )}
+      )}`}
+      color={getColorForFaction(factionId)}
       blur
     >
       <ClaimPlanetsSection
@@ -105,9 +102,12 @@ function Secondary({ factionId }: { factionId: FactionId }) {
 }
 
 function AllSecondaries({ activeFactionId }: { activeFactionId: FactionId }) {
-  const factions = useFactions();
+  const factionIds = useOrderedFactionIds("MAP");
 
-  if (!factions["Xxcha Kingdom"] || activeFactionId === "Xxcha Kingdom") {
+  if (
+    !factionIds.includes("Xxcha Kingdom") ||
+    activeFactionId === "Xxcha Kingdom"
+  ) {
     return null;
   }
 

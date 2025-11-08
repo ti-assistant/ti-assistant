@@ -1,6 +1,10 @@
+import FactionComponents from "./components/FactionComponents/FactionComponents";
 import LabeledDiv from "./components/LabeledDiv/LabeledDiv";
-import { useFaction, useNumFactions } from "./context/factionDataHooks";
-import { getFactionColor, getFactionName } from "./util/factions";
+import {
+  useFactionColor,
+  useIsFactionPassed,
+  useNumFactions,
+} from "./context/factionDataHooks";
 import { rem } from "./util/util";
 
 interface SmallStrategyCardProps {
@@ -10,11 +14,10 @@ interface SmallStrategyCardProps {
 export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
   const numFactions = useNumFactions();
 
-  const faction = useFaction(cards[0]?.faction ?? "Vuil'raith Cabal");
+  const factionId = cards[0]?.faction ?? "Vuil'raith Cabal";
 
-  if (!faction) {
-    return null;
-  }
+  const isFactionPassed = useIsFactionPassed(factionId);
+  const factionColor = useFactionColor(factionId);
 
   const initiative = cards.reduce(
     (lowestInitiative, card) => Math.min(lowestInitiative, card.order),
@@ -28,10 +31,10 @@ export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
     height = rem(50);
   }
 
-  const borderColor = !faction.passed ? getFactionColor(faction) : "#555";
+  const borderColor = !isFactionPassed ? factionColor : "#555";
   return (
     <LabeledDiv
-      label={getFactionName(faction)}
+      label={<FactionComponents.Name factionId={factionId} />}
       color={borderColor}
       style={{
         height,
@@ -54,7 +57,7 @@ export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
             fontSize: numFactions > 7 ? rem(28) : rem(32),
             display: "flex",
             justifyContent: "center",
-            color: faction.passed ? "#555" : "#eee",
+            color: isFactionPassed ? "#555" : "#eee",
             transition: "color 120ms",
           }}
         >

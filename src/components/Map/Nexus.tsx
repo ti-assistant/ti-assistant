@@ -12,6 +12,7 @@ export default function Nexus({
   position,
   overlayDetails,
   planetInfo,
+  systems,
   selectable,
   onClick,
   tilePercentage,
@@ -22,6 +23,7 @@ export default function Nexus({
   position: NexusPosition;
   overlayDetails: OverlayDetails;
   planetInfo: Partial<Record<PlanetId, Planet>>;
+  systems?: Partial<Record<SystemId, System>>;
   selectable: boolean;
   onClick?: (systemId: string) => void;
   tilePercentage: number;
@@ -51,6 +53,7 @@ export default function Nexus({
       <SystemImage
         overlayDetails={overlayDetails}
         planets={planetInfo}
+        systems={systems}
         systemNumber={systemNumber}
         selectable={selectable}
         onClick={onClick}

@@ -15,7 +15,9 @@ export function useGameDataValue<Type>(path: string, defaultValue: Type): Type {
 
   useEffect(() => {
     setValue(DataStore.getValue(path) ?? defaultValue);
-    return subscribe(setValue, path);
+    return subscribe((data) => {
+      setValue(data ?? defaultValue);
+    }, path);
   }, [path, subscribe]);
 
   return value;
@@ -31,13 +33,20 @@ export function useMemoizedGameDataValue<BaseType, Type>(
   const [value, setValue] = useState<Type>(baseVal);
   const subscribe = use(DataContext);
 
-  const valueHash = stableHash(value);
+  let valueHash = stableHash(value);
+  if (value instanceof Set) {
+    valueHash = stableHash(Array.from(value));
+  }
 
   useEffect(() => {
     const newVal = DataStore.getValue<BaseType>(path);
     if (newVal) {
       const newValue = fn(newVal);
-      if (valueHash !== stableHash(newValue)) {
+      let newHash = stableHash(newValue);
+      if (newValue instanceof Set) {
+        newHash = stableHash(Array.from(newValue));
+      }
+      if (valueHash !== newHash) {
         setValue(newValue);
       }
     }
@@ -46,7 +55,11 @@ export function useMemoizedGameDataValue<BaseType, Type>(
         return;
       }
       const newValue = fn(newVal);
-      if (valueHash === stableHash(newValue)) {
+      let newHash = stableHash(newValue);
+      if (newValue instanceof Set) {
+        newHash = stableHash(Array.from(newValue));
+      }
+      if (valueHash === newHash) {
         return;
       }
       setValue(newValue);

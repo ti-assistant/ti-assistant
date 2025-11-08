@@ -1,15 +1,31 @@
 import React, { CSSProperties, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { TechRow } from "../TechRow";
-import { useGameId, useTechs, useViewOnly } from "../context/dataHooks";
-import { useFactions } from "../context/factionDataHooks";
+import {
+  useGameId,
+  useTech,
+  useTechs,
+  useViewOnly,
+} from "../context/dataHooks";
+import { useFaction, useFactions } from "../context/factionDataHooks";
+import { useOrderedFactionIds } from "../context/gameDataHooks";
+import {
+  useFactionsWithTech,
+  useOrderedTechIds,
+  useTechState,
+} from "../context/techDataHooks";
 import { addTechAsync, removeTechAsync } from "../dynamic/api";
-import { hasTech, isTechPurged, isTechReplaced } from "../util/api/techs";
-import { getFactionColor, getFactionName } from "../util/factions";
+import { hasTech, isTechPurged } from "../util/api/techs";
+import {
+  getColorForFaction,
+  getFactionColor,
+  getFactionName,
+} from "../util/factions";
 import { techTypeString } from "../util/strings";
-import { getTechTypeColor, sortTechs } from "../util/techs";
+import { ableToResearchTech, getTechTypeColor, sortTechs } from "../util/techs";
 import { objectEntries, objectKeys, rem } from "../util/util";
 import { CollapsibleSection } from "./CollapsibleSection";
+import FactionComponents from "./FactionComponents/FactionComponents";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import LabeledDiv from "./LabeledDiv/LabeledDiv";
 import { Selector } from "./Selector/Selector";
@@ -23,6 +39,7 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
   const gameId = useGameId();
   const techs = useTechs();
   const viewOnly = useViewOnly();
+  const mapOrderedFactionIds = useOrderedFactionIds("MAP");
 
   const [collapsed, setCollapsed] = useState(!openedByDefault);
 
@@ -73,16 +90,16 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
         className={`${styles.collapsible} ${collapsed ? styles.collapsed : ""}`}
       >
         <div className={styles.collapsibleTechColumn}>
-          {orderedFactions.map((faction) => {
+          {mapOrderedFactionIds.map((factionId) => {
             const factionTechs = typedTechs.filter(
-              (tech) => tech.faction === faction.id
+              (tech) => tech.faction === factionId
             );
 
             return (
               <LabeledDiv
-                key={faction.id}
-                label={getFactionName(faction)}
-                color={getFactionColor(faction)}
+                key={factionId}
+                label={<FactionComponents.Name factionId={factionId} />}
+                color={getColorForFaction(factionId)}
                 opts={{ fixedWidth: true }}
               >
                 <div
@@ -104,7 +121,7 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                       opacity: 0.3,
                     }}
                   >
-                    <FactionIcon factionId={faction.id} size="100%" />
+                    <FactionIcon factionId={factionId} size="100%" />
                   </div>
                 </div>
                 <div
@@ -115,7 +132,7 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                     width: "100%",
                   }}
                 >
-                  {faction.id === "Nekro Virus" ? (
+                  {factionId === "Nekro Virus" ? (
                     <>
                       <Selector
                         hoverMenuLabel="Valefar Assimilator"
@@ -127,34 +144,26 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                             return;
                           }
                           if (add) {
-                            addTechAsync(gameId, faction.id, techId);
+                            addTechAsync(gameId, factionId, techId);
                           } else {
-                            removeTechAsync(gameId, faction.id, techId);
+                            removeTechAsync(gameId, factionId, techId);
                           }
                         }}
                         renderItem={(techId) => {
-                          const tech = (techs ?? {})[techId];
-                          if (!tech || !gameId) {
-                            return null;
-                          }
                           return (
                             <div
                               onClick={
                                 viewOnly
                                   ? undefined
                                   : () =>
-                                      removeTechAsync(
-                                        gameId,
-                                        faction.id,
-                                        techId
-                                      )
+                                      removeTechAsync(gameId, factionId, techId)
                               }
                             >
                               <TechRow
                                 className={`${styles.factionTechRow} ${
                                   styles.selected
                                 } ${viewOnly ? styles.viewOnly : ""}`}
-                                tech={tech}
+                                techId={techId}
                                 opts={{ hideSymbols: true, hideIcon: true }}
                               />
                             </div>
@@ -172,34 +181,26 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                             return;
                           }
                           if (add) {
-                            addTechAsync(gameId, faction.id, techId);
+                            addTechAsync(gameId, factionId, techId);
                           } else {
-                            removeTechAsync(gameId, faction.id, techId);
+                            removeTechAsync(gameId, factionId, techId);
                           }
                         }}
                         renderItem={(techId) => {
-                          const tech = (techs ?? {})[techId];
-                          if (!tech || !gameId) {
-                            return null;
-                          }
                           return (
                             <div
                               onClick={
                                 viewOnly
                                   ? undefined
                                   : () =>
-                                      removeTechAsync(
-                                        gameId,
-                                        faction.id,
-                                        techId
-                                      )
+                                      removeTechAsync(gameId, factionId, techId)
                               }
                             >
                               <TechRow
                                 className={`${styles.factionTechRow} ${
                                   styles.selected
                                 } ${viewOnly ? styles.viewOnly : ""}`}
-                                tech={tech}
+                                techId={techId}
                                 opts={{ hideSymbols: true, hideIcon: true }}
                               />
                             </div>
@@ -210,6 +211,10 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                     </>
                   ) : (
                     factionTechs.map((tech) => {
+                      const faction = factions[factionId];
+                      if (!faction) {
+                        return null;
+                      }
                       const factionHasTech = hasTech(faction, tech);
                       return (
                         <div
@@ -219,9 +224,9 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                               return;
                             }
                             if (factionHasTech) {
-                              removeTechAsync(gameId, faction.id, tech.id);
+                              removeTechAsync(gameId, factionId, tech.id);
                             } else {
-                              addTechAsync(gameId, faction.id, tech.id);
+                              addTechAsync(gameId, factionId, tech.id);
                             }
                           }}
                           style={{ maxWidth: "100%" }}
@@ -230,7 +235,7 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                             className={`${styles.factionTechRow} ${
                               factionHasTech ? styles.selected : ""
                             } ${viewOnly ? styles.viewOnly : ""}`}
-                            tech={tech}
+                            techId={tech.id}
                             opts={{
                               hideSymbols: true,
                               hideIcon: true,
@@ -254,32 +259,25 @@ interface NumFactionsCSS extends CSSProperties {
   "--num-factions": number;
 }
 
-function TechUpdateRow({
-  tech,
-  orderedFactions,
-}: {
-  tech: Tech;
-  orderedFactions: Faction[];
-}) {
-  const gameId = useGameId();
-  const viewOnly = useViewOnly();
+function TechUpdateRow({ techId }: { techId: TechId }) {
+  const factionsWithTech = useFactionsWithTech(techId);
+  const mapOrderedFactionIds = useOrderedFactionIds("MAP");
+  const techState = useTechState(techId);
 
-  const numFactions = orderedFactions.length;
+  const numFactions = mapOrderedFactionIds.length;
 
-  const isResearched = orderedFactions.reduce((isResearched, faction) => {
-    return isResearched || hasTech(faction, tech);
-  }, false);
+  const isResearched = factionsWithTech.size > 0 && techState !== "purged";
 
   return (
     <React.Fragment>
       <TechRow
-        tech={tech}
+        techId={techId}
         opts={{
           hideSymbols: true,
-          fade: tech.state === "purged" || !isResearched,
+          fade: techState === "purged" || !isResearched,
         }}
       />
-      {tech.state === "purged" ? (
+      {techState === "purged" ? (
         <div style={{ opacity: 0.5 }}>PURGED</div>
       ) : (
         <div
@@ -290,51 +288,76 @@ function TechUpdateRow({
             } as NumFactionsCSS
           }
         >
-          {Object.values(orderedFactions).map((faction) => {
-            const factionHasTech = hasTech(faction, tech);
-            if (
-              isTechReplaced(faction.id, tech.id) ||
-              isTechPurged(faction, tech)
-            ) {
-              return <div key={faction.id}></div>;
-            }
+          {mapOrderedFactionIds.map((factionId) => {
             return (
-              <div
-                key={faction.id}
-                className={`flexRow ${styles.selected} ${
-                  styles.factionIconWrapper
-                } ${viewOnly ? styles.viewOnly : ""}`}
-                onClick={
-                  viewOnly
-                    ? undefined
-                    : () => {
-                        if (factionHasTech) {
-                          removeTechAsync(gameId, faction.id, tech.id);
-                        } else {
-                          addTechAsync(gameId, faction.id, tech.id);
-                        }
-                      }
-                }
-              >
-                <div
-                  className={`
-                  ${styles.factionIcon} ${
-                    factionHasTech ? styles.selected : ""
-                  } ${viewOnly ? styles.viewOnly : ""}`}
-                  style={
-                    {
-                      "--color": getFactionColor(faction),
-                    } as ExtendedCSS
-                  }
-                >
-                  <FactionIcon factionId={faction.id} size="100%" />
-                </div>
-              </div>
+              <TechUpdateIcon
+                key={factionId}
+                factionId={factionId}
+                techId={techId}
+              />
             );
           })}
         </div>
       )}
     </React.Fragment>
+  );
+}
+
+function TechUpdateIcon({
+  factionId,
+  techId,
+}: {
+  factionId: FactionId;
+  techId: TechId;
+}) {
+  // const factionTechs = useFactionTechs(factionId);
+  const faction = useFaction(factionId);
+  const factionIds = useOrderedFactionIds("MAP");
+  const tech = useTech(techId);
+  // const canResearch = useCanResearch(factionId, techId);
+  // const factionHasTech = useFactionHasTech(factionId, techId);
+  const gameId = useGameId();
+  const viewOnly = useViewOnly();
+
+  const factionHasTech = hasTech(faction, tech);
+  const canResearch = ableToResearchTech(tech, faction, factionIds);
+
+  const ableToResearch = factionHasTech || canResearch;
+  if (!ableToResearch) {
+    return <div key={factionId}></div>;
+  }
+  return (
+    <div
+      key={factionId}
+      className={`flexRow ${styles.selected} ${styles.factionIconWrapper} ${
+        viewOnly ? styles.viewOnly : ""
+      }`}
+      onClick={
+        viewOnly
+          ? undefined
+          : () => {
+              if (factionHasTech) {
+                removeTechAsync(gameId, factionId, techId);
+              } else {
+                addTechAsync(gameId, factionId, techId);
+              }
+            }
+      }
+    >
+      <div
+        className={`
+                  ${styles.factionIcon} ${
+          factionHasTech ? styles.selected : ""
+        } ${viewOnly ? styles.viewOnly : ""}`}
+        style={
+          {
+            "--color": getColorForFaction(factionId),
+          } as ExtendedCSS
+        }
+      >
+        <FactionIcon factionId={factionId} size="100%" />
+      </div>
+    </div>
   );
 }
 
@@ -349,20 +372,12 @@ function TechSection({
   type: TechType;
   openedByDefault?: boolean;
 }) {
-  const factions = useFactions();
-  const techs = useTechs();
+  const orderedTechIds = useOrderedTechIds(
+    (tech) => tech.type === type && !tech.faction
+  );
   const intl = useIntl();
 
   const [collapsed, setCollapsed] = useState(!openedByDefault);
-
-  const typedTechs = Object.values(techs ?? {}).filter(
-    (tech) => tech.type === type && !tech.faction
-  );
-  sortTechs(typedTechs);
-
-  const orderedFactions = Object.values(factions).sort(
-    (a, b) => a.mapPosition - b.mapPosition
-  );
 
   return (
     <div
@@ -385,14 +400,8 @@ function TechSection({
         className={`${styles.collapsible} ${collapsed ? styles.collapsed : ""}`}
       >
         <div className={styles.collapsibleTechColumn}>
-          {typedTechs.map((tech) => {
-            return (
-              <TechUpdateRow
-                key={tech.id}
-                tech={tech}
-                orderedFactions={orderedFactions}
-              />
-            );
+          {orderedTechIds.map((techId) => {
+            return <TechUpdateRow key={techId} techId={techId} />;
           })}
         </div>
       </div>
@@ -401,20 +410,12 @@ function TechSection({
 }
 
 function UpgradeTechSection() {
-  const factions = useFactions();
-  const techs = useTechs();
+  const upgradeTechIds = useOrderedTechIds(
+    (tech) => tech.type === "UPGRADE" && !tech.faction
+  );
   const intl = useIntl();
 
   const [collapsed, setCollapsed] = useState(true);
-
-  const typedTechs = Object.values(techs ?? {}).filter(
-    (tech) => tech.type === "UPGRADE" && !tech.faction
-  );
-  sortTechs(typedTechs);
-
-  const orderedFactions = Object.values(factions).sort(
-    (a, b) => a.mapPosition - b.mapPosition
-  );
 
   return (
     <div className={`${styles.techColumn} ${styles.lastColumn}`}>
@@ -428,14 +429,8 @@ function UpgradeTechSection() {
         className={`${styles.collapsible} ${collapsed ? styles.collapsed : ""}`}
       >
         <div className={styles.collapsibleTechColumn}>
-          {typedTechs.map((tech) => {
-            return (
-              <TechUpdateRow
-                key={tech.id}
-                tech={tech}
-                orderedFactions={orderedFactions}
-              />
-            );
+          {upgradeTechIds.map((techId) => {
+            return <TechUpdateRow key={techId} techId={techId} />;
           })}
         </div>
       </div>
@@ -573,7 +568,7 @@ function TechsByFaction({
             return (
               <TechRow
                 key={tech.id}
-                tech={tech}
+                techId={tech.id}
                 removeTech={
                   viewOnly
                     ? undefined
@@ -620,18 +615,15 @@ interface TechGridProperties extends CSSProperties {
 }
 
 export default function TechPanel({ byFaction }: { byFaction: boolean }) {
-  const factions = useFactions();
+  const mapOrderedFactionIds = useOrderedFactionIds("MAP");
 
-  const orderedFactions = Object.values(factions)
-    .sort((a, b) => a.mapPosition - b.mapPosition)
-    .map((faction) => faction.id);
   const techGridProperties: TechGridProperties = {
-    "--num-columns": byFaction ? Math.ceil(orderedFactions.length / 2) : 4,
+    "--num-columns": byFaction ? Math.ceil(mapOrderedFactionIds.length / 2) : 4,
   };
   return (
     <div className={styles.techGrid} style={techGridProperties}>
       {byFaction ? (
-        orderedFactions.map((factionId, index) => {
+        mapOrderedFactionIds.map((factionId, index) => {
           return (
             <TechsByFaction
               key={factionId}

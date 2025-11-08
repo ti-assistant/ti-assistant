@@ -23,10 +23,11 @@ import {
 } from "../dynamic/api";
 import PromissoryMenuSVG from "../icons/ui/PromissoryMenu";
 import RelicMenuSVG from "../icons/ui/RelicMenu";
+import ThundersEdgeMenuSVG from "../icons/ui/ThundersEdgeMenu";
 import { InfoRow } from "../InfoRow";
 import { SelectableRow } from "../SelectableRow";
 import { buildMergeFunction } from "../util/expansions";
-import { getFactionColor } from "../util/factions";
+import { getColorForFaction, getFactionColor } from "../util/factions";
 import { Optional } from "../util/types/types";
 import { rem } from "../util/util";
 import { CollapsibleSection } from "./CollapsibleSection";
@@ -39,7 +40,6 @@ import LabeledDiv from "./LabeledDiv/LabeledDiv";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import OptionalLine from "./LineWithChildren/OptionalLine";
 import styles from "./ThundersEdgePanel.module.scss";
-import ThundersEdgeMenuSVG from "../icons/ui/ThundersEdgeMenu";
 
 function getSupportScorer(factionId: FactionId, support: Objective) {
   if (!support.keyedScorers) {
@@ -114,15 +114,11 @@ function ExpeditionRadialSelector({
   expeditionId: ExpeditionId;
 }) {
   const expedition = useExpedition();
-  const factions = useFactions();
   const gameId = useGameId();
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
   const viewOnly = useViewOnly();
 
   const selectedFactionId = expedition[expeditionId];
-  const selectedFaction = selectedFactionId
-    ? factions[selectedFactionId]
-    : undefined;
 
   return (
     <div className="flexColumn">
@@ -140,12 +136,12 @@ function ExpeditionRadialSelector({
         <ExpeditionIcon expedition={expeditionId} />
       </div>
       <FactionSelectRadialMenu
-        borderColor={getFactionColor(selectedFaction)}
+        borderColor={getColorForFaction(selectedFactionId)}
         factions={mapOrderedFactionIds}
         onSelect={(factionId) => {
           commitToExpeditionAsync(gameId, expeditionId, factionId);
         }}
-        selectedFaction={expedition[expeditionId]}
+        selectedFaction={selectedFactionId}
         viewOnly={viewOnly}
       />
     </div>
@@ -153,7 +149,6 @@ function ExpeditionRadialSelector({
 }
 
 function RelicsSection() {
-  const factions = useFactions();
   const gameId = useGameId();
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
   const relics = useRelics();
@@ -205,7 +200,6 @@ function RelicsSection() {
             if (!owner) {
               return null;
             }
-            const factionOwner = factions[owner];
             return (
               <div
                 key={relic.id}
@@ -231,7 +225,7 @@ function RelicsSection() {
                   </InfoRow>
                 </SelectableRow>
                 <FactionCircle
-                  borderColor={getFactionColor(factionOwner)}
+                  borderColor={getColorForFaction(owner)}
                   factionId={owner}
                   size={24}
                 />

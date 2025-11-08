@@ -93,6 +93,7 @@ export default function ResultsPhase() {
 
 interface RoundInfo {
   planets: Partial<Record<PlanetId, Planet>>;
+  systems: Partial<Record<SystemId, System>>;
   mapString?: string;
   techs: Partial<Record<FactionId, Record<TechType, number>>>;
   victoryPoints: Partial<Record<FactionId, Record<ObjectiveType, number>>>;
@@ -385,7 +386,8 @@ function buildSetupGameData(gameData: GameData): {
   options["processed-map-string"] = processMapString(
     options["map-string"] ?? "",
     options["map-style"],
-    factions.length
+    factions.length,
+    options.expansions.includes("THUNDERS EDGE")
   );
 
   return {

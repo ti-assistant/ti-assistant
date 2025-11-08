@@ -4,24 +4,23 @@ import dynamic from "next/dynamic";
 import { FormattedMessage } from "react-intl";
 import { FactionSummary } from "../../../../../../src/FactionSummary";
 import { StaticFactionTimer } from "../../../../../../src/Timer";
+import FactionComponents from "../../../../../../src/components/FactionComponents/FactionComponents";
 import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
 import { useOptions } from "../../../../../../src/context/dataHooks";
 import {
-  useFaction,
+  useFactionColor,
+  useIsFactionPassed,
   useNumFactions,
 } from "../../../../../../src/context/factionDataHooks";
 import {
   FactionOrdering,
+  useCompleteOrderedFactionIds,
   useOrderedFactionIds,
 } from "../../../../../../src/context/gameDataHooks";
 import {
   useFinalPhase,
   usePhase,
 } from "../../../../../../src/context/stateDataHooks";
-import {
-  getFactionColor,
-  getFactionName,
-} from "../../../../../../src/util/factions";
 import { rem } from "../../../../../../src/util/util";
 import styles from "./SummaryColumn.module.scss";
 
@@ -33,15 +32,7 @@ const FactionPanel = dynamic(
   }
 );
 
-function sortByOrder(a: Faction, b: Faction) {
-  if (a.order > b.order) {
-    return 1;
-  } else {
-    return -1;
-  }
-}
-
-export default function SummaryColumn({ viewOnly }: { viewOnly?: boolean }) {
+export default function SummaryColumn() {
   const phase = usePhase();
   const numFactions = useNumFactions();
   const finalPhase = useFinalPhase();
@@ -56,7 +47,7 @@ export default function SummaryColumn({ viewOnly }: { viewOnly?: boolean }) {
         : "SPEAKER";
   }
 
-  const orderedFactionIds = useOrderedFactionIds(order, tieBreak);
+  const orderedFactionIds = useCompleteOrderedFactionIds(order, tieBreak);
 
   let title = (
     <FormattedMessage
@@ -88,68 +79,43 @@ export default function SummaryColumn({ viewOnly }: { viewOnly?: boolean }) {
       {numFactions < 8 ? <div className="flexRow">{title}</div> : null}
 
       {orderedFactionIds.map((factionId) => {
-        return (
-          <FactionDiv
-            key={factionId}
-            factionId={factionId}
-            viewOnly={viewOnly}
-          />
-        );
+        return <FactionDiv key={factionId} factionId={factionId} />;
       })}
     </div>
   );
 }
 
-function FactionDiv({
-  factionId,
-  viewOnly,
-}: {
-  factionId: FactionId;
-  viewOnly?: boolean;
-}) {
-  const faction = useFaction(factionId);
+function FactionDiv({ factionId }: { factionId: FactionId }) {
+  const factionColor = useFactionColor(factionId);
+  const isPassed = useIsFactionPassed(factionId);
   const options = useOptions();
   const phase = usePhase();
-
-  if (!faction) {
-    return null;
-  }
 
   const factionSummaryOptions = {
     showIcon: true,
   };
 
-  const fadeFaction = phase !== "END" && faction.passed;
+  const fadeFaction = phase !== "END" && isPassed;
 
   return (
     <LabeledDiv
       label={
-        faction ? (
-          <div className="flexRow" style={{ gap: 0 }}>
-            {getFactionName(faction)}
-            <FactionPanel factionId={factionId} options={options} />
-          </div>
-        ) : (
-          <div className="flexRow" style={{ gap: 0 }}>
-            Loading Faction
-            <div className="popupIcon">&#x24D8;</div>
-          </div>
-        )
+        <div className="flexRow" style={{ gap: 0 }}>
+          <FactionComponents.Name factionId={factionId} />
+          <FactionPanel factionId={factionId} options={options} />
+        </div>
       }
       rightLabel={
         <StaticFactionTimer active={false} factionId={factionId} width={84} />
       }
-      color={fadeFaction ? "#555" : getFactionColor(faction)}
+      color={fadeFaction ? "#555" : factionColor}
     >
       <div
         style={{
           filter: fadeFaction ? "brightness(0.6)" : "unset",
         }}
       >
-        <FactionSummary
-          factionId={faction.id}
-          options={factionSummaryOptions}
-        />
+        <FactionSummary factionId={factionId} />
       </div>
     </LabeledDiv>
   );

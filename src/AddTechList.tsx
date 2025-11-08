@@ -1,15 +1,14 @@
-import Image from "next/image";
 import { useState } from "react";
 
+import { FormattedMessage } from "react-intl";
+import BlueTechSVG from "./icons/techs/BlueTech";
+import GreenTechSVG from "./icons/techs/GreenTech";
+import RedTechSVG from "./icons/techs/RedTech";
+import YellowTechSVG from "./icons/techs/YellowTech";
 import { Tab, TabBody } from "./Tab";
 import { TechRow } from "./TechRow";
 import { sortTechsByName, sortTechsByPreReqAndExpansion } from "./util/techs";
-import { FormattedMessage } from "react-intl";
 import { rem } from "./util/util";
-import GreenTechSVG from "./icons/techs/GreenTech";
-import YellowTechSVG from "./icons/techs/YellowTech";
-import RedTechSVG from "./icons/techs/RedTech";
-import BlueTechSVG from "./icons/techs/BlueTech";
 
 interface AddTechListProps {
   techs: Tech[];
@@ -96,7 +95,7 @@ export function AddTechList({ techs, addTech }: AddTechListProps) {
           }}
         >
           {blueTechs.map((tech) => {
-            return <TechRow key={tech.id} tech={tech} addTech={addTech} />;
+            return <TechRow key={tech.id} techId={tech.id} addTech={addTech} />;
           })}
         </div>
       </TabBody>
@@ -114,7 +113,7 @@ export function AddTechList({ techs, addTech }: AddTechListProps) {
           }}
         >
           {greenTechs.map((tech) => {
-            return <TechRow key={tech.id} tech={tech} addTech={addTech} />;
+            return <TechRow key={tech.id} techId={tech.id} addTech={addTech} />;
           })}
         </div>
       </TabBody>
@@ -132,7 +131,7 @@ export function AddTechList({ techs, addTech }: AddTechListProps) {
           }}
         >
           {yellowTechs.map((tech) => {
-            return <TechRow key={tech.id} tech={tech} addTech={addTech} />;
+            return <TechRow key={tech.id} techId={tech.id} addTech={addTech} />;
           })}
         </div>
       </TabBody>
@@ -150,7 +149,7 @@ export function AddTechList({ techs, addTech }: AddTechListProps) {
           }}
         >
           {redTechs.map((tech) => {
-            return <TechRow key={tech.id} tech={tech} addTech={addTech} />;
+            return <TechRow key={tech.id} techId={tech.id} addTech={addTech} />;
           })}
         </div>
       </TabBody>
@@ -168,7 +167,7 @@ export function AddTechList({ techs, addTech }: AddTechListProps) {
           }}
         >
           {unitUpgrades.map((tech) => {
-            return <TechRow key={tech.id} tech={tech} addTech={addTech} />;
+            return <TechRow key={tech.id} techId={tech.id} addTech={addTech} />;
           })}
         </div>
       </TabBody>

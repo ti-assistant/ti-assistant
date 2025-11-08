@@ -1,7 +1,12 @@
 import { getDefaultMapString, processMapString } from "./map";
 
 export function getMapString(options: Options, numFactions: number) {
-  const defaultMap = getDefaultMapString(numFactions, options["map-style"]);
+  const thundersEdge = options.expansions.includes("THUNDERS EDGE");
+  const defaultMap = getDefaultMapString(
+    numFactions,
+    options["map-style"],
+    thundersEdge
+  );
   let processed = options["processed-map-string"];
   if (processed && processed !== "" && processed !== defaultMap) {
     return processed;
@@ -12,7 +17,12 @@ export function getMapString(options: Options, numFactions: number) {
     return;
   }
 
-  processed = processMapString(raw, options["map-style"], numFactions);
+  processed = processMapString(
+    raw,
+    options["map-style"],
+    numFactions,
+    thundersEdge
+  );
   if (processed && processed !== "" && processed !== defaultMap) {
     return processed;
   }

@@ -30,10 +30,12 @@ export default function ClaimPlanetsSection({
   availablePlanets,
   factionId,
   numPlanets,
+  hideWrapper,
 }: {
   availablePlanets: Planet[];
   factionId: FactionId;
   numPlanets?: number;
+  hideWrapper?: boolean;
 }) {
   const claimedPlanetEvents = useClaimedPlanetEvents(factionId);
   const gameId = useGameId();
@@ -70,7 +72,7 @@ export default function ClaimPlanetsSection({
 
   return (
     <div className="flexColumn" style={{ width: "100%" }}>
-      <ClaimedPlanetsSection factionId={factionId} />
+      <ClaimedPlanetsSection factionId={factionId} hideWrapper={hideWrapper} />
       {!complete && availablePlanets.length > 0 ? (
         <ClientOnlyHoverMenu
           label={
@@ -112,11 +114,27 @@ export default function ClaimPlanetsSection({
   );
 }
 
-function ClaimedPlanetsSection({ factionId }: { factionId: FactionId }) {
+function ClaimedPlanetsSection({
+  factionId,
+  hideWrapper,
+}: {
+  factionId: FactionId;
+  hideWrapper?: boolean;
+}) {
   const claimedPlanetEvents = useClaimedPlanetEvents(factionId);
 
   if (claimedPlanetEvents.length === 0) {
     return null;
+  }
+
+  if (hideWrapper) {
+    return (
+      <div className={styles.ClaimedPlanetsSection}>
+        {claimedPlanetEvents.map((event) => {
+          return <ClaimedPlanetRow key={event.planet} event={event} />;
+        })}
+      </div>
+    );
   }
 
   return (

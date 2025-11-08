@@ -111,10 +111,6 @@
     "defaultMessage": "Home",
     "description": "Home system planets."
   },
-  "2HJ0k5": {
-    "defaultMessage": "S",
-    "description": "The letter used to identify secret objectives."
-  },
   "2I5JBO": {
     "defaultMessage": "Biotic",
     "description": "Title of green techs."
@@ -2804,7 +2800,7 @@
     "description": "Title of Faction Ability: Oceanbound"
   },
   "Deepwrought Scholarate.Abilities.Research Team.Description": {
-    "defaultMessage": "When ground forces are committed, if your units on the planet are already not coexisting, you may choose for your units to coexist.",
+    "defaultMessage": "When ground forces are committed, if your units on the planet are not already coexisting, you may choose for your units to coexist.",
     "description": "Description for Faction Ability: Research Team"
   },
   "Deepwrought Scholarate.Abilities.Research Team.Title": {
@@ -5650,6 +5646,14 @@
   "Objectives.Unveil Flagship.Title": {
     "defaultMessage": "Unveil Flagship",
     "description": "Title of Objective: Unveil Flagship"
+  },
+  "Objectives.Zealous Orthodoxy.Description": {
+    "defaultMessage": "The first player to score 2 secret objectives gains 1 victory point.",
+    "description": "Description for Objective: Zealous Orthodoxy"
+  },
+  "Objectives.Zealous Orthodoxy.Title": {
+    "defaultMessage": "Zealous Orthodoxy",
+    "description": "Title of Objective: Zealous Orthodoxy"
   },
   "Obsidian.Abilities.Marionettes.Description": {
     "defaultMessage": "The player or players whose control tokens are on each plot card are the puppeted players for the plot.",
