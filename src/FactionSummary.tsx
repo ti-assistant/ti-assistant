@@ -46,8 +46,6 @@ export function FactionSummary({ factionId }: FactionSummaryProps) {
   const phase = usePhase();
   const viewOnly = useViewOnly();
 
-  console.log("Manual", manualVPs);
-
   const VPs = manualVPs + scoredVPs;
 
   function manualVpAdjust(increase: boolean) {

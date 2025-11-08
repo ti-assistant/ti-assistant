@@ -67,6 +67,9 @@ export default function PlanetOverlay({
     if (!systemNumber) {
       return false;
     }
+    if (systemNumber === "18" || systemNumber === "112") {
+      return planet.system === 18 || planet.system === 112;
+    }
     if (systemNumber === "82A" || systemNumber === "82B") {
       return planet.system === "82B" || planet.system === "82A";
     }

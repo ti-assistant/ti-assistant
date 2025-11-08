@@ -132,8 +132,6 @@ function buildGameLog(
         updateGameData(dynamicGameData, handler.getUpdates());
         updateActionLog(dynamicGameData, handler, Date.now(), startTimeSeconds);
         break;
-      case "PURGE_SYSTEM":
-        console.log("Made it");
       default:
         updateActionLog(dynamicGameData, handler, Date.now(), startTimeSeconds);
         updateGameData(dynamicGameData, handler.getUpdates());

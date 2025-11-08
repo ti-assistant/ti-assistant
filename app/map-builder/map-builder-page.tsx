@@ -266,8 +266,6 @@ export default function MapBuilderPage() {
     }
   });
 
-  console.log("Tile Numbers", tileNumbers);
-
   let mapStyles: MapStyle[] = [];
   switch (numFactions) {
     case 3:
