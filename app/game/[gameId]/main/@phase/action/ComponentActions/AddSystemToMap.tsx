@@ -61,7 +61,8 @@ function Content({
       ? updateMapString(
           mapString,
           options["map-style"],
-          mapOrderedFactionIds.length
+          mapOrderedFactionIds.length,
+          options.expansions.includes("THUNDERS EDGE")
         )
       : mapString;
   let updatedSystemTiles = updatedMapString.split(" ");

@@ -17,7 +17,7 @@ import {
 import {
   FactionOrdering,
   useActiveFactionId,
-  useOrderedFactionIds,
+  useCompleteOrderedFactionIds,
 } from "../../../../src/context/gameDataHooks";
 import {
   useFinalPhase,
@@ -248,7 +248,7 @@ export default function FactionsSection({}) {
       break;
   }
 
-  const orderedFactionIds = useOrderedFactionIds(ordering, tieBreak);
+  const orderedFactionIds = useCompleteOrderedFactionIds(ordering, tieBreak);
 
   return (
     <div

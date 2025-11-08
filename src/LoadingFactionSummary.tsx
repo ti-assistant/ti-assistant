@@ -3,12 +3,12 @@ import styles from "./FactionSummary.module.scss";
 import FactionIcon from "./components/FactionIcon/FactionIcon";
 import PlanetSummary from "./components/PlanetSummary/PlanetSummary";
 import TechSummary from "./components/TechSummary/TechSummary";
-import { rem } from "./util/util";
 import { Techs } from "./context/techDataHooks";
+import { rem } from "./util/util";
 
 export default function LoadingFactionSummary() {
   let techs: Techs = {};
-  let ownedTechs: TechId[] = [];
+  let ownedTechs: Set<TechId> = new Set();
   let updatedPlanets: Planet[] = [];
   let VPs = 0;
 

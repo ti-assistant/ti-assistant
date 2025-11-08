@@ -108,15 +108,15 @@ export function TechRow({
   opts = {},
 }: TechRowProps) {
   const tech = useTech(techId);
+  const viewOnly = useViewOnly();
+  const { openModal } = use(ModalContext);
   if (!tech) {
     return null;
   }
-  const viewOnly = useViewOnly();
-  const { openModal } = use(ModalContext);
 
   return (
     <SelectableRow
-      itemId={tech.id}
+      itemId={techId}
       selectItem={addTech}
       removeItem={removeTech}
       viewOnly={viewOnly}
