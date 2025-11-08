@@ -159,6 +159,7 @@ export default function SystemImage({
         priority={
           systemNumber === "299" ||
           systemNumber === "18" ||
+          systemNumber === "112" ||
           systemNumber === "82A"
         }
       />
