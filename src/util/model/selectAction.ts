@@ -1,5 +1,6 @@
 import { createIntl, createIntlCache } from "react-intl";
 import { buildObjectives, buildPlanets } from "../../data/GameData";
+import { getCurrentTurnLogEntries } from "../api/actionLog";
 
 export class SelectActionHandler implements Handler {
   constructor(public gameData: StoredGameData, public data: SelectActionData) {}
@@ -16,22 +17,28 @@ export class SelectActionHandler implements Handler {
     const cache = createIntlCache();
     const intl = createIntl({ locale: "en" }, cache);
 
-    const selectedAction = this.data.event.action;
-
-    if (selectedAction === "Imperial") {
-      const mecatol = buildPlanets(this.gameData, intl)["Mecatol Rex"];
+    const currentTurn = getCurrentTurnLogEntries(this.gameData.actionLog ?? []);
+    for (const entry of currentTurn) {
       if (
-        mecatol &&
-        this.gameData.state.activeplayer &&
-        mecatol.owner === this.gameData.state.activeplayer
+        entry.data.action === "SELECT_ACTION" &&
+        entry.data.event.action === "Imperial" &&
+        this.data.event.action !== "Imperial"
       ) {
-        const mecatolScorers =
-          buildObjectives(this.gameData, intl)["Imperial Point"]?.scorers ?? [];
-        const lastIndex = mecatolScorers.lastIndexOf(
-          this.gameData.state.activeplayer
-        );
-        mecatolScorers.splice(lastIndex, 1);
-        updates[`objectives.Imperial Point.scorers`] = mecatolScorers;
+        const mecatol = buildPlanets(this.gameData, intl)["Mecatol Rex"];
+        if (
+          mecatol &&
+          this.gameData.state.activeplayer &&
+          mecatol.owner === this.gameData.state.activeplayer
+        ) {
+          const mecatolScorers =
+            buildObjectives(this.gameData, intl)["Imperial Point"]?.scorers ??
+            [];
+          const lastIndex = mecatolScorers.lastIndexOf(
+            this.gameData.state.activeplayer
+          );
+          mecatolScorers.splice(lastIndex, 1);
+          updates[`objectives.Imperial Point.scorers`] = mecatolScorers;
+        }
       }
     }
 
