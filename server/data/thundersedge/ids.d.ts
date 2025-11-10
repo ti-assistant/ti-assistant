@@ -54,6 +54,7 @@ namespace ThundersEdge {
     | "Conventions of War Abandoned"
     | "Mercenaries for Hire"
     | "Nanomachines"
+    | "Sever"
     | "Share Knowledge"
     | "Stellar Atomics"
     | "Puppets of the Blade";
