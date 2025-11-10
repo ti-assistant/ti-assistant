@@ -150,7 +150,7 @@ function SecondaryCheck({
   primaryCompleted: boolean;
   orderedFactionIds: FactionId[];
 }) {
-  let allCompleted = true;
+  let allCompleted = useAllSecondariesCompleted();
   return (
     <div className="flexColumn hugeFont">
       <div
