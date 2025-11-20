@@ -105,6 +105,15 @@ export default function getProphecyOfKingsFactions(
       }),
       startswith: {
         choice: {
+          description: intl.formatMessage(
+            {
+              id: "Argent Flight.Tech Choice",
+              description: "Text of Argent's tech choice.",
+              defaultMessage:
+                "Choose two of the following:{br}Neural Motivator{br}Sarween Tools{br}Plasma Scoring",
+            },
+            { br: "\n\n" }
+          ),
           options: ["Neural Motivator", "Plasma Scoring", "Sarween Tools"],
           select: 2,
         },

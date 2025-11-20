@@ -180,6 +180,7 @@ export default function FactionAgendaPhase({
     planets,
     agendas,
     objectives,
+    options,
     intl
   );
   const totalVotes = computeVotes(

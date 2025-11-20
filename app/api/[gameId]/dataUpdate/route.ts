@@ -32,6 +32,7 @@ import {
   RemoveStartingTechHandler,
 } from "../../../../src/util/model/chooseStartingTech";
 import { ChooseSubFactionHandler } from "../../../../src/util/model/chooseSubFaction";
+import { ChooseTFFactionHandler } from "../../../../src/util/model/chooseTFFaction";
 import {
   ClaimPlanetHandler,
   UnclaimPlanetHandler,
@@ -50,7 +51,12 @@ import {
   GainRelicHandler,
   LoseRelicHandler,
 } from "../../../../src/util/model/gainRelic";
+import {
+  GainTFCardHandler,
+  LoseTFCardHandler,
+} from "../../../../src/util/model/gainTFCard";
 import { GiftOfPrescienceHandler } from "../../../../src/util/model/giftOfPrescience";
+import { ManualVoteUpdateHandler } from "../../../../src/util/model/manualVoteUpdate";
 import { ManualVPUpdateHandler } from "../../../../src/util/model/manualVPUpdate";
 import {
   MarkPrimaryHandler,
@@ -114,22 +120,17 @@ import { SelectSubAgendaHandler } from "../../../../src/util/model/selectSubAgen
 import { SelectSubComponentHandler } from "../../../../src/util/model/selectSubComponent";
 import { SetObjectivePointsHandler } from "../../../../src/util/model/setObjectivePoints";
 import { SetSpeakerHandler } from "../../../../src/util/model/setSpeaker";
+import { SetTyrantHandler } from "../../../../src/util/model/setTyrant";
 import { SpeakerTieBreakHandler } from "../../../../src/util/model/speakerTieBreak";
 import { StartVotingHandler } from "../../../../src/util/model/startVoting";
 import { SwapMapTilesHandler } from "../../../../src/util/model/swapMapTiles";
 import { SwapStrategyCardsHandler } from "../../../../src/util/model/swapStrategyCards";
+import { ToggleStructureHandler } from "../../../../src/util/model/toggleSpaceDock";
 import { PassHandler, UnpassHandler } from "../../../../src/util/model/unpass";
 import { UpdateBreakthroughStateHandler } from "../../../../src/util/model/updateBreakthroughState";
 import { UpdateLeaderStateHandler } from "../../../../src/util/model/updateLeaderState";
 import { UpdatePlanetStateHandler } from "../../../../src/util/model/updatePlanetState";
 import { Optional } from "../../../../src/util/types/types";
-import { ToggleStructureHandler } from "../../../../src/util/model/toggleSpaceDock";
-import { SetTyrantHandler } from "../../../../src/util/model/setTyrant";
-import {
-  GainTFCardHandler,
-  LoseTFCardHandler,
-} from "../../../../src/util/model/gainTFCard";
-import { ChooseTFFactionHandler } from "../../../../src/util/model/chooseTFFaction";
 
 export async function POST(
   req: Request,
@@ -462,6 +463,10 @@ function updateInTransaction(
       }
       case "MANUAL_VP_UPDATE": {
         handler = new ManualVPUpdateHandler(gameData, data);
+        break;
+      }
+      case "MANUAL_VOTE_UPDATE": {
+        handler = new ManualVoteUpdateHandler(gameData, data);
         break;
       }
       case "REVEAL_AGENDA": {

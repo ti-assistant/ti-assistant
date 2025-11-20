@@ -6,6 +6,7 @@ import { ClientOnlyHoverMenu } from "../../../../../../src/HoverMenu";
 import { SelectableRow } from "../../../../../../src/SelectableRow";
 import GainRelic from "../../../../../../src/components/Actions/GainRelic";
 import GainTFCard from "../../../../../../src/components/Actions/GainSplicedCard";
+import Conditional from "../../../../../../src/components/Conditional/Conditional";
 import FactionComponents from "../../../../../../src/components/FactionComponents/FactionComponents";
 import FormattedDescription from "../../../../../../src/components/FormattedDescription/FormattedDescription";
 import FrontierExploration from "../../../../../../src/components/FrontierExploration/FrontierExploration";
@@ -539,6 +540,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
   let rightLabel: Optional<ReactNode>;
   let lineColor: Optional<string>;
   let innerContent: Optional<ReactNode>;
+  let conditional: Optional<AppSection>;
 
   let componentName = currentTurn
     .filter((logEntry) => logEntry.data.action === "PLAY_COMPONENT")
@@ -553,22 +555,27 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
   switch (componentName) {
     case "Enigmatic Device":
     case "Focused Research": {
+      conditional = "TECHS";
       innerContent = <TechResearchSection factionId={factionId} />;
       break;
     }
     case "Share Knowledge": {
+      conditional = "TECHS";
       innerContent = <ComponentActions.ShareKnowledge factionId={factionId} />;
       break;
     }
     case "Plagiarize": {
+      conditional = "TECHS";
       innerContent = <ComponentActions.Plagiarize factionId={factionId} />;
       break;
     }
     case "Divert Funding": {
+      conditional = "TECHS";
       innerContent = <ComponentActions.DivertFunding factionId={factionId} />;
       break;
     }
     case "Visionaria Select": {
+      conditional = "TECHS";
       innerContent = <ComponentActions.VisionariaSelect />;
       break;
     }
@@ -611,6 +618,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       break;
     }
     case "Stellar Converter": {
+      conditional = "PLANETS";
       leftLabel = <ComponentActions.PurgePlanet.Label />;
       innerContent = (
         <ComponentActions.PurgePlanet.Content
@@ -624,11 +632,13 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       break;
     }
     case "Conventions of War Abandoned": {
+      conditional = "PLANETS";
       leftLabel = <ComponentActions.PurgePlanet.Label />;
       innerContent = <ComponentActions.PurgePlanet.Content />;
       break;
     }
     case "Nano-Forge": {
+      conditional = "PLANETS";
       leftLabel = (
         <ComponentActions.AttachToPlanet.LeftLabel attachmentId="Nano-Forge" />
       );
@@ -646,6 +656,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       break;
     }
     case "Terraform": {
+      conditional = "PLANETS";
       leftLabel = (
         <ComponentActions.AttachToPlanet.LeftLabel attachmentId="Terraform" />
       );
@@ -682,6 +693,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       break;
     }
     case "UNITDSGNFLAYESH": {
+      conditional = "TECHS";
       innerContent = (
         <TechResearchSection
           factionId={factionId}
@@ -692,6 +704,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       break;
     }
     case "Planetary Rigs": {
+      conditional = "PLANETS";
       innerContent = <ComponentActions.PlanetaryRigs factionId={factionId} />;
       break;
     }
@@ -709,6 +722,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       break;
     }
     case "Ta Zern (Deepwrought)": {
+      conditional = "TECHS";
       innerContent = (
         <ComponentActions.TaZernDeepwrought factionId={factionId} />
       );
@@ -835,12 +849,14 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
     //   break;
     // }
     case "Industrial Initiative": {
+      conditional = "PLANETS";
       innerContent = (
         <ComponentActions.IndustrialInitiative factionId={factionId} />
       );
       break;
     }
     case "Mining Initiative": {
+      conditional = "PLANETS";
       innerContent = (
         <ComponentActions.MiningInitiative factionId={factionId} />
       );
@@ -873,6 +889,27 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
   }
   if (!innerContent) {
     return null;
+  }
+
+  if (conditional) {
+    return (
+      <Conditional appSection={conditional}>
+        <div className="flexColumn" style={{ width: "100%", gap: rem(4) }}>
+          <LabeledLine
+            leftLabel={leftLabel}
+            label={label}
+            rightLabel={rightLabel}
+            color={lineColor}
+          />
+          <div
+            className="flexColumn"
+            style={{ alignItems: "flex-start", width: "100%" }}
+          >
+            {innerContent}
+          </div>
+        </div>
+      </Conditional>
+    );
   }
   return (
     <div className="flexColumn" style={{ width: "100%", gap: rem(4) }}>

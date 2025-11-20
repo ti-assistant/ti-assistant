@@ -1,3 +1,4 @@
+import Conditional from "../../../../../../../src/components/Conditional/Conditional";
 import FactionComponents from "../../../../../../../src/components/FactionComponents/FactionComponents";
 import LabeledDiv from "../../../../../../../src/components/LabeledDiv/LabeledDiv";
 import TechResearchSection from "../../../../../../../src/components/TechResearchSection/TechResearchSection";
@@ -23,15 +24,17 @@ function Primary({ factionId }: { factionId: FactionId }) {
   const factionColor = useFactionColor(factionId);
 
   return (
-    <div style={{ width: "fit-content" }}>
-      <LabeledDiv
-        label={<FactionComponents.Name factionId={factionId} />}
-        color={factionColor}
-        blur
-      >
-        <TechResearchSection factionId={factionId} numTechs={2} hideWrapper />
-      </LabeledDiv>
-    </div>
+    <Conditional appSection="TECHS">
+      <div style={{ width: "fit-content" }}>
+        <LabeledDiv
+          label={<FactionComponents.Name factionId={factionId} />}
+          color={factionColor}
+          blur
+        >
+          <TechResearchSection factionId={factionId} numTechs={2} hideWrapper />
+        </LabeledDiv>
+      </div>
+    </Conditional>
   );
 }
 
@@ -51,21 +54,23 @@ function Secondary({ factionId }: { factionId: FactionId }) {
     return null;
   }
   return (
-    <LabeledDiv
-      key={factionId}
-      label={<FactionComponents.Name factionId={factionId} />}
-      color={getFactionColor(faction)}
-      opts={{ fixedWidth: true }}
-      blur
-    >
-      <>
-        <TechResearchSection
-          factionId={factionId}
-          numTechs={maxTechs}
-          hideWrapper
-        />
-      </>
-    </LabeledDiv>
+    <Conditional appSection="TECHS">
+      <LabeledDiv
+        key={factionId}
+        label={<FactionComponents.Name factionId={factionId} />}
+        color={getFactionColor(faction)}
+        opts={{ fixedWidth: true }}
+        blur
+      >
+        <>
+          <TechResearchSection
+            factionId={factionId}
+            numTechs={maxTechs}
+            hideWrapper
+          />
+        </>
+      </LabeledDiv>
+    </Conditional>
   );
 }
 
@@ -77,24 +82,26 @@ function AllSecondaries({ activeFactionId }: { activeFactionId: FactionId }) {
   );
 
   return (
-    <div
-      className="flexRow mediumFont"
-      style={{
-        paddingTop: rem(4),
-        width: "100%",
-        flexWrap: "wrap",
-      }}
-    >
-      {orderedFactionIds.map((factionId) => {
-        if (factionId === activeFactionId || factionId === "Nekro Virus") {
-          return null;
-        }
-        return (
-          <div key={factionId} style={{ width: "48%" }}>
-            <Secondary factionId={factionId} />
-          </div>
-        );
-      })}
-    </div>
+    <Conditional appSection="TECHS">
+      <div
+        className="flexRow mediumFont"
+        style={{
+          paddingTop: rem(4),
+          width: "100%",
+          flexWrap: "wrap",
+        }}
+      >
+        {orderedFactionIds.map((factionId) => {
+          if (factionId === activeFactionId || factionId === "Nekro Virus") {
+            return null;
+          }
+          return (
+            <div key={factionId} style={{ width: "48%" }}>
+              <Secondary factionId={factionId} />
+            </div>
+          );
+        })}
+      </div>
+    </Conditional>
   );
 }

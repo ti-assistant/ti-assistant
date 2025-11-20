@@ -14,6 +14,7 @@ interface SetupOptions {
   "hide-planets": boolean;
   "hide-techs": boolean;
   events: Set<EventId>;
+  hide: Set<AppSection>;
   [key: string]: any;
 }
 

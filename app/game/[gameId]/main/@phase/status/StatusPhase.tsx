@@ -80,6 +80,7 @@ import {
 import styles from "./StatusPhase.module.scss";
 import { TechRow } from "../../../../../../src/TechRow";
 import TechSelectHoverMenu from "../../../../../../src/components/TechSelectHoverMenu/TechSelectHoverMenu";
+import Conditional from "../../../../../../src/components/Conditional/Conditional";
 
 function CommandTokenGains() {
   const factionsWithHyper = useFactionsWithTech("Hyper Metabolism");
@@ -296,6 +297,7 @@ function MiddleColumn() {
   const actionLog = useActionLog();
   const gameId = useGameId();
   const objectives = useObjectives();
+  const options = useOptions();
   const planets = usePlanets();
   const strategyCards = useStrategyCards();
 
@@ -321,9 +323,11 @@ function MiddleColumn() {
     .map((logEntry) => (logEntry.data as RevealObjectiveData).event.objective);
   const revealedObjective = revealedObjectives[0];
 
+  const hideObjectives = options.hide?.includes("OBJECTIVES");
+
   let innerContent = (
     <div className="flexColumn" style={{ width: "100%" }}>
-      {!revealedObjective ? (
+      {!revealedObjective && !hideObjectives ? (
         <LabeledDiv
           label={
             <FormattedMessage
@@ -631,6 +635,8 @@ export default function StatusPhase() {
 
   const intl = useIntl();
 
+  const hideTechs = options.hide?.includes("TECHS");
+
   const { openModal } = use(ModalContext);
 
   function nextPhase(skipAgenda = false) {
@@ -647,7 +653,10 @@ export default function StatusPhase() {
   }
 
   function hasStartOfStatusPhaseAbilities() {
-    if (options.expansions.includes("THUNDERS EDGE")) {
+    if (
+      options.expansions.includes("THUNDERS EDGE") &&
+      !options.hide?.includes("TECHS")
+    ) {
       return true;
     }
     for (const ability of Object.values(getStartOfStatusPhaseAbilities())) {
@@ -954,26 +963,30 @@ export default function StatusPhase() {
                     })}
                 </div>
                 {options.expansions.includes("THUNDERS EDGE") ? (
-                  <LabeledDiv
-                    label={
-                      <FormattedMessage
-                        id="hl6LkY"
-                        defaultMessage="Entropic Scar"
-                        description="Name of an amomaly that grants techs."
-                      />
-                    }
-                  >
-                    {initiativeOrderedFactionIds.map((factionId) => {
-                      return (
-                        <EntropicScarResearch
-                          key={factionId}
-                          factionId={factionId}
+                  <Conditional appSection="TECHS">
+                    <LabeledDiv
+                      label={
+                        <FormattedMessage
+                          id="hl6LkY"
+                          defaultMessage="Entropic Scar"
+                          description="Name of an amomaly that grants techs."
                         />
-                      );
-                    })}
-                  </LabeledDiv>
+                      }
+                    >
+                      {initiativeOrderedFactionIds.map((factionId) => {
+                        return (
+                          <EntropicScarResearch
+                            key={factionId}
+                            factionId={factionId}
+                          />
+                        );
+                      })}
+                    </LabeledDiv>
+                  </Conditional>
                 ) : null}
-                <RadicalAdvancement />
+                <Conditional appSection="TECHS">
+                  <RadicalAdvancement />
+                </Conditional>
               </div>
             </ClientOnlyHoverMenu>
           </NumberedItem>
@@ -992,68 +1005,86 @@ export default function StatusPhase() {
         </NumberedItem>
         <NumberedItem>
           <div className="largeFont">
-            {revealedObjectiveObj ? (
-              <LabeledDiv
-                label={
-                  <FormattedMessage
-                    id="IfyaDZ"
-                    description="A label for revealed objectives."
-                    defaultMessage="Revealed {type} {count, plural, one {Objective} other {Objectives}}"
-                    values={{
-                      count: 1,
-                      type:
-                        round > 3
-                          ? objectiveTypeString("STAGE TWO", intl)
-                          : objectiveTypeString("STAGE ONE", intl),
-                    }}
-                  />
-                }
-              >
-                <ObjectiveRow
-                  objective={revealedObjectiveObj}
-                  removeObjective={() =>
-                    hideObjectiveAsync(gameId, revealedObjectiveObj.id)
-                  }
-                  viewing={true}
+            <Conditional
+              appSection="OBJECTIVES"
+              fallback={
+                <FormattedMessage
+                  id="lDBTCO"
+                  description="Instruction telling the speaker to reveal objectives."
+                  defaultMessage="Reveal {count, number} {type} {count, plural, one {objective} other {objectives}}"
+                  values={{
+                    count: 1,
+                    type:
+                      round > 3
+                        ? objectiveTypeString("STAGE TWO", intl)
+                        : objectiveTypeString("STAGE ONE", intl),
+                  }}
                 />
-              </LabeledDiv>
-            ) : (
-              <LabeledDiv
-                label={<FactionComponents.Name factionId={speaker} />}
-                color={getColorForFaction(speaker)}
-                style={{ width: "100%" }}
-              >
-                <div className="flexRow" style={{ whiteSpace: "nowrap" }}>
-                  <ObjectiveSelectHoverMenu
-                    action={(_, objectiveId) =>
-                      revealObjectiveAsync(gameId, objectiveId)
+              }
+            >
+              {revealedObjectiveObj ? (
+                <LabeledDiv
+                  label={
+                    <FormattedMessage
+                      id="IfyaDZ"
+                      description="A label for revealed objectives."
+                      defaultMessage="Revealed {type} {count, plural, one {Objective} other {Objectives}}"
+                      values={{
+                        count: 1,
+                        type:
+                          round > 3
+                            ? objectiveTypeString("STAGE TWO", intl)
+                            : objectiveTypeString("STAGE ONE", intl),
+                      }}
+                    />
+                  }
+                >
+                  <ObjectiveRow
+                    objective={revealedObjectiveObj}
+                    removeObjective={() =>
+                      hideObjectiveAsync(gameId, revealedObjectiveObj.id)
                     }
-                    label={
-                      <FormattedMessage
-                        id="lDBTCO"
-                        description="Instruction telling the speaker to reveal objectives."
-                        defaultMessage="Reveal {count, number} {type} {count, plural, one {objective} other {objectives}}"
-                        values={{
-                          count: 1,
-                          type:
-                            round > 3
-                              ? objectiveTypeString("STAGE TWO", intl)
-                              : objectiveTypeString("STAGE ONE", intl),
-                        }}
-                      />
-                    }
-                    objectives={Object.values(availableObjectives).filter(
-                      (objective) => {
-                        return (
-                          objective.type ===
-                          (round > 3 ? "STAGE TWO" : "STAGE ONE")
-                        );
-                      }
-                    )}
+                    viewing={true}
                   />
-                </div>
-              </LabeledDiv>
-            )}
+                </LabeledDiv>
+              ) : (
+                <LabeledDiv
+                  label={<FactionComponents.Name factionId={speaker} />}
+                  color={getColorForFaction(speaker)}
+                  style={{ width: "100%" }}
+                >
+                  <div className="flexRow" style={{ whiteSpace: "nowrap" }}>
+                    <ObjectiveSelectHoverMenu
+                      action={(_, objectiveId) =>
+                        revealObjectiveAsync(gameId, objectiveId)
+                      }
+                      label={
+                        <FormattedMessage
+                          id="lDBTCO"
+                          description="Instruction telling the speaker to reveal objectives."
+                          defaultMessage="Reveal {count, number} {type} {count, plural, one {objective} other {objectives}}"
+                          values={{
+                            count: 1,
+                            type:
+                              round > 3
+                                ? objectiveTypeString("STAGE TWO", intl)
+                                : objectiveTypeString("STAGE ONE", intl),
+                          }}
+                        />
+                      }
+                      objectives={Object.values(availableObjectives).filter(
+                        (objective) => {
+                          return (
+                            objective.type ===
+                            (round > 3 ? "STAGE TWO" : "STAGE ONE")
+                          );
+                        }
+                      )}
+                    />
+                  </div>
+                </LabeledDiv>
+              )}
+            </Conditional>
           </div>
         </NumberedItem>
         <NumberedItem>

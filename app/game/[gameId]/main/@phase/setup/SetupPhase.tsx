@@ -32,6 +32,7 @@ import { processMapString } from "../../../../../../src/util/map";
 import { objectiveTypeString } from "../../../../../../src/util/strings";
 import { rem } from "../../../../../../src/util/util";
 import styles from "./SetupPhase.module.scss";
+import Conditional from "../../../../../../src/components/Conditional/Conditional";
 
 function factionTechChoicesComplete(
   factions: Partial<Record<FactionId, Faction>>
@@ -65,24 +66,30 @@ function factionSubFactionChoicesComplete(
 
 export function setupPhaseComplete(
   factions: Partial<Record<FactionId, Faction>>,
-  revealedObjectives: string[]
+  revealedObjectives: string[],
+  options: Options
 ): boolean {
+  const hideObjectives = options.hide?.includes("OBJECTIVES");
+  const hideTechs = options.hide?.includes("TECHS");
   return (
     factionSubFactionChoicesComplete(factions) &&
-    factionTechChoicesComplete(factions) &&
-    revealedObjectives.length === 2
+    (factionTechChoicesComplete(factions) || !!hideTechs) &&
+    (revealedObjectives.length === 2 || !!hideObjectives)
   );
 }
 
 function getSetupPhaseText(
   factions: Partial<Record<FactionId, Faction>>,
   revealedObjectives: string[],
-  intl: IntlShape
+  intl: IntlShape,
+  options: Options
 ) {
+  const hideObjectives = options.hide?.includes("OBJECTIVES");
+  const hideTechs = options.hide?.includes("TECHS");
   const textSections = [];
   if (
     !factionSubFactionChoicesComplete(factions) ||
-    !factionTechChoicesComplete(factions)
+    (!factionTechChoicesComplete(factions) && !hideTechs)
   ) {
     textSections.push(
       intl.formatMessage({
@@ -93,7 +100,7 @@ function getSetupPhaseText(
       })
     );
   }
-  if (revealedObjectives.length !== 2) {
+  if (!hideObjectives && revealedObjectives.length !== 2) {
     textSections.push(
       intl.formatMessage(
         {
@@ -201,7 +208,7 @@ export default function SetupPhase() {
             <div
               className="flexColumn mediumFont"
               style={{
-                fontFamily: "Myriad Pro",
+                fontFamily: "Source Sans",
                 paddingTop: rem(8),
                 alignItems: "flex-start",
                 whiteSpace: "nowrap",
@@ -301,73 +308,91 @@ export default function SetupPhase() {
             />
           </NumberedItem>
           <NumberedItem>
-            <div className="flexColumn">
-              {revealedObjectives.length > 0 ? (
-                <LabeledDiv
-                  label={
-                    <FormattedMessage
-                      id="RBlsAq"
-                      description="A label for the stage I objectives that have been revealed"
-                      defaultMessage="Revealed stage I {count, plural, one {objective} other {objectives}}"
-                      values={{ count: revealedObjectives.length }}
-                    />
-                  }
-                >
-                  <div className="flexColumn" style={{ alignItems: "stretch" }}>
-                    {revealedObjectives.map((objectiveId) => {
-                      const objective = objectives[objectiveId];
-                      if (!objective) {
-                        return (
-                          <SelectableRow
-                            key={objectiveId}
-                            itemId={objectiveId}
-                            removeItem={() => {
-                              hideObjectiveAsync(gameId, objectiveId);
-                            }}
-                            viewOnly={viewOnly}
-                          >
-                            {objectiveId}
-                          </SelectableRow>
-                        );
-                      }
-                      return (
-                        <ObjectiveRow
-                          key={objectiveId}
-                          objective={objective}
-                          removeObjective={() => {
-                            hideObjectiveAsync(gameId, objectiveId);
-                          }}
-                          viewing={true}
-                        />
-                      );
-                    })}
-                  </div>
-                </LabeledDiv>
-              ) : null}
-              {revealedObjectives.length < 2 ? (
-                <FactionDiv factionId={speaker}>
-                  <ObjectiveSelectHoverMenu
-                    action={revealObjectiveAsync}
+            <Conditional
+              appSection="OBJECTIVES"
+              fallback={
+                <FormattedMessage
+                  id="lDBTCO"
+                  description="Instruction telling the speaker to reveal objectives."
+                  defaultMessage="Reveal {count, number} {type} {count, plural, one {objective} other {objectives}}"
+                  values={{
+                    count: 2,
+                    type: objectiveTypeString("STAGE ONE", intl),
+                  }}
+                />
+              }
+            >
+              <div className="flexColumn">
+                {revealedObjectives.length > 0 ? (
+                  <LabeledDiv
                     label={
                       <FormattedMessage
-                        id="lDBTCO"
-                        description="Instruction telling the speaker to reveal objectives."
-                        defaultMessage="Reveal {count, number} {type} {count, plural, one {objective} other {objectives}}"
-                        values={{
-                          count: 2,
-                          type: objectiveTypeString("STAGE ONE", intl),
-                        }}
+                        id="RBlsAq"
+                        description="A label for the stage I objectives that have been revealed"
+                        defaultMessage="Revealed stage I {count, plural, one {objective} other {objectives}}"
+                        values={{ count: revealedObjectives.length }}
                       />
                     }
-                    objectives={Object.values(availableObjectives).filter(
-                      (objective) => {
-                        return objective.type === "STAGE ONE";
+                  >
+                    <div
+                      className="flexColumn"
+                      style={{ alignItems: "stretch" }}
+                    >
+                      {revealedObjectives.map((objectiveId) => {
+                        const objective = objectives[objectiveId];
+                        if (!objective) {
+                          return (
+                            <SelectableRow
+                              key={objectiveId}
+                              itemId={objectiveId}
+                              removeItem={() => {
+                                hideObjectiveAsync(gameId, objectiveId);
+                              }}
+                              viewOnly={viewOnly}
+                            >
+                              {objectiveId}
+                            </SelectableRow>
+                          );
+                        }
+                        return (
+                          <ObjectiveRow
+                            key={objectiveId}
+                            objective={objective}
+                            removeObjective={() => {
+                              hideObjectiveAsync(gameId, objectiveId);
+                            }}
+                            viewing={true}
+                          />
+                        );
+                      })}
+                    </div>
+                  </LabeledDiv>
+                ) : null}
+                {revealedObjectives.length < 2 ? (
+                  <FactionDiv factionId={speaker}>
+                    <ObjectiveSelectHoverMenu
+                      action={revealObjectiveAsync}
+                      label={
+                        <FormattedMessage
+                          id="lDBTCO"
+                          description="Instruction telling the speaker to reveal objectives."
+                          defaultMessage="Reveal {count, number} {type} {count, plural, one {objective} other {objectives}}"
+                          values={{
+                            count: 2,
+                            type: objectiveTypeString("STAGE ONE", intl),
+                          }}
+                        />
                       }
-                    )}
-                  />
-                </FactionDiv>
-              ) : null}
-            </div>
+                      objectives={Object.values(availableObjectives).filter(
+                        (objective) => {
+                          return objective.type === "STAGE ONE";
+                        }
+                      )}
+                    />
+                  </FactionDiv>
+                ) : null}
+              </div>
+            </Conditional>
           </NumberedItem>
           <NumberedItem>
             <FormattedMessage
@@ -471,6 +496,7 @@ function FinishPhaseButton({ embedded }: { embedded?: boolean }) {
   const factions = useFactions();
   const gameId = useGameId();
   const intl = useIntl();
+  const options = useOptions();
   const viewOnly = useViewOnly();
   const revealedObjectives = useLogEntries<RevealObjectiveData>(
     "REVEAL_OBJECTIVE"
@@ -478,7 +504,7 @@ function FinishPhaseButton({ embedded }: { embedded?: boolean }) {
 
   return (
     <div className={`flexColumn ${embedded ? styles.Embedded : ""}`}>
-      {!setupPhaseComplete(factions, revealedObjectives) ? (
+      {!setupPhaseComplete(factions, revealedObjectives, options) ? (
         <div
           style={{
             color: "firebrick",
@@ -486,11 +512,11 @@ function FinishPhaseButton({ embedded }: { embedded?: boolean }) {
             fontWeight: "bold",
           }}
         >
-          {getSetupPhaseText(factions, revealedObjectives, intl)}
+          {getSetupPhaseText(factions, revealedObjectives, intl, options)}
         </div>
       ) : null}
       <LockedButtons
-        unlocked={setupPhaseComplete(factions, revealedObjectives)}
+        unlocked={setupPhaseComplete(factions, revealedObjectives, options)}
         buttons={[
           {
             text: intl.formatMessage({

@@ -20,6 +20,7 @@ import {
 import { GainRelicHandler, LoseRelicHandler } from "../model/gainRelic";
 import { GainTFCardHandler, LoseTFCardHandler } from "../model/gainTFCard";
 import { GiftOfPrescienceHandler } from "../model/giftOfPrescience";
+import { ManualVoteUpdateHandler } from "../model/manualVoteUpdate";
 import { ManualVPUpdateHandler } from "../model/manualVPUpdate";
 import {
   MarkPrimaryHandler,
@@ -575,6 +576,14 @@ export function getOppositeHandler(
       return new GainTFCardHandler(gameData, {
         action: "GAIN_TF_CARD",
         event: data.event,
+      });
+    case "MANUAL_VOTE_UPDATE":
+      return new ManualVoteUpdateHandler(gameData, {
+        action: "MANUAL_VOTE_UPDATE",
+        event: {
+          faction: data.event.faction,
+          votes: 0 - data.event.votes,
+        },
       });
   }
 }

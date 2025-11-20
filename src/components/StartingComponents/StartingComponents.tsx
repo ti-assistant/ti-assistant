@@ -13,7 +13,6 @@ import {
   chooseStartingTechAsync,
   chooseSubFactionAsync,
   chooseTFFactionAsync,
-  removeStartingTechAsync,
 } from "../../dynamic/api";
 import SynergySVG from "../../icons/ui/Synergy";
 import CarrierSVG from "../../icons/units/Carrier";
@@ -34,15 +33,16 @@ import {
   getTechColor,
 } from "../../util/techs";
 import { objectEntries, rem } from "../../util/util";
+import Conditional from "../Conditional/Conditional";
 import ExpansionIcon from "../ExpansionIcon/ExpansionIcon";
+import FactionComponents from "../FactionComponents/FactionComponents";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
+import FormattedDescription from "../FormattedDescription/FormattedDescription";
 import TechIcon from "../TechIcon/TechIcon";
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
 import { Strings } from "../strings";
 import styles from "./StartingComponents.module.scss";
-import FactionComponents from "../FactionComponents/FactionComponents";
-import GainTFCard from "../Actions/GainSplicedCard";
 
 interface StartingComponentsProps {
   factionId: FactionId;
@@ -255,22 +255,17 @@ export default function StartingComponents({
         {orderedTechs.map((tech) => {
           if (startswith.choice) {
             return (
-              <SelectableRow
+              <div
                 key={tech.id}
-                itemId={tech.id}
-                removeItem={() =>
-                  removeStartingTechAsync(gameId, factionId, tech.id)
-                }
                 style={{
-                  color: getTechColor(tech),
-                  fontSize: "14px",
                   whiteSpace: "nowrap",
                   fontFamily: "Myriad Pro",
+                  color: getTechColor(tech),
+                  fontSize: rem(14),
                 }}
-                viewOnly={viewOnly}
               >
                 {tech.name}
-              </SelectableRow>
+              </div>
             );
           }
           return (
@@ -290,20 +285,38 @@ export default function StartingComponents({
       </>
       {numToChoose > 0 ? (
         <div>
-          <TechSelectHoverMenu
-            factionId={factionId}
-            ignorePrereqs
-            techs={orderedChoices}
-            label={intl.formatMessage({
-              id: "/sF4zW",
-              description:
-                "Label on a hover menu used to select starting techs.",
-              defaultMessage: "Choose Starting Tech",
-            })}
-            selectTech={(tech) =>
-              chooseStartingTechAsync(gameId, factionId, tech.id)
+          <Conditional
+            appSection="TECHS"
+            fallback={
+              <div
+                style={{
+                  fontFamily: "Myriad Pro",
+                  whiteSpace: "normal",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <FormattedDescription
+                  description={faction.startswith?.choice?.description}
+                />
+              </div>
             }
-          />
+          >
+            <TechSelectHoverMenu
+              factionId={factionId}
+              ignorePrereqs
+              techs={orderedChoices}
+              label={intl.formatMessage({
+                id: "/sF4zW",
+                description:
+                  "Label on a hover menu used to select starting techs.",
+                defaultMessage: "Choose Starting Tech",
+              })}
+              selectTech={(tech) =>
+                chooseStartingTechAsync(gameId, factionId, tech.id)
+              }
+            />
+          </Conditional>
         </div>
       ) : null}
       {factionId === "Crimson Rebellion" ? (

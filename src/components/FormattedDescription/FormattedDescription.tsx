@@ -1,5 +1,15 @@
+import { useIntl } from "react-intl";
+import { getTechs } from "../../../server/data/techs";
+import { getTechTypeColor } from "../../util/techs";
 import { Optional } from "../../util/types/types";
 import styles from "./FormattedDescription.module.scss";
+
+const TECH_REGEX_LIST = [
+  // Techs
+  /Neural Motivator/gi,
+  /Sarween Tools/gi,
+  /Plasma Scoring/gi,
+];
 
 const KEYWORDS_REGEX_LIST = [
   // ACTION
@@ -75,13 +85,19 @@ const ABILITY_REGEX_LIST = [
   /SYNERGY/gi,
 ];
 
-const FULL_REGEX_LIST = [...KEYWORDS_REGEX_LIST, ...ABILITY_REGEX_LIST];
+const FULL_REGEX_LIST = [
+  ...KEYWORDS_REGEX_LIST,
+  ...ABILITY_REGEX_LIST,
+  ...TECH_REGEX_LIST,
+];
 
 export default function FormattedDescription({
   description,
 }: {
   description: Optional<string>;
 }) {
+  const intl = useIntl();
+  const techs = getTechs(intl);
   if (!description) {
     return null;
   }
@@ -92,6 +108,10 @@ export default function FormattedDescription({
   );
   const keywordRegex = new RegExp(
     `${KEYWORDS_REGEX_LIST.map((exp) => exp.source).join("|")}`,
+    "g"
+  );
+  const techRegex = new RegExp(
+    `(${TECH_REGEX_LIST.map((exp) => exp.source).join("|")})`,
     "g"
   );
   const fullRegex = new RegExp(
@@ -111,6 +131,7 @@ export default function FormattedDescription({
             {chunks.map((chunk, index) => {
               abilityRegex.lastIndex = 0;
               keywordRegex.lastIndex = 0;
+              techRegex.lastIndex = 0;
               if (abilityRegex.test(chunk)) {
                 return (
                   <span key={index} className={styles.Ability}>
@@ -122,6 +143,17 @@ export default function FormattedDescription({
                   <i key={index} className={styles.Keyword}>
                     {chunk}
                   </i>
+                );
+              } else if (techRegex.test(chunk)) {
+                const tech = techs[chunk as TechId];
+                if (!tech) {
+                  return <span key={index}>{chunk}</span>;
+                }
+                const color = getTechTypeColor(tech.type);
+                return (
+                  <span key={index} className={styles.Tech} style={{ color }}>
+                    {chunk}
+                  </span>
                 );
               }
               return <span key={index}>{chunk}</span>;

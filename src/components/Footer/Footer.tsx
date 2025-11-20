@@ -41,6 +41,7 @@ import ThundersEdgePanel from "../ThundersEdgePanel";
 import { Strings } from "../strings";
 import styles from "./Footer.module.scss";
 import TFCardIcon from "../TFCardIcon/TFCardIcon";
+import Conditional from "../Conditional/Conditional";
 
 const ObjectivePanel = dynamic(
   () => import("../ObjectivePanel/ObjectivePanel"),
@@ -108,6 +109,15 @@ function getNumButtons(
   ) {
     buttons++;
   }
+  if (options.hide?.includes("OBJECTIVES")) {
+    buttons--;
+  }
+  if (options.hide?.includes("PLANETS")) {
+    buttons--;
+  }
+  if (options.hide?.includes("TECHS")) {
+    buttons--;
+  }
   return buttons;
 }
 
@@ -120,6 +130,10 @@ export default function Footer() {
   const tyrant = useTyrant();
   const strategyCards = useStrategyCards();
   const viewOnly = useViewOnly();
+
+  const hideObjectives = options.hide?.includes("OBJECTIVES");
+  const hidePlanets = options.hide?.includes("PLANETS");
+  const hideTechs = options.hide?.includes("TECHS");
 
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
@@ -379,86 +393,94 @@ export default function Footer() {
             </span>
           </div>
         ) : null}
-        <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
-          <button
-            className="flexRow"
-            onClick={() => openModal(<TechModalContent viewOnly={viewOnly} />)}
-            style={{
-              width: rem(34),
-              padding: rem(2),
-              aspectRatio: 1,
-              borderRadius: "100%",
-            }}
-          >
-            <div
+        <Conditional appSection="TECHS">
+          <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
+            <button
               className="flexRow"
+              onClick={() =>
+                openModal(<TechModalContent viewOnly={viewOnly} />)
+              }
               style={{
-                position: "relative",
-                width: "100%",
-                height: "100%",
+                width: rem(34),
+                padding: rem(2),
+                aspectRatio: 1,
+                borderRadius: "100%",
               }}
             >
-              {twilightsFallGame ? (
-                <TFCardIcon size={28} />
-              ) : (
-                <TechSkipIcon size={28} outline />
-              )}
-            </div>
-          </button>
-          <span className={styles.ButtonLabel}>
-            {twilightsFallGame ? "Cards" : "Techs"}
-          </span>
-        </div>
-        <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
-          <button
-            onClick={() =>
-              openModal(<ObjectiveModalContent viewOnly={viewOnly} />)
-            }
-            style={{
-              position: "relative",
-              width: rem(34),
-              height: rem(34),
-              padding: rem(2),
-              borderRadius: "100%",
-            }}
-          >
-            <div
-              className="flexRow"
+              <div
+                className="flexRow"
+                style={{
+                  position: "relative",
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                {twilightsFallGame ? (
+                  <TFCardIcon size={28} />
+                ) : (
+                  <TechSkipIcon size={28} outline />
+                )}
+              </div>
+            </button>
+            <span className={styles.ButtonLabel}>
+              {twilightsFallGame ? "Cards" : "Techs"}
+            </span>
+          </div>
+        </Conditional>
+        <Conditional appSection="OBJECTIVES">
+          <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
+            <button
+              onClick={() =>
+                openModal(<ObjectiveModalContent viewOnly={viewOnly} />)
+              }
               style={{
                 position: "relative",
-                width: "100%",
-                height: "100%",
+                width: rem(34),
+                height: rem(34),
+                padding: rem(2),
+                borderRadius: "100%",
               }}
             >
-              <ObjectivesMenuSVG />
-            </div>
-          </button>
-          <span className={styles.ButtonLabel}>Objectives</span>
-        </div>
-        <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
-          <button
-            onClick={() => openModal(<PlanetModalContent />)}
-            style={{
-              position: "relative",
-              width: rem(34),
-              height: rem(34),
-              padding: rem(2),
-              borderRadius: "100%",
-            }}
-          >
-            <div
-              className="flexRow"
+              <div
+                className="flexRow"
+                style={{
+                  position: "relative",
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                <ObjectivesMenuSVG />
+              </div>
+            </button>
+            <span className={styles.ButtonLabel}>Objectives</span>
+          </div>
+        </Conditional>
+        <Conditional appSection="PLANETS">
+          <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
+            <button
+              onClick={() => openModal(<PlanetModalContent />)}
               style={{
                 position: "relative",
-                width: "100%",
-                height: "100%",
+                width: rem(34),
+                height: rem(34),
+                padding: rem(2),
+                borderRadius: "100%",
               }}
             >
-              <PlanetMenuSVG />
-            </div>
-          </button>
-          <span className={styles.ButtonLabel}>Planets</span>
-        </div>
+              <div
+                className="flexRow"
+                style={{
+                  position: "relative",
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                <PlanetMenuSVG />
+              </div>
+            </button>
+            <span className={styles.ButtonLabel}>Planets</span>
+          </div>
+        </Conditional>
         {options.expansions.includes("THUNDERS EDGE") ||
         options.expansions.includes("POK") ? (
           <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>

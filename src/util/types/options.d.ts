@@ -9,6 +9,8 @@ type Expansion =
   | "TWILIGHTS FALL"
   | "DISCORDANT STARS";
 
+type AppSection = "PLANETS" | "OBJECTIVES" | "TECHS";
+
 type OptionUpdateAction = "SET_OPTION";
 
 interface OptionUpdateData {
@@ -29,5 +31,7 @@ interface Options {
   "map-style": MapStyle;
   "victory-points": number;
   events?: EventId[];
+  // Optional tracking
+  hide?: AppSection[];
   [key: string]: any;
 }

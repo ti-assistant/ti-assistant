@@ -26,6 +26,7 @@ import {
 import { GainRelicHandler, LoseRelicHandler } from "../model/gainRelic";
 import { GainTFCardHandler, LoseTFCardHandler } from "../model/gainTFCard";
 import { GiftOfPrescienceHandler } from "../model/giftOfPrescience";
+import { ManualVoteUpdateHandler } from "../model/manualVoteUpdate";
 import { ManualVPUpdateHandler } from "../model/manualVPUpdate";
 import {
   MarkPrimaryHandler,
@@ -131,6 +132,8 @@ export function getHandler(gameData: StoredGameData, data: GameUpdateData) {
       return new LoseRelicHandler(gameData, data);
     case "MANUAL_VP_UPDATE":
       return new ManualVPUpdateHandler(gameData, data);
+    case "MANUAL_VOTE_UPDATE":
+      return new ManualVoteUpdateHandler(gameData, data);
     case "MARK_SECONDARY":
       return new MarkSecondaryHandler(gameData, data);
     case "PLAY_ACTION_CARD":

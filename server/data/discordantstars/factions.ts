@@ -121,6 +121,8 @@ export const DISCORDANT_STARS_FACTIONS: Record<
     startswith: {
       planets: ["Benc", "Hau"],
       choice: {
+        description:
+          "Choose two of the following:\n\nPsychoarchaeology\n\nDark Energy Tap\n\nScanlink Drone Network",
         options: [
           "Psychoarchaeology",
           "Dark Energy Tap",
@@ -211,6 +213,7 @@ export const DISCORDANT_STARS_FACTIONS: Record<
     startswith: {
       planets: ["Kjalengard", "Hulgade"],
       choice: {
+        description: "Choose one unit upgrade technology.",
         options: [
           "Cruiser II",
           "Destroyer II",
@@ -310,6 +313,8 @@ export const DISCORDANT_STARS_FACTIONS: Record<
     startswith: {
       planets: ["Louk", "Auldane"],
       choice: {
+        description:
+          "Choose two of the following:\n\nAntimass Deflectors\n\nSarween Tools\n\nPlasma Scoring",
         options: ["Antimass Deflectors", "Sarween Tools", "Plasma Scoring"],
         select: 2,
       },
@@ -400,6 +405,8 @@ export const DISCORDANT_STARS_FACTIONS: Record<
     startswith: {
       planets: ["Gghurn Theta", "Arche"],
       choice: {
+        description:
+          "Choose one of the following:\n\nMagen Defense Grid\n\nSelf Assembly Routines",
         options: ["Magen Defense Grid", "Self Assembly Routines"],
         select: 1,
       },
@@ -587,6 +594,7 @@ export const DISCORDANT_STARS_FACTIONS: Record<
     shortname: "Edyn",
     startswith: {
       choice: {
+        description: "Choose any three technologies with no prerequisites.",
         options: [
           "Psychoarchaeology",
           "Neural Motivator",
@@ -943,6 +951,8 @@ export const DISCORDANT_STARS_FACTIONS: Record<
     startswith: {
       planets: ["Ghoti"],
       choice: {
+        description:
+          "Choose one of the following:\n\nGravity Drive\n\nSling Relay",
         options: ["Gravity Drive", "Sling Relay"],
         select: 1,
       },
@@ -1022,6 +1032,8 @@ export const DISCORDANT_STARS_FACTIONS: Record<
     startswith: {
       planets: ["Last Stop"],
       choice: {
+        description:
+          "Choose two of the following:\n\nPsychoarchaeology\n\nScanlink Drone Network\n\nAI Development Algorithm",
         options: [
           "Psychoarchaeology",
           "Scanlink Drone Network",
@@ -1339,6 +1351,8 @@ export const DISCORDANT_STARS_FACTIONS: Record<
     startswith: {
       planets: ["Avicenna"],
       choice: {
+        description:
+          "Choose one of the following:\n\nDaxcive Animators\n\nBio-Stims",
         options: ["Daxcive Animators", "Bio-Stims"],
         select: 1,
       },
@@ -1420,6 +1434,8 @@ export const DISCORDANT_STARS_FACTIONS: Record<
     startswith: {
       planets: ["Aysis Rest", "Solitude"],
       choice: {
+        description:
+          "Choose two of the following:\n\nDark Energy Tap\n\nScanlink Drone Network\n\nAI Development Algorithm",
         options: [
           "Dark Energy Tap",
           "Scanlink Drone Network",
@@ -1761,6 +1777,8 @@ export const DISCORDANT_STARS_FACTIONS: Record<
     startswith: {
       planets: ["Alesna", "Azle"],
       choice: {
+        description:
+          "Choose one of the following:\n\nGraviton Laser System\n\nPredictive Intelligence",
         options: ["Graviton Laser System", "Predictive Intelligence"],
         select: 1,
       },
@@ -2005,6 +2023,8 @@ export const DISCORDANT_STARS_FACTIONS: Record<
     shortname: "Nokar",
     startswith: {
       choice: {
+        description:
+          "Choose two of the following:\n\nAI Development Algorithm\n\nDark Energy Tap\n\nPsychoarchaeology",
         options: [
           "AI Development Algorithm",
           "Dark Energy Tap",
@@ -2428,6 +2448,8 @@ export const DISCORDANT_STARS_FACTIONS: Record<
     startswith: {
       planets: ["Discordia"],
       choice: {
+        description:
+          "Choose two of the following:\n\nNeural Motivator\n\nAntimass Deflectors\n\nPlasma Scoring",
         options: ["Neural Motivator", "Antimass Deflectors", "Plasma Scoring"],
         select: 2,
       },
@@ -2520,6 +2542,8 @@ export const DISCORDANT_STARS_FACTIONS: Record<
     startswith: {
       planets: ["Vadarian", "Norvus"],
       choice: {
+        description:
+          "Choose two of the following:\n\nNeural Motivator\n\nAntimass Deflectors\n\nSarween Tools",
         options: ["Neural Motivator", "Antimass Deflectors", "Sarween Tools"],
         select: 2,
       },

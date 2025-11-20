@@ -77,6 +77,10 @@ export function getReplacementTech(
       switch (factionId) {
         case "Argent Flight":
           return "Strike Wing Alpha II";
+        case "Crimson Rebellion":
+          return "Exile II";
+        case "Ral Nel Consortium":
+          return "Linkship II";
       }
       break;
     case "Dreadnought II":
@@ -113,6 +117,8 @@ export function getReplacementTech(
       switch (factionId) {
         case "Clan of Saar":
           return "Floating Factory II";
+        case "Last Bastion":
+          return "4X4IC Helios V2";
         case "Vuil'raith Cabal":
           return "Dimensional Tear II";
       }

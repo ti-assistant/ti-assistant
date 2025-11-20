@@ -44,9 +44,7 @@ const hideObjectiveFn = import("../util/api/revealObjective").then(
 const loseRelicFn = import("../util/api/gainRelic").then(
   (mod) => mod.loseRelic
 );
-const manualVPUpdateFn = import("../util/api/manualVPUpdate").then(
-  (mod) => mod.manualVPUpdate
-);
+const manualUpdateMod = import("../util/api/manualVPUpdate");
 const markSecondaryMod = import("../util/api/markSecondary");
 const playActionCardFn = import("../util/api/playActionCard").then(
   (mod) => mod.playActionCard
@@ -364,8 +362,17 @@ export async function manualVPUpdateAsync(
   faction: FactionId,
   vps: number
 ) {
-  const manualVPUpdate = await manualVPUpdateFn;
-  manualVPUpdate(gameId, faction, vps);
+  const mod = await manualUpdateMod;
+  mod.manualVPUpdate(gameId, faction, vps);
+}
+
+export async function manualVoteUpdateAsync(
+  gameId: string,
+  faction: FactionId,
+  votes: number
+) {
+  const mod = await manualUpdateMod;
+  mod.manualVoteUpdate(gameId, faction, votes);
 }
 
 export async function markSecondaryAsync(

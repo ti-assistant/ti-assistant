@@ -5,6 +5,7 @@ import {
   useCurrentTurn,
   useGameId,
   useLeader,
+  useOptions,
   usePlanets,
   useViewOnly,
 } from "../../context/dataHooks";
@@ -39,8 +40,13 @@ export default function ClaimPlanetsSection({
 }) {
   const claimedPlanetEvents = useClaimedPlanetEvents(factionId);
   const gameId = useGameId();
+  const options = useOptions();
   const planets = usePlanets();
   const viewOnly = useViewOnly();
+
+  if (options.hide?.includes("PLANETS")) {
+    return null;
+  }
 
   const claimedAttachments = new Set<AttachmentId>();
   for (const planet of Object.values(planets)) {

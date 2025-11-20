@@ -109,14 +109,11 @@ function FactionDiv({ factionId }: { factionId: FactionId }) {
         <StaticFactionTimer active={false} factionId={factionId} width={84} />
       }
       color={fadeFaction ? "#555" : factionColor}
+      innerStyle={{
+        filter: fadeFaction ? "brightness(0.6)" : "unset",
+      }}
     >
-      <div
-        style={{
-          filter: fadeFaction ? "brightness(0.6)" : "unset",
-        }}
-      >
-        <FactionSummary factionId={factionId} />
-      </div>
+      <FactionSummary factionId={factionId} />
     </LabeledDiv>
   );
 }

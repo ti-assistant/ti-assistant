@@ -115,6 +115,12 @@ export default function getThundersEdgeFactions(
       }),
       startswith: {
         choice: {
+          description: intl.formatMessage({
+            id: "Crimson Rebellion.Tech Choice",
+            description: "Text of Rebellion's tech choice.",
+            defaultMessage:
+              "Choose one blue or red technology with no prerequisites.",
+          }),
           options: [
             "Antimass Deflectors",
             "Dark Energy Tap",
@@ -295,6 +301,11 @@ export default function getThundersEdgeFactions(
       }),
       startswith: {
         choice: {
+          description: intl.formatMessage({
+            id: "Deepwrought Scholarate.Tech Choice",
+            description: "Text of Deepwrought's tech choice.",
+            defaultMessage: "During setup, research technology twice.",
+          }),
           options: [],
           select: 2,
         },
@@ -448,6 +459,12 @@ export default function getThundersEdgeFactions(
       }),
       startswith: {
         choice: {
+          description: intl.formatMessage({
+            id: "Firmament.Tech Choice",
+            description: "Text of Firmament's tech choice.",
+            defaultMessage:
+              "Choose one green or yellow technology that has no prerequisites.",
+          }),
           options: [
             "Neural Motivator",
             "Psychoarchaeology",
@@ -617,6 +634,12 @@ export default function getThundersEdgeFactions(
       }),
       startswith: {
         choice: {
+          description: intl.formatMessage({
+            id: "Last Bastion.Tech Choice",
+            description: "Text of Bastion's tech choice.",
+            defaultMessage:
+              "Choose 1 blue or yellow technology with no prerequisites.",
+          }),
           options: [
             "Antimass Deflectors",
             "Dark Energy Tap",
@@ -947,6 +970,12 @@ export default function getThundersEdgeFactions(
       }),
       startswith: {
         choice: {
+          description: intl.formatMessage({
+            id: "Ral Nel Consortium.Tech Choice",
+            description: "Text of Ral Nel's tech choice.",
+            defaultMessage:
+              "Choose 1 green or red technology with no prerequisites.",
+          }),
           options: [
             "Neural Motivator",
             "Psychoarchaeology",

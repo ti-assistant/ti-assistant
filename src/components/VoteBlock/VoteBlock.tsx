@@ -19,6 +19,7 @@ import { useGameState, usePhase } from "../../context/stateDataHooks";
 import { Techs } from "../../context/techDataHooks";
 import {
   castVotesAsync,
+  manualVoteUpdateAsync,
   playActionCardAsync,
   playPromissoryNoteAsync,
   playRiderAsync,
@@ -55,6 +56,7 @@ import {
 import { riderString } from "../../util/strings";
 import { ActionLog, Optional } from "../../util/types/types";
 import { rem } from "../../util/util";
+import Conditional from "../Conditional/Conditional";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import NumberInput from "../NumberInput/NumberInput";
 import { Selector } from "../Selector/Selector";
@@ -108,6 +110,7 @@ export function getTargets(
   planets: Partial<Record<PlanetId, Planet>>,
   agendas: Partial<Record<AgendaId, Agenda>>,
   objectives: Partial<Record<ObjectiveId, Objective>>,
+  options: Options,
   intl: IntlShape
 ) {
   if (!agenda) {
@@ -158,7 +161,7 @@ export function getTargets(
       ];
     case "Planet":
       const ownedPlanetNames = Object.values(planets)
-        .filter((planet) => !!planet.owner)
+        .filter((planet) => !!planet.owner || options.hide?.includes("PLANETS"))
         .filter(
           (planet) =>
             !planet.attributes.includes("ocean") &&
@@ -171,7 +174,7 @@ export function getTargets(
     case "Cultural Planet":
       const culturalPlanets = Object.values(planets)
         .filter((planet) => planet.types.includes("CULTURAL"))
-        .filter((planet) => !!planet.owner)
+        .filter((planet) => !!planet.owner || options.hide?.includes("PLANETS"))
         .map((planet) => {
           return { id: planet.id, name: planet.name };
         });
@@ -179,7 +182,7 @@ export function getTargets(
     case "Hazardous Planet":
       const hazardousPlanets = Object.values(planets)
         .filter((planet) => planet.types.includes("HAZARDOUS"))
-        .filter((planet) => !!planet.owner)
+        .filter((planet) => !!planet.owner || options.hide?.includes("PLANETS"))
         .map((planet) => {
           return { id: planet.id, name: planet.name };
         });
@@ -187,7 +190,7 @@ export function getTargets(
     case "Industrial Planet":
       const industrialPlanets = Object.values(planets)
         .filter((planet) => planet.types.includes("INDUSTRIAL"))
-        .filter((planet) => !!planet.owner)
+        .filter((planet) => !!planet.owner || options.hide?.includes("PLANETS"))
         .map((planet) => {
           return { id: planet.id, name: planet.name };
         });
@@ -195,7 +198,7 @@ export function getTargets(
     case "Non-Home Planet Other Than Mecatol Rex":
       const electablePlanets = Object.values(planets)
         .filter((planet) => !planet.home && planet.name !== "Mecatol Rex")
-        .filter((planet) => !!planet.owner)
+        .filter((planet) => !!planet.owner || options.hide?.includes("PLANETS"))
         .filter(
           (planet) =>
             !planet.attributes.includes("ocean") &&
@@ -433,30 +436,34 @@ export function computeRemainingVotes(
   let influenceNeeded = votesCast;
   let planetCount = 0;
   let remainingVotes = 0;
-  const hasXxchaHero = leaders["Xxekir Grom"]?.state === "readied";
-  for (const planet of orderedPlanets) {
-    // Space Stations do not count for voting.
-    if (planet.attributes.includes("space-station")) {
-      continue;
-    }
-    let planetInfluence = planet.influence;
-    if (factionId === "Xxcha Kingdom") {
-      if (options.expansions.includes("CODEX THREE") && hasXxchaHero) {
-        planetInfluence += planet.resources;
+  if (options.hide?.includes("PLANETS")) {
+    remainingVotes = Math.max((faction.availableVotes ?? 0) - votesCast, 0);
+  } else {
+    const hasXxchaHero = leaders["Xxekir Grom"]?.state === "readied";
+    for (const planet of orderedPlanets) {
+      // Space Stations do not count for voting.
+      if (planet.attributes.includes("space-station")) {
+        continue;
       }
-    }
-    if (influenceNeeded > 0 && planetInfluence <= influenceNeeded) {
-      influenceNeeded -= planetInfluence;
-      continue;
-    }
-    planetCount++;
+      let planetInfluence = planet.influence;
+      if (factionId === "Xxcha Kingdom") {
+        if (options.expansions.includes("CODEX THREE") && hasXxchaHero) {
+          planetInfluence += planet.resources;
+        }
+      }
+      if (influenceNeeded > 0 && planetInfluence <= influenceNeeded) {
+        influenceNeeded -= planetInfluence;
+        continue;
+      }
+      planetCount++;
 
-    remainingVotes += planetInfluence;
-  }
+      remainingVotes += planetInfluence;
+    }
 
-  // Player cast an invalid number of votes. Forcibly adjust.
-  if (influenceNeeded > 0) {
-    remainingVotes = Math.max(remainingVotes - influenceNeeded, 0);
+    // Player cast an invalid number of votes. Forcibly adjust.
+    if (influenceNeeded > 0) {
+      remainingVotes = Math.max(remainingVotes - influenceNeeded, 0);
+    }
   }
 
   let extraVotes = 0;
@@ -731,6 +738,7 @@ function PredictionSection({
     planets,
     agendas,
     objectives,
+    options,
     intl
   ).filter((target) => target.id !== "Abstain");
 
@@ -859,6 +867,7 @@ function VotingSection({
     planets,
     agendas,
     objectives,
+    options,
     intl
   );
   const factionVotes = getFactionVotes(currentTurn, factionId);
@@ -1201,41 +1210,72 @@ function AvailableVotes({
 
   return (
     <div className={styles.AvailableVotes} style={availableVotesStyle}>
-      <div className={styles.InfluenceIcon}>
-        <InfluenceSVG influence={influence} />
-      </div>
-      <div className="flexRow" style={{ gap: 0 }}>
-        {hasHacanCommander ? (
-          <>
-            +{" "}
-            <div
-              className="flexColumn"
-              style={{
-                gap: 0,
-                paddingLeft: rem(4),
-                justifyContent: "flex-start",
-                alignItems: "flex-start",
-              }}
-            >
-              {extraVotes}
-              <div className="flexRow" style={{ gap: rem(2) }}>
-                2x
-                <div
-                  style={{
-                    width: rem(14),
-                    height: rem(15),
-                    position: "relative",
-                  }}
-                >
-                  <TradeGoodSVG />
+      <Conditional
+        appSection="PLANETS"
+        fallback={
+          <ManualVoteCount factionId={factionId} influence={influence} />
+        }
+      >
+        <div className={styles.InfluenceIcon}>
+          <InfluenceSVG influence={influence} />
+        </div>
+        <div className="flexRow" style={{ gap: 0 }}>
+          {hasHacanCommander ? (
+            <>
+              +{" "}
+              <div
+                className="flexColumn"
+                style={{
+                  gap: 0,
+                  paddingLeft: rem(4),
+                  justifyContent: "flex-start",
+                  alignItems: "flex-start",
+                }}
+              >
+                {extraVotes}
+                <div className="flexRow" style={{ gap: rem(2) }}>
+                  2x
+                  <div
+                    style={{
+                      width: rem(14),
+                      height: rem(15),
+                      position: "relative",
+                    }}
+                  >
+                    <TradeGoodSVG />
+                  </div>
                 </div>
               </div>
-            </div>
-          </>
-        ) : (
-          <>+ {extraVotes}</>
-        )}
-      </div>
+            </>
+          ) : (
+            <>+ {extraVotes}</>
+          )}
+        </div>
+      </Conditional>
     </div>
+  );
+}
+
+function ManualVoteCount({
+  factionId,
+  influence,
+}: {
+  factionId: FactionId;
+  influence: number;
+}) {
+  const gameId = useGameId();
+  const viewOnly = useViewOnly();
+
+  return (
+    <NumberInput
+      value={influence}
+      maxValue={99}
+      softMax={99}
+      minValue={0}
+      onChange={(votes) => {
+        manualVoteUpdateAsync(gameId, factionId, votes - influence);
+      }}
+      viewOnly={viewOnly}
+    />
   );
 }

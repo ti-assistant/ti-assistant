@@ -60,7 +60,10 @@ export function FactionSummary({ factionId }: FactionSummaryProps) {
   const editable = phase !== "END" && !viewOnly;
 
   return (
-    <div className={styles.FactionSummary}>
+    <div
+      className={styles.FactionSummary}
+      style={{ justifyContent: "space-evenly" }}
+    >
       <FactionTechSummary factionId={factionId} />
       <div className={styles.VPGrid}>
         <div
@@ -137,8 +140,13 @@ export function FactionSummary({ factionId }: FactionSummaryProps) {
 function ObjectiveDots({ factionId }: { factionId: FactionId }) {
   const gameId = useGameId();
   const objectives = useObjectives();
+  const options = useOptions();
   const revealOrder = useObjectiveRevealOrder();
   const viewOnly = useViewOnly();
+
+  if (options.hide?.includes("OBJECTIVES")) {
+    return null;
+  }
 
   const stageIs = Object.values(objectives).filter(
     (obj) => obj.type === "STAGE ONE" && obj.selected
@@ -361,7 +369,12 @@ function ObjectiveDots({ factionId }: { factionId: FactionId }) {
 function FactionPlanetSummary({ factionId }: { factionId: FactionId }) {
   const attachments = useAttachments();
   const xxekirGrom = useLeader("Xxekir Grom");
+  const options = useOptions();
   const planets = usePlanets();
+
+  if (options.hide?.includes("PLANETS")) {
+    return null;
+  }
 
   const ownedPlanets = factionId
     ? filterToClaimedPlanets(planets, factionId)
@@ -384,6 +397,10 @@ function FactionTechSummary({ factionId }: { factionId: FactionId }) {
   const factionTechs = useFactionTechs(factionId);
   const options = useOptions();
   const techs = useTechs();
+
+  if (options.hide?.includes("TECHS")) {
+    return null;
+  }
 
   if (options.expansions.includes("TWILIGHTS FALL")) {
     return (

@@ -10,6 +10,7 @@ import { getClaimedPlanets, getGainedRelic } from "../../util/actionLog";
 import { Optional } from "../../util/types/types";
 import GainRelic from "../Actions/GainRelic";
 import { ClaimedPlanetRow } from "../ClaimPlanetsSection/ClaimPlanetsSection";
+import Conditional from "../Conditional/Conditional";
 
 export default function FrontierExploration({
   factionId,
@@ -42,21 +43,23 @@ export default function FrontierExploration({
   return (
     <div className="flexRow" style={{ width: "100%" }}>
       <GainRelic factionId={factionId} />
-      {!mirageFound && !gainedRelic ? (
-        <button
-          onClick={() => {
-            claimPlanetAsync(gameId, factionId, "Mirage");
-          }}
-          disabled={viewOnly}
-        >
-          <FormattedMessage
-            id="iFF5UN"
-            description="Text on a button that allows a player to claim a planet."
-            defaultMessage="Claim {planet}"
-            values={{ planet: "Mirage" }}
-          />
-        </button>
-      ) : null}
+      <Conditional appSection="PLANETS">
+        {!mirageFound && !gainedRelic ? (
+          <button
+            onClick={() => {
+              claimPlanetAsync(gameId, factionId, "Mirage");
+            }}
+            disabled={viewOnly}
+          >
+            <FormattedMessage
+              id="iFF5UN"
+              description="Text on a button that allows a player to claim a planet."
+              defaultMessage="Claim {planet}"
+              values={{ planet: "Mirage" }}
+            />
+          </button>
+        ) : null}
+      </Conditional>
     </div>
   );
 }
