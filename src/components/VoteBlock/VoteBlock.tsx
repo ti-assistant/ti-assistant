@@ -1275,6 +1275,7 @@ function ManualVoteCount({
       onChange={(votes) => {
         manualVoteUpdateAsync(gameId, factionId, votes - influence);
       }}
+      inputStyle={{ borderColor: "#72d4f7" }}
       viewOnly={viewOnly}
     />
   );

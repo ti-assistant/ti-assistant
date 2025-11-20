@@ -132,7 +132,7 @@ export class ResolveAgendaHandler implements Handler {
           (logEntry) => logEntry.data.action === "CAST_VOTES"
         );
 
-        const forFactions = new Set();
+        const forFactions = new Set<FactionId>();
         const objectives = buildObjectives(this.gameData, intl);
         for (const votes of castVotesActions) {
           const data = votes.data as CastVotesData;
