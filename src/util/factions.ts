@@ -132,3 +132,28 @@ export function getMapOrderedFactionIds(
     })
     .map(([id, _]) => id);
 }
+
+export function hasLeader(
+  leaderId: LeaderId,
+  faction: Faction,
+  leaders: Partial<Record<LeaderId, Leader>>
+) {
+  const leader = leaders[leaderId];
+  if (!leader) {
+    return false;
+  }
+  switch (leader.type) {
+    case "AGENT":
+      return leader.faction === faction.id;
+    case "COMMANDER":
+      if (leader.state !== "readied") {
+        return false;
+      }
+      if (leader.faction === faction.id) {
+        return true;
+      }
+      return !!faction.alliances?.includes(leader.faction);
+    case "HERO":
+      return leader.state === "readied" && leader.faction === faction.id;
+  }
+}

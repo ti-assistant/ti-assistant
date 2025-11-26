@@ -43,7 +43,11 @@ import {
   getCurrentTurnLogEntries,
 } from "../../util/api/actionLog";
 import { hasTech } from "../../util/api/techs";
-import { getFactionColor, getFactionName } from "../../util/factions";
+import {
+  getFactionColor,
+  getFactionName,
+  hasLeader,
+} from "../../util/factions";
 import {
   applyAllPlanetAttachments,
   filterToClaimedPlanets,
@@ -324,8 +328,8 @@ export function canFactionVote(
   if (faction.id === "Nekro Virus") {
     return false;
   }
-  const hasXxchaCommander = leaders["Elder Qanoj"]?.state === "readied";
-  if (faction.id === "Xxcha Kingdom" && faction && hasXxchaCommander) {
+  const hasXxchaCommander = hasLeader("Elder Qanoj", faction, leaders);
+  if (hasXxchaCommander) {
     return true;
   }
   const politicalSecrets = getPromissoryTargets(
@@ -459,8 +463,8 @@ export function computeRemainingVotes(
   if (factionId === "Argent Flight") {
     extraVotes += Object.keys(factions).length;
   }
-  const hasXxchaCommander = leaders["Elder Qanoj"]?.state === "readied";
-  if (factionId === "Xxcha Kingdom" && hasXxchaCommander) {
+  const hasXxchaCommander = hasLeader("Elder Qanoj", faction, leaders);
+  if (hasXxchaCommander) {
     extraVotes += planetCount;
   }
   const hasPredictiveIntelligence = hasTech(
