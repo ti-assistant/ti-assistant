@@ -7,7 +7,9 @@ import { useGameId, useOptions, useViewOnly } from "../../context/dataHooks";
 import { useFactions } from "../../context/factionDataHooks";
 import { useOrderedFactionIds } from "../../context/gameDataHooks";
 import { changeOptionAsync, updateFactionAsync } from "../../dynamic/api";
-import DummyFactionSummary from "../../InnerFactionSummary";
+import DummyFactionSummary, {
+  DummySummaryLabel,
+} from "../../InnerFactionSummary";
 import { BLACK_BORDER_GLOW } from "../../util/borderGlow";
 import { convertToFactionColor } from "../../util/factions";
 import { rem } from "../../util/util";
@@ -110,40 +112,28 @@ function SettingsModalContent() {
           <>
             Display Settings
             <div style={{ width: "fit-content", scale: 1 }}>
-              <LabeledDiv label="Faction Summary" color="var(--neutral-border)">
+              <LabeledDiv
+                label={
+                  <DummySummaryLabel
+                    factionId="Vuil'raith Cabal"
+                    label={settings["fs-left-label"]}
+                  />
+                }
+                rightLabel={
+                  <DummySummaryLabel
+                    factionId="Vuil'raith Cabal"
+                    label={settings["fs-right-label"]}
+                  />
+                }
+                color="var(--neutral-border)"
+              >
                 <DummyFactionSummary />
               </LabeledDiv>
             </div>
             <div style={{ width: "fit-content" }}>
               <LabeledDiv
-                label={
-                  <span
-                    style={{
-                      position: "relative",
-                      zIndex: 1,
-                      color: "#eee",
-                      fontFamily: "Myriad Pro",
-                    }}
-                  >
-                    <Toggle
-                      toggleFn={(prev) => {
-                        if (prev) {
-                          updateSetting("fs-tech-summary-display", "NONE");
-                        } else {
-                          updateSetting(
-                            "fs-tech-summary-display",
-                            "NUMBER+ICON+TREE"
-                          );
-                        }
-                      }}
-                      selected={techSummarySetting !== "NONE"}
-                    >
-                      Tech Summary
-                    </Toggle>
-                  </span>
-                }
+                label="Tech Summary"
                 innerStyle={{
-                  paddingTop: rem(24),
                   fontFamily: "Myriad Pro",
                   flexDirection: "row",
                   flexWrap: "wrap",
@@ -224,6 +214,161 @@ function SettingsModalContent() {
                   </div>
                 </Chip>
               </LabeledDiv>
+            </div>
+            <div className="flexRow">
+              <div>
+                Left:
+                <Chip
+                  selected={settings["fs-left"] === "NONE"}
+                  toggleFn={() => updateSetting("fs-left", "NONE")}
+                >
+                  None
+                </Chip>
+                <Chip
+                  selected={settings["fs-left"] === "TECHS"}
+                  toggleFn={() => updateSetting("fs-left", "TECHS")}
+                >
+                  Techs
+                </Chip>
+                <Chip
+                  selected={settings["fs-left"] === "OBJECTIVES"}
+                  toggleFn={() => updateSetting("fs-left", "OBJECTIVES")}
+                >
+                  Objectives
+                </Chip>
+                <Chip
+                  selected={settings["fs-left"] === "PLANETS"}
+                  toggleFn={() => updateSetting("fs-left", "PLANETS")}
+                >
+                  Planets
+                </Chip>
+                <Chip
+                  selected={settings["fs-left"] === "TIMER"}
+                  toggleFn={() => updateSetting("fs-left", "TIMER")}
+                >
+                  Timer
+                </Chip>
+              </div>
+              <div>
+                Center:
+                <Chip
+                  selected={settings["fs-center"] === "NONE"}
+                  toggleFn={() => updateSetting("fs-center", "NONE")}
+                >
+                  None
+                </Chip>
+                <Chip
+                  selected={settings["fs-center"] === "TECHS"}
+                  toggleFn={() => updateSetting("fs-center", "TECHS")}
+                >
+                  Techs
+                </Chip>
+                <Chip
+                  selected={settings["fs-center"] === "OBJECTIVES"}
+                  toggleFn={() => updateSetting("fs-center", "OBJECTIVES")}
+                >
+                  Objectives
+                </Chip>
+                <Chip
+                  selected={settings["fs-center"] === "PLANETS"}
+                  toggleFn={() => updateSetting("fs-center", "PLANETS")}
+                >
+                  Planets
+                </Chip>
+                <Chip
+                  selected={settings["fs-center"] === "TIMER"}
+                  toggleFn={() => updateSetting("fs-center", "TIMER")}
+                >
+                  Timer
+                </Chip>
+              </div>
+              <div>
+                Right:
+                <Chip
+                  selected={settings["fs-right"] === "NONE"}
+                  toggleFn={() => updateSetting("fs-right", "NONE")}
+                >
+                  None
+                </Chip>
+                <Chip
+                  selected={settings["fs-right"] === "TECHS"}
+                  toggleFn={() => updateSetting("fs-right", "TECHS")}
+                >
+                  Techs
+                </Chip>
+                <Chip
+                  selected={settings["fs-right"] === "OBJECTIVES"}
+                  toggleFn={() => updateSetting("fs-right", "OBJECTIVES")}
+                >
+                  Objectives
+                </Chip>
+                <Chip
+                  selected={settings["fs-right"] === "PLANETS"}
+                  toggleFn={() => updateSetting("fs-right", "PLANETS")}
+                >
+                  Planets
+                </Chip>
+                <Chip
+                  selected={settings["fs-right"] === "TIMER"}
+                  toggleFn={() => updateSetting("fs-right", "TIMER")}
+                >
+                  Timer
+                </Chip>
+              </div>
+              <div>
+                Left Label:
+                <Chip
+                  selected={settings["fs-left-label"] === "NONE"}
+                  toggleFn={() => updateSetting("fs-left-label", "NONE")}
+                >
+                  None
+                </Chip>
+                <Chip
+                  selected={settings["fs-left-label"] === "NAME"}
+                  toggleFn={() => updateSetting("fs-left-label", "NAME")}
+                >
+                  Name
+                </Chip>
+                <Chip
+                  selected={settings["fs-left-label"] === "TIMER"}
+                  toggleFn={() => updateSetting("fs-left-label", "TIMER")}
+                >
+                  Timer
+                </Chip>
+                <Chip
+                  selected={settings["fs-left-label"] === "VPS"}
+                  toggleFn={() => updateSetting("fs-left-label", "VPS")}
+                >
+                  VPs
+                </Chip>
+              </div>
+              <div>
+                Right Label:
+                <Chip
+                  selected={settings["fs-right-label"] === "NONE"}
+                  toggleFn={() => updateSetting("fs-right-label", "NONE")}
+                >
+                  None
+                </Chip>
+                <Chip
+                  selected={settings["fs-right-label"] === "NAME"}
+                  toggleFn={() => updateSetting("fs-right-label", "NAME")}
+                >
+                  Name
+                </Chip>
+                <Chip
+                  selected={settings["fs-right-label"] === "TIMER"}
+                  toggleFn={() => updateSetting("fs-right-label", "TIMER")}
+                >
+                  Timer
+                </Chip>
+                <Chip
+                  selected={settings["fs-right-label"] === "VPS"}
+                  toggleFn={() => updateSetting("fs-right-label", "VPS")}
+                >
+                  VPs
+                </Chip>
+              </div>
             </div>
           </>
         ) : null}

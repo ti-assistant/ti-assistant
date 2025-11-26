@@ -1,4 +1,4 @@
-import React from "react";
+import React, { use } from "react";
 import { FormattedMessage } from "react-intl";
 import styles from "./FactionSummary.module.scss";
 import FactionIcon from "./components/FactionIcon/FactionIcon";
@@ -35,106 +35,59 @@ import {
   filterToClaimedPlanets,
 } from "./util/planets";
 import { objectEntries, rem } from "./util/util";
+import { SettingsContext } from "./context/contexts";
+import { StaticFactionTimer } from "./Timer";
+import { SummarySection } from "./util/settings";
 
 interface FactionSummaryProps {
   factionId: FactionId;
 }
 
 export function FactionSummary({ factionId }: FactionSummaryProps) {
-  const manualVPs = useManualFactionVPs(factionId);
-  const scoredVPs = useScoredFactionVPs(factionId);
-  const gameId = useGameId();
-  const phase = usePhase();
-  const viewOnly = useViewOnly();
-
-  const VPs = manualVPs + scoredVPs;
-
-  function manualVpAdjust(increase: boolean) {
-    if (!gameId || !factionId) {
-      return;
-    }
-    const value = increase ? 1 : -1;
-    manualVPUpdateAsync(gameId, factionId, value);
-  }
-
-  const editable = phase !== "END" && !viewOnly;
+  const { settings } = use(SettingsContext);
 
   return (
     <div
       className={styles.FactionSummary}
       style={{ justifyContent: "space-evenly" }}
     >
-      <FactionTechSummary factionId={factionId} />
-      <div className={styles.VPGrid}>
-        <div
-          className="flexColumn"
-          style={{
-            position: "absolute",
-            zIndex: -1,
-            width: "100%",
-            height: "100%",
-            top: 0,
-            left: 0,
-          }}
-        >
-          <div
-            className="flexColumn"
-            style={{
-              position: "absolute",
-              zIndex: -1,
-              opacity: 0.25,
-              width: rem(60),
-              height: rem(60),
-              userSelect: "none",
-            }}
-          >
-            <FactionIcon factionId={factionId} size="100%" />
-          </div>
-        </div>
-        <div
-          className="flexRow"
-          style={{
-            gap: rem(4),
-            height: "100%",
-            justifyContent: "space-between",
-          }}
-        >
-          {VPs > 0 && editable ? (
-            <div
-              className="arrowDown"
-              onClick={() => manualVpAdjust(false)}
-            ></div>
-          ) : (
-            <div style={{ width: rem(12) }}></div>
-          )}
-          <div
-            className="flexRow"
-            style={{ width: rem(24), lineHeight: rem(20) }}
-          >
-            {VPs}
-          </div>
-          {editable ? (
-            <div className="arrowUp" onClick={() => manualVpAdjust(true)}></div>
-          ) : (
-            <div style={{ width: rem(12) }}></div>
-          )}
-        </div>
-        <div
-          className="centered"
-          style={{ fontSize: rem(20), lineHeight: rem(20) }}
-        >
-          <FormattedMessage
-            id="PzyYtG"
-            description="Shortened version of Victory Points."
-            defaultMessage="{count, plural, =0 {VPs} one {VP} other {VPs}}"
-            values={{ count: VPs }}
-          />
-        </div>
-        <ObjectiveDots factionId={factionId} />
-      </div>
-      <FactionPlanetSummary factionId={factionId} />
+      <FactionSummarySection
+        factionId={factionId}
+        section={settings["fs-left"]}
+      />
+      <FactionSummarySection
+        factionId={factionId}
+        section={settings["fs-center"]}
+      />
+      <FactionSummarySection
+        factionId={factionId}
+        section={settings["fs-right"]}
+      />
     </div>
   );
+}
+
+function FactionSummarySection({
+  factionId,
+  section,
+}: {
+  factionId: FactionId;
+  section: SummarySection;
+}) {
+  switch (section) {
+    case "NONE":
+      return null;
+    case "OBJECTIVES":
+      return <FactionObjectiveSummary factionId={factionId} />;
+    case "TECHS":
+      return <FactionTechSummary factionId={factionId} />;
+    case "PLANETS":
+      return <FactionPlanetSummary factionId={factionId} />;
+    case "TIMER":
+      return (
+        <StaticFactionTimer factionId={factionId} active={false} width={84} />
+      );
+  }
 }
 
 function ObjectiveDots({ factionId }: { factionId: FactionId }) {
@@ -390,6 +343,96 @@ function FactionPlanetSummary({ factionId }: { factionId: FactionId }) {
       planets={updatedPlanets}
       hasXxchaHero={hasXxchaHero}
     />
+  );
+}
+
+function FactionObjectiveSummary({ factionId }: { factionId: FactionId }) {
+  const manualVPs = useManualFactionVPs(factionId);
+  const scoredVPs = useScoredFactionVPs(factionId);
+  const gameId = useGameId();
+  const phase = usePhase();
+  const viewOnly = useViewOnly();
+
+  const VPs = manualVPs + scoredVPs;
+
+  function manualVpAdjust(increase: boolean) {
+    if (!gameId || !factionId) {
+      return;
+    }
+    const value = increase ? 1 : -1;
+    manualVPUpdateAsync(gameId, factionId, value);
+  }
+
+  const editable = phase !== "END" && !viewOnly;
+
+  return (
+    <div className={styles.VPGrid}>
+      <div
+        className="flexColumn"
+        style={{
+          position: "absolute",
+          zIndex: -1,
+          width: "100%",
+          height: "100%",
+          top: 0,
+          left: 0,
+        }}
+      >
+        <div
+          className="flexColumn"
+          style={{
+            position: "absolute",
+            zIndex: -1,
+            opacity: 0.25,
+            width: rem(60),
+            height: rem(60),
+            userSelect: "none",
+          }}
+        >
+          <FactionIcon factionId={factionId} size="100%" />
+        </div>
+      </div>
+      <div
+        className="flexRow"
+        style={{
+          gap: rem(4),
+          height: "100%",
+          justifyContent: "space-between",
+        }}
+      >
+        {VPs > 0 && editable ? (
+          <div
+            className="arrowDown"
+            onClick={() => manualVpAdjust(false)}
+          ></div>
+        ) : (
+          <div style={{ width: rem(12) }}></div>
+        )}
+        <div
+          className="flexRow"
+          style={{ width: rem(24), lineHeight: rem(20) }}
+        >
+          {VPs}
+        </div>
+        {editable ? (
+          <div className="arrowUp" onClick={() => manualVpAdjust(true)}></div>
+        ) : (
+          <div style={{ width: rem(12) }}></div>
+        )}
+      </div>
+      <div
+        className="centered"
+        style={{ fontSize: rem(20), lineHeight: rem(20) }}
+      >
+        <FormattedMessage
+          id="PzyYtG"
+          description="Shortened version of Victory Points."
+          defaultMessage="{count, plural, =0 {VPs} one {VP} other {VPs}}"
+          values={{ count: VPs }}
+        />
+      </div>
+      <ObjectiveDots factionId={factionId} />
+    </div>
   );
 }
 

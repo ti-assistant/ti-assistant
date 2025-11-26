@@ -23,6 +23,9 @@ import {
 } from "../../../../../../src/context/stateDataHooks";
 import { rem } from "../../../../../../src/util/util";
 import styles from "./SummaryColumn.module.scss";
+import { use } from "react";
+import { SettingsContext } from "../../../../../../src/context/contexts";
+import { SummaryLabel } from "../../../../../../src/util/settings";
 
 const FactionPanel = dynamic(
   () => import("../../../../../../src/components/FactionPanel"),
@@ -90,6 +93,7 @@ function FactionDiv({ factionId }: { factionId: FactionId }) {
   const isPassed = useIsFactionPassed(factionId);
   const options = useOptions();
   const phase = usePhase();
+  const { settings } = use(SettingsContext);
 
   const factionSummaryOptions = {
     showIcon: true,
@@ -100,13 +104,18 @@ function FactionDiv({ factionId }: { factionId: FactionId }) {
   return (
     <LabeledDiv
       label={
-        <div className="flexRow" style={{ gap: 0 }}>
-          <FactionComponents.Name factionId={factionId} />
-          <FactionPanel factionId={factionId} options={options} />
-        </div>
+        <FactionSummaryLabel
+          factionId={factionId}
+          options={options}
+          label={settings["fs-left-label"]}
+        />
       }
       rightLabel={
-        <StaticFactionTimer active={false} factionId={factionId} width={84} />
+        <FactionSummaryLabel
+          factionId={factionId}
+          options={options}
+          label={settings["fs-right-label"]}
+        />
       }
       color={fadeFaction ? "#555" : factionColor}
       innerStyle={{
@@ -116,4 +125,36 @@ function FactionDiv({ factionId }: { factionId: FactionId }) {
       <FactionSummary factionId={factionId} />
     </LabeledDiv>
   );
+}
+
+function FactionSummaryLabel({
+  factionId,
+  options,
+  label,
+}: {
+  factionId: FactionId;
+  options: Options;
+  label: SummaryLabel;
+}) {
+  switch (label) {
+    case "NONE":
+      return null;
+    case "NAME":
+      return (
+        <div className="flexRow" style={{ gap: 0 }}>
+          <FactionComponents.Name factionId={factionId} />
+          <FactionPanel factionId={factionId} options={options} />
+        </div>
+      );
+    case "TIMER":
+      return (
+        <StaticFactionTimer active={false} factionId={factionId} width={84} />
+      );
+    case "VPS":
+      return (
+        <>
+          <FactionComponents.VPs factionId={factionId} /> VPs
+        </>
+      );
+  }
 }
