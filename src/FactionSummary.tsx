@@ -5,7 +5,6 @@ import FactionIcon from "./components/FactionIcon/FactionIcon";
 import PlanetSummary from "./components/PlanetSummary/PlanetSummary";
 import TechSummary from "./components/TechSummary/TechSummary";
 import {
-  useActionLog,
   useAttachments,
   useGameId,
   useLeader,
@@ -28,7 +27,6 @@ import {
   scoreObjectiveAsync,
   unscoreObjectiveAsync,
 } from "./dynamic/api";
-import { getLogEntries } from "./util/actionLog";
 import {
   applyAllPlanetAttachments,
   filterToClaimedPlanets,

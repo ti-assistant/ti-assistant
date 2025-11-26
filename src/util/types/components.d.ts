@@ -29,7 +29,7 @@ interface BaseLeader {
   abilityName?: string;
   description: string;
   expansion: Expansion;
-  faction?: FactionId;
+  faction: FactionId;
   id: LeaderId;
   name: string;
   omegas?: Omega<BaseLeader>[];
