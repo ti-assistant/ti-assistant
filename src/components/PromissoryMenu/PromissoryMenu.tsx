@@ -13,7 +13,6 @@ import {
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import PromissoryMenuSVG from "../../icons/ui/PromissoryMenu";
 import { getColorForFaction } from "../../util/factions";
-import { Optional } from "../../util/types/types";
 import { objectEntries, rem } from "../../util/util";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
@@ -39,31 +38,12 @@ function getSupportScorer(factionId: FactionId, support: Objective) {
   return scorers[0];
 }
 
-function getAllianceHolder(
-  factionId: FactionId,
-  factions: Partial<Record<FactionId, Faction>>
-) {
-  return Object.values(factions).reduce(
-    (owner: Optional<FactionId>, faction) => {
-      if (faction.id === factionId || faction.id === "Mahact Gene-Sorcerers") {
-        return owner;
-      }
-      const alliances = faction.alliances ?? [];
-      if (alliances.includes(factionId)) {
-        return faction.id;
-      }
-      return owner;
-    },
-    undefined
-  );
-}
-
 function getAlliancePartner(
   factionId: FactionId,
   allAlliances: Partial<Record<FactionId, FactionId[]>>
 ) {
   for (const [id, alliances] of objectEntries(allAlliances)) {
-    if (factionId === id || id === "Mahact Gene-Sorcerers") {
+    if (factionId === id) {
       continue;
     }
     if (alliances.includes(factionId)) {
