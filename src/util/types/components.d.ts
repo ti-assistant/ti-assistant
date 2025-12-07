@@ -49,6 +49,7 @@ type Leader = BaseLeader & GameLeader;
 interface BaseTechComponent {
   description: string;
   expansion: Expansion;
+  removedIn?: Expansion;
   event?: EventId;
   faction?: FactionId;
   id: TechId;
@@ -61,6 +62,7 @@ interface BaseComponent {
   abilityName?: string;
   description: string;
   expansion: Expansion;
+  removedIn?: Expansion;
   event?: EventId;
   faction?: FactionId;
   id: BreakthroughId | ComponentId | RelicId | TechId | LeaderId | EventId;

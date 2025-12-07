@@ -155,7 +155,8 @@ export default function getBaseComponents(
         },
         { br: "\n\n" }
       ),
-      expansion: "BASE ONLY",
+      expansion: "BASE",
+      removedIn: "CODEX ONE",
       faction: "Arborec",
       id: "Stymie",
       name: intl.formatMessage({
@@ -209,7 +210,8 @@ export default function getBaseComponents(
         defaultMessage:
           "ACTION: Exhaust this card and choose 1 planet in a system that contains 1 or more of your ships that have BOMBARDMENT; destroy all infantry on that planet.",
       }),
-      expansion: "BASE ONLY",
+      expansion: "BASE",
+      removedIn: "CODEX ONE",
       id: "X-89 Bacterial Weapon",
       name: intl.formatMessage({
         id: "Components.X-89 Bacterial Weapon.Title",

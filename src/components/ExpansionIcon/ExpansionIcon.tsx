@@ -15,7 +15,6 @@ export default function ExpansionIcon({
   let innerContent;
   switch (expansion) {
     case "BASE":
-    case "BASE ONLY":
       return null;
     case "POK":
       innerContent = <ProphecyofKingsSVG color={color} />;

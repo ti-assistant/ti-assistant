@@ -398,7 +398,8 @@ export default function getBaseObjectives(
         defaultMessage:
           "Given to the current owner of the Holy Planet of Ixth.",
       }),
-      expansion: "BASE ONLY",
+      expansion: "BASE",
+      removedIn: "POK",
       max: 2,
       repeatable: true,
       id: "Holy Planet of Ixth",

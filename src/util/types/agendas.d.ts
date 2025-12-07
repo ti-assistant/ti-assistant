@@ -26,6 +26,7 @@ interface BaseAgenda {
   description: string;
   elect: OutcomeType;
   expansion: Expansion;
+  removedIn?: Expansion;
   id: AgendaId;
   name: string;
   omegas?: Omega<BaseAgenda>[];

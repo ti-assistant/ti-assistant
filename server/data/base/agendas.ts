@@ -189,7 +189,8 @@ export default function getBaseAgendas(
         { br: "\n\n" }
       ),
       elect: "Hazardous Planet",
-      expansion: "BASE ONLY",
+      expansion: "BASE",
+      removedIn: "POK",
       id: "Core Mining",
       name: intl.formatMessage({
         id: "Agendas.Core Mining.Title",
@@ -209,7 +210,8 @@ export default function getBaseAgendas(
         { br: "\n\n" }
       ),
       elect: "Cultural Planet",
-      expansion: "BASE ONLY",
+      expansion: "BASE",
+      removedIn: "POK",
       id: "Demilitarized Zone",
       name: intl.formatMessage({
         id: "Agendas.Demilitarized Zone.Title",
@@ -309,7 +311,8 @@ export default function getBaseAgendas(
         { br: "\n\n" }
       ),
       elect: "Cultural Planet",
-      expansion: "BASE ONLY",
+      expansion: "BASE",
+      removedIn: "POK",
       id: "Holy Planet of Ixth",
       name: intl.formatMessage({
         id: "Agendas.Holy Planet of Ixth.Title",
@@ -742,7 +745,8 @@ export default function getBaseAgendas(
         { br: "\n\n" }
       ),
       elect: "Industrial Planet",
-      expansion: "BASE ONLY",
+      expansion: "BASE",
+      removedIn: "POK",
       id: "Research Team: Biotic",
       name: intl.formatMessage({
         id: "Agendas.Research Team: Biotic.Title",
@@ -762,7 +766,8 @@ export default function getBaseAgendas(
         { br: "\n\n" }
       ),
       elect: "Industrial Planet",
-      expansion: "BASE ONLY",
+      expansion: "BASE",
+      removedIn: "POK",
       id: "Research Team: Cybernetic",
       name: intl.formatMessage({
         id: "Agendas.Research Team: Cybernetic.Title",
@@ -782,7 +787,8 @@ export default function getBaseAgendas(
         { br: "\n\n" }
       ),
       elect: "Industrial Planet",
-      expansion: "BASE ONLY",
+      expansion: "BASE",
+      removedIn: "POK",
       id: "Research Team: Propulsion",
       name: intl.formatMessage({
         id: "Agendas.Research Team: Propulsion.Title",
@@ -802,7 +808,8 @@ export default function getBaseAgendas(
         { br: "\n\n" }
       ),
       elect: "Hazardous Planet",
-      expansion: "BASE ONLY",
+      expansion: "BASE",
+      removedIn: "POK",
       id: "Research Team: Warfare",
       name: intl.formatMessage({
         id: "Agendas.Research Team: Warfare.Title",
@@ -842,7 +849,8 @@ export default function getBaseAgendas(
         { br: "\n\n" }
       ),
       elect: "Cultural Planet",
-      expansion: "BASE ONLY",
+      expansion: "BASE",
+      removedIn: "POK",
       id: "Senate Sanctuary",
       name: intl.formatMessage({
         id: "Agendas.Senate Sanctuary.Title",
@@ -862,7 +870,8 @@ export default function getBaseAgendas(
         { br: "\n\n" }
       ),
       elect: "Player",
-      expansion: "BASE ONLY",
+      expansion: "BASE",
+      removedIn: "POK",
       id: "Shard of the Throne",
       name: intl.formatMessage({
         id: "Agendas.Shard of the Throne.Title",
@@ -922,7 +931,8 @@ export default function getBaseAgendas(
         { br: "\n\n" }
       ),
       elect: "Hazardous Planet",
-      expansion: "BASE ONLY",
+      expansion: "BASE",
+      removedIn: "POK",
       id: "Terraforming Initiative",
       name: intl.formatMessage({
         id: "Agendas.Terraforming Initiative.Title",
@@ -942,7 +952,8 @@ export default function getBaseAgendas(
         { br: "\n\n" }
       ),
       elect: "Player",
-      expansion: "BASE ONLY",
+      expansion: "BASE",
+      removedIn: "POK",
       id: "The Crown of Emphidia",
       name: intl.formatMessage({
         id: "Agendas.The Crown of Emphidia.Title",
@@ -962,7 +973,8 @@ export default function getBaseAgendas(
         { br: "\n\n" }
       ),
       elect: "Player",
-      expansion: "BASE ONLY",
+      expansion: "BASE",
+      removedIn: "POK",
       id: "The Crown of Thalnos",
       name: intl.formatMessage({
         id: "Agendas.The Crown of Thalnos.Title",

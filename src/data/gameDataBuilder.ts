@@ -1,3 +1,4 @@
+import { useOptions } from "../context/dataHooks";
 import { buildMergeFunction } from "../util/expansions";
 import { isValidMapString, validSystemNumber } from "../util/map";
 import { getMapString } from "../util/options";
@@ -69,14 +70,10 @@ export function buildCompleteAgendas(
   const gameAgendas = storedGameData.agendas ?? {};
 
   objectEntries(baseData.agendas).forEach(([agendaId, agenda]) => {
-    if (
-      agenda.expansion !== "BASE" &&
-      agenda.expansion !== "BASE ONLY" &&
-      !expansions.includes(agenda.expansion)
-    ) {
+    if (agenda.expansion !== "BASE" && !expansions.includes(agenda.expansion)) {
       return;
     }
-    if (expansions.includes("POK") && agenda.expansion === "BASE ONLY") {
+    if (agenda.removedIn && expansions.includes(agenda.removedIn)) {
       return;
     }
 
@@ -99,16 +96,11 @@ export function buildCompleteAttachments(
 
   const attachments: Partial<Record<AttachmentId, Attachment>> = {};
   objectEntries(baseData.attachments).forEach(([attachmentId, attachment]) => {
-    // Maybe filter out PoK attachments.
+    // Filter out expansion attachments.
     if (
       attachment.expansion !== "BASE" &&
-      attachment.expansion !== "BASE ONLY" &&
       !expansions.includes(attachment.expansion)
     ) {
-      return;
-    }
-    // Filter out attachments that are removed by PoK.
-    if (expansions.includes("POK") && attachment.expansion === "BASE ONLY") {
       return;
     }
 
@@ -138,7 +130,6 @@ export function buildCompleteComponents(
 ) {
   const gameComponents = storedGameData.components ?? {};
   const gameFactions = storedGameData.factions ?? {};
-  const gameRelics = storedGameData.relics ?? {};
 
   const expansions = storedGameData.options.expansions;
   const events = storedGameData.options.events ?? [];
@@ -147,28 +138,19 @@ export function buildCompleteComponents(
 
   let components: Record<string, Component> = {};
   Object.entries(baseData.components).forEach(([componentId, component]) => {
-    // Maybe filter out PoK components.
+    // Filter out expansion components.
     if (
-      component.expansion &&
       component.expansion !== "BASE" &&
-      component.expansion !== "BASE ONLY" &&
       !expansions.includes(component.expansion)
     ) {
       return;
     }
 
-    // TODO: Remove this for TE.
-    // Filter out Codex Two relics if not using PoK.
-    if (!expansions.includes("POK") && component.type === "RELIC") {
-      return;
-    }
     // Filter out leaders if not using PoK.
     if (!expansions.includes("POK") && component.type === "LEADER") {
       return;
     }
-    // TODO: Consider this for TE.
-    // Filter out components that are removed by PoK.
-    if (expansions.includes("POK") && component.expansion === "BASE ONLY") {
+    if (component.removedIn && expansions.includes(component.removedIn)) {
       return;
     }
 
@@ -223,25 +205,6 @@ export function buildCompleteComponents(
   if (!isYssarilComponent) {
     delete components["Ssruu"];
   }
-
-  // objectEntries(baseData.relics)
-  //   .filter(([_, relic]) => relic.timing === "COMPONENT_ACTION")
-  //   .forEach(([relicId, relic]) => {
-  //     if (!expansions.includes("POK")) {
-  //       return;
-  //     }
-  //     // Maybe filter out Codex Two relics.
-  //     if (!expansions.includes(relic.expansion)) {
-  //       return;
-  //     }
-
-  //     components[relicId] = {
-  //       ...relic,
-  //       ...(gameComponents[relicId] ?? {}),
-  //       ...(gameRelics[relicId] ?? {}),
-  //       type: "RELIC",
-  //     };
-  //   });
 
   // Faction breakthroughs
   if (expansions.includes("THUNDERS EDGE")) {
@@ -326,12 +289,14 @@ export function buildCompleteObjectives(
 
   const objectives: Partial<Record<ObjectiveId, Objective>> = {};
   objectEntries(baseData.objectives).forEach(([objectiveId, objective]) => {
-    // Maybe filter out PoK objectives.
-    if (!expansions.includes("POK") && objective.expansion === "POK") {
+    // Filter out expansion objectives.
+    if (
+      objective.expansion !== "BASE" &&
+      !expansions.includes(objective.expansion)
+    ) {
       return;
     }
-    // Filter out objectives that are removed by PoK.
-    if (expansions.includes("POK") && objective.expansion === "BASE ONLY") {
+    if (objective.removedIn && expansions.includes(objective.removedIn)) {
       return;
     }
 
@@ -434,11 +399,10 @@ export function buildCompletePlanets(
     ) {
       return;
     }
-    // Maybe filter out PoK/DS systems. Only do it this way if not using the map to filter.
+    // Filter out expansion systems. Only do it this way if not using the map to filter.
     if (
       (!validMapString || inGameSystems.length === 0) &&
       planet.expansion !== "BASE" &&
-      planet.expansion !== "BASE ONLY" &&
       !gameOptions.expansions.includes(planet.expansion)
     ) {
       // Check for Argent Flight. Might be able to remedy this in some other way.
@@ -498,8 +462,8 @@ export function buildCompleteRelics(
 
   const relics: Partial<Record<RelicId, Relic>> = {};
   objectEntries(baseData.relics).forEach(([relicId, relic]) => {
-    // Maybe filter out Codex relics.
-    if (!expansions.includes("POK") || !expansions.includes(relic.expansion)) {
+    // Filter out expansion relics.
+    if (relic.expansion !== "BASE" && !expansions.includes(relic.expansion)) {
       return;
     }
 
@@ -579,8 +543,11 @@ export function buildCompleteTechs(
 
   const techs: Partial<Record<TechId, Tech>> = {};
   Object.values(baseData.techs).forEach((tech) => {
-    // Maybe filter out PoK technologies.
-    if (!options.expansions.includes("POK") && tech.expansion === "POK") {
+    // Filter out expansion technologies.
+    if (
+      tech.expansion !== "BASE" &&
+      !options.expansions.includes(tech.expansion)
+    ) {
       return;
     }
 
@@ -613,8 +580,11 @@ export function buildCompleteLeaders(
   const omegaMergeFn = buildMergeFunction(options.expansions);
 
   objectEntries(baseData.leaders).forEach(([leaderId, leader]) => {
-    // Maybe filter out PoK technologies.
-    if (!options.expansions.includes("POK") && leader.expansion === "POK") {
+    // Filter out expansion leaders.
+    if (
+      leader.expansion !== "BASE" &&
+      !options.expansions.includes(leader.expansion)
+    ) {
       return;
     }
     const updatedLeader = omegaMergeFn(leader);

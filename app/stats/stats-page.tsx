@@ -162,7 +162,7 @@ function applyFilters(
       }
     }
     for (const expansion of Array.from(filters.expansions.include)) {
-      if (expansion === "BASE" || expansion === "BASE ONLY") {
+      if (expansion === "BASE") {
         continue;
       }
       if (!game.expansions.includes(expansion)) {
