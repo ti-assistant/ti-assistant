@@ -154,8 +154,11 @@ export function buildBaseTechs(options: Options, intl: IntlShape) {
   const omegaMergeFn = buildMergeFunction(options.expansions);
 
   Object.values(getTechs(intl)).forEach((tech) => {
-    // Maybe filter out PoK technologies.
-    if (!options.expansions.includes("POK") && tech.expansion === "POK") {
+    // Filter out expansion technologies.
+    if (
+      tech.expansion !== "BASE" &&
+      !options.expansions.includes(tech.expansion)
+    ) {
       return;
     }
 
@@ -176,8 +179,8 @@ export function buildBaseLeaders(options: Options, intl: IntlShape) {
   const leaders: Record<string, BaseLeader> = {};
   const omegaMergeFn = buildMergeFunction(options.expansions);
   objectEntries(getLeaders(intl)).forEach(([leaderId, leader]) => {
-    // Maybe filter out PoK technologies.
-    if (!options.expansions.includes("POK") && leader.expansion === "POK") {
+    // Filter out leaders if not using PoK.
+    if (!options.expansions.includes("POK")) {
       return;
     }
 
