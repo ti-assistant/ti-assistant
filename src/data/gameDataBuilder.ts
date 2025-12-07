@@ -303,6 +303,7 @@ export function buildCompleteObjectives(
     ) {
       return;
     }
+    // Filter out deprecated objectives.
     if (objective.removedIn && expansions.includes(objective.removedIn)) {
       return;
     }
@@ -476,6 +477,10 @@ export function buildCompleteRelics(
       return;
     }
 
+    if (relic.removedIn && expansions.includes(relic.removedIn)) {
+      return;
+    }
+
     relics[relicId] = {
       ...relic,
       ...(gameRelics[relicId] ?? {}),
@@ -573,6 +578,10 @@ export function buildCompleteTechs(
       return;
     }
 
+    if (tech.removedIn && options.expansions.includes(tech.removedIn)) {
+      return;
+    }
+
     const updatedTech = omegaMergeFn(tech);
 
     techs[tech.id] = {
@@ -580,12 +589,6 @@ export function buildCompleteTechs(
       ...(storedTechs[tech.id] ?? {}),
     };
   });
-
-  for (const tech of Object.values(techs)) {
-    if (tech.type !== "UPGRADE" && tech.deprecates) {
-      delete techs[tech.deprecates];
-    }
-  }
 
   return techs;
 }

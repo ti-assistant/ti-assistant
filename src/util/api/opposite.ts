@@ -60,6 +60,7 @@ import { PurgeTechHandler, UnpurgeTechHandler } from "../model/purgeTech";
 import { PassHandler, UnpassHandler } from "../model/unpass";
 import { PurgeSystemHandler, UnpurgeSystemHandler } from "../model/purgeSystem";
 import { ToggleStructureHandler } from "../model/toggleSpaceDock";
+import { SetTyrantHandler } from "../model/setTyrant";
 
 export function getOppositeHandler(
   gameData: StoredGameData,
@@ -164,6 +165,15 @@ export function getOppositeHandler(
         },
       };
       return new SetSpeakerHandler(gameData, setSpeakerData);
+    }
+    case "SET_TYRANT": {
+      const setTyrantData: SetTyrantData = {
+        action: "SET_TYRANT",
+        event: {
+          newTyrant: data.event.prevTyrant,
+        },
+      };
+      return new SetTyrantHandler(gameData, setTyrantData);
     }
     case "MARK_SECONDARY": {
       const markSecondaryData: MarkSecondaryData = {

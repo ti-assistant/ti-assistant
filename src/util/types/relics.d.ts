@@ -1,6 +1,7 @@
 interface BaseRelic {
   description: string;
   expansion: Expansion;
+  removedIn?: Expansion;
   id: RelicId;
   name: string;
   timing: Timing;

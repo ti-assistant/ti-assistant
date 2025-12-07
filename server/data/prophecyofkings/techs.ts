@@ -22,6 +22,7 @@ export default function getProphecyOfKingsTechs(
         { br: "\n\n" }
       ),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "AI Development Algorithm",
       name: intl.formatMessage({
         id: "Techs.AI Development Algorithm.Title",
@@ -42,6 +43,7 @@ export default function getProphecyOfKingsTechs(
         { br: "\n\n" }
       ),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       faction: "Argent Flight",
       id: "Aerie Hololattice",
       name: intl.formatMessage({
@@ -60,6 +62,7 @@ export default function getProphecyOfKingsTechs(
           "After you or one of your neighbors activates a system that is adjacent to an anomaly, you may apply +1 to the move value of all of that player's ships during this tactical action.",
       }),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       faction: "Empyrean",
       id: "Aetherstream",
       name: intl.formatMessage({
@@ -78,6 +81,7 @@ export default function getProphecyOfKingsTechs(
           "You may exhaust this card at the end of your turn to ready 1 of your planets that has a technology specialty or 1 of your other technologies.",
       }),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Bio-Stims",
       name: intl.formatMessage({
         id: "Techs.Bio-Stims.Title",
@@ -96,6 +100,7 @@ export default function getProphecyOfKingsTechs(
           "After this unit is destroyed, gain 1 commodity or convert 1 of your commodities to a trade good. Then, place the unit on this card. At the start of your next turn, place each unit that is on this card on a planet you control in your home system.",
       }),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       faction: "Mahact Gene-Sorcerers",
       id: "Crimson Legionnaire II",
       name: intl.formatMessage({
@@ -123,6 +128,7 @@ export default function getProphecyOfKingsTechs(
         { br: "\n\n" }
       ),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Dark Energy Tap",
       name: intl.formatMessage({
         id: "Techs.Dark Energy Tap.Title",
@@ -144,6 +150,7 @@ export default function getProphecyOfKingsTechs(
         { br: "\n\n" }
       ),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       faction: "Vuil'raith Cabal",
       id: "Dimensional Tear II",
       name: intl.formatMessage({
@@ -165,6 +172,7 @@ export default function getProphecyOfKingsTechs(
           "You may exhaust this card before a player casts votes; that player must cast at least 1 vote for an outcome of your choice or remove 1 token from their fleet pool and return it to their reinforcements.",
       }),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       faction: "Mahact Gene-Sorcerers",
       id: "Genetic Recombination",
       name: intl.formatMessage({
@@ -189,6 +197,7 @@ export default function getProphecyOfKingsTechs(
           "This unit is treated as both a structure and a ground force. It cannot be transported. You may use this unit's SPACE CANNON against ships that are adjacent to this unit's system.",
       }),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       faction: "Titans of Ul",
       id: "Hel Titan II",
       name: intl.formatMessage({
@@ -213,6 +222,7 @@ export default function getProphecyOfKingsTechs(
           "You may treat this unit as if it were adjacent to systems that contain 1 or more of your mechs.",
       }),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       faction: "Nomad",
       id: "Memoria II",
       name: intl.formatMessage({
@@ -237,6 +247,7 @@ export default function getProphecyOfKingsTechs(
         defaultMessage: "After you explore a planet, ready that planet.",
       }),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       faction: "Naaz-Rokha Alliance",
       id: "Pre-Fab Arcologies",
       name: intl.formatMessage({
@@ -258,6 +269,7 @@ export default function getProphecyOfKingsTechs(
         { br: "\n\n" }
       ),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Predictive Intelligence",
       name: intl.formatMessage({
         id: "Techs.Predictive Intelligence.Title",
@@ -278,6 +290,7 @@ export default function getProphecyOfKingsTechs(
         { br: "\n\n" }
       ),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Psychoarchaeology",
       name: intl.formatMessage({
         id: "Techs.Psychoarchaeology.Title",
@@ -290,6 +303,7 @@ export default function getProphecyOfKingsTechs(
     "Saturn Engine II": {
       abilities: [sustainDamage(intl)],
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       faction: "Titans of Ul",
       id: "Saturn Engine II",
       name: intl.formatMessage({
@@ -316,6 +330,7 @@ export default function getProphecyOfKingsTechs(
           "When you activate a system, you may explore 1 planet in that system which contains 1 or more of your units.",
       }),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Scanlink Drone Network",
       name: intl.formatMessage({
         id: "Techs.Scanlink Drone Network.Title",
@@ -336,6 +351,7 @@ export default function getProphecyOfKingsTechs(
         { br: "\n\n" }
       ),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Self Assembly Routines",
       name: intl.formatMessage({
         id: "Techs.Self Assembly Routines.Title",
@@ -353,6 +369,7 @@ export default function getProphecyOfKingsTechs(
           "ACTION: Exhaust this card to produce 1 ship in any system that contains 1 of your space docks.",
       }),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Sling Relay",
       name: intl.formatMessage({
         id: "Techs.Sling Relay.Title",
@@ -371,6 +388,7 @@ export default function getProphecyOfKingsTechs(
           "When this unit uses ANTI-FIGHTER BARRAGE, each result of 9 or 10 also destroys 1 of your opponent's infantry in the space area of the active system.",
       }),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       faction: "Argent Flight",
       id: "Strike Wing Alpha II",
       name: intl.formatMessage({
@@ -397,6 +415,7 @@ export default function getProphecyOfKingsTechs(
           "At the start of a combat round, you may exhaust this card to apply +1 to the result of each of your unit's combat rolls during this combat round.",
       }),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       faction: "Naaz-Rokha Alliance",
       id: "Supercharge",
       name: intl.formatMessage({
@@ -415,6 +434,7 @@ export default function getProphecyOfKingsTechs(
           "After any player's agent becomes exhausted, you may exhaust this card to ready that agent; if you ready another player's agent, you may perform a transaction with that player.",
       }),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       faction: "Nomad",
       id: "Temporal Command Suite",
       name: intl.formatMessage({
@@ -433,6 +453,7 @@ export default function getProphecyOfKingsTechs(
           "After a player moves ships into a system that contains 1 or more of your units, they must give you 1 promissory note from their hand, if able.",
       }),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       faction: "Empyrean",
       id: "Voidwatch",
       name: intl.formatMessage({
@@ -451,6 +472,7 @@ export default function getProphecyOfKingsTechs(
           "ACTION: Exhaust this card to choose another player's non-structure unit in a system that is adjacent to 1 or more of your space docks. Capture 1 unit of that type from that player's reinforcements.",
       }),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       faction: "Vuil'raith Cabal",
       id: "Vortex",
       name: intl.formatMessage({

@@ -108,9 +108,7 @@ const selectSubComponentFn = import("../util/api/selectSubComponent").then(
 const setGlobalPauseFn = import("../util/api/setPause").then(
   (mod) => mod.setGlobalPause
 );
-const setSpeakerFn = import("../util/api/setSpeaker").then(
-  (mod) => mod.setSpeaker
-);
+const setSpeakerMod = import("../util/api/setSpeaker");
 const setObjectivePointsFn = import("../util/api/setObjectivePoints").then(
   (mod) => mod.setObjectivePoints
 );
@@ -547,8 +545,16 @@ export async function setGlobalPauseAsync(gameId: string, paused: boolean) {
 }
 
 export async function setSpeakerAsync(gameId: string, newSpeaker: FactionId) {
-  const setSpeaker = await setSpeakerFn;
-  setSpeaker(gameId, newSpeaker);
+  const mod = await setSpeakerMod;
+  mod.setSpeaker(gameId, newSpeaker);
+}
+
+export async function setTyrantAsync(
+  gameId: string,
+  newTyrant: Optional<FactionId>
+) {
+  const mod = await setSpeakerMod;
+  mod.setTyrant(gameId, newTyrant);
 }
 
 export async function setObjectivePointsAsync(

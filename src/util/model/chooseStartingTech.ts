@@ -28,7 +28,7 @@ export class ChooseStartingTechHandler implements Handler {
     }
 
     if (
-      !faction.startswith.choice ||
+      !faction.startswith?.choice ||
       !faction.startswith.choice.options.includes(this.data.event.tech)
     ) {
       return false;
@@ -42,7 +42,7 @@ export class ChooseStartingTechHandler implements Handler {
     const intl = createIntl({ locale: "en" }, cache);
     const startingTechs =
       buildFactions(this.gameData, intl)[this.data.event.faction]?.startswith
-        .techs ?? [];
+        ?.techs ?? [];
     const updates: Record<string, any> = {
       [`state.paused`]: false,
       [`sequenceNum`]: "INCREMENT",
@@ -102,7 +102,7 @@ export class RemoveStartingTechHandler implements Handler {
     }
 
     if (
-      !faction.startswith.techs ||
+      !faction.startswith?.techs ||
       !faction.startswith.techs.includes(this.data.event.tech)
     ) {
       return false;
@@ -116,7 +116,7 @@ export class RemoveStartingTechHandler implements Handler {
     const intl = createIntl({ locale: "en" }, cache);
     const startingTechs =
       buildFactions(this.gameData, intl)[this.data.event.faction]?.startswith
-        .techs ?? [];
+        ?.techs ?? [];
     const updates: Record<string, any> = {
       [`state.paused`]: false,
       [`sequenceNum`]: "INCREMENT",

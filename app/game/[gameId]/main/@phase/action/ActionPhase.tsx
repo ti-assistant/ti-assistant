@@ -627,9 +627,134 @@ export function AdditionalActions({
         </div>
       );
     }
+    case "Noctis": {
+      const strategyCard = strategyCards.Noctis;
+      return (
+        <div className="flexColumn largeFont" style={{ ...style }}>
+          <LabeledLine
+            leftLabel={
+              <InfoRow
+                infoTitle={`${strategyCard?.name} Primary`}
+                infoContent={
+                  <FormattedDescription description={strategyCard?.primary} />
+                }
+              >
+                <FormattedMessage
+                  id="mhqGMn"
+                  description="The main ability for a strategy card."
+                  defaultMessage="Primary"
+                />
+              </InfoRow>
+            }
+            rightLabel={
+              <Toggle
+                selected={primaryCompleted}
+                toggleFn={() => {
+                  markPrimaryAsync(gameId, !primaryCompleted);
+                }}
+              >
+                <FormattedMessage
+                  id="9F+GVy"
+                  description="Text on a button for marking something completed."
+                  defaultMessage="Done"
+                />
+              </Toggle>
+            }
+          />
+          <StrategicActions.Noctis.Primary factionId={factionId} />
+          <LabeledLine
+            leftLabel={
+              <InfoRow
+                infoTitle={`${strategyCard?.name} Secondary`}
+                infoContent={
+                  <FormattedDescription description={strategyCard?.secondary} />
+                }
+              >
+                <FormattedMessage
+                  id="PBW6vs"
+                  description="The alternate ability for a strategy card."
+                  defaultMessage="Secondary"
+                />
+              </InfoRow>
+            }
+          />
+          <StrategicActions.Noctis.AllSecondaries activeFactionId={factionId} />
+          <SecondaryCheck
+            activeFactionId={factionId}
+            primaryCompleted={primaryCompleted}
+            orderedFactionIds={orderedFactionIds}
+          />
+        </div>
+      );
+    }
+    case "Tyrannus": {
+      const strategyCard = strategyCards.Tyrannus;
+      return (
+        <div className="flexColumn largeFont" style={{ ...style }}>
+          <LabeledLine
+            leftLabel={
+              <InfoRow
+                infoTitle={`${strategyCard?.name} Primary`}
+                infoContent={
+                  <FormattedDescription description={strategyCard?.primary} />
+                }
+              >
+                <FormattedMessage
+                  id="mhqGMn"
+                  description="The main ability for a strategy card."
+                  defaultMessage="Primary"
+                />
+              </InfoRow>
+            }
+            rightLabel={
+              <Toggle
+                selected={primaryCompleted}
+                toggleFn={() => {
+                  markPrimaryAsync(gameId, !primaryCompleted);
+                }}
+              >
+                <FormattedMessage
+                  id="9F+GVy"
+                  description="Text on a button for marking something completed."
+                  defaultMessage="Done"
+                />
+              </Toggle>
+            }
+          />
+          <StrategicActions.Tyrannus.Primary />
+          <LabeledLine
+            leftLabel={
+              <InfoRow
+                infoTitle={`${strategyCard?.name} Secondary`}
+                infoContent={
+                  <FormattedDescription description={strategyCard?.secondary} />
+                }
+              >
+                <FormattedMessage
+                  id="PBW6vs"
+                  description="The alternate ability for a strategy card."
+                  defaultMessage="Secondary"
+                />
+              </InfoRow>
+            }
+          />
+          <SecondaryCheck
+            activeFactionId={factionId}
+            primaryCompleted={primaryCompleted}
+            orderedFactionIds={orderedFactionIds}
+          />
+        </div>
+      );
+    }
     case "Leadership":
     case "Construction":
-    case "Trade": {
+    case "Trade":
+    case "Lux":
+    case "Civitas":
+    case "Amicus":
+    case "Calamitas":
+    case "Magus":
+    case "Aeterna": {
       const strategyCard = strategyCards[selectedAction];
       return (
         <div className="flexColumn" style={{ width: "100%" }}>

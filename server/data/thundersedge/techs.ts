@@ -7,7 +7,6 @@ export default function getThundersEdgeTechs(
   return {
     // Council Keleres
     "Executive Order": {
-      deprecates: "IIHQ Modernization",
       description: intl.formatMessage({
         id: "Council Keleres.Techs.Executive Order.Description",
         description: "Description for Tech: Executive Order",

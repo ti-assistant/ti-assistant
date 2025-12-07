@@ -7,8 +7,7 @@ type Expansion =
   | "CODEX FOUR"
   | "THUNDERS EDGE"
   | "TWILIGHTS FALL"
-  | "DISCORDANT STARS"
-  | "BASE ONLY";
+  | "DISCORDANT STARS";
 
 type OptionUpdateAction = "SET_OPTION";
 

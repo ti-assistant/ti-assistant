@@ -75,7 +75,15 @@ export class EndTurnHandler implements Handler {
       case "Trade":
       case "Warfare":
       case "Technology":
-      case "Imperial": {
+      case "Imperial":
+      case "Lux":
+      case "Noctis":
+      case "Tyrannus":
+      case "Civitas":
+      case "Amicus":
+      case "Calamitas":
+      case "Magus":
+      case "Aeterna": {
         updates[`strategycards.${this.data.event.selectedAction}.used`] = true;
         break;
       }
@@ -129,7 +137,15 @@ export class UnendTurnHandler implements Handler {
       case "Trade":
       case "Warfare":
       case "Technology":
-      case "Imperial": {
+      case "Imperial":
+      case "Lux":
+      case "Noctis":
+      case "Tyrannus":
+      case "Civitas":
+      case "Amicus":
+      case "Calamitas":
+      case "Magus":
+      case "Aeterna": {
         updates[`strategycards.${this.data.event.selectedAction}.used`] =
           "DELETE";
         break;

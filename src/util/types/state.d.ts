@@ -7,21 +7,6 @@ type Phase =
   | "AGENDA"
   | "END";
 
-type StateUpdateAction =
-  | "ADVANCE_PHASE"
-  | "START_NEXT_ROUND"
-  | "JUMP_TO_PLAYER"
-  | "ADVANCE_PLAYER"
-  | "PREVIOUS_PLAYER"
-  | "SET_SPEAKER"
-  | "END_GAME"
-  | "CONTINUE_GAME"
-  | "SET_AGENDA_NUM"
-  | "ANCIENT_BURIAL_SITES" // Probably a better way to do this...
-  | "SET_GLOBAL_PAUSE";
-
-type GameAction = "ASSIGN_STRATEGY_CARD" | "SET_SPEAKER";
-
 interface UndoData {
   action: "UNDO";
 }
@@ -38,5 +23,6 @@ interface GameState {
   phase: Phase;
   round: number;
   speaker: FactionId;
+  tyrant?: FactionId;
   votingStarted?: boolean;
 }

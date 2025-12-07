@@ -72,6 +72,7 @@ import { SelectSubAgendaHandler } from "../model/selectSubAgenda";
 import { SelectSubComponentHandler } from "../model/selectSubComponent";
 import { SetObjectivePointsHandler } from "../model/setObjectivePoints";
 import { SetSpeakerHandler } from "../model/setSpeaker";
+import { SetTyrantHandler } from "../model/setTyrant";
 import { SpeakerTieBreakHandler } from "../model/speakerTieBreak";
 import { StartVotingHandler } from "../model/startVoting";
 import { SwapMapTilesHandler } from "../model/swapMapTiles";
@@ -170,6 +171,8 @@ export function getHandler(gameData: StoredGameData, data: GameUpdateData) {
       return new SetObjectivePointsHandler(gameData, data);
     case "SET_SPEAKER":
       return new SetSpeakerHandler(gameData, data);
+    case "SET_TYRANT":
+      return new SetTyrantHandler(gameData, data);
     case "SPEAKER_TIE_BREAK":
       return new SpeakerTieBreakHandler(gameData, data);
     case "START_VOTING":

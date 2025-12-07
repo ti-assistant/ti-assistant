@@ -51,6 +51,7 @@ const TECH_ORDER: Record<TechType, number> = {
   YELLOW: 3,
   RED: 4,
   UPGRADE: 5,
+  OTHER: 6,
 } as const;
 
 /**
@@ -100,6 +101,7 @@ export function getFactionPreReqs(
     YELLOW: 0,
     BLUE: 0,
     UPGRADE: 0,
+    OTHER: 0,
   };
 
   if (!faction) {
@@ -226,7 +228,7 @@ export function canResearchTech(
   for (const req of tech.prereqs) {
     if (localPrereqs[req] === 0) {
       if (
-        faction?.breakthrough.state &&
+        faction?.breakthrough?.state &&
         faction.breakthrough.state !== "locked"
       ) {
         if (synergy && synergy.left === req) {

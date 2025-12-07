@@ -162,15 +162,12 @@ export function buildBaseTechs(options: Options, intl: IntlShape) {
       return;
     }
 
+    if (tech.removedIn && options.expansions.includes(tech.removedIn)) {
+      return;
+    }
+
     techs[tech.id] = omegaMergeFn(tech);
   });
-
-  // Handle replacement.
-  for (const tech of Object.values(techs)) {
-    if (tech.type !== "UPGRADE" && tech.deprecates) {
-      delete techs[tech.deprecates];
-    }
-  }
 
   return techs;
 }

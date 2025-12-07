@@ -8,11 +8,16 @@ import {
   sustainDamage,
 } from "../../../src/util/strings";
 
+function buildBaseTech(tech: BaseTech): BaseTech {
+  tech.removedIn = "TWILIGHTS FALL";
+  return tech;
+}
+
 export default function getBaseTechs(
   intl: IntlShape
 ): Record<BaseGame.TechId, BaseTech> {
   return {
-    "Advanced Carrier II": {
+    "Advanced Carrier II": buildBaseTech({
       abilities: [sustainDamage(intl)],
       description: "",
       expansion: "BASE",
@@ -33,8 +38,8 @@ export default function getBaseTechs(
       },
       type: "UPGRADE",
       unitType: "Carrier",
-    },
-    "Antimass Deflectors": {
+    }),
+    "Antimass Deflectors": buildBaseTech({
       description: intl.formatMessage(
         {
           id: "Techs.Antimass Deflectors.Description",
@@ -53,8 +58,8 @@ export default function getBaseTechs(
       }),
       prereqs: [],
       type: "BLUE",
-    },
-    "Assault Cannon": {
+    }),
+    "Assault Cannon": buildBaseTech({
       description: intl.formatMessage({
         id: "Techs.Assault Cannon.Description",
         description: "Description for Tech: Assault Cannon",
@@ -70,8 +75,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["RED", "RED", "RED"],
       type: "RED",
-    },
-    Bioplasmosis: {
+    }),
+    Bioplasmosis: buildBaseTech({
       description: intl.formatMessage({
         id: "Arborec.Techs.Bioplasmosis.Description",
         description: "Description for Tech: Bioplasmosis",
@@ -88,8 +93,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["GREEN", "GREEN"],
       type: "GREEN",
-    },
-    "Carrier II": {
+    }),
+    "Carrier II": buildBaseTech({
       abilities: [],
       description: "",
       expansion: "BASE",
@@ -108,8 +113,8 @@ export default function getBaseTechs(
       },
       type: "UPGRADE",
       unitType: "Carrier",
-    },
-    "Chaos Mapping": {
+    }),
+    "Chaos Mapping": buildBaseTech({
       description: intl.formatMessage(
         {
           id: "Clan of Saar.Techs.Chaos Mapping.Description",
@@ -129,8 +134,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["BLUE"],
       type: "BLUE",
-    },
-    "Cruiser II": {
+    }),
+    "Cruiser II": buildBaseTech({
       abilities: [],
       expansion: "BASE",
       id: "Cruiser II",
@@ -148,8 +153,8 @@ export default function getBaseTechs(
       },
       type: "UPGRADE",
       unitType: "Cruiser",
-    },
-    "Daxcive Animators": {
+    }),
+    "Daxcive Animators": buildBaseTech({
       description: intl.formatMessage({
         id: "Techs.Daxcive Animators.Description",
         description: "Description for Tech: Daxcive Animators",
@@ -165,8 +170,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["GREEN"],
       type: "GREEN",
-    },
-    "Destroyer II": {
+    }),
+    "Destroyer II": buildBaseTech({
       abilities: [antiFighterBarrage("6 (x3)", intl)],
       expansion: "BASE",
       id: "Destroyer II",
@@ -183,8 +188,8 @@ export default function getBaseTechs(
       },
       type: "UPGRADE",
       unitType: "Destroyer",
-    },
-    "Dimensional Splicer": {
+    }),
+    "Dimensional Splicer": buildBaseTech({
       description: intl.formatMessage({
         id: "Ghosts of Creuss.Techs.Dimensional Splicer.Description",
         description: "Description for Tech: Dimensional Splicer",
@@ -201,8 +206,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["RED"],
       type: "RED",
-    },
-    "Dreadnought II": {
+    }),
+    "Dreadnought II": buildBaseTech({
       abilities: [sustainDamage(intl), bombardment("5", intl)],
       description: intl.formatMessage({
         id: "Techs.Dreadnought II.Description",
@@ -226,8 +231,8 @@ export default function getBaseTechs(
       },
       type: "UPGRADE",
       unitType: "Dreadnought",
-    },
-    "Duranium Armor": {
+    }),
+    "Duranium Armor": buildBaseTech({
       description: intl.formatMessage({
         id: "Techs.Duranium Armor.Description",
         description: "Description for Tech: Duranium Armor",
@@ -243,8 +248,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["RED", "RED"],
       type: "RED",
-    },
-    "E-Res Siphons": {
+    }),
+    "E-Res Siphons": buildBaseTech({
       description: intl.formatMessage({
         id: "Universities of Jol-Nar.Techs.E-Res Siphons.Description",
         description: "Description for Tech: E-Res Siphons",
@@ -261,8 +266,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["YELLOW", "YELLOW"],
       type: "YELLOW",
-    },
-    "Exotrireme II": {
+    }),
+    "Exotrireme II": buildBaseTech({
       abilities: [sustainDamage(intl), bombardment("4 (x2)", intl)],
       description: intl.formatMessage(
         {
@@ -291,8 +296,8 @@ export default function getBaseTechs(
       },
       type: "UPGRADE",
       unitType: "Dreadnought",
-    },
-    "Fighter II": {
+    }),
+    "Fighter II": buildBaseTech({
       abilities: [],
       description: intl.formatMessage({
         id: "Techs.Fighter II.Description",
@@ -315,8 +320,8 @@ export default function getBaseTechs(
       },
       type: "UPGRADE",
       unitType: "Fighter",
-    },
-    "Fleet Logistics": {
+    }),
+    "Fleet Logistics": buildBaseTech({
       description: intl.formatMessage({
         id: "Techs.Fleet Logistics.Description",
         description: "Description for Tech: Fleet Logistics",
@@ -332,8 +337,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["BLUE", "BLUE"],
       type: "BLUE",
-    },
-    "Floating Factory II": {
+    }),
+    "Floating Factory II": buildBaseTech({
       abilities: [production("7", intl)],
       description: intl.formatMessage({
         id: "Clan of Saar.Techs.Floating Factory II.Description",
@@ -357,8 +362,8 @@ export default function getBaseTechs(
       },
       type: "UPGRADE",
       unitType: "Space Dock",
-    },
-    "Graviton Laser System": {
+    }),
+    "Graviton Laser System": buildBaseTech({
       description: intl.formatMessage({
         id: "Techs.Graviton Laser System.Description",
         description: "Description for Tech: Graviton Laser System",
@@ -374,8 +379,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["YELLOW"],
       type: "YELLOW",
-    },
-    "Gravity Drive": {
+    }),
+    "Gravity Drive": buildBaseTech({
       description: intl.formatMessage({
         id: "Techs.Gravity Drive.Description",
         description: "Description for Tech: Gravity Drive",
@@ -391,8 +396,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["BLUE"],
       type: "BLUE",
-    },
-    "Hegemonic Trade Policy": {
+    }),
+    "Hegemonic Trade Policy": buildBaseTech({
       description: intl.formatMessage({
         id: "Winnu.Techs.Hegemonic Trade Policy.Description",
         description: "Description for Tech: Hegemonic Trade Policy",
@@ -409,8 +414,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["YELLOW", "YELLOW"],
       type: "YELLOW",
-    },
-    "Hybrid Crystal Fighter II": {
+    }),
+    "Hybrid Crystal Fighter II": buildBaseTech({
       abilities: [],
       description: intl.formatMessage({
         id: "Naalu Collective.Techs.Hybrid Crystal Fighter II.Description",
@@ -435,8 +440,8 @@ export default function getBaseTechs(
       },
       type: "UPGRADE",
       unitType: "Fighter",
-    },
-    "Hyper Metabolism": {
+    }),
+    "Hyper Metabolism": buildBaseTech({
       description: intl.formatMessage({
         id: "Techs.Hyper Metabolism.Description",
         description: "Description for Tech: Hyper Metabolism",
@@ -452,8 +457,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["GREEN", "GREEN"],
       type: "GREEN",
-    },
-    "Impulse Core": {
+    }),
+    "Impulse Core": buildBaseTech({
       description: intl.formatMessage({
         id: "Yin Brotherhood.Techs.Impulse Core.Description",
         description: "Description for Tech: Impulse Core",
@@ -470,8 +475,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["YELLOW", "YELLOW"],
       type: "YELLOW",
-    },
-    "Infantry II": {
+    }),
+    "Infantry II": buildBaseTech({
       abilities: [],
       description: intl.formatMessage({
         id: "Techs.Infantry II.Description",
@@ -493,8 +498,8 @@ export default function getBaseTechs(
       },
       type: "UPGRADE",
       unitType: "Infantry",
-    },
-    "Inheritance Systems": {
+    }),
+    "Inheritance Systems": buildBaseTech({
       description: intl.formatMessage({
         id: "L1Z1X Mindnet.Techs.Inheritance Systems.Description",
         description: "Description for Tech: Inheritance Systems",
@@ -511,8 +516,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["YELLOW", "YELLOW"],
       type: "YELLOW",
-    },
-    "Instinct Training": {
+    }),
+    "Instinct Training": buildBaseTech({
       description: intl.formatMessage({
         id: "Xxcha Kingdom.Techs.Instinct Training.Description",
         description: "Description for Tech: Instinct Training",
@@ -529,8 +534,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["GREEN"],
       type: "GREEN",
-    },
-    "Integrated Economy": {
+    }),
+    "Integrated Economy": buildBaseTech({
       description: intl.formatMessage({
         id: "Techs.Integrated Economy.Description",
         description: "Description for Tech: Integrated Economy",
@@ -546,8 +551,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["YELLOW", "YELLOW", "YELLOW"],
       type: "YELLOW",
-    },
-    "L4 Disruptors": {
+    }),
+    "L4 Disruptors": buildBaseTech({
       description: intl.formatMessage({
         id: "Barony of Letnev.Techs.L4 Disruptors.Description",
         description: "Description for Tech: L4 Disruptors",
@@ -564,8 +569,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["YELLOW"],
       type: "YELLOW",
-    },
-    "Lazax Gate Folding": {
+    }),
+    "Lazax Gate Folding": buildBaseTech({
       description: intl.formatMessage(
         {
           id: "Winnu.Techs.Lazax Gate Folding.Description",
@@ -585,8 +590,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["BLUE", "BLUE"],
       type: "BLUE",
-    },
-    "Letani Warrior II": {
+    }),
+    "Letani Warrior II": buildBaseTech({
       abilities: [production("2", intl)],
       description: intl.formatMessage({
         id: "Arborec.Techs.Letani Warrior II.Description",
@@ -610,8 +615,8 @@ export default function getBaseTechs(
       },
       type: "UPGRADE",
       unitType: "Infantry",
-    },
-    "LightWave Deflector": {
+    }),
+    "LightWave Deflector": buildBaseTech({
       description: intl.formatMessage({
         id: "Techs.Light/Wave Deflector.Description",
         description: "Description for Tech: Light/Wave Deflector",
@@ -627,8 +632,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["BLUE", "BLUE", "BLUE"],
       type: "BLUE",
-    },
-    "Magen Defense Grid": {
+    }),
+    "Magen Defense Grid": buildBaseTech({
       description: intl.formatMessage({
         id: "Techs.Magen Defense Grid.Description",
         description: "Description for Tech: Magen Defense Grid",
@@ -677,8 +682,8 @@ export default function getBaseTechs(
       ],
       prereqs: ["RED"],
       type: "RED",
-    },
-    "Mageon Implants": {
+    }),
+    "Mageon Implants": buildBaseTech({
       description: intl.formatMessage({
         id: "Yssaril Tribes.Techs.Mageon Implants.Description",
         description: "Description for Tech: Mageon Implants",
@@ -695,8 +700,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["GREEN", "GREEN", "GREEN"],
       type: "GREEN",
-    },
-    "Magmus Reactor": {
+    }),
+    "Magmus Reactor": buildBaseTech({
       description: intl.formatMessage(
         {
           id: "Embers of Muaat.Techs.Magmus Reactor.Description",
@@ -743,8 +748,8 @@ export default function getBaseTechs(
       ],
       prereqs: ["RED", "RED"],
       type: "RED",
-    },
-    "Mirror Computing": {
+    }),
+    "Mirror Computing": buildBaseTech({
       description: intl.formatMessage({
         id: "Mentak Coalition.Techs.Mirror Computing.Description",
         description: "Description for Tech: Mirror Computing",
@@ -761,8 +766,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["YELLOW", "YELLOW", "YELLOW"],
       type: "YELLOW",
-    },
-    "Neural Motivator": {
+    }),
+    "Neural Motivator": buildBaseTech({
       description: intl.formatMessage({
         id: "Techs.Neural Motivator.Description",
         description: "Description for Tech: Neural Motivator",
@@ -778,8 +783,8 @@ export default function getBaseTechs(
       }),
       prereqs: [],
       type: "GREEN",
-    },
-    Neuroglaive: {
+    }),
+    Neuroglaive: buildBaseTech({
       description: intl.formatMessage({
         id: "Naalu Collective.Techs.Neuroglaive.Description",
         description: "Description for Tech: Neuroglaive",
@@ -796,8 +801,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["GREEN", "GREEN", "GREEN"],
       type: "GREEN",
-    },
-    "Non-Euclidean Shielding": {
+    }),
+    "Non-Euclidean Shielding": buildBaseTech({
       description: intl.formatMessage({
         id: "Barony of Letnev.Techs.Non-Euclidean Shielding.Description",
         description: "Description for Tech: Non-Euclidean Shielding",
@@ -814,8 +819,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["RED", "RED"],
       type: "RED",
-    },
-    "Nullification Field": {
+    }),
+    "Nullification Field": buildBaseTech({
       description: intl.formatMessage({
         id: "Xxcha Kingdom.Techs.Nullification Field.Description",
         description: "Description for Tech: Nullification Field",
@@ -832,8 +837,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["YELLOW", "YELLOW"],
       type: "YELLOW",
-    },
-    "PDS II": {
+    }),
+    "PDS II": buildBaseTech({
       abilities: [planetaryShield(intl), spaceCannon("5", intl)],
       description: intl.formatMessage({
         id: "Techs.PDS II.Description",
@@ -852,8 +857,8 @@ export default function getBaseTechs(
       stats: {},
       type: "UPGRADE",
       unitType: "PDS",
-    },
-    "Plasma Scoring": {
+    }),
+    "Plasma Scoring": buildBaseTech({
       description: intl.formatMessage({
         id: "Techs.Plasma Scoring.Description",
         description: "Description for Tech: Plasma Scoring",
@@ -869,8 +874,8 @@ export default function getBaseTechs(
       }),
       prereqs: [],
       type: "RED",
-    },
-    "Production Biomes": {
+    }),
+    "Production Biomes": buildBaseTech({
       description: intl.formatMessage({
         id: "Emirates of Hacan.Techs.Production Biomes.Description",
         description: "Description for Tech: Production Biomes",
@@ -887,8 +892,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["GREEN", "GREEN"],
       type: "GREEN",
-    },
-    "Prototype War Sun II": {
+    }),
+    "Prototype War Sun II": buildBaseTech({
       abilities: [sustainDamage(intl), bombardment("3 (x3)", intl)],
       description: intl.formatMessage({
         id: "Embers of Muaat.Techs.Prototype War Sun II.Description",
@@ -914,8 +919,8 @@ export default function getBaseTechs(
       },
       type: "UPGRADE",
       unitType: "War Sun",
-    },
-    "Quantum Datahub Node": {
+    }),
+    "Quantum Datahub Node": buildBaseTech({
       description: intl.formatMessage({
         id: "Emirates of Hacan.Techs.Quantum Datahub Node.Description",
         description: "Description for Tech: Quantum Datahub Node",
@@ -932,8 +937,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["YELLOW", "YELLOW", "YELLOW"],
       type: "YELLOW",
-    },
-    "Salvage Operations": {
+    }),
+    "Salvage Operations": buildBaseTech({
       description: intl.formatMessage({
         id: "Mentak Coalition.Techs.Salvage Operations.Description",
         description: "Description for Tech: Salvage Operations",
@@ -950,8 +955,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["YELLOW", "YELLOW"],
       type: "YELLOW",
-    },
-    "Sarween Tools": {
+    }),
+    "Sarween Tools": buildBaseTech({
       description: intl.formatMessage({
         id: "Techs.Sarween Tools.Description",
         description: "Description for Tech: Sarween Tools",
@@ -967,8 +972,8 @@ export default function getBaseTechs(
       }),
       prereqs: [],
       type: "YELLOW",
-    },
-    "Space Dock II": {
+    }),
+    "Space Dock II": buildBaseTech({
       abilities: [production("X", intl)],
       description: intl.formatMessage(
         {
@@ -990,8 +995,8 @@ export default function getBaseTechs(
       stats: {},
       type: "UPGRADE",
       unitType: "Space Dock",
-    },
-    "Spacial Conduit Cylinder": {
+    }),
+    "Spacial Conduit Cylinder": buildBaseTech({
       description: intl.formatMessage({
         id: "Universities of Jol-Nar.Techs.Spacial Conduit Cylinder.Description",
         description: "Description for Tech: Spacial Conduit Cylinder",
@@ -1008,8 +1013,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["BLUE", "BLUE"],
       type: "BLUE",
-    },
-    "Spec Ops II": {
+    }),
+    "Spec Ops II": buildBaseTech({
       abilities: [],
       description: intl.formatMessage({
         id: "Federation of Sol.Techs.Spec Ops II.Description",
@@ -1033,8 +1038,8 @@ export default function getBaseTechs(
       },
       type: "UPGRADE",
       unitType: "Infantry",
-    },
-    "Super-Dreadnought II": {
+    }),
+    "Super-Dreadnought II": buildBaseTech({
       abilities: [sustainDamage(intl), bombardment("4", intl)],
       description: intl.formatMessage({
         id: "L1Z1X Mindnet.Techs.Super-Dreadnought II.Description",
@@ -1060,8 +1065,8 @@ export default function getBaseTechs(
       },
       type: "UPGRADE",
       unitType: "Dreadnought",
-    },
-    "Transit Diodes": {
+    }),
+    "Transit Diodes": buildBaseTech({
       description: intl.formatMessage({
         id: "Techs.Transit Diodes.Description",
         description: "Description for Tech: Transit Diodes",
@@ -1077,8 +1082,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["YELLOW", "YELLOW"],
       type: "YELLOW",
-    },
-    "Transparasteel Plating": {
+    }),
+    "Transparasteel Plating": buildBaseTech({
       description: intl.formatMessage({
         id: "Yssaril Tribes.Techs.Transparasteel Plating.Description",
         description: "Description for Tech: Transparasteel Plating",
@@ -1095,8 +1100,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["GREEN"],
       type: "GREEN",
-    },
-    "Valkyrie Particle Weave": {
+    }),
+    "Valkyrie Particle Weave": buildBaseTech({
       description: intl.formatMessage({
         id: "Sardakk N'orr.Techs.Valkyrie Particle Weave.Description",
         description: "Description for Tech: Valkyrie Particle Weave",
@@ -1113,8 +1118,8 @@ export default function getBaseTechs(
       }),
       prereqs: ["RED", "RED"],
       type: "RED",
-    },
-    "War Sun": {
+    }),
+    "War Sun": buildBaseTech({
       abilities: [sustainDamage(intl), bombardment("3 (x3)", intl)],
       description: intl.formatMessage({
         id: "Techs.War Sun.Description",
@@ -1138,8 +1143,8 @@ export default function getBaseTechs(
       },
       type: "UPGRADE",
       unitType: "War Sun",
-    },
-    "Wormhole Generator": {
+    }),
+    "Wormhole Generator": buildBaseTech({
       description: intl.formatMessage({
         id: "Ghosts of Creuss.Techs.Wormhole Generator.Description",
         description: "Description for Tech: Wormhole Generator",
@@ -1180,8 +1185,8 @@ export default function getBaseTechs(
       ],
       prereqs: ["BLUE", "BLUE"],
       type: "BLUE",
-    },
-    "X-89 Bacterial Weapon": {
+    }),
+    "X-89 Bacterial Weapon": buildBaseTech({
       description: intl.formatMessage({
         id: "Techs.X-89 Bacterial Weapon.Description",
         description: "Description for Tech: X-89 Bacterial Weapon",
@@ -1231,8 +1236,8 @@ export default function getBaseTechs(
       ],
       prereqs: ["GREEN", "GREEN", "GREEN"],
       type: "GREEN",
-    },
-    "Yin Spinner": {
+    }),
+    "Yin Spinner": buildBaseTech({
       description: intl.formatMessage({
         id: "Yin Brotherhood.Techs.Yin Spinner.Description",
         description: "Description for Tech: Yin Spinner",
@@ -1273,6 +1278,6 @@ export default function getBaseTechs(
       ],
       prereqs: ["GREEN", "GREEN"],
       type: "GREEN",
-    },
+    }),
   };
 }

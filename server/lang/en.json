@@ -163,6 +163,10 @@
     "defaultMessage": "Start of {phase} Phase",
     "description": "Text showing that something will occur at the start of a specific phase."
   },
+  "4QPpwL": {
+    "defaultMessage": "New Tyrant",
+    "description": "Label for a selector selecting a new tyrant."
+  },
   "4V92Jv": {
     "defaultMessage": "Warp",
     "description": "Text on a button specifying that the map style should be warp."
@@ -2442,6 +2446,14 @@
   "Components.Puppets of the Blade.Title": {
     "defaultMessage": "Puppets of the Blade",
     "description": "Title of Component: Puppets of the Blade"
+  },
+  "Components.Sever.Description": {
+    "defaultMessage": "ACTION: Place this card faceup in your play area and place the sever token in a system that contains your units; wormholes in that system have no effect during movement.{br}Remove the sever token and return this card to the Rebellion player at the end of the status phase.",
+    "description": "Description for Component: Sever"
+  },
+  "Components.Sever.Title": {
+    "defaultMessage": "Sever",
+    "description": "Title of Component: Sever"
   },
   "Components.Share Knowledge.Description": {
     "defaultMessage": "ACTION: Place this card faceup in your play area and gain 1 non-faction, non-unit upgrade technology that the Deepwrought player owns; place this technology on this card.{br}Return that technology to the deck and this card to the Deepwrought player at the end of the status phase.",
@@ -8319,10 +8331,6 @@
     "defaultMessage": "Secret",
     "description": "Label for selecting a secret objective."
   },
-  "hCXyLw": {
-    "defaultMessage": "Select Strategy Card",
-    "description": "Label telling a player to select a strategy card."
-  },
   "hIFcXI": {
     "defaultMessage": "PLANETARY SHIELD",
     "description": "A unit ability that prevents BOMBARDMENT."
@@ -8534,6 +8542,10 @@
   "uxvbkq": {
     "defaultMessage": "Results",
     "description": "Label for section describing the results of voting on an agenda."
+  },
+  "vHExhS": {
+    "defaultMessage": "Tyrant",
+    "description": "The title of the player that has the Benediction token."
   },
   "vTtJ6S": {
     "defaultMessage": "Active Player",

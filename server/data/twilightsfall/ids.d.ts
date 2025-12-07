@@ -18,4 +18,22 @@ namespace TwilightsFall {
     | "Calamitas"
     | "Magus"
     | "Aeterna";
+
+  type TechId =
+    | "Wavelength Red"
+    | "Antimatter Red"
+    | "Wavelength Orange"
+    | "Antimatter Orange"
+    | "Wavelength Yellow"
+    | "Antimatter Yellow"
+    | "Wavelength Green"
+    | "Antimatter Green"
+    | "Wavelength Blue"
+    | "Antimatter Blue"
+    | "Wavelength Purple"
+    | "Antimatter Purple"
+    | "Wavelength Magenta"
+    | "Antimatter Magenta"
+    | "Wavelength Black"
+    | "Antimatter Black";
 }

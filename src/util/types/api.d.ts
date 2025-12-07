@@ -28,6 +28,7 @@ type GameUpdateData =
   | (SelectActionData | UnselectActionData)
   | (EndTurnData | UnendTurnData)
   | SetSpeakerData
+  | SetTyrantData
   | (MarkSecondaryData | MarkPrimaryData)
   | (ScoreObjectiveData | UnscoreObjectiveData)
   | (SwapStrategyCardsData | UnswapStrategyCardsData)
@@ -651,6 +652,17 @@ interface SetSpeakerEvent {
 interface SetSpeakerData {
   action: "SET_SPEAKER";
   event: SetSpeakerEvent;
+}
+
+interface SetTyrantEvent {
+  newTyrant?: FactionId;
+  // Set by server, used for undo.
+  prevTyrant?: FactionId;
+}
+
+interface SetTyrantData {
+  action: "SET_TYRANT";
+  event: SetTyrantEvent;
 }
 
 interface SpeakerTieBreakEvent {

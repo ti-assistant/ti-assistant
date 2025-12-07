@@ -16,6 +16,17 @@ interface FactionIconCSS extends CSSProperties {
   "--size": string;
 }
 
+const SVG_FACTIONS: FactionId[] = [
+  "A Sickening Lurch",
+  "Avarice Rex",
+  "El Nen Janovet",
+  "Il Na Viroset",
+  "Il Sai Lakoe",
+  "Radiant Aur",
+  "The Ruby Monarch",
+  "The Saint of Swords",
+];
+
 export default function FactionIcon({ factionId, size }: FactionIconProps) {
   let innerContent = useMemo(() => {
     if (!factionId) {
@@ -28,9 +39,14 @@ export default function FactionIcon({ factionId, size }: FactionIconProps) {
 
     const adjustedFactionName = factionId.replace("'", "");
 
+    let source = `/images/factions/${adjustedFactionName}.webp`;
+    if (SVG_FACTIONS.includes(factionId)) {
+      source = `/images/factions/${adjustedFactionName}.svg`;
+    }
+
     return (
       <Image
-        src={`/images/factions/${adjustedFactionName}.webp`}
+        src={source}
         alt={`${factionId} Icon`}
         sizes={rem(200)}
         fill

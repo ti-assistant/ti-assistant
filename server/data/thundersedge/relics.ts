@@ -82,6 +82,7 @@ export default function getThundersEdgeRelics(
         { br: "\n\n" }
       ),
       expansion: "THUNDERS EDGE",
+      removedIn: "TWILIGHTS FALL",
       id: "The Quantumcore",
       name: intl.formatMessage({
         id: "Relics.The Quantumcore.Title",

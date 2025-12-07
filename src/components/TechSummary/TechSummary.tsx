@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { FormattedMessage } from "react-intl";
 import { SettingsContext } from "../../context/contexts";
-import { useViewOnly } from "../../context/dataHooks";
+import { useOptions, useViewOnly } from "../../context/dataHooks";
 import { Techs } from "../../context/techDataHooks";
 import { rem } from "../../util/util";
 import OptionalElement from "../OptionalElement/OptionalElement";
@@ -184,6 +184,7 @@ export default function TechSummary({
   techs: Techs;
   ownedTechs: Set<TechId>;
 }) {
+  const options = useOptions();
   const { settings } = useContext(SettingsContext);
   const viewOnly = useViewOnly();
 
@@ -239,7 +240,9 @@ export default function TechSummary({
 
   const showNumbers = settings["fs-tech-summary-display"].includes("NUMBER");
   const showIcons = settings["fs-tech-summary-display"].includes("ICON");
-  const showTrees = settings["fs-tech-summary-display"].includes("TREE");
+  const showTrees =
+    settings["fs-tech-summary-display"].includes("TREE") &&
+    !options.expansions.includes("TWILIGHTS FALL");
 
   return (
     <>

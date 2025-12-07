@@ -124,6 +124,7 @@ import { UpdateLeaderStateHandler } from "../../../../src/util/model/updateLeade
 import { UpdatePlanetStateHandler } from "../../../../src/util/model/updatePlanetState";
 import { Optional } from "../../../../src/util/types/types";
 import { ToggleStructureHandler } from "../../../../src/util/model/toggleSpaceDock";
+import { SetTyrantHandler } from "../../../../src/util/model/setTyrant";
 
 export async function POST(
   req: Request,
@@ -401,6 +402,13 @@ function updateInTransaction(
       case "SET_SPEAKER": {
         data.event.prevSpeaker = gameData.state.speaker;
         handler = new SetSpeakerHandler(gameData, data);
+        break;
+      }
+      case "SET_TYRANT": {
+        if (gameData.state.tyrant) {
+          data.event.prevTyrant = gameData.state.tyrant;
+        }
+        handler = new SetTyrantHandler(gameData, data);
         break;
       }
       case "MARK_SECONDARY": {
