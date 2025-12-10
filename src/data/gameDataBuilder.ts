@@ -51,6 +51,10 @@ export function buildCompleteActionCards(
       return;
     }
 
+    if (actionCard.removedIn && expansions.includes(actionCard.removedIn)) {
+      return;
+    }
+
     actionCards[actionCardId] = {
       ...actionCard,
       ...(gameActionCards[actionCardId] ?? {}),

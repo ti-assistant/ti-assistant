@@ -16,6 +16,7 @@ export default function getCodexOneActionCards(
         { br: "\n\n" }
       ),
       expansion: "CODEX ONE",
+      removedIn: "TWILIGHTS FALL",
       id: "Blitz",
       name: intl.formatMessage({
         id: "Action Cards.Blitz.Name",
@@ -36,6 +37,7 @@ export default function getCodexOneActionCards(
         { br: "\n\n" }
       ),
       expansion: "CODEX ONE",
+      removedIn: "TWILIGHTS FALL",
       id: "Counterstroke",
       name: intl.formatMessage({
         id: "Action Cards.Counterstroke.Name",
@@ -56,6 +58,7 @@ export default function getCodexOneActionCards(
         { br: "\n\n" }
       ),
       expansion: "CODEX ONE",
+      removedIn: "TWILIGHTS FALL",
       id: "Fighter Conscription",
       name: intl.formatMessage({
         id: "Action Cards.Fighter Conscription.Name",
@@ -76,6 +79,7 @@ export default function getCodexOneActionCards(
         { br: "\n\n" }
       ),
       expansion: "CODEX ONE",
+      removedIn: "TWILIGHTS FALL",
       id: "Forward Supply Base",
       name: intl.formatMessage({
         id: "Action Cards.Forward Supply Base.Name",
@@ -96,6 +100,7 @@ export default function getCodexOneActionCards(
         { br: "\n\n" }
       ),
       expansion: "CODEX ONE",
+      removedIn: "TWILIGHTS FALL",
       id: "Ghost Squad",
       name: intl.formatMessage({
         id: "Action Cards.Ghost Squad.Name",
@@ -116,6 +121,7 @@ export default function getCodexOneActionCards(
         { br: "\n\n" }
       ),
       expansion: "CODEX ONE",
+      removedIn: "TWILIGHTS FALL",
       id: "Hack Election",
       name: intl.formatMessage({
         id: "Action Cards.Hack Election.Name",
@@ -151,6 +157,7 @@ export default function getCodexOneActionCards(
         { br: "\n\n" }
       ),
       expansion: "CODEX ONE",
+      removedIn: "TWILIGHTS FALL",
       id: "Harness Energy",
       name: intl.formatMessage({
         id: "Action Cards.Harness Energy.Name",
@@ -171,6 +178,7 @@ export default function getCodexOneActionCards(
         { br: "\n\n" }
       ),
       expansion: "CODEX ONE",
+      removedIn: "TWILIGHTS FALL",
       id: "Impersonation",
       name: intl.formatMessage({
         id: "Action Cards.Impersonation.Name",
@@ -191,6 +199,7 @@ export default function getCodexOneActionCards(
         { br: "\n\n" }
       ),
       expansion: "CODEX ONE",
+      removedIn: "TWILIGHTS FALL",
       id: "Insider Information",
       name: intl.formatMessage({
         id: "Action Cards.Insider Information.Name",
@@ -225,6 +234,7 @@ export default function getCodexOneActionCards(
         { br: "\n\n" }
       ),
       expansion: "CODEX ONE",
+      removedIn: "TWILIGHTS FALL",
       id: "Master Plan",
       name: intl.formatMessage({
         id: "Action Cards.Master Plan.Name",
@@ -245,6 +255,7 @@ export default function getCodexOneActionCards(
         { br: "\n\n" }
       ),
       expansion: "CODEX ONE",
+      removedIn: "TWILIGHTS FALL",
       id: "Plagiarize",
       name: intl.formatMessage({
         id: "Action Cards.Plagiarize.Name",
@@ -265,6 +276,7 @@ export default function getCodexOneActionCards(
         { br: "\n\n" }
       ),
       expansion: "CODEX ONE",
+      removedIn: "TWILIGHTS FALL",
       id: "Rally",
       name: intl.formatMessage({
         id: "Action Cards.Rally.Name",
@@ -285,6 +297,7 @@ export default function getCodexOneActionCards(
         { br: "\n\n" }
       ),
       expansion: "CODEX ONE",
+      removedIn: "TWILIGHTS FALL",
       id: "Reflective Shielding",
       name: intl.formatMessage({
         id: "Action Cards.Reflective Shielding.Name",
@@ -305,6 +318,7 @@ export default function getCodexOneActionCards(
         { br: "\n\n" }
       ),
       expansion: "CODEX ONE",
+      removedIn: "TWILIGHTS FALL",
       id: "Sanction",
       name: intl.formatMessage({
         id: "Action Cards.Sanction.Name",
@@ -325,6 +339,7 @@ export default function getCodexOneActionCards(
         { br: "\n\n" }
       ),
       expansion: "CODEX ONE",
+      removedIn: "TWILIGHTS FALL",
       id: "Scramble Frequency",
       name: intl.formatMessage({
         id: "Action Cards.Scramble Frequency.Name",
@@ -345,6 +360,7 @@ export default function getCodexOneActionCards(
         { br: "\n\n" }
       ),
       expansion: "CODEX ONE",
+      removedIn: "TWILIGHTS FALL",
       id: "Solar Flare",
       name: intl.formatMessage({
         id: "Action Cards.Solar Flare.Name",
@@ -365,6 +381,7 @@ export default function getCodexOneActionCards(
         { br: "\n\n" }
       ),
       expansion: "CODEX ONE",
+      removedIn: "TWILIGHTS FALL",
       id: "War Machine",
       name: intl.formatMessage({
         id: "Action Cards.War Machine.Name",

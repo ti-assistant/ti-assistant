@@ -2,6 +2,7 @@ interface BaseActionCard {
   count: number;
   description: string;
   expansion: Expansion;
+  removedIn?: Expansion;
   id: ActionCardId;
   name: string;
   omegas?: Omega<BaseActionCard>[];
@@ -21,4 +22,5 @@ type ActionCardId =
   | CodexOne.ActionCardId
   | ProphecyOfKings.ActionCardId
   | ThundersEdge.ActionCardId
+  | TwilightsFall.ActionCardId
   | DiscordantStars.ActionCardId;
