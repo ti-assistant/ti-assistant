@@ -709,7 +709,13 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       );
       break;
     }
-
+    case "Executive Order": {
+      leftLabel = <ComponentActions.ExecutiveOrder.Label />;
+      innerContent = (
+        <ComponentActions.ExecutiveOrder.Content factionId={factionId} />
+      );
+      break;
+    }
     // case "Repeal Law": {
     //   if (!agendas) {
     //     break;

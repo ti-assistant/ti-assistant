@@ -42,6 +42,22 @@ export default function getThundersEdgeComponents(
       requiresTech: "X-89 Bacterial Weapon",
       type: "EVENT",
     },
+    "Executive Order": {
+      description: intl.formatMessage({
+        id: "Components.Executive Order.Description",
+        description: "Description for Component: Executive Order",
+        defaultMessage:
+          "ACTION: Reveal the top or bottom card of the agenda deck and vote on it, being speaker. You may use trade goods to vote.",
+      }),
+      expansion: "THUNDERS EDGE",
+      id: "Executive Order",
+      name: intl.formatMessage({
+        id: "Components.Executive Order.Title",
+        description: "Title of Component: Executive Order",
+        defaultMessage: "Executive Order",
+      }),
+      type: "TECH",
+    },
     Nanomachines: {
       description: intl.formatMessage(
         {

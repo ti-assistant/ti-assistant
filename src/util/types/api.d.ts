@@ -514,6 +514,8 @@ interface ResolveAgendaEvent {
 
   // Set by server, used to undo Politics Rider.
   prevSpeaker?: FactionId;
+  // Set by server, used to determine turn end information.
+  phase?: Phase;
 }
 
 interface RepealAgendaEvent {
