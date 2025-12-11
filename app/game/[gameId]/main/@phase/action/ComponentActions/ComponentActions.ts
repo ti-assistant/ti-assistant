@@ -4,6 +4,7 @@ import BookOfLatvinia from "./BookOfLatvinia";
 import DannelOfTheTenth from "./DannelOfTheTenth";
 import DivertFunding from "./DivertFunding";
 import DynamisCore from "./DynamisCore";
+import ExecutiveOrder from "./ExecutiveOrder";
 import IndustrialInitiative from "./IndustrialInitiative";
 import MiningInitiative from "./MiningInitiative";
 import Overrule from "./Overrule";
@@ -26,6 +27,7 @@ const ComponentActions = {
   DannelOfTheTenth,
   DivertFunding,
   DynamisCore,
+  ExecutiveOrder,
   IndustrialInitiative,
   MiningInitiative,
   Overrule,

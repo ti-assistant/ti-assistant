@@ -52,6 +52,7 @@ namespace ThundersEdge {
   type ComponentId =
     | "Avernus"
     | "Conventions of War Abandoned"
+    | "Executive Order"
     | "Mercenaries for Hire"
     | "Nanomachines"
     | "Sever"

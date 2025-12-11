@@ -17,6 +17,14 @@ export const PHASE_BOUNDARIES = ["ADVANCE_PHASE", "END_GAME"];
 export function getCurrentTurnLogEntries(actionLog: ActionLog) {
   const currentTurn: ActionLog = [];
   for (const logEntry of actionLog) {
+    // Shouldn't consider it turn end if in Action Phase.
+    if (
+      logEntry.data.action === "RESOLVE_AGENDA" &&
+      logEntry.data.event.phase === "ACTION"
+    ) {
+      currentTurn.push(logEntry);
+      continue;
+    }
     if (TURN_BOUNDARIES.includes(logEntry.data.action)) {
       break;
     }

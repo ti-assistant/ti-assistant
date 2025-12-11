@@ -19,10 +19,9 @@ import {
 import { SetSpeakerHandler } from "./setSpeaker";
 
 export class ResolveAgendaHandler implements Handler {
-  constructor(
-    public gameData: StoredGameData,
-    public data: ResolveAgendaData
-  ) {}
+  constructor(public gameData: StoredGameData, public data: ResolveAgendaData) {
+    this.data.event.phase = this.gameData.state.phase;
+  }
 
   validate(): boolean {
     return true;
@@ -38,7 +37,10 @@ export class ResolveAgendaHandler implements Handler {
       [`agendas.${this.data.event.agenda}.resolved`]: true,
       [`agendas.${this.data.event.agenda}.target`]: this.data.event.target,
     };
-    if (this.data.event.resolvedBy !== "UNDO") {
+    if (
+      this.data.event.resolvedBy !== "UNDO" &&
+      this.gameData.state.phase === "AGENDA"
+    ) {
       updates[`state.agendaNum`] = (this.gameData.state.agendaNum ?? 0) + 1;
     }
     const cache = createIntlCache();
@@ -143,7 +145,7 @@ export class ResolveAgendaHandler implements Handler {
             );
             const factionVPs =
               buildFactions(this.gameData, intl)[data.event.faction]?.vps ?? 0;
-            if (VPs === 0) {
+            if (VPs === 0 && this.data.event.target === "Against") {
               updates[`factions.${data.event.faction}.vps`] = factionVPs + 1;
             }
           }
@@ -394,14 +396,15 @@ export class RepealAgendaHandler implements Handler {
     if (this.data.event.repealedBy === "UNDO") {
       updates[`agendas.${this.data.event.agenda}.target`] = "DELETE";
       updates[`agendas.${this.data.event.agenda}.resolved`] = "DELETE";
-      updates[`state.agendaNum`] = (this.gameData.state.agendaNum ?? 0) - 1;
-
+      if (this.gameData.state.phase === "AGENDA") {
+        updates[`state.agendaNum`] = (this.gameData.state.agendaNum ?? 0) - 1;
+      }
       const currentTurn = getCurrentTurnLogEntries(
         this.gameData.actionLog ?? []
       );
 
       // NOTE: Each rider should only be able to be played once in a given round.
-      // NOTE: This may not properly undo riders.
+      // NOTE: This does not properly undo riders.
       const riders = getPlayedRiders(currentTurn);
       for (const rider of riders) {
         if (!rider.faction || rider.outcome !== this.data.event.target) {

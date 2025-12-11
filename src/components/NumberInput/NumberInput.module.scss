@@ -28,6 +28,8 @@
 }
 
 .InputBox {
+  --input-border-color: var(--neutral-border);
+
   display: flex;
   justify-content: center;
 
@@ -35,6 +37,6 @@
 
   background-color: #333;
   color: #eee;
-  border: 2px solid var(--neutral-border);
+  border: 2px solid var(--input-border-color);
   border-radius: 0.25rem;
 }

@@ -1,6 +1,6 @@
 import { CSSProperties } from "react";
-import styles from "./NumberInput.module.scss";
 import { rem } from "../../util/util";
+import styles from "./NumberInput.module.scss";
 
 interface NumberInputCSS extends CSSProperties {
   "--up-arrow-color": string;
@@ -8,6 +8,7 @@ interface NumberInputCSS extends CSSProperties {
 }
 
 export default function NumberInput({
+  borderColor,
   value,
   maxValue = Number.MAX_SAFE_INTEGER,
   softMax = Number.MAX_SAFE_INTEGER,
@@ -16,6 +17,7 @@ export default function NumberInput({
   onChange,
   viewOnly,
 }: {
+  borderColor?: string;
   onChange: (value: number) => void;
   maxValue?: number;
   softMax?: number;
@@ -63,6 +65,11 @@ export default function NumberInput({
               }
         }
         onBlur={(e) => updateValue(e.currentTarget)}
+        style={
+          borderColor
+            ? ({ "--input-border-color": borderColor } as CSSProperties)
+            : undefined
+        }
       >
         {value}
       </div>

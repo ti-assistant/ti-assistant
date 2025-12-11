@@ -15,7 +15,7 @@ import {
 } from "../../context/dataHooks";
 import { useFactions } from "../../context/factionDataHooks";
 import { useObjectives } from "../../context/objectiveDataHooks";
-import { useGameState } from "../../context/stateDataHooks";
+import { useGameState, usePhase } from "../../context/stateDataHooks";
 import { Techs } from "../../context/techDataHooks";
 import {
   castVotesAsync,
@@ -502,9 +502,14 @@ const RIDERS = [
 interface VoteBlockProps {
   factionId: FactionId;
   agenda: Optional<Agenda>;
+  manualVotes?: boolean;
 }
 
-export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
+export default function VoteBlock({
+  factionId,
+  agenda,
+  manualVotes,
+}: VoteBlockProps) {
   const actionLog = useActionLog();
   const agendas = useAgendas();
   const factions = useFactions();
@@ -603,11 +608,15 @@ export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
         {!agenda ? (
           <>
             <div></div>
-            <AvailableVotes factionId={factionId} />
+            <AvailableVotes factionId={factionId} manual={manualVotes} />
           </>
         ) : null}
         {agenda && !state.votingStarted ? (
-          <PredictionSection factionId={factionId} agenda={agenda} />
+          <PredictionSection
+            factionId={factionId}
+            agenda={agenda}
+            manualVotes={manualVotes}
+          />
         ) : null}
         {agenda && state.votingStarted ? (
           !canFactionVote(faction, agendas, state, currentTurn, leaders) &&
@@ -635,7 +644,11 @@ export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
               </button>
             </div>
           ) : (
-            <VotingSection factionId={factionId} agenda={agenda} />
+            <VotingSection
+              factionId={factionId}
+              agenda={agenda}
+              manualVotes={manualVotes}
+            />
           )
         ) : null}
       </div>
@@ -646,9 +659,11 @@ export default function VoteBlock({ factionId, agenda }: VoteBlockProps) {
 function PredictionSection({
   factionId,
   agenda,
+  manualVotes,
 }: {
   factionId: FactionId;
   agenda: Optional<Agenda>;
+  manualVotes?: boolean;
 }) {
   const actionLog = useActionLog();
   const agendas = useAgendas();
@@ -656,6 +671,7 @@ function PredictionSection({
   const gameId = useGameId();
   const objectives = useObjectives();
   const options = useOptions();
+  const phase = usePhase();
   const planets = usePlanets();
   const strategyCards = useStrategyCards();
   const viewOnly = useViewOnly();
@@ -678,6 +694,9 @@ function PredictionSection({
     }
     const secrets = getPromissoryTargets(currentTurn, "Political Secret");
     if (rider === "Galactic Threat") {
+      if (phase !== "AGENDA") {
+        return false;
+      }
       if (factionId !== "Nekro Virus" || secrets.includes("Nekro Virus")) {
         return false;
       }
@@ -726,7 +745,7 @@ function PredictionSection({
         >
           Cannot Predict
         </div>
-        <AvailableVotes factionId={factionId} />
+        <AvailableVotes factionId={factionId} manual={manualVotes} />
       </>
     );
   }
@@ -757,7 +776,7 @@ function PredictionSection({
         }}
         viewOnly={viewOnly}
       />
-      <AvailableVotes factionId={factionId} />{" "}
+      <AvailableVotes factionId={factionId} manual={manualVotes} />{" "}
       {pendingRider && targets.length > 0 ? (
         <div style={{ gridColumn: "span 2" }}>
           <Selector
@@ -785,9 +804,11 @@ function PredictionSection({
 function VotingSection({
   factionId,
   agenda,
+  manualVotes,
 }: {
   factionId: FactionId;
   agenda: Optional<Agenda>;
+  manualVotes?: boolean;
 }) {
   const actionLog = useActionLog();
   const agendas = useAgendas();
@@ -932,7 +953,7 @@ function VotingSection({
           />
         ) : null}
       </div>
-      <AvailableVotes factionId={factionId} />
+      <AvailableVotes factionId={factionId} manual={manualVotes} />
       {hasVotableTarget ? (
         <NumberInput
           value={factionVotes.votes}
@@ -1108,7 +1129,13 @@ interface AvailableVotesStyle extends CSSProperties {
   "--height": string;
 }
 
-function AvailableVotes({ factionId }: { factionId: FactionId }) {
+function AvailableVotes({
+  factionId,
+  manual,
+}: {
+  factionId: FactionId;
+  manual?: boolean;
+}) {
   const actionLog = useActionLog();
   const currentPhase = getCurrentPhaseLogEntries(actionLog);
   const agendas = useAgendas();
@@ -1120,6 +1147,9 @@ function AvailableVotes({ factionId }: { factionId: FactionId }) {
   const relics = useRelics();
   const state = useGameState();
   const techs = useTechs();
+  const viewOnly = useViewOnly();
+
+  const [manualVotes, setManualVotes] = useState<number>(0);
 
   let { influence, extraVotes } = computeRemainingVotes(
     factionId,
@@ -1152,6 +1182,22 @@ function AvailableVotes({ factionId }: { factionId: FactionId }) {
     "--height": rem(35),
     "--width": rem(28),
   };
+
+  if (manual) {
+    return (
+      <div className={styles.AvailableVotes} style={availableVotesStyle}>
+        <NumberInput
+          borderColor="#72d4f7"
+          value={manualVotes}
+          maxValue={99}
+          softMax={influence}
+          minValue={0}
+          onChange={(votes) => setManualVotes(votes)}
+          viewOnly={viewOnly}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className={styles.AvailableVotes} style={availableVotesStyle}>
