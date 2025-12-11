@@ -66,7 +66,7 @@ function Content({ factionId }: { factionId: FactionId }) {
         <StartVoting />
       </div>
       <VotingColumn speaker={factionId} manualVotes />
-      <CastVotesSection />
+      <CastVotesSection hideObjectives />
     </div>
   );
 }

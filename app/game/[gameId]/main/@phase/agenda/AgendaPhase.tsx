@@ -279,7 +279,7 @@ function AgendaSteps() {
           <WhenAnAgendaIsRevealed speaker={state.speaker} />
           <AfterAnAgendaIsRevealed />
           <StartVoting />
-          <CastVotesSection />
+          <CastVotesSection showRemainingVotes />
         </div>
       )}
     </React.Fragment>

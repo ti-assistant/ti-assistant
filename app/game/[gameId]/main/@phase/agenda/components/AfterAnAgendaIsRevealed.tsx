@@ -105,43 +105,6 @@ export default function AfterAnAgendaIsRevealed() {
             viewOnly={viewOnly}
           />
         </div>
-        {/* <Selector
-          hoverMenuLabel={
-            <FormattedMessage
-              id="Components.Assassinate Representative.Title"
-              description="Title of Component: Assassinate Representative"
-              defaultMessage="Assassinate Representative"
-            />
-          }
-          selectedLabel={
-            <FormattedMessage
-              id="c9hO6S"
-              description="Label for section describing the faction that has has Assassinate Representative played on them."
-              defaultMessage="Assassinated Representative"
-            />
-          }
-          options={Object.values(factions)}
-          selectedItem={assassinatedRep}
-          toggleItem={(factionId, add) => {
-            if (!gameId) {
-              return;
-            }
-            if (add) {
-              playActionCardAsync(
-                gameId,
-                "Assassinate Representative",
-                factionId
-              );
-            } else {
-              unplayActionCardAsync(
-                gameId,
-                "Assassinate Representative",
-                factionId
-              );
-            }
-          }}
-          viewOnly={viewOnly}
-        /> */}
       </div>
     </ClientOnlyHoverMenu>
   );

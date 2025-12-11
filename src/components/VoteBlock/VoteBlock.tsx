@@ -15,7 +15,7 @@ import {
 } from "../../context/dataHooks";
 import { useFactions } from "../../context/factionDataHooks";
 import { useObjectives } from "../../context/objectiveDataHooks";
-import { useGameState } from "../../context/stateDataHooks";
+import { useGameState, usePhase } from "../../context/stateDataHooks";
 import { Techs } from "../../context/techDataHooks";
 import {
   castVotesAsync,
@@ -671,6 +671,7 @@ function PredictionSection({
   const gameId = useGameId();
   const objectives = useObjectives();
   const options = useOptions();
+  const phase = usePhase();
   const planets = usePlanets();
   const strategyCards = useStrategyCards();
   const viewOnly = useViewOnly();
@@ -693,6 +694,9 @@ function PredictionSection({
     }
     const secrets = getPromissoryTargets(currentTurn, "Political Secret");
     if (rider === "Galactic Threat") {
+      if (phase !== "AGENDA") {
+        return false;
+      }
       if (factionId !== "Nekro Virus" || secrets.includes("Nekro Virus")) {
         return false;
       }

@@ -77,7 +77,11 @@ function getSelectedOutcome(selectedTargets: string[], currentTurn: ActionLog) {
   return getSpeakerTieBreak(currentTurn);
 }
 
-export default function AgendaDetails() {
+export default function AgendaDetails({
+  hideObjectives,
+}: {
+  hideObjectives?: boolean;
+}) {
   const actionLog = useActionLog();
   const agendas = useAgendas();
   const factions = useFactions();
@@ -424,7 +428,7 @@ export default function AgendaDetails() {
   return (
     <>
       {agendaSelection}
-      {driveSection}
+      {hideObjectives ? null : driveSection}
     </>
   );
 }

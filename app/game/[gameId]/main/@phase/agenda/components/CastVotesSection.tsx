@@ -1,12 +1,21 @@
 import { FormattedMessage, useIntl } from "react-intl";
 import LabeledDiv from "../../../../../../../src/components/LabeledDiv/LabeledDiv";
-import { translateOutcome } from "../../../../../../../src/components/VoteBlock/VoteBlock";
 import {
+  canFactionVote,
+  computeRemainingVotes,
+  translateOutcome,
+} from "../../../../../../../src/components/VoteBlock/VoteBlock";
+import {
+  useActionLog,
   useAgendas,
+  useAttachments,
   useCurrentTurn,
   useGameId,
+  useLeaders,
+  useOptions,
   usePlanets,
   useStrategyCards,
+  useTechs,
   useViewOnly,
 } from "../../../../../../../src/context/dataHooks";
 import { useFactions } from "../../../../../../../src/context/factionDataHooks";
@@ -19,22 +28,37 @@ import {
   getSelectedSubAgenda,
   getSpeakerTieBreak,
 } from "../../../../../../../src/util/actionLog";
+import {
+  getCurrentPhasePreviousLogEntries,
+  getCurrentTurnLogEntries,
+} from "../../../../../../../src/util/api/actionLog";
 import { ActionLog } from "../../../../../../../src/util/types/types";
 import { objectKeys, rem } from "../../../../../../../src/util/util";
 import { computeVotes } from "../AgendaPhase";
 import AgendaDetails from "./AgendaDetails";
 import CovertLegislation from "./CovertLegislation";
 
-export function CastVotesSection() {
+export function CastVotesSection({
+  hideObjectives,
+  showRemainingVotes,
+}: {
+  hideObjectives?: boolean;
+  showRemainingVotes?: boolean;
+}) {
+  const actionLog = useActionLog();
   const agendas = useAgendas();
+  const attachments = useAttachments();
   const currentTurn = useCurrentTurn();
   const factions = useFactions();
   const gameId = useGameId();
   const intl = useIntl();
+  const leaders = useLeaders();
   const objectives = useObjectives();
+  const options = useOptions();
   const planets = usePlanets();
   const state = useGameState();
   const strategyCards = useStrategyCards();
+  const techs = useTechs();
   const viewOnly = useViewOnly();
 
   if (!state.votingStarted) {
@@ -57,6 +81,35 @@ export function CastVotesSection() {
     localAgenda.elect = eligibleOutcomes;
   }
 
+  let totalVotes = 0;
+  for (const faction of Object.values(factions)) {
+    if (
+      !canFactionVote(
+        faction,
+        agendas,
+        state,
+        getCurrentTurnLogEntries(actionLog),
+        leaders
+      )
+    ) {
+      continue;
+    }
+    const factionVotes = computeRemainingVotes(
+      faction.id,
+      factions,
+      planets,
+      attachments,
+      agendas,
+      options,
+      state,
+      getCurrentPhasePreviousLogEntries(actionLog),
+      leaders,
+      techs
+    );
+    totalVotes += factionVotes.influence;
+    totalVotes += factionVotes.extraVotes;
+  }
+
   const votes = computeVotes(
     currentAgenda,
     currentTurn,
@@ -72,6 +125,11 @@ export function CastVotesSection() {
     .map(([target, _]) => {
       return target;
     });
+
+  for (const numVotes of Object.values(votes)) {
+    totalVotes -= numVotes;
+  }
+  totalVotes = Math.max(totalVotes, 0);
 
   const selectedSubAgenda = getSelectedSubAgenda(currentTurn);
   const subAgenda = selectedSubAgenda ? agendas[selectedSubAgenda] : undefined;
@@ -151,8 +209,9 @@ export function CastVotesSection() {
           })}
         </div>
       ) : null}
+      {showRemainingVotes ? <div>Remaining Votes: {totalVotes}</div> : null}
       <CovertLegislation.RevealAgenda />
-      <AgendaDetails />
+      <AgendaDetails hideObjectives={hideObjectives} />
       {readyToResolve() ? (
         <div
           className="flexColumn"
