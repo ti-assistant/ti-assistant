@@ -30,7 +30,7 @@ export default function getTwilightsFallActionCards(
         {
           id: "Action Cards.Cloak.Description",
           defaultMessage:
-            "After you activate a system:{br}Your ships can move through systems that contain other players' ships during this action, and space cannon cannot be used against them.",
+            "After you activate a system:{br}Your ships can move through systems that contain other players' ships during this action, and SPACE CANNON cannot be used against them.",
           description: "Description of action card: Cloak",
         },
         { br: "\n\n" }
@@ -50,7 +50,7 @@ export default function getTwilightsFallActionCards(
         {
           id: "Action Cards.Coerce.Description",
           defaultMessage:
-            "ACTION: Choose a player. That player must give you one of their abilities.",
+            "ACTION: Choose a player. That player must give you 1 of their abilities.",
           description: "Description of action card: Coerce",
         },
         { br: "\n\n" }
@@ -227,7 +227,7 @@ export default function getTwilightsFallActionCards(
         {
           id: "Action Cards.Feint.Description",
           defaultMessage:
-            "When you announce a retreat:{br}Your systems immediately retreat to an eligible system; do not place a command token in that system.",
+            "When you announce a retreat:{br}Your units immediately retreat to an eligible system; do not place a command token in that system.",
           description: "Description of action card: Feint",
         },
         { br: "\n\n" }
@@ -386,7 +386,7 @@ export default function getTwilightsFallActionCards(
         {
           id: "Action Cards.Locust.Description",
           defaultMessage:
-            "ACTION: Choose 1 infantry in a system adjacent to your units and roll 1 die. On a result of 3 or higher, destroy that infantry and choose an infantry in the same or adjacent system to repeat this roll; for each new roll, choose an infantry owned by a different player than the previous infantry, if able.",
+            "ACTION: Choose 1 infantry in a system adjacent to your units and roll 1 die. On a result of 3 or higher, destroy that infantry and choose an infantry in the same or an adjacent system to repeat this roll; for each new roll, choose an infantry owned by a different player than the previous infantry, if able.",
           description: "Description of action card: Locust",
         },
         { br: "\n\n" }
@@ -420,23 +420,23 @@ export default function getTwilightsFallActionCards(
       }),
       timing: "COMPONENT_ACTION",
     },
-    Manafest: {
+    Manifest: {
       count: 1,
       description: intl.formatMessage(
         {
-          id: "Action Cards.Manafest.Description",
+          id: "Action Cards.Manifest.Description",
           defaultMessage:
             "ACTION: Resolve the PRODUCTION ability of 1 of your units; reduce the combined cost of the produced units by 3.",
-          description: "Description of action card: Manafest",
+          description: "Description of action card: Manifest",
         },
         { br: "\n\n" }
       ),
       expansion: "TWILIGHTS FALL",
-      id: "Manafest",
+      id: "Manifest",
       name: intl.formatMessage({
-        id: "Action Cards.Manafest.Name",
-        defaultMessage: "Manafest",
-        description: "Name of action card: Manafest",
+        id: "Action Cards.Manifest.Name",
+        defaultMessage: "Manifest",
+        description: "Name of action card: Manifest",
       }),
       timing: "COMPONENT_ACTION",
     },
@@ -506,7 +506,7 @@ export default function getTwilightsFallActionCards(
         {
           id: "Action Cards.Meteor.Description",
           defaultMessage:
-            "When you would remove ground forces due to insufficient capacity:{br}Commit those ground forces to a planet instead; resolve an invasion on that planet using only those ground forces.",
+            "When you would remove ground forces due to insufficient capacity:{br}Commit those ground forces to a planet in that system instead; resolve an invasion on that planet using only those ground forces.",
           description: "Description of action card: Meteor",
         },
         { br: "\n\n" }
@@ -746,7 +746,7 @@ export default function getTwilightsFallActionCards(
         {
           id: "Action Cards.Thieve.Description",
           defaultMessage:
-            "When a splice ends, if you did not participate:{br}Take all of the remaining splice cards.",
+            "When a splice ends, if you did not participate:{br}Take all of the remaining spliced cards.",
           description: "Description of action card: Thieve",
         },
         { br: "\n\n" }
