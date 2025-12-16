@@ -46,6 +46,7 @@ export default function FactionActionPhase({
           </>
         );
     }
+    return null;
   }
 
   return (
