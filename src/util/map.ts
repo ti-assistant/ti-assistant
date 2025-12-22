@@ -1,68 +1,17 @@
 import { Optional } from "./types/types";
 import { objectKeys } from "./util";
-import { getSystems } from "../../server/data/systems";
-
-/**
- * Map-builder-only overrides: some systems are not marked as `HOME` in the
- * canonical server data (`server/data/systems.ts`), but should be treated as
- * home systems in the Map Builder UI and when parsing user-provided map
- * strings. Example: the Ghosts of Creuss gate system (system number "17").
- *
- * These overrides ensure that when a user pastes or edits a map string with
- * explicit numeric home tiles, those tiles are preserved as homes (and thus
- * not replaced by `P1..Pn` placeholders) to respect user intent.
- */
-export const MAP_BUILDER_HOME_OVERRIDES = new Set(["17", "94"]);
 
 export function isHomeSystem(systemNumber?: string): boolean {
   if (!systemNumber) {
     return false;
   }
 
-  // Normalize the representation: if it contains a rotation prefix like "rotate:XXX"
-  // take the final token.
+  // Normalize rotation-prefixed tokens like "rotate:17" to the final token.
   const token = systemNumber.includes(":")
     ? systemNumber.split(":").pop() ?? systemNumber
     : systemNumber;
 
-  // Explicit P markers are always homes (P1..P8)
-  if (/^P[1-8]$/.test(token)) {
-    return true;
-  }
-
-  const systems = getSystems() as Record<string, { type?: string }>;
-
-  // Direct canonical match: '96A', '92', etc.
-  if (systems[token]?.type === "HOME") {
-    return true;
-  }
-
-  // Simplified numeric fallback: match leading digits (covers tokens like
-  // '86A3' by extracting the numeric prefix) and check the canonical numeric
-  // key and A/B variants. This replaces the previous explicit suffix-stripping
-  // because checking `num`, `numA`, and `numB` is sufficient and clearer.
-  const numericMatch = token.match(/^(\d+)/);
-  if (numericMatch && numericMatch[1]) {
-    const numKey = numericMatch[1];
-
-    // Map-builder-only override: preserve certain non-HOME canonical systems
-    // as homes in the Map Builder UI (e.g., Ghosts of Creuss gate "17").
-    if (MAP_BUILDER_HOME_OVERRIDES.has(numKey)) {
-      return true;
-    }
-
-    if (systems[numKey]?.type === "HOME") {
-      return true;
-    }
-    if (systems[`${numKey}A`]?.type === "HOME") {
-      return true;
-    }
-    if (systems[`${numKey}B`]?.type === "HOME") {
-      return true;
-    }
-  }
-
-  return false;
+  return /^P[1-8]$/.test(token);
 }
 
 export function isFactionHomeSystem(systemNumber: string) {
@@ -298,67 +247,18 @@ export function updateMapString(
       : defaultMapString;
 
   if (!isValidMapString(updatedMapString, numFactions)) {
+    let currentNum = numFactions;
     const tiles = updatedMapString.split(" ");
-
-    // If the user provided any explicit home systems in their input, only impute
-    // placeholder Pn labels for the remaining players who do not have a home
-    // system provided. This avoids overwriting or ignoring valid numeric home
-    // system tiles that the user specified.
-    const originalExplicitHomes = mapString
-      ? mapString.split(" ").filter((s) => isHomeSystem(s)).length
-      : 0;
-
-    if (originalExplicitHomes > 0) {
-      // Track any P numbers already present so we don't duplicate them.
-      const usedP = new Set<number>();
-      tiles.forEach((t) => {
-        const m = t.match(/^P([1-8])$/);
-        if (m && m[1]) {
-          const n = parseInt(m[1]);
-          if (!isNaN(n)) {
-            usedP.add(n);
-          }
-        }
-      });
-
-      let nextP = 1;
-      const getNextP = () => {
-        while (usedP.has(nextP) && nextP <= numFactions) {
-          nextP++;
-        }
-        if (nextP > numFactions) return null;
-        const out = nextP;
-        nextP++;
-        return out;
-      };
-
-      let remaining = Math.max(0, numFactions - originalExplicitHomes);
-      for (let i = tiles.length - 1; i >= 0 && remaining > 0; i--) {
-        if (tiles[i] === "0") {
-          const pnum = getNextP();
-          if (!pnum) break;
-          tiles[i] = `P${pnum}`;
-          usedP.add(pnum);
-          remaining--;
+    for (let i = tiles.length - 1; i > 0; i--) {
+      if (tiles[i] === "0") {
+        tiles[i] = `P${currentNum}`;
+        currentNum--;
+        if (currentNum < 1) {
+          break;
         }
       }
-
-      updatedMapString = tiles.join(" ");
-    } else {
-      // Original fallback behavior: populate zeros with Px counting down from
-      // numFactions (keeps previous behaviour for blank/missing-input cases).
-      let currentNum = numFactions;
-      for (let i = tiles.length - 1; i > 0; i--) {
-        if (tiles[i] === "0") {
-          tiles[i] = `P${currentNum}`;
-          currentNum--;
-          if (currentNum < 1) {
-            break;
-          }
-        }
-      }
-      updatedMapString = tiles.join(" ");
     }
+    updatedMapString = tiles.join(" ");
 
     if (!isValidMapString(updatedMapString, numFactions)) {
       updatedMapString = mergeMapStrings(defaultMapString, mapString);
@@ -395,6 +295,18 @@ function mapValuePriority(a?: string, b?: string) {
   if (b === "0") {
     return a;
   }
+
+  // Prefer an explicit system number (e.g. "17" or "96A") over a P# placeholder
+  // so that user-specified tiles are preserved when merging with defaults.
+  const isPA = /^P\d+$/.test(a);
+  const isPB = /^P\d+$/.test(b);
+  if (isPA && !isPB) {
+    return b;
+  }
+  if (!isPA && isPB) {
+    return a;
+  }
+
   return a;
 }
 
