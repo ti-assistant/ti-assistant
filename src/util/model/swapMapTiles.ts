@@ -108,5 +108,15 @@ function mapValuePriority(a?: string, b?: string) {
   if (b === "0") {
     return a;
   }
+
+  const isPA = /^P\d+$/.test(a);
+  const isPB = /^P\d+$/.test(b);
+  if (isPA && !isPB) {
+    return b;
+  }
+  if (!isPA && isPB) {
+    return a;
+  }
+
   return a;
 }

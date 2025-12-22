@@ -1,11 +1,17 @@
 import { Optional } from "./types/types";
 import { objectKeys } from "./util";
 
-export function isHomeSystem(systemNumber?: string) {
+export function isHomeSystem(systemNumber?: string): boolean {
   if (!systemNumber) {
     return false;
   }
-  return systemNumber.match(/^P[1-8]$/);
+
+  // Normalize rotation-prefixed tokens like "rotate:17" to the final token.
+  const token = systemNumber.includes(":")
+    ? systemNumber.split(":").pop() ?? systemNumber
+    : systemNumber;
+
+  return /^P[1-8]$/.test(token);
 }
 
 export function isFactionHomeSystem(systemNumber: string) {
@@ -253,6 +259,7 @@ export function updateMapString(
       }
     }
     updatedMapString = tiles.join(" ");
+
     if (!isValidMapString(updatedMapString, numFactions)) {
       updatedMapString = mergeMapStrings(defaultMapString, mapString);
     }
@@ -288,6 +295,18 @@ function mapValuePriority(a?: string, b?: string) {
   if (b === "0") {
     return a;
   }
+
+  // Prefer an explicit system number (e.g. "17" or "96A") over a P# placeholder
+  // so that user-specified tiles are preserved when merging with defaults.
+  const isPA = /^P\d+$/.test(a);
+  const isPB = /^P\d+$/.test(b);
+  if (isPA && !isPB) {
+    return b;
+  }
+  if (!isPA && isPB) {
+    return a;
+  }
+
   return a;
 }
 
