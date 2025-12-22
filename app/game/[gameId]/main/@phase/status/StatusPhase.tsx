@@ -42,6 +42,7 @@ import {
   useAgendaUnlocked,
   useRound,
   useSpeaker,
+  useTyrant,
 } from "../../../../../../src/context/stateDataHooks";
 import {
   useFactionsWithTech,
@@ -623,6 +624,7 @@ export default function StatusPhase() {
     useCompleteOrderedFactionIds("INITIATIVE");
   const round = useRound();
   const speaker = useSpeaker();
+  const tyrant = useTyrant();
   const viewOnly = useViewOnly();
 
   const ministerOfPolicy = useAgenda("Minister of Policy");
@@ -818,28 +820,53 @@ export default function StatusPhase() {
   });
 
   const nextPhaseButtons = [];
-  if (!agendaUnlocked) {
+  if (options.expansions.includes("TWILIGHTS FALL")) {
+    if (!tyrant) {
+      nextPhaseButtons.push({
+        text: intl.formatMessage({
+          id: "5WXn8l",
+          defaultMessage: "Start Next Round",
+          description: "Text on a button that will start the next round.",
+        }),
+        onClick: () => nextPhase(true),
+      });
+    }
     nextPhaseButtons.push({
-      text: intl.formatMessage({
-        id: "5WXn8l",
-        defaultMessage: "Start Next Round",
-        description: "Text on a button that will start the next round.",
-      }),
-      onClick: () => nextPhase(true),
+      text: intl.formatMessage(
+        {
+          id: "8/h2ME",
+          defaultMessage: "Advance to {phase} Phase",
+          description:
+            "Text on a button that will advance the game to a specific phase.",
+        },
+        { phase: phaseString("EDICT", intl) }
+      ),
+      onClick: () => nextPhase(false),
+    });
+  } else {
+    if (!agendaUnlocked) {
+      nextPhaseButtons.push({
+        text: intl.formatMessage({
+          id: "5WXn8l",
+          defaultMessage: "Start Next Round",
+          description: "Text on a button that will start the next round.",
+        }),
+        onClick: () => nextPhase(true),
+      });
+    }
+    nextPhaseButtons.push({
+      text: intl.formatMessage(
+        {
+          id: "8/h2ME",
+          defaultMessage: "Advance to {phase} Phase",
+          description:
+            "Text on a button that will advance the game to a specific phase.",
+        },
+        { phase: phaseString("AGENDA", intl) }
+      ),
+      onClick: () => nextPhase(false),
     });
   }
-  nextPhaseButtons.push({
-    text: intl.formatMessage(
-      {
-        id: "8/h2ME",
-        defaultMessage: "Advance to {phase} Phase",
-        description:
-          "Text on a button that will advance the game to a specific phase.",
-      },
-      { phase: phaseString("AGENDA", intl) }
-    ),
-    onClick: () => nextPhase(false),
-  });
 
   return (
     <>

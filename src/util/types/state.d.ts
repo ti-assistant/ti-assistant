@@ -5,6 +5,7 @@ type Phase =
   | "ACTION"
   | "STATUS"
   | "AGENDA"
+  | "EDICT"
   | "END";
 
 interface UndoData {

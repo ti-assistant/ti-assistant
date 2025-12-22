@@ -337,6 +337,12 @@
       "value": " Phase"
     }
   ],
+  "4QPpwL": [
+    {
+      "type": 0,
+      "value": "New Tyrant"
+    }
+  ],
   "4V92Jv": [
     {
       "type": 0,
@@ -591,6 +597,42 @@
     {
       "type": 0,
       "value": " in Effect"
+    }
+  ],
+  "A Sickening Lurch.Name": [
+    {
+      "type": 0,
+      "value": "A Sickening Lurch"
+    }
+  ],
+  "A Sickening Lurch.Shortname": [
+    {
+      "type": 0,
+      "value": "Lurch"
+    }
+  ],
+  "A Sickening Lurch.Units.A Strangled Whisper.Description": [
+    {
+      "type": 0,
+      "value": "This ship can transport any number of infantry and fighters, and they do not count against this ship's capacity."
+    }
+  ],
+  "A Sickening Lurch.Units.A Strangled Whisper.Title": [
+    {
+      "type": 0,
+      "value": "A Strangled Whisper"
+    }
+  ],
+  "A Sickening Lurch.Units.Bone Picked Clean.Description": [
+    {
+      "type": 0,
+      "value": "When you splice, capture 1 infantry from the reinforcements of any player with adjacent units; you can spend 1 captured infantry after rolling during combat to reroll this unit's dice."
+    }
+  ],
+  "A Sickening Lurch.Units.Bone Picked Clean.Title": [
+    {
+      "type": 0,
+      "value": "Bone Picked Clean"
     }
   ],
   "A5p5qF": [
@@ -4391,6 +4433,42 @@
       "value": "Warfare Research Facility"
     }
   ],
+  "Avarice Rex.Name": [
+    {
+      "type": 0,
+      "value": "Avarice Rex"
+    }
+  ],
+  "Avarice Rex.Shortname": [
+    {
+      "type": 0,
+      "value": "Avarice"
+    }
+  ],
+  "Avarice Rex.Units.Delver.Description": [
+    {
+      "type": 0,
+      "value": "When you splice, gain 1 commodity or convert 1 of your commodities to a trade good."
+    }
+  ],
+  "Avarice Rex.Units.Delver.Title": [
+    {
+      "type": 0,
+      "value": "Delver"
+    }
+  ],
+  "Avarice Rex.Units.Scintilla.Description": [
+    {
+      "type": 0,
+      "value": "When you splice, gain 2 commodities or convert up to 2 of your commodities to trade goods."
+    }
+  ],
+  "Avarice Rex.Units.Scintilla.Title": [
+    {
+      "type": 0,
+      "value": "Scintilla"
+    }
+  ],
   "Barony of Letnev.Abilities.Armada.Description": [
     {
       "type": 0,
@@ -5243,6 +5321,26 @@
     {
       "type": 0,
       "value": "Puppets of the Blade"
+    }
+  ],
+  "Components.Sever.Description": [
+    {
+      "type": 0,
+      "value": "ACTION: Place this card faceup in your play area and place the sever token in a system that contains your units; wormholes in that system have no effect during movement."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Remove the sever token and return this card to the Rebellion player at the end of the status phase."
+    }
+  ],
+  "Components.Sever.Title": [
+    {
+      "type": 0,
+      "value": "Sever"
     }
   ],
   "Components.Share Knowledge.Description": [
@@ -6281,6 +6379,42 @@
     {
       "type": 0,
       "value": "Skinny"
+    }
+  ],
+  "El Nen Janovet.Name": [
+    {
+      "type": 0,
+      "value": "El Nen Janovet"
+    }
+  ],
+  "El Nen Janovet.Shortname": [
+    {
+      "type": 0,
+      "value": "Janovet"
+    }
+  ],
+  "El Nen Janovet.Units.Analyzer.Description": [
+    {
+      "type": 0,
+      "value": "After you win a ground combat in which this unit participated, you may return this unit to your reinforcements to draw 1 unit upgrade."
+    }
+  ],
+  "El Nen Janovet.Units.Analyzer.Title": [
+    {
+      "type": 0,
+      "value": "Analyzer"
+    }
+  ],
+  "El Nen Janovet.Units.The Faces of Janovet.Description": [
+    {
+      "type": 0,
+      "value": "This unit gains the unit abilities and text abilities of your destroyer, cruiser, and dreadnought unit upgrade technologies."
+    }
+  ],
+  "El Nen Janovet.Units.The Faces of Janovet.Title": [
+    {
+      "type": 0,
+      "value": "The Faces of Janovet"
     }
   ],
   "Embers of Muaat.Abilities.Gashlai Physiology.Description": [
@@ -8441,6 +8575,78 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "count"
+    }
+  ],
+  "Il Na Viroset.Name": [
+    {
+      "type": 0,
+      "value": "Il Na Viroset"
+    }
+  ],
+  "Il Na Viroset.Shortname": [
+    {
+      "type": 0,
+      "value": "Viroset"
+    }
+  ],
+  "Il Na Viroset.Units.Enigma.Description": [
+    {
+      "type": 0,
+      "value": "This unit ignores the effects of all anomalies. Its MOVE value is reduced by 1 for each unit it would transport."
+    }
+  ],
+  "Il Na Viroset.Units.Enigma.Title": [
+    {
+      "type": 0,
+      "value": "Enigma"
+    }
+  ],
+  "Il Na Viroset.Units.Starlancer XI.Description": [
+    {
+      "type": 0,
+      "value": "This unit participates in space combat as if it were a ship. For each anomaly this unit is in or adjacent to, apply +1 to this unit's combat rolls."
+    }
+  ],
+  "Il Na Viroset.Units.Starlancer XI.Title": [
+    {
+      "type": 0,
+      "value": "Starlancer XI"
+    }
+  ],
+  "Il Sai Lakoe.Name": [
+    {
+      "type": 0,
+      "value": "Il Sai Lakoe, Herald of Thorns"
+    }
+  ],
+  "Il Sai Lakoe.Shortname": [
+    {
+      "type": 0,
+      "value": "Lakoe"
+    }
+  ],
+  "Il Sai Lakoe.Units.Lakoe's Roots.Description": [
+    {
+      "type": 0,
+      "value": "When this unit is produced, place it on any planet you control."
+    }
+  ],
+  "Il Sai Lakoe.Units.Lakoe's Roots.Title": [
+    {
+      "type": 0,
+      "value": "Lakoe's Roots"
+    }
+  ],
+  "Il Sai Lakoe.Units.Nightbloom.Description": [
+    {
+      "type": 0,
+      "value": "When this unit moves, you may resolve the PRODUCTION abilities of your units in the system it started in and each system it moved through."
+    }
+  ],
+  "Il Sai Lakoe.Units.Nightbloom.Title": [
+    {
+      "type": 0,
+      "value": "Nightbloom"
     }
   ],
   "Irm2+w": [
@@ -12367,6 +12573,42 @@
       "value": "count"
     }
   ],
+  "Radiant Aur.Name": [
+    {
+      "type": 0,
+      "value": "Radiant Aur"
+    }
+  ],
+  "Radiant Aur.Shortname": [
+    {
+      "type": 0,
+      "value": "Aur"
+    }
+  ],
+  "Radiant Aur.Units.Airo Shir Rex.Description": [
+    {
+      "type": 0,
+      "value": "At the start of the edict phase, if this unit is on the game board, draw and resolve 1 edict."
+    }
+  ],
+  "Radiant Aur.Units.Airo Shir Rex.Title": [
+    {
+      "type": 0,
+      "value": "Airo Shir Rex"
+    }
+  ],
+  "Radiant Aur.Units.Starlancer II.Description": [
+    {
+      "type": 0,
+      "value": "At the start of each round of ground combat, you may spend 1 token from your strategy pool to repair all of your mechs."
+    }
+  ],
+  "Radiant Aur.Units.Starlancer II.Title": [
+    {
+      "type": 0,
+      "value": "Starlancer II"
+    }
+  ],
   "Ral Nel Consortium.Abilities.Miniaturization.Description": [
     {
       "type": 0,
@@ -13311,6 +13553,118 @@
       "value": "Thunder's Edge"
     }
   ],
+  "Strategy Cards.Aeterna.Primary": [
+    {
+      "type": 0,
+      "value": "Immediately score 1 public objective if you fulfill its requirements; otherwise, draw 1 paradigm."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Gain 1 victory point if you control Mecatol Rex; otherwise, draw 1 secret objective."
+    }
+  ],
+  "Strategy Cards.Aeterna.Secondary": [
+    {
+      "type": 0,
+      "value": "Spend 1 token from your strategy pool to draw 1 secret objective or 1 paradigm."
+    }
+  ],
+  "Strategy Cards.Aeterna.Title": [
+    {
+      "type": 0,
+      "value": "Aeterna"
+    }
+  ],
+  "Strategy Cards.Amicus.Primary": [
+    {
+      "type": 0,
+      "value": "Gain 3 trade goods."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Replenish commodities."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Choose any number of other players. Those players use the secondary ability of this strategy card without spending a command token."
+    }
+  ],
+  "Strategy Cards.Amicus.Secondary": [
+    {
+      "type": 0,
+      "value": "Spend 1 token from your strategy pool to replenish your commodities."
+    }
+  ],
+  "Strategy Cards.Amicus.Title": [
+    {
+      "type": 0,
+      "value": "Amicus"
+    }
+  ],
+  "Strategy Cards.Calamitas.Primary": [
+    {
+      "type": 0,
+      "value": "Initiate a unit upgrade splice."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Resolve the PRODUCTION abilities of your units in 1 system."
+    }
+  ],
+  "Strategy Cards.Calamitas.Secondary": [
+    {
+      "type": 0,
+      "value": "Spend 1 token from your strategy pool and 4 resources to either participate in the unit upgrade splice or use the PRODUCTION abilities of the units in your home system."
+    }
+  ],
+  "Strategy Cards.Calamitas.Title": [
+    {
+      "type": 0,
+      "value": "Calamitas"
+    }
+  ],
+  "Strategy Cards.Civitas.Primary": [
+    {
+      "type": 0,
+      "value": "Either place 1 structure on a planet you control or use the PRODUCTION ability of 1 of your space docks."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Place 1 structure on a planet you control."
+    }
+  ],
+  "Strategy Cards.Civitas.Secondary": [
+    {
+      "type": 0,
+      "value": "Spend 1 token from your strategy pool to place 1 structure on a planet you control."
+    }
+  ],
+  "Strategy Cards.Civitas.Title": [
+    {
+      "type": 0,
+      "value": "Civitas"
+    }
+  ],
   "Strategy Cards.Construction.POK.Secondary": [
     {
       "type": 0,
@@ -13451,6 +13805,76 @@
       "value": "Leadership"
     }
   ],
+  "Strategy Cards.Lux.Primary": [
+    {
+      "type": 0,
+      "value": "Gain 3 command tokens."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Spend any amount of influence to gain 1 command token for every 3 influence spent."
+    }
+  ],
+  "Strategy Cards.Lux.Secondary": [
+    {
+      "type": 0,
+      "value": "Spend any amount of influence to gain 1 command token for every 3 influence spent."
+    }
+  ],
+  "Strategy Cards.Lux.Title": [
+    {
+      "type": 0,
+      "value": "Lux"
+    }
+  ],
+  "Strategy Cards.Magus.Primary": [
+    {
+      "type": 0,
+      "value": "Initiate an ability splice. You may spend 3 resources and 3 influence to add 1 additional ability to the pool; if you do, after each player has chosen, it passes back to you and you take an additional ability."
+    }
+  ],
+  "Strategy Cards.Magus.Secondary": [
+    {
+      "type": 0,
+      "value": "Spend 1 token from your strategy pool and 3 resources or 3 influence to participate in the ability splice."
+    }
+  ],
+  "Strategy Cards.Magus.Title": [
+    {
+      "type": 0,
+      "value": "Magus"
+    }
+  ],
+  "Strategy Cards.Noctis.Primary": [
+    {
+      "type": 0,
+      "value": "Initiate a genome splice."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Ready up to 2 planets."
+    }
+  ],
+  "Strategy Cards.Noctis.Secondary": [
+    {
+      "type": 0,
+      "value": "Spend 1 token from your strategy pool to participate in the genome splice."
+    }
+  ],
+  "Strategy Cards.Noctis.Title": [
+    {
+      "type": 0,
+      "value": "Noctis"
+    }
+  ],
   "Strategy Cards.Politics.Primary": [
     {
       "type": 0,
@@ -13543,6 +13967,40 @@
     {
       "type": 0,
       "value": "Trade"
+    }
+  ],
+  "Strategy Cards.Tyrannus.Primary": [
+    {
+      "type": 0,
+      "value": "Choose a player other than the speaker. That player gains the speaker token."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Choose a player other than the speaker or tyrant. That player gainst the benediction token."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Draw 2 action cards."
+    }
+  ],
+  "Strategy Cards.Tyrannus.Secondary": [
+    {
+      "type": 0,
+      "value": "Spend 1 token from your strategy pool to draw 2 action cards."
+    }
+  ],
+  "Strategy Cards.Tyrannus.Title": [
+    {
+      "type": 0,
+      "value": "Tyrannus"
     }
   ],
   "Strategy Cards.Warfare.Primary": [
@@ -14141,6 +14599,78 @@
     {
       "type": 0,
       "value": "X-89 Bacterial Weapon"
+    }
+  ],
+  "The Ruby Monarch.Name": [
+    {
+      "type": 0,
+      "value": "The Ruby Monarch"
+    }
+  ],
+  "The Ruby Monarch.Shortname": [
+    {
+      "type": 0,
+      "value": "Monarch"
+    }
+  ],
+  "The Ruby Monarch.Units.The Scarlet Knife.Description": [
+    {
+      "type": 0,
+      "value": "DEPLOY: At the start of your turn, you may discard 1 of your abilities or genomes to place this unit from your reinforcements into a system that contains your ships."
+    }
+  ],
+  "The Ruby Monarch.Units.The Scarlet Knife.Title": [
+    {
+      "type": 0,
+      "value": "The Scarlet Knife"
+    }
+  ],
+  "The Ruby Monarch.Units.The Sharpened Edge.Description": [
+    {
+      "type": 0,
+      "value": "DEPLOY: When your flagship is placed, you may place 1 mech into your flagship's space area."
+    }
+  ],
+  "The Ruby Monarch.Units.The Sharpened Edge.Title": [
+    {
+      "type": 0,
+      "value": "The Sharpened Edge"
+    }
+  ],
+  "The Saint of Swords.Name": [
+    {
+      "type": 0,
+      "value": "The Saint of Swords"
+    }
+  ],
+  "The Saint of Swords.Shortname": [
+    {
+      "type": 0,
+      "value": "Saint"
+    }
+  ],
+  "The Saint of Swords.Units.Colada.Description": [
+    {
+      "type": 0,
+      "value": "While this unit is being transported, choose 1 unit in its system that has a capacity value to roll 1 additional die on its combat rolls."
+    }
+  ],
+  "The Saint of Swords.Units.Colada.Title": [
+    {
+      "type": 0,
+      "value": "Colada"
+    }
+  ],
+  "The Saint of Swords.Units.Tizona.Description": [
+    {
+      "type": 0,
+      "value": "Apply +1 to the MOVE value of this ship if it would transport 4 units."
+    }
+  ],
+  "The Saint of Swords.Units.Tizona.Title": [
+    {
+      "type": 0,
+      "value": "Tizona"
     }
   ],
   "Titans of Ul.Abilities.Awaken.Description": [
@@ -15259,6 +15789,12 @@
     {
       "type": 0,
       "value": "Group by"
+    }
+  ],
+  "X+daca": [
+    {
+      "type": 0,
+      "value": "Twilight's Fall"
     }
   ],
   "X3Nzbr": [
@@ -16403,12 +16939,6 @@
       "value": "Secret"
     }
   ],
-  "hCXyLw": [
-    {
-      "type": 0,
-      "value": "Select Strategy Card"
-    }
-  ],
   "hIFcXI": [
     {
       "type": 0,
@@ -17064,6 +17594,12 @@
     {
       "type": 0,
       "value": "Results"
+    }
+  ],
+  "vHExhS": [
+    {
+      "type": 0,
+      "value": "Tyrant"
     }
   ],
   "vTtJ6S": [

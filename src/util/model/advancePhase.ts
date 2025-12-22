@@ -136,13 +136,19 @@ export class AdvancePhaseHandler implements Handler {
           updates[`state.phase`] = "STRATEGY";
           updates[`state.round`] = this.gameData.state.round + 1;
         } else {
-          updates[`state.phase`] = "AGENDA";
+          const nextPhase = this.gameData.options.expansions.includes(
+            "TWILIGHTS FALL"
+          )
+            ? "EDICT"
+            : "AGENDA";
+          updates[`state.phase`] = nextPhase;
           updates[`state.agendaNum`] = 1;
           updates[`state.agendaUnlocked`] = true;
         }
         break;
       }
-      case "AGENDA": {
+      case "AGENDA":
+      case "EDICT": {
         updates[`state.phase`] = "STRATEGY";
         updates[`state.round`] = this.gameData.state.round + 1;
         updates[`state.activeplayer`] = this.gameData.state.speaker;
