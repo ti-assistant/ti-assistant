@@ -1,7 +1,5 @@
 import { IntlShape } from "react-intl";
 
-export type TFAbilityId = TwilightsFall.TFAbilityId;
-
 export default function getTwilightsFallAbilities(
   intl: IntlShape
 ): Record<TwilightsFall.TFAbilityId, TFBaseAbility> {
@@ -515,7 +513,7 @@ export default function getTwilightsFallAbilities(
           id: "TF.Ability.Genetic Research.Text",
           description: "Text of Twilight's Fall Ability: Genetic Research",
           defaultMessage:
-            "At the start of the status phase:{br}Choose a technology color and gain trade goods equal to the number of abilities you own that have that technology colour.",
+            "At the start of the status phase:{br}Choose a technology color and gain trade goods equal to the number of abilities you own that have that technology color.",
         },
         { br: "\n\n" }
       ),

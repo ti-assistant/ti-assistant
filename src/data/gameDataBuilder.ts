@@ -1,4 +1,3 @@
-import { useOptions } from "../context/dataHooks";
 import { buildMergeFunction } from "../util/expansions";
 import { isValidMapString, validSystemNumber } from "../util/map";
 import { getMapString } from "../util/options";
@@ -27,6 +26,11 @@ export function buildCompleteGameData(
     systems: buildCompleteSystems(baseData, storedGameData),
     techs: buildCompleteTechs(baseData, storedGameData),
     timers: storedGameData.timers,
+
+    abilities: buildCompleteAbilities(baseData, storedGameData),
+    genomes: buildCompleteGenomes(baseData, storedGameData),
+    paradigms: buildCompleteParadigms(baseData, storedGameData),
+    upgrades: buildCompleteUpgrades(baseData, storedGameData),
 
     allPlanets: buildCompletePlanets(baseData, storedGameData, true),
   };
@@ -632,4 +636,100 @@ export function buildCompleteLeaders(
   });
 
   return leaders;
+}
+
+export function buildCompleteAbilities(
+  baseData: BaseData,
+  storedGameData: StoredGameData
+) {
+  const storedAbilities = storedGameData.abilities ?? {};
+  const abilities: Partial<Record<TFAbilityId, TFAbility>> = {};
+
+  objectEntries(baseData.abilities).forEach(([abilityId, ability]) => {
+    if (
+      ability.expansion &&
+      !storedGameData.options.expansions.includes(ability.expansion)
+    ) {
+      return;
+    }
+
+    abilities[abilityId] = {
+      ...ability,
+      ...(storedAbilities[abilityId] ?? {}),
+    };
+  });
+
+  return abilities;
+}
+
+export function buildCompleteGenomes(
+  baseData: BaseData,
+  storedGameData: StoredGameData
+) {
+  const storedGenomes = storedGameData.genomes ?? {};
+  const genomes: Partial<Record<TFGenomeId, TFGenome>> = {};
+
+  objectEntries(baseData.genomes).forEach(([genomeId, genome]) => {
+    if (
+      genome.expansion &&
+      !storedGameData.options.expansions.includes(genome.expansion)
+    ) {
+      return;
+    }
+
+    genomes[genomeId] = {
+      ...genome,
+      ...(storedGenomes[genomeId] ?? {}),
+    };
+  });
+
+  return genomes;
+}
+
+export function buildCompleteParadigms(
+  baseData: BaseData,
+  storedGameData: StoredGameData
+) {
+  const storedParadigms = storedGameData.paradigms ?? {};
+  const paradigms: Partial<Record<TFParadigmId, TFParadigm>> = {};
+
+  objectEntries(baseData.paradigms).forEach(([paradigmId, paradigm]) => {
+    if (
+      paradigm.expansion &&
+      !storedGameData.options.expansions.includes(paradigm.expansion)
+    ) {
+      return;
+    }
+
+    paradigms[paradigmId] = {
+      ...paradigm,
+      ...(storedParadigms[paradigmId] ?? {}),
+    };
+  });
+
+  return paradigms;
+}
+
+export function buildCompleteUpgrades(
+  baseData: BaseData,
+  storedGameData: StoredGameData
+) {
+  const storedUpgrades = storedGameData.upgrades ?? {};
+  const upgrades: Partial<Record<TFUnitUpgradeId, TFUnitUpgrade>> = {};
+
+  objectEntries(baseData.upgrades).forEach(([upgradeId, upgrade]) => {
+    if (
+      upgrade.expansion &&
+      !storedGameData.options.expansions.includes(upgrade.expansion)
+    ) {
+      return;
+    }
+
+    upgrades[upgradeId] = {
+      ...upgrade,
+      ...(storedUpgrades[upgradeId] ?? {}),
+    };
+  });
+
+  return upgrades;
 }

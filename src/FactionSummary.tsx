@@ -3,11 +3,14 @@ import { FormattedMessage } from "react-intl";
 import styles from "./FactionSummary.module.scss";
 import FactionIcon from "./components/FactionIcon/FactionIcon";
 import PlanetSummary from "./components/PlanetSummary/PlanetSummary";
-import TechSummary from "./components/TechSummary/TechSummary";
+import TechSummary, {
+  TFTechSummary,
+} from "./components/TechSummary/TechSummary";
 import {
   useAttachments,
   useGameId,
   useLeader,
+  useOptions,
   usePlanets,
   useTechs,
   useViewOnly,
@@ -379,7 +382,12 @@ function FactionPlanetSummary({ factionId }: { factionId: FactionId }) {
 
 function FactionTechSummary({ factionId }: { factionId: FactionId }) {
   const factionTechs = useFactionTechs(factionId);
+  const options = useOptions();
   const techs = useTechs();
+
+  if (options.expansions.includes("TWILIGHTS FALL")) {
+    return <TFTechSummary factionId={factionId} />;
+  }
 
   return (
     <TechSummary

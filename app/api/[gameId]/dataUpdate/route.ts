@@ -125,6 +125,10 @@ import { UpdatePlanetStateHandler } from "../../../../src/util/model/updatePlane
 import { Optional } from "../../../../src/util/types/types";
 import { ToggleStructureHandler } from "../../../../src/util/model/toggleSpaceDock";
 import { SetTyrantHandler } from "../../../../src/util/model/setTyrant";
+import {
+  GainTFCardHandler,
+  LoseTFCardHandler,
+} from "../../../../src/util/model/gainTFCard";
 
 export async function POST(
   req: Request,
@@ -618,6 +622,12 @@ function updateInTransaction(
         break;
       case "TOGGLE_STRUCTURE":
         handler = new ToggleStructureHandler(gameData, data);
+        break;
+      case "GAIN_TF_CARD":
+        handler = new GainTFCardHandler(gameData, data);
+        break;
+      case "LOSE_TF_CARD":
+        handler = new LoseTFCardHandler(gameData, data);
         break;
 
       case "UNDO": {

@@ -1,7 +1,5 @@
 import { IntlShape } from "react-intl";
 
-export type TFGenomeId = TwilightsFall.TFGenomeId;
-
 export default function getTwilightsFallGenomes(
   intl: IntlShape
 ): Record<TwilightsFall.TFGenomeId, TFBaseGenome> {

@@ -161,6 +161,7 @@ const swapMapTilesModule = import("../util/api/swapMapTiles");
 const gainAllianceModule = import("../util/api/gainAlliance");
 const purgeSystemModule = import("../util/api/purgeSystem");
 const toggleStructureModule = import("../util/api/toggleStructure");
+const gainTFCardModule = import("../util/api/gainTFCard");
 
 export async function addAttachmentAsync(
   gameId: string,
@@ -737,4 +738,22 @@ export async function toggleStructureAsync(
 ) {
   const mod = await toggleStructureModule;
   mod.toggleStructure(gameId, planetId, structure, change);
+}
+
+export async function gainTFCardAsync(
+  gameId: string,
+  factionId: FactionId,
+  event: AbilityEvent | GenomeEvent | ParadigmEvent | UpgradeEvent
+) {
+  const mod = await gainTFCardModule;
+  mod.gainTFCard(gameId, factionId, event);
+}
+
+export async function loseTFCardAsync(
+  gameId: string,
+  factionId: FactionId,
+  event: AbilityEvent | GenomeEvent | ParadigmEvent | UpgradeEvent
+) {
+  const mod = await gainTFCardModule;
+  mod.loseTFCard(gameId, factionId, event);
 }

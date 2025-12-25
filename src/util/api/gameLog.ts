@@ -23,6 +23,7 @@ import {
   LoseAllianceHandler,
 } from "../model/gainAlliance";
 import { GainRelicHandler, LoseRelicHandler } from "../model/gainRelic";
+import { GainTFCardHandler, LoseTFCardHandler } from "../model/gainTFCard";
 import { GiftOfPrescienceHandler } from "../model/giftOfPrescience";
 import { ManualVPUpdateHandler } from "../model/manualVPUpdate";
 import {
@@ -233,5 +234,9 @@ export function getHandler(gameData: StoredGameData, data: GameUpdateData) {
       return new UnpurgeSystemHandler(gameData, data);
     case "TOGGLE_STRUCTURE":
       return new ToggleStructureHandler(gameData, data);
+    case "GAIN_TF_CARD":
+      return new GainTFCardHandler(gameData, data);
+    case "LOSE_TF_CARD":
+      return new LoseTFCardHandler(gameData, data);
   }
 }

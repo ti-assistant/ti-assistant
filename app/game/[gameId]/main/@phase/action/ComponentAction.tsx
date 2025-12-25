@@ -5,6 +5,7 @@ import { FormattedMessage } from "react-intl";
 import { ClientOnlyHoverMenu } from "../../../../../../src/HoverMenu";
 import { SelectableRow } from "../../../../../../src/SelectableRow";
 import GainRelic from "../../../../../../src/components/Actions/GainRelic";
+import GainTFCard from "../../../../../../src/components/Actions/GainSplicedCard";
 import FactionComponents from "../../../../../../src/components/FactionComponents/FactionComponents";
 import FormattedDescription from "../../../../../../src/components/FormattedDescription/FormattedDescription";
 import FrontierExploration from "../../../../../../src/components/FrontierExploration/FrontierExploration";
@@ -594,6 +595,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
     case "Gain Relic":
     case "Black Market Forgery":
     case "Hesh and Prit":
+    case "Create":
     case "Fabrication": {
       innerContent = (
         <div className="flexColumn" style={{ width: "100%" }}>
@@ -713,6 +715,40 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       leftLabel = <ComponentActions.ExecutiveOrder.Label />;
       innerContent = (
         <ComponentActions.ExecutiveOrder.Content factionId={factionId} />
+      );
+      break;
+    }
+    case "Coerce": {
+      innerContent = (
+        <GainTFCard factionId={factionId} steal numToGain={{ abilities: 1 }} />
+      );
+      break;
+    }
+    case "Elevate": {
+      innerContent = (
+        <GainTFCard factionId={factionId} numToGain={{ paradigms: 1 }} />
+      );
+      break;
+    }
+    case "Evolve": {
+      innerContent = (
+        <GainTFCard
+          factionId={factionId}
+          numToGain={{ abilities: 1, genomes: 1, upgrades: 1, total: 1 }}
+        />
+      );
+      break;
+    }
+    case "Irradiate": {
+      innerContent = (
+        <GainTFCard factionId={factionId} numToGain={{ upgrades: 1 }} />
+      );
+      break;
+    }
+    case "Mutate": {
+      // TODO: Add ability removal.
+      innerContent = (
+        <GainTFCard factionId={factionId} numToGain={{ abilities: 1 }} />
       );
       break;
     }

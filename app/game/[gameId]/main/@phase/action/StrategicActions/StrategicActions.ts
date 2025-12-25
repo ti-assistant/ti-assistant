@@ -1,5 +1,8 @@
+import Aeterna from "./Aeterna";
+import Calamitas from "./Calamitas";
 import Diplomacy from "./Diplomacy";
 import Imperial from "./Imperial";
+import Magus from "./Magus";
 import Noctis from "./Noctis";
 import Politics from "./Politics";
 import Technology from "./Technology";
@@ -15,6 +18,9 @@ const StrategicActions = {
   // Twilight's Fall
   Noctis,
   Tyrannus,
+  Calamitas,
+  Magus,
+  Aeterna,
 };
 
 export default StrategicActions;

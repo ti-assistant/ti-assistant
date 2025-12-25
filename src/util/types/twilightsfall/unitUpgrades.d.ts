@@ -10,7 +10,9 @@ interface TFBaseUnitUpgrade {
 }
 
 interface TFGameUnitUpgrade {
-  owner: FactionId;
+  owner?: FactionId;
 }
 
 type TFUnitUpgrade = TFBaseUnitUpgrade & TFGameUnitUpgrade;
+
+type TFUnitUpgradeId = TwilightsFall.TFUnitUpgradeId;

@@ -12,6 +12,10 @@ import { getSystems } from "../../server/data/systems";
 import { getTechs } from "../../server/data/techs";
 import { getEvents } from "../../server/data/events";
 import { getActionCards } from "../../server/data/actionCards";
+import { getAbilities } from "../../server/data/abilities";
+import { getGenomes } from "../../server/data/genomes";
+import { getParadigms } from "../../server/data/paradigms";
+import { getUnitUpgrades } from "../../server/data/upgrades";
 
 export function getBaseData(intl: IntlShape): BaseData {
   return {
@@ -28,5 +32,10 @@ export function getBaseData(intl: IntlShape): BaseData {
     strategycards: getStrategyCards(intl),
     systems: getSystems(),
     techs: getTechs(intl),
+    // Twilight's Fall
+    abilities: getAbilities(intl),
+    genomes: getGenomes(intl),
+    paradigms: getParadigms(intl),
+    upgrades: getUnitUpgrades(intl),
   };
 }

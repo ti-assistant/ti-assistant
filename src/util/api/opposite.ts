@@ -61,6 +61,7 @@ import { PassHandler, UnpassHandler } from "../model/unpass";
 import { PurgeSystemHandler, UnpurgeSystemHandler } from "../model/purgeSystem";
 import { ToggleStructureHandler } from "../model/toggleSpaceDock";
 import { SetTyrantHandler } from "../model/setTyrant";
+import { GainTFCardHandler, LoseTFCardHandler } from "../model/gainTFCard";
 
 export function getOppositeHandler(
   gameData: StoredGameData,
@@ -554,6 +555,16 @@ export function getOppositeHandler(
           ...data.event,
           change,
         },
+      });
+    case "GAIN_TF_CARD":
+      return new LoseTFCardHandler(gameData, {
+        action: "LOSE_TF_CARD",
+        event: data.event,
+      });
+    case "LOSE_TF_CARD":
+      return new GainTFCardHandler(gameData, {
+        action: "GAIN_TF_CARD",
+        event: data.event,
       });
   }
 }

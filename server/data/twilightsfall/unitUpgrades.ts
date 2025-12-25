@@ -8,8 +8,6 @@ import {
   sustainDamage,
 } from "../../../src/util/strings";
 
-export type TFUnitUpgradeId = TwilightsFall.TFUnitUpgradeId;
-
 export default function getTwilightsFallUnitUpgrades(
   intl: IntlShape
 ): Record<TwilightsFall.TFUnitUpgradeId, TFBaseUnitUpgrade> {

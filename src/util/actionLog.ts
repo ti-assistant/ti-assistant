@@ -131,6 +131,65 @@ export function getGainedRelic(actionLog: ActionLog, planet?: PlanetId) {
     .map((logEntry) => logEntry.data.event.relic)[0];
 }
 
+export function getGainedTFCardLogEntries(
+  actionLog: ActionLog,
+  factionId: FactionId
+) {
+  return getLogEntries<GainTFCardData>(actionLog, "GAIN_TF_CARD").filter(
+    (logEntry) => logEntry.data.event.faction === factionId
+  );
+}
+
+interface GainedCardsByType {
+  abilities: TFAbilityId[];
+  genomes: TFGenomeId[];
+  paradigms: TFParadigmId[];
+  upgrades: TFUnitUpgradeId[];
+}
+
+export function getGainedTFCardsByType(
+  actionLog: ActionLog,
+  factionId: FactionId
+) {
+  const events = getLogEntries<GainTFCardData>(actionLog, "GAIN_TF_CARD")
+    .filter((logEntry) => logEntry.data.event.faction === factionId)
+    .map((logEntry) => logEntry.data.event);
+  const cardsByType: GainedCardsByType = {
+    abilities: [],
+    genomes: [],
+    paradigms: [],
+    upgrades: [],
+  };
+  for (const event of events) {
+    switch (event.type) {
+      case "ABILITY":
+        cardsByType.abilities.push(event.ability);
+        break;
+      case "GENOME":
+        cardsByType.genomes.push(event.genome);
+        break;
+      case "PARADIGM":
+        cardsByType.paradigms.push(event.paradigm);
+        break;
+      case "UNIT_UPGRADE":
+        cardsByType.upgrades.push(event.upgrade);
+        break;
+    }
+  }
+  return cardsByType;
+}
+
+export function getGainedAbility(actionLog: ActionLog, factionId: FactionId) {
+  return getLogEntries<GainTFCardData>(actionLog, "GAIN_TF_CARD")
+    .filter((logEntry) => {
+      return (
+        logEntry.data.event.type === "ABILITY" &&
+        logEntry.data.event.faction === factionId
+      );
+    })
+    .map((logEntry) => logEntry.data.event)[0];
+}
+
 export function getPurgedPlanet(actionLog: ActionLog) {
   return getLogEntries<UpdatePlanetStateData>(actionLog, "UPDATE_PLANET_STATE")
     .filter((logEntry) => logEntry.data.event.state === "PURGED")

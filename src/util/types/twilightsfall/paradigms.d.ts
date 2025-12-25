@@ -8,7 +8,9 @@ interface TFBaseParadigm {
 }
 
 interface TFGameParadigm {
-  owner: FactionId;
+  owner?: FactionId;
 }
 
 type TFParadigm = TFBaseParadigm & TFGameParadigm;
+
+type TFParadigmId = TwilightsFall.TFParadigmId;

@@ -1,7 +1,5 @@
 import { IntlShape } from "react-intl";
 
-export type TFGenomeId = TwilightsFall.TFParadigmId;
-
 export default function getTwilightsFallParadigms(
   intl: IntlShape
 ): Record<TwilightsFall.TFParadigmId, TFBaseParadigm> {

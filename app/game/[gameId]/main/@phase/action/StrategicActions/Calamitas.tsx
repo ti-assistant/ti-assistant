@@ -9,13 +9,13 @@ import { useOrderedFactionIds } from "../../../../../../../src/context/gameDataH
 import { getColorForFaction } from "../../../../../../../src/util/factions";
 import { rem } from "../../../../../../../src/util/util";
 
-const Noctis = {
+const Calamitas = {
   Primary,
   Secondary,
   AllSecondaries,
 };
 
-export default Noctis;
+export default Calamitas;
 
 function Primary({ factionId }: { factionId: FactionId }) {
   const factionColor = useFactionColor(factionId);
@@ -27,7 +27,7 @@ function Primary({ factionId }: { factionId: FactionId }) {
         color={factionColor}
         blur
       >
-        <GainTFCard factionId={factionId} numToGain={{ genomes: 1 }} />
+        <GainTFCard factionId={factionId} numToGain={{ upgrades: 1 }} />
       </LabeledDiv>
     </div>
   );
@@ -49,7 +49,7 @@ function Secondary({ factionId }: { factionId: FactionId }) {
       blur
     >
       <>
-        <GainTFCard factionId={factionId} numToGain={{ genomes: 1 }} />
+        <GainTFCard factionId={factionId} numToGain={{ upgrades: 1 }} />
       </>
     </LabeledDiv>
   );

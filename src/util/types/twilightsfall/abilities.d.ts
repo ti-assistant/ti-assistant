@@ -9,7 +9,9 @@ interface TFBaseAbility {
 }
 
 interface TFGameAbility {
-  owner: FactionId;
+  owner?: FactionId;
 }
 
 type TFAbility = TFBaseAbility & TFGameAbility;
+
+type TFAbilityId = TwilightsFall.TFAbilityId;

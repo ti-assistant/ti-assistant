@@ -746,15 +746,134 @@ export function AdditionalActions({
         </div>
       );
     }
+    case "Magus": {
+      const strategyCard = strategyCards.Magus;
+      return (
+        <div className="flexColumn largeFont" style={{ ...style }}>
+          <LabeledLine
+            leftLabel={
+              <InfoRow
+                infoTitle={`${strategyCard?.name} Primary`}
+                infoContent={
+                  <FormattedDescription description={strategyCard?.primary} />
+                }
+              >
+                <FormattedMessage
+                  id="mhqGMn"
+                  description="The main ability for a strategy card."
+                  defaultMessage="Primary"
+                />
+              </InfoRow>
+            }
+            rightLabel={
+              <Toggle
+                selected={primaryCompleted}
+                toggleFn={() => {
+                  markPrimaryAsync(gameId, !primaryCompleted);
+                }}
+              >
+                <FormattedMessage
+                  id="9F+GVy"
+                  description="Text on a button for marking something completed."
+                  defaultMessage="Done"
+                />
+              </Toggle>
+            }
+          />
+          <StrategicActions.Magus.Primary factionId={factionId} />
+          <LabeledLine
+            leftLabel={
+              <InfoRow
+                infoTitle={`${strategyCard?.name} Secondary`}
+                infoContent={
+                  <FormattedDescription description={strategyCard?.secondary} />
+                }
+              >
+                <FormattedMessage
+                  id="PBW6vs"
+                  description="The alternate ability for a strategy card."
+                  defaultMessage="Secondary"
+                />
+              </InfoRow>
+            }
+          />
+          <StrategicActions.Magus.AllSecondaries activeFactionId={factionId} />
+          <SecondaryCheck
+            activeFactionId={factionId}
+            primaryCompleted={primaryCompleted}
+            orderedFactionIds={orderedFactionIds}
+          />
+        </div>
+      );
+    }
+    case "Calamitas": {
+      const strategyCard = strategyCards.Calamitas;
+      return (
+        <div className="flexColumn largeFont" style={{ ...style }}>
+          <LabeledLine
+            leftLabel={
+              <InfoRow
+                infoTitle={`${strategyCard?.name} Primary`}
+                infoContent={
+                  <FormattedDescription description={strategyCard?.primary} />
+                }
+              >
+                <FormattedMessage
+                  id="mhqGMn"
+                  description="The main ability for a strategy card."
+                  defaultMessage="Primary"
+                />
+              </InfoRow>
+            }
+            rightLabel={
+              <Toggle
+                selected={primaryCompleted}
+                toggleFn={() => {
+                  markPrimaryAsync(gameId, !primaryCompleted);
+                }}
+              >
+                <FormattedMessage
+                  id="9F+GVy"
+                  description="Text on a button for marking something completed."
+                  defaultMessage="Done"
+                />
+              </Toggle>
+            }
+          />
+          <StrategicActions.Calamitas.Primary factionId={factionId} />
+          <LabeledLine
+            leftLabel={
+              <InfoRow
+                infoTitle={`${strategyCard?.name} Secondary`}
+                infoContent={
+                  <FormattedDescription description={strategyCard?.secondary} />
+                }
+              >
+                <FormattedMessage
+                  id="PBW6vs"
+                  description="The alternate ability for a strategy card."
+                  defaultMessage="Secondary"
+                />
+              </InfoRow>
+            }
+          />
+          <StrategicActions.Calamitas.AllSecondaries
+            activeFactionId={factionId}
+          />
+          <SecondaryCheck
+            activeFactionId={factionId}
+            primaryCompleted={primaryCompleted}
+            orderedFactionIds={orderedFactionIds}
+          />
+        </div>
+      );
+    }
     case "Leadership":
     case "Construction":
     case "Trade":
     case "Lux":
     case "Civitas":
-    case "Amicus":
-    case "Calamitas":
-    case "Magus":
-    case "Aeterna": {
+    case "Amicus": {
       const strategyCard = strategyCards[selectedAction];
       return (
         <div className="flexColumn" style={{ width: "100%" }}>
@@ -864,6 +983,69 @@ export function AdditionalActions({
                 />
               </InfoRow>
             }
+          />
+          <SecondaryCheck
+            activeFactionId={factionId}
+            primaryCompleted={primaryCompleted}
+            orderedFactionIds={orderedFactionIds}
+          />
+        </div>
+      );
+    }
+    case "Aeterna": {
+      const strategyCard = strategyCards.Aeterna;
+      return (
+        <div
+          className="flexColumn largeFont"
+          style={{ width: "100%", ...style }}
+        >
+          <LabeledLine
+            leftLabel={
+              <InfoRow
+                infoTitle={`${strategyCard?.name} Primary`}
+                infoContent={
+                  <FormattedDescription description={strategyCard?.primary} />
+                }
+              >
+                <FormattedMessage
+                  id="mhqGMn"
+                  description="The main ability for a strategy card."
+                  defaultMessage="Primary"
+                />
+              </InfoRow>
+            }
+            rightLabel={
+              <Toggle
+                selected={primaryCompleted}
+                toggleFn={() => markPrimaryAsync(gameId, !primaryCompleted)}
+              >
+                <FormattedMessage
+                  id="9F+GVy"
+                  description="Text on a button for marking something completed."
+                  defaultMessage="Done"
+                />
+              </Toggle>
+            }
+          />
+          <StrategicActions.Aeterna.Primary factionId={factionId} />
+          <LabeledLine
+            leftLabel={
+              <InfoRow
+                infoTitle={`${strategyCard?.name} Secondary`}
+                infoContent={
+                  <FormattedDescription description={strategyCard?.secondary} />
+                }
+              >
+                <FormattedMessage
+                  id="PBW6vs"
+                  description="The alternate ability for a strategy card."
+                  defaultMessage="Secondary"
+                />
+              </InfoRow>
+            }
+          />
+          <StrategicActions.Aeterna.AllSecondaries
+            activeFactionId={factionId}
           />
           <SecondaryCheck
             activeFactionId={factionId}

@@ -1,7 +1,7 @@
 interface TFBaseGenome {
   description: string;
   expansion?: Expansion; // In addition to Twilight's Fall.
-  id: TFUnitUpgradeId;
+  id: TFGenomeId;
   name: string;
   origin: FactionId;
   subName: string;
@@ -9,7 +9,9 @@ interface TFBaseGenome {
 }
 
 interface TFGameGenome {
-  owner: FactionId;
+  owner?: FactionId;
 }
 
 type TFGenome = TFBaseGenome & TFGameGenome;
+
+type TFGenomeId = TwilightsFall.TFGenomeId;

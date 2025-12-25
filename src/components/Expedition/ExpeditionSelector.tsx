@@ -56,7 +56,10 @@ export default function ExpeditionSelector({
   const viewOnly = useViewOnly();
   const selectedAction = getSelectedActionFromLog(currentTurn);
 
-  if (!options.expansions.includes("THUNDERS EDGE")) {
+  if (
+    !options.expansions.includes("THUNDERS EDGE") ||
+    options.expansions.includes("TWILIGHTS FALL")
+  ) {
     return null;
   }
 

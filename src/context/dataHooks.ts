@@ -112,6 +112,26 @@ export function useLogEntries<DataType extends GameUpdateData>(
   );
 }
 
+type Abilities = Partial<Record<TFAbilityId, TFAbility>>;
+export function useAbilities() {
+  return useGameDataValue<Abilities>("abilities", {});
+}
+
+type Genomes = Partial<Record<TFGenomeId, TFGenome>>;
+export function useGenomes() {
+  return useGameDataValue<Genomes>("genomes", {});
+}
+
+type Paradigms = Partial<Record<TFParadigmId, TFParadigm>>;
+export function useParadigms() {
+  return useGameDataValue<Paradigms>("paradigms", {});
+}
+
+type Upgrades = Partial<Record<TFUnitUpgradeId, TFUnitUpgrade>>;
+export function useUpgrades() {
+  return useGameDataValue<Upgrades>("upgrades", {});
+}
+
 export function useActionCards() {
   return useGameDataValue<ActionCards>("actionCards", {});
 }

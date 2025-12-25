@@ -1,7 +1,12 @@
 import { useContext } from "react";
 import { FormattedMessage } from "react-intl";
 import { SettingsContext } from "../../context/contexts";
-import { useOptions, useViewOnly } from "../../context/dataHooks";
+import {
+  useAbilities,
+  useOptions,
+  useUpgrades,
+  useViewOnly,
+} from "../../context/dataHooks";
 import { Techs } from "../../context/techDataHooks";
 import { rem } from "../../util/util";
 import OptionalElement from "../OptionalElement/OptionalElement";
@@ -372,6 +377,129 @@ export default function TechSummary({
               type="UPGRADE"
               viewOnly={viewOnly}
             />
+          </OptionalElement>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export function TFTechSummary({ factionId }: { factionId: FactionId }) {
+  const abilities = useAbilities();
+  const { settings } = useContext(SettingsContext);
+  const upgrades = useUpgrades();
+
+  if (settings["fs-tech-summary-display"] === "NONE") {
+    return null;
+  }
+
+  let blueTechs = [];
+  let yellowTechs = [];
+  let greenTechs = [];
+  let redTechs = [];
+  let upgradeTechs = [];
+  for (const ability of Object.values(abilities)) {
+    if (ability.owner !== factionId) {
+      continue;
+    }
+    switch (ability.type) {
+      case "RED":
+        redTechs.push(ability);
+        break;
+      case "YELLOW":
+        yellowTechs.push(ability);
+        break;
+      case "GREEN":
+        greenTechs.push(ability);
+        break;
+      case "BLUE":
+        blueTechs.push(ability);
+        break;
+    }
+  }
+  for (const upgrade of Object.values(upgrades)) {
+    if (upgrade.owner !== factionId) {
+      continue;
+    }
+    upgradeTechs.push(upgrade);
+  }
+
+  const showNumbers = settings["fs-tech-summary-display"].includes("NUMBER");
+  const showIcons = settings["fs-tech-summary-display"].includes("ICON");
+
+  return (
+    <>
+      <div className={`${styles.TechSummaryGrid}`}>
+        <div className={styles.TechSummarySection}>
+          <OptionalElement value={showNumbers}>
+            <div className={styles.TechSummaryNumber}>
+              {greenTechs.length || "-"}
+            </div>
+          </OptionalElement>
+          <OptionalElement value={showIcons}>
+            <div className="flexRow" style={{ height: "100%" }}>
+              <TechIcon type={"GREEN"} size={16} />
+            </div>
+          </OptionalElement>
+        </div>
+        <div className={styles.TechSummarySection}>
+          <OptionalElement value={showIcons}>
+            <div className="flexRow" style={{ height: "100%" }}>
+              <TechIcon type={"BLUE"} size={16} />
+            </div>
+          </OptionalElement>
+          <OptionalElement value={showNumbers}>
+            <div className={styles.TechSummaryNumber}>
+              {blueTechs.length || "-"}
+            </div>
+          </OptionalElement>
+        </div>
+        <div className={styles.TechSummarySection}>
+          <OptionalElement value={showNumbers}>
+            <div className={styles.TechSummaryNumber}>
+              {yellowTechs.length || "-"}
+            </div>
+          </OptionalElement>
+          <OptionalElement value={showIcons}>
+            <div className="flexRow" style={{ height: "100%" }}>
+              <TechIcon type={"YELLOW"} size={16} />
+            </div>
+          </OptionalElement>
+        </div>
+        <div className={styles.TechSummarySection}>
+          <OptionalElement value={showIcons}>
+            <div className="flexRow" style={{ height: "100%" }}>
+              <TechIcon type={"RED"} size={16} />
+            </div>
+          </OptionalElement>
+          <OptionalElement value={showNumbers}>
+            <div className={styles.TechSummaryNumber}>
+              {redTechs.length || "-"}
+            </div>
+          </OptionalElement>
+        </div>{" "}
+        <div
+          className="flexRow"
+          style={{ height: "100%", gridRow: "1 / 3", gridColumn: "3 / 4" }}
+        ></div>
+        <div
+          className={styles.TechSummarySection}
+          style={{ gridColumn: "span 3" }}
+        >
+          <OptionalElement value={showNumbers}>
+            <div className={styles.TechSummaryNumber}>
+              {upgradeTechs.length || "-"}
+            </div>
+          </OptionalElement>
+          <OptionalElement value={showIcons}>
+            <div className="flexRow" style={{ fontSize: rem(12) }}>
+              <FormattedMessage
+                id="lGDH2d"
+                description="Unit upgrade techs."
+                defaultMessage="{count, plural, =0 {Upgrades} one {Upgrade} other {Upgrades}}"
+                values={{ count: upgradeTechs.length }}
+              />
+            </div>
           </OptionalElement>
         </div>
       </div>

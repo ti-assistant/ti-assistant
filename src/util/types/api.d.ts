@@ -64,6 +64,7 @@ type GameUpdateData =
   | (PassData | UnpassData)
   | (PurgeSystemData | UnpurgeSystemData)
   | ToggleStructureData
+  | (GainTFCardData | LoseTFCardData)
   | UndoData;
 
 type Secondary = "PENDING" | "DONE" | "SKIPPED";
@@ -88,6 +89,12 @@ interface BaseData {
   strategycards: Record<StrategyCardId, StrategyCard>;
   systems: Record<SystemId, BaseSystem>;
   techs: Record<TechId, BaseTech>;
+
+  // Twilight's Fall Specific
+  abilities: Record<TFAbilityId, TFBaseAbility>;
+  genomes: Record<TFGenomeId, TFBaseGenome>;
+  paradigms: Record<TFParadigmId, TFBaseParadigm>;
+  upgrades: Record<TFUnitUpgradeId, TFBaseUnitUpgrade>;
 }
 
 interface GameData {
@@ -110,6 +117,12 @@ interface GameData {
   systems?: Partial<Record<SystemId, System>>;
   techs?: Partial<Record<TechId, Tech>>;
   timers?: Timers;
+
+  // Twilight's Fall Specific
+  abilities?: Partial<Record<TFAbilityId, TFAbility>>;
+  genomes?: Partial<Record<TFGenomeId, TFGenome>>;
+  paradigms?: Partial<Record<TFParadigmId, TFParadigm>>;
+  upgrades?: Partial<Record<TFUnitUpgradeId, TFUnitUpgrade>>;
 
   // If set, prevent the user from making changes.
   viewOnly?: boolean;
@@ -147,6 +160,11 @@ interface StoredGameData {
   techs?: Partial<Record<TechId, GameTech>>;
   timers?: Timers;
   updates?: Record<string, { timestamp: Timestamp }>;
+  // Twilight's Fall Specific
+  abilities?: Partial<Record<TFAbilityId, TFGameAbility>>;
+  genomes?: Partial<Record<TFGenomeId, TFGameGenome>>;
+  paradigms?: Partial<Record<TFParadigmId, TFGameParadigm>>;
+  upgrades?: Partial<Record<TFUnitUpgradeId, TFGameUnitUpgrade>>;
   // Secrets
   [key: string]: any;
   // Metadata
@@ -374,6 +392,45 @@ interface GainRelicEvent {
 interface GainRelicData {
   action: "GAIN_RELIC";
   event: GainRelicEvent;
+}
+
+type TFCardType = "GENOME" | "PARADIGM" | "UNIT_UPGRADE" | "ABILITY";
+
+interface AbilityEvent {
+  type: "ABILITY";
+  ability: TFAbilityId;
+}
+
+interface GenomeEvent {
+  type: "GENOME";
+  genome: TFGenomeId;
+}
+
+interface ParadigmEvent {
+  type: "PARADIGM";
+  paradigm: TFParadigmId;
+}
+
+interface UpgradeEvent {
+  type: "UNIT_UPGRADE";
+  upgrade: TFUnitUpgradeId;
+}
+
+interface TFCardEvent {
+  faction: FactionId;
+  prevFaction?: FactionId;
+}
+
+interface GainTFCardData {
+  action: "GAIN_TF_CARD";
+  event: TFCardEvent &
+    (AbilityEvent | GenomeEvent | ParadigmEvent | UpgradeEvent);
+}
+
+interface LoseTFCardData {
+  action: "LOSE_TF_CARD";
+  event: TFCardEvent &
+    (AbilityEvent | GenomeEvent | ParadigmEvent | UpgradeEvent);
 }
 
 interface GainAllianceEvent {
