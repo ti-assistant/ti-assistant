@@ -1,4 +1,6 @@
 import { FormattedMessage, useIntl } from "react-intl";
+import { getFactions } from "../../../server/data/factions";
+import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import { SelectableRow } from "../../SelectableRow";
 import {
   useGameId,
@@ -6,37 +8,40 @@ import {
   useTechs,
   useViewOnly,
 } from "../../context/dataHooks";
-import { useFaction } from "../../context/factionDataHooks";
+import { useFaction, useFactions } from "../../context/factionDataHooks";
 import {
   chooseStartingTechAsync,
   chooseSubFactionAsync,
+  chooseTFFactionAsync,
   removeStartingTechAsync,
 } from "../../dynamic/api";
+import SynergySVG from "../../icons/ui/Synergy";
+import CarrierSVG from "../../icons/units/Carrier";
+import CruiserSVG from "../../icons/units/Cruiser";
+import DestroyerSVG from "../../icons/units/Destroyer";
+import DreadnoughtSVG from "../../icons/units/Dreadnought";
+import FighterSVG from "../../icons/units/Fighter";
+import FlagshipSVG from "../../icons/units/Flagship";
+import InfantrySVG from "../../icons/units/Infantry";
+import MechSVG from "../../icons/units/Mech";
+import PDSSVG from "../../icons/units/PDS";
+import SpaceDockSVG from "../../icons/units/SpaceDock";
+import WarSunSVG from "../../icons/units/WarSun";
+import { getFactionColor } from "../../util/factions";
 import {
   canResearchTech,
   getFactionPreReqs,
   getTechColor,
 } from "../../util/techs";
-import { objectEntries, objectKeys, rem } from "../../util/util";
+import { objectEntries, rem } from "../../util/util";
+import ExpansionIcon from "../ExpansionIcon/ExpansionIcon";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
+import TechIcon from "../TechIcon/TechIcon";
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
 import { Strings } from "../strings";
 import styles from "./StartingComponents.module.scss";
-import FighterSVG from "../../icons/units/Fighter";
-import InfantrySVG from "../../icons/units/Infantry";
-import CarrierSVG from "../../icons/units/Carrier";
-import CruiserSVG from "../../icons/units/Cruiser";
-import DestroyerSVG from "../../icons/units/Destroyer";
-import PDSSVG from "../../icons/units/PDS";
-import DreadnoughtSVG from "../../icons/units/Dreadnought";
-import { getFactionColor } from "../../util/factions";
-import SpaceDockSVG from "../../icons/units/SpaceDock";
-import FlagshipSVG from "../../icons/units/Flagship";
-import WarSunSVG from "../../icons/units/WarSun";
-import MechSVG from "../../icons/units/Mech";
-import TechIcon from "../TechIcon/TechIcon";
-import SynergySVG from "../../icons/ui/Synergy";
+import FactionComponents from "../FactionComponents/FactionComponents";
 
 interface StartingComponentsProps {
   factionId: FactionId;
@@ -74,22 +79,13 @@ export default function StartingComponents({
     return null;
   }
 
-  const startswith = faction.startswith;
-  if (!startswith) {
-    return null;
-  }
+  const startswith: StartsWith = faction.startswith ?? { units: {} };
 
-  const orderedUnits = objectEntries(startswith.units).sort(
+  const orderedUnits = objectEntries(startswith.units ?? {}).sort(
     (a, b) => unitOrder.indexOf(a[0]) - unitOrder.indexOf(b[0])
   );
   const orderedTechs = techs
     ? (startswith.techs ?? [])
-        .filter((tech) => {
-          if (!techs) {
-            return false;
-          }
-          return !!techs[tech];
-        })
         .filter((tech) => {
           return !!techs[tech];
         })
@@ -195,6 +191,17 @@ export default function StartingComponents({
           <FactionIcon factionId={factionId} size={60} />
         </div>
       ) : null}
+      {options.expansions.includes("TWILIGHTS FALL") ? (
+        <>
+          <div className="flexRow" style={{ fontFamily: "Myriad Pro" }}>
+            Planet Faction:{" "}
+            <TFFactionSelect factionId={factionId} type="Planet" />
+          </div>
+          <div className="flexRow" style={{ fontFamily: "Myriad Pro" }}>
+            Unit Faction: <TFFactionSelect factionId={factionId} type="Unit" />
+          </div>
+        </>
+      ) : null}
       {startswith.planetchoice ? (
         <div
           className="flexRow"
@@ -227,8 +234,10 @@ export default function StartingComponents({
           />
         </div>
       ) : null}
-      <div style={{}}>
-        {orderedTechs.length === 0 && !startswith.choice ? (
+      <>
+        {orderedTechs.length === 0 &&
+        !startswith.choice &&
+        !options.expansions.includes("TWILIGHTS FALL") ? (
           <div
             style={{
               fontFamily: "Myriad Pro",
@@ -277,7 +286,7 @@ export default function StartingComponents({
             </div>
           );
         })}
-      </div>
+      </>
       {numToChoose > 0 ? (
         <div>
           <TechSelectHoverMenu
@@ -376,4 +385,154 @@ function UnitIcon({ unit, color }: { unit: UnitType; color: string }) {
     case "War Sun":
       return <WarSunSVG size={size} color={iconColor} />;
   }
+}
+
+function TFFactionSelect({
+  factionId,
+  type,
+}: {
+  factionId: FactionId;
+  type: "Unit" | "Planet";
+}) {
+  const intl = useIntl();
+  const allFactions = getFactions(intl);
+  const factions = useFactions();
+  const gameId = useGameId();
+  const options = useOptions();
+  const viewOnly = useViewOnly();
+
+  const alreadyChosen = Object.values(factions).reduce((set, faction) => {
+    if (faction.startswith?.planetFaction) {
+      set.add(faction.startswith.planetFaction);
+    }
+    if (faction.startswith?.unitFaction) {
+      set.add(faction.startswith.unitFaction);
+    }
+    return set;
+  }, new Set<FactionId>());
+
+  const filteredFactions = Object.values(allFactions).filter((faction) => {
+    if (faction.locked) {
+      return false;
+    }
+    if (alreadyChosen.has(faction.id)) {
+      return false;
+    }
+    if (faction.expansion === "TWILIGHTS FALL") {
+      return false;
+    }
+    if (faction.id === "Council Keleres") {
+      return false;
+    }
+    if (
+      faction.expansion !== "BASE" &&
+      !options.expansions.includes(faction.expansion)
+    ) {
+      return false;
+    }
+    return true;
+  });
+  filteredFactions.sort((a, b) => {
+    if (a.name > b.name) {
+      return 1;
+    }
+    return -1;
+  });
+
+  const faction = factions[factionId];
+  if (!faction) {
+    return null;
+  }
+
+  const selectedFaction =
+    type === "Unit"
+      ? faction.startswith?.unitFaction
+      : faction.startswith?.planetFaction;
+
+  if (selectedFaction) {
+    return (
+      <SelectableRow
+        itemId={selectedFaction}
+        removeItem={
+          viewOnly
+            ? undefined
+            : () => chooseTFFactionAsync(gameId, factionId, undefined, type)
+        }
+      >
+        <FactionComponents.Icon size={24} factionId={selectedFaction} />
+      </SelectableRow>
+    );
+  }
+
+  if (viewOnly) {
+    return null;
+  }
+
+  return (
+    <ClientOnlyHoverMenu
+      label={
+        <FormattedMessage
+          id="Cw3noi"
+          description="Text on a hover menu for selecting a player's faction"
+          defaultMessage="Pick Faction"
+        />
+      }
+      buttonStyle={{ fontSize: rem(14) }}
+    >
+      <div
+        style={{
+          display: "grid",
+          gridAutoFlow: "column",
+          gridTemplateRows: `repeat(${Math.min(
+            filteredFactions.length,
+            10
+          )}, minmax(0, 1fr))`,
+          gap: rem(4),
+          padding: rem(8),
+          maxWidth: `min(80vw, ${rem(700)})`,
+          overflowX: "auto",
+        }}
+      >
+        {filteredFactions.map((faction) => {
+          const faded = alreadyChosen.has(faction.id);
+          return (
+            <button
+              key={faction.id}
+              className={`flexRow ${faded ? "faded" : ""}`}
+              style={{
+                position: "relative",
+                justifyContent: "flex-start",
+                alignItems: "center",
+                fontSize: rem(16),
+              }}
+              onClick={() =>
+                chooseTFFactionAsync(gameId, factionId, faction.id, type)
+              }
+            >
+              <FactionIcon factionId={faction.id} size={20} />
+              {faction.name}
+              {faction.expansion !== "BASE" ? (
+                <>
+                  <div style={{ width: rem(4) }}></div>
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: rem(4),
+                      right: rem(4),
+                    }}
+                  >
+                    <ExpansionIcon
+                      expansion={faction.expansion}
+                      size={8}
+                      color={faded ? "#555" : undefined}
+                    />
+                  </div>
+                </>
+              ) : null}
+            </button>
+          );
+        })}
+      </div>
+    </ClientOnlyHoverMenu>
+  );
 }

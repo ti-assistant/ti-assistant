@@ -65,6 +65,7 @@ type GameUpdateData =
   | (PurgeSystemData | UnpurgeSystemData)
   | ToggleStructureData
   | (GainTFCardData | LoseTFCardData)
+  | ChooseTFFactionData
   | UndoData;
 
 type Secondary = "PENDING" | "DONE" | "SKIPPED";
@@ -283,6 +284,17 @@ interface ChooseStartingTechData {
 interface RemoveStartingTechData {
   action: "REMOVE_STARTING_TECH";
   event: ChooseStartingTechEvent;
+}
+
+interface ChooseTFFactionEvent {
+  factionId: FactionId;
+  subFaction?: FactionId;
+  type: "Planet" | "Unit";
+}
+
+interface ChooseTFFactionData {
+  action: "CHOOSE_TF_FACTION";
+  event: ChooseTFFactionEvent;
 }
 
 interface ChooseSubFactionEvent {

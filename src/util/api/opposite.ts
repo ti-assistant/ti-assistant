@@ -1,17 +1,24 @@
 import {
-  RemoveAttachmentHandler,
   AddAttachmentHandler,
+  RemoveAttachmentHandler,
 } from "../model/addAttachment";
-import { RemoveTechHandler, AddTechHandler } from "../model/addTech";
+import { AddTechHandler, RemoveTechHandler } from "../model/addTech";
 import { RewindPhaseHandler } from "../model/advancePhase";
 import { UnassignStrategyCardHandler } from "../model/assignStrategyCard";
 import { CastVotesHandler } from "../model/castVotes";
 import { RemoveStartingTechHandler } from "../model/chooseStartingTech";
 import { ChooseSubFactionHandler } from "../model/chooseSubFaction";
-import { UnclaimPlanetHandler, ClaimPlanetHandler } from "../model/claimPlanet";
+import { ChooseTFFactionHandler } from "../model/chooseTFFaction";
+import { ClaimPlanetHandler, UnclaimPlanetHandler } from "../model/claimPlanet";
+import { CommitToExpeditionHandler } from "../model/commitToExpedition";
 import { ContinueGameHandler } from "../model/endGame";
 import { UnendTurnHandler } from "../model/endTurn";
+import {
+  GainAllianceHandler,
+  LoseAllianceHandler,
+} from "../model/gainAlliance";
 import { GainRelicHandler, LoseRelicHandler } from "../model/gainRelic";
+import { GainTFCardHandler, LoseTFCardHandler } from "../model/gainTFCard";
 import { GiftOfPrescienceHandler } from "../model/giftOfPrescience";
 import { ManualVPUpdateHandler } from "../model/manualVPUpdate";
 import {
@@ -19,10 +26,13 @@ import {
   MarkSecondaryHandler,
 } from "../model/markSecondary";
 import { UnplayActionCardHandler } from "../model/playActionCard";
+import { UndoAdjudicatorBaalHandler } from "../model/playAdjudicatorBaal";
 import { UnplayComponentHandler } from "../model/playComponent";
 import { UnplayPromissoryNoteHandler } from "../model/playPromissoryNote";
 import { UnplayRelicHandler } from "../model/playRelic";
 import { UnplayRiderHandler } from "../model/playRider";
+import { PurgeSystemHandler, UnpurgeSystemHandler } from "../model/purgeSystem";
+import { PurgeTechHandler, UnpurgeTechHandler } from "../model/purgeTech";
 import {
   RepealAgendaHandler,
   ResolveAgendaHandler,
@@ -33,8 +43,8 @@ import {
   RevealObjectiveHandler,
 } from "../model/revealObjective";
 import {
-  UnscoreObjectiveHandler,
   ScoreObjectiveHandler,
+  UnscoreObjectiveHandler,
 } from "../model/scoreObjective";
 import { UnselectActionHandler } from "../model/selectAction";
 import { SelectEligibleOutcomesHandler } from "../model/selectEligibleOutcomes";
@@ -43,25 +53,16 @@ import { SelectSubAgendaHandler } from "../model/selectSubAgenda";
 import { SelectSubComponentHandler } from "../model/selectSubComponent";
 import { SetObjectivePointsHandler } from "../model/setObjectivePoints";
 import { SetSpeakerHandler } from "../model/setSpeaker";
+import { SetTyrantHandler } from "../model/setTyrant";
 import { SpeakerTieBreakHandler } from "../model/speakerTieBreak";
 import { UnstartVotingHandler } from "../model/startVoting";
+import { SwapMapTilesHandler } from "../model/swapMapTiles";
 import { UnswapStrategyCardsHandler } from "../model/swapStrategyCards";
+import { ToggleStructureHandler } from "../model/toggleSpaceDock";
+import { PassHandler, UnpassHandler } from "../model/unpass";
+import { UpdateBreakthroughStateHandler } from "../model/updateBreakthroughState";
 import { UpdateLeaderStateHandler } from "../model/updateLeaderState";
 import { UpdatePlanetStateHandler } from "../model/updatePlanetState";
-import { UndoAdjudicatorBaalHandler } from "../model/playAdjudicatorBaal";
-import { SwapMapTilesHandler } from "../model/swapMapTiles";
-import { UpdateBreakthroughStateHandler } from "../model/updateBreakthroughState";
-import { CommitToExpeditionHandler } from "../model/commitToExpedition";
-import {
-  GainAllianceHandler,
-  LoseAllianceHandler,
-} from "../model/gainAlliance";
-import { PurgeTechHandler, UnpurgeTechHandler } from "../model/purgeTech";
-import { PassHandler, UnpassHandler } from "../model/unpass";
-import { PurgeSystemHandler, UnpurgeSystemHandler } from "../model/purgeSystem";
-import { ToggleStructureHandler } from "../model/toggleSpaceDock";
-import { SetTyrantHandler } from "../model/setTyrant";
-import { GainTFCardHandler, LoseTFCardHandler } from "../model/gainTFCard";
 
 export function getOppositeHandler(
   gameData: StoredGameData,
@@ -321,6 +322,15 @@ export function getOppositeHandler(
       return new ChooseSubFactionHandler(gameData, {
         action: "CHOOSE_SUB_FACTION",
         event: data.event,
+      });
+    }
+    case "CHOOSE_TF_FACTION": {
+      return new ChooseTFFactionHandler(gameData, {
+        action: "CHOOSE_TF_FACTION",
+        event: {
+          factionId: data.event.factionId,
+          type: data.event.type,
+        },
       });
     }
     case "PLAY_ACTION_CARD": {

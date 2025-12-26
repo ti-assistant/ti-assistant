@@ -1,15 +1,3 @@
-type FactionUpdateAction =
-  | "ADD_TECH"
-  | "REMOVE_TECH"
-  | "CHOOSE_STARTING_TECH"
-  | "REMOVE_STARTING_TECH"
-  | "CHOOSE_SUB_FACTION"
-  | "PASS"
-  | "READY_ALL"
-  | "MANUAL_VP_ADJUST"
-  | "UPDATE_CAST_VOTES"
-  | "RESET_CAST_VOTES";
-
 type SubFaction = "Argent Flight" | "Mentak Coalition" | "Xxcha Kingdom";
 
 type UnitType =
@@ -41,6 +29,9 @@ interface StartsWith {
   planetchoice?: {
     options: SubFaction[];
   };
+  // Twilight's Fall
+  planetFaction?: FactionId;
+  unitFaction?: FactionId;
 }
 
 interface Ability {

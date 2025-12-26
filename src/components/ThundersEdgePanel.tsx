@@ -56,7 +56,8 @@ export default function ThundersEdgePanel() {
   const options = useOptions();
   return (
     <div className={styles.ThundersEdgeGrid}>
-      {options.expansions.includes("THUNDERS EDGE") ? (
+      {options.expansions.includes("THUNDERS EDGE") &&
+      !options.expansions.includes("TWILIGHTS FALL") ? (
         <ExpeditionSection />
       ) : null}
       <RelicsSection />

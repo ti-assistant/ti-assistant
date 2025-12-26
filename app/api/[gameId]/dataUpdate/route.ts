@@ -129,6 +129,7 @@ import {
   GainTFCardHandler,
   LoseTFCardHandler,
 } from "../../../../src/util/model/gainTFCard";
+import { ChooseTFFactionHandler } from "../../../../src/util/model/chooseTFFaction";
 
 export async function POST(
   req: Request,
@@ -493,6 +494,10 @@ function updateInTransaction(
       }
       case "CHOOSE_SUB_FACTION": {
         handler = new ChooseSubFactionHandler(gameData, data);
+        break;
+      }
+      case "CHOOSE_TF_FACTION": {
+        handler = new ChooseTFFactionHandler(gameData, data);
         break;
       }
       case "PLAY_ACTION_CARD": {

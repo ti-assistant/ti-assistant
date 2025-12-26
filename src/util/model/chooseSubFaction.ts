@@ -23,7 +23,7 @@ export class ChooseSubFactionHandler implements Handler {
       [`sequenceNum`]: "INCREMENT",
     };
 
-    const undoing = faction.startswith.faction === this.data.event.subFaction;
+    const undoing = faction.startswith?.faction === this.data.event.subFaction;
     updates[`factions.${this.data.event.faction}.startswith.faction`] = undoing
       ? "DELETE"
       : this.data.event.subFaction;

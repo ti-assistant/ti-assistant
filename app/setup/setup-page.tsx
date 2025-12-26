@@ -1147,11 +1147,13 @@ function FactionSelect({
                     }
                   />
                 </SelectableRow>
-                <ColorPicker
-                  pickedColor={faction.color}
-                  selectedColors={selectedColors}
-                  updateColor={selectColor}
-                />
+                {options.expansions.has("TWILIGHTS FALL") ? null : (
+                  <ColorPicker
+                    pickedColor={faction.color}
+                    selectedColors={selectedColors}
+                    updateColor={selectColor}
+                  />
+                )}
               </>
             ) : (
               <ClientOnlyHoverMenu

@@ -14,6 +14,7 @@ import {
   RemoveStartingTechHandler,
 } from "../model/chooseStartingTech";
 import { ChooseSubFactionHandler } from "../model/chooseSubFaction";
+import { ChooseTFFactionHandler } from "../model/chooseTFFaction";
 import { ClaimPlanetHandler, UnclaimPlanetHandler } from "../model/claimPlanet";
 import { CommitToExpeditionHandler } from "../model/commitToExpedition";
 import { ContinueGameHandler, EndGameHandler } from "../model/endGame";
@@ -104,6 +105,8 @@ export function getHandler(gameData: StoredGameData, data: GameUpdateData) {
       return new ChooseStartingTechHandler(gameData, data);
     case "CHOOSE_SUB_FACTION":
       return new ChooseSubFactionHandler(gameData, data);
+    case "CHOOSE_TF_FACTION":
+      return new ChooseTFFactionHandler(gameData, data);
     case "CLAIM_PLANET":
       return new ClaimPlanetHandler(gameData, data);
     case "CONTINUE_GAME":

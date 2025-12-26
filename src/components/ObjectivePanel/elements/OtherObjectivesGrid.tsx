@@ -72,6 +72,10 @@ function SupportForTheThrone({
   const supportForTheThrone = useObjective("Support for the Throne");
   const viewOnly = useViewOnly();
 
+  if (!supportForTheThrone) {
+    return null;
+  }
+
   return (
     <LabeledDiv
       label={
@@ -287,11 +291,13 @@ function OtherObjectives({
         fontSize: zealousOrthodoxy ? rem(12) : undefined,
       }}
     >
-      <SimpleScorable
-        objectiveId="Imperial Rider"
-        orderedFactionIds={orderedFactionIds}
-        info="Can be scored multiple times via The Codex, Ral Nel's Breakthrough, and Garbozia's ability."
-      />
+      {options.expansions.includes("TWILIGHTS FALL") ? null : (
+        <SimpleScorable
+          objectiveId="Imperial Rider"
+          orderedFactionIds={orderedFactionIds}
+          info="Can be scored multiple times via The Codex, Ral Nel's Breakthrough, and Garbozia's ability."
+        />
+      )}
       {zealousOrthodoxy ? (
         <SimpleScorable
           objectiveId="Zealous Orthodoxy"
@@ -376,6 +382,10 @@ function LawObjectives({
   const includesPoK = options.expansions.includes("POK");
   const includesTE = options.expansions.includes("THUNDERS EDGE");
 
+  if (options.expansions.includes("TWILIGHTS FALL")) {
+    return null;
+  }
+
   return (
     <LabeledDiv
       label={
@@ -428,6 +438,10 @@ function DirectiveObjectives({
   const options = useOptions();
 
   const totalWar = (options.events ?? []).includes("Total War");
+
+  if (options.expansions.includes("TWILIGHTS FALL")) {
+    return null;
+  }
 
   return (
     <LabeledDiv

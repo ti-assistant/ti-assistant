@@ -370,15 +370,24 @@ export function buildCompletePlanets(
       isPlanetInMap = true;
     }
     if (planet.faction && !gameFactions[planet.faction] && !isPlanetInMap) {
-      if (!gameFactions["Council Keleres"]) {
-        return;
+      let isPlanetSelected = false;
+      for (const faction of Object.values(gameFactions)) {
+        if (faction.startswith?.planetFaction === planet.faction) {
+          isPlanetSelected = true;
+          break;
+        }
       }
-      if (
-        !gameFactions["Council Keleres"].startswith?.planets?.includes(
-          planet.id
-        )
-      ) {
-        return;
+      if (!isPlanetSelected) {
+        if (!gameFactions["Council Keleres"]) {
+          return;
+        }
+        if (
+          !gameFactions["Council Keleres"].startswith?.planets?.includes(
+            planet.id
+          )
+        ) {
+          return;
+        }
       }
     }
     if (

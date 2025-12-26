@@ -19,9 +19,7 @@ const changeOptionFn = import("../util/api/changeOption").then(
 const chooseStartingTechFn = import("../util/api/chooseStartingTech").then(
   (mod) => mod.chooseStartingTech
 );
-const chooseSubFactionFn = import("../util/api/chooseSubFaction").then(
-  (mod) => mod.chooseSubFaction
-);
+const chooseSubFactionMod = import("../util/api/chooseSubFaction");
 const claimPlanetFn = import("../util/api/claimPlanet").then(
   (mod) => mod.claimPlanet
 );
@@ -243,8 +241,18 @@ export async function chooseSubFactionAsync(
   faction: "Council Keleres",
   subFaction: SubFaction
 ) {
-  const chooseSubFaction = await chooseSubFactionFn;
-  chooseSubFaction(gameId, faction, subFaction);
+  const mod = await chooseSubFactionMod;
+  mod.chooseSubFaction(gameId, faction, subFaction);
+}
+
+export async function chooseTFFactionAsync(
+  gameId: string,
+  factionId: FactionId,
+  subFaction: Optional<FactionId>,
+  type: "Unit" | "Planet"
+) {
+  const mod = await chooseSubFactionMod;
+  mod.chooseTFFaction(gameId, factionId, subFaction, type);
 }
 
 export async function claimPlanetAsync(

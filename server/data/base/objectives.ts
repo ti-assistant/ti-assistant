@@ -784,6 +784,7 @@ export default function getBaseObjectives(
       }),
       points: 1,
       repeatable: true,
+      removedIn: "TWILIGHTS FALL",
       type: "OTHER",
     },
     "Sway the Council": {
