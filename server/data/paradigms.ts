@@ -1,7 +1,5 @@
 import { IntlShape } from "react-intl";
-import getTwilightsFallParadigms, {
-  TFParadigmId,
-} from "./twilightsfall/paradigms";
+import getTwilightsFallParadigms from "./twilightsfall/paradigms";
 
 export function getParadigms(
   intl: IntlShape

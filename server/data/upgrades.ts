@@ -1,7 +1,5 @@
 import { IntlShape } from "react-intl";
-import getTwilightsFallUnitUpgrades, {
-  TFUnitUpgradeId,
-} from "./twilightsfall/unitUpgrades";
+import getTwilightsFallUnitUpgrades from "./twilightsfall/unitUpgrades";
 
 export function getUnitUpgrades(
   intl: IntlShape

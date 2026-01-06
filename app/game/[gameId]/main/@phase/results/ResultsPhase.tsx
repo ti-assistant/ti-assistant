@@ -2,9 +2,6 @@
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { IntlShape, useIntl } from "react-intl";
-import MapLapse from "./MapLapse";
-import TechGraph from "./TechGraph";
-import { VictoryPointsGraph } from "./VictoryPointsGraph";
 import BorderedDiv from "../../../../../../src/components/BorderedDiv/BorderedDiv";
 import Chip from "../../../../../../src/components/Chip/Chip";
 import { GameLog } from "../../../../../../src/components/GameLog/GameLog";
@@ -19,11 +16,14 @@ import { useFactions } from "../../../../../../src/context/factionDataHooks";
 import { useGameData } from "../../../../../../src/context/gameDataHooks";
 import { getBaseData } from "../../../../../../src/data/baseData";
 import { Loader } from "../../../../../../src/Loader";
+import { processMapString } from "../../../../../../src/util/map";
 import { getMapString } from "../../../../../../src/util/options";
 import { ActionLog, Optional } from "../../../../../../src/util/types/types";
 import { rem } from "../../../../../../src/util/util";
+import MapLapse from "./MapLapse";
+import TechGraph from "./TechGraph";
 import Timers from "./Timers";
-import { processMapString } from "../../../../../../src/util/map";
+import { VictoryPointsGraph } from "./VictoryPointsGraph";
 
 type View = "Game Log" | "Victory Points" | "Techs" | "Map Lapse" | "Timers";
 
@@ -268,7 +268,7 @@ function buildInitialGameData(
         };
       }
       const startingTechs: Partial<Record<TechId, { ready: boolean }>> = {};
-      (baseFaction.startswith.techs ?? []).forEach((tech) => {
+      (baseFaction.startswith?.techs ?? []).forEach((tech) => {
         startingTechs[tech] = {
           ready: true,
         };
@@ -305,15 +305,17 @@ function buildInitialGameData(
       faction.id === "Winnu" &&
       !setupData.options.expansions.includes("POK")
     ) {
-      localFaction.startswith.choice = {
-        select: 1,
-        options: [
-          "Neural Motivator",
-          "Sarween Tools",
-          "Antimass Deflectors",
-          "Plasma Scoring",
-        ],
-      };
+      if (localFaction.startswith) {
+        localFaction.startswith.choice = {
+          select: 1,
+          options: [
+            "Neural Motivator",
+            "Sarween Tools",
+            "Antimass Deflectors",
+            "Plasma Scoring",
+          ],
+        };
+      }
     }
     baseFactions[faction.id] = localFaction;
     Object.entries(faction.planets).forEach(([name, planet]) => {

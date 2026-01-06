@@ -8,11 +8,14 @@ import {
   useViewOnly,
 } from "../../../../../../src/context/dataHooks";
 import { useFaction } from "../../../../../../src/context/factionDataHooks";
-import {
-  useObjective,
-  useObjectives,
-} from "../../../../../../src/context/objectiveDataHooks";
+import { useObjectives } from "../../../../../../src/context/objectiveDataHooks";
 import { useRound } from "../../../../../../src/context/stateDataHooks";
+import {
+  hideObjectiveAsync,
+  revealObjectiveAsync,
+  scoreObjectiveAsync,
+  unscoreObjectiveAsync,
+} from "../../../../../../src/dynamic/api";
 import { ClientOnlyHoverMenu } from "../../../../../../src/HoverMenu";
 import { SelectableRow } from "../../../../../../src/SelectableRow";
 import {
@@ -21,12 +24,6 @@ import {
 } from "../../../../../../src/util/actionLog";
 import { objectiveTypeString } from "../../../../../../src/util/strings";
 import { rem } from "../../../../../../src/util/util";
-import {
-  hideObjectiveAsync,
-  revealObjectiveAsync,
-  scoreObjectiveAsync,
-  unscoreObjectiveAsync,
-} from "../../../../../../src/dynamic/api";
 
 export default function FactionStatusPhase({
   factionId,
@@ -57,7 +54,7 @@ export default function FactionStatusPhase({
       }
       let planetFaction = factionId;
       if (factionId === "Council Keleres") {
-        planetFaction = faction?.startswith.faction ?? planetFaction;
+        planetFaction = faction?.startswith?.faction ?? planetFaction;
       }
       if (
         planet.home &&

@@ -1,7 +1,5 @@
 import { IntlShape } from "react-intl";
-import getTwilightsFallAbilities, {
-  TFAbilityId,
-} from "./twilightsfall/abilities";
+import getTwilightsFallAbilities from "./twilightsfall/abilities";
 
 export function getAbilities(
   intl: IntlShape
