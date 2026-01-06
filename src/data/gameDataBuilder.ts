@@ -139,6 +139,10 @@ export function buildCompleteComponents(
   const gameComponents = storedGameData.components ?? {};
   const gameFactions = storedGameData.factions ?? {};
 
+  const gameAbilities = storedGameData.abilities ?? {};
+  const gameGenomes = storedGameData.genomes ?? {};
+  const gameParadigms = storedGameData.paradigms ?? {};
+
   const expansions = storedGameData.options.expansions;
   const events = storedGameData.options.events ?? [];
 
@@ -223,6 +227,39 @@ export function buildCompleteComponents(
           expansion: "THUNDERS EDGE",
           faction: factionId,
           type: "BREAKTHROUGH",
+        };
+      }
+    });
+  }
+
+  if (expansions.includes("TWILIGHTS FALL")) {
+    objectEntries(baseData.abilities).map(([abilityId, ability]) => {
+      if (ability.timing === "COMPONENT_ACTION") {
+        components[abilityId] = {
+          ...ability,
+          ...gameAbilities[abilityId],
+          type: "ABILITY",
+          expansion: "TWILIGHTS FALL",
+        };
+      }
+    });
+    objectEntries(baseData.genomes).map(([genomeId, genome]) => {
+      if (genome.timing === "COMPONENT_ACTION") {
+        components[genomeId] = {
+          ...genome,
+          ...gameGenomes[genomeId],
+          type: "ABILITY",
+          expansion: "TWILIGHTS FALL",
+        };
+      }
+    });
+    objectEntries(baseData.paradigms).map(([paradigmId, paradigm]) => {
+      if (paradigm.timing === "COMPONENT_ACTION") {
+        components[paradigmId] = {
+          ...paradigm,
+          ...gameParadigms[paradigmId],
+          type: "ABILITY",
+          expansion: "TWILIGHTS FALL",
         };
       }
     });

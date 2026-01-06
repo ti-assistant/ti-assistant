@@ -88,6 +88,32 @@ export function sortTechs(techs: Tech[]) {
   });
 }
 
+interface TechSortable {
+  name: string;
+  type: TechType;
+}
+
+export function sortByTechOrder(sortable: TechSortable[]) {
+  sortable.sort((a, b) => {
+    const typeDiff = TECH_ORDER[a.type] - TECH_ORDER[b.type];
+    if (typeDiff !== 0) {
+      return typeDiff;
+    }
+    if (a.type === "UPGRADE") {
+      if (a.name < b.name) {
+        return -1;
+      } else {
+        return 1;
+      }
+    }
+    if (a.name < b.name) {
+      return -1;
+    } else {
+      return 1;
+    }
+  });
+}
+
 export function getFactionPreReqs(
   faction: Optional<Faction>,
   techs: Partial<Record<TechId, Tech>>,

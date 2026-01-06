@@ -2751,6 +2751,18 @@
     "defaultMessage": "Fires of the Gashlai",
     "description": "Title of Component: Fires of the Gashlai"
   },
+  "Components.Gain Ability.Title": {
+    "defaultMessage": "Gain Ability",
+    "description": "Title of Component: Gain Ability"
+  },
+  "Components.Gain Genome.Title": {
+    "defaultMessage": "Gain Genome",
+    "description": "Title of Component: Gain Genome"
+  },
+  "Components.Gain Paradigm.Title": {
+    "defaultMessage": "Gain Paradigm",
+    "description": "Title of Component: Gain Paradigm"
+  },
   "Components.Gain Relic.Description": {
     "defaultMessage": "ACTION: Purge 3 of your relic fragments of the same type to gain 1 Relic.",
     "description": "Description for Component: Gain Relic"
@@ -2758,6 +2770,10 @@
   "Components.Gain Relic.Title": {
     "defaultMessage": "Gain Relic",
     "description": "Title of Component: Gain Relic"
+  },
+  "Components.Gain Unit Upgrade.Title": {
+    "defaultMessage": "Gain Unit Upgrade",
+    "description": "Title of Component: Gain Unit Upgrade"
   },
   "Components.Hack Election.Title": {
     "defaultMessage": "Hack Election",
@@ -2866,6 +2882,22 @@
   "Components.Star Forge.Title": {
     "defaultMessage": "Star Forge",
     "description": "Title of Component: Star Forge"
+  },
+  "Components.Steal Ability.Title": {
+    "defaultMessage": "Steal Ability",
+    "description": "Title of Component: Steal Ability"
+  },
+  "Components.Steal Genome.Title": {
+    "defaultMessage": "Steal Genome",
+    "description": "Title of Component: Steal Genome"
+  },
+  "Components.Steal Paradigm.Title": {
+    "defaultMessage": "Steal Paradigm",
+    "description": "Title of Component: Steal Paradigm"
+  },
+  "Components.Steal Unit Upgrade.Title": {
+    "defaultMessage": "Steal Unit Upgrade",
+    "description": "Title of Component: Steal Unit Upgrade"
   },
   "Components.Stellar Atomics.Description": {
     "defaultMessage": "ACTION: Discard your control token from the Stellar Atomics card to destroy all ground forces and structures on any non-home planet.",
@@ -7432,7 +7464,7 @@
     "description": "Name of Twilight's Fall Ability: Fleet Logistics"
   },
   "TF.Ability.Fleet Logistics.Text": {
-    "defaultMessage": "During each of your turns of the action phase, you may perform 2 actions instead of 1",
+    "defaultMessage": "During each of your turns of the action phase, you may perform 2 actions instead of 1.",
     "description": "Text of Twilight's Fall Ability: Fleet Logistics"
   },
   "TF.Ability.Foresight.Name": {
@@ -7456,7 +7488,7 @@
     "description": "Name of Twilight's Fall Ability: Genetic Research"
   },
   "TF.Ability.Genetic Research.Text": {
-    "defaultMessage": "At the start of the status phase:{br}Choose a technology color and gain trade goods equal to the number of abilities you own that have that technology colour.",
+    "defaultMessage": "At the start of the status phase:{br}Choose a technology color and gain trade goods equal to the number of abilities you own that have that technology color.",
     "description": "Text of Twilight's Fall Ability: Genetic Research"
   },
   "TF.Ability.Guild Ships.Name": {
@@ -10242,6 +10274,10 @@
   "fCdj3q": {
     "defaultMessage": "Score Action Phase Objective",
     "description": "Text on a hover menu allowing a player to score an action phase objective."
+  },
+  "fHRZ5N": {
+    "defaultMessage": "Inaugural Splice",
+    "description": "A step in the setup phase: The inaugural splice."
   },
   "fVAave": {
     "defaultMessage": "Details",

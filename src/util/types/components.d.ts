@@ -65,7 +65,16 @@ interface BaseComponent {
   removedIn?: Expansion;
   event?: EventId;
   faction?: FactionId;
-  id: BreakthroughId | ComponentId | RelicId | TechId | LeaderId | EventId;
+  id:
+    | TFAbilityId
+    | TFGenomeId
+    | TFParadigmId
+    | BreakthroughId
+    | ComponentId
+    | RelicId
+    | TechId
+    | LeaderId
+    | EventId;
   leader?: LeaderType;
   name: string;
   replaces?: string;
@@ -77,6 +86,7 @@ interface BaseComponent {
 
 interface GameComponent {
   state?: ComponentState;
+  owner?: FactionId;
 }
 
 type Component = (BaseComponent | BaseTechComponent) & GameComponent;

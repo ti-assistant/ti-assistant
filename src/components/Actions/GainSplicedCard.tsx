@@ -28,7 +28,6 @@ import GenomeIcon from "../LegendaryPlanetIcon/GenomeIcon";
 import ParadigmIcon from "../LegendaryPlanetIcon/ParadigmIcon";
 import UpgradeIcon from "../LegendaryPlanetIcon/UpgradeIcon";
 import { Selector } from "../Selector/Selector";
-import TechIcon from "../TechIcon/TechIcon";
 import UnitIcon from "../Units/Icons";
 import UnitStats from "../UnitStats/UnitStats";
 import styles from "./GainSplicedCard.module.scss";
@@ -64,7 +63,10 @@ export default function GainTFCard({
   const canGainMore = !numToGain.total || totalGained < numToGain.total;
 
   return (
-    <div style={{ width: "fit-content" }}>
+    <div
+      className="flexColumn"
+      style={{ width: "fit-content", alignItems: "flex-start" }}
+    >
       <GainedCardsSection
         factionId={factionId}
         gainedCardsByType={gainedCardsByType}
@@ -178,17 +180,6 @@ function GainedCardsSection({
                       {ability.name}
                     </div>
                   </InfoRow>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      opacity: "80%",
-                      flexShrink: 0,
-                    }}
-                  >
-                    <TechIcon type={ability.type} size="1em" />
-                  </div>
                 </div>
               </SelectableRow>
             );
@@ -502,6 +493,10 @@ function InnerAbilitySelectMenu({
 }) {
   const viewOnly = useViewOnly();
 
+  if (abilities.length === 0) {
+    return null;
+  }
+
   return (
     <ClientOnlyHoverMenu
       label={label}
@@ -513,7 +508,7 @@ function InnerAbilitySelectMenu({
           style={{
             display: "grid",
             gridAutoFlow: "column",
-            gridTemplateRows: `repeat(8, auto)`,
+            gridTemplateRows: `repeat(${Math.min(8, abilities.length)}, auto)`,
             padding: rem(8),
             gap: rem(4),
             alignItems: "stretch",
@@ -767,7 +762,10 @@ export function GainUpgradeSection({
           style={{
             display: "grid",
             gridAutoFlow: "column",
-            gridTemplateRows: `repeat(11, auto)`,
+            gridTemplateRows: `repeat(${Math.min(
+              availableUpgrades.length,
+              11
+            )}, auto)`,
             padding: rem(8),
             gap: rem(4),
             alignItems: "stretch",

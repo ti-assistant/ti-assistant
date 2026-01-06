@@ -356,11 +356,6 @@ export default function StartingComponents({
           );
         })}
       </div>
-      {/* TODO: Move - not enough room here. */}
-      <GainTFCard
-        factionId={factionId}
-        numToGain={{ abilities: 2, genomes: 1, upgrades: 1 }}
-      />
     </div>
   );
 }

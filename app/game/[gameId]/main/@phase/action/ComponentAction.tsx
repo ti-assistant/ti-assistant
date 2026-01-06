@@ -173,6 +173,10 @@ function ComponentSelect({
         (faction?.breakthrough?.state &&
           faction.breakthrough.state !== "locked")
     )
+    .filter(
+      (component) =>
+        component.type !== "ABILITY" || component.owner === factionId
+    )
     .sort((a, b) => (a.name > b.name ? 1 : -1));
 
   const numRows = options.expansions.includes("THUNDERS EDGE") ? 12 : 10;
@@ -456,7 +460,7 @@ function ComponentSelect({
         >
           <div
             className="flexColumn"
-            style={{ alignItems: "stretch", padding: rem(8) }}
+            style={{ alignItems: "stretch", padding: rem(8), gap: rem(4) }}
           >
             {others.map((component) => {
               if (component.type === "FLAGSHIP") {

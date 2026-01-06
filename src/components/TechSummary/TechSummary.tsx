@@ -523,3 +523,138 @@ export function TFTechSummary({
     </>
   );
 }
+
+export function FullTFTechSummary({
+  techs,
+  ownedTechs,
+  factionId,
+}: {
+  techs: Techs;
+  ownedTechs: TechId[];
+  factionId: FactionId;
+}) {
+  const abilities = useAbilities();
+  const { settings } = useContext(SettingsContext);
+  const upgrades = useUpgrades();
+  const viewOnly = useViewOnly();
+
+  let blueTechs = [];
+  let yellowTechs = [];
+  let greenTechs = [];
+  let redTechs = [];
+  let upgradeTechs = [];
+  for (const ability of Object.values(abilities)) {
+    if (ability.owner !== factionId) {
+      continue;
+    }
+    switch (ability.type) {
+      case "RED":
+        redTechs.push(ability);
+        break;
+      case "YELLOW":
+        yellowTechs.push(ability);
+        break;
+      case "GREEN":
+        greenTechs.push(ability);
+        break;
+      case "BLUE":
+        blueTechs.push(ability);
+        break;
+    }
+  }
+  for (const upgrade of Object.values(upgrades)) {
+    if (upgrade.owner !== factionId) {
+      continue;
+    }
+    upgradeTechs.push(upgrade);
+  }
+
+  const techOrder: TechType[] = ["GREEN", "BLUE", "YELLOW", "RED", "UPGRADE"];
+
+  Object.values(techs).sort((a, b) => {
+    const typeDiff = techOrder.indexOf(a.type) - techOrder.indexOf(b.type);
+    if (typeDiff !== 0) {
+      return typeDiff;
+    }
+    const prereqDiff: number = a.prereqs.length - b.prereqs.length;
+    if (prereqDiff !== 0) {
+      return prereqDiff;
+    }
+    if (a.name < b.name) {
+      return -1;
+    } else {
+      return 1;
+    }
+  });
+
+  const numberWidth = rem(10.75 * 1.2);
+  const iconSize = 20;
+
+  return (
+    <>
+      <div className={`${styles.TechSummaryGrid} ${styles.Horizontal}`}>
+        <div
+          className="flexRow centered"
+          style={{ height: "100%", width: numberWidth }}
+        >
+          {greenTechs.length || "-"}
+        </div>
+        <div className="flexRow" style={{ height: "100%" }}>
+          <TechIcon type={"GREEN"} size={iconSize} />
+        </div>
+        <div>&nbsp;</div>
+        <div
+          className="flexRow centered"
+          style={{ height: "100%", width: numberWidth }}
+        >
+          {blueTechs.length || "-"}
+        </div>
+
+        <div className="flexRow" style={{ height: "100%" }}>
+          <TechIcon type={"BLUE"} size={iconSize} />
+        </div>
+        <div>&nbsp;</div>
+        <div
+          className="flexRow centered"
+          style={{ height: "100%", width: numberWidth }}
+        >
+          {yellowTechs.length || "-"}
+        </div>
+        <div className="flexRow" style={{ height: "100%" }}>
+          <TechIcon type={"YELLOW"} size={iconSize} />
+        </div>
+        <div>&nbsp;</div>
+        <div
+          className="flexRow centered"
+          style={{ height: "100%", width: numberWidth }}
+        >
+          {redTechs.length || "-"}
+        </div>
+        <div className="flexRow" style={{ height: "100%" }}>
+          <TechIcon type={"RED"} size={iconSize} />
+        </div>
+        <div
+          className={styles.UnitUpgradeText}
+          style={{ whiteSpace: "nowrap" }}
+        >
+          {upgradeTechs.length || "-"}{" "}
+          <FormattedMessage
+            id="lGDH2d"
+            description="Unit upgrade techs."
+            defaultMessage="{count, plural, =0 {Upgrades} one {Upgrade} other {Upgrades}}"
+            values={{ count: upgradeTechs.length }}
+          />
+        </div>
+        <div className={styles.FactionTechTree}>
+          <TechTree
+            type="FACTION"
+            factionId={factionId}
+            techs={techs}
+            ownedTechs={new Set(ownedTechs)}
+            viewOnly={viewOnly}
+          />
+        </div>
+      </div>
+    </>
+  );
+}

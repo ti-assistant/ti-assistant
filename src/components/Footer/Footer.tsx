@@ -40,6 +40,7 @@ import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
 import ThundersEdgePanel from "../ThundersEdgePanel";
 import { Strings } from "../strings";
 import styles from "./Footer.module.scss";
+import TFCardIcon from "../TFCardIcon/TFCardIcon";
 
 const ObjectivePanel = dynamic(
   () => import("../ObjectivePanel/ObjectivePanel"),
@@ -183,6 +184,7 @@ export default function Footer() {
       );
       break;
   }
+  const twilightsFallGame = options.expansions.includes("TWILIGHTS FALL");
 
   const numButtons = getNumButtons(phase, strategyCards, options, !!tyrant);
   return (
@@ -253,14 +255,22 @@ export default function Footer() {
                 position: "relative",
               }}
             >
-              <TechSkipIcon size={24} outline />
+              {twilightsFallGame ? (
+                <TFCardIcon size={24} />
+              ) : (
+                <TechSkipIcon size={24} outline />
+              )}
             </div>
           </button>
-          <FormattedMessage
-            id="USnh0f"
-            description="Text shown on a button that opens the update techs panel."
-            defaultMessage="Update Techs"
-          />
+          {twilightsFallGame ? (
+            "Update Cards"
+          ) : (
+            <FormattedMessage
+              id="USnh0f"
+              description="Text shown on a button that opens the update techs panel."
+              defaultMessage="Update Techs"
+            />
+          )}
         </div>
         <div
           className="flexRow"
@@ -388,10 +398,16 @@ export default function Footer() {
                 height: "100%",
               }}
             >
-              <TechSkipIcon size={28} outline />
+              {twilightsFallGame ? (
+                <TFCardIcon size={28} />
+              ) : (
+                <TechSkipIcon size={28} outline />
+              )}
             </div>
           </button>
-          <span className={styles.ButtonLabel}>Techs</span>
+          <span className={styles.ButtonLabel}>
+            {twilightsFallGame ? "Cards" : "Techs"}
+          </span>
         </div>
         <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
           <button
@@ -602,8 +618,11 @@ function ObjectiveModalContent({ viewOnly }: { viewOnly?: boolean }) {
 
 function TechModalContent({ viewOnly }: { viewOnly?: boolean }) {
   const { settings, updateSetting } = useContext(SettingsContext);
+  const options = useOptions();
 
-  const groupTechsByFaction = settings["group-techs-by-faction"];
+  const groupTechsByFaction =
+    settings["group-techs-by-faction"] ||
+    options.expansions.includes("TWILIGHTS FALL");
 
   return (
     <div
@@ -623,55 +642,61 @@ function TechModalContent({ viewOnly }: { viewOnly?: boolean }) {
             width: "min-content",
           }}
         >
-          <FormattedMessage
-            id="ys7uwX"
-            description="Shortened version of technologies."
-            defaultMessage="Techs"
-          />
-        </div>
-        <div
-          className="flexRow"
-          style={{
-            backgroundColor: "var(--background-color)",
-            border: "1px solid var(--neutral-border)",
-            padding: `${rem(4)} ${rem(8)}`,
-            borderRadius: rem(4),
-            width: "min-content",
-            whiteSpace: "nowrap",
-            fontSize: rem(12),
-            gap: rem(4),
-          }}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <FormattedMessage
-            id="WvbM4Q"
-            description="Label for a group of buttons for selecting which option to group by."
-            defaultMessage="Group by"
-          />
-          :
-          <Chip
-            selected={!groupTechsByFaction}
-            toggleFn={() => updateSetting("group-techs-by-faction", false)}
-            fontSize={12}
-          >
+          {options.expansions.includes("TWILIGHTS FALL") ? (
+            "Cards"
+          ) : (
             <FormattedMessage
               id="ys7uwX"
               description="Shortened version of technologies."
               defaultMessage="Techs"
             />
-          </Chip>
-          <Chip
-            selected={groupTechsByFaction}
-            toggleFn={() => updateSetting("group-techs-by-faction", true)}
-            fontSize={12}
+          )}
+        </div>
+        {options.expansions.includes("TWILIGHTS FALL") ? null : (
+          <div
+            className="flexRow"
+            style={{
+              backgroundColor: "var(--background-color)",
+              border: "1px solid var(--neutral-border)",
+              padding: `${rem(4)} ${rem(8)}`,
+              borderRadius: rem(4),
+              width: "min-content",
+              whiteSpace: "nowrap",
+              fontSize: rem(12),
+              gap: rem(4),
+            }}
+            onClick={(e) => e.stopPropagation()}
           >
             <FormattedMessage
-              id="r2htpd"
-              description="Text on a button that will randomize factions."
-              defaultMessage="Factions"
+              id="WvbM4Q"
+              description="Label for a group of buttons for selecting which option to group by."
+              defaultMessage="Group by"
             />
-          </Chip>
-        </div>
+            :
+            <Chip
+              selected={!groupTechsByFaction}
+              toggleFn={() => updateSetting("group-techs-by-faction", false)}
+              fontSize={12}
+            >
+              <FormattedMessage
+                id="ys7uwX"
+                description="Shortened version of technologies."
+                defaultMessage="Techs"
+              />
+            </Chip>
+            <Chip
+              selected={groupTechsByFaction}
+              toggleFn={() => updateSetting("group-techs-by-faction", true)}
+              fontSize={12}
+            >
+              <FormattedMessage
+                id="r2htpd"
+                description="Text on a button that will randomize factions."
+                defaultMessage="Factions"
+              />
+            </Chip>
+          </div>
+        )}
       </div>
       <div
         className="flexColumn largeFont"
