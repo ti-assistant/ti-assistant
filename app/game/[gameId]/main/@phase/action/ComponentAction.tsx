@@ -44,6 +44,7 @@ import { hasTech } from "../../../../../../src/util/api/techs";
 import { Optional } from "../../../../../../src/util/types/types";
 import { objectEntries, rem } from "../../../../../../src/util/util";
 import ComponentActions from "./ComponentActions/ComponentActions";
+import StrategicActions from "./StrategicActions/StrategicActions";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -600,7 +601,8 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
     case "Black Market Forgery":
     case "Hesh and Prit":
     case "Create":
-    case "Fabrication": {
+    case "Fabrication":
+    case "Forge Legend": {
       innerContent = (
         <div className="flexColumn" style={{ width: "100%" }}>
           <GainRelic factionId={factionId} />
@@ -660,12 +662,14 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       );
       break;
     }
+    case "Blessing of the Yin":
     case "Dannel of the Tenth": {
       innerContent = (
         <ComponentActions.DannelOfTheTenth factionId={factionId} />
       );
       break;
     }
+    case "Changing the Ways":
     case "Riftwalker Meian": {
       innerContent = <ComponentActions.RiftwalkerMeian />;
       break;
@@ -695,7 +699,8 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       innerContent = <ComponentActions.Overrule factionId={factionId} />;
       break;
     }
-    case "Strategize": {
+    case "Strategize":
+    case "Sins of the Father": {
       innerContent = <ComponentActions.Strategize factionId={factionId} />;
       break;
     }
@@ -734,6 +739,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       );
       break;
     }
+    case "Eternity's End":
     case "Evolve": {
       innerContent = (
         <GainTFCard
@@ -754,6 +760,25 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       innerContent = (
         <GainTFCard factionId={factionId} numToGain={{ abilities: 1 }} />
       );
+      break;
+    }
+    case "Brillance of the Hylar": {
+      innerContent = (
+        <GainTFCard
+          factionId={factionId}
+          numToGain={{ abilities: 1, genomes: 1, upgrades: 1 }}
+        />
+      );
+      break;
+    }
+    case "Devour World": {
+      innerContent = (
+        <GainTFCard factionId={factionId} numToGain={{ abilities: 1 }} />
+      );
+      break;
+    }
+    case "Witching Hour": {
+      innerContent = <StrategicActions.Tyrannus.Primary />;
       break;
     }
     // case "Repeal Law": {
