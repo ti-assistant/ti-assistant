@@ -386,7 +386,13 @@ function FactionTechSummary({ factionId }: { factionId: FactionId }) {
   const techs = useTechs();
 
   if (options.expansions.includes("TWILIGHTS FALL")) {
-    return <TFTechSummary factionId={factionId} />;
+    return (
+      <TFTechSummary
+        factionId={factionId}
+        techs={techs}
+        ownedTechs={factionTechs}
+      />
+    );
   }
 
   return (

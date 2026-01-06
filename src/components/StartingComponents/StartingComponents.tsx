@@ -42,6 +42,7 @@ import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
 import { Strings } from "../strings";
 import styles from "./StartingComponents.module.scss";
 import FactionComponents from "../FactionComponents/FactionComponents";
+import GainTFCard from "../Actions/GainSplicedCard";
 
 interface StartingComponentsProps {
   factionId: FactionId;
@@ -355,6 +356,11 @@ export default function StartingComponents({
           );
         })}
       </div>
+      {/* TODO: Move - not enough room here. */}
+      <GainTFCard
+        factionId={factionId}
+        numToGain={{ abilities: 2, genomes: 1, upgrades: 1 }}
+      />
     </div>
   );
 }
@@ -421,7 +427,7 @@ function TFFactionSelect({
     if (faction.expansion === "TWILIGHTS FALL") {
       return false;
     }
-    if (faction.id === "Council Keleres") {
+    if (faction.id === "Council Keleres" && type === "Planet") {
       return false;
     }
     if (

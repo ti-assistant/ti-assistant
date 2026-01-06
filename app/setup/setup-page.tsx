@@ -151,6 +151,9 @@ function MobileOptions({
 
   const filteredEvents = objectEntries(events)
     .filter(([_, event]) => {
+      if (options.expansions.has("TWILIGHTS FALL")) {
+        return false;
+      }
       return options.expansions.has(event.expansion);
     })
     .sort(([_, a], [__, b]) => {
@@ -539,6 +542,9 @@ function Options({
 
   const filteredEvents = objectEntries(events)
     .filter(([_, event]) => {
+      if (options.expansions.has("TWILIGHTS FALL")) {
+        return false;
+      }
       return options.expansions.has(event.expansion);
     })
     .sort(([_, a], [__, b]) => {
@@ -1663,6 +1669,10 @@ export default function SetupPage({
         currentOptions.expansions.add("CODEX TWO");
         currentOptions.expansions.add("CODEX THREE");
         currentOptions.expansions.add("CODEX FOUR");
+      }
+      // Clear events if using Twilight's Fall.
+      if (expansion === "TWILIGHTS FALL") {
+        currentOptions.events = new Set<EventId>();
       }
       setFactions(
         setupFactions.map((faction, _) => {

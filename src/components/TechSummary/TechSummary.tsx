@@ -384,10 +384,19 @@ export default function TechSummary({
   );
 }
 
-export function TFTechSummary({ factionId }: { factionId: FactionId }) {
+export function TFTechSummary({
+  factionId,
+  techs,
+  ownedTechs,
+}: {
+  factionId: FactionId;
+  techs: Techs;
+  ownedTechs: Set<TechId>;
+}) {
   const abilities = useAbilities();
   const { settings } = useContext(SettingsContext);
   const upgrades = useUpgrades();
+  const viewOnly = useViewOnly();
 
   if (settings["fs-tech-summary-display"] === "NONE") {
     return null;
@@ -481,7 +490,15 @@ export function TFTechSummary({ factionId }: { factionId: FactionId }) {
         <div
           className="flexRow"
           style={{ height: "100%", gridRow: "1 / 3", gridColumn: "3 / 4" }}
-        ></div>
+        >
+          <TechTree
+            factionId={factionId}
+            techs={techs}
+            ownedTechs={ownedTechs}
+            type="FACTION"
+            viewOnly={viewOnly}
+          />
+        </div>
         <div
           className={styles.TechSummarySection}
           style={{ gridColumn: "span 3" }}

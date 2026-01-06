@@ -1,5 +1,5 @@
 import { CSSProperties } from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import {
   useAbilities,
   useCurrentTurn,
@@ -10,13 +10,25 @@ import {
   useViewOnly,
 } from "../../context/dataHooks";
 import { gainTFCardAsync, loseTFCardAsync } from "../../dynamic/api";
+import { ClientOnlyHoverMenu } from "../../HoverMenu";
+import AbilitySVG from "../../icons/twilightsfall/ability";
+import GenomeSVG from "../../icons/twilightsfall/genome";
+import ParadigmSVG from "../../icons/twilightsfall/paradigm";
+import UpgradeSVG from "../../icons/twilightsfall/upgrade";
 import { InfoRow } from "../../InfoRow";
 import { SelectableRow } from "../../SelectableRow";
 import { getGainedTFCardsByType } from "../../util/actionLog";
+import { getTechTypeColor } from "../../util/techs";
 import { rem } from "../../util/util";
 import FormattedDescription from "../FormattedDescription/FormattedDescription";
+import IconDiv from "../LabeledDiv/IconDiv";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
+import AbilityIcon from "../LegendaryPlanetIcon/AbilityIcon";
+import GenomeIcon from "../LegendaryPlanetIcon/GenomeIcon";
+import ParadigmIcon from "../LegendaryPlanetIcon/ParadigmIcon";
+import UpgradeIcon from "../LegendaryPlanetIcon/UpgradeIcon";
 import { Selector } from "../Selector/Selector";
+import TechIcon from "../TechIcon/TechIcon";
 import UnitIcon from "../Units/Icons";
 import UnitStats from "../UnitStats/UnitStats";
 import styles from "./GainSplicedCard.module.scss";
@@ -128,170 +140,220 @@ function GainedCardsSection({
 
   const innerContent = (
     <>
-      {gainedCardsByType.abilities.map((abilityId) => {
-        const ability = abilities[abilityId];
-        if (!ability) {
-          return null;
-        }
-        return (
-          <SelectableRow
-            itemId={ability.id}
-            removeItem={() =>
-              loseTFCardAsync(gameId, factionId, {
-                ability: ability.id,
-                type: "ABILITY",
-              })
+      {gainedCardsByType.abilities.length > 0 ? (
+        <IconDiv icon={<AbilityIcon />} blur>
+          {gainedCardsByType.abilities.map((abilityId) => {
+            const ability = abilities[abilityId];
+            if (!ability) {
+              return null;
             }
-            viewOnly={viewOnly}
-          >
-            <InfoRow
-              infoTitle={ability.name}
-              infoContent={
-                <FormattedDescription description={ability.description} />
-              }
-            >
-              {ability.name}
-            </InfoRow>
-          </SelectableRow>
-        );
-      })}
-      {gainedCardsByType.genomes.map((genomeId) => {
-        const genome = genomes[genomeId];
-        if (!genome) {
-          return null;
-        }
-        return (
-          <SelectableRow
-            itemId={genome.id}
-            removeItem={() =>
-              loseTFCardAsync(gameId, factionId, {
-                genome: genome.id,
-                type: "GENOME",
-              })
-            }
-            viewOnly={viewOnly}
-          >
-            <InfoRow
-              infoTitle={genome.name}
-              infoContent={
-                <FormattedDescription description={genome.description} />
-              }
-            >
-              {genome.name}
-            </InfoRow>
-          </SelectableRow>
-        );
-      })}
-      {gainedCardsByType.upgrades.map((upgradeId) => {
-        const upgrade = upgrades[upgradeId];
-        if (!upgrade) {
-          return null;
-        }
-        return (
-          <SelectableRow
-            itemId={upgrade.id}
-            removeItem={() =>
-              loseTFCardAsync(gameId, factionId, {
-                upgrade: upgrade.id,
-                type: "UNIT_UPGRADE",
-              })
-            }
-            viewOnly={viewOnly}
-          >
-            <InfoRow
-              infoTitle={
+            return (
+              <SelectableRow
+                key={abilityId}
+                itemId={abilityId}
+                removeItem={() =>
+                  loseTFCardAsync(gameId, factionId, {
+                    ability: abilityId,
+                    type: "ABILITY",
+                  })
+                }
+                viewOnly={viewOnly}
+                style={{ width: "100%" }}
+              >
                 <div
                   className="flexRow"
-                  style={{ fontSize: rem(40), gap: rem(20) }}
-                >
-                  {upgrade.name}
-                  <UnitIcon type={upgrade.unitType} size={40} />
-                </div>
-              }
-              infoContent={
-                <div
-                  className="myriadPro flexColumn"
                   style={{
+                    justifyContent: "space-between",
                     width: "100%",
-                    padding: rem(4),
-                    whiteSpace: "pre-line",
-                    textAlign: "center",
-                    fontSize: rem(32),
-                    gap: rem(32),
+                    gap: rem(4),
                   }}
                 >
-                  <FormattedDescription description={upgrade.description} />
-                  <div className="flexColumn" style={{ width: "100%" }}>
-                    {upgrade.abilities.length > 0 ? (
-                      <div
-                        className={styles.UpgradeTechAbilities}
-                        style={{
-                          whiteSpace: "nowrap",
-                          fontFamily: "Slider",
-                          paddingLeft: rem(8),
-                          rowGap: rem(2),
-                          width: "100%",
-                        }}
-                      >
-                        {upgrade.abilities.map((ability) => {
-                          return (
-                            <div key={ability}>{ability.toUpperCase()}</div>
-                          );
-                        })}
-                      </div>
-                    ) : null}
-                    <UnitStats
-                      stats={upgrade.stats}
-                      type={upgrade.unitType}
-                      className={styles.UnitStats}
-                    />
+                  <InfoRow
+                    infoTitle={ability.name}
+                    infoContent={
+                      <FormattedDescription description={ability.description} />
+                    }
+                  >
+                    <div style={{ color: getTechTypeColor(ability.type) }}>
+                      {ability.name}
+                    </div>
+                  </InfoRow>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      opacity: "80%",
+                      flexShrink: 0,
+                    }}
+                  >
+                    <TechIcon type={ability.type} size="1em" />
                   </div>
                 </div>
-              }
-            >
-              {upgrade.name}
-            </InfoRow>
-          </SelectableRow>
-        );
-      })}
-      {gainedCardsByType.paradigms.map((paradigmId) => {
-        const paradigm = paradigms[paradigmId];
-        if (!paradigm) {
-          return null;
-        }
-        return (
-          <SelectableRow
-            itemId={paradigm.id}
-            removeItem={() =>
-              loseTFCardAsync(gameId, factionId, {
-                paradigm: paradigm.id,
-                type: "PARADIGM",
-              })
+              </SelectableRow>
+            );
+          })}
+        </IconDiv>
+      ) : null}
+      {gainedCardsByType.genomes.length > 0 ? (
+        <IconDiv icon={<GenomeIcon />} blur>
+          {gainedCardsByType.genomes.map((genomeId) => {
+            const genome = genomes[genomeId];
+            if (!genome) {
+              return null;
             }
-            viewOnly={viewOnly}
-          >
-            <InfoRow
-              infoTitle={paradigm.name}
-              infoContent={
-                <FormattedDescription description={paradigm.description} />
-              }
-            >
-              {paradigm.name}
-            </InfoRow>
-          </SelectableRow>
-        );
-      })}
+            return (
+              <SelectableRow
+                key={genomeId}
+                itemId={genomeId}
+                removeItem={() =>
+                  loseTFCardAsync(gameId, factionId, {
+                    genome: genomeId,
+                    type: "GENOME",
+                  })
+                }
+                viewOnly={viewOnly}
+              >
+                <InfoRow
+                  infoTitle={genome.name}
+                  infoContent={
+                    <FormattedDescription description={genome.description} />
+                  }
+                >
+                  {genome.name}
+                </InfoRow>
+              </SelectableRow>
+            );
+          })}
+        </IconDiv>
+      ) : null}
+      {gainedCardsByType.upgrades.length > 0 ? (
+        <IconDiv icon={<UpgradeIcon />} blur>
+          {gainedCardsByType.upgrades.map((upgradeId) => {
+            const upgrade = upgrades[upgradeId];
+            if (!upgrade) {
+              return null;
+            }
+            return (
+              <SelectableRow
+                key={upgradeId}
+                itemId={upgradeId}
+                removeItem={() =>
+                  loseTFCardAsync(gameId, factionId, {
+                    upgrade: upgradeId,
+                    type: "UNIT_UPGRADE",
+                  })
+                }
+                viewOnly={viewOnly}
+              >
+                <InfoRow
+                  infoTitle={
+                    <div
+                      className="flexRow"
+                      style={{ fontSize: rem(40), gap: rem(20) }}
+                    >
+                      {upgrade.name}
+                      <UnitIcon type={upgrade.unitType} size={40} />
+                    </div>
+                  }
+                  infoContent={
+                    <div
+                      className="myriadPro flexColumn"
+                      style={{
+                        width: "100%",
+                        padding: rem(4),
+                        whiteSpace: "pre-line",
+                        textAlign: "center",
+                        fontSize: rem(32),
+                        gap: rem(32),
+                      }}
+                    >
+                      <FormattedDescription description={upgrade.description} />
+                      <div className="flexColumn" style={{ width: "100%" }}>
+                        {upgrade.abilities.length > 0 ? (
+                          <div
+                            className={styles.UpgradeTechAbilities}
+                            style={{
+                              whiteSpace: "nowrap",
+                              fontFamily: "Slider",
+                              paddingLeft: rem(8),
+                              rowGap: rem(2),
+                              width: "100%",
+                            }}
+                          >
+                            {upgrade.abilities.map((ability) => {
+                              return (
+                                <div key={ability}>{ability.toUpperCase()}</div>
+                              );
+                            })}
+                          </div>
+                        ) : null}
+                        <UnitStats
+                          stats={upgrade.stats}
+                          type={upgrade.unitType}
+                          className={styles.UnitStats}
+                        />
+                      </div>
+                    </div>
+                  }
+                >
+                  <div
+                    className="flexRow"
+                    style={{ position: "relative", gap: rem(8) }}
+                  >
+                    {upgrade.name}
+                    <UnitIcon type={upgrade.unitType} size="1em" />
+                  </div>
+                </InfoRow>
+              </SelectableRow>
+            );
+          })}
+        </IconDiv>
+      ) : null}
+      {gainedCardsByType.paradigms.length > 0 ? (
+        <IconDiv icon={<ParadigmIcon />} blur>
+          {gainedCardsByType.paradigms.map((paradigmId) => {
+            const paradigm = paradigms[paradigmId];
+            if (!paradigm) {
+              return null;
+            }
+            return (
+              <SelectableRow
+                key={paradigmId}
+                itemId={paradigmId}
+                removeItem={() =>
+                  loseTFCardAsync(gameId, factionId, {
+                    paradigm: paradigmId,
+                    type: "PARADIGM",
+                  })
+                }
+                viewOnly={viewOnly}
+                style={{ width: "100%" }}
+              >
+                <InfoRow
+                  infoTitle={paradigm.name}
+                  infoContent={
+                    <FormattedDescription description={paradigm.description} />
+                  }
+                >
+                  {paradigm.name}
+                </InfoRow>
+              </SelectableRow>
+            );
+          })}
+        </IconDiv>
+      ) : null}
     </>
   );
 
-  if (hideWrapper) {
-    return innerContent;
-  }
+  // if (hideWrapper) {
+  return <div className="flexColumn">{innerContent}</div>;
+  // }
 
   return <LabeledDiv label="TODO">{innerContent}</LabeledDiv>;
 }
 
-function GainAbilitySection({
+export function GainAbilitySection({
   factionId,
   gainedAbilities,
   numToGain,
@@ -306,7 +368,7 @@ function GainAbilitySection({
 }) {
   const abilities = useAbilities();
   const gameId = useGameId();
-  const viewOnly = useViewOnly();
+  const intl = useIntl();
 
   let availableAbilities = Object.values(abilities)
     .filter((ability) => !ability.owner)
@@ -322,42 +384,171 @@ function GainAbilitySection({
     return null;
   }
 
+  const redAbilities = availableAbilities.filter(
+    (ability) => ability.type === "RED"
+  );
+  const yellowAbilities = availableAbilities.filter(
+    (ability) => ability.type === "YELLOW"
+  );
+  const blueAbilities = availableAbilities.filter(
+    (ability) => ability.type === "BLUE"
+  );
+  const greenAbilities = availableAbilities.filter(
+    (ability) => ability.type === "GREEN"
+  );
+
+  function selectAbility(ability: TFAbility) {
+    gainTFCardAsync(gameId, factionId, {
+      ability: ability.id,
+      type: "ABILITY",
+    });
+  }
+
   return (
-    <Selector
-      hoverMenuLabel={
+    <ClientOnlyHoverMenu
+      label={
         steal ? (
-          <FormattedMessage
-            id="Components.Steal Ability.Title"
-            description="Title of Component: Steal Ability"
-            defaultMessage="Steal Ability"
-          />
+          <div className="flexRow" style={{ gap: rem(6) }}>
+            <span style={{ width: "1em" }}>
+              <AbilitySVG />
+            </span>
+            <FormattedMessage
+              id="Components.Steal Ability.Title"
+              description="Title of Component: Steal Ability"
+              defaultMessage="Steal Ability"
+            />
+          </div>
         ) : (
-          <FormattedMessage
-            id="Components.Gain Ability.Title"
-            description="Title of Component: Gain Ability"
-            defaultMessage="Gain Ability"
-          />
+          <div className="flexRow" style={{ gap: rem(6) }}>
+            <span style={{ width: "1em" }}>
+              <AbilitySVG />
+            </span>
+            <FormattedMessage
+              id="Components.Gain Ability.Title"
+              description="Title of Component: Gain Ability"
+              defaultMessage="Gain Ability"
+            />
+          </div>
         )
       }
-      // icon={<RelicPlanetIcon />}
-      hoverMenuStyle={{ fontSize: rem(14) }}
-      options={availableAbilities}
-      toggleItem={(abilityId, add) => {
-        if (add) {
-          gainTFCardAsync(gameId, factionId, {
-            ability: abilityId,
-            type: "ABILITY",
-          });
-        }
-      }}
-      viewOnly={viewOnly}
-      style={style}
-      itemsPerColumn={15}
-    />
+      style={{ whiteSpace: "nowrap" }}
+      buttonStyle={{ fontSize: rem(14) }}
+      renderProps={(outerCloseFn) => (
+        <div
+          className={styles.OuterTechSelectMenu}
+          style={{
+            padding: rem(8),
+            alignItems: "flex-start",
+            overflow: "visible",
+          }}
+        >
+          <InnerAbilitySelectMenu
+            abilities={greenAbilities}
+            label={intl.formatMessage({
+              id: "2I5JBO",
+              description: "Title of green techs.",
+              defaultMessage: "Biotic",
+            })}
+            selectAbility={selectAbility}
+            outerCloseFn={outerCloseFn}
+          />
+          <InnerAbilitySelectMenu
+            abilities={blueAbilities}
+            label={intl.formatMessage({
+              id: "Nr4DLa",
+              description: "Title of blue techs.",
+              defaultMessage: "Propulsion",
+            })}
+            selectAbility={selectAbility}
+            outerCloseFn={outerCloseFn}
+          />
+          <InnerAbilitySelectMenu
+            abilities={yellowAbilities}
+            label={intl.formatMessage({
+              id: "W9OGxl",
+              description: "Title of yellow techs.",
+              defaultMessage: "Cybernetic",
+            })}
+            selectAbility={selectAbility}
+            outerCloseFn={outerCloseFn}
+          />
+          <InnerAbilitySelectMenu
+            abilities={redAbilities}
+            label={intl.formatMessage({
+              id: "ZqAjEi",
+              description: "Title of red techs.",
+              defaultMessage: "Warfare",
+            })}
+            selectAbility={selectAbility}
+            outerCloseFn={outerCloseFn}
+          />
+        </div>
+      )}
+    ></ClientOnlyHoverMenu>
   );
 }
 
-function GainGenomeSection({
+// TODO: Add faction icons (simplified?).
+function InnerAbilitySelectMenu({
+  abilities,
+  label,
+  selectAbility,
+  outerCloseFn,
+}: {
+  abilities: TFAbility[];
+  label: string;
+  selectAbility: (ability: TFAbility) => void;
+  outerCloseFn: () => void;
+}) {
+  const viewOnly = useViewOnly();
+
+  return (
+    <ClientOnlyHoverMenu
+      label={label}
+      buttonStyle={{ fontSize: rem(14) }}
+      borderColor={getTechTypeColor(abilities[0]?.type ?? "UPGRADE")}
+      renderProps={(innerCloseFn) => (
+        <div
+          className="flexColumn"
+          style={{
+            display: "grid",
+            gridAutoFlow: "column",
+            gridTemplateRows: `repeat(8, auto)`,
+            padding: rem(8),
+            gap: rem(4),
+            alignItems: "stretch",
+          }}
+        >
+          {abilities.map((ability) => {
+            return (
+              <button
+                key={ability.id}
+                onClick={() => {
+                  innerCloseFn();
+                  outerCloseFn();
+                  selectAbility(ability);
+                }}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  fontSize: rem(16),
+                  gap: rem(8),
+                }}
+                disabled={viewOnly}
+              >
+                {ability.name}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    ></ClientOnlyHoverMenu>
+  );
+}
+
+// TODO: Add faction icons (simplified?).
+export function GainGenomeSection({
   factionId,
   gainedGenomes,
   numToGain,
@@ -392,17 +583,27 @@ function GainGenomeSection({
     <Selector
       hoverMenuLabel={
         steal ? (
-          <FormattedMessage
-            id="Components.Steal Genome.Title"
-            description="Title of Component: Steal Genome"
-            defaultMessage="Steal Genome"
-          />
+          <div className="flexRow" style={{ gap: rem(6) }}>
+            <span style={{ width: "0.61em" }}>
+              <GenomeSVG />
+            </span>
+            <FormattedMessage
+              id="Components.Steal Genome.Title"
+              description="Title of Component: Steal Genome"
+              defaultMessage="Steal Genome"
+            />
+          </div>
         ) : (
-          <FormattedMessage
-            id="Components.Gain Genome.Title"
-            description="Title of Component: Gain Genome"
-            defaultMessage="Gain Genome"
-          />
+          <div className="flexRow" style={{ gap: rem(6) }}>
+            <span style={{ width: "0.61em" }}>
+              <GenomeSVG />
+            </span>
+            <FormattedMessage
+              id="Components.Gain Genome.Title"
+              description="Title of Component: Gain Genome"
+              defaultMessage="Gain Genome"
+            />
+          </div>
         )
       }
       // icon={<RelicPlanetIcon />}
@@ -423,7 +624,8 @@ function GainGenomeSection({
   );
 }
 
-function GainParadigmSection({
+// TODO: Add faction icons.
+export function GainParadigmSection({
   factionId,
   gainedParadigms,
   numToGain,
@@ -458,17 +660,27 @@ function GainParadigmSection({
     <Selector
       hoverMenuLabel={
         steal ? (
-          <FormattedMessage
-            id="Components.Steal Paradigm.Title"
-            description="Title of Component: Steal Paradigm"
-            defaultMessage="Steal Paradigm"
-          />
+          <div className="flexRow" style={{ gap: rem(6) }}>
+            <span style={{ width: "0.61em" }}>
+              <ParadigmSVG />
+            </span>
+            <FormattedMessage
+              id="Components.Steal Paradigm.Title"
+              description="Title of Component: Steal Paradigm"
+              defaultMessage="Steal Paradigm"
+            />
+          </div>
         ) : (
-          <FormattedMessage
-            id="Components.Gain Paradigm.Title"
-            description="Title of Component: Gain Paradigm"
-            defaultMessage="Gain Paradigm"
-          />
+          <div className="flexRow" style={{ gap: rem(6) }}>
+            <span style={{ width: "0.64em" }}>
+              <ParadigmSVG />
+            </span>
+            <FormattedMessage
+              id="Components.Gain Paradigm.Title"
+              description="Title of Component: Gain Paradigm"
+              defaultMessage="Gain Paradigm"
+            />
+          </div>
         )
       }
       // icon={<RelicPlanetIcon />}
@@ -489,7 +701,8 @@ function GainParadigmSection({
   );
 }
 
-function GainUpgradeSection({
+// TODO: Add unit icons and faction icons.
+export function GainUpgradeSection({
   factionId,
   gainedUpgrades,
   numToGain,
@@ -521,20 +734,100 @@ function GainUpgradeSection({
   }
 
   return (
+    <ClientOnlyHoverMenu
+      label={
+        steal ? (
+          <div className="flexRow" style={{ gap: rem(6) }}>
+            <span style={{ width: "0.52em" }}>
+              <UpgradeSVG />
+            </span>
+            <FormattedMessage
+              id="Components.Steal Unit Upgrade.Title"
+              description="Title of Component: Steal Unit Upgrade"
+              defaultMessage="Steal Unit Upgrade"
+            />
+          </div>
+        ) : (
+          <div className="flexRow" style={{ gap: rem(6) }}>
+            <span style={{ width: "0.52em" }}>
+              <UpgradeSVG />
+            </span>
+            <FormattedMessage
+              id="Components.Gain Unit Upgrade.Title"
+              description="Title of Component: Gain Unit Upgrade"
+              defaultMessage="Gain Unit Upgrade"
+            />
+          </div>
+        )
+      }
+      buttonStyle={{ fontSize: rem(14) }}
+      renderProps={(innerCloseFn) => (
+        <div
+          className="flexColumn"
+          style={{
+            display: "grid",
+            gridAutoFlow: "column",
+            gridTemplateRows: `repeat(11, auto)`,
+            padding: rem(8),
+            gap: rem(4),
+            alignItems: "stretch",
+          }}
+        >
+          {availableUpgrades.map((upgrade) => {
+            return (
+              <button
+                key={upgrade.id}
+                onClick={() => {
+                  innerCloseFn();
+                  gainTFCardAsync(gameId, factionId, {
+                    upgrade: upgrade.id,
+                    type: "UNIT_UPGRADE",
+                  });
+                }}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  fontSize: rem(16),
+                  gap: rem(8),
+                }}
+                disabled={viewOnly}
+              >
+                {upgrade.name}
+                <UnitIcon type={upgrade.unitType} size={16} />
+              </button>
+            );
+          })}
+        </div>
+      )}
+    ></ClientOnlyHoverMenu>
+  );
+
+  return (
     <Selector
       hoverMenuLabel={
         steal ? (
-          <FormattedMessage
-            id="Components.Steal Unit Upgrade.Title"
-            description="Title of Component: Steal Unit Upgrade"
-            defaultMessage="Steal Unit Upgrade"
-          />
+          <div className="flexRow" style={{ gap: rem(6) }}>
+            <span style={{ width: "0.52em" }}>
+              <UpgradeSVG />
+            </span>
+            <FormattedMessage
+              id="Components.Steal Unit Upgrade.Title"
+              description="Title of Component: Steal Unit Upgrade"
+              defaultMessage="Steal Unit Upgrade"
+            />
+          </div>
         ) : (
-          <FormattedMessage
-            id="Components.Gain Unit Upgrade.Title"
-            description="Title of Component: Gain Unit Upgrade"
-            defaultMessage="Gain Unit Upgrade"
-          />
+          <div className="flexRow" style={{ gap: rem(6) }}>
+            <span style={{ width: "0.52em" }}>
+              <UpgradeSVG />
+            </span>
+            <FormattedMessage
+              id="Components.Gain Unit Upgrade.Title"
+              description="Title of Component: Gain Unit Upgrade"
+              defaultMessage="Gain Unit Upgrade"
+            />
+          </div>
         )
       }
       // icon={<RelicPlanetIcon />}

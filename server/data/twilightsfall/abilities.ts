@@ -453,7 +453,7 @@ export default function getTwilightsFallAbilities(
           id: "TF.Ability.Fleet Logistics.Text",
           description: "Text of Twilight's Fall Ability: Fleet Logistics",
           defaultMessage:
-            "During each of your turns of the action phase, you may perform 2 actions instead of 1",
+            "During each of your turns of the action phase, you may perform 2 actions instead of 1.",
         },
         { br: "\n\n" }
       ),

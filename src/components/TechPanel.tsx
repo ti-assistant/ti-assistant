@@ -1,10 +1,14 @@
 import React, { CSSProperties, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { TechRow } from "../TechRow";
 import {
+  useAbilities,
   useGameId,
+  useGenomes,
+  useOptions,
+  useParadigms,
   useTech,
   useTechs,
+  useUpgrades,
   useViewOnly,
 } from "../context/dataHooks";
 import { useFaction, useFactions } from "../context/factionDataHooks";
@@ -14,7 +18,10 @@ import {
   useOrderedTechIds,
   useTechState,
 } from "../context/techDataHooks";
-import { addTechAsync, removeTechAsync } from "../dynamic/api";
+import { addTechAsync, loseTFCardAsync, removeTechAsync } from "../dynamic/api";
+import { InfoRow } from "../InfoRow";
+import { SelectableRow } from "../SelectableRow";
+import { TechRow } from "../TechRow";
 import { hasTech, isTechPurged } from "../util/api/techs";
 import {
   getColorForFaction,
@@ -24,15 +31,24 @@ import {
 import { techTypeString } from "../util/strings";
 import { ableToResearchTech, getTechTypeColor, sortTechs } from "../util/techs";
 import { objectEntries, objectKeys, rem } from "../util/util";
+import {
+  GainAbilitySection,
+  GainGenomeSection,
+  GainParadigmSection,
+  GainUpgradeSection,
+} from "./Actions/GainSplicedCard";
 import { CollapsibleSection } from "./CollapsibleSection";
 import FactionComponents from "./FactionComponents/FactionComponents";
 import FactionIcon from "./FactionIcon/FactionIcon";
+import FormattedDescription from "./FormattedDescription/FormattedDescription";
 import LabeledDiv from "./LabeledDiv/LabeledDiv";
 import { Selector } from "./Selector/Selector";
 import TechIcon from "./TechIcon/TechIcon";
 import styles from "./TechPanel.module.scss";
 import TechSelectHoverMenu from "./TechSelectHoverMenu/TechSelectHoverMenu";
 import { FullTechSummary } from "./TechSummary/TechSummary";
+import UnitIcon from "./Units/Icons";
+import UnitStats from "./UnitStats/UnitStats";
 
 function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
   const factions = useFactions();
@@ -445,8 +461,13 @@ function TechsByFaction({
   factionId: FactionId;
   openedByDefault: boolean;
 }) {
+  const abilities = useAbilities();
+  const genomes = useGenomes();
+  const paradigms = useParadigms();
+  const upgrades = useUpgrades();
   const factions = useFactions();
   const techs = useTechs();
+  const options = useOptions();
   const gameId = useGameId();
   const intl = useIntl();
   const viewOnly = useViewOnly();
@@ -469,6 +490,19 @@ function TechsByFaction({
     .filter((tech) => !!tech && tech.state !== "purged") as Tech[];
 
   sortTechs(factionTechs);
+
+  const factionAbilities = Object.values(abilities).filter(
+    (ability) => ability.owner === factionId
+  );
+  const factionGenomes = Object.values(genomes).filter(
+    (genome) => genome.owner === factionId
+  );
+  const factionUpgrades = Object.values(upgrades).filter(
+    (upgrade) => upgrade.owner === factionId
+  );
+  const factionParadigms = Object.values(paradigms).filter(
+    (paradigm) => paradigm.owner === factionId
+  );
 
   function getResearchableTechs(faction: Faction) {
     if (faction.id === "Nekro Virus") {
@@ -580,30 +614,216 @@ function TechsByFaction({
               />
             );
           })}
+          {factionAbilities.map((ability) => {
+            return (
+              <SelectableRow
+                key={ability.id}
+                itemId={ability.id}
+                removeItem={
+                  viewOnly
+                    ? undefined
+                    : () =>
+                        loseTFCardAsync(gameId, factionId, {
+                          ability: ability.id,
+                          type: "ABILITY",
+                        })
+                }
+                viewOnly={viewOnly}
+              >
+                <InfoRow
+                  infoTitle={ability.name}
+                  infoContent={
+                    <FormattedDescription description={ability.description} />
+                  }
+                >
+                  {ability.name}
+                </InfoRow>
+              </SelectableRow>
+            );
+          })}
+          {factionGenomes.map((genome) => {
+            return (
+              <SelectableRow
+                key={genome.id}
+                itemId={genome.id}
+                removeItem={
+                  viewOnly
+                    ? undefined
+                    : () =>
+                        loseTFCardAsync(gameId, factionId, {
+                          genome: genome.id,
+                          type: "GENOME",
+                        })
+                }
+                viewOnly={viewOnly}
+              >
+                <InfoRow
+                  infoTitle={genome.name}
+                  infoContent={
+                    <FormattedDescription description={genome.description} />
+                  }
+                >
+                  {genome.name}
+                </InfoRow>
+              </SelectableRow>
+            );
+          })}
+          {factionUpgrades.map((upgrade) => {
+            return (
+              <SelectableRow
+                itemId={upgrade.id}
+                removeItem={
+                  viewOnly
+                    ? undefined
+                    : () =>
+                        loseTFCardAsync(gameId, factionId, {
+                          upgrade: upgrade.id,
+                          type: "UNIT_UPGRADE",
+                        })
+                }
+                viewOnly={viewOnly}
+              >
+                <InfoRow
+                  infoTitle={
+                    <div
+                      className="flexRow"
+                      style={{ fontSize: rem(40), gap: rem(20) }}
+                    >
+                      {upgrade.name}
+                      <UnitIcon type={upgrade.unitType} size={40} />
+                    </div>
+                  }
+                  infoContent={
+                    <div
+                      className="myriadPro flexColumn"
+                      style={{
+                        width: "100%",
+                        padding: rem(4),
+                        whiteSpace: "pre-line",
+                        textAlign: "center",
+                        fontSize: rem(32),
+                        gap: rem(32),
+                      }}
+                    >
+                      <FormattedDescription description={upgrade.description} />
+                      <div className="flexColumn" style={{ width: "100%" }}>
+                        {upgrade.abilities.length > 0 ? (
+                          <div
+                            className={styles.UpgradeTechAbilities}
+                            style={{
+                              whiteSpace: "nowrap",
+                              fontFamily: "Slider",
+                              paddingLeft: rem(8),
+                              rowGap: rem(2),
+                              width: "100%",
+                            }}
+                          >
+                            {upgrade.abilities.map((ability) => {
+                              return (
+                                <div key={ability}>{ability.toUpperCase()}</div>
+                              );
+                            })}
+                          </div>
+                        ) : null}
+                        <UnitStats
+                          stats={upgrade.stats}
+                          type={upgrade.unitType}
+                          className={styles.UnitStats}
+                        />
+                      </div>
+                    </div>
+                  }
+                >
+                  {upgrade.name}
+                </InfoRow>
+              </SelectableRow>
+            );
+          })}
+          {factionParadigms.map((paradigm) => {
+            return (
+              <SelectableRow
+                key={paradigm.id}
+                itemId={paradigm.id}
+                removeItem={
+                  viewOnly
+                    ? undefined
+                    : () =>
+                        loseTFCardAsync(gameId, factionId, {
+                          paradigm: paradigm.id,
+                          type: "PARADIGM",
+                        })
+                }
+                viewOnly={viewOnly}
+              >
+                <InfoRow
+                  infoTitle={paradigm.name}
+                  infoContent={
+                    <FormattedDescription description={paradigm.description} />
+                  }
+                >
+                  {paradigm.name}
+                </InfoRow>
+              </SelectableRow>
+            );
+          })}
         </div>
         {viewOnly ? null : (
-          <div
-            className="flexRow"
-            style={{
-              justifyContent: "flex-start",
-              alignItems: "flex-start",
-              paddingLeft: rem(8),
-              width: "100%",
-            }}
-          >
-            <TechSelectHoverMenu
-              factionId={factionId}
-              label={intl.formatMessage({
-                id: "3qIvsL",
-                description: "Label on a hover menu used to research tech.",
-                defaultMessage: "Research Tech",
-              })}
-              techs={getResearchableTechs(faction)}
-              selectTech={(tech) => {
-                addTechAsync(gameId, factionId, tech.id);
+          <>
+            <div
+              className="flexRow"
+              style={{
+                justifyContent: "flex-start",
+                alignItems: "flex-start",
+                paddingLeft: rem(8),
+                width: "100%",
               }}
-            />
-          </div>
+            >
+              <TechSelectHoverMenu
+                factionId={factionId}
+                label={intl.formatMessage({
+                  id: "3qIvsL",
+                  description: "Label on a hover menu used to research tech.",
+                  defaultMessage: "Research Tech",
+                })}
+                techs={getResearchableTechs(faction)}
+                selectTech={(tech) => {
+                  addTechAsync(gameId, factionId, tech.id);
+                }}
+              />
+            </div>
+            {options.expansions.includes("TWILIGHTS FALL") ? (
+              <div
+                className="flexColumn"
+                style={{
+                  justifyContent: "flex-start",
+                  alignItems: "flex-start",
+                  paddingLeft: rem(8),
+                  width: "100%",
+                }}
+              >
+                <GainAbilitySection
+                  factionId={factionId}
+                  gainedAbilities={[]}
+                  numToGain={1}
+                />
+                <GainGenomeSection
+                  factionId={factionId}
+                  gainedGenomes={[]}
+                  numToGain={1}
+                />
+                <GainUpgradeSection
+                  factionId={factionId}
+                  gainedUpgrades={[]}
+                  numToGain={1}
+                />
+                <GainParadigmSection
+                  factionId={factionId}
+                  gainedParadigms={[]}
+                  numToGain={1}
+                />
+              </div>
+            ) : null}
+          </>
         )}
       </div>
     </CollapsibleSection>
