@@ -90,7 +90,7 @@ function buildGameLog(
       )) {
         initialTechs[factionId] = getTechCountsByType(
           techs,
-          faction.startswith.techs
+          faction.startswith?.techs
         );
         initialPoints[factionId] = {
           "STAGE ONE": 0,
@@ -127,6 +127,7 @@ function buildGameLog(
       case "RESOLVE_AGENDA":
       case "REPEAL_AGENDA":
       case "SET_SPEAKER":
+      case "SET_TYRANT":
       case "SELECT_ACTION":
       case "UNDO":
         updateGameData(dynamicGameData, handler.getUpdates());

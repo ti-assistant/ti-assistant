@@ -56,7 +56,8 @@ export default function ThundersEdgePanel() {
   const options = useOptions();
   return (
     <div className={styles.ThundersEdgeGrid}>
-      {options.expansions.includes("THUNDERS EDGE") ? (
+      {options.expansions.includes("THUNDERS EDGE") &&
+      !options.expansions.includes("TWILIGHTS FALL") ? (
         <ExpeditionSection />
       ) : null}
       <RelicsSection />
@@ -349,9 +350,13 @@ function PromissoriesSection() {
     })
     .map((faction) => {
       const updatedFaction = omegaMergeFn(faction);
-      updatedFaction.abilities = updatedFaction.abilities.map(omegaMergeFn);
-      updatedFaction.promissories =
-        updatedFaction.promissories.map(omegaMergeFn);
+      if (updatedFaction.abilities) {
+        updatedFaction.abilities = updatedFaction.abilities.map(omegaMergeFn);
+      }
+      if (updatedFaction.promissories) {
+        updatedFaction.promissories =
+          updatedFaction.promissories.map(omegaMergeFn);
+      }
       updatedFaction.units = updatedFaction.units.map(omegaMergeFn);
       return updatedFaction;
     })
@@ -363,7 +368,7 @@ function PromissoriesSection() {
   }
 
   const showYinBreakthroughs =
-    factions["Yin Brotherhood"]?.breakthrough.state === "readied";
+    factions["Yin Brotherhood"]?.breakthrough?.state === "readied";
 
   const numColumns =
     mapOrderedFactionIds.length > 4

@@ -1,8 +1,8 @@
 import { FormattedMessage } from "react-intl";
 import LabeledDiv from "../../../src/components/LabeledDiv/LabeledDiv";
+import { objectEntries, rem } from "../../../src/util/util";
 import { ProcessedGame } from "../processor";
 import styles from "./StrategyCardSection.module.scss";
-import { objectEntries, rem } from "../../../src/util/util";
 
 interface StrategyCardInfo {
   rounds: Record<
@@ -46,6 +46,14 @@ const CARD_ORDER: Record<StrategyCardId, number> = {
   Warfare: 6,
   Technology: 7,
   Imperial: 8,
+  Lux: 9,
+  Noctis: 10,
+  Tyrannus: 11,
+  Civitas: 12,
+  Amicus: 13,
+  Calamitas: 14,
+  Magus: 15,
+  Aeterna: 16,
 } as const;
 
 export default function StrategyCardSection({

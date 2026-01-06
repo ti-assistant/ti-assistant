@@ -163,6 +163,10 @@
     "defaultMessage": "Start of {phase} Phase",
     "description": "Text showing that something will occur at the start of a specific phase."
   },
+  "4QPpwL": {
+    "defaultMessage": "New Tyrant",
+    "description": "Label for a selector selecting a new tyrant."
+  },
   "4V92Jv": {
     "defaultMessage": "Warp",
     "description": "Text on a button specifying that the map style should be warp."
@@ -275,6 +279,38 @@
     "defaultMessage": "{count} {count, plural, one {Law} other {Laws}} in Effect",
     "description": "Text on a hover menu that will display the current laws that have been passed."
   },
+  "A Sickening Lurch.Name": {
+    "defaultMessage": "A Sickening Lurch",
+    "description": "Name of Faction: A Sickening Lurch"
+  },
+  "A Sickening Lurch.Shortname": {
+    "defaultMessage": "Lurch",
+    "description": "Shortened version of Faction name: A Sickening Lurch"
+  },
+  "A Sickening Lurch.Techs.Antimatter Black.Title": {
+    "defaultMessage": "Antimatter: Black",
+    "description": "Title of Tech: Antimatter Black"
+  },
+  "A Sickening Lurch.Techs.Wavelength Black.Title": {
+    "defaultMessage": "Wavelength: Black",
+    "description": "Title of Tech: Wavelength Black"
+  },
+  "A Sickening Lurch.Units.A Strangled Whisper.Description": {
+    "defaultMessage": "This ship can transport any number of infantry and fighters, and they do not count against this ship's capacity.",
+    "description": "Description for Faction Unit: A Strangled Whisper"
+  },
+  "A Sickening Lurch.Units.A Strangled Whisper.Title": {
+    "defaultMessage": "A Strangled Whisper",
+    "description": "Title of Faction Unit: A Strangled Whisper"
+  },
+  "A Sickening Lurch.Units.Bone Picked Clean.Description": {
+    "defaultMessage": "When you splice, capture 1 infantry from the reinforcements of any player with adjacent units; you can spend 1 captured infantry after rolling during combat to reroll this unit's dice.",
+    "description": "Description for Faction Unit: Bone Picked Clean"
+  },
+  "A Sickening Lurch.Units.Bone Picked Clean.Title": {
+    "defaultMessage": "Bone Picked Clean",
+    "description": "Title of Faction Unit: Bone Picked Clean"
+  },
   "A5p5qF": {
     "defaultMessage": "Report Issue",
     "description": "A button that will open the Github issues page."
@@ -310,6 +346,14 @@
   "Action Cards.Assassinate Representative.Name": {
     "defaultMessage": "Assassinate Representative",
     "description": "Name of action card: Assassinate Representative"
+  },
+  "Action Cards.Atomize.Description": {
+    "defaultMessage": "When your flagship is destroyed:{br}Purge your flagship and destroy all other units in its system.",
+    "description": "Description of action card: Atomize"
+  },
+  "Action Cards.Atomize.Name": {
+    "defaultMessage": "Atomize",
+    "description": "Name of action card: Atomize"
   },
   "Action Cards.Black Market Dealings.Description": {
     "defaultMessage": "When you are negotiating a transaction:{br}You and the other player can include relics, action cards, and unscored secret objectives as part of the transaction. This card cannot be cancelled.",
@@ -351,6 +395,30 @@
     "defaultMessage": "Bunker",
     "description": "Name of action card: Bunker"
   },
+  "Action Cards.Cloak.Description": {
+    "defaultMessage": "After you activate a system:{br}Your ships can move through systems that contain other players' ships during this action, and SPACE CANNON cannot be used against them.",
+    "description": "Description of action card: Cloak"
+  },
+  "Action Cards.Cloak.Name": {
+    "defaultMessage": "Cloak",
+    "description": "Name of action card: Cloak"
+  },
+  "Action Cards.Coerce.Description": {
+    "defaultMessage": "ACTION: Choose a player. That player must give you 1 of their abilities.",
+    "description": "Description of action card: Coerce"
+  },
+  "Action Cards.Coerce.Name": {
+    "defaultMessage": "Coerce",
+    "description": "Name of action card: Coerce"
+  },
+  "Action Cards.Command.Description": {
+    "defaultMessage": "After you activate a system:{br}Apply +1 to the move value of each of your ships during this tactical action. Additionally, your ships may move through and into asteroid fields during this movement.",
+    "description": "Description of action card: Command"
+  },
+  "Action Cards.Command.Name": {
+    "defaultMessage": "Command",
+    "description": "Name of action card: Command"
+  },
   "Action Cards.Confounding Legal Text.Description": {
     "defaultMessage": "When another player is elected as the outcome of an agenda:{br}You are the elected player instead.",
     "description": "Description of action card: Confounding Legal Text"
@@ -374,6 +442,14 @@
   "Action Cards.Construction Rider.Name": {
     "defaultMessage": "Construction Rider",
     "description": "Name of action card: Construction Rider"
+  },
+  "Action Cards.Converge.Description": {
+    "defaultMessage": "Before you roll dice for SPACE CANNON:{br}Your hits must be applied to non-fighter ships during SPACE CANNON OFFENSE, or mechs during SPACE CANNON DEFENSE, if able.",
+    "description": "Description of action card: Converge"
+  },
+  "Action Cards.Converge.Name": {
+    "defaultMessage": "Converge",
+    "description": "Name of action card: Converge"
   },
   "Action Cards.Counterstroke.Description": {
     "defaultMessage": "After another player activates a system that contains 1 of your command tokens:{br}Return that command token to your tactic pool.",
@@ -406,6 +482,14 @@
   "Action Cards.Crash Landing.Name": {
     "defaultMessage": "Crash Landing",
     "description": "Name of action card: Crash Landing"
+  },
+  "Action Cards.Create.Description": {
+    "defaultMessage": "ACTION: Gain 1 relic.",
+    "description": "Description of action card: Create"
+  },
+  "Action Cards.Create.Name": {
+    "defaultMessage": "Create",
+    "description": "Name of action card: Create"
   },
   "Action Cards.Cripple Defenses.Description": {
     "defaultMessage": "ACTION: Choose 1 planet. Destroy each PDS on that planet.",
@@ -487,6 +571,14 @@
     "defaultMessage": "Divert Funding",
     "description": "Name of action card: Divert Funding"
   },
+  "Action Cards.Divinity.Description": {
+    "defaultMessage": "When 1 of your units would be destroyed:{br}It is not destroyed instead.",
+    "description": "Description of action card: Divinity"
+  },
+  "Action Cards.Divinity.Name": {
+    "defaultMessage": "Divinity",
+    "description": "Name of action card: Divinity"
+  },
   "Action Cards.Economic Initiative.Description": {
     "defaultMessage": "ACTION: Ready each cultural planet you control.",
     "description": "Description of action card: Economic Initiative"
@@ -495,6 +587,14 @@
     "defaultMessage": "Economic Initiative",
     "description": "Name of action card: Economic Initiative"
   },
+  "Action Cards.Elevate.Description": {
+    "defaultMessage": "ACTION: Draw 1 paradigm.",
+    "description": "Description of action card: Elevate"
+  },
+  "Action Cards.Elevate.Name": {
+    "defaultMessage": "Elevate",
+    "description": "Name of action card: Elevate"
+  },
   "Action Cards.Emergency Repairs.Description": {
     "defaultMessage": "At the start or end of a combat round:{br}Repair all of your units that have SUSTAIN DAMAGE in the active system.",
     "description": "Description of action card: Emergency Repairs"
@@ -502,6 +602,30 @@
   "Action Cards.Emergency Repairs.Name": {
     "defaultMessage": "Emergency Repairs",
     "description": "Name of action card: Emergency Repairs"
+  },
+  "Action Cards.Engineer.Description": {
+    "defaultMessage": "When you draw cards for a splice that you initiated:{br}Add 2 additional cards to the splice; after you choose your card, choose and discard 2 of the spliced cards before passing them to the next player.",
+    "description": "Description of action card: Engineer"
+  },
+  "Action Cards.Engineer.Name": {
+    "defaultMessage": "Engineer",
+    "description": "Name of action card: Engineer"
+  },
+  "Action Cards.Entangle.Description": {
+    "defaultMessage": "After you activate a system:{br}All systems that contain alpha wormholes, beta wormholes, gamma wormholes, and gravity rifts are adjacent during this movement.",
+    "description": "Description of action card: Entangle"
+  },
+  "Action Cards.Entangle.Name": {
+    "defaultMessage": "Entangle",
+    "description": "Name of action card: Entangle"
+  },
+  "Action Cards.Evolve.Description": {
+    "defaultMessage": "ACTION: Draw 1 card from any splice deck.",
+    "description": "Description of action card: Evolve"
+  },
+  "Action Cards.Evolve.Name": {
+    "defaultMessage": "Evolve",
+    "description": "Name of action card: Evolve"
   },
   "Action Cards.Exchange Program.Description": {
     "defaultMessage": "ACTION: Choose another player. You and the planet may agree to place 1 infantry from each of your reinforcements into coexistence on a planet the other player controls that contains their ground forces; if no agreement is reached, you each discard 1 token from your fleet pool.",
@@ -535,6 +659,14 @@
     "defaultMessage": "Extreme Duress",
     "description": "Name of action card: Extreme Duress"
   },
+  "Action Cards.Feint.Description": {
+    "defaultMessage": "When you announce a retreat:{br}Your units immediately retreat to an eligible system; do not place a command token in that system.",
+    "description": "Description of action card: Feint"
+  },
+  "Action Cards.Feint.Name": {
+    "defaultMessage": "Feint",
+    "description": "Name of action card: Feint"
+  },
   "Action Cards.Fighter Conscription.Description": {
     "defaultMessage": "ACTION: Place 1 fighter from your reinforcements into each system that contains 1 or more of your space docks or ships that have a capacity value; they cannot be placed in systems that contain other players' ships.",
     "description": "Description of action card: Fighter Conscription"
@@ -567,6 +699,14 @@
     "defaultMessage": "Flank Speed",
     "description": "Name of action card: Flank Speed"
   },
+  "Action Cards.Flux.Description": {
+    "defaultMessage": "ACTION: Either remove any player's command token from the board, or place a command token from any player's reinforcements in a system that contains or is adjacent to one of your ships.",
+    "description": "Description of action card: Flux"
+  },
+  "Action Cards.Flux.Name": {
+    "defaultMessage": "Flux",
+    "description": "Name of action card: Flux"
+  },
   "Action Cards.Focused Research.Description": {
     "defaultMessage": "ACTION: Spend 4 trade goods to research 1 technology.",
     "description": "Description of action card: Focused Research"
@@ -590,6 +730,14 @@
   "Action Cards.Frontline Deployment.Name": {
     "defaultMessage": "Frontline Deployment",
     "description": "Name of action card: Frontline Deployment"
+  },
+  "Action Cards.Genophage.Description": {
+    "defaultMessage": "ACTION: Discard 1 of your neighbors' genomes.",
+    "description": "Description of action card: Genophage"
+  },
+  "Action Cards.Genophage.Name": {
+    "defaultMessage": "Genophage",
+    "description": "Name of action card: Genophage"
   },
   "Action Cards.Ghost Ship.Description": {
     "defaultMessage": "ACTION: Place 1 destroyer from your reinforcements in a non-home system that contains a wormhole and does not contain other players' ships.",
@@ -619,6 +767,14 @@
     "defaultMessage": "After an agenda is revealed:{br}During this agenda, you vote last.",
     "description": "Description of action card: Hack Election"
   },
+  "Action Cards.Hardlight.Description": {
+    "defaultMessage": "Before hits are assigned to your units:{br}Cancel up to 2 hits.",
+    "description": "Description of action card: Hardlight"
+  },
+  "Action Cards.Hardlight.Name": {
+    "defaultMessage": "Hardlight",
+    "description": "Name of action card: Hardlight"
+  },
   "Action Cards.Harness Energy.Description": {
     "defaultMessage": "After you activate an anomaly:{br}Replenish your commodities.",
     "description": "Description of action card: Harness Energy"
@@ -626,6 +782,22 @@
   "Action Cards.Harness Energy.Name": {
     "defaultMessage": "Harness Energy",
     "description": "Name of action card: Harness Energy"
+  },
+  "Action Cards.Helix.Description": {
+    "defaultMessage": "ACTION: Initiate a splice of any type, including all players.",
+    "description": "Description of action card: Helix"
+  },
+  "Action Cards.Helix.Name": {
+    "defaultMessage": "Helix",
+    "description": "Name of action card: Helix"
+  },
+  "Action Cards.Ignis.Description": {
+    "defaultMessage": "ACTION: Place a command token from your tactic pool in any non-home system; choose and destroy 1 unit in that system.",
+    "description": "Description of action card: Ignis"
+  },
+  "Action Cards.Ignis.Name": {
+    "defaultMessage": "Ignis",
+    "description": "Name of action card: Ignis"
   },
   "Action Cards.Imperial Rider.Description": {
     "defaultMessage": "After an agenda is revealed:{br}You cannot vote on this agenda. Predict aloud an outcome of this agenda. If your prediction is correct, gain 1 victory point.",
@@ -695,6 +867,22 @@
     "defaultMessage": "Intercept",
     "description": "Name of action card: Intercept"
   },
+  "Action Cards.Irradiate.Description": {
+    "defaultMessage": "ACTION: Choose 1 unit type other than flagship; reveal cards from the unit upgrade deck until you reveal a card of that type, if able. Then, gain that card and shuffle the rest back into the unit upgrade deck.",
+    "description": "Description of action card: Irradiate"
+  },
+  "Action Cards.Irradiate.Name": {
+    "defaultMessage": "Irradiate",
+    "description": "Name of action card: Irradiate"
+  },
+  "Action Cards.Lash.Description": {
+    "defaultMessage": "When 1 of your units is destroyed:{br}Destroy a unit in its system that has an equal or lower cost.",
+    "description": "Description of action card: Lash"
+  },
+  "Action Cards.Lash.Name": {
+    "defaultMessage": "Lash",
+    "description": "Name of action card: Lash"
+  },
   "Action Cards.Leadership Rider.Description": {
     "defaultMessage": "After an agenda is revealed:{br}You cannot vote on this agenda. Predict aloud an outcome of this agenda. If your prediction is correct, gain 3 command tokens.",
     "description": "Description of action card: Leadership Rider"
@@ -710,6 +898,14 @@
   "Action Cards.Lie in Wait.Name": {
     "defaultMessage": "Lie in Wait",
     "description": "Name of action card: Lie in Wait"
+  },
+  "Action Cards.Locust.Description": {
+    "defaultMessage": "ACTION: Choose 1 infantry in a system adjacent to your units and roll 1 die. On a result of 3 or higher, destroy that infantry and choose an infantry in the same or an adjacent system to repeat this roll; for each new roll, choose an infantry owned by a different player than the previous infantry, if able.",
+    "description": "Description of action card: Locust"
+  },
+  "Action Cards.Locust.Name": {
+    "defaultMessage": "Locust",
+    "description": "Name of action card: Locust"
   },
   "Action Cards.Lost Star Chart.Description": {
     "defaultMessage": "After you activate a system:{br}During this tactical action, systems that contain alpha and beta wormholes are adjacent to each other.",
@@ -727,6 +923,14 @@
     "defaultMessage": "Lucky Shot",
     "description": "Name of action card: Lucky Shot"
   },
+  "Action Cards.Magnificence.Description": {
+    "defaultMessage": "ACTION: Move all units from the space area of any system into an adjacent system that contains a different player's ships. Space combat is resolved in that system; neither player can retreat or resolve abilities that would move their ships.",
+    "description": "Description of action card: Magnificence"
+  },
+  "Action Cards.Magnificence.Name": {
+    "defaultMessage": "Magnificence",
+    "description": "Name of action card: Magnificence"
+  },
   "Action Cards.Maneuvering Jets.Description": {
     "defaultMessage": "Before you assign hits produced by another player's SPACE CANNON roll:{br}Cancel 1 hit.",
     "description": "Description of action card: Maneuvering Jets"
@@ -734,6 +938,14 @@
   "Action Cards.Maneuvering Jets.Name": {
     "defaultMessage": "Maneuvering Jets",
     "description": "Name of action card: Maneuvering Jets"
+  },
+  "Action Cards.Manifest.Description": {
+    "defaultMessage": "ACTION: Resolve the PRODUCTION ability of 1 of your units; reduce the combined cost of the produced units by 3.",
+    "description": "Description of action card: Manifest"
+  },
+  "Action Cards.Manifest.Name": {
+    "defaultMessage": "Manifest",
+    "description": "Name of action card: Manifest"
   },
   "Action Cards.Manipulate Investments.Description": {
     "defaultMessage": "At the start of the strategy phase:{br}Place a total of 5 trade goods from the supply on strategy cards of your choice; you must place these tokens on at least 3 different cards.",
@@ -743,6 +955,14 @@
     "defaultMessage": "Manipulate Investments",
     "description": "Name of action card: Manipulate Investments"
   },
+  "Action Cards.Manipulate.Description": {
+    "defaultMessage": "After cards are drawn for a splice that you are not participating in:{br}Take the cards and choose which card each participating player will take.",
+    "description": "Description of action card: Manipulate"
+  },
+  "Action Cards.Manipulate.Name": {
+    "defaultMessage": "Manipulate",
+    "description": "Name of action card: Manipulate"
+  },
   "Action Cards.Master Plan.Description": {
     "defaultMessage": "After you perform an action:{br}Perform an additional action.",
     "description": "Description of action card: Master Plan"
@@ -751,6 +971,22 @@
     "defaultMessage": "Master Plan",
     "description": "Name of action card: Master Plan"
   },
+  "Action Cards.Meddle.Description": {
+    "defaultMessage": "When any die is rolled:{br}Add or subtract 1 from its result.",
+    "description": "Description of action card: Meddle"
+  },
+  "Action Cards.Meddle.Name": {
+    "defaultMessage": "Meddle",
+    "description": "Name of action card: Meddle"
+  },
+  "Action Cards.Meld.Description": {
+    "defaultMessage": "When a die is rolled by any player:{br}Roll two dice instead, and add the results together (max 10).",
+    "description": "Description of action card: Meld"
+  },
+  "Action Cards.Meld.Name": {
+    "defaultMessage": "Meld",
+    "description": "Name of action card: Meld"
+  },
   "Action Cards.Mercenary Contract.Description": {
     "defaultMessage": "ACTION: Spend 2 trade goods to place 2 neutral infantry on any non-home planet that contains no units; if that planet was owned by another player, they return its planet card to the planet card deck.",
     "description": "Description of action card: Mercenary Contract"
@@ -758,6 +994,14 @@
   "Action Cards.Mercenary Contract.Name": {
     "defaultMessage": "Mercenary Contract",
     "description": "Name of action card: Mercenary Contract"
+  },
+  "Action Cards.Meteor.Description": {
+    "defaultMessage": "When you would remove ground forces due to insufficient capacity:{br}Commit those ground forces to a planet in that system instead; resolve an invasion on that planet using only those ground forces.",
+    "description": "Description of action card: Meteor"
+  },
+  "Action Cards.Meteor.Name": {
+    "defaultMessage": "Meteor",
+    "description": "Name of action card: Meteor"
   },
   "Action Cards.Mining Initiative.Description": {
     "defaultMessage": "ACTION: Gain trade goods equal to the resource value of 1 planet you control.",
@@ -774,6 +1018,14 @@
   "Action Cards.Morale Boost.Name": {
     "defaultMessage": "Morale Boost",
     "description": "Name of action card: Morale Boost"
+  },
+  "Action Cards.Mutate.Description": {
+    "defaultMessage": "ACTION: Discard 1 of your abilities, then draw 1 ability.",
+    "description": "Description of action card: Mutate"
+  },
+  "Action Cards.Mutate.Name": {
+    "defaultMessage": "Mutate",
+    "description": "Name of action card: Mutate"
   },
   "Action Cards.Nav Suite.Description": {
     "defaultMessage": "After you activate a system:{br}During the \"Movement\" step of this tactical action, ignore the effect of anomalies.",
@@ -798,6 +1050,14 @@
   "Action Cards.Parley.Name": {
     "defaultMessage": "Parley",
     "description": "Name of action card: Parley"
+  },
+  "Action Cards.Pax.Description": {
+    "defaultMessage": "After another player commits units to land on a planet you control:{br}Return the committed units to the space area; choose 1 of them to destroy.",
+    "description": "Description of action card: Pax"
+  },
+  "Action Cards.Pax.Name": {
+    "defaultMessage": "Pax",
+    "description": "Name of action card: Pax"
   },
   "Action Cards.Pirate Contract.Description": {
     "defaultMessage": "ACTION: Place 1 neutral destroyer in a non-home system that contains no non-neutral ships.",
@@ -887,6 +1147,14 @@
     "defaultMessage": "Refit Troops",
     "description": "Name of action card: Refit Troops"
   },
+  "Action Cards.Reflect.Description": {
+    "defaultMessage": "ACTION: For each trade good you have, either gain 1 commodity or convert 1 of your commodities to a trade good.",
+    "description": "Description of action card: Reflect"
+  },
+  "Action Cards.Reflect.Name": {
+    "defaultMessage": "Reflect",
+    "description": "Name of action card: Reflect"
+  },
   "Action Cards.Reflective Shielding.Description": {
     "defaultMessage": "When one of your ships uses SUSTAIN DAMAGE during combat:{br}Produce 2 hits against your opponent's ships in the active system.",
     "description": "Description of action card: Reflective Shielding"
@@ -935,6 +1203,14 @@
     "defaultMessage": "Reverse Engineer",
     "description": "Name of action card: Reverse Engineer"
   },
+  "Action Cards.Reverse.Description": {
+    "defaultMessage": "When a splice begins:{br}Reverse the order the spliced cards are passed.",
+    "description": "Description of action card: Reverse"
+  },
+  "Action Cards.Reverse.Name": {
+    "defaultMessage": "Reverse",
+    "description": "Name of action card: Reverse"
+  },
   "Action Cards.Rise of a Messiah.Description": {
     "defaultMessage": "ACTION: Place 1 infantry from your reinforcements on each planet you control.",
     "description": "Description of action card: Rise of a Messiah"
@@ -942,6 +1218,14 @@
   "Action Cards.Rise of a Messiah.Name": {
     "defaultMessage": "Rise of a Messiah",
     "description": "Name of action card: Rise of a Messiah"
+  },
+  "Action Cards.Rise.Description": {
+    "defaultMessage": "ACTION: Either place 1 infantry on each planet you control or place 1 fighter in each system that contains your ships or space docks and no other players' ships.",
+    "description": "Description of action card: Rise"
+  },
+  "Action Cards.Rise.Name": {
+    "defaultMessage": "Rise",
+    "description": "Name of action card: Rise"
   },
   "Action Cards.Rout.Description": {
     "defaultMessage": "At the start of the \"Announce Retreats\" step of space combat, if you are the defender:{br}Your opponent must announce a retreat, if able.",
@@ -975,6 +1259,14 @@
     "defaultMessage": "Sanction",
     "description": "Name of action card: Sanction"
   },
+  "Action Cards.Scarab.Description": {
+    "defaultMessage": "ACTION: Choose a spliced card you own; gain 2 trade goods for each card you own with a faction origin that matches that card.",
+    "description": "Description of action card: Scarab"
+  },
+  "Action Cards.Scarab.Name": {
+    "defaultMessage": "Scarab",
+    "description": "Name of action card: Scarab"
+  },
   "Action Cards.Scramble Frequency.Description": {
     "defaultMessage": "After another player makes a BOMBARDMENT, SPACE CANNON, or ANTI-FIGHTER BARRAGE roll:{br}That player rerolls all of their dice.",
     "description": "Description of action card: Scramble Frequency"
@@ -998,6 +1290,14 @@
   "Action Cards.Seize Artifact.Name": {
     "defaultMessage": "Seize Artifact",
     "description": "Name of action card: Seize Artifact"
+  },
+  "Action Cards.Shatter.Description": {
+    "defaultMessage": "When another player exhausts a genome or plays an action card other than \"Shatter\":{br}That genome is exhausted without effect, or that action card is canceled.",
+    "description": "Description of action card: Shatter"
+  },
+  "Action Cards.Shatter.Name": {
+    "defaultMessage": "Shatter",
+    "description": "Name of action card: Shatter"
   },
   "Action Cards.Shields Holding.Description": {
     "defaultMessage": "Before you assign hits to your ships during a space combat:{br}Cancel up to 2 hits.",
@@ -1031,6 +1331,14 @@
     "defaultMessage": "Solar Flare",
     "description": "Name of action card: Solar Flare"
   },
+  "Action Cards.Spark.Description": {
+    "defaultMessage": "After another player's unit uses SUSTAIN DAMAGE to cancel a hit produced by your units or abilities:{br}Destroy that unit.",
+    "description": "Description of action card: Spark"
+  },
+  "Action Cards.Spark.Name": {
+    "defaultMessage": "Spark",
+    "description": "Name of action card: Spark"
+  },
   "Action Cards.Spy.Description": {
     "defaultMessage": "ACTION: Choose 1 player. That player gives you 1 random action card from their hand.",
     "description": "Description of action card: Spy"
@@ -1038,6 +1346,22 @@
   "Action Cards.Spy.Name": {
     "defaultMessage": "Spy",
     "description": "Name of action card: Spy"
+  },
+  "Action Cards.Starflare.Description": {
+    "defaultMessage": "ACTION: Choose a supernova; each player destroys 3 of their units in that supernova and each adjacent system.",
+    "description": "Description of action card: Starflare"
+  },
+  "Action Cards.Starflare.Name": {
+    "defaultMessage": "Starflare",
+    "description": "Name of action card: Starflare"
+  },
+  "Action Cards.Stasis.Description": {
+    "defaultMessage": "At the start of another player's turn:{br}Immediately end that player's turn.",
+    "description": "Description of action card: Stasis"
+  },
+  "Action Cards.Stasis.Name": {
+    "defaultMessage": "Stasis",
+    "description": "Name of action card: Stasis"
   },
   "Action Cards.Strategize.Description": {
     "defaultMessage": "ACTION: Perform the secondary ability of any readied or unchosen strategy card.",
@@ -1063,6 +1387,14 @@
     "defaultMessage": "Tactical Bombardment",
     "description": "Name of action card: Tactical Bombardment"
   },
+  "Action Cards.Tartarus.Description": {
+    "defaultMessage": "At the start of the strategy phase:{br}Choose a strategy card; that card cannot be picked unless there is no other option.",
+    "description": "Description of action card: Tartarus"
+  },
+  "Action Cards.Tartarus.Name": {
+    "defaultMessage": "Tartarus",
+    "description": "Name of action card: Tartarus"
+  },
   "Action Cards.Technology Rider.Description": {
     "defaultMessage": "After an agenda is revealed:{br}You cannot vote on this agenda. Predict aloud an outcome of this agenda. If your prediction is correct, research 1 technology.",
     "description": "Description of action card: Technology Rider"
@@ -1070,6 +1402,22 @@
   "Action Cards.Technology Rider.Name": {
     "defaultMessage": "Technology Rider",
     "description": "Name of action card: Technology Rider"
+  },
+  "Action Cards.Thieve.Description": {
+    "defaultMessage": "When a splice ends, if you did not participate:{br}Take all of the remaining spliced cards.",
+    "description": "Description of action card: Thieve"
+  },
+  "Action Cards.Thieve.Name": {
+    "defaultMessage": "Thieve",
+    "description": "Name of action card: Thieve"
+  },
+  "Action Cards.Timestop.Description": {
+    "defaultMessage": "When a player activates a system that contains your units:{br}Immediately perform an action, during which you are the active player.",
+    "description": "Description of action card: Timestop"
+  },
+  "Action Cards.Timestop.Name": {
+    "defaultMessage": "Timestop",
+    "description": "Name of action card: Timestop"
   },
   "Action Cards.Trade Rider.Description": {
     "defaultMessage": "After an agenda is revealed:{br}You cannot vote on this agenda. Predict aloud an outcome of this agenda. If your prediction is correct, gain 5 trade goods.",
@@ -1079,6 +1427,30 @@
     "defaultMessage": "Trade Rider",
     "description": "Name of action card: Trade Rider"
   },
+  "Action Cards.Transpose.Description": {
+    "defaultMessage": "ACTION: Give 1 of your abilities to one of your neighbors, then take 1 of their abilities.",
+    "description": "Description of action card: Transpose"
+  },
+  "Action Cards.Transpose.Name": {
+    "defaultMessage": "Transpose",
+    "description": "Name of action card: Transpose"
+  },
+  "Action Cards.Trine.Description": {
+    "defaultMessage": "During the \"Space Cannon Offense\" step of a tactical action:{br}Your units up to 2 systems away can use their SPACE CANNON abilities against ships in the active system.",
+    "description": "Description of action card: Trine"
+  },
+  "Action Cards.Trine.Name": {
+    "defaultMessage": "Trine",
+    "description": "Name of action card: Trine"
+  },
+  "Action Cards.Twinning.Description": {
+    "defaultMessage": "After another player resolves the component action of an action card:{br}Immediately resolve that action card as if you played it.",
+    "description": "Description of action card: Twinning"
+  },
+  "Action Cards.Twinning.Name": {
+    "defaultMessage": "Twinning",
+    "description": "Name of action card: Twinning"
+  },
   "Action Cards.Unexpected Action.Description": {
     "defaultMessage": "ACTION: Remove 1 of your command tokens from the game board and return it to your reinforcements.",
     "description": "Description of action card: Unexpected Action"
@@ -1086,6 +1458,14 @@
   "Action Cards.Unexpected Action.Name": {
     "defaultMessage": "Unexpected Action",
     "description": "Name of action card: Unexpected Action"
+  },
+  "Action Cards.Unravel.Description": {
+    "defaultMessage": "ACTION: Choose and purge a relic. If the relic belonged to another player, that player gains 1 victory point; if it belonged to you, put The Fracture into play and place 1 additional ingress token in a system that contains your units.",
+    "description": "Description of action card: Unravel"
+  },
+  "Action Cards.Unravel.Name": {
+    "defaultMessage": "Unravel",
+    "description": "Name of action card: Unravel"
   },
   "Action Cards.Unstable Planet.Description": {
     "defaultMessage": "ACTION: Choose 1 hazardous planet. Exhaust that planet and destroy up to 3 infantry on it.",
@@ -1110,6 +1490,14 @@
   "Action Cards.Uprising.Name": {
     "defaultMessage": "Uprising",
     "description": "Name of action card: Uprising"
+  },
+  "Action Cards.Vault.Description": {
+    "defaultMessage": "After you activate a system:{br}You may ignore the effects of anomalies during this movement.",
+    "description": "Description of action card: Vault"
+  },
+  "Action Cards.Vault.Name": {
+    "defaultMessage": "Vault",
+    "description": "Name of action card: Vault"
   },
   "Action Cards.Veto.Description": {
     "defaultMessage": "When an agenda is revealed:{br}Discard that agenda and reveal 1 agenda from the top of the deck. Players vote on this agenda instead.",
@@ -1991,6 +2379,42 @@
     "defaultMessage": "Warfare Research Facility",
     "description": "Title of Attachment: Warfare Research Facility"
   },
+  "Avarice Rex.Name": {
+    "defaultMessage": "Avarice Rex",
+    "description": "Name of Faction: Avarice Rex"
+  },
+  "Avarice Rex.Shortname": {
+    "defaultMessage": "Avarice",
+    "description": "Shortened version of Faction name: Avarice Rex"
+  },
+  "Avarice Rex.Techs.Antimatter Yellow.Title": {
+    "defaultMessage": "Antimatter: Yellow",
+    "description": "Title of Tech: Antimatter Yellow"
+  },
+  "Avarice Rex.Techs.Wavelength Yellow.Title": {
+    "defaultMessage": "Wavelength: Yellow",
+    "description": "Title of Tech: Wavelength Yellow"
+  },
+  "Avarice Rex.Units.Delver.Description": {
+    "defaultMessage": "When you splice, gain 1 commodity or convert 1 of your commodities to a trade good.",
+    "description": "Description for Faction Unit: Delver"
+  },
+  "Avarice Rex.Units.Delver.Title": {
+    "defaultMessage": "Delver",
+    "description": "Title of Faction Unit: Delver"
+  },
+  "Avarice Rex.Units.Scintilla.Description": {
+    "defaultMessage": "When you splice, gain 2 commodities or convert up to 2 of your commodities to trade goods.",
+    "description": "Description for Faction Unit: Scintilla"
+  },
+  "Avarice Rex.Units.Scintilla.Title": {
+    "defaultMessage": "Scintilla",
+    "description": "Title of Faction Unit: Scintilla"
+  },
+  "BATnO1": {
+    "defaultMessage": "Draw 3 Edicts and choose 1 to resolve.",
+    "description": "Instructions for the Tyrant to resolve the Edict phase."
+  },
   "Barony of Letnev.Abilities.Armada.Description": {
     "defaultMessage": "The maximum number of non-fighter ships you can have in each system is equal to 2 more than the number of tokens in your fleet pool.",
     "description": "Description for Faction Ability: Armada"
@@ -2303,6 +2727,14 @@
     "defaultMessage": "Enigmatic Device",
     "description": "Title of Component: Enigmatic Device"
   },
+  "Components.Executive Order.Description": {
+    "defaultMessage": "ACTION: Reveal the top or bottom card of the agenda deck and vote on it, being speaker. You may use trade goods to vote.",
+    "description": "Description for Component: Executive Order"
+  },
+  "Components.Executive Order.Title": {
+    "defaultMessage": "Executive Order",
+    "description": "Title of Component: Executive Order"
+  },
   "Components.Fabrication.Description": {
     "defaultMessage": "ACTION: Either purge 2 of your relic fragments of the same type to gain 1 relic; or purge 1 of your relic fragments to gain 1 command token.",
     "description": "Description for Component: Fabrication"
@@ -2319,6 +2751,18 @@
     "defaultMessage": "Fires of the Gashlai",
     "description": "Title of Component: Fires of the Gashlai"
   },
+  "Components.Gain Ability.Title": {
+    "defaultMessage": "Gain Ability",
+    "description": "Title of Component: Gain Ability"
+  },
+  "Components.Gain Genome.Title": {
+    "defaultMessage": "Gain Genome",
+    "description": "Title of Component: Gain Genome"
+  },
+  "Components.Gain Paradigm.Title": {
+    "defaultMessage": "Gain Paradigm",
+    "description": "Title of Component: Gain Paradigm"
+  },
   "Components.Gain Relic.Description": {
     "defaultMessage": "ACTION: Purge 3 of your relic fragments of the same type to gain 1 Relic.",
     "description": "Description for Component: Gain Relic"
@@ -2326,6 +2770,10 @@
   "Components.Gain Relic.Title": {
     "defaultMessage": "Gain Relic",
     "description": "Title of Component: Gain Relic"
+  },
+  "Components.Gain Unit Upgrade.Title": {
+    "defaultMessage": "Gain Unit Upgrade",
+    "description": "Title of Component: Gain Unit Upgrade"
   },
   "Components.Hack Election.Title": {
     "defaultMessage": "Hack Election",
@@ -2395,6 +2843,14 @@
     "defaultMessage": "Puppets of the Blade",
     "description": "Title of Component: Puppets of the Blade"
   },
+  "Components.Sever.Description": {
+    "defaultMessage": "ACTION: Place this card faceup in your play area and place the sever token in a system that contains your units; wormholes in that system have no effect during movement.{br}Remove the sever token and return this card to the Rebellion player at the end of the status phase.",
+    "description": "Description for Component: Sever"
+  },
+  "Components.Sever.Title": {
+    "defaultMessage": "Sever",
+    "description": "Title of Component: Sever"
+  },
   "Components.Share Knowledge.Description": {
     "defaultMessage": "ACTION: Place this card faceup in your play area and gain 1 non-faction, non-unit upgrade technology that the Deepwrought player owns; place this technology on this card.{br}Return that technology to the deck and this card to the Deepwrought player at the end of the status phase.",
     "description": "Description for Component: Share Knowledge"
@@ -2426,6 +2882,22 @@
   "Components.Star Forge.Title": {
     "defaultMessage": "Star Forge",
     "description": "Title of Component: Star Forge"
+  },
+  "Components.Steal Ability.Title": {
+    "defaultMessage": "Steal Ability",
+    "description": "Title of Component: Steal Ability"
+  },
+  "Components.Steal Genome.Title": {
+    "defaultMessage": "Steal Genome",
+    "description": "Title of Component: Steal Genome"
+  },
+  "Components.Steal Paradigm.Title": {
+    "defaultMessage": "Steal Paradigm",
+    "description": "Title of Component: Steal Paradigm"
+  },
+  "Components.Steal Unit Upgrade.Title": {
+    "defaultMessage": "Steal Unit Upgrade",
+    "description": "Title of Component: Steal Unit Upgrade"
   },
   "Components.Stellar Atomics.Description": {
     "defaultMessage": "ACTION: Discard your control token from the Stellar Atomics card to destroy all ground forces and structures on any non-home planet.",
@@ -2910,6 +3382,38 @@
   "Ecx237": {
     "defaultMessage": "Skinny",
     "description": "Text on a button specifying that the map style should be skinny."
+  },
+  "El Nen Janovet.Name": {
+    "defaultMessage": "El Nen Janovet",
+    "description": "Name of Faction: El Nen Janovet"
+  },
+  "El Nen Janovet.Shortname": {
+    "defaultMessage": "Janovet",
+    "description": "Shortened version of Faction name: El Nen Janovet"
+  },
+  "El Nen Janovet.Techs.Antimatter Magenta.Title": {
+    "defaultMessage": "Antimatter: Magenta",
+    "description": "Title of Tech: Antimatter Magenta"
+  },
+  "El Nen Janovet.Techs.Wavelength Magenta.Title": {
+    "defaultMessage": "Wavelength: Magenta",
+    "description": "Title of Tech: Wavelength Magenta"
+  },
+  "El Nen Janovet.Units.Analyzer.Description": {
+    "defaultMessage": "After you win a ground combat in which this unit participated, you may return this unit to your reinforcements to draw 1 unit upgrade.",
+    "description": "Description for Faction Unit: Analyzer"
+  },
+  "El Nen Janovet.Units.Analyzer.Title": {
+    "defaultMessage": "Analyzer",
+    "description": "Title of Faction Unit: Analyzer"
+  },
+  "El Nen Janovet.Units.The Faces of Janovet.Description": {
+    "defaultMessage": "This unit gains the unit abilities and text abilities of your destroyer, cruiser, and dreadnought unit upgrade technologies.",
+    "description": "Description for Faction Unit: The Faces of Janovet"
+  },
+  "El Nen Janovet.Units.The Faces of Janovet.Title": {
+    "defaultMessage": "The Faces of Janovet",
+    "description": "Title of Faction Unit: The Faces of Janovet"
   },
   "Embers of Muaat.Abilities.Gashlai Physiology.Description": {
     "defaultMessage": "Your ships can move through supernovas.",
@@ -3806,6 +4310,70 @@
   "IfyaDZ": {
     "defaultMessage": "Revealed {type} {count, plural, one {Objective} other {Objectives}}",
     "description": "A label for revealed objectives."
+  },
+  "Il Na Viroset.Name": {
+    "defaultMessage": "Il Na Viroset",
+    "description": "Name of Faction: Il Na Viroset"
+  },
+  "Il Na Viroset.Shortname": {
+    "defaultMessage": "Viroset",
+    "description": "Shortened version of Faction name: Il Na Viroset"
+  },
+  "Il Na Viroset.Techs.Antimatter Purple.Title": {
+    "defaultMessage": "Antimatter: Purple",
+    "description": "Title of Tech: Antimatter Purple"
+  },
+  "Il Na Viroset.Techs.Wavelength Purple.Title": {
+    "defaultMessage": "Wavelength: Purple",
+    "description": "Title of Tech: Wavelength Purple"
+  },
+  "Il Na Viroset.Units.Enigma.Description": {
+    "defaultMessage": "This unit ignores the effects of all anomalies. Its MOVE value is reduced by 1 for each unit it would transport.",
+    "description": "Description for Faction Unit: Enigma"
+  },
+  "Il Na Viroset.Units.Enigma.Title": {
+    "defaultMessage": "Enigma",
+    "description": "Title of Faction Unit: Enigma"
+  },
+  "Il Na Viroset.Units.Starlancer XI.Description": {
+    "defaultMessage": "This unit participates in space combat as if it were a ship. For each anomaly this unit is in or adjacent to, apply +1 to this unit's combat rolls.",
+    "description": "Description for Faction Unit: Starlancer XI"
+  },
+  "Il Na Viroset.Units.Starlancer XI.Title": {
+    "defaultMessage": "Starlancer XI",
+    "description": "Title of Faction Unit: Starlancer XI"
+  },
+  "Il Sai Lakoe.Name": {
+    "defaultMessage": "Il Sai Lakoe, Herald of Thorns",
+    "description": "Name of Faction: Il Sai Lakoe"
+  },
+  "Il Sai Lakoe.Shortname": {
+    "defaultMessage": "Lakoe",
+    "description": "Shortened version of Faction name: Il Sai Lakoe"
+  },
+  "Il Sai Lakoe.Techs.Antimatter Green.Title": {
+    "defaultMessage": "Antimatter: Green",
+    "description": "Title of Tech: Antimatter Green"
+  },
+  "Il Sai Lakoe.Techs.Wavelength Green.Title": {
+    "defaultMessage": "Wavelength: Green",
+    "description": "Title of Tech: Wavelength Green"
+  },
+  "Il Sai Lakoe.Units.Lakoe's Roots.Description": {
+    "defaultMessage": "When this unit is produced, place it on any planet you control.",
+    "description": "Description for Faction Unit: Lakoe's Roots"
+  },
+  "Il Sai Lakoe.Units.Lakoe's Roots.Title": {
+    "defaultMessage": "Lakoe's Roots",
+    "description": "Title of Faction Unit: Lakoe's Roots"
+  },
+  "Il Sai Lakoe.Units.Nightbloom.Description": {
+    "defaultMessage": "When this unit moves, you may resolve the PRODUCTION abilities of your units in the system it started in and each system it moved through.",
+    "description": "Description for Faction Unit: Nightbloom"
+  },
+  "Il Sai Lakoe.Units.Nightbloom.Title": {
+    "defaultMessage": "Nightbloom",
+    "description": "Title of Faction Unit: Nightbloom"
   },
   "Irm2+w": {
     "defaultMessage": "{phase} Phase",
@@ -5771,10 +6339,6 @@
     "defaultMessage": "PRODUCTION {value}",
     "description": "A unit ability that allows a unit to produce other units."
   },
-  "OpsE1E": {
-    "defaultMessage": "{num, select, 1 {First} 2 {Second} other {First}} Agenda",
-    "description": "Label specifying which agenda this is."
-  },
   "Outcomes.Cultural Planet": {
     "defaultMessage": "Cultural Planet",
     "description": "Outcome type: Cultural Planet"
@@ -5834,6 +6398,10 @@
   "Phase.Agenda": {
     "defaultMessage": "Agenda",
     "description": "Phase title for Agenda phase."
+  },
+  "Phase.Edict": {
+    "defaultMessage": "Edict",
+    "description": "Phase title for Edict phase."
   },
   "Phase.End": {
     "defaultMessage": "Results",
@@ -5938,6 +6506,38 @@
   "RBlsAq": {
     "defaultMessage": "Revealed stage I {count, plural, one {objective} other {objectives}}",
     "description": "A label for the stage I objectives that have been revealed"
+  },
+  "Radiant Aur.Name": {
+    "defaultMessage": "Radiant Aur",
+    "description": "Name of Faction: Radiant Aur"
+  },
+  "Radiant Aur.Shortname": {
+    "defaultMessage": "Aur",
+    "description": "Shortened version of Faction name: Radiant Aur"
+  },
+  "Radiant Aur.Techs.Antimatter Orange.Title": {
+    "defaultMessage": "Antimatter: Orange",
+    "description": "Title of Tech: Antimatter Orange"
+  },
+  "Radiant Aur.Techs.Wavelength Orange.Title": {
+    "defaultMessage": "Wavelength: Orange",
+    "description": "Title of Tech: Wavelength Orange"
+  },
+  "Radiant Aur.Units.Airo Shir Rex.Description": {
+    "defaultMessage": "At the start of the edict phase, if this unit is on the game board, draw and resolve 1 edict.",
+    "description": "Description for Faction Unit: Airo Shir Rex"
+  },
+  "Radiant Aur.Units.Airo Shir Rex.Title": {
+    "defaultMessage": "Airo Shir Rex",
+    "description": "Title of Faction Unit: Airo Shir Rex"
+  },
+  "Radiant Aur.Units.Starlancer II.Description": {
+    "defaultMessage": "At the start of each round of ground combat, you may spend 1 token from your strategy pool to repair all of your mechs.",
+    "description": "Description for Faction Unit: Starlancer II"
+  },
+  "Radiant Aur.Units.Starlancer II.Title": {
+    "defaultMessage": "Starlancer II",
+    "description": "Title of Faction Unit: Starlancer II"
   },
   "Ral Nel Consortium.Abilities.Miniaturization.Description": {
     "defaultMessage": "Your structures can be transported by any ship; this does not require or count against capacity. While your structures are in the space area, they cannot use their unit abilities. At the end of your tactical actions, you may place your structures that are in space areas onto planets you control in their respective systems.",
@@ -6451,6 +7051,54 @@
     "defaultMessage": "Thunder's Edge",
     "description": "Text on a button that will enable/disable the Thunder's Edge expansion."
   },
+  "Strategy Cards.Aeterna.Primary": {
+    "defaultMessage": "Immediately score 1 public objective if you fulfill its requirements; otherwise, draw 1 paradigm.{br}Gain 1 victory point if you control Mecatol Rex; otherwise, draw 1 secret objective.",
+    "description": "Primary of Strategy Card: Aeterna"
+  },
+  "Strategy Cards.Aeterna.Secondary": {
+    "defaultMessage": "Spend 1 token from your strategy pool to draw 1 secret objective or 1 paradigm.",
+    "description": "Secondary of Strategy Card: Aeterna"
+  },
+  "Strategy Cards.Aeterna.Title": {
+    "defaultMessage": "Aeterna",
+    "description": "Title of Strategy Card: Aeterna"
+  },
+  "Strategy Cards.Amicus.Primary": {
+    "defaultMessage": "Gain 3 trade goods.{br}Replenish commodities.{br}Choose any number of other players. Those players use the secondary ability of this strategy card without spending a command token.",
+    "description": "Primary of Strategy Card: Amicus"
+  },
+  "Strategy Cards.Amicus.Secondary": {
+    "defaultMessage": "Spend 1 token from your strategy pool to replenish your commodities.",
+    "description": "Secondary of Strategy Card: Amicus"
+  },
+  "Strategy Cards.Amicus.Title": {
+    "defaultMessage": "Amicus",
+    "description": "Title of Strategy Card: Amicus"
+  },
+  "Strategy Cards.Calamitas.Primary": {
+    "defaultMessage": "Initiate a unit upgrade splice.{br}Resolve the PRODUCTION abilities of your units in 1 system.",
+    "description": "Primary of Strategy Card: Calamitas"
+  },
+  "Strategy Cards.Calamitas.Secondary": {
+    "defaultMessage": "Spend 1 token from your strategy pool and 4 resources to either participate in the unit upgrade splice or use the PRODUCTION abilities of the units in your home system.",
+    "description": "Secondary of Strategy Card: Calamitas"
+  },
+  "Strategy Cards.Calamitas.Title": {
+    "defaultMessage": "Calamitas",
+    "description": "Title of Strategy Card: Calamitas"
+  },
+  "Strategy Cards.Civitas.Primary": {
+    "defaultMessage": "Either place 1 structure on a planet you control or use the PRODUCTION ability of 1 of your space docks.{br}Place 1 structure on a planet you control.",
+    "description": "Primary of Strategy Card: Civitas"
+  },
+  "Strategy Cards.Civitas.Secondary": {
+    "defaultMessage": "Spend 1 token from your strategy pool to place 1 structure on a planet you control.",
+    "description": "Secondary of Strategy Card: Civitas"
+  },
+  "Strategy Cards.Civitas.Title": {
+    "defaultMessage": "Civitas",
+    "description": "Title of Strategy Card: Civitas"
+  },
   "Strategy Cards.Construction.POK.Secondary": {
     "defaultMessage": "Spend 1 token from your strategy pool and place it in any system; you may place either 1 space dock or 1 PDS on a planet you control in that system.",
     "description": "Secondary of Strategy Card: Construction"
@@ -6523,6 +7171,42 @@
     "defaultMessage": "Leadership",
     "description": "Title of Strategy Card: Leadership"
   },
+  "Strategy Cards.Lux.Primary": {
+    "defaultMessage": "Gain 3 command tokens.{br}Spend any amount of influence to gain 1 command token for every 3 influence spent.",
+    "description": "Primary of Strategy Card: Lux"
+  },
+  "Strategy Cards.Lux.Secondary": {
+    "defaultMessage": "Spend any amount of influence to gain 1 command token for every 3 influence spent.",
+    "description": "Secondary of Strategy Card: Lux"
+  },
+  "Strategy Cards.Lux.Title": {
+    "defaultMessage": "Lux",
+    "description": "Title of Strategy Card: Lux"
+  },
+  "Strategy Cards.Magus.Primary": {
+    "defaultMessage": "Initiate an ability splice. You may spend 3 resources and 3 influence to add 1 additional ability to the pool; if you do, after each player has chosen, it passes back to you and you take an additional ability.",
+    "description": "Primary of Strategy Card: Magus"
+  },
+  "Strategy Cards.Magus.Secondary": {
+    "defaultMessage": "Spend 1 token from your strategy pool and 3 resources or 3 influence to participate in the ability splice.",
+    "description": "Secondary of Strategy Card: Magus"
+  },
+  "Strategy Cards.Magus.Title": {
+    "defaultMessage": "Magus",
+    "description": "Title of Strategy Card: Magus"
+  },
+  "Strategy Cards.Noctis.Primary": {
+    "defaultMessage": "Initiate a genome splice.{br}Ready up to 2 planets.",
+    "description": "Primary of Strategy Card: Noctis"
+  },
+  "Strategy Cards.Noctis.Secondary": {
+    "defaultMessage": "Spend 1 token from your strategy pool to participate in the genome splice.",
+    "description": "Secondary of Strategy Card: Noctis"
+  },
+  "Strategy Cards.Noctis.Title": {
+    "defaultMessage": "Noctis",
+    "description": "Title of Strategy Card: Noctis"
+  },
   "Strategy Cards.Politics.Primary": {
     "defaultMessage": "Choose a player other than the speaker. That player gains the speaker token.{br}Draw 2 action cards.{br}Look at the top 2 cards of the agenda deck. Place each card on the top or bottom of the deck in any order.",
     "description": "Primary of Strategy Card: Politics"
@@ -6559,6 +7243,18 @@
     "defaultMessage": "Trade",
     "description": "Title of Strategy Card: Trade"
   },
+  "Strategy Cards.Tyrannus.Primary": {
+    "defaultMessage": "Choose a player other than the speaker. That player gains the speaker token.{br}Choose a player other than the speaker or tyrant. That player gainst the benediction token.{br}Draw 2 action cards.",
+    "description": "Primary of Strategy Card: Tyrannus"
+  },
+  "Strategy Cards.Tyrannus.Secondary": {
+    "defaultMessage": "Spend 1 token from your strategy pool to draw 2 action cards.",
+    "description": "Secondary of Strategy Card: Tyrannus"
+  },
+  "Strategy Cards.Tyrannus.Title": {
+    "defaultMessage": "Tyrannus",
+    "description": "Title of Strategy Card: Tyrannus"
+  },
   "Strategy Cards.Warfare.Primary": {
     "defaultMessage": "Remove 1 of your command tokens from the game board; then, gain 1 command token.{br}Redistribute any number of the command tokens on your command sheet.",
     "description": "Primary of Strategy Card: Warfare"
@@ -6586,6 +7282,1514 @@
   "SyY9is": {
     "defaultMessage": "{count} {count, plural, one {Dreadnought} other {Dreadnoughts}}",
     "description": "A number of Dreadnought units."
+  },
+  "TF.Ability.Abundance.Name": {
+    "defaultMessage": "Abundance",
+    "description": "Name of Twilight's Fall Ability: Abundance"
+  },
+  "TF.Ability.Abundance.Text": {
+    "defaultMessage": "When 1 or more of your units use PRODUCTION, you may gain 1 trade good.",
+    "description": "Text of Twilight's Fall Ability: Abundance"
+  },
+  "TF.Ability.Aerie Hololattice.Name": {
+    "defaultMessage": "Aerie Hololattice",
+    "description": "Name of Twilight's Fall Ability: Aerie Hololattice"
+  },
+  "TF.Ability.Aerie Hololattice.Text": {
+    "defaultMessage": "Other players cannot move ships through systems that contain your structures.{br}Each planet that contains 1 or more of your structures gains the PRODUCTION 1 ability as if it were a unit.",
+    "description": "Text of Twilight's Fall Ability: Aerie Hololattice"
+  },
+  "TF.Ability.Aetherstream.Name": {
+    "defaultMessage": "Aetherstream",
+    "description": "Name of Twilight's Fall Ability: Aetherstream"
+  },
+  "TF.Ability.Aetherstream.Text": {
+    "defaultMessage": "After you or one of your neighbors activates a system that is adjacent to an anomaly:{br}You may apply +1 to the move value of all of that player's ships during this tactical action.",
+    "description": "Text of Twilight's Fall Ability: Aetherstream"
+  },
+  "TF.Ability.Agency Supply Network.Name": {
+    "defaultMessage": "Agency Supply Network",
+    "description": "Name of Twilight's Fall Ability: Agency Supply Network"
+  },
+  "TF.Ability.Agency Supply Network.Text": {
+    "defaultMessage": "Once per action, when you resolve a unit's PRODUCTION ability:{br}You may resolve another of your unit's PRODUCTION abilities in any system.",
+    "description": "Text of Twilight's Fall Ability: Agency Supply Network"
+  },
+  "TF.Ability.Amalgamation.Name": {
+    "defaultMessage": "Amalgamation",
+    "description": "Name of Twilight's Fall Ability: Amalgamation"
+  },
+  "TF.Ability.Amalgamation.Text": {
+    "defaultMessage": "Capture your opponent's non-structure units that are destroyed during combat.{br}When you produce a unit, you may return 1 captured unit of that type to produce that unit without spending resources.",
+    "description": "Text of Twilight's Fall Ability: Amalgamation"
+  },
+  "TF.Ability.Ambush.Name": {
+    "defaultMessage": "Ambush",
+    "description": "Name of Twilight's Fall Ability: Ambush"
+  },
+  "TF.Ability.Ambush.Text": {
+    "defaultMessage": "At the start of a space combat:{br}You may roll 1 die for each of up to 2 of your cruisers or destroyers in the system. For each result equal to or greater than that ship's combat value, produce 1 hit; your opponent must assign it to 1 of their ships.",
+    "description": "Text of Twilight's Fall Ability: Ambush"
+  },
+  "TF.Ability.Armada.Name": {
+    "defaultMessage": "Armada",
+    "description": "Name of Twilight's Fall Ability: Armada"
+  },
+  "TF.Ability.Armada.Text": {
+    "defaultMessage": "The maximum number of non-fighter ships you can have in each system is equal to 2 more than the number of tokens in your fleet pool.",
+    "description": "Text of Twilight's Fall Ability: Armada"
+  },
+  "TF.Ability.Assimilate.Name": {
+    "defaultMessage": "Assimilate",
+    "description": "Name of Twilight's Fall Ability: Assimilate"
+  },
+  "TF.Ability.Assimilate.Text": {
+    "defaultMessage": "When you gain control of a planet:{br}Replace each structure on that planet with a matching unit from your reinforcements.",
+    "description": "Text of Twilight's Fall Ability: Assimilate"
+  },
+  "TF.Ability.Awaken.Name": {
+    "defaultMessage": "Awaken",
+    "description": "Name of Twilight's Fall Ability: Awaken"
+  },
+  "TF.Ability.Awaken.Text": {
+    "defaultMessage": "After you activate a system that contains 1 or more of your infantry, you may replace 1 of those infantry with a PDS from your reinforcements.",
+    "description": "Text of Twilight's Fall Ability: Awaken"
+  },
+  "TF.Ability.Bio-Synthetic Synergy.Name": {
+    "defaultMessage": "Bio-Synthetic Synergy",
+    "description": "Name of Twilight's Fall Ability: Bio-Synthetic Synergy"
+  },
+  "TF.Ability.Bio-Synthetic Synergy.Text": {
+    "defaultMessage": "Your action cards cannot be canceled by \"Shatter\" action cards.{br}Your other abilities cannot be taken, purged, or discarded by other players and cannot have singularity tokens placed on them.",
+    "description": "Text of Twilight's Fall Ability: Bio-Synthetic Synergy"
+  },
+  "TF.Ability.Bioplasmosis.Name": {
+    "defaultMessage": "Bioplasmosis",
+    "description": "Name of Twilight's Fall Ability: Bioplasmosis"
+  },
+  "TF.Ability.Bioplasmosis.Text": {
+    "defaultMessage": "At the start of the status phase:{br}You may remove any number of ground forces from planets you control and place them on 1 or more planets you control in the same or adjacent systems.",
+    "description": "Text of Twilight's Fall Ability: Bioplasmosis"
+  },
+  "TF.Ability.Chaos Mapping.Name": {
+    "defaultMessage": "Chaos Mapping",
+    "description": "Name of Twilight's Fall Ability: Chaos Mapping"
+  },
+  "TF.Ability.Chaos Mapping.Text": {
+    "defaultMessage": "At the start of your turn during the action phase:{br}You may produce 1 unit in a system that contains at least 1 of your units that has PRODUCTION.",
+    "description": "Text of Twilight's Fall Ability: Chaos Mapping"
+  },
+  "TF.Ability.Courier Transport.Name": {
+    "defaultMessage": "Courier Transport",
+    "description": "Name of Twilight's Fall Ability: Courier Transport"
+  },
+  "TF.Ability.Courier Transport.Text": {
+    "defaultMessage": "After you activate a system:{br}You may move your structures from adjacent systems that do not contain your command tokens onto planets you control in the active system.",
+    "description": "Text of Twilight's Fall Ability: Courier Transport"
+  },
+  "TF.Ability.Crafty.Name": {
+    "defaultMessage": "Crafty",
+    "description": "Name of Twilight's Fall Ability: Crafty"
+  },
+  "TF.Ability.Crafty.Text": {
+    "defaultMessage": "You can have any number of action cards in your hand. Game effects cannot prevent you from using this ability.{br}During your turn of the action phase, players that have passed cannot play action cards.",
+    "description": "Text of Twilight's Fall Ability: Crafty"
+  },
+  "TF.Ability.Crucible.Name": {
+    "defaultMessage": "Crucible",
+    "description": "Name of Twilight's Fall Ability: Crucible"
+  },
+  "TF.Ability.Crucible.Text": {
+    "defaultMessage": "Your ships do not roll for gravity rifts; apply an additional +1 to the move values of your ships that would move out of or through a gravity rift instead.",
+    "description": "Text of Twilight's Fall Ability: Crucible"
+  },
+  "TF.Ability.Devotion.Name": {
+    "defaultMessage": "Devotion",
+    "description": "Name of Twilight's Fall Ability: Devotion"
+  },
+  "TF.Ability.Devotion.Text": {
+    "defaultMessage": "After each space combat round:{br}You may destroy 1 of your cruisers or destroyers in the active system to produce 1 hit and assign it to 1 of your opponent's ships in that system.",
+    "description": "Text of Twilight's Fall Ability: Devotion"
+  },
+  "TF.Ability.Dimensional Splicer.Name": {
+    "defaultMessage": "Dimensional Splicer",
+    "description": "Name of Twilight's Fall Ability: Dimensional Splicer"
+  },
+  "TF.Ability.Dimensional Splicer.Text": {
+    "defaultMessage": "At the start of a space combat in a system that contains a wormhole and 1 or more of your ships:{br}You may produce 1 hit and assign it to 1 of your opponent's ships.",
+    "description": "Text of Twilight's Fall Ability: Dimensional Splicer"
+  },
+  "TF.Ability.Dimensional Tear.Name": {
+    "defaultMessage": "Dimensional Tear",
+    "description": "Name of Twilight's Fall Ability: Dimensional Tear"
+  },
+  "TF.Ability.Dimensional Tear.Text": {
+    "defaultMessage": "Systems that contain your space docks are also gravity rifts; your ships do not roll for these gravity rifts. Place a dimensional tear token beneath your space docks as a reminder.",
+    "description": "Text of Twilight's Fall Ability: Dimensional Tear"
+  },
+  "TF.Ability.Distant Suns.Name": {
+    "defaultMessage": "Distant Suns",
+    "description": "Name of Twilight's Fall Ability: Distant Suns"
+  },
+  "TF.Ability.Distant Suns.Text": {
+    "defaultMessage": "When you explore a planet that contains 1 of your mechs:{br}You may draw 1 additional card; choose 1 to resolve and discard the rest.",
+    "description": "Text of Twilight's Fall Ability: Distant Suns"
+  },
+  "TF.Ability.E-Res Siphons.Name": {
+    "defaultMessage": "E-Res Siphons",
+    "description": "Name of Twilight's Fall Ability: E-Res Siphons"
+  },
+  "TF.Ability.E-Res Siphons.Text": {
+    "defaultMessage": "After another player activates a system that contains 1 or more of your ships:{br}Gain 4 trade goods.",
+    "description": "Text of Twilight's Fall Ability: E-Res Siphons"
+  },
+  "TF.Ability.Entropic Harvest.Name": {
+    "defaultMessage": "Entropic Harvest",
+    "description": "Name of Twilight's Fall Ability: Entropic Harvest"
+  },
+  "TF.Ability.Entropic Harvest.Text": {
+    "defaultMessage": "At the end of any player's combat:{br}Gain 1 commodity or convert 1 of your commodities to a trade good.",
+    "description": "Text of Twilight's Fall Ability: Entropic Harvest"
+  },
+  "TF.Ability.Fabrication.Name": {
+    "defaultMessage": "Fabrication",
+    "description": "Name of Twilight's Fall Ability: Fabrication"
+  },
+  "TF.Ability.Fabrication.Text": {
+    "defaultMessage": "ACTION: Either purge 2 of your relic fragments of the same type to gain 1 relic or purge 1 of your relic fragments to gain 1 command token.",
+    "description": "Text of Twilight's Fall Ability: Fabrication"
+  },
+  "TF.Ability.Fleet Logistics.Name": {
+    "defaultMessage": "Fleet Logistics",
+    "description": "Name of Twilight's Fall Ability: Fleet Logistics"
+  },
+  "TF.Ability.Fleet Logistics.Text": {
+    "defaultMessage": "During each of your turns of the action phase, you may perform 2 actions instead of 1.",
+    "description": "Text of Twilight's Fall Ability: Fleet Logistics"
+  },
+  "TF.Ability.Foresight.Name": {
+    "defaultMessage": "Foresight",
+    "description": "Name of Twilight's Fall Ability: Foresight"
+  },
+  "TF.Ability.Foresight.Text": {
+    "defaultMessage": "After another player moves ships into a system that contains 1 or more of your ships:{br}You may place 1 command token from your reinforcements in an adjacent system that does not contain another player's ships; move your ships from the active system into that system.",
+    "description": "Text of Twilight's Fall Ability: Foresight"
+  },
+  "TF.Ability.Future Path.Name": {
+    "defaultMessage": "Future Path",
+    "description": "Name of Twilight's Fall Ability: Future Path"
+  },
+  "TF.Ability.Future Path.Text": {
+    "defaultMessage": "When you gain trade goods from choosing a previously unchosen strategy card or from the \"Amicus\" strategy card:{br}Triple those trade goods.",
+    "description": "Text of Twilight's Fall Ability: Future Path"
+  },
+  "TF.Ability.Genetic Research.Name": {
+    "defaultMessage": "Genetic Research",
+    "description": "Name of Twilight's Fall Ability: Genetic Research"
+  },
+  "TF.Ability.Genetic Research.Text": {
+    "defaultMessage": "At the start of the status phase:{br}Choose a technology color and gain trade goods equal to the number of abilities you own that have that technology color.",
+    "description": "Text of Twilight's Fall Ability: Genetic Research"
+  },
+  "TF.Ability.Guild Ships.Name": {
+    "defaultMessage": "Guild Ships",
+    "description": "Name of Twilight's Fall Ability: Guild Ships"
+  },
+  "TF.Ability.Guild Ships.Text": {
+    "defaultMessage": "You can negotiate transactions with players who are not your neighbor.{br}You can exchange action cards with other players as part of transactions.",
+    "description": "Text of Twilight's Fall Ability: Guild Ships"
+  },
+  "TF.Ability.Harrow.Name": {
+    "defaultMessage": "Harrow",
+    "description": "Name of Twilight's Fall Ability: Harrow"
+  },
+  "TF.Ability.Harrow.Text": {
+    "defaultMessage": "At the end of each round of ground combat:{br}Your ships in the active system may use their BOMBARDMENT abilities against your opponent's ground forces on the planet.",
+    "description": "Text of Twilight's Fall Ability: Harrow"
+  },
+  "TF.Ability.Hegemonic Trade Policy.Name": {
+    "defaultMessage": "Hegemonic Trade Policy",
+    "description": "Name of Twilight's Fall Ability: Hegemonic Trade Policy"
+  },
+  "TF.Ability.Hegemonic Trade Policy.Text": {
+    "defaultMessage": "When 1 or more of your units use PRODUCITON:{br}You may swap the resource and influence values of 1 planet you control during this use of PRODUCTION.",
+    "description": "Text of Twilight's Fall Ability: Hegemonic Trade Policy"
+  },
+  "TF.Ability.Indoctrination.Name": {
+    "defaultMessage": "Indoctrination",
+    "description": "Name of Twilight's Fall Ability: Indoctrination"
+  },
+  "TF.Ability.Indoctrination.Text": {
+    "defaultMessage": "At the start of a ground combat:{br}You may spend 2 influence to replace 1 of your opponent's participating infantry with 1 infantry from your reinforcements.",
+    "description": "Text of Twilight's Fall Ability: Indoctrination"
+  },
+  "TF.Ability.Inheritance Systems.Name": {
+    "defaultMessage": "Inheritance Systems",
+    "description": "Name of Twilight's Fall Ability: Inheritance Systems"
+  },
+  "TF.Ability.Inheritance Systems.Text": {
+    "defaultMessage": "During the status phase:{br}Draw 1 additional action card and gain 1 additional command token.",
+    "description": "Text of Twilight's Fall Ability: Inheritance Systems"
+  },
+  "TF.Ability.Instinct Training.Name": {
+    "defaultMessage": "Instinct Training",
+    "description": "Name of Twilight's Fall Ability: Instinct Training"
+  },
+  "TF.Ability.Instinct Training.Text": {
+    "defaultMessage": "When another player plays an action card:{br}You may spend 1 token from your strategy pool to cancel that action card.",
+    "description": "Text of Twilight's Fall Ability: Instinct Training"
+  },
+  "TF.Ability.Lazax Gate Folding.Name": {
+    "defaultMessage": "Lazax Gate Folding",
+    "description": "Name of Twilight's Fall Ability: Lazax Gate Folding"
+  },
+  "TF.Ability.Lazax Gate Folding.Text": {
+    "defaultMessage": "During your tactical actions:{br}Treat systems that contain legendary planets you do not control as if they contain both an alpha and beta wormhole.",
+    "description": "Text of Twilight's Fall Ability: Lazax Gate Folding"
+  },
+  "TF.Ability.Liberate.Name": {
+    "defaultMessage": "Liberate",
+    "description": "Name of Twilight's Fall Ability: Liberate"
+  },
+  "TF.Ability.Liberate.Text": {
+    "defaultMessage": "When you gain control of a planet:{br}Ready that planet if it contains a number of your infantry equal to or greater than that planet's resource value; otherwise, place 1 infantry on that planet.",
+    "description": "Text of Twilight's Fall Ability: Liberate"
+  },
+  "TF.Ability.Magmus Reactor.Name": {
+    "defaultMessage": "Magmus Reactor",
+    "description": "Name of Twilight's Fall Ability: Magmus Reactor"
+  },
+  "TF.Ability.Magmus Reactor.Text": {
+    "defaultMessage": "Your units can move into and through supernovas.{br}Each supernova that does not contain other players' units and each system that contains 1 or more of your war suns gains the PRODUCTION 5 ability as if it were one of your units.",
+    "description": "Text of Twilight's Fall Ability: Magmus Reactor"
+  },
+  "TF.Ability.Mirror Computing.Name": {
+    "defaultMessage": "Mirror Computing",
+    "description": "Name of Twilight's Fall Ability: Mirror Computing"
+  },
+  "TF.Ability.Mirror Computing.Text": {
+    "defaultMessage": "When you spend trade goods:{br}Each trade good is worth 2 resources or influence instead of 1.",
+    "description": "Text of Twilight's Fall Ability: Mirror Computing"
+  },
+  "TF.Ability.Mitosis.Name": {
+    "defaultMessage": "Mitosis",
+    "description": "Name of Twilight's Fall Ability: Mitosis"
+  },
+  "TF.Ability.Mitosis.Text": {
+    "defaultMessage": "At the start of the status phase:{br}Place 1 infantry from your reinforcements on any planet you control.",
+    "description": "Text of Twilight's Fall Ability: Mitosis"
+  },
+  "TF.Ability.Munitions Reserves.Name": {
+    "defaultMessage": "Munitions Reserves",
+    "description": "Name of Twilight's Fall Ability: Munitions Reserves"
+  },
+  "TF.Ability.Munitions Reserves.Text": {
+    "defaultMessage": "At the start of each round of space combat:{br}You may spend 2 trade goods; you may reroll any number of your dice during this combat round.",
+    "description": "Text of Twilight's Fall Ability: Munitions Reserves"
+  },
+  "TF.Ability.Nanomachines.Name": {
+    "defaultMessage": "Nanomachines",
+    "description": "Name of Twilight's Fall Ability: Nanomachines"
+  },
+  "TF.Ability.Nanomachines.Text": {
+    "defaultMessage": "ACTION: Exhaust this card to place 1 PDS on a planet you control.{br}ACTION: Exhaust this card to repair all of your damaged units.{br}ACTION: Exhaust this card and discard 1 action card to draw 1 action card.",
+    "description": "Text of Twilight's Fall Ability: Nanomachines"
+  },
+  "TF.Ability.Neural Parasite.Name": {
+    "defaultMessage": "Neural Parasite",
+    "description": "Name of Twilight's Fall Ability: Neural Parasite"
+  },
+  "TF.Ability.Neural Parasite.Text": {
+    "defaultMessage": "At the start of your turn:{br}Destroy 1 of another player's infantry in or adjacent to a system that contains your infantry.",
+    "description": "Text of Twilight's Fall Ability: Neural Parasite"
+  },
+  "TF.Ability.Neuroglaive.Name": {
+    "defaultMessage": "Neuroglaive",
+    "description": "Name of Twilight's Fall Ability: Neuroglaive"
+  },
+  "TF.Ability.Neuroglaive.Text": {
+    "defaultMessage": "After another player actvates a system that contains 1 or more of your ships:{br}That player removes 1 token from their fleet pool and returns it to their reinforcements.",
+    "description": "Text of Twilight's Fall Ability: Neuroglaive"
+  },
+  "TF.Ability.Nomadic.Name": {
+    "defaultMessage": "Nomadic",
+    "description": "Name of Twilight's Fall Ability: Nomadic"
+  },
+  "TF.Ability.Nomadic.Text": {
+    "defaultMessage": "You can score objectives even if you do not control the planets in your home system.{br}Other players cannot activate asteroid fields that contain 1 or more of your ships.",
+    "description": "Text of Twilight's Fall Ability: Nomadic"
+  },
+  "TF.Ability.Non-Euclidean Shielding.Name": {
+    "defaultMessage": "Non-Euclidean Shielding",
+    "description": "Name of Twilight's Fall Ability: Non-Euclidean Shielding"
+  },
+  "TF.Ability.Non-Euclidean Shielding.Text": {
+    "defaultMessage": "When 1 of your units uses SUSTAIN DAMAGE:{br}Cancel 2 hits instead of 1.",
+    "description": "Text of Twilight's Fall Ability: Non-Euclidean Shielding"
+  },
+  "TF.Ability.Nullification Field.Name": {
+    "defaultMessage": "Nullification Field",
+    "description": "Name of Twilight's Fall Ability: Nullification Field"
+  },
+  "TF.Ability.Nullification Field.Text": {
+    "defaultMessage": "When another player activates a system that contains 1 or more of your ships:{br}You may exhaust this card and spend 1 token from your strategy pool to immediately end that player's turn.",
+    "description": "Text of Twilight's Fall Ability: Nullification Field"
+  },
+  "TF.Ability.Orbital Drop.Name": {
+    "defaultMessage": "Orbital Drop",
+    "description": "Name of Twilight's Fall Ability: Orbital Drop"
+  },
+  "TF.Ability.Orbital Drop.Text": {
+    "defaultMessage": "ACTION: Spend 1 token from your strategy pool to place 2 infantry from your reinforcements on 1 planet you control.",
+    "description": "Text of Twilight's Fall Ability: Orbital Drop"
+  },
+  "TF.Ability.Overwatch.Name": {
+    "defaultMessage": "Overwatch",
+    "description": "Name of Twilight's Fall Ability: Overwatch"
+  },
+  "TF.Ability.Overwatch.Text": {
+    "defaultMessage": "After another player moves ships into a system that contains 1 of your command tokens:{br}You may return that token to your reinforcements.",
+    "description": "Text of Twilight's Fall Ability: Overwatch"
+  },
+  "TF.Ability.Pacifist.Name": {
+    "defaultMessage": "Pacifist",
+    "description": "Name of Twilight's Fall Ability: Pacifist"
+  },
+  "TF.Ability.Pacifist.Text": {
+    "defaultMessage": "When ground forces are committed:{br}If your units on that planet are not already coexisting, you may choose for your units to coexist.",
+    "description": "Text of Twilight's Fall Ability: Pacifist"
+  },
+  "TF.Ability.Peace Accords.Name": {
+    "defaultMessage": "Peace Accords",
+    "description": "Name of Twilight's Fall Ability: Peace Accords"
+  },
+  "TF.Ability.Peace Accords.Text": {
+    "defaultMessage": "After you spend a token from your strategy pool:{br}You may gain control of 1 planet that does not contain the custodians token or any units and is adjacent to a planet you control.",
+    "description": "Text of Twilight's Fall Ability: Peace Accords"
+  },
+  "TF.Ability.Pillage.Name": {
+    "defaultMessage": "Pillage",
+    "description": "Name of Twilight's Fall Ability: Pillage"
+  },
+  "TF.Ability.Pillage.Text": {
+    "defaultMessage": "After 1 of your neighbors gains trade goods or resolves a transaction:{br}If they have 3 or more trade goods, you may take 1 of their trade goods or commodities.",
+    "description": "Text of Twilight's Fall Ability: Pillage"
+  },
+  "TF.Ability.Planesplitter.Name": {
+    "defaultMessage": "Planesplitter",
+    "description": "Name of Twilight's Fall Ability: Planesplitter"
+  },
+  "TF.Ability.Planesplitter.Text": {
+    "defaultMessage": "When you gain this card, put The Fracture into play.{br}Apply +1 to the MOVE value of each of your ships that start its movement in The Fracture.{br}Apply +2 to the result of each of your units' combat rolls in The Fracture.",
+    "description": "Text of Twilight's Fall Ability: Planesplitter"
+  },
+  "TF.Ability.Proxima Targeting VI.Name": {
+    "defaultMessage": "Proxima Targeting VI",
+    "description": "Name of Twilight's Fall Ability: Proxima Targeting VI"
+  },
+  "TF.Ability.Proxima Targeting VI.Text": {
+    "defaultMessage": "Cancel 1 hit produced by each BOMBARDMENT roll against your units.{br}At the start of a round of ground combat, you may resolve BOMBARDMENT 7 (x3) against your opponent's ground forces; if you do, resolve BOMBARDMENT 7 (x3) against your own ground forces.",
+    "description": "Text of Twilight's Fall Ability: Proxima Targeting VI"
+  },
+  "TF.Ability.Puppet Council.Name": {
+    "defaultMessage": "Puppet Council",
+    "description": "Name of Twilight's Fall Ability: Puppet Council"
+  },
+  "TF.Ability.Puppet Council.Text": {
+    "defaultMessage": "At the start of the strategy phase:{br}Replenish your commodities, then gain 1 trade good.",
+    "description": "Text of Twilight's Fall Ability: Puppet Council"
+  },
+  "TF.Ability.Quantum Datahub Node.Name": {
+    "defaultMessage": "Quantum Datahub Node",
+    "description": "Name of Twilight's Fall Ability: Quantum Datahub Node"
+  },
+  "TF.Ability.Quantum Datahub Node.Text": {
+    "defaultMessage": "At the end of the strategy phase:{br}You may spend 1 token from your strategy pool and give another player 3 of your trade goods. If you do, give 1 of your strategy cards to that player and take 1 of their strategy cards.",
+    "description": "Text of Twilight's Fall Ability: Quantum Datahub Node"
+  },
+  "TF.Ability.Quantum Drive.Name": {
+    "defaultMessage": "Quantum Drive",
+    "description": "Name of Twilight's Fall Ability: Quantum Drive"
+  },
+  "TF.Ability.Quantum Drive.Text": {
+    "defaultMessage": "You can produce your flagship without spending resources.",
+    "description": "Text of Twilight's Fall Ability: Quantum Drive"
+  },
+  "TF.Ability.Quantum Entanglement.Name": {
+    "defaultMessage": "Quantum Entanglement",
+    "description": "Name of Twilight's Fall Ability: Quantum Entanglement"
+  },
+  "TF.Ability.Quantum Entanglement.Text": {
+    "defaultMessage": "You treat all systems that contain either an alpha or beta wormhole as adjacent to each other. Game effects cannot prevent you from using this ability.",
+    "description": "Text of Twilight's Fall Ability: Quantum Entanglement"
+  },
+  "TF.Ability.Radical Advancement.Name": {
+    "defaultMessage": "Radical Advancement",
+    "description": "Name of Twilight's Fall Ability: Radical Advancement"
+  },
+  "TF.Ability.Radical Advancement.Text": {
+    "defaultMessage": "At the start of the status phase:{br}You may choose to replace 1 of your abilities; if you do, reveal abilities from the deck until you reveal another ability with the same technology color and gain it; shuffle the replaced ability and the other revealed cards back into the deck.",
+    "description": "Text of Twilight's Fall Ability: Radical Advancement"
+  },
+  "TF.Ability.Raid Formation.Name": {
+    "defaultMessage": "Raid Formation",
+    "description": "Name of Twilight's Fall Ability: Raid Formation"
+  },
+  "TF.Ability.Raid Formation.Text": {
+    "defaultMessage": "When 1 or more of your units uses ANTI-FIGHTER BARRAGE:{br}For each hit produced in excess of your opponent's fighters, choose 1 of your opponent's ships that has SUSTAIN DAMAGE to become damaged.",
+    "description": "Text of Twilight's Fall Ability: Raid Formation"
+  },
+  "TF.Ability.Reclamation.Name": {
+    "defaultMessage": "Reclamation",
+    "description": "Name of Twilight's Fall Ability: Reclamation"
+  },
+  "TF.Ability.Reclamation.Text": {
+    "defaultMessage": "After you resolve an action during which you gained control of a legendary planet:{br}You may place 1 PDS and 1 space dock from your reinforcements on that planet.",
+    "description": "Text of Twilight's Fall Ability: Reclamation"
+  },
+  "TF.Ability.Scavenge.Name": {
+    "defaultMessage": "Scavenge",
+    "description": "Name of Twilight's Fall Ability: Scavenge"
+  },
+  "TF.Ability.Scavenge.Text": {
+    "defaultMessage": "After you gain control of a planet:{br}Gain 1 trade good.",
+    "description": "Text of Twilight's Fall Ability: Scavenge"
+  },
+  "TF.Ability.Scheming.Name": {
+    "defaultMessage": "Scheming",
+    "description": "Name of Twilight's Fall Ability: Scheming"
+  },
+  "TF.Ability.Scheming.Text": {
+    "defaultMessage": "When you draw 1 or more action cards:{br}Draw 1 additional action card. Then, choose and discard 1 action card from your hand.",
+    "description": "Text of Twilight's Fall Ability: Scheming"
+  },
+  "TF.Ability.Singularity X.Name": {
+    "defaultMessage": "Singularity X",
+    "description": "Name of Twilight's Fall Ability: Singularity X"
+  },
+  "TF.Ability.Singularity X.Text": {
+    "defaultMessage": "Once per combat, after 1 of your opponent's units is destroyed:{br}You may place the \"Singularity X\" token on one of your opponent's abilities. While that token is on a card, this card gains that card's text. You cannot place a singularity token on a card that already has a singularity token.",
+    "description": "Text of Twilight's Fall Ability: Singularity X"
+  },
+  "TF.Ability.Singularity Y.Name": {
+    "defaultMessage": "Singularity Y",
+    "description": "Name of Twilight's Fall Ability: Singularity Y"
+  },
+  "TF.Ability.Singularity Y.Text": {
+    "defaultMessage": "Once per combat, after 1 of your opponent's units is destroyed:{br}You may place the \"Singularity Y\" token on one of your opponent's abilities. While that token is on a card, this card gains that card's text. You cannot place a singularity token on a card that already has a singularity token.",
+    "description": "Text of Twilight's Fall Ability: Singularity Y"
+  },
+  "TF.Ability.Singularity Z.Name": {
+    "defaultMessage": "Singularity Z",
+    "description": "Name of Twilight's Fall Ability: Singularity Z"
+  },
+  "TF.Ability.Singularity Z.Text": {
+    "defaultMessage": "Once per combat, after 1 of your opponent's units is destroyed:{br}You may place the \"Singularity Z\" token on one of your opponent's abilities. While that token is on a card, this card gains that card's text. You cannot place a singularity token on a card that already has a singularity token.",
+    "description": "Text of Twilight's Fall Ability: Singularity Z"
+  },
+  "TF.Ability.Sled Factories.Name": {
+    "defaultMessage": "Sled Factories",
+    "description": "Name of Twilight's Fall Ability: Sled Factories"
+  },
+  "TF.Ability.Sled Factories.Text": {
+    "defaultMessage": "When 1 or more of your units use PRODUCTION:{br}Reduce the combined cost of the produced units by 2.",
+    "description": "Text of Twilight's Fall Ability: Sled Factories"
+  },
+  "TF.Ability.Slipstream.Name": {
+    "defaultMessage": "Slipstream",
+    "description": "Name of Twilight's Fall Ability: Slipstream"
+  },
+  "TF.Ability.Slipstream.Text": {
+    "defaultMessage": "During your tactical actions:{br}Apply +1 to the move value of each of your ships that starts its movement in a system that contains a wormhole.",
+    "description": "Text of Twilight's Fall Ability: Slipstream"
+  },
+  "TF.Ability.Smothering Presence.Name": {
+    "defaultMessage": "Smothering Presence",
+    "description": "Name of Twilight's Fall Ability: Smothering Presence"
+  },
+  "TF.Ability.Smothering Presence.Text": {
+    "defaultMessage": "Other players' units in or adjacent to systems that contain your structures lose all of their unit abilities.",
+    "description": "Text of Twilight's Fall Ability: Smothering Presence"
+  },
+  "TF.Ability.Spatial Conduit Cylinder.Name": {
+    "defaultMessage": "Spatial Conduit Cylinder",
+    "description": "Name of Twilight's Fall Ability: Spatial Conduit Cylinder"
+  },
+  "TF.Ability.Spatial Conduit Cylinder.Text": {
+    "defaultMessage": "After you activate a system that contains 1 or more of your units:{br}That system is adjacent to all other systems that contain 1 or more of your units during this action.",
+    "description": "Text of Twilight's Fall Ability: Spatial Conduit Cylinder"
+  },
+  "TF.Ability.Spec Ops Training.Name": {
+    "defaultMessage": "Spec Ops Training",
+    "description": "Name of Twilight's Fall Ability: Spec Ops Training"
+  },
+  "TF.Ability.Spec Ops Training.Text": {
+    "defaultMessage": "After 1 of your ground forces is destroyed:{br}Roll 1 die. If the result is 5 or greater, place the unit on this card. At the start of your next turn, place each unit that is on this card on a planet you control in your home system.",
+    "description": "Text of Twilight's Fall Ability: Spec Ops Training"
+  },
+  "TF.Ability.Stall Tactics.Name": {
+    "defaultMessage": "Stall Tactics",
+    "description": "Name of Twilight's Fall Ability: Stall Tactics"
+  },
+  "TF.Ability.Stall Tactics.Text": {
+    "defaultMessage": "ACTION: Discard 1 action card from your hand.",
+    "description": "Text of Twilight's Fall Ability: Stall Tactics"
+  },
+  "TF.Ability.Star Forge.Name": {
+    "defaultMessage": "Star Forge",
+    "description": "Name of Twilight's Fall Ability: Star Forge"
+  },
+  "TF.Ability.Star Forge.Text": {
+    "defaultMessage": "ACTION: Spend 1 token from your strategy pool to place either 2 fighters or 1 destroyer from your reinforcements in a system that contains 1 or more of your ships.",
+    "description": "Text of Twilight's Fall Ability: Star Forge"
+  },
+  "TF.Ability.Stellar Genesis.Name": {
+    "defaultMessage": "Stellar Genesis",
+    "description": "Name of Twilight's Fall Ability: Stellar Genesis"
+  },
+  "TF.Ability.Stellar Genesis.Text": {
+    "defaultMessage": "After you spend a token from your strategy pool:{br}You may gain 1 trade good.",
+    "description": "Text of Twilight's Fall Ability: Stellar Genesis"
+  },
+  "TF.Ability.Stymie.Name": {
+    "defaultMessage": "Stymie",
+    "description": "Name of Twilight's Fall Ability: Stymie"
+  },
+  "TF.Ability.Stymie.Text": {
+    "defaultMessage": "After another player moves ships into a system that contains 1 or more of your units:{br}You may place 1 command token from that player's reinforcements in any non-home system.",
+    "description": "Text of Twilight's Fall Ability: Stymie"
+  },
+  "TF.Ability.Subatomic Splicer.Name": {
+    "defaultMessage": "Subatomic Splicer",
+    "description": "Name of Twilight's Fall Ability: Subatomic Splicer"
+  },
+  "TF.Ability.Subatomic Splicer.Text": {
+    "defaultMessage": "When one of your ships is destroyed:{br}You may produce a ship of the same type at a space dock in your home system.",
+    "description": "Text of Twilight's Fall Ability: Subatomic Splicer"
+  },
+  "TF.Ability.Supercharge.Name": {
+    "defaultMessage": "Supercharge",
+    "description": "Name of Twilight's Fall Ability: Supercharge"
+  },
+  "TF.Ability.Supercharge.Text": {
+    "defaultMessage": "Before making a combat roll:{br}Choose 1 of your units and apply +2 to the results of its combat roll.",
+    "description": "Text of Twilight's Fall Ability: Supercharge"
+  },
+  "TF.Ability.Survival Instinct.Name": {
+    "defaultMessage": "Survival Instinct",
+    "description": "Name of Twilight's Fall Ability: Survival Instinct"
+  },
+  "TF.Ability.Survival Instinct.Text": {
+    "defaultMessage": "After a player actives a system that contains your ships:{br}You may move up to 2 of your ships into the active system from adjacent systems that do not contain your command tokens.",
+    "description": "Text of Twilight's Fall Ability: Survival Instinct"
+  },
+  "TF.Ability.Tactical Brilliance.Name": {
+    "defaultMessage": "Tactical Brilliance",
+    "description": "Name of Twilight's Fall Ability: Tactical Brilliance"
+  },
+  "TF.Ability.Tactical Brilliance.Text": {
+    "defaultMessage": "After you roll dice for a unit ability:{br}You may reroll any of those dice.",
+    "description": "Text of Twilight's Fall Ability: Tactical Brilliance"
+  },
+  "TF.Ability.Telepathic.Name": {
+    "defaultMessage": "Telepathic",
+    "description": "Name of Twilight's Fall Ability: Telepathic"
+  },
+  "TF.Ability.Telepathic.Text": {
+    "defaultMessage": "At the end of the strategy phase:{br}Place the Naalu \"0\" token on your strategy card; you are first in initiative order.{br}This card cannot have a singularity token placed on it.",
+    "description": "Text of Twilight's Fall Ability: Telepathic"
+  },
+  "TF.Ability.Temporal Command Suite.Name": {
+    "defaultMessage": "Temporal Command Suite",
+    "description": "Name of Twilight's Fall Ability: Temporal Command Suite"
+  },
+  "TF.Ability.Temporal Command Suite.Text": {
+    "defaultMessage": "After any player's genome becomes exhausted:{br}You may spend 3 influence to ready that genome; if you ready another player's genome, you may perform a transaction with that player.",
+    "description": "Text of Twilight's Fall Ability: Temporal Command Suite"
+  },
+  "TF.Ability.Terraform.Name": {
+    "defaultMessage": "Terraform",
+    "description": "Name of Twilight's Fall Ability: Terraform"
+  },
+  "TF.Ability.Terraform.Text": {
+    "defaultMessage": "Planets that contain your structures are treated as having all 3 planet traits (cultural, hazardous, and industrial)",
+    "description": "Text of Twilight's Fall Ability: Terraform"
+  },
+  "TF.Ability.The Burning Eye.Name": {
+    "defaultMessage": "The Burning Eye",
+    "description": "Name of Twilight's Fall Ability: The Burning Eye"
+  },
+  "TF.Ability.The Burning Eye.Text": {
+    "defaultMessage": "You can treat planets in systems that contain your ships as if you contolled them for the purpose of scoring secret objectives.",
+    "description": "Text of Twilight's Fall Ability: The Burning Eye"
+  },
+  "TF.Ability.Unrelenting.Name": {
+    "defaultMessage": "Unrelenting",
+    "description": "Name of Twilight's Fall Ability: Unrelenting"
+  },
+  "TF.Ability.Unrelenting.Text": {
+    "defaultMessage": "Apply +1 to the result of each of your unit's combat rolls.",
+    "description": "Text of Twilight's Fall Ability: Unrelenting"
+  },
+  "TF.Ability.Valkyrie Particle Weave.Name": {
+    "defaultMessage": "Valkyrie Particle Weave",
+    "description": "Name of Twilight's Fall Ability: Valkyrie Particle Weave"
+  },
+  "TF.Ability.Valkyrie Particle Weave.Text": {
+    "defaultMessage": "After making combat rolls during a round of ground combat:{br}If your opponent produced 1 or more hits, you produce 1 additional hit.",
+    "description": "Text of Twilight's Fall Ability: Valkyrie Particle Weave"
+  },
+  "TF.Ability.Valkyrie Vanguard.Name": {
+    "defaultMessage": "Valkyrie Vanguard",
+    "description": "Name of Twilight's Fall Ability: Valkyrie Vanguard"
+  },
+  "TF.Ability.Valkyrie Vanguard.Text": {
+    "defaultMessage": "During the \"Commit Ground Forces\" step:{br}You can commit up to 1 ground force from each planet in the active system and each planet in adjacent systems that do not contain 1 of your command tokens.",
+    "description": "Text of Twilight's Fall Ability: Valkyrie Vanguard"
+  },
+  "TF.Ability.Versatile.Name": {
+    "defaultMessage": "Versatile",
+    "description": "Name of Twilight's Fall Ability: Versatile"
+  },
+  "TF.Ability.Versatile.Text": {
+    "defaultMessage": "When you gain command tokens during the status phase:{br}Gain 1 additional command token.",
+    "description": "Text of Twilight's Fall Ability: Versatile"
+  },
+  "TF.Ability.Voidborn.Name": {
+    "defaultMessage": "Voidborn",
+    "description": "Name of Twilight's Fall Ability: Voidborn"
+  },
+  "TF.Ability.Voidborn.Text": {
+    "defaultMessage": "Nebulae do not affect your ships' movement.{br}You can allow other players to move their ships through systems that contain your ships.",
+    "description": "Text of Twilight's Fall Ability: Voidborn"
+  },
+  "TF.Ability.Yin Ascendant.Name": {
+    "defaultMessage": "Yin Ascendant",
+    "description": "Name of Twilight's Fall Ability: Yin Ascendant"
+  },
+  "TF.Ability.Yin Ascendant.Text": {
+    "defaultMessage": "When you score an objective:{br}Draw 1 genome, ability, or unit upgrade.",
+    "description": "Text of Twilight's Fall Ability: Yin Ascendant"
+  },
+  "TF.Ability.Zealous.Name": {
+    "defaultMessage": "Zealous",
+    "description": "Name of Twilight's Fall Ability: Zealous"
+  },
+  "TF.Ability.Zealous.Text": {
+    "defaultMessage": "When 1 or more of your units roll dice for a unit ability:{br}You may choose 1 of those units to roll 1 additional die.",
+    "description": "Text of Twilight's Fall Ability: Zealous"
+  },
+  "TF.Edict.Arbitrate.Name": {
+    "defaultMessage": "Arbitrate",
+    "description": "Name of Twilight's Fall Edict: Arbitrate"
+  },
+  "TF.Edict.Arbitrate.Text": {
+    "defaultMessage": "You may discard any of your spliced cards. For each card you discarded, draw 1 card of that type. Then, you may allow any other players to do the same.",
+    "description": "Text of Twilight's Fall Edict: Arbitrate"
+  },
+  "TF.Edict.Arise.Name": {
+    "defaultMessage": "Arise",
+    "description": "Name of Twilight's Fall Edict: Arise"
+  },
+  "TF.Edict.Arise.Text": {
+    "defaultMessage": "Either place 1 infantry on each planet you control or place 1 fighter in each system that contains your ships.",
+    "description": "Text of Twilight's Fall Edict: Arise"
+  },
+  "TF.Edict.Artifice.Name": {
+    "defaultMessage": "Artifice",
+    "description": "Name of Twilight's Fall Edict: Artifice"
+  },
+  "TF.Edict.Artifice.Text": {
+    "defaultMessage": "Draw 1 relic and 1 paradigm; for each point behind the player with the most victory points you are, you may draw an additional card from either deck. Choose one of each type to keep and shuffle the rest back into their respective decks.",
+    "description": "Text of Twilight's Fall Edict: Artifice"
+  },
+  "TF.Edict.Bless.Name": {
+    "defaultMessage": "Bless",
+    "description": "Name of Twilight's Fall Edict: Bless"
+  },
+  "TF.Edict.Bless.Text": {
+    "defaultMessage": "Gain each of the following, then each other player chooses 1 of the following to gain:{br}1 command token{br}2 action cards{br}3 trade goods",
+    "description": "Text of Twilight's Fall Edict: Bless"
+  },
+  "TF.Edict.Censure.Name": {
+    "defaultMessage": "Censure",
+    "description": "Name of Twilight's Fall Edict: Censure"
+  },
+  "TF.Edict.Censure.Text": {
+    "defaultMessage": "Place any player's control token on this card. That player cannot perform transactions during this game round. Discard this card at the end of the status phase.",
+    "description": "Text of Twilight's Fall Edict: Censure"
+  },
+  "TF.Edict.Convene.Name": {
+    "defaultMessage": "Convene",
+    "description": "Name of Twilight's Fall Edict: Convene"
+  },
+  "TF.Edict.Convene.Text": {
+    "defaultMessage": "Reveal ability cards equal to the number of players. The speaker chooses 1 of them for you to gain. Then, you choose 1 ability for each other player to gain.",
+    "description": "Text of Twilight's Fall Edict: Convene"
+  },
+  "TF.Edict.Execute.Name": {
+    "defaultMessage": "Execute",
+    "description": "Name of Twilight's Fall Edict: Execute"
+  },
+  "TF.Edict.Execute.Text": {
+    "defaultMessage": "Choose up to 3 planets; destroy half of the infantry on each of those planets, rounded up.",
+    "description": "Text of Twilight's Fall Edict: Execute"
+  },
+  "TF.Edict.Foretell.Name": {
+    "defaultMessage": "Foretell",
+    "description": "Name of Twilight's Fall Edict: Foretell"
+  },
+  "TF.Edict.Foretell.Text": {
+    "defaultMessage": "Look at up to 3 unrevealed public objectives.",
+    "description": "Text of Twilight's Fall Edict: Foretell"
+  },
+  "TF.Edict.Legacy of Ixth.Name": {
+    "defaultMessage": "Legacy of Ixth",
+    "description": "Name of Twilight's Fall Edict: Legacy of Ixth"
+  },
+  "TF.Edict.Legacy of Ixth.Text": {
+    "defaultMessage": "Roll 1 die:{br}1-5: Destroy each unit in the Mecatol Rex system, then each player destroys 3 of their units in each system adjacent to Mecatol Rex.{br}6-9: Each player draws 1 spliced card from any deck.{br}10: Draw up to 2 spliced cards from any decks.",
+    "description": "Text of Twilight's Fall Edict: Legacy of Ixth"
+  },
+  "TF.Edict.Splice.Name": {
+    "defaultMessage": "Splice",
+    "description": "Name of Twilight's Fall Edict: Splice"
+  },
+  "TF.Edict.Splice.Text": {
+    "defaultMessage": "Initiate a splice of any type, including all players.",
+    "description": "Text of Twilight's Fall Edict: Splice"
+  },
+  "TF.Genome.Action Genome.Name": {
+    "defaultMessage": "Action Genome",
+    "description": "Name of Twilight's Fall Genome: Action Genome"
+  },
+  "TF.Genome.Action Genome.Text": {
+    "defaultMessage": "At any time:{br}You may exhaust this card to allow any player to spend commodities as if they were trade goods.",
+    "description": "Text of Twilight's Fall Genome: Action Genome"
+  },
+  "TF.Genome.Altruistic Genome.Name": {
+    "defaultMessage": "Altruistic Genome",
+    "description": "Name of Twilight's Fall Genome: Altruistic Genome"
+  },
+  "TF.Genome.Altruistic Genome.Text": {
+    "defaultMessage": "When a hit is produced against a unit:{br}You may exhaust this card to cancel that hit.",
+    "description": "Text of Twilight's Fall Genome: Altruistic Genome"
+  },
+  "TF.Genome.Aristocratic Genome.Name": {
+    "defaultMessage": "Aristocratic Genome",
+    "description": "Name of Twilight's Fall Genome: Aristocratic Genome"
+  },
+  "TF.Genome.Aristocratic Genome.Text": {
+    "defaultMessage": "At the start of a space combat round:{br}You may exhaust this card to choose 1 ship in the active system; that ship rolls 1 additional die during this combat round.",
+    "description": "Text of Twilight's Fall Genome: Aristocratic Genome"
+  },
+  "TF.Genome.Breach Genome.Name": {
+    "defaultMessage": "Breach Genome",
+    "description": "Name of Twilight's Fall Genome: Breach Genome"
+  },
+  "TF.Genome.Breach Genome.Text": {
+    "defaultMessage": "ACTION: Exhaust this card to choose 1 player. That player may swap the position of 2 of their ships in any systems; they may transport units when they swap.",
+    "description": "Text of Twilight's Fall Genome: Breach Genome"
+  },
+  "TF.Genome.Brutal Genome.Name": {
+    "defaultMessage": "Brutal Genome",
+    "description": "Name of Twilight's Fall Genome: Brutal Genome"
+  },
+  "TF.Genome.Brutal Genome.Text": {
+    "defaultMessage": "After a player activates a system:{br}You may exhaust this card to allow that player to replace 1 of their infantry in the active system with 1 mech from their reinforcements.",
+    "description": "Text of Twilight's Fall Genome: Brutal Genome"
+  },
+  "TF.Genome.Captain's Genome.Name": {
+    "defaultMessage": "Captain's Genome",
+    "description": "Name of Twilight's Fall Genome: Captain's Genome"
+  },
+  "TF.Genome.Captain's Genome.Text": {
+    "defaultMessage": "After a player activates a system:{br}You may exhaust this card to increase the move value of 1 of that player's ships to match the move value of the ship on the game board that has the highest move value.",
+    "description": "Text of Twilight's Fall Genome: Captain's Genome"
+  },
+  "TF.Genome.Clever Genome.Name": {
+    "defaultMessage": "Clever Genome",
+    "description": "Name of Twilight's Fall Genome: Clever Genome"
+  },
+  "TF.Genome.Clever Genome.Text": {
+    "defaultMessage": "This card has the text ability of each other player's genomes, even if those genomes are exhausted.",
+    "description": "Text of Twilight's Fall Genome: Clever Genome"
+  },
+  "TF.Genome.Cosmic Genome.Name": {
+    "defaultMessage": "Cosmic Genome",
+    "description": "Name of Twilight's Fall Genome: Cosmic Genome"
+  },
+  "TF.Genome.Cosmic Genome.Text": {
+    "defaultMessage": "After a player moves ships into a system that does not contain any planets:{br}You may exhaust this card; that player gains 1 command token.",
+    "description": "Text of Twilight's Fall Genome: Cosmic Genome"
+  },
+  "TF.Genome.Courier Genome.Name": {
+    "defaultMessage": "Courier Genome",
+    "description": "Name of Twilight's Fall Genome: Courier Genome"
+  },
+  "TF.Genome.Courier Genome.Text": {
+    "defaultMessage": "ACTION: Exhaust this card to draw 2 action cards; give 1 of those cards to another player.",
+    "description": "Text of Twilight's Fall Genome: Courier Genome"
+  },
+  "TF.Genome.Curious Genome.Name": {
+    "defaultMessage": "Curious Genome",
+    "description": "Name of Twilight's Fall Genome: Curious Genome"
+  },
+  "TF.Genome.Curious Genome.Text": {
+    "defaultMessage": "At the end of a player's turn:{br}You may exhaust this card to allow that player to explore 1 of their planets.",
+    "description": "Text of Twilight's Fall Genome: Curious Genome"
+  },
+  "TF.Genome.Deployment Genome.Name": {
+    "defaultMessage": "Deployment Genome",
+    "description": "Name of Twilight's Fall Genome: Deployment Genome"
+  },
+  "TF.Genome.Deployment Genome.Text": {
+    "defaultMessage": "At the end of a player's turn:{br}You may exhaust this card to allow that player to remove up to 2 of their ground forces from the game board and place them on planets they control in the active system.",
+    "description": "Text of Twilight's Fall Genome: Deployment Genome"
+  },
+  "TF.Genome.Diplomatic Genome.Name": {
+    "defaultMessage": "Diplomatic Genome",
+    "description": "Name of Twilight's Fall Genome: Diplomatic Genome"
+  },
+  "TF.Genome.Diplomatic Genome.Text": {
+    "defaultMessage": "ACTION: Exhaust this card to ready any planet; if that planet is in a system that is adjacent to a planet you control, you may remove 1 infantry from that planet and return it to its reinforcements.",
+    "description": "Text of Twilight's Fall Genome: Diplomatic Genome"
+  },
+  "TF.Genome.Divine Genome.Name": {
+    "defaultMessage": "Divine Genome",
+    "description": "Name of Twilight's Fall Genome: Divine Genome"
+  },
+  "TF.Genome.Divine Genome.Text": {
+    "defaultMessage": "When 1 or more of a player's units use PRODUCTION:{br}You may exhaust this card to reduce the combined cost of the produced units by 2.",
+    "description": "Text of Twilight's Fall Genome: Divine Genome"
+  },
+  "TF.Genome.Enigmatic Genome.Name": {
+    "defaultMessage": "Enigmatic Genome",
+    "description": "Name of Twilight's Fall Genome: Enigmatic Genome"
+  },
+  "TF.Genome.Enigmatic Genome.Text": {
+    "defaultMessage": "After a player activates a non-home system that contains a wormhole:{br}You may exhaust this card; if you do, that system is adjacent to all other systems that contain a wormhole during this tactical action.",
+    "description": "Text of Twilight's Fall Genome: Enigmatic Genome"
+  },
+  "TF.Genome.Experimental Genome.Name": {
+    "defaultMessage": "Experimental Genome",
+    "description": "Name of Twilight's Fall Genome: Experimental Genome"
+  },
+  "TF.Genome.Experimental Genome.Text": {
+    "defaultMessage": "When a player spends resources:{br}You may exhaust this card to allow that player to remove any number of their infantry from the game board. For each unit removed, reduce the resources spent by 1.",
+    "description": "Text of Twilight's Fall Genome: Experimental Genome"
+  },
+  "TF.Genome.Human Genome.Name": {
+    "defaultMessage": "Human Genome",
+    "description": "Name of Twilight's Fall Genome: Human Genome"
+  },
+  "TF.Genome.Human Genome.Text": {
+    "defaultMessage": "At the start of a ground combat round:{br}You may exhaust this card to choose 1 ground force in the active system; that ground force rolls 1 additional die during this combat round.",
+    "description": "Text of Twilight's Fall Genome: Human Genome"
+  },
+  "TF.Genome.Hyper Genome.Name": {
+    "defaultMessage": "Hyper Genome",
+    "description": "Name of Twilight's Fall Genome: Hyper Genome"
+  },
+  "TF.Genome.Hyper Genome.Text": {
+    "defaultMessage": "At any time:{br}You may exhaust this card and choose another player; that player gives you 1 trade good, if able, then you each draw 1 action card.",
+    "description": "Text of Twilight's Fall Genome: Hyper Genome"
+  },
+  "TF.Genome.Investment Genome.Name": {
+    "defaultMessage": "Investment Genome",
+    "description": "Name of Twilight's Fall Genome: Investment Genome"
+  },
+  "TF.Genome.Investment Genome.Text": {
+    "defaultMessage": "When you gain trade goods from the supply:{br}You may exhaust this card to place an equal number of trade goods on this card. When this card readies, gain the trade goods on this card.",
+    "description": "Text of Twilight's Fall Genome: Investment Genome"
+  },
+  "TF.Genome.Limit Genome.Name": {
+    "defaultMessage": "Limit Genome",
+    "description": "Name of Twilight's Fall Genome: Limit Genome"
+  },
+  "TF.Genome.Limit Genome.Text": {
+    "defaultMessage": "After any player's command token is placed in a system:{br}You may exhaust this card to return that token to that player's reinforcements.",
+    "description": "Text of Twilight's Fall Genome: Limit Genome"
+  },
+  "TF.Genome.Mirror Genome.Name": {
+    "defaultMessage": "Mirror Genome",
+    "description": "Name of Twilight's Fall Genome: Mirror Genome"
+  },
+  "TF.Genome.Mirror Genome.Text": {
+    "defaultMessage": "When a player moves ships:{br}You may exhaust this card; if you do, SPACE CANNON cannot be used against those ships; if they are not transporting units, they can also move through other players' ships.",
+    "description": "Text of Twilight's Fall Genome: Mirror Genome"
+  },
+  "TF.Genome.Molten Genome.Name": {
+    "defaultMessage": "Molten Genome",
+    "description": "Name of Twilight's Fall Genome: Molten Genome"
+  },
+  "TF.Genome.Molten Genome.Text": {
+    "defaultMessage": "ACTION: Exhaust this card to choose a player; that player may produce up to 2 units that each have a cost of 4 or less in a system that contains one of their war suns or their flagship.",
+    "description": "Text of Twilight's Fall Genome: Molten Genome"
+  },
+  "TF.Genome.Pacific Genome.Name": {
+    "defaultMessage": "Pacific Genome",
+    "description": "Name of Twilight's Fall Genome: Pacific Genome"
+  },
+  "TF.Genome.Pacific Genome.Text": {
+    "defaultMessage": "ACTION: Exhaust this card and choose any player's non-fighter ship; that player may replace that ship with one from their reinforcements that costs up to 2 more than the replaced ship.",
+    "description": "Text of Twilight's Fall Genome: Pacific Genome"
+  },
+  "TF.Genome.Ravenous Genome.Name": {
+    "defaultMessage": "Ravenous Genome",
+    "description": "Name of Twilight's Fall Genome: Ravenous Genome"
+  },
+  "TF.Genome.Ravenous Genome.Text": {
+    "defaultMessage": "After another player replenishes commodities:{br}You may exhaust this card to convert their commodities to trade goods and capture 1 unit from their reinforcements that has a cost equal to or lower than their commodity value.",
+    "description": "Text of Twilight's Fall Genome: Ravenous Genome"
+  },
+  "TF.Genome.Recursive Genome.Name": {
+    "defaultMessage": "Recursive Genome",
+    "description": "Name of Twilight's Fall Genome: Recursive Genome"
+  },
+  "TF.Genome.Recursive Genome.Text": {
+    "defaultMessage": "During the action phase:{br}You may exhaust this card to choose a player; that player may discard 1 action card or spend 1 command token from their command sheet to gain 2 trade goods.",
+    "description": "Text of Twilight's Fall Genome: Recursive Genome"
+  },
+  "TF.Genome.Research Genome.Name": {
+    "defaultMessage": "Research Genome",
+    "description": "Name of Twilight's Fall Genome: Research Genome"
+  },
+  "TF.Genome.Research Genome.Text": {
+    "defaultMessage": "When a player initiates a splice:{br}You may exhaust this card to add 3 additional cards to that splice.",
+    "description": "Text of Twilight's Fall Genome: Research Genome"
+  },
+  "TF.Genome.Scornful Genome.Name": {
+    "defaultMessage": "Scornful Genome",
+    "description": "Name of Twilight's Fall Genome: Scornful Genome"
+  },
+  "TF.Genome.Scornful Genome.Text": {
+    "defaultMessage": "When a player produces ground forces in a system:{br}You may exhaust this card; that player may place those units on any planets they control in that system and any adjacent systems.",
+    "description": "Text of Twilight's Fall Genome: Scornful Genome"
+  },
+  "TF.Genome.Silver Genome.Name": {
+    "defaultMessage": "Silver Genome",
+    "description": "Name of Twilight's Fall Genome: Silver Genome"
+  },
+  "TF.Genome.Silver Genome.Text": {
+    "defaultMessage": "During the action phase:{br}You may exhaust this card to gain 2 commodities or replenish another player's commodities.",
+    "description": "Text of Twilight's Fall Genome: Silver Genome"
+  },
+  "TF.Genome.Splitting Genome.Name": {
+    "defaultMessage": "Splitting Genome",
+    "description": "Name of Twilight's Fall Genome: Splitting Genome"
+  },
+  "TF.Genome.Splitting Genome.Text": {
+    "defaultMessage": "After a player's destroyer or cruiser is destroyed:{br}You may exhaust this card. If you do, that player may place up to 2 fighters from their reinforcements in that unit's system.",
+    "description": "Text of Twilight's Fall Genome: Splitting Genome"
+  },
+  "TF.Genome.Swarm Genome.Name": {
+    "defaultMessage": "Swarm Genome",
+    "description": "Name of Twilight's Fall Genome: Swarm Genome"
+  },
+  "TF.Genome.Swarm Genome.Text": {
+    "defaultMessage": "At the end of a player's tactical action:{br}You may exhaust this card; if you do, that player may place 2 infantry from their reinforcements on a planet they control in the active system.",
+    "description": "Text of Twilight's Fall Genome: Swarm Genome"
+  },
+  "TF.Genome.Temporal Genome.Name": {
+    "defaultMessage": "Temporal Genome",
+    "description": "Name of Twilight's Fall Genome: Temporal Genome"
+  },
+  "TF.Genome.Temporal Genome.Text": {
+    "defaultMessage": "After the \"Roll Dice\" step of combat:{br}You may exhaust this card. If you do, hits are not assigned to either players' units. Return to the start of this combat round's \"Roll Dice\" step.",
+    "description": "Text of Twilight's Fall Genome: Temporal Genome"
+  },
+  "TF.Genome.Valiant Genome.Name": {
+    "defaultMessage": "Valiant Genome",
+    "description": "Name of Twilight's Fall Genome: Valiant Genome"
+  },
+  "TF.Genome.Valiant Genome.Text": {
+    "defaultMessage": "When a player's unit is destroyed during combat:{br}You may exhaust this card to roll 1 die. If the result is equal to or greater than that unit's combat value, their opponent must choose and destroy 1 of their units.",
+    "description": "Text of Twilight's Fall Genome: Valiant Genome"
+  },
+  "TF.Paradigm.Artemis Ascendent.Name": {
+    "defaultMessage": "Artemis Ascendent",
+    "description": "Name of Twilight's Fall Paradigm: Artemis Ascendent"
+  },
+  "TF.Paradigm.Artemis Ascendent.Text": {
+    "defaultMessage": "At the start of a round of space combat in a system that contains a planet you control:{br}Place your flagship and any combination of up to a total of 2 cruisers or destroyers from your reinforcements in the active system.{br}Then, purge this card.",
+    "description": "Text of Twilight's Fall Paradigm: Artemis Ascendent"
+  },
+  "TF.Paradigm.Awakening.Name": {
+    "defaultMessage": "Awakening",
+    "description": "Name of Twilight's Fall Paradigm: Awakening"
+  },
+  "TF.Paradigm.Awakening.Text": {
+    "defaultMessage": "ACTION: Ready a planet you control and attach this card to it. Its resource and influence values are each increased by 3, and it gains the SPACE CANNONS 5 (X3) ability as if it were a unit.",
+    "description": "Text of Twilight's Fall Paradigm: Awakening"
+  },
+  "TF.Paradigm.Blessing of the Yin.Name": {
+    "defaultMessage": "Blessing of the Yin",
+    "description": "Name of Twilight's Fall Paradigm: Blessing of the Yin"
+  },
+  "TF.Paradigm.Blessing of the Yin.Text": {
+    "defaultMessage": "ACTION: Commit up to 3 infantry from your reinforcements to any non-home planets and resolve ground combats on those planets; players cannot use SPACE CANNON against these units.{br}Then, purge this card.",
+    "description": "Text of Twilight's Fall Paradigm: Blessing of the Yin"
+  },
+  "TF.Paradigm.Brillance of the Hylar.Name": {
+    "defaultMessage": "Brillance of the Hylar",
+    "description": "Name of Twilight's Fall Paradigm: Brillance of the Hylar"
+  },
+  "TF.Paradigm.Brillance of the Hylar.Text": {
+    "defaultMessage": "ACTION: Draw 1 genome, 1 unit upgrade, and 1 ability.{br}Then, purge this card.",
+    "description": "Text of Twilight's Fall Paradigm: Brillance of the Hylar"
+  },
+  "TF.Paradigm.Brood Swarm.Name": {
+    "defaultMessage": "Brood Swarm",
+    "description": "Name of Twilight's Fall Paradigm: Brood Swarm"
+  },
+  "TF.Paradigm.Brood Swarm.Text": {
+    "defaultMessage": "After you move ships into the active system:{br}You may skip directly to the \"Commit Ground Forces\" step. If you do, after you commit ground forces to land on planets, purge this card and return each of your ships in the active system to your reinforcements",
+    "description": "Text of Twilight's Fall Paradigm: Brood Swarm"
+  },
+  "TF.Paradigm.Changing the Ways.Name": {
+    "defaultMessage": "Changing the Ways",
+    "description": "Name of Twilight's Fall Paradigm: Changing the Ways"
+  },
+  "TF.Paradigm.Changing the Ways.Text": {
+    "defaultMessage": "ACTION: Swap the positions of any two non-Fracture systems that contain wormholes or your units, other than the Creuss system, Ahk Creuxx system, or the wormhole nexus.{br}Then, purge this card.",
+    "description": "Text of Twilight's Fall Paradigm: Changing the Ways"
+  },
+  "TF.Paradigm.Devour World.Name": {
+    "defaultMessage": "Devour World",
+    "description": "Name of Twilight's Fall Paradigm: Devour World"
+  },
+  "TF.Paradigm.Devour World.Text": {
+    "defaultMessage": "ACTION: Choose a planet that has a technology specialty in a system that contains your units. Destroy any other player's units on that planet. Gain trade goods equal to that planet's combined resource and influence values and draw 1 ability. Then purge this card.",
+    "description": "Text of Twilight's Fall Paradigm: Devour World"
+  },
+  "TF.Paradigm.Diaspora.Name": {
+    "defaultMessage": "Diaspora",
+    "description": "Name of Twilight's Fall Paradigm: Diaspora"
+  },
+  "TF.Paradigm.Diaspora.Text": {
+    "defaultMessage": "ACTION: Choose 1 system that does not contain other players' ships; you may move your flagship and any number of your dreadnoughts from other systems into the chosen system.{br}Then, purge this card.",
+    "description": "Text of Twilight's Fall Paradigm: Diaspora"
+  },
+  "TF.Paradigm.Dimensional Reflection.Name": {
+    "defaultMessage": "Dimensional Reflection",
+    "description": "Name of Twilight's Fall Paradigm: Dimensional Reflection"
+  },
+  "TF.Paradigm.Dimensional Reflection.Text": {
+    "defaultMessage": "When you produce ships:{br}You may place any of those ships onto this card.{br}At the start of a combat, you may purge this card to place all ships from this card into the active system.",
+    "description": "Text of Twilight's Fall Paradigm: Dimensional Reflection"
+  },
+  "TF.Paradigm.Eternity's End.Name": {
+    "defaultMessage": "Eternity's End",
+    "description": "Name of Twilight's Fall Paradigm: Eternity's End"
+  },
+  "TF.Paradigm.Eternity's End.Text": {
+    "defaultMessage": "ACTION: Search the ability, unit upgrade, or genome deck for any card and gain it.{br}Then, purge this card.",
+    "description": "Text of Twilight's Fall Paradigm: Eternity's End"
+  },
+  "TF.Paradigm.Event Horizon.Name": {
+    "defaultMessage": "Event Horizon",
+    "description": "Name of Twilight's Fall Paradigm: Event Horizon"
+  },
+  "TF.Paradigm.Event Horizon.Text": {
+    "defaultMessage": "ACTION: Each other player rolls a die for each of their non-fighter ships that are in or adjacent to a system that contains a gravity rift; on a 1-5, return that unit to their reinforcements.{br}Then, purge this card.",
+    "description": "Text of Twilight's Fall Paradigm: Event Horizon"
+  },
+  "TF.Paradigm.Extortion.Name": {
+    "defaultMessage": "Extortion",
+    "description": "Name of Twilight's Fall Paradigm: Extortion"
+  },
+  "TF.Paradigm.Extortion.Text": {
+    "defaultMessage": "ACTION: Each other player shows you 1 action card from their hand. For each player, you may either take that card or force that player to discard 3 random action cards from their hand.{br}Then, purge this card.",
+    "description": "Text of Twilight's Fall Paradigm: Extortion"
+  },
+  "TF.Paradigm.Flock Migration.Name": {
+    "defaultMessage": "Flock Migration",
+    "description": "Name of Twilight's Fall Paradigm: Flock Migration"
+  },
+  "TF.Paradigm.Flock Migration.Text": {
+    "defaultMessage": "ACTION: Move any number of your ships from any systems to any number of other systems that contain 1 of your command tokens and no other players' ships.{br}Then, purge this card.",
+    "description": "Text of Twilight's Fall Paradigm: Flock Migration"
+  },
+  "TF.Paradigm.Forge Legend.Name": {
+    "defaultMessage": "Forge Legend",
+    "description": "Name of Twilight's Fall Paradigm: Forge Legend"
+  },
+  "TF.Paradigm.Forge Legend.Text": {
+    "defaultMessage": "ACTION: Gain 1 relic and 2 command tokens.{br}Then, purge this card.",
+    "description": "Text of Twilight's Fall Paradigm: Forge Legend"
+  },
+  "TF.Paradigm.Gravitational Collapse.Name": {
+    "defaultMessage": "Gravitational Collapse",
+    "description": "Name of Twilight's Fall Paradigm: Gravitational Collapse"
+  },
+  "TF.Paradigm.Gravitational Collapse.Text": {
+    "defaultMessage": "After you move a war sun into a non-home system other than Mecatol Rex:{br}You may destroy all other players' units in that system and replace that system tile with the Muaat supernova tile. If you do, purge this card and each planet card that corresponds to the replaced system tile.",
+    "description": "Text of Twilight's Fall Paradigm: Gravitational Collapse"
+  },
+  "TF.Paradigm.Insurrection.Name": {
+    "defaultMessage": "Insurrection",
+    "description": "Name of Twilight's Fall Paradigm: Insurrection"
+  },
+  "TF.Paradigm.Insurrection.Text": {
+    "defaultMessage": "At the start of a space combat that you are participating in:{br}You may purge this card; if you do, for each other player's ship that is destroyed during this combat, place 1 ship of that type from your reinforcements in the active system.",
+    "description": "Text of Twilight's Fall Paradigm: Insurrection"
+  },
+  "TF.Paradigm.Intelligence Unshackled.Name": {
+    "defaultMessage": "Intelligence Unshackled",
+    "description": "Name of Twilight's Fall Paradigm: Intelligence Unshackled"
+  },
+  "TF.Paradigm.Intelligence Unshackled.Text": {
+    "defaultMessage": "When one of your units is destroyed:{br}You may purge this card to designate that unit as the catalyst; roll 1 die for each other player's unit in the system. For each result equal to or greater than the catalyst's combat value, destroy that unit.",
+    "description": "Text of Twilight's Fall Paradigm: Intelligence Unshackled"
+  },
+  "TF.Paradigm.Limit Break.Name": {
+    "defaultMessage": "Limit Break",
+    "description": "Name of Twilight's Fall Paradigm: Limit Break"
+  },
+  "TF.Paradigm.Limit Break.Text": {
+    "defaultMessage": "When the last player passes:{br}You may choose to no longer be passed; if you do, gain 2 command tokens, draw 1 action card, and purge this card.",
+    "description": "Text of Twilight's Fall Paradigm: Limit Break"
+  },
+  "TF.Paradigm.Opening the Eye.Name": {
+    "defaultMessage": "Opening the Eye",
+    "description": "Name of Twilight's Fall Paradigm: Opening the Eye"
+  },
+  "TF.Paradigm.Opening the Eye.Text": {
+    "defaultMessage": "ACTION: Place 1 frontier token in each system that does not contain any planets and does not already have a frontier token. Then, explore each frontier token that is in a system that contains 1 or more of your ships.{br}Then, purge this card.",
+    "description": "Text of Twilight's Fall Paradigm: Opening the Eye"
+  },
+  "TF.Paradigm.Overgrowth.Name": {
+    "defaultMessage": "Overgrowth",
+    "description": "Name of Twilight's Fall Paradigm: Overgrowth"
+  },
+  "TF.Paradigm.Overgrowth.Text": {
+    "defaultMessage": "ACTION: Produce any number of units in any number of systems that contain 1 or more of your ground forces.{br}Then, purge this card.",
+    "description": "Text of Twilight's Fall Paradigm: Overgrowth"
+  },
+  "TF.Paradigm.Poison of the Nefishh.Name": {
+    "defaultMessage": "Poison of the Nefishh",
+    "description": "Name of Twilight's Fall Paradigm: Poison of the Nefishh"
+  },
+  "TF.Paradigm.Poison of the Nefishh.Text": {
+    "defaultMessage": "At the end of the status phase:{br}You may choose an ability owned by another player; they must either give you that ability or give you 2 other abilities. If you do, purge this card.",
+    "description": "Text of Twilight's Fall Paradigm: Poison of the Nefishh"
+  },
+  "TF.Paradigm.Sanction of the Quieron.Name": {
+    "defaultMessage": "Sanction of the Quieron",
+    "description": "Name of Twilight's Fall Paradigm: Sanction of the Quieron"
+  },
+  "TF.Paradigm.Sanction of the Quieron.Text": {
+    "defaultMessage": "ACTION: Resolve the PRODUCTION abilities of your units in your home system. You may reduce the cost of each of your units to 0 during this use of PRODUCTION. Then, purge this card.",
+    "description": "Text of Twilight's Fall Paradigm: Sanction of the Quieron"
+  },
+  "TF.Paradigm.Sins of the Father.Name": {
+    "defaultMessage": "Sins of the Father",
+    "description": "Name of Twilight's Fall Paradigm: Sins of the Father"
+  },
+  "TF.Paradigm.Sins of the Father.Text": {
+    "defaultMessage": "ACTION: Perform the primary ability of any strategy card. Then, choose any number of other players. Those players may perform the secondary ability of that strategy card.{br}Then, purge this card.",
+    "description": "Text of Twilight's Fall Paradigm: Sins of the Father"
+  },
+  "TF.Paradigm.The Laws Unwritten.Name": {
+    "defaultMessage": "The Laws Unwritten",
+    "description": "Name of Twilight's Fall Paradigm: The Laws Unwritten"
+  },
+  "TF.Paradigm.The Laws Unwritten.Text": {
+    "defaultMessage": "ACTION: Purge an ability owned by any player.{br}Then, purge this card.",
+    "description": "Text of Twilight's Fall Paradigm: The Laws Unwritten"
+  },
+  "TF.Paradigm.The Lay of Lisis.Name": {
+    "defaultMessage": "The Lay of Lisis",
+    "description": "Name of Twilight's Fall Paradigm: The Lay of Lisis"
+  },
+  "TF.Paradigm.The Lay of Lisis.Text": {
+    "defaultMessage": "ACTION: Choose 1 system that is adjacent to 1 of your space docks. Destroy all other players' infantry and fighters in that system.{br}Then, purge this card.",
+    "description": "Text of Twilight's Fall Paradigm: Awakening"
+  },
+  "TF.Paradigm.The Winds of Change.Name": {
+    "defaultMessage": "The Winds of Change",
+    "description": "Name of Twilight's Fall Paradigm: The Winds of Change"
+  },
+  "TF.Paradigm.The Winds of Change.Text": {
+    "defaultMessage": "ACTION: Reveal cards from the action card deck until you have 3 action cards that have component actions. Draw those cards and shuffle the rest back into the action card deck.{br}Then, purge this card.",
+    "description": "Text of Twilight's Fall Paradigm: The Winds of Change"
+  },
+  "TF.Paradigm.Time Warp.Name": {
+    "defaultMessage": "Time Warp",
+    "description": "Name of Twilight's Fall Paradigm: Time Warp"
+  },
+  "TF.Paradigm.Time Warp.Text": {
+    "defaultMessage": "ACTION: Place this card near the game board; your flagship and units it transports can move out of systems that contain your command tokens during this game round.{br}At the end of that game round, purge this card.",
+    "description": "Text of Twilight's Fall Paradigm: Time Warp"
+  },
+  "TF.Paradigm.Twilight Directive.Name": {
+    "defaultMessage": "Twilight Directive",
+    "description": "Name of Twilight's Fall Paradigm: Twilight Directive"
+  },
+  "TF.Paradigm.Twilight Directive.Text": {
+    "defaultMessage": "ACTION: Remove each of your command tokens from the game board and return them to your reinforcements.{br}Then, purge this card.",
+    "description": "Text of Twilight's Fall Paradigm: Twilight Directive"
+  },
+  "TF.Paradigm.Voice of the Council.Name": {
+    "defaultMessage": "Voice of the Council",
+    "description": "Name of Twilight's Fall Paradigm: Voice of the Council"
+  },
+  "TF.Paradigm.Voice of the Council.Text": {
+    "defaultMessage": "ACTION: Reveal 3 edicts; choose 1 to resolve and shuffle the rest back into the edict deck.{br}Then, purge this card.",
+    "description": "Text of Twilight's Fall Paradigm: Voice of the Council"
+  },
+  "TF.Paradigm.Void Transference.Name": {
+    "defaultMessage": "Void Transference",
+    "description": "Name of Twilight's Fall Paradigm: Void Transference"
+  },
+  "TF.Paradigm.Void Transference.Text": {
+    "defaultMessage": "ACTION: Place this card near the game board; the number of non-fighter ships you can have in systems is not limited by the number of command tokens in your fleet pool during this game round.{br}At the end of that game round, purge this card.",
+    "description": "Text of Twilight's Fall Paradigm: Void Transference"
+  },
+  "TF.Paradigm.Witching Hour.Name": {
+    "defaultMessage": "Witching Hour",
+    "description": "Name of Twilight's Fall Paradigm: Witching Hour"
+  },
+  "TF.Paradigm.Witching Hour.Text": {
+    "defaultMessage": "ACTION: Choose a player other than the current speaker to gain the speaker token.{br}Choose a player other than the tyrant to gain the benediction token.{br}Then, purge this card.",
+    "description": "Text of Twilight's Fall Paradigm: Witching Hour"
+  },
+  "TF.Unit Upgrade.Advanced Carrier.Name": {
+    "defaultMessage": "Advanced Carrier",
+    "description": "Name of Twilight's Fall Unit Upgrade: Advanced Carrier"
+  },
+  "TF.Unit Upgrade.Ahk Syl Fier.Name": {
+    "defaultMessage": "Ahk Syl Fier",
+    "description": "Name of Twilight's Fall Unit Upgrade: Ahk Syl Fier"
+  },
+  "TF.Unit Upgrade.Ahk Syl Fier.Text": {
+    "defaultMessage": "At the start of your turn, you may place or move a Creuss wormhole token into this system.",
+    "description": "Text of Twilight's Fall Unit Upgrade: Ahk Syl Fier"
+  },
+  "TF.Unit Upgrade.Ambassador.Name": {
+    "defaultMessage": "Ambassador",
+    "description": "Name of Twilight's Fall Unit Upgrade: Ambassador"
+  },
+  "TF.Unit Upgrade.Ambassador.Text": {
+    "defaultMessage": "After you commit units, if units transported by Ambassadors are the only units commited to a planet, you may place those units into coexistance instead.",
+    "description": "Text of Twilight's Fall Unit Upgrade: Ambassador"
+  },
+  "TF.Unit Upgrade.Corsair.Name": {
+    "defaultMessage": "Corsair",
+    "description": "Name of Twilight's Fall Unit Upgrade: Corsair"
+  },
+  "TF.Unit Upgrade.Corsair.Text": {
+    "defaultMessage": "If the active system contains another player's non-fighter ships, this unit can move through systems that contain other players' ships.",
+    "description": "Text of Twilight's Fall Unit Upgrade: Corsair"
+  },
+  "TF.Unit Upgrade.Dawncrusher.Name": {
+    "defaultMessage": "Dawncrusher",
+    "description": "Name of Twilight's Fall Unit Upgrade: Dawncrusher"
+  },
+  "TF.Unit Upgrade.Dawncrusher.Text": {
+    "defaultMessage": "This unit cannot be destroyed by \"Spark\" action cards.",
+    "description": "Text of Twilight's Fall Unit Upgrade: Dawncrusher"
+  },
+  "TF.Unit Upgrade.Echo of Ascension.Name": {
+    "defaultMessage": "Echo of Ascension",
+    "description": "Name of Twilight's Fall Unit Upgrade: Echo of Ascension"
+  },
+  "TF.Unit Upgrade.Echo of Ascension.Text": {
+    "defaultMessage": "Keep this card in your play area and adjust the printed values of your flagship by the indicated amounts.",
+    "description": "Text of Twilight's Fall Unit Upgrade: Echo of Ascension"
+  },
+  "TF.Unit Upgrade.Eidolon Landwaster.Name": {
+    "defaultMessage": "Eidolon Landwaster",
+    "description": "Name of Twilight's Fall Unit Upgrade: Eidolon Landwaster"
+  },
+  "TF.Unit Upgrade.Eidolon Landwaster.Text": {
+    "defaultMessage": "Keep this card in your play area; your mechs roll 1 additional die during combat.",
+    "description": "Text of Twilight's Fall Unit Upgrade: Eidolon Landwaster"
+  },
+  "TF.Unit Upgrade.Eidolon Terminus.Name": {
+    "defaultMessage": "Eidolon Terminus",
+    "description": "Name of Twilight's Fall Unit Upgrade: Eidolon Terminus"
+  },
+  "TF.Unit Upgrade.Eidolon Terminus.Text": {
+    "defaultMessage": "Keep this card in your play area; the COMBAT value of your mechs is reduced by 1.",
+    "description": "Text of Twilight's Fall Unit Upgrade: Eidolon Terminus"
+  },
+  "TF.Unit Upgrade.Exile.Name": {
+    "defaultMessage": "Exile",
+    "description": "Name of Twilight's Fall Unit Upgrade: Exile"
+  },
+  "TF.Unit Upgrade.Exile.Text": {
+    "defaultMessage": "This unit can move through systems that contain other player's ships.",
+    "description": "Text of Twilight's Fall Unit Upgrade: Exile"
+  },
+  "TF.Unit Upgrade.Exotrireme.Name": {
+    "defaultMessage": "Exotrireme",
+    "description": "Name of Twilight's Fall Unit Upgrade: Exotrireme"
+  },
+  "TF.Unit Upgrade.Exotrireme.Text": {
+    "defaultMessage": "This unit cannot be destroyed by \"Spark\" action cards.{br}After a round of space combat, you may destroy this unit to destroy up to 2 ships in this system.",
+    "description": "Text of Twilight's Fall Unit Upgrade: Exotrireme"
+  },
+  "TF.Unit Upgrade.Floating Factories.Name": {
+    "defaultMessage": "Floating Factories",
+    "description": "Name of Twilight's Fall Unit Upgrade: Floating Factories"
+  },
+  "TF.Unit Upgrade.Floating Factories.Text": {
+    "defaultMessage": "This unit is placed in the space area instead of on a planet.{br}This unit can move and retreat as if it were a ship. If this unit is blockaded, it is destroyed.",
+    "description": "Text of Twilight's Fall Unit Upgrade: Floating Factories"
+  },
+  "TF.Unit Upgrade.Guild Agents.Name": {
+    "defaultMessage": "Guild Agents",
+    "description": "Name of Twilight's Fall Unit Upgrade: Guild Agents"
+  },
+  "TF.Unit Upgrade.Guild Agents.Text": {
+    "defaultMessage": "After you move this unit into a system that contains another player's units, you may look at that player's action cards and take 1 of them.",
+    "description": "Text of Twilight's Fall Unit Upgrade: Guild Agents"
+  },
+  "TF.Unit Upgrade.Hel-Titan.Name": {
+    "defaultMessage": "Hel-Titan",
+    "description": "Name of Twilight's Fall Unit Upgrade: Hel-Titan"
+  },
+  "TF.Unit Upgrade.Hel-Titan.Text": {
+    "defaultMessage": "This unit is treated as both a structure and a ground force. It cannot be transported. You may use this unit's SPACE CANNON ability against ships that are adjacent to this unit's system.",
+    "description": "Text of Twilight's Fall Unit Upgrade: Hel-Titan"
+  },
+  "TF.Unit Upgrade.Helios Entity.Name": {
+    "defaultMessage": "Helios Entity",
+    "description": "Name of Twilight's Fall Unit Upgrade: Helios Entity"
+  },
+  "TF.Unit Upgrade.Helios Entity.Text": {
+    "defaultMessage": "This unit's PRODUCTION value is equal to 2 more than the resource value of this planet.{br}The resource value of this planet is increased by 2.{br}Up to 3 fighters in this system do not count against your ships' capacity.",
+    "description": "Text of Twilight's Fall Unit Upgrade: Helios Entity"
+  },
+  "TF.Unit Upgrade.Hybrid Crystal Fighter.Name": {
+    "defaultMessage": "Hybrid Crystal Fighter",
+    "description": "Name of Twilight's Fall Unit Upgrade: Hybrid Crystal Fighter"
+  },
+  "TF.Unit Upgrade.Hybrid Crystal Fighter.Text": {
+    "defaultMessage": "This unit may move without being transported. Each fighter in excess of your ships' capacity counts as 1/2 of a ship against your fleet pool.",
+    "description": "Text of Twilight's Fall Unit Upgrade: Hybrid Crystal Fighter"
+  },
+  "TF.Unit Upgrade.Justiciar Rall.Name": {
+    "defaultMessage": "Justiciar Rall",
+    "description": "Name of Twilight's Fall Unit Upgrade: Justiciar Rall"
+  },
+  "TF.Unit Upgrade.Justiciar Rall.Text": {
+    "defaultMessage": "You may use this unit's SPACE CANNON ability against ships that are adjacent to this unit's system.{br}Hits produced by this unit must be assigned to non-fighter ships if able.",
+    "description": "Text of Twilight's Fall Unit Upgrade: Justiciar Rall"
+  },
+  "TF.Unit Upgrade.Keeper Matrix.Name": {
+    "defaultMessage": "Keeper Matrix",
+    "description": "Name of Twilight's Fall Unit Upgrade: Keeper Matrix"
+  },
+  "TF.Unit Upgrade.Keeper Matrix.Text": {
+    "defaultMessage": "Your may use this unit's SPACE CANNON ability against ships that are adjacent to this unit's system.",
+    "description": "Text of Twilight's Fall Unit Upgrade: Keeper Matrix"
+  },
+  "TF.Unit Upgrade.Letani Warrior.Name": {
+    "defaultMessage": "Letani Warrior",
+    "description": "Name of Twilight's Fall Unit Upgrade: Letani Warrior"
+  },
+  "TF.Unit Upgrade.Linkship.Name": {
+    "defaultMessage": "Linkship",
+    "description": "Name of Twilight's Fall Unit Upgrade: Linkship"
+  },
+  "TF.Unit Upgrade.Linkship.Text": {
+    "defaultMessage": "When this unit retreats, you may destroy 1 ship in the active system that is damaged or does not have SUSTAIN DAMAGE.",
+    "description": "Text of Twilight's Fall Unit Upgrade: Linkship"
+  },
+  "TF.Unit Upgrade.Morphwing.Name": {
+    "defaultMessage": "Morphwing",
+    "description": "Name of Twilight's Fall Unit Upgrade: Morphwing"
+  },
+  "TF.Unit Upgrade.Morphwing.Text": {
+    "defaultMessage": "This unit may move without being transported. Fighters in excess of your ships' capacity count against your fleet pool. This ship can be committed during an invasion; either return it to the space area or replace it with 1 infantry at the end of combat.",
+    "description": "Text of Twilight's Fall Unit Upgrade: Morphwing"
+  },
+  "TF.Unit Upgrade.Production Biomes.Name": {
+    "defaultMessage": "Production Biomes",
+    "description": "Name of Twilight's Fall Unit Upgrade: Production Biomes"
+  },
+  "TF.Unit Upgrade.Production Biomes.Text": {
+    "defaultMessage": "Up to 3 fighters in this system do not count against your ships' capacity.{br}When this unit uses PRODUCTION, you may spend 1 token from your strategy pool to gain 4 trade goods and choose another player to gain 2 trade goods.",
+    "description": "Text of Twilight's Fall Unit Upgrade: Production Biomes"
+  },
+  "TF.Unit Upgrade.Prototype War Sun.Name": {
+    "defaultMessage": "Prototype War Sun",
+    "description": "Name of Twilight's Fall Unit Upgrade: Prototype War Sun"
+  },
+  "TF.Unit Upgrade.Prototype War Sun.Text": {
+    "defaultMessage": "Other players' units in this system lose PLANETARY SHIELD.{br}This unit and other units moving at the same time can move into and through supernovas.",
+    "description": "Text of Twilight's Fall Unit Upgrade: Prototype War Sun"
+  },
+  "TF.Unit Upgrade.Saggitaria.Name": {
+    "defaultMessage": "Saggitaria",
+    "description": "Name of Twilight's Fall Unit Upgrade: Saggitaria"
+  },
+  "TF.Unit Upgrade.Strike Wing Alpha.Name": {
+    "defaultMessage": "Strike Wing Alpha",
+    "description": "Name of Twilight's Fall Unit Upgrade: Strike Wing Alpha"
+  },
+  "TF.Unit Upgrade.Strike Wing Alpha.Text": {
+    "defaultMessage": "When this unit uses ANTI-FIGHTER BARRAGE, each result of 9 or 10 also destroys 1 of your opponent's infantry in the space area of the active system.",
+    "description": "Text of Twilight's Fall Unit Upgrade: Strike Wing Alpha"
+  },
+  "TF.Unit Upgrade.Super-Dreadnought.Name": {
+    "defaultMessage": "Super-Dreadnought",
+    "description": "Name of Twilight's Fall Unit Upgrade: Super-Dreadnought"
+  },
+  "TF.Unit Upgrade.Super-Dreadnought.Text": {
+    "defaultMessage": "This unit cannot be destroyed by \"Spark\" action cards.",
+    "description": "Text of Twilight's Fall Unit Upgrade: Super-Dreadnought"
+  },
+  "TF.Unit Upgrade.The Dragon, Freed.Name": {
+    "defaultMessage": "The Dragon, Freed",
+    "description": "Name of Twilight's Fall Unit Upgrade: The Dragon, Freed"
+  },
+  "TF.Unit Upgrade.The Dragon, Freed.Text": {
+    "defaultMessage": "While you own this card, you can only have 1 war sun.{br}When this unit uses BOMBARDMENT, it uses it against each planet in its system and each adjacent system, even yours, ignoring PLANETARY SHIELD.",
+    "description": "Text of Twilight's Fall Unit Upgrade: The Dragon, Freed"
+  },
+  "TF.Unit Upgrade.Triune.Name": {
+    "defaultMessage": "Triune",
+    "description": "Name of Twilight's Fall Unit Upgrade: Triune"
+  },
+  "TF.Unit Upgrade.Triune.Text": {
+    "defaultMessage": "This unit may move without being transported. Fighters in excess of your ships' capacity count against your fleet pool. You may remove 3 of your fighters from systems that contain or are adjacent to a player's units to cancel an action card played by that player.",
+    "description": "Text of Twilight's Fall Unit Upgrade: Triune"
+  },
+  "TF.Unit Upgrade.University War Sun.Name": {
+    "defaultMessage": "University War Sun",
+    "description": "Name of Twilight's Fall Unit Upgrade: University War Sun"
+  },
+  "TF.Unit Upgrade.University War Sun.Text": {
+    "defaultMessage": "Other players' units in this system lose PLANETARY SHIELD.",
+    "description": "Text of Twilight's Fall Unit Upgrade: University War Sun"
+  },
+  "TF.Unit Upgrade.Valefar Prime.Name": {
+    "defaultMessage": "Valefar Prime",
+    "description": "Name of Twilight's Fall Unit Upgrade: Valefar Prime"
+  },
+  "TF.Unit Upgrade.Valefar Prime.Text": {
+    "defaultMessage": "Keep this card in your play area; the COST of your mechs is reduced by 1.",
+    "description": "Text of Twilight's Fall Unit Upgrade: Valefar Prime"
+  },
+  "TF.Unit Upgrade.Vortexer.Name": {
+    "defaultMessage": "Vortexer",
+    "description": "Name of Twilight's Fall Unit Upgrade: Vortexer"
+  },
+  "TF.Unit Upgrade.Vortexer.Text": {
+    "defaultMessage": "Capture other players' infantry and fighters that are destroyed or removed in this unit's system or an adjacent system. At the start of your turn, you may spend captured infantry or fighters to place equivalent units from your reinforcements in this system.",
+    "description": "Text of Twilight's Fall Unit Upgrade: Vortexer"
+  },
+  "TF.Unit Upgrade.Yin Clone.Name": {
+    "defaultMessage": "Yin Clone",
+    "description": "Name of Twilight's Fall Unit Upgrade: Yin Clone"
+  },
+  "TF.Unit Upgrade.Yin Clone.Text": {
+    "defaultMessage": "After this unit is destroyed or removed, place the unit on this card. At the start of the status phase, place each unit that is on this card on a planet you control.",
+    "description": "Text of Twilight's Fall Unit Upgrade: Yin Clone"
   },
   "Techs.4X4IC Helios V2.Description": {
     "defaultMessage": "This unit's PRODUCTION value is equal to 4 more than the resource value of this planet.{br}The resource value of this planet is increased by 2.{br}Up to 3 fighters in this system do not count against your ships' capacity.",
@@ -6875,6 +9079,70 @@
     "defaultMessage": "X-89 Bacterial Weapon",
     "description": "Title of Tech: X-89 Bacterial Weapon"
   },
+  "The Ruby Monarch.Name": {
+    "defaultMessage": "The Ruby Monarch",
+    "description": "Name of Faction: The Ruby Monarch"
+  },
+  "The Ruby Monarch.Shortname": {
+    "defaultMessage": "Monarch",
+    "description": "Shortened version of Faction name: The Ruby Monarch"
+  },
+  "The Ruby Monarch.Techs.Antimatter Red.Title": {
+    "defaultMessage": "Antimatter: Red",
+    "description": "Title of Tech: Antimatter Red"
+  },
+  "The Ruby Monarch.Techs.Wavelength Red.Title": {
+    "defaultMessage": "Wavelength: Red",
+    "description": "Title of Tech: Wavelength Red"
+  },
+  "The Ruby Monarch.Units.The Scarlet Knife.Description": {
+    "defaultMessage": "DEPLOY: At the start of your turn, you may discard 1 of your abilities or genomes to place this unit from your reinforcements into a system that contains your ships.",
+    "description": "Description for Faction Unit: The Scarlet Knife"
+  },
+  "The Ruby Monarch.Units.The Scarlet Knife.Title": {
+    "defaultMessage": "The Scarlet Knife",
+    "description": "Title of Faction Unit: The Scarlet Knife"
+  },
+  "The Ruby Monarch.Units.The Sharpened Edge.Description": {
+    "defaultMessage": "DEPLOY: When your flagship is placed, you may place 1 mech into your flagship's space area.",
+    "description": "Description for Faction Unit: The Sharpened Edge"
+  },
+  "The Ruby Monarch.Units.The Sharpened Edge.Title": {
+    "defaultMessage": "The Sharpened Edge",
+    "description": "Title of Faction Unit: The Sharpened Edge"
+  },
+  "The Saint of Swords.Name": {
+    "defaultMessage": "The Saint of Swords",
+    "description": "Name of Faction: The Saint of Swords"
+  },
+  "The Saint of Swords.Shortname": {
+    "defaultMessage": "Saint",
+    "description": "Shortened version of Faction name: The Saint of Swords"
+  },
+  "The Saint of Swords.Techs.Antimatter Blue.Title": {
+    "defaultMessage": "Antimatter: Blue",
+    "description": "Title of Tech: Antimatter Blue"
+  },
+  "The Saint of Swords.Techs.Wavelength Blue.Title": {
+    "defaultMessage": "Wavelength: Blue",
+    "description": "Title of Tech: Wavelength Blue"
+  },
+  "The Saint of Swords.Units.Colada.Description": {
+    "defaultMessage": "While this unit is being transported, choose 1 unit in its system that has a capacity value to roll 1 additional die on its combat rolls.",
+    "description": "Description for Faction Unit: Colada"
+  },
+  "The Saint of Swords.Units.Colada.Title": {
+    "defaultMessage": "Colada",
+    "description": "Title of Faction Unit: Colada"
+  },
+  "The Saint of Swords.Units.Tizona.Description": {
+    "defaultMessage": "Apply +1 to the MOVE value of this ship if it would transport 4 units.",
+    "description": "Description for Faction Unit: Tizona"
+  },
+  "The Saint of Swords.Units.Tizona.Title": {
+    "defaultMessage": "Tizona",
+    "description": "Title of Faction Unit: Tizona"
+  },
   "Titans of Ul.Abilities.Awaken.Description": {
     "defaultMessage": "After you activate a system that contains 1 or more of your sleeper tokens, you may replace each of those tokens with 1 PDS from your reinforcements.",
     "description": "Description for Faction Ability: Awaken"
@@ -6994,6 +9262,14 @@
   "Titans of Ul.Units.Saturn Engine I.Title": {
     "defaultMessage": "Saturn Engine I",
     "description": "Title of Faction Unit: Saturn Engine I"
+  },
+  "Twilight's Fall.Techs.Antimatter.Description": {
+    "defaultMessage": "Your ships can retreat into adjacent systems that do not contain other players' units, even if you do not have units or control planets in that system.{br}After you perform a tactical action in a system that contains a frontier token, if you have 1 or more ships in that system, explore that token.",
+    "description": "Description for Tech: Antimatter"
+  },
+  "Twilight's Fall.Techs.Wavelength.Description": {
+    "defaultMessage": "Your ships can move into and through asteroid fields.{br}When you activate a system, you may explore 1 planet in that system that contains 1 or more of your units.",
+    "description": "Description for Tech: Wavelength"
   },
   "UJSVtn": {
     "defaultMessage": "Map String",
@@ -7446,6 +9722,10 @@
   "WvbM4Q": {
     "defaultMessage": "Group by",
     "description": "Label for a group of buttons for selecting which option to group by."
+  },
+  "X+daca": {
+    "defaultMessage": "Twilight's Fall",
+    "description": "Text on a button that will enable/disable the Twilight's Fall gamemode."
   },
   "X3Nzbr": {
     "defaultMessage": "Patrons",
@@ -7927,10 +10207,6 @@
     "defaultMessage": "Select Faction",
     "description": "Instruction telling the user to select their faction."
   },
-  "c9hO6S": {
-    "defaultMessage": "Assassinated Representative",
-    "description": "Label for section describing the faction that has has Assassinate Representative played on them."
-  },
   "cHsAYk": {
     "defaultMessage": "Select Outcome",
     "description": "Text on hover menu for selecting voting outcome."
@@ -7999,6 +10275,10 @@
     "defaultMessage": "Score Action Phase Objective",
     "description": "Text on a hover menu allowing a player to score an action phase objective."
   },
+  "fHRZ5N": {
+    "defaultMessage": "Inaugural Splice",
+    "description": "A step in the setup phase: The inaugural splice."
+  },
   "fVAave": {
     "defaultMessage": "Details",
     "description": "Label for a section containing additional details."
@@ -8026,10 +10306,6 @@
   "ggO0Am": {
     "defaultMessage": "Secret",
     "description": "Label for selecting a secret objective."
-  },
-  "hCXyLw": {
-    "defaultMessage": "Select Strategy Card",
-    "description": "Label telling a player to select a strategy card."
   },
   "hIFcXI": {
     "defaultMessage": "PLANETARY SHIELD",
@@ -8114,10 +10390,6 @@
   "lYD2yu": {
     "defaultMessage": "Start Game",
     "description": "Text on a button that will start a game."
-  },
-  "m5acGq": {
-    "defaultMessage": "Cast votes (or abstain)",
-    "description": "Text label telling players to cast votes or abstain."
   },
   "mYdPrP": {
     "defaultMessage": "Researched in {perc}% of games ({count} of {games})",
@@ -8242,6 +10514,10 @@
   "uxvbkq": {
     "defaultMessage": "Results",
     "description": "Label for section describing the results of voting on an agenda."
+  },
+  "vHExhS": {
+    "defaultMessage": "Tyrant",
+    "description": "The title of the player that has the Benediction token."
   },
   "vTtJ6S": {
     "defaultMessage": "Active Player",

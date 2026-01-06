@@ -2,4 +2,8 @@
   position: relative;
   width: var(--size);
   height: var(--size);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

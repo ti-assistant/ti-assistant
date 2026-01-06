@@ -19,9 +19,7 @@ const changeOptionFn = import("../util/api/changeOption").then(
 const chooseStartingTechFn = import("../util/api/chooseStartingTech").then(
   (mod) => mod.chooseStartingTech
 );
-const chooseSubFactionFn = import("../util/api/chooseSubFaction").then(
-  (mod) => mod.chooseSubFaction
-);
+const chooseSubFactionMod = import("../util/api/chooseSubFaction");
 const claimPlanetFn = import("../util/api/claimPlanet").then(
   (mod) => mod.claimPlanet
 );
@@ -108,9 +106,7 @@ const selectSubComponentFn = import("../util/api/selectSubComponent").then(
 const setGlobalPauseFn = import("../util/api/setPause").then(
   (mod) => mod.setGlobalPause
 );
-const setSpeakerFn = import("../util/api/setSpeaker").then(
-  (mod) => mod.setSpeaker
-);
+const setSpeakerMod = import("../util/api/setSpeaker");
 const setObjectivePointsFn = import("../util/api/setObjectivePoints").then(
   (mod) => mod.setObjectivePoints
 );
@@ -163,6 +159,7 @@ const swapMapTilesModule = import("../util/api/swapMapTiles");
 const gainAllianceModule = import("../util/api/gainAlliance");
 const purgeSystemModule = import("../util/api/purgeSystem");
 const toggleStructureModule = import("../util/api/toggleStructure");
+const gainTFCardModule = import("../util/api/gainTFCard");
 
 export async function addAttachmentAsync(
   gameId: string,
@@ -244,8 +241,18 @@ export async function chooseSubFactionAsync(
   faction: "Council Keleres",
   subFaction: SubFaction
 ) {
-  const chooseSubFaction = await chooseSubFactionFn;
-  chooseSubFaction(gameId, faction, subFaction);
+  const mod = await chooseSubFactionMod;
+  mod.chooseSubFaction(gameId, faction, subFaction);
+}
+
+export async function chooseTFFactionAsync(
+  gameId: string,
+  factionId: FactionId,
+  subFaction: Optional<FactionId>,
+  type: "Unit" | "Planet"
+) {
+  const mod = await chooseSubFactionMod;
+  mod.chooseTFFaction(gameId, factionId, subFaction, type);
 }
 
 export async function claimPlanetAsync(
@@ -547,8 +554,16 @@ export async function setGlobalPauseAsync(gameId: string, paused: boolean) {
 }
 
 export async function setSpeakerAsync(gameId: string, newSpeaker: FactionId) {
-  const setSpeaker = await setSpeakerFn;
-  setSpeaker(gameId, newSpeaker);
+  const mod = await setSpeakerMod;
+  mod.setSpeaker(gameId, newSpeaker);
+}
+
+export async function setTyrantAsync(
+  gameId: string,
+  newTyrant: Optional<FactionId>
+) {
+  const mod = await setSpeakerMod;
+  mod.setTyrant(gameId, newTyrant);
 }
 
 export async function setObjectivePointsAsync(
@@ -731,4 +746,22 @@ export async function toggleStructureAsync(
 ) {
   const mod = await toggleStructureModule;
   mod.toggleStructure(gameId, planetId, structure, change);
+}
+
+export async function gainTFCardAsync(
+  gameId: string,
+  factionId: FactionId,
+  event: AbilityEvent | GenomeEvent | ParadigmEvent | UpgradeEvent
+) {
+  const mod = await gainTFCardModule;
+  mod.gainTFCard(gameId, factionId, event);
+}
+
+export async function loseTFCardAsync(
+  gameId: string,
+  factionId: FactionId,
+  event: AbilityEvent | GenomeEvent | ParadigmEvent | UpgradeEvent
+) {
+  const mod = await gainTFCardModule;
+  mod.loseTFCard(gameId, factionId, event);
 }

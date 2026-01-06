@@ -7,6 +7,7 @@ import FactionDiv from "../../../../../../src/components/LabeledDiv/FactionDiv";
 import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
 import ObjectiveRow from "../../../../../../src/components/ObjectiveRow/ObjectiveRow";
 import ObjectiveSelectHoverMenu from "../../../../../../src/components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
+import InauguralSplice from "../../../../../../src/components/StartingComponents/InauguralSplice";
 import StartingComponents from "../../../../../../src/components/StartingComponents/StartingComponents";
 import {
   useGameId,
@@ -37,7 +38,7 @@ function factionTechChoicesComplete(
 ): boolean {
   let complete = true;
   Object.values(factions).forEach((faction) => {
-    if (faction.startswith.choice) {
+    if (faction.startswith?.choice) {
       const numSelected = (faction.startswith.techs ?? []).length;
       let numRequired = faction.startswith.choice.select;
       let numAvailable = faction.startswith.choice.options.length;
@@ -59,7 +60,7 @@ function factionSubFactionChoicesComplete(
   if (!factions["Council Keleres"]) {
     return true;
   }
-  return (factions["Council Keleres"].startswith.planets ?? []).length !== 0;
+  return (factions["Council Keleres"].startswith?.planets ?? []).length !== 0;
 }
 
 export function setupPhaseComplete(
@@ -175,6 +176,10 @@ export default function SetupPhase() {
       );
     });
   }, [revealedObjectives, objectives]);
+
+  const showInauguralSplice =
+    revealedObjectives.length >= 2 &&
+    options.expansions.includes("TWILIGHTS FALL");
 
   return (
     <>
@@ -364,41 +369,14 @@ export default function SetupPhase() {
               ) : null}
             </div>
           </NumberedItem>
-
-          <FinishPhaseButton embedded />
-          {/* <div className={`flexColumn ${styles.Embedded}`}>
-            {!setupPhaseComplete(factions, revealedObjectives) ? (
-              <div
-                style={{
-                  color: "firebrick",
-                  fontFamily: "Myriad Pro",
-                  fontWeight: "bold",
-                }}
-              >
-                {getSetupPhaseText(factions, revealedObjectives, intl)}
-              </div>
-            ) : null}
-            <LockedButtons
-              unlocked={setupPhaseComplete(factions, revealedObjectives)}
-              buttons={[
-                {
-                  text: intl.formatMessage({
-                    id: "lYD2yu",
-                    description: "Text on a button that will start a game.",
-                    defaultMessage: "Start Game",
-                  }),
-                  onClick: () => {
-                    if (!gameId) {
-                      return;
-                    }
-                    advancePhaseAsync(gameId);
-                  },
-                  style: { fontSize: rem(40) },
-                },
-              ]}
-              viewOnly={viewOnly}
+          <NumberedItem>
+            <FormattedMessage
+              id="fHRZ5N"
+              description="A step in the setup phase: The inaugural splice."
+              defaultMessage="Inaugural Splice"
             />
-          </div> */}
+          </NumberedItem>
+          <FinishPhaseButton embedded />
         </ol>
       </div>
       <div className={`flexColumn ${styles.MainColumn}`}>
@@ -414,11 +392,19 @@ export default function SetupPhase() {
           }}
         >
           <div className="flexColumn" style={{ width: "100%" }}>
-            <FormattedMessage
-              id="rlGbdz"
-              description="A label for a section of components that a faction starts with."
-              defaultMessage="Starting Components"
-            />
+            {showInauguralSplice ? (
+              <FormattedMessage
+                id="fHRZ5N"
+                description="A step in the setup phase: The inaugural splice."
+                defaultMessage="Inaugural Splice"
+              />
+            ) : (
+              <FormattedMessage
+                id="rlGbdz"
+                description="A label for a section of components that a faction starts with."
+                defaultMessage="Starting Components"
+              />
+            )}
           </div>
           <div
             style={{
@@ -430,48 +416,37 @@ export default function SetupPhase() {
             }}
           >
             {Object.values(orderedFactionIds).map((factionId) => {
+              if (showInauguralSplice) {
+                return (
+                  <InauguralSpliceDiv key={factionId} factionId={factionId} />
+                );
+              }
               return (
                 <StartingComponentDiv key={factionId} factionId={factionId} />
               );
             })}
           </div>
           <FinishPhaseButton />
-          {/* <div className="flexColumn">
-            {!setupPhaseComplete(factions, revealedObjectives) ? (
-              <div
-                style={{
-                  color: "firebrick",
-                  fontFamily: "Myriad Pro",
-                  fontWeight: "bold",
-                }}
-              >
-                {getSetupPhaseText(factions, revealedObjectives, intl)}
-              </div>
-            ) : null}
-            <LockedButtons
-              unlocked={setupPhaseComplete(factions, revealedObjectives)}
-              buttons={[
-                {
-                  text: intl.formatMessage({
-                    id: "lYD2yu",
-                    description: "Text on a button that will start a game.",
-                    defaultMessage: "Start Game",
-                  }),
-                  onClick: () => {
-                    if (!gameId) {
-                      return;
-                    }
-                    advancePhaseAsync(gameId);
-                  },
-                  style: { fontSize: rem(40) },
-                },
-              ]}
-              viewOnly={viewOnly}
-            />
-          </div> */}
         </div>
       </div>
     </>
+  );
+}
+
+function InauguralSpliceDiv({ factionId }: { factionId: FactionId }) {
+  return (
+    <FactionDiv factionId={factionId}>
+      <div
+        className="flexColumn"
+        style={{
+          alignItems: "flex-start",
+          height: "100%",
+          width: "100%",
+        }}
+      >
+        <InauguralSplice factionId={factionId} />
+      </div>
+    </FactionDiv>
   );
 }
 

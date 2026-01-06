@@ -292,6 +292,24 @@ export function LogEntryElement({
         </div>
       );
     }
+    case "SET_TYRANT": {
+      if (!logEntry.data.event.newTyrant) {
+        return null;
+      }
+      return (
+        <div
+          className="flexRow"
+          style={{
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
+            fontFamily: "Myriad Pro",
+          }}
+        >
+          New Tyrant:
+          <ColoredFactionName factionId={logEntry.data.event.newTyrant} />
+        </div>
+      );
+    }
     case "SCORE_OBJECTIVE": {
       const objective = objectives[logEntry.data.event.objective];
       if (!objective) {

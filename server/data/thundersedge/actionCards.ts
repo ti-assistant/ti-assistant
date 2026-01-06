@@ -16,6 +16,7 @@ export default function getThundersEdgeActionCards(
         { br: "\n\n" }
       ),
       expansion: "THUNDERS EDGE",
+      removedIn: "TWILIGHTS FALL",
       id: "Black Market Dealings",
       name: intl.formatMessage({
         id: "Action Cards.Black Market Dealings.Name",
@@ -36,6 +37,7 @@ export default function getThundersEdgeActionCards(
         { br: "\n\n" }
       ),
       expansion: "THUNDERS EDGE",
+      removedIn: "TWILIGHTS FALL",
       id: "Brilliance",
       name: intl.formatMessage({
         id: "Action Cards.Brilliance.Name",
@@ -56,6 +58,7 @@ export default function getThundersEdgeActionCards(
         { br: "\n\n" }
       ),
       expansion: "THUNDERS EDGE",
+      removedIn: "TWILIGHTS FALL",
       id: "Crash Landing",
       name: intl.formatMessage({
         id: "Action Cards.Crash Landing.Name",
@@ -77,6 +80,7 @@ export default function getThundersEdgeActionCards(
         { br: "\n\n" }
       ),
       expansion: "THUNDERS EDGE",
+      removedIn: "TWILIGHTS FALL",
       id: "Crisis",
       name: intl.formatMessage({
         id: "Action Cards.Crisis.Name",
@@ -97,6 +101,7 @@ export default function getThundersEdgeActionCards(
         { br: "\n\n" }
       ),
       expansion: "THUNDERS EDGE",
+      removedIn: "TWILIGHTS FALL",
       id: "Exchange Program",
       name: intl.formatMessage({
         id: "Action Cards.Exchange Program.Name",
@@ -117,6 +122,7 @@ export default function getThundersEdgeActionCards(
         { br: "\n\n" }
       ),
       expansion: "THUNDERS EDGE",
+      removedIn: "TWILIGHTS FALL",
       id: "Extreme Duress",
       name: intl.formatMessage({
         id: "Action Cards.Extreme Duress.Name",
@@ -137,6 +143,7 @@ export default function getThundersEdgeActionCards(
         { br: "\n\n" }
       ),
       expansion: "THUNDERS EDGE",
+      removedIn: "TWILIGHTS FALL",
       id: "Lie in Wait",
       name: intl.formatMessage({
         id: "Action Cards.Lie in Wait.Name",
@@ -158,6 +165,7 @@ export default function getThundersEdgeActionCards(
         { br: "\n\n" }
       ),
       expansion: "THUNDERS EDGE",
+      removedIn: "TWILIGHTS FALL",
       id: "Mercenary Contract",
       name: intl.formatMessage({
         id: "Action Cards.Mercenary Contract.Name",
@@ -178,6 +186,7 @@ export default function getThundersEdgeActionCards(
         { br: "\n\n" }
       ),
       expansion: "THUNDERS EDGE",
+      removedIn: "TWILIGHTS FALL",
       id: "Overrule",
       name: intl.formatMessage({
         id: "Action Cards.Overrule.Name",
@@ -198,6 +207,7 @@ export default function getThundersEdgeActionCards(
         { br: "\n\n" }
       ),
       expansion: "THUNDERS EDGE",
+      removedIn: "TWILIGHTS FALL",
       id: "Pirate Contract",
       name: intl.formatMessage({
         id: "Action Cards.Pirate Contract.Name",
@@ -218,6 +228,7 @@ export default function getThundersEdgeActionCards(
         { br: "\n\n" }
       ),
       expansion: "THUNDERS EDGE",
+      removedIn: "TWILIGHTS FALL",
       id: "Pirate Fleet",
       name: intl.formatMessage({
         id: "Action Cards.Pirate Fleet.Name",
@@ -238,6 +249,7 @@ export default function getThundersEdgeActionCards(
         { br: "\n\n" }
       ),
       expansion: "THUNDERS EDGE",
+      removedIn: "TWILIGHTS FALL",
       id: "Puppets on a String",
       name: intl.formatMessage({
         id: "Action Cards.Puppets on a String.Name",
@@ -258,6 +270,7 @@ export default function getThundersEdgeActionCards(
         { br: "\n\n" }
       ),
       expansion: "THUNDERS EDGE",
+      removedIn: "TWILIGHTS FALL",
       id: "Rescue",
       name: intl.formatMessage({
         id: "Action Cards.Rescue.Name",
@@ -278,6 +291,7 @@ export default function getThundersEdgeActionCards(
         { br: "\n\n" }
       ),
       expansion: "THUNDERS EDGE",
+      removedIn: "TWILIGHTS FALL",
       id: "Strategize",
       name: intl.formatMessage({
         id: "Action Cards.Strategize.Name",

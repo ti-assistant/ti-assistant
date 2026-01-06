@@ -14,13 +14,14 @@ import Graph, { Line } from "./Graph";
 export function getTechCountsByType(
   techs: Partial<Record<TechId, Tech>>,
   techList: Optional<TechId[]>
-) {
+): Record<TechType, number> {
   return {
     BLUE: getTechsOfType(techs, techList, "BLUE"),
     GREEN: getTechsOfType(techs, techList, "GREEN"),
     RED: getTechsOfType(techs, techList, "RED"),
     YELLOW: getTechsOfType(techs, techList, "YELLOW"),
     UPGRADE: getTechsOfType(techs, techList, "UPGRADE"),
+    OTHER: getTechsOfType(techs, techList, "OTHER"),
   };
 }
 

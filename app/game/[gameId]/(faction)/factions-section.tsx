@@ -203,6 +203,7 @@ export default function FactionsSection({}) {
   switch (phase) {
     case "SETUP":
     case "STRATEGY":
+    case "EDICT":
     case "UNKNOWN":
       orderTitle = (
         <FormattedMessage

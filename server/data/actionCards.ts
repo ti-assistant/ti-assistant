@@ -4,6 +4,7 @@ import getCodexOneActionCards from "./codexone/actionCards";
 import getDiscordantStarsActionCards from "./discordantstars/actionCards";
 import getProphecyOfKingsActionCards from "./prophecyofkings/actionCards";
 import getThundersEdgeActionCards from "./thundersedge/actionCards";
+import getTwilightsFallActionCards from "./twilightsfall/actionCards";
 
 export function getActionCards(
   intl: IntlShape
@@ -13,6 +14,7 @@ export function getActionCards(
     ...getCodexOneActionCards(intl),
     ...getProphecyOfKingsActionCards(intl),
     ...getThundersEdgeActionCards(intl),
+    ...getTwilightsFallActionCards(intl),
     ...getDiscordantStarsActionCards(intl),
   };
 }

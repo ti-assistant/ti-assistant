@@ -1,3 +1,4 @@
+import { Optional } from "../util/types/types";
 import { useGameDataValue } from "./dataHooks";
 
 export function useGameState() {
@@ -26,4 +27,8 @@ export function usePhase() {
 
 export function useSpeaker() {
   return useGameDataValue<FactionId>("state.speaker", "Vuil'raith Cabal");
+}
+
+export function useTyrant() {
+  return useGameDataValue<Optional<FactionId>>("state.tyrant", undefined);
 }

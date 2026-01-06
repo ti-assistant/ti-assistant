@@ -89,12 +89,6 @@ export default function getCodexThreeFactions(
         synergy: { left: "YELLOW", right: "GREEN" },
         timing: "PASSIVE",
       },
-      colors: {
-        Blue: 0.5,
-        Orange: 0.35,
-        Purple: 0.7,
-        Yellow: 0.35,
-      },
       colorList: [
         "Purple",
         "Blue",
@@ -136,6 +130,7 @@ export default function getCodexThreeFactions(
           ),
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Council Keleres.Shortname",
         description: "Shortened version of Faction name: Council Keleres",

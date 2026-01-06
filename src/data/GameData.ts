@@ -1,17 +1,21 @@
 import { IntlShape } from "react-intl";
+import { getAbilities } from "../../server/data/abilities";
 import { getActionCards } from "../../server/data/actionCards";
 import { getAgendas } from "../../server/data/agendas";
 import { getAttachments } from "../../server/data/attachments";
 import { getComponents } from "../../server/data/components";
 import { getEvents } from "../../server/data/events";
 import { getFactions } from "../../server/data/factions";
+import { getGenomes } from "../../server/data/genomes";
 import { getLeaders } from "../../server/data/leaders";
 import { getObjectives } from "../../server/data/objectives";
+import { getParadigms } from "../../server/data/paradigms";
 import { getPlanets } from "../../server/data/planets";
 import { getRelics } from "../../server/data/relics";
 import { getStrategyCards } from "../../server/data/strategyCards";
 import { getSystems } from "../../server/data/systems";
 import { getTechs } from "../../server/data/techs";
+import { getUnitUpgrades } from "../../server/data/upgrades";
 import { buildMergeFunction } from "../util/expansions";
 import { objectEntries } from "../util/util";
 import {
@@ -46,6 +50,11 @@ export function buildBaseData(intl: IntlShape): BaseData {
     strategycards: getStrategyCards(intl),
     systems: getSystems(),
     techs: getTechs(intl),
+
+    abilities: getAbilities(intl),
+    genomes: getGenomes(intl),
+    paradigms: getParadigms(intl),
+    upgrades: getUnitUpgrades(intl),
   };
 }
 
@@ -162,15 +171,12 @@ export function buildBaseTechs(options: Options, intl: IntlShape) {
       return;
     }
 
+    if (tech.removedIn && options.expansions.includes(tech.removedIn)) {
+      return;
+    }
+
     techs[tech.id] = omegaMergeFn(tech);
   });
-
-  // Handle replacement.
-  for (const tech of Object.values(techs)) {
-    if (tech.type !== "UPGRADE" && tech.deprecates) {
-      delete techs[tech.deprecates];
-    }
-  }
 
   return techs;
 }

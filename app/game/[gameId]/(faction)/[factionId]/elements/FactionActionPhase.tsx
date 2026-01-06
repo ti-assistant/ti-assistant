@@ -35,6 +35,14 @@ export default function FactionActionPhase({
       case "Warfare":
       case "Technology":
       case "Imperial":
+      case "Lux":
+      case "Noctis":
+      case "Aeterna":
+      case "Amicus":
+      case "Calamitas":
+      case "Civitas":
+      case "Magus":
+      case "Tyrannus":
         return (
           <>
             <SecondaryCheck factionId={factionId} />

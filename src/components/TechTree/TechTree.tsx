@@ -14,6 +14,7 @@ const TYPE_ORDER: Record<TechType, number> = {
   YELLOW: 3,
   RED: 4,
   UPGRADE: 5,
+  OTHER: 6,
 } as const;
 
 const UPGRADE_TECH_ORDER: Partial<Record<TechId, number>> = {

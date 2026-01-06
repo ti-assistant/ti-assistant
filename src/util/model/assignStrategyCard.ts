@@ -58,7 +58,7 @@ export class AssignStrategyCardHandler implements Handler {
       buildStrategyCards(this.gameData, intl)
     );
 
-    updates[`state.activeplayer`] = onDeckFaction ? onDeckFaction.name : "None";
+    updates[`state.activeplayer`] = onDeckFaction ? onDeckFaction.id : "None";
 
     return updates;
   }

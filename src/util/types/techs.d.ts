@@ -1,4 +1,4 @@
-type TechType = "RED" | "BLUE" | "YELLOW" | "GREEN" | "UPGRADE";
+type TechType = "RED" | "BLUE" | "YELLOW" | "GREEN" | "UPGRADE" | "OTHER";
 
 interface UnitStats {
   capacity?: number;
@@ -14,7 +14,6 @@ interface OmegaTech {
 }
 
 interface BaseNormalTech {
-  deprecates?: TechId;
   description: string;
   expansion: Expansion;
   faction?: FactionId;
@@ -23,6 +22,7 @@ interface BaseNormalTech {
   name: string;
   omegas?: Omega<BaseNormalTech>[];
   prereqs: TechType[];
+  removedIn?: Expansion;
   type: "RED" | "GREEN" | "BLUE" | "YELLOW";
 }
 
@@ -36,13 +36,26 @@ interface BaseUpgradeTech {
   name: string;
   omegas?: Omega<BaseUpgradeTech>[];
   prereqs: TechType[];
+  removedIn?: Expansion;
   replaces?: TechId;
   stats: UnitStats;
   type: "UPGRADE";
   unitType: UnitType;
 }
 
-type BaseTech = BaseNormalTech | BaseUpgradeTech;
+interface BaseOtherTech {
+  description: string;
+  expansion: Expansion;
+  faction: FactionId;
+  id: TechId;
+  name: string;
+  omegas?: Omega<BaseOtherTech>[];
+  prereqs: TechType[];
+  removedIn?: Expansion;
+  type: "OTHER";
+}
+
+type BaseTech = BaseNormalTech | BaseUpgradeTech | BaseOtherTech;
 
 type TechState = "ready" | "exhausted" | "purged";
 
@@ -59,4 +72,5 @@ type TechId =
   | ProphecyOfKings.TechId
   | CodexThree.TechId
   | ThundersEdge.TechId
+  | TwilightsFall.TechId
   | DiscordantStars.TechId;

@@ -16,6 +16,7 @@ export default function getProphecyOfKingsActionCards(
         { br: "\n\n" }
       ),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Archaeological Expedition",
       name: intl.formatMessage({
         id: "Action Cards.Archaeological Expedition.Name",
@@ -36,6 +37,7 @@ export default function getProphecyOfKingsActionCards(
         { br: "\n\n" }
       ),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Confounding Legal Text",
       name: intl.formatMessage({
         id: "Action Cards.Confounding Legal Text.Name",
@@ -56,6 +58,7 @@ export default function getProphecyOfKingsActionCards(
         { br: "\n\n" }
       ),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Coup d'Etat",
       name: intl.formatMessage({
         id: "Action Cards.Coup d'Etat.Name",
@@ -76,6 +79,7 @@ export default function getProphecyOfKingsActionCards(
         { br: "\n\n" }
       ),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Deadly Plot",
       name: intl.formatMessage({
         id: "Action Cards.Deadly Plot.Name",
@@ -96,6 +100,7 @@ export default function getProphecyOfKingsActionCards(
         { br: "\n\n" }
       ),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Decoy Operation",
       name: intl.formatMessage({
         id: "Action Cards.Decoy Operation.Name",
@@ -116,6 +121,7 @@ export default function getProphecyOfKingsActionCards(
         { br: "\n\n" }
       ),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Diplomatic Pressure",
       name: intl.formatMessage({
         id: "Action Cards.Diplomatic Pressure.Name",
@@ -136,6 +142,7 @@ export default function getProphecyOfKingsActionCards(
         { br: "\n\n" }
       ),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Divert Funding",
       name: intl.formatMessage({
         id: "Action Cards.Divert Funding.Name",
@@ -156,6 +163,7 @@ export default function getProphecyOfKingsActionCards(
         { br: "\n\n" }
       ),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Exploration Probe",
       name: intl.formatMessage({
         id: "Action Cards.Exploration Probe.Name",
@@ -176,6 +184,7 @@ export default function getProphecyOfKingsActionCards(
         { br: "\n\n" }
       ),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Manipulate Investments",
       name: intl.formatMessage({
         id: "Action Cards.Manipulate Investments.Name",
@@ -196,6 +205,7 @@ export default function getProphecyOfKingsActionCards(
         { br: "\n\n" }
       ),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Nav Suite",
       name: intl.formatMessage({
         id: "Action Cards.Nav Suite.Name",
@@ -216,6 +226,7 @@ export default function getProphecyOfKingsActionCards(
         { br: "\n\n" }
       ),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Refit Troops",
       name: intl.formatMessage({
         id: "Action Cards.Refit Troops.Name",
@@ -236,6 +247,7 @@ export default function getProphecyOfKingsActionCards(
         { br: "\n\n" }
       ),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Reveal Prototype",
       name: intl.formatMessage({
         id: "Action Cards.Reveal Prototype.Name",
@@ -256,6 +268,7 @@ export default function getProphecyOfKingsActionCards(
         { br: "\n\n" }
       ),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Reverse Engineer",
       name: intl.formatMessage({
         id: "Action Cards.Reverse Engineer.Name",
@@ -276,6 +289,7 @@ export default function getProphecyOfKingsActionCards(
         { br: "\n\n" }
       ),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Rout",
       name: intl.formatMessage({
         id: "Action Cards.Rout.Name",
@@ -296,6 +310,7 @@ export default function getProphecyOfKingsActionCards(
         { br: "\n\n" }
       ),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Scuttle",
       name: intl.formatMessage({
         id: "Action Cards.Scuttle.Name",
@@ -316,6 +331,7 @@ export default function getProphecyOfKingsActionCards(
         { br: "\n\n" }
       ),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Seize Artifact",
       name: intl.formatMessage({
         id: "Action Cards.Seize Artifact.Name",
@@ -336,6 +352,7 @@ export default function getProphecyOfKingsActionCards(
         { br: "\n\n" }
       ),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Waylay",
       name: intl.formatMessage({
         id: "Action Cards.Waylay.Name",

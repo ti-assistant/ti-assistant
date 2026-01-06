@@ -14,6 +14,7 @@ import {
   RemoveStartingTechHandler,
 } from "../model/chooseStartingTech";
 import { ChooseSubFactionHandler } from "../model/chooseSubFaction";
+import { ChooseTFFactionHandler } from "../model/chooseTFFaction";
 import { ClaimPlanetHandler, UnclaimPlanetHandler } from "../model/claimPlanet";
 import { CommitToExpeditionHandler } from "../model/commitToExpedition";
 import { ContinueGameHandler, EndGameHandler } from "../model/endGame";
@@ -23,6 +24,7 @@ import {
   LoseAllianceHandler,
 } from "../model/gainAlliance";
 import { GainRelicHandler, LoseRelicHandler } from "../model/gainRelic";
+import { GainTFCardHandler, LoseTFCardHandler } from "../model/gainTFCard";
 import { GiftOfPrescienceHandler } from "../model/giftOfPrescience";
 import { ManualVPUpdateHandler } from "../model/manualVPUpdate";
 import {
@@ -72,6 +74,7 @@ import { SelectSubAgendaHandler } from "../model/selectSubAgenda";
 import { SelectSubComponentHandler } from "../model/selectSubComponent";
 import { SetObjectivePointsHandler } from "../model/setObjectivePoints";
 import { SetSpeakerHandler } from "../model/setSpeaker";
+import { SetTyrantHandler } from "../model/setTyrant";
 import { SpeakerTieBreakHandler } from "../model/speakerTieBreak";
 import { StartVotingHandler } from "../model/startVoting";
 import { SwapMapTilesHandler } from "../model/swapMapTiles";
@@ -102,6 +105,8 @@ export function getHandler(gameData: StoredGameData, data: GameUpdateData) {
       return new ChooseStartingTechHandler(gameData, data);
     case "CHOOSE_SUB_FACTION":
       return new ChooseSubFactionHandler(gameData, data);
+    case "CHOOSE_TF_FACTION":
+      return new ChooseTFFactionHandler(gameData, data);
     case "CLAIM_PLANET":
       return new ClaimPlanetHandler(gameData, data);
     case "CONTINUE_GAME":
@@ -170,6 +175,8 @@ export function getHandler(gameData: StoredGameData, data: GameUpdateData) {
       return new SetObjectivePointsHandler(gameData, data);
     case "SET_SPEAKER":
       return new SetSpeakerHandler(gameData, data);
+    case "SET_TYRANT":
+      return new SetTyrantHandler(gameData, data);
     case "SPEAKER_TIE_BREAK":
       return new SpeakerTieBreakHandler(gameData, data);
     case "START_VOTING":
@@ -230,5 +237,9 @@ export function getHandler(gameData: StoredGameData, data: GameUpdateData) {
       return new UnpurgeSystemHandler(gameData, data);
     case "TOGGLE_STRUCTURE":
       return new ToggleStructureHandler(gameData, data);
+    case "GAIN_TF_CARD":
+      return new GainTFCardHandler(gameData, data);
+    case "LOSE_TF_CARD":
+      return new LoseTFCardHandler(gameData, data);
   }
 }

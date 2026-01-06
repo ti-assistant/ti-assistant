@@ -43,3 +43,15 @@ export function getNewSpeakerEventFromLog(actionLog: ActionLog) {
 
   return entry.data.event;
 }
+
+export function getNewTyrantEventFromLog(actionLog: ActionLog) {
+  const currentTurn = getCurrentTurnLogEntries(actionLog);
+
+  const entry = getLogEntries<SetTyrantData>(currentTurn, "SET_TYRANT")[0];
+
+  if (!entry) {
+    return undefined;
+  }
+
+  return entry.data.event;
+}

@@ -60,11 +60,6 @@ export default function getProphecyOfKingsFactions(
         synergy: { left: "BLUE", right: "YELLOW" },
         timing: "PASSIVE",
       },
-      colors: {
-        Blue: 0.15,
-        Green: 0.15,
-        Orange: 1.6,
-      },
       colorList: [
         "Orange",
         "Black",
@@ -102,6 +97,7 @@ export default function getProphecyOfKingsFactions(
           ),
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Argent Flight.Shortname",
         description: "Shortened version of Faction name: Argent Flight",
@@ -244,11 +240,6 @@ export default function getProphecyOfKingsFactions(
         synergy: { left: "GREEN", right: "BLUE" },
         timing: "TACTICAL_ACTION",
       },
-      colors: {
-        Magenta: 0.15,
-        Purple: 1.6,
-        Red: 0.15,
-      },
       colorList: [
         "Purple",
         "Blue",
@@ -301,6 +292,7 @@ export default function getProphecyOfKingsFactions(
           ),
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Empyrean.Shortname",
         description: "Shortened version of Faction name: Empyrean",
@@ -424,10 +416,6 @@ export default function getProphecyOfKingsFactions(
         synergy: { left: "YELLOW", right: "GREEN" },
         timing: "COMPONENT_ACTION",
       },
-      colors: {
-        Purple: 0.3,
-        Yellow: 1.6,
-      },
       colorList: [
         "Yellow",
         "Purple",
@@ -465,6 +453,7 @@ export default function getProphecyOfKingsFactions(
           ),
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Mahact Gene-Sorcerers.Shortname",
         description: "Shortened version of Faction name: Mahact Gene-Sorcerers",
@@ -619,10 +608,6 @@ export default function getProphecyOfKingsFactions(
           type: "Mech",
         },
       },
-      colors: {
-        Green: 1.6,
-        Yellow: 0.3,
-      },
       colorList: [
         "Green",
         "Yellow",
@@ -660,6 +645,7 @@ export default function getProphecyOfKingsFactions(
           ),
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Naaz-Rokha Alliance.Shortname",
         description: "Shortened version of Faction name: Naaz-Rokha Alliance",
@@ -796,10 +782,6 @@ export default function getProphecyOfKingsFactions(
         synergy: { left: "YELLOW", right: "GREEN" },
         timing: "OTHER",
       },
-      colors: {
-        Blue: 1.25,
-        Purple: 0.65,
-      },
       colorList: [
         "Blue",
         "Purple",
@@ -836,6 +818,7 @@ export default function getProphecyOfKingsFactions(
           ),
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Nomad.Shortname",
         description: "Shortened version of Faction name: Nomad",
@@ -961,9 +944,6 @@ export default function getProphecyOfKingsFactions(
         synergy: { left: "YELLOW", right: "GREEN" },
         timing: "OTHER",
       },
-      colors: {
-        Magenta: 1.9,
-      },
       colorList: [
         "Magenta",
         "Red",
@@ -1000,6 +980,7 @@ export default function getProphecyOfKingsFactions(
           ),
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Titans of Ul.Shortname",
         description: "Shortened version of Faction name: Titans of Ul",
@@ -1164,11 +1145,6 @@ export default function getProphecyOfKingsFactions(
         synergy: { left: "RED", right: "GREEN" },
         timing: "TACTICAL_ACTION",
       },
-      colors: {
-        Black: 0.4,
-        Magenta: 0.1,
-        Red: 1.35,
-      },
       colorList: [
         "Red",
         "Black",
@@ -1205,6 +1181,7 @@ export default function getProphecyOfKingsFactions(
           ),
         },
       ],
+      removedIn: "TWILIGHTS FALL",
       shortname: intl.formatMessage({
         id: "Vuil'raith Cabal.Shortname",
         description: "Shortened version of Faction name: Vuil'raith Cabal",

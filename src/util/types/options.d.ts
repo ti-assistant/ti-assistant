@@ -6,6 +6,7 @@ type Expansion =
   | "CODEX THREE"
   | "CODEX FOUR"
   | "THUNDERS EDGE"
+  | "TWILIGHTS FALL"
   | "DISCORDANT STARS";
 
 type OptionUpdateAction = "SET_OPTION";

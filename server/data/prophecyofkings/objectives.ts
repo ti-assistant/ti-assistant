@@ -79,6 +79,7 @@ export default function getProphecyOfKingsObjectives(
           "Win a combat against a player whose promissory note you had in your play area at the start of your tactical action.",
       }),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Betray a Friend",
       name: intl.formatMessage({
         id: "Objectives.Betray a Friend.Title",
@@ -247,6 +248,7 @@ export default function getProphecyOfKingsObjectives(
         defaultMessage: "There are 3 or more laws in play.",
       }),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Dictate Policy",
       name: intl.formatMessage({
         id: "Objectives.Dictate Policy.Title",
@@ -280,6 +282,7 @@ export default function getProphecyOfKingsObjectives(
         defaultMessage: "You or a planet you control are elected by an agenda.",
       }),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Drive the Debate",
       name: intl.formatMessage({
         id: "Objectives.Drive the Debate.Title",
@@ -713,6 +716,7 @@ export default function getProphecyOfKingsObjectives(
           "Have another player's promissory note in your play area.",
       }),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Strengthen Bonds",
       name: intl.formatMessage({
         id: "Objectives.Strengthen Bonds.Title",

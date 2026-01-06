@@ -28,6 +28,7 @@ export default function getProphecyOfKingsRelics(
           "At the start of the agenda phase, you may purge this card and exhaust all of your planets to gain any 1 technology.",
       }),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "Maw of Worlds",
       name: intl.formatMessage({
         id: "Relics.Maw of Worlds.Title",
@@ -165,6 +166,7 @@ export default function getProphecyOfKingsRelics(
           "When you research a technology, you may exhaust this card to ignore 1 prerequisite or draw 1 action card.",
       }),
       expansion: "POK",
+      removedIn: "TWILIGHTS FALL",
       id: "The Prophet's Tears",
       name: intl.formatMessage({
         id: "Relics.The Prophet's Tears.Title",

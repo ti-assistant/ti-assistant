@@ -16,6 +16,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Ancient Burial Sites",
       name: intl.formatMessage({
         id: "Action Cards.Ancient Burial Sites.Name",
@@ -36,6 +37,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Assassinate Representative",
       name: intl.formatMessage({
         id: "Action Cards.Assassinate Representative.Name",
@@ -56,6 +58,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Bribery",
       name: intl.formatMessage({
         id: "Action Cards.Bribery.Name",
@@ -76,6 +79,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Bunker",
       name: intl.formatMessage({
         id: "Action Cards.Bunker.Name",
@@ -96,6 +100,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Confusing Legal Text",
       name: intl.formatMessage({
         id: "Action Cards.Confusing Legal Text.Name",
@@ -116,6 +121,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Construction Rider",
       name: intl.formatMessage({
         id: "Action Cards.Construction Rider.Name",
@@ -136,6 +142,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Courageous to the End",
       name: intl.formatMessage({
         id: "Action Cards.Courageous to the End.Name",
@@ -156,6 +163,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Cripple Defenses",
       name: intl.formatMessage({
         id: "Action Cards.Cripple Defenses.Name",
@@ -176,6 +184,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Diplomacy Rider",
       name: intl.formatMessage({
         id: "Action Cards.Diplomacy Rider.Name",
@@ -196,6 +205,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Direct Hit",
       name: intl.formatMessage({
         id: "Action Cards.Direct Hit.Name",
@@ -216,6 +226,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Disable",
       name: intl.formatMessage({
         id: "Action Cards.Disable.Name",
@@ -236,6 +247,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Distinguished Councilor",
       name: intl.formatMessage({
         id: "Action Cards.Distinguished Councilor.Name",
@@ -255,6 +267,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Economic Initiative",
       name: intl.formatMessage({
         id: "Action Cards.Economic Initiative.Name",
@@ -275,6 +288,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Emergency Repairs",
       name: intl.formatMessage({
         id: "Action Cards.Emergency Repairs.Name",
@@ -295,6 +309,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Experimental Battlestation",
       name: intl.formatMessage({
         id: "Action Cards.Experimental Battlestation.Name",
@@ -315,6 +330,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Fighter Prototype",
       name: intl.formatMessage({
         id: "Action Cards.Fighter Prototype.Name",
@@ -335,6 +351,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Fire Team",
       name: intl.formatMessage({
         id: "Action Cards.Fire Team.Name",
@@ -355,6 +372,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Flank Speed",
       name: intl.formatMessage({
         id: "Action Cards.Flank Speed.Name",
@@ -375,6 +393,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Focused Research",
       name: intl.formatMessage({
         id: "Action Cards.Focused Research.Name",
@@ -395,6 +414,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Frontline Deployment",
       name: intl.formatMessage({
         id: "Action Cards.Frontline Deployment.Name",
@@ -415,6 +435,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Ghost Ship",
       name: intl.formatMessage({
         id: "Action Cards.Ghost Ship.Name",
@@ -435,6 +456,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Imperial Rider",
       name: intl.formatMessage({
         id: "Action Cards.Imperial Rider.Name",
@@ -455,6 +477,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "In The Silence Of Space",
       name: intl.formatMessage({
         id: "Action Cards.In The Silence Of Space.Name",
@@ -475,6 +498,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Industrial Initiative",
       name: intl.formatMessage({
         id: "Action Cards.Industrial Initiative.Name",
@@ -495,6 +519,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Infiltrate",
       name: intl.formatMessage({
         id: "Action Cards.Infiltrate.Name",
@@ -515,6 +540,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Insubordination",
       name: intl.formatMessage({
         id: "Action Cards.Insubordination.Name",
@@ -535,6 +561,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Intercept",
       name: intl.formatMessage({
         id: "Action Cards.Intercept.Name",
@@ -555,6 +582,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Leadership Rider",
       name: intl.formatMessage({
         id: "Action Cards.Leadership Rider.Name",
@@ -575,6 +603,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Lost Star Chart",
       name: intl.formatMessage({
         id: "Action Cards.Lost Star Chart.Name",
@@ -595,6 +624,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Lucky Shot",
       name: intl.formatMessage({
         id: "Action Cards.Lucky Shot.Name",
@@ -615,6 +645,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Maneuvering Jets",
       name: intl.formatMessage({
         id: "Action Cards.Maneuvering Jets.Name",
@@ -635,6 +666,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Mining Initiative",
       name: intl.formatMessage({
         id: "Action Cards.Mining Initiative.Name",
@@ -655,6 +687,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Morale Boost",
       name: intl.formatMessage({
         id: "Action Cards.Morale Boost.Name",
@@ -675,6 +708,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Parley",
       name: intl.formatMessage({
         id: "Action Cards.Parley.Name",
@@ -695,6 +729,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Plague",
       name: intl.formatMessage({
         id: "Action Cards.Plague.Name",
@@ -715,6 +750,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Political Stability",
       name: intl.formatMessage({
         id: "Action Cards.Political Stability.Name",
@@ -735,6 +771,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Politics Rider",
       name: intl.formatMessage({
         id: "Action Cards.Politics Rider.Name",
@@ -755,6 +792,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Public Disgrace",
       name: intl.formatMessage({
         id: "Action Cards.Public Disgrace.Name",
@@ -774,6 +812,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Reactor Meltdown",
       name: intl.formatMessage({
         id: "Action Cards.Reactor Meltdown.Name",
@@ -794,6 +833,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Reparations",
       name: intl.formatMessage({
         id: "Action Cards.Reparations.Name",
@@ -813,6 +853,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Repeal Law",
       name: intl.formatMessage({
         id: "Action Cards.Repeal Law.Name",
@@ -833,6 +874,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Rise of a Messiah",
       name: intl.formatMessage({
         id: "Action Cards.Rise of a Messiah.Name",
@@ -853,6 +895,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Sabotage",
       name: intl.formatMessage({
         id: "Action Cards.Sabotage.Name",
@@ -873,6 +916,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Salvage",
       name: intl.formatMessage({
         id: "Action Cards.Salvage.Name",
@@ -893,6 +937,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Shields Holding",
       name: intl.formatMessage({
         id: "Action Cards.Shields Holding.Name",
@@ -913,6 +958,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Signal Jamming",
       name: intl.formatMessage({
         id: "Action Cards.Signal Jamming.Name",
@@ -933,6 +979,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Skilled Retreat",
       name: intl.formatMessage({
         id: "Action Cards.Skilled Retreat.Name",
@@ -953,6 +1000,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Spy",
       name: intl.formatMessage({
         id: "Action Cards.Spy.Name",
@@ -973,6 +1021,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Summit",
       name: intl.formatMessage({
         id: "Action Cards.Summit.Name",
@@ -993,6 +1042,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Tactical Bombardment",
       name: intl.formatMessage({
         id: "Action Cards.Tactical Bombardment.Name",
@@ -1013,6 +1063,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Technology Rider",
       name: intl.formatMessage({
         id: "Action Cards.Technology Rider.Name",
@@ -1033,6 +1084,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Trade Rider",
       name: intl.formatMessage({
         id: "Action Cards.Trade Rider.Name",
@@ -1053,6 +1105,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Unexpected Action",
       name: intl.formatMessage({
         id: "Action Cards.Unexpected Action.Name",
@@ -1073,6 +1126,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Unstable Planet",
       name: intl.formatMessage({
         id: "Action Cards.Unstable Planet.Name",
@@ -1093,6 +1147,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Upgrade",
       name: intl.formatMessage({
         id: "Action Cards.Upgrade.Name",
@@ -1113,6 +1168,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Uprising",
       name: intl.formatMessage({
         id: "Action Cards.Uprising.Name",
@@ -1133,6 +1189,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Veto",
       name: intl.formatMessage({
         id: "Action Cards.Veto.Name",
@@ -1153,6 +1210,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "War Effort",
       name: intl.formatMessage({
         id: "Action Cards.War Effort.Name",
@@ -1173,6 +1231,7 @@ export default function getBaseActionCards(
         { br: "\n\n" }
       ),
       expansion: "BASE",
+      removedIn: "TWILIGHTS FALL",
       id: "Warfare Rider",
       name: intl.formatMessage({
         id: "Action Cards.Warfare Rider.Name",

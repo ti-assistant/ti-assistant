@@ -11,6 +11,16 @@ export namespace Strings {
     );
   }
 
+  export function Tyrant() {
+    return (
+      <FormattedMessage
+        id="vHExhS"
+        description="The title of the player that has the Benediction token."
+        defaultMessage="Tyrant"
+      />
+    );
+  }
+
   export function Units({ unit, count }: { unit: UnitType; count: number }) {
     switch (unit) {
       case "Carrier":

@@ -1,4 +1,3 @@
-import { useOptions } from "../context/dataHooks";
 import { buildMergeFunction } from "../util/expansions";
 import { isValidMapString, validSystemNumber } from "../util/map";
 import { getMapString } from "../util/options";
@@ -28,6 +27,11 @@ export function buildCompleteGameData(
     techs: buildCompleteTechs(baseData, storedGameData),
     timers: storedGameData.timers,
 
+    abilities: buildCompleteAbilities(baseData, storedGameData),
+    genomes: buildCompleteGenomes(baseData, storedGameData),
+    paradigms: buildCompleteParadigms(baseData, storedGameData),
+    upgrades: buildCompleteUpgrades(baseData, storedGameData),
+
     allPlanets: buildCompletePlanets(baseData, storedGameData, true),
   };
 
@@ -48,6 +52,10 @@ export function buildCompleteActionCards(
       actionCard.expansion !== "BASE" &&
       !expansions.includes(actionCard.expansion)
     ) {
+      return;
+    }
+
+    if (actionCard.removedIn && expansions.includes(actionCard.removedIn)) {
       return;
     }
 
@@ -130,6 +138,10 @@ export function buildCompleteComponents(
 ) {
   const gameComponents = storedGameData.components ?? {};
   const gameFactions = storedGameData.factions ?? {};
+
+  const gameAbilities = storedGameData.abilities ?? {};
+  const gameGenomes = storedGameData.genomes ?? {};
+  const gameParadigms = storedGameData.paradigms ?? {};
 
   const expansions = storedGameData.options.expansions;
   const events = storedGameData.options.events ?? [];
@@ -220,6 +232,39 @@ export function buildCompleteComponents(
     });
   }
 
+  if (expansions.includes("TWILIGHTS FALL")) {
+    objectEntries(baseData.abilities).map(([abilityId, ability]) => {
+      if (ability.timing === "COMPONENT_ACTION") {
+        components[abilityId] = {
+          ...ability,
+          ...gameAbilities[abilityId],
+          type: "ABILITY",
+          expansion: "TWILIGHTS FALL",
+        };
+      }
+    });
+    objectEntries(baseData.genomes).map(([genomeId, genome]) => {
+      if (genome.timing === "COMPONENT_ACTION") {
+        components[genomeId] = {
+          ...genome,
+          ...gameGenomes[genomeId],
+          type: "ABILITY",
+          expansion: "TWILIGHTS FALL",
+        };
+      }
+    });
+    objectEntries(baseData.paradigms).map(([paradigmId, paradigm]) => {
+      if (paradigm.timing === "COMPONENT_ACTION") {
+        components[paradigmId] = {
+          ...paradigm,
+          ...gameParadigms[paradigmId],
+          type: "ABILITY",
+          expansion: "TWILIGHTS FALL",
+        };
+      }
+    });
+  }
+
   Object.values(components).forEach((component) => {
     if (component.replaces) {
       delete components[component.replaces];
@@ -245,14 +290,21 @@ export function buildCompleteFactions(
 
     let updatedFaction = omegaMergeFn(baseFaction);
 
-    updatedFaction.abilities = updatedFaction.abilities.map(omegaMergeFn);
-    updatedFaction.promissories = updatedFaction.promissories.map(omegaMergeFn);
+    if (updatedFaction.abilities) {
+      updatedFaction.abilities = updatedFaction.abilities.map(omegaMergeFn);
+    }
+    if (updatedFaction.promissories) {
+      updatedFaction.promissories =
+        updatedFaction.promissories.map(omegaMergeFn);
+    }
     updatedFaction.units = updatedFaction.units.map(omegaMergeFn);
 
-    const breakthrough = {
-      ...updatedFaction.breakthrough,
-      ...faction.breakthrough,
-    };
+    const breakthrough = updatedFaction.breakthrough
+      ? {
+          ...updatedFaction.breakthrough,
+          ...faction.breakthrough,
+        }
+      : undefined;
     factions[factionId] = {
       ...updatedFaction,
       ...faction,
@@ -263,12 +315,12 @@ export function buildCompleteFactions(
   if (Object.keys(factions).includes("Council Keleres")) {
     const councilChoice = new Set<TechId>();
     Object.values(factions).forEach((faction) => {
-      (faction.startswith.techs ?? []).forEach((tech) => {
+      (faction.startswith?.techs ?? []).forEach((tech) => {
         councilChoice.add(tech);
       });
     });
     const council = factions["Council Keleres"];
-    if (council?.startswith.choice) {
+    if (council?.startswith?.choice) {
       council.startswith.choice.options = Array.from(councilChoice);
     }
   }
@@ -296,6 +348,7 @@ export function buildCompleteObjectives(
     ) {
       return;
     }
+    // Filter out deprecated objectives.
     if (objective.removedIn && expansions.includes(objective.removedIn)) {
       return;
     }
@@ -354,19 +407,30 @@ export function buildCompletePlanets(
       isPlanetInMap = true;
     }
     if (planet.faction && !gameFactions[planet.faction] && !isPlanetInMap) {
-      if (!gameFactions["Council Keleres"]) {
-        return;
+      let isPlanetSelected = false;
+      for (const faction of Object.values(gameFactions)) {
+        if (faction.startswith?.planetFaction === planet.faction) {
+          isPlanetSelected = true;
+          break;
+        }
       }
-      if (
-        !gameFactions["Council Keleres"].startswith.planets?.includes(planet.id)
-      ) {
-        return;
+      if (!isPlanetSelected) {
+        if (!gameFactions["Council Keleres"]) {
+          return;
+        }
+        if (
+          !gameFactions["Council Keleres"].startswith?.planets?.includes(
+            planet.id
+          )
+        ) {
+          return;
+        }
       }
     }
     if (
       planet.faction &&
       planet.subFaction &&
-      gameFactions[planet.faction]?.startswith.faction !== planet.subFaction
+      gameFactions[planet.faction]?.startswith?.faction !== planet.subFaction
     ) {
       return;
     }
@@ -467,6 +531,10 @@ export function buildCompleteRelics(
       return;
     }
 
+    if (relic.removedIn && expansions.includes(relic.removedIn)) {
+      return;
+    }
+
     relics[relicId] = {
       ...relic,
       ...(gameRelics[relicId] ?? {}),
@@ -500,10 +568,23 @@ export function buildCompleteStrategyCards(
   objectEntries(baseData.strategycards).forEach(([cardId, card]) => {
     const updatedCard = omegaMergeFn(card);
 
+    if (
+      updatedCard.expansion &&
+      !storedGameData.options.expansions.includes(updatedCard.expansion)
+    ) {
+      return;
+    }
+
     cards[cardId] = {
       ...updatedCard,
       ...(strategyCards[cardId] ?? {}),
     };
+  });
+
+  Object.values(cards).forEach((card) => {
+    if (card.replaces) {
+      delete cards[card.replaces];
+    }
   });
 
   return cards;
@@ -551,6 +632,10 @@ export function buildCompleteTechs(
       return;
     }
 
+    if (tech.removedIn && options.expansions.includes(tech.removedIn)) {
+      return;
+    }
+
     const updatedTech = omegaMergeFn(tech);
 
     techs[tech.id] = {
@@ -558,12 +643,6 @@ export function buildCompleteTechs(
       ...(storedTechs[tech.id] ?? {}),
     };
   });
-
-  for (const tech of Object.values(techs)) {
-    if (tech.type !== "UPGRADE" && tech.deprecates) {
-      delete techs[tech.deprecates];
-    }
-  }
 
   return techs;
 }
@@ -591,7 +670,7 @@ export function buildCompleteLeaders(
 
     if (
       leader.subFaction &&
-      factions["Council Keleres"]?.startswith.faction !== leader.subFaction
+      factions["Council Keleres"]?.startswith?.faction !== leader.subFaction
     ) {
       return;
     }
@@ -603,4 +682,100 @@ export function buildCompleteLeaders(
   });
 
   return leaders;
+}
+
+export function buildCompleteAbilities(
+  baseData: BaseData,
+  storedGameData: StoredGameData
+) {
+  const storedAbilities = storedGameData.abilities ?? {};
+  const abilities: Partial<Record<TFAbilityId, TFAbility>> = {};
+
+  objectEntries(baseData.abilities).forEach(([abilityId, ability]) => {
+    if (
+      ability.expansion &&
+      !storedGameData.options.expansions.includes(ability.expansion)
+    ) {
+      return;
+    }
+
+    abilities[abilityId] = {
+      ...ability,
+      ...(storedAbilities[abilityId] ?? {}),
+    };
+  });
+
+  return abilities;
+}
+
+export function buildCompleteGenomes(
+  baseData: BaseData,
+  storedGameData: StoredGameData
+) {
+  const storedGenomes = storedGameData.genomes ?? {};
+  const genomes: Partial<Record<TFGenomeId, TFGenome>> = {};
+
+  objectEntries(baseData.genomes).forEach(([genomeId, genome]) => {
+    if (
+      genome.expansion &&
+      !storedGameData.options.expansions.includes(genome.expansion)
+    ) {
+      return;
+    }
+
+    genomes[genomeId] = {
+      ...genome,
+      ...(storedGenomes[genomeId] ?? {}),
+    };
+  });
+
+  return genomes;
+}
+
+export function buildCompleteParadigms(
+  baseData: BaseData,
+  storedGameData: StoredGameData
+) {
+  const storedParadigms = storedGameData.paradigms ?? {};
+  const paradigms: Partial<Record<TFParadigmId, TFParadigm>> = {};
+
+  objectEntries(baseData.paradigms).forEach(([paradigmId, paradigm]) => {
+    if (
+      paradigm.expansion &&
+      !storedGameData.options.expansions.includes(paradigm.expansion)
+    ) {
+      return;
+    }
+
+    paradigms[paradigmId] = {
+      ...paradigm,
+      ...(storedParadigms[paradigmId] ?? {}),
+    };
+  });
+
+  return paradigms;
+}
+
+export function buildCompleteUpgrades(
+  baseData: BaseData,
+  storedGameData: StoredGameData
+) {
+  const storedUpgrades = storedGameData.upgrades ?? {};
+  const upgrades: Partial<Record<TFUnitUpgradeId, TFUnitUpgrade>> = {};
+
+  objectEntries(baseData.upgrades).forEach(([upgradeId, upgrade]) => {
+    if (
+      upgrade.expansion &&
+      !storedGameData.options.expansions.includes(upgrade.expansion)
+    ) {
+      return;
+    }
+
+    upgrades[upgradeId] = {
+      ...upgrade,
+      ...(storedUpgrades[upgradeId] ?? {}),
+    };
+  });
+
+  return upgrades;
 }

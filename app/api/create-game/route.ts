@@ -62,7 +62,7 @@ export async function POST(req: Request) {
     // Get starting techs for each faction.
     const baseFaction = BASE_FACTIONS[faction.id];
     const startingTechs: Partial<Record<TechId, GameTech>> = {};
-    (baseFaction.startswith.techs ?? []).forEach((tech) => {
+    (baseFaction.startswith?.techs ?? []).forEach((tech) => {
       startingTechs[tech] = {
         state: "ready",
         ready: true,
@@ -101,13 +101,15 @@ export async function POST(req: Request) {
       // Faction specific values
       planets: homePlanets,
       techs: startingTechs,
-      startswith: baseFaction.startswith,
       // State values
       hero: "locked",
       commander: options["game-variant"].includes("alliance")
         ? "readied"
         : "locked",
     };
+    if (baseFaction.startswith) {
+      gameFaction.startswith = baseFaction.startswith;
+    }
 
     if (faction.id === "Crimson Rebellion") {
       gameFaction.breakthrough = {
@@ -145,7 +147,10 @@ export async function POST(req: Request) {
     }
     const localFaction = { ...faction };
     if (faction.id === "Winnu" && !options.expansions.includes("POK")) {
-      localFaction.startswith.choice = {
+      const startsWith = localFaction.startswith ?? {
+        units: {},
+      };
+      startsWith.choice = {
         select: 1,
         options: [
           "Neural Motivator",
@@ -154,6 +159,7 @@ export async function POST(req: Request) {
           "Plasma Scoring",
         ],
       };
+      localFaction.startswith = startsWith;
     }
     baseFactions[faction.id] = localFaction;
     objectEntries(faction.planets).forEach(([name, planet]) => {

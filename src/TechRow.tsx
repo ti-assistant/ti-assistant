@@ -86,7 +86,6 @@ interface TechRowProps {
   techId: TechId;
   removeTech?: (techId: TechId) => void;
   addTech?: (techId: TechId) => void;
-  leftContent?: ReactNode;
   opts?: TechRowOptions;
   researchAgreement?: boolean;
 }
@@ -103,7 +102,6 @@ export function TechRow({
   techId,
   removeTech,
   addTech,
-  leftContent,
   researchAgreement,
   opts = {},
 }: TechRowProps) {
@@ -125,7 +123,6 @@ export function TechRow({
         className="flexRow"
         style={{ width: "100%", justifyContent: "stretch" }}
       >
-        {leftContent ? <div>{leftContent}</div> : null}
         <div
           className={className}
           style={{

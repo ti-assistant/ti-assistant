@@ -422,7 +422,7 @@ export function getWormholeNexusSystemNumber(
   return "A";
 }
 
-const FACTION_TO_SYSTEM_NUMBER: Record<FactionId, string> = {
+const FACTION_TO_SYSTEM_NUMBER: Partial<Record<FactionId, string>> = {
   "Federation of Sol": "1",
   "Mentak Coalition": "2",
   "Yin Brotherhood": "3",
@@ -517,10 +517,7 @@ export function getFactionSystemNumber(
   return FACTION_TO_SYSTEM_NUMBER[faction.id] ?? "299";
 }
 
-const FACTION_TO_SYSTEM_ID: Record<
-  Exclude<FactionId, "Council Keleres">,
-  SystemId
-> = {
+const FACTION_TO_SYSTEM_ID: Partial<Record<FactionId, SystemId>> = {
   "Federation of Sol": 1,
   "Mentak Coalition": 2,
   "Yin Brotherhood": 3,
@@ -615,7 +612,11 @@ export function extractFactionIds(
 
   const SYSTEMS_TO_FACTIONS: Record<string, FactionId> = {};
   objectKeys(FACTION_TO_SYSTEM_NUMBER).forEach((key) => {
-    SYSTEMS_TO_FACTIONS[FACTION_TO_SYSTEM_NUMBER[key]] = key;
+    const systemNumber = FACTION_TO_SYSTEM_NUMBER[key];
+    if (!systemNumber) {
+      return;
+    }
+    SYSTEMS_TO_FACTIONS[systemNumber] = key;
   });
 
   const factions: Record<number, FactionId> = {};

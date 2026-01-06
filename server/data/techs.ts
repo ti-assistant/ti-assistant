@@ -4,6 +4,7 @@ import getCodexThreeTechs from "./codexthree/techs";
 import { DISCORDANT_STARS_TECHS } from "./discordantstars/techs";
 import getProphecyOfKingsTechs from "./prophecyofkings/techs";
 import getThundersEdgeTechs from "./thundersedge/techs";
+import getTwilightsFallTechs from "./twilightsfall/techs";
 
 export function getTechs(intl: IntlShape): Record<TechId, BaseTech> {
   return {
@@ -11,6 +12,7 @@ export function getTechs(intl: IntlShape): Record<TechId, BaseTech> {
     ...getProphecyOfKingsTechs(intl),
     ...getCodexThreeTechs(intl),
     ...getThundersEdgeTechs(intl),
+    ...getTwilightsFallTechs(intl),
     ...DISCORDANT_STARS_TECHS,
   };
 }

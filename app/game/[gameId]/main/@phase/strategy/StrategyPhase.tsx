@@ -418,17 +418,6 @@ function InfoContent({ children }: PropsWithChildren) {
   );
 }
 
-const CARD_ORDER: Record<StrategyCardId, number> = {
-  Leadership: 1,
-  Diplomacy: 2,
-  Politics: 3,
-  Construction: 4,
-  Trade: 5,
-  Warfare: 6,
-  Technology: 7,
-  Imperial: 8,
-};
-
 export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
   const gameId = useGameId();
   const checksAndBalancesAgenda = useAgenda("Checks and Balances");
@@ -436,8 +425,8 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
   const strategyCards = useStrategyCards();
   const viewOnly = useViewOnly();
 
-  const orderedStrategyCards = Object.values(strategyCards).sort(
-    (a, b) => CARD_ORDER[a.id] - CARD_ORDER[b.id]
+  const orderedStrategyCards = Object.values(strategyCards).sort((a, b) =>
+    a.order > b.order ? 1 : -1
   );
 
   const checksAndBalances =

@@ -312,7 +312,7 @@ function processGame(
       winner = factionId;
       maxPoints = points;
     }
-    const startingTechs = faction.startswith.techs ?? [];
+    const startingTechs = faction.startswith?.techs ?? [];
     const endingTechs = objectKeys(faction.techs);
     factionInfo[factionId] = {
       points,
@@ -402,7 +402,7 @@ function isPlanetGame(game: StoredGameData) {
 function isTechGame(game: StoredGameData) {
   return Object.values(game.factions).reduce((isTechGame, faction) => {
     for (const techId of objectKeys(faction.techs)) {
-      if (!(faction.startswith.techs ?? []).includes(techId)) {
+      if (!(faction.startswith?.techs ?? []).includes(techId)) {
         return isTechGame;
       }
     }

@@ -33,6 +33,7 @@ export default function getCodexThreeTechs(
         { br: "\n\n" }
       ),
       expansion: "CODEX THREE",
+      removedIn: "THUNDERS EDGE",
       faction: "Council Keleres",
       id: "IIHQ Modernization",
       name: intl.formatMessage({

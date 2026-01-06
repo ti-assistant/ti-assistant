@@ -165,6 +165,9 @@ export default function TechSelectHoverMenu({
   const unitUpgrades = techs.filter((tech) => {
     return tech.type === "UPGRADE";
   });
+  const otherTechs = techs.filter((tech) => {
+    return tech.type === "OTHER";
+  });
   sortTechsByName(unitUpgrades);
 
   if (techs.length === 0) {
@@ -245,6 +248,19 @@ export default function TechSelectHoverMenu({
               id: "2hHU0G",
               description: "Title of uprade techs.",
               defaultMessage: "Unit Upgrades",
+            })}
+            prereqs={factionPreReqs}
+            selectTech={selectTech}
+            outerCloseFn={outerCloseFn}
+          />
+          <InnerTechSelectHoverMenu
+            factionId={factionId}
+            ignorePrereqs={ignorePrereqs}
+            techs={otherTechs}
+            label={intl.formatMessage({
+              id: "sgqLYB",
+              description: "Text on a button used to select a non-listed value",
+              defaultMessage: "Other",
             })}
             prereqs={factionPreReqs}
             selectTech={selectTech}

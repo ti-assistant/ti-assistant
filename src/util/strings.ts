@@ -146,6 +146,12 @@ export function phaseString(phase: Phase, intl: IntlShape) {
         description: "Phase title for end of game.",
         defaultMessage: "Results",
       });
+    case "EDICT":
+      return intl.formatMessage({
+        id: "Phase.Edict",
+        description: "Phase title for Edict phase.",
+        defaultMessage: "Edict",
+      });
   }
 }
 
