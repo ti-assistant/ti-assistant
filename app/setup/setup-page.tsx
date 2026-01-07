@@ -33,7 +33,8 @@ import { objectEntries, rem } from "../../src/util/util";
 import ColorPicker from "./components/ColorPicker";
 import PlayerNameInput from "./components/PlayerNameInput";
 import styles from "./setup.module.scss";
-import { arrayBuffer } from "stream/consumers";
+import TechSkipIcon from "../../src/components/TechSkipIcon/TechSkipIcon";
+import TFCardIcon from "../../src/components/TFCardIcon/TFCardIcon";
 
 const SetupFactionPanel = dynamic(
   () => import("../../src/components/SetupFactionPanel"),
@@ -231,7 +232,7 @@ function MobileOptions({
           />
         }
       >
-        <div className="flexColumn" style={{ alignItems: "center" }}>
+        <div className="flexRow" style={{ flexWrap: "wrap" }}>
           <Toggle
             selected={options.expansions.has("POK")}
             toggleFn={(prevValue) => {
@@ -243,7 +244,9 @@ function MobileOptions({
               description="Text on a button that will enable/disable the Prophecy of Kings expansion."
               defaultMessage="Prophecy of Kings"
             />
-            <ProphecyofKingsSVG />
+            <div style={{ width: rem(12), marginLeft: rem(4) }}>
+              <ProphecyofKingsSVG />
+            </div>
           </Toggle>
           <Toggle
             selected={options.expansions.has("THUNDERS EDGE")}
@@ -256,6 +259,9 @@ function MobileOptions({
               description="Text on a button that will enable/disable the Thunder's Edge expansion."
               defaultMessage="Thunder's Edge"
             />
+            <div style={{ width: rem(14), marginLeft: rem(4) }}>
+              <ThundersEdgeMenuSVG />
+            </div>
           </Toggle>
           {!options.expansions.has("THUNDERS EDGE") ? (
             <div
@@ -266,7 +272,10 @@ function MobileOptions({
                 gap: rem(4),
               }}
             >
-              Codices:
+              Codices{" "}
+              <div style={{ width: rem(12) }}>
+                <CodexSVG />
+              </div>
               <Toggle
                 selected={options.expansions.has("CODEX ONE")}
                 toggleFn={(prevValue) => {
@@ -2159,30 +2168,47 @@ export default function SetupPage({
           ) : null}
         </div>
         {/* Custom UI Section */}
-        <div className="flexColumn" style={{ gridArea: "trac" }}>
+        <div className="flexRow" style={{ gridArea: "trac", flexWrap: "wrap" }}>
           <LabeledDiv label="Track">
-            <Toggle
-              selected={!options.hide.has("TECHS")}
-              toggleFn={() => toggleHide(!options.hide.has("TECHS"), "TECHS")}
+            <div
+              className="flexRow"
+              style={{
+                flexWrap: "wrap",
+                justifyContent: "flex-start",
+                gap: rem(4),
+              }}
             >
-              Techs
-            </Toggle>
-            <Toggle
-              selected={!options.hide.has("PLANETS")}
-              toggleFn={() =>
-                toggleHide(!options.hide.has("PLANETS"), "PLANETS")
-              }
-            >
-              Planets
-            </Toggle>
-            <Toggle
-              selected={!options.hide.has("OBJECTIVES")}
-              toggleFn={() =>
-                toggleHide(!options.hide.has("OBJECTIVES"), "OBJECTIVES")
-              }
-            >
-              Objectives
-            </Toggle>
+              <Toggle
+                selected={!options.hide.has("TECHS")}
+                toggleFn={() => toggleHide(!options.hide.has("TECHS"), "TECHS")}
+              >
+                {options.expansions.has("TWILIGHTS FALL") ? "Cards" : "Techs"}
+              </Toggle>
+              <Toggle
+                selected={!options.hide.has("PLANETS")}
+                toggleFn={() =>
+                  toggleHide(!options.hide.has("PLANETS"), "PLANETS")
+                }
+              >
+                Planets
+              </Toggle>
+              <Toggle
+                selected={!options.hide.has("OBJECTIVES")}
+                toggleFn={() =>
+                  toggleHide(!options.hide.has("OBJECTIVES"), "OBJECTIVES")
+                }
+              >
+                Objectives
+              </Toggle>
+              <Toggle
+                selected={!options.hide.has("RELICS")}
+                toggleFn={() =>
+                  toggleHide(!options.hide.has("RELICS"), "RELICS")
+                }
+              >
+                Relics
+              </Toggle>
+            </div>
           </LabeledDiv>
         </div>
         {/* Start Game Section */}
@@ -2366,6 +2392,35 @@ export default function SetupPage({
 
             {/* </div> */}
           </div>
+          <LabeledDiv label="Track">
+            <div
+              className="flexRow"
+              style={{ gridArea: "trac", flexWrap: "wrap" }}
+            >
+              <Toggle
+                selected={!options.hide.has("TECHS")}
+                toggleFn={() => toggleHide(!options.hide.has("TECHS"), "TECHS")}
+              >
+                {options.expansions.has("TWILIGHTS FALL") ? "Cards" : "Techs"}
+              </Toggle>
+              <Toggle
+                selected={!options.hide.has("PLANETS")}
+                toggleFn={() =>
+                  toggleHide(!options.hide.has("PLANETS"), "PLANETS")
+                }
+              >
+                Planets
+              </Toggle>
+              <Toggle
+                selected={!options.hide.has("OBJECTIVES")}
+                toggleFn={() =>
+                  toggleHide(!options.hide.has("OBJECTIVES"), "OBJECTIVES")
+                }
+              >
+                Objectives
+              </Toggle>
+            </div>
+          </LabeledDiv>
           <div className="flexColumn" style={{ width: "100%" }}>
             <div className="flexRow">
               Speaker:

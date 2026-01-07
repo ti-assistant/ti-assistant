@@ -81,6 +81,7 @@ import { rem } from "../../../../../../src/util/util";
 import styles from "./ActionPhase.module.scss";
 import { ComponentAction } from "./ComponentAction";
 import StrategicActions from "./StrategicActions/StrategicActions";
+import Conditional from "../../../../../../src/components/Conditional/Conditional";
 
 interface FactionActionButtonsProps {
   factionId: FactionId;
@@ -405,24 +406,65 @@ export function AdditionalActions({
           <div className="flexColumn largeFont" style={{ width: "100%" }}>
             <LabeledLine
               leftLabel={
-                isActive ? "Technology Primary" : "Technology Secondary"
+                isActive ? (
+                  <InfoRow
+                    infoTitle={`${strategyCard?.name} Primary`}
+                    infoContent={
+                      <FormattedDescription
+                        description={strategyCard?.primary}
+                      />
+                    }
+                  >
+                    <FormattedMessage
+                      id="mhqGMn"
+                      description="The main ability for a strategy card."
+                      defaultMessage="Primary"
+                    />
+                  </InfoRow>
+                ) : (
+                  <InfoRow
+                    infoTitle={`${strategyCard?.name} Secondary`}
+                    infoContent={
+                      <FormattedDescription
+                        description={strategyCard?.secondary}
+                      />
+                    }
+                  >
+                    <FormattedMessage
+                      id="PBW6vs"
+                      description="The alternate ability for a strategy card."
+                      defaultMessage="Secondary"
+                    />
+                  </InfoRow>
+                )
               }
             />
             <React.Fragment>
-              <TechResearchSection
-                factionId={factionId}
-                numTechs={numTechs}
-                hideWrapper
-              />
+              <Conditional appSection="TECHS">
+                <TechResearchSection
+                  factionId={factionId}
+                  numTechs={numTechs}
+                  hideWrapper
+                />
+              </Conditional>
               {isActive ? (
                 <React.Fragment>
                   <LabeledLine
                     leftLabel={
-                      <FormattedMessage
-                        id="PBW6vs"
-                        description="The alternate ability for a strategy card."
-                        defaultMessage="Secondary"
-                      />
+                      <InfoRow
+                        infoTitle={`${strategyCard?.name} Secondary`}
+                        infoContent={
+                          <FormattedDescription
+                            description={strategyCard?.secondary}
+                          />
+                        }
+                      >
+                        <FormattedMessage
+                          id="PBW6vs"
+                          description="The alternate ability for a strategy card."
+                          defaultMessage="Secondary"
+                        />
+                      </InfoRow>
                     }
                   />
                   <SecondaryCheck

@@ -8,7 +8,11 @@ import {
   useTechs,
   useViewOnly,
 } from "../../context/dataHooks";
-import { useFaction, useFactions } from "../../context/factionDataHooks";
+import {
+  useFaction,
+  useFactions,
+  useNumFactions,
+} from "../../context/factionDataHooks";
 import {
   chooseStartingTechAsync,
   chooseSubFactionAsync,
@@ -43,6 +47,7 @@ import TechIcon from "../TechIcon/TechIcon";
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
 import { Strings } from "../strings";
 import styles from "./StartingComponents.module.scss";
+import { getMapString } from "../../util/options";
 
 interface StartingComponentsProps {
   factionId: FactionId;
@@ -73,6 +78,8 @@ export default function StartingComponents({
   const options = useOptions();
   const techs = useTechs();
   const viewOnly = useViewOnly();
+  const numFactions = useNumFactions();
+  const mapString = getMapString(options, numFactions);
 
   const intl = useIntl();
 
@@ -194,10 +201,12 @@ export default function StartingComponents({
       ) : null}
       {options.expansions.includes("TWILIGHTS FALL") ? (
         <>
-          <div className="flexRow" style={{ fontFamily: "Myriad Pro" }}>
-            Planet Faction:{" "}
-            <TFFactionSelect factionId={factionId} type="Planet" />
-          </div>
+          {options.hide?.includes("PLANETS") && !mapString ? null : (
+            <div className="flexRow" style={{ fontFamily: "Myriad Pro" }}>
+              Planet Faction:{" "}
+              <TFFactionSelect factionId={factionId} type="Planet" />
+            </div>
+          )}
           <div className="flexRow" style={{ fontFamily: "Myriad Pro" }}>
             Unit Faction: <TFFactionSelect factionId={factionId} type="Unit" />
           </div>

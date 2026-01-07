@@ -16,6 +16,7 @@ import { setGameId } from "../../../src/util/api/util";
 import { BLACK_BORDER_GLOW } from "../../../src/util/borderGlow";
 import { rem } from "../../../src/util/util";
 import styles from "./game-page.module.scss";
+import Conditional from "../../../src/components/Conditional/Conditional";
 
 export default function SelectFactionPage() {
   const router = useRouter();
@@ -91,26 +92,28 @@ export default function SelectFactionPage() {
             />
           </div>
         </Link>
-        <Link href={`/game/${gameId}/objectives`}>
-          <div
-            style={{
-              border: `${"3px"} solid grey`,
-              borderRadius: rem(5),
-              height: `8vh`,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: rem(24),
-              cursor: "pointer",
-            }}
-          >
-            <FormattedMessage
-              id="9m91nk"
-              description="Text on a button that opens the objective view of the assistant."
-              defaultMessage="Objective View"
-            />
-          </div>
-        </Link>
+        <Conditional appSection="OBJECTIVES">
+          <Link href={`/game/${gameId}/objectives`}>
+            <div
+              style={{
+                border: `${"3px"} solid grey`,
+                borderRadius: rem(5),
+                height: `8vh`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: rem(24),
+                cursor: "pointer",
+              }}
+            >
+              <FormattedMessage
+                id="9m91nk"
+                description="Text on a button that opens the objective view of the assistant."
+                defaultMessage="Objective View"
+              />
+            </div>
+          </Link>
+        </Conditional>
         {orderedFactionIds.map((factionId) => {
           return <FactionLink key={factionId} factionId={factionId} />;
         })}
@@ -142,7 +145,7 @@ function FactionLink({ factionId }: { factionId: FactionId }) {
             zIndex: 0,
           }}
         >
-          <FactionIcon factionId={factionId} size="100%" />
+          <FactionComponents.Icon factionId={factionId} size="100%" />
         </div>
         <div
           className="flexColumn"

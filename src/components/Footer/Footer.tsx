@@ -96,6 +96,9 @@ function getNumButtons(
   options: Options,
   tyrant: boolean
 ) {
+  const hideThundersEdgeModalButton =
+    options.expansions.includes("TWILIGHTS FALL") &&
+    options.hide?.includes("RELICS");
   let buttons = 3;
   if (!shouldBlockSpeakerUpdates(phase, strategyCards)) {
     buttons++;
@@ -104,8 +107,9 @@ function getNumButtons(
     buttons++;
   }
   if (
-    options.expansions.includes("POK") ||
-    options.expansions.includes("THUNDERS EDGE")
+    (options.expansions.includes("POK") ||
+      options.expansions.includes("THUNDERS EDGE")) &&
+    !hideThundersEdgeModalButton
   ) {
     buttons++;
   }
@@ -199,6 +203,10 @@ export default function Footer() {
       break;
   }
   const twilightsFallGame = options.expansions.includes("TWILIGHTS FALL");
+
+  const hideThundersEdgeModalButton =
+    options.expansions.includes("TWILIGHTS FALL") &&
+    options.hide?.includes("RELICS");
 
   const numButtons = getNumButtons(phase, strategyCards, options, !!tyrant);
   return (
@@ -332,8 +340,9 @@ export default function Footer() {
             defaultMessage="Update Planets"
           />
         </div>
-        {options.expansions.includes("THUNDERS EDGE") ||
-        options.expansions.includes("POK") ? (
+        {(options.expansions.includes("THUNDERS EDGE") ||
+          options.expansions.includes("POK")) &&
+        !hideThundersEdgeModalButton ? (
           <div
             className="flexRow"
             onClick={() => openModal(<ThundersEdgeModalContent />)}
@@ -481,8 +490,9 @@ export default function Footer() {
             <span className={styles.ButtonLabel}>Planets</span>
           </div>
         </Conditional>
-        {options.expansions.includes("THUNDERS EDGE") ||
-        options.expansions.includes("POK") ? (
+        {(options.expansions.includes("THUNDERS EDGE") ||
+          options.expansions.includes("POK")) &&
+        !hideThundersEdgeModalButton ? (
           <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
             <button
               onClick={() => openModal(<ThundersEdgeModalContent />)}

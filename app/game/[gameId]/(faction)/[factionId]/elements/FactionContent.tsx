@@ -8,6 +8,7 @@ import ObjectiveTab from "./ObjectiveTab";
 import PhaseSection from "./PhaseSection";
 import PlanetTab from "./PlanetTab";
 import TechTab from "./TechTab";
+import Conditional from "../../../../../../src/components/Conditional/Conditional";
 
 export default function FactionContent({
   factionId,
@@ -71,53 +72,65 @@ export default function FactionContent({
                 className="flexRow"
                 style={{ width: "100%", margin: `0 ${rem(4)}` }}
               >
-                <Tab
-                  selectTab={toggleTabShown}
-                  id="techs"
-                  selectedId={tabShown}
-                >
-                  <FormattedMessage
-                    id="ys7uwX"
-                    description="Shortened version of technologies."
-                    defaultMessage="Techs"
-                  />
-                </Tab>
-                <Tab
-                  selectTab={toggleTabShown}
-                  id="planets"
-                  selectedId={tabShown}
-                >
-                  <FormattedMessage
-                    id="1fNqTf"
-                    description="Planets."
-                    defaultMessage="Planets"
-                  />
-                </Tab>
-                <Tab
-                  selectTab={toggleTabShown}
-                  id="objectives"
-                  selectedId={tabShown}
-                >
-                  <FormattedMessage
-                    id="5Bl4Ek"
-                    description="Cards that define how to score victory points."
-                    defaultMessage="Objectives"
-                  />
-                </Tab>
+                <Conditional appSection="TECHS">
+                  <Tab
+                    selectTab={toggleTabShown}
+                    id="techs"
+                    selectedId={tabShown}
+                  >
+                    <FormattedMessage
+                      id="ys7uwX"
+                      description="Shortened version of technologies."
+                      defaultMessage="Techs"
+                    />
+                  </Tab>
+                </Conditional>
+                <Conditional appSection="PLANETS">
+                  <Tab
+                    selectTab={toggleTabShown}
+                    id="planets"
+                    selectedId={tabShown}
+                  >
+                    <FormattedMessage
+                      id="1fNqTf"
+                      description="Planets."
+                      defaultMessage="Planets"
+                    />
+                  </Tab>
+                </Conditional>
+                <Conditional appSection="OBJECTIVES">
+                  <Tab
+                    selectTab={toggleTabShown}
+                    id="objectives"
+                    selectedId={tabShown}
+                  >
+                    <FormattedMessage
+                      id="5Bl4Ek"
+                      description="Cards that define how to score victory points."
+                      defaultMessage="Objectives"
+                    />
+                  </Tab>
+                </Conditional>
               </div>
-              <TabBody id="techs" selectedId={tabShown}>
-                <LabeledLine />
-                <TechTab factionId={factionId} />
-              </TabBody>
-              <TabBody id="planets" selectedId={tabShown}>
-                <LabeledLine />
-                <PlanetTab factionId={factionId} />
-              </TabBody>
+              <Conditional appSection="TECHS">
+                <TabBody id="techs" selectedId={tabShown}>
+                  <LabeledLine />
+                  <TechTab factionId={factionId} />
+                </TabBody>
+              </Conditional>
+              <Conditional appSection="PLANETS">
+                <TabBody id="planets" selectedId={tabShown}>
+                  <LabeledLine />
+                  <PlanetTab factionId={factionId} />
+                </TabBody>
+              </Conditional>
 
-              <TabBody id="objectives" selectedId={tabShown}>
-                <LabeledLine />
-                <ObjectiveTab factionId={factionId} />
-              </TabBody>
+              <Conditional appSection="OBJECTIVES">
+                <TabBody id="objectives" selectedId={tabShown}>
+                  <LabeledLine />
+                  <ObjectiveTab factionId={factionId} />
+                </TabBody>
+              </Conditional>
             </div>
           </div>
         </div>

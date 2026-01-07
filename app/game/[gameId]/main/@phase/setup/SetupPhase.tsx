@@ -1,8 +1,10 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 import { LockedButtons } from "../../../../../../src/LockedButton";
 import { NumberedItem } from "../../../../../../src/NumberedItem";
 import { SelectableRow } from "../../../../../../src/SelectableRow";
+import Chip from "../../../../../../src/components/Chip/Chip";
+import Conditional from "../../../../../../src/components/Conditional/Conditional";
 import FactionDiv from "../../../../../../src/components/LabeledDiv/FactionDiv";
 import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
 import ObjectiveRow from "../../../../../../src/components/ObjectiveRow/ObjectiveRow";
@@ -32,7 +34,6 @@ import { processMapString } from "../../../../../../src/util/map";
 import { objectiveTypeString } from "../../../../../../src/util/strings";
 import { rem } from "../../../../../../src/util/util";
 import styles from "./SetupPhase.module.scss";
-import Conditional from "../../../../../../src/components/Conditional/Conditional";
 
 function factionTechChoicesComplete(
   factions: Partial<Record<FactionId, Faction>>
@@ -148,7 +149,6 @@ function setMapString(
 }
 
 export default function SetupPhase() {
-  // const factions = useFactions();
   const gameId = useGameId();
   const objectives = useObjectives();
   const options = useOptions();
@@ -165,6 +165,9 @@ export default function SetupPhase() {
   const intl = useIntl();
 
   const mapStringRef = useRef<HTMLInputElement>(null);
+
+  const [showInauguralSplice, setShowInauguralSplice] =
+    useState<boolean>(false);
 
   const userMapString = options["map-string"];
 
@@ -183,10 +186,6 @@ export default function SetupPhase() {
       );
     });
   }, [revealedObjectives, objectives]);
-
-  const showInauguralSplice =
-    revealedObjectives.length >= 2 &&
-    options.expansions.includes("TWILIGHTS FALL");
 
   return (
     <>
@@ -394,13 +393,15 @@ export default function SetupPhase() {
               </div>
             </Conditional>
           </NumberedItem>
-          <NumberedItem>
-            <FormattedMessage
-              id="fHRZ5N"
-              description="A step in the setup phase: The inaugural splice."
-              defaultMessage="Inaugural Splice"
-            />
-          </NumberedItem>
+          {options.expansions.includes("TWILIGHTS FALL") ? (
+            <NumberedItem>
+              <FormattedMessage
+                id="fHRZ5N"
+                description="A step in the setup phase: The inaugural splice."
+                defaultMessage="Inaugural Splice"
+              />
+            </NumberedItem>
+          ) : null}
           <FinishPhaseButton embedded />
         </ol>
       </div>
@@ -416,13 +417,36 @@ export default function SetupPhase() {
             gap: rem(8),
           }}
         >
-          <div className="flexColumn" style={{ width: "100%" }}>
-            {showInauguralSplice ? (
-              <FormattedMessage
-                id="fHRZ5N"
-                description="A step in the setup phase: The inaugural splice."
-                defaultMessage="Inaugural Splice"
-              />
+          <div
+            className="flexRow"
+            style={{ width: "100%", justifyContent: "center" }}
+          >
+            {options.expansions.includes("TWILIGHTS FALL") &&
+            !options.hide?.includes("TECHS") ? (
+              <>
+                <Chip
+                  toggleFn={() => setShowInauguralSplice(false)}
+                  selected={!showInauguralSplice}
+                  fontSize={16}
+                >
+                  <FormattedMessage
+                    id="rlGbdz"
+                    description="A label for a section of components that a faction starts with."
+                    defaultMessage="Starting Components"
+                  />
+                </Chip>
+                <Chip
+                  toggleFn={() => setShowInauguralSplice(true)}
+                  selected={showInauguralSplice}
+                  fontSize={16}
+                >
+                  <FormattedMessage
+                    id="fHRZ5N"
+                    description="A step in the setup phase: The inaugural splice."
+                    defaultMessage="Inaugural Splice"
+                  />
+                </Chip>
+              </>
             ) : (
               <FormattedMessage
                 id="rlGbdz"
