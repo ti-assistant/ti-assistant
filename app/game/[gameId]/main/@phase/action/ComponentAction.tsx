@@ -610,6 +610,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
     case "Create":
     case "Fabrication":
     case "Forge Legend": {
+      conditional = "RELICS";
       innerContent = (
         <div className="flexColumn" style={{ width: "100%" }}>
           <GainRelic factionId={factionId} />

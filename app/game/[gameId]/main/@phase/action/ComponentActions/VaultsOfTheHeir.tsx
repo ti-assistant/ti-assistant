@@ -5,6 +5,7 @@ import TechSelectHoverMenu from "../../../../../../../src/components/TechSelectH
 import {
   useCurrentTurn,
   useGameId,
+  useOptions,
   useTechs,
 } from "../../../../../../../src/context/dataHooks";
 import { useFaction } from "../../../../../../../src/context/factionDataHooks";
@@ -25,11 +26,16 @@ export default function VaultsOfTheHeir({
   const currentTurn = useCurrentTurn();
   const faction = useFaction(factionId);
   const gameId = useGameId();
+  const options = useOptions();
   const intl = useIntl();
   const techs = useTechs();
 
   if (!faction) {
     return null;
+  }
+
+  if (options.hide?.includes("TECHS")) {
+    return <GainRelic factionId={factionId} />;
   }
 
   const canPurgeTechs = objectKeys(faction.techs)
