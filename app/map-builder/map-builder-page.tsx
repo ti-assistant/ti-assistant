@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState, useEffect } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
@@ -150,6 +150,16 @@ function mapValuePriority(a?: string, b?: string) {
   if (b === "0") {
     return a;
   }
+
+  const isPA = /^P\d+$/.test(a);
+  const isPB = /^P\d+$/.test(b);
+  if (isPA && !isPB) {
+    return b;
+  }
+  if (!isPA && isPB) {
+    return a;
+  }
+
   return a;
 }
 
@@ -158,6 +168,9 @@ export default function MapBuilderPage() {
   const [mapString, setMapString] = useState(
     getDefaultMapString(6, "standard", true)
   );
+  const [rawMapInput, setRawMapInput] = useState(mapString);
+  useEffect(() => setRawMapInput(mapString), [mapString]);
+
   const [mapStyle, setMapStyle] = useState<MapStyle>("standard");
   const [numFactions, setNumFactions] = useState(6);
   const [filters, setFilters] = useState<Set<Filter>>(
@@ -645,10 +658,11 @@ export default function MapBuilderPage() {
         style={{
           width: "100%",
         }}
-        value={mapString}
-        onChange={(element) => {
+        value={rawMapInput}
+        onChange={(element) => setRawMapInput(element.target.value)}
+        onBlur={() => {
           setMapString(
-            processMapString(element.target.value, mapStyle, numFactions, false)
+            processMapString(rawMapInput.trim(), mapStyle, numFactions, false)
           );
         }}
       ></input>
