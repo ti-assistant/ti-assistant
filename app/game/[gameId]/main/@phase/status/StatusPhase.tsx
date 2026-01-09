@@ -1,8 +1,11 @@
-import React, { use } from "react";
+import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ClientOnlyHoverMenu } from "../../../../../../src/HoverMenu";
+import { InfoRow } from "../../../../../../src/InfoRow";
 import { LockedButtons } from "../../../../../../src/LockedButton";
 import { NumberedItem } from "../../../../../../src/NumberedItem";
+import { TechRow } from "../../../../../../src/TechRow";
+import Conditional from "../../../../../../src/components/Conditional/Conditional";
 import CrownOfEmphidia from "../../../../../../src/components/CrownOfEmphidia/CrownOfEmphidia";
 import FactionComponents from "../../../../../../src/components/FactionComponents/FactionComponents";
 import FactionName from "../../../../../../src/components/FactionComponents/FactionName";
@@ -11,12 +14,11 @@ import FormattedDescription from "../../../../../../src/components/FormattedDesc
 import IconDiv from "../../../../../../src/components/LabeledDiv/IconDiv";
 import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
 import LabeledLine from "../../../../../../src/components/LabeledLine/LabeledLine";
-import { ModalContent } from "../../../../../../src/components/Modal/Modal";
 import ObjectiveRow from "../../../../../../src/components/ObjectiveRow/ObjectiveRow";
 import ObjectiveSelectHoverMenu from "../../../../../../src/components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import { Selector } from "../../../../../../src/components/Selector/Selector";
 import TechResearchSection from "../../../../../../src/components/TechResearchSection/TechResearchSection";
-import { ModalContext } from "../../../../../../src/context/contexts";
+import TechSelectHoverMenu from "../../../../../../src/components/TechSelectHoverMenu/TechSelectHoverMenu";
 import {
   useActionLog,
   useAgenda,
@@ -31,7 +33,6 @@ import {
   useViewOnly,
 } from "../../../../../../src/context/dataHooks";
 import {
-  useFaction,
   useFactionColor,
   useFactions,
   useFactionTechs,
@@ -78,9 +79,6 @@ import {
   rem,
 } from "../../../../../../src/util/util";
 import styles from "./StatusPhase.module.scss";
-import { TechRow } from "../../../../../../src/TechRow";
-import TechSelectHoverMenu from "../../../../../../src/components/TechSelectHoverMenu/TechSelectHoverMenu";
-import Conditional from "../../../../../../src/components/Conditional/Conditional";
 
 function CommandTokenGains() {
   const factionsWithHyper = useFactionsWithTech("Hyper Metabolism");
@@ -635,10 +633,6 @@ export default function StatusPhase() {
 
   const intl = useIntl();
 
-  const hideTechs = options.hide?.includes("TECHS");
-
-  const { openModal } = use(ModalContext);
-
   function nextPhase(skipAgenda = false) {
     if (!skipAgenda) {
       advancePhaseAsync(gameId);
@@ -927,34 +921,17 @@ export default function StatusPhase() {
                           >
                             {abilities.map((ability) => {
                               return (
-                                <div key={ability.name} className="flexRow">
+                                <InfoRow
+                                  key={ability.name}
+                                  infoTitle={ability.name}
+                                  infoContent={
+                                    <FormattedDescription
+                                      description={ability.description}
+                                    />
+                                  }
+                                >
                                   {ability.name}
-                                  <div
-                                    className="popupIcon"
-                                    onClick={() =>
-                                      openModal(
-                                        <ModalContent title={ability.name}>
-                                          <div
-                                            className="myriadPro"
-                                            style={{
-                                              width: "100%",
-                                              padding: rem(4),
-                                              whiteSpace: "pre-line",
-                                              textAlign: "center",
-                                              fontSize: rem(32),
-                                            }}
-                                          >
-                                            <FormattedDescription
-                                              description={ability.description}
-                                            />
-                                          </div>
-                                        </ModalContent>
-                                      )
-                                    }
-                                  >
-                                    &#x24D8;
-                                  </div>
-                                </div>
+                                </InfoRow>
                               );
                             })}
                           </div>
@@ -1180,23 +1157,17 @@ export default function StatusPhase() {
                         >
                           {abilities.map((ability) => {
                             return (
-                              <div key={ability.name} className="flexRow">
+                              <InfoRow
+                                key={ability.name}
+                                infoTitle={ability.name}
+                                infoContent={
+                                  <FormattedDescription
+                                    description={ability.description}
+                                  />
+                                }
+                              >
                                 {ability.name}
-                                <div
-                                  className="popupIcon"
-                                  onClick={() =>
-                                    openModal(
-                                      <ModalContent title={ability.name}>
-                                        <FormattedDescription
-                                          description={ability.description}
-                                        />
-                                      </ModalContent>
-                                    )
-                                  }
-                                >
-                                  &#x24D8;
-                                </div>
-                              </div>
+                              </InfoRow>
                             );
                           })}
                         </div>

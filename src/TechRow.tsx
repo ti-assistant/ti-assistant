@@ -1,15 +1,13 @@
-import { ReactNode, use } from "react";
 import { FormattedMessage } from "react-intl";
+import InfoModal from "./InfoModal";
 import { SelectableRow } from "./SelectableRow";
 import styles from "./TechRow.module.scss";
 import FactionIcon from "./components/FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "./components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import FormattedDescription from "./components/FormattedDescription/FormattedDescription";
-import { ModalContent } from "./components/Modal/Modal";
 import TechIcon from "./components/TechIcon/TechIcon";
 import UnitStats from "./components/UnitStats/UnitStats";
 import UnitIcon from "./components/Units/Icons";
-import { ModalContext } from "./context/contexts";
 import {
   useGameId,
   useLogEntries,
@@ -107,7 +105,6 @@ export function TechRow({
 }: TechRowProps) {
   const tech = useTech(techId);
   const viewOnly = useViewOnly();
-  const { openModal } = use(ModalContext);
   if (!tech) {
     return null;
   }
@@ -168,36 +165,22 @@ export function TechRow({
               </div>
             ) : null}
           </div>
-
-          <div
-            className="popupIcon"
-            style={{
-              display: opts.hideInfo ? "none" : "block",
-              fontSize: rem(16),
-            }}
-            onClick={(e) => {
-              e.stopPropagation();
-              openModal(
-                <ModalContent
-                  title={
-                    <div
-                      className="flexRow"
-                      style={{ fontSize: rem(40), gap: rem(20) }}
-                    >
-                      {tech.name}
-                      {tech.type === "UPGRADE" ? (
-                        <UnitIcon type={tech.unitType} size={40} />
-                      ) : null}
-                    </div>
-                  }
-                >
-                  <InfoContent tech={tech} />
-                </ModalContent>
-              );
-            }}
+          <InfoModal
+            title={
+              <div
+                className="flexRow"
+                style={{ fontSize: rem(40), gap: rem(20) }}
+              >
+                {tech.name}
+                {tech.type === "UPGRADE" ? (
+                  <UnitIcon type={tech.unitType} size={40} />
+                ) : null}
+              </div>
+            }
+            style={{ marginLeft: rem(8) }}
           >
-            &#x24D8;
-          </div>
+            <InfoContent tech={tech} />
+          </InfoModal>
         </div>
         {opts.hideSymbols ? null : (
           <div
@@ -229,7 +212,6 @@ function ResearchAgreement({ tech }: { tech: Tech }) {
   const factions = useFactions();
   const gameId = useGameId();
   const viewOnly = useViewOnly();
-  const { openModal } = use(ModalContext);
 
   const selectedFaction = researchAgreement?.data.event.faction;
 
@@ -265,48 +247,22 @@ function ResearchAgreement({ tech }: { tech: Tech }) {
         }
       }}
       tag={
-        <div
-          className="popupIcon hoverParent"
-          style={{ marginLeft: 0, color: "#999", fontSize: rem(10) }}
-          onClick={() =>
-            openModal(
-              <ModalContent
-                title={
-                  <div style={{ fontSize: rem(40) }}>
-                    <FormattedMessage
-                      id="Universities of Jol-Nar.Promissories.Research Agreement.Title"
-                      description="Title of Faction Promissory: Research Agreement"
-                      defaultMessage="Research Agreement"
-                    />
-                  </div>
-                }
-              >
-                <div
-                  className="flexRow myriadPro"
-                  style={{
-                    boxSizing: "border-box",
-                    maxWidth: rem(800),
-                    width: "100%",
-                    minWidth: rem(320),
-                    padding: rem(4),
-                    whiteSpace: "pre-line",
-                    textAlign: "center",
-                    fontSize: rem(32),
-                  }}
-                >
-                  <FormattedMessage
-                    id="Universities of Jol-Nar.Promissories.Research Agreement.Description"
-                    description="Description for Faction Promissory: Research Agreement"
-                    defaultMessage="After the Jol-Nar player researches a technology that is not a faction technology:{br}Gain that technology.{br}Then, return this card to the Jol-Nar player."
-                    values={{ br: "\n\n" }}
-                  />
-                </div>
-              </ModalContent>
-            )
+        <InfoModal
+          title={
+            <FormattedMessage
+              id="Universities of Jol-Nar.Promissories.Research Agreement.Title"
+              description="Title of Faction Promissory: Research Agreement"
+              defaultMessage="Research Agreement"
+            />
           }
         >
-          &#x24D8;
-        </div>
+          <FormattedMessage
+            id="Universities of Jol-Nar.Promissories.Research Agreement.Description"
+            description="Description for Faction Promissory: Research Agreement"
+            defaultMessage="After the Jol-Nar player researches a technology that is not a faction technology:{br}Gain that technology.{br}Then, return this card to the Jol-Nar player."
+            values={{ br: "\n\n" }}
+          />
+        </InfoModal>
       }
       viewOnly={viewOnly}
     />

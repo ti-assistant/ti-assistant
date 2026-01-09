@@ -33,8 +33,6 @@ import { objectEntries, rem } from "../../src/util/util";
 import ColorPicker from "./components/ColorPicker";
 import PlayerNameInput from "./components/PlayerNameInput";
 import styles from "./setup.module.scss";
-import TechSkipIcon from "../../src/components/TechSkipIcon/TechSkipIcon";
-import TFCardIcon from "../../src/components/TFCardIcon/TFCardIcon";
 
 const SetupFactionPanel = dynamic(
   () => import("../../src/components/SetupFactionPanel"),

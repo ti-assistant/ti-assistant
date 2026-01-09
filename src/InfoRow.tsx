@@ -1,7 +1,6 @@
-import { PropsWithChildren, ReactNode, use } from "react";
+import { PropsWithChildren, ReactNode } from "react";
 
-import { ModalContent } from "./components/Modal/Modal";
-import { ModalContext } from "./context/contexts";
+import InfoModal from "./InfoModal";
 import { rem } from "./util/util";
 
 interface InfoRowProps {
@@ -14,44 +13,15 @@ export function InfoRow({
   infoTitle,
   infoContent,
 }: PropsWithChildren<InfoRowProps>) {
-  const { openModal } = use(ModalContext);
-
   return (
     <div
       className="flexRow"
-      style={{ width: "100%", justifyContent: "stretch", gap: 0 }}
+      style={{ width: "100%", justifyContent: "stretch" }}
     >
       {children}
-      <div
-        className="popupIcon"
-        style={{
-          fontSize: "1rem",
-        }}
-        onClick={() =>
-          openModal(
-            <ModalContent title={infoTitle}>
-              <div
-                className="myriadPro flexColumn"
-                style={{
-                  boxSizing: "border-box",
-                  maxWidth: "50rem",
-                  width: "100%",
-                  minWidth: "20rem",
-                  padding: "0.25rem",
-                  whiteSpace: "pre-line",
-                  textAlign: "center",
-                  fontSize: rem(32),
-                  gap: rem(32),
-                }}
-              >
-                {infoContent}
-              </div>
-            </ModalContent>
-          )
-        }
-      >
-        &#x24D8;
-      </div>
+      <InfoModal title={infoTitle} style={{ marginLeft: rem(8) }}>
+        {infoContent}
+      </InfoModal>
     </div>
   );
 }

@@ -1,11 +1,9 @@
-import { use } from "react";
-import { ModalContext } from "../../context/contexts";
 import { useViewOnly } from "../../context/dataHooks";
+import InfoModal from "../../InfoModal";
 import { SelectableRow } from "../../SelectableRow";
 import { rem } from "../../util/util";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import FormattedDescription from "../FormattedDescription/FormattedDescription";
-import { ModalContent } from "../Modal/Modal";
 
 interface InfoContentProps {
   objective: Objective;
@@ -52,8 +50,6 @@ export default function ObjectiveRow({
 }: ObjectiveRowProps) {
   const viewOnly = useViewOnly();
 
-  const { openModal } = use(ModalContext);
-
   function canScore() {
     if (!scoreObjective || viewing || !factionId) {
       return false;
@@ -93,23 +89,9 @@ export default function ObjectiveRow({
             <div style={{ display: "flex", flex: "2 0 50%" }}>
               {objective.name}
             </div>
-            <div
-              className="popupIcon"
-              style={{ paddingRight: rem(8) }}
-              onClick={() =>
-                openModal(
-                  <ModalContent
-                    title={
-                      <div style={{ fontSize: rem(40) }}>{objective.name}</div>
-                    }
-                  >
-                    <InfoContent objective={objective} />
-                  </ModalContent>
-                )
-              }
-            >
-              &#x24D8;
-            </div>
+            <InfoModal title={objective.name} style={{ marginLeft: rem(8) }}>
+              <InfoContent objective={objective} />
+            </InfoModal>
           </div>
           <div className="flexColumn">
             {canScore() && scoreObjective ? (

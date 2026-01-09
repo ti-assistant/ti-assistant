@@ -17,6 +17,8 @@ import {
   chooseStartingTechAsync,
   chooseSubFactionAsync,
   chooseTFFactionAsync,
+  removeStartingTechAsync,
+  removeTechAsync,
 } from "../../dynamic/api";
 import SynergySVG from "../../icons/ui/Synergy";
 import CarrierSVG from "../../icons/units/Carrier";
@@ -264,17 +266,21 @@ export default function StartingComponents({
         {orderedTechs.map((tech) => {
           if (startswith.choice) {
             return (
-              <div
+              <SelectableRow
                 key={tech.id}
+                itemId={tech.id}
+                removeItem={() =>
+                  removeStartingTechAsync(gameId, factionId, tech.id)
+                }
                 style={{
+                  color: getTechColor(tech),
+                  fontSize: "14px",
                   whiteSpace: "nowrap",
                   fontFamily: "Myriad Pro",
-                  color: getTechColor(tech),
-                  fontSize: rem(14),
                 }}
               >
                 {tech.name}
-              </div>
+              </SelectableRow>
             );
           }
           return (

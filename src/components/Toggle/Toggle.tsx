@@ -1,7 +1,6 @@
-import { CSSProperties, PropsWithChildren, ReactNode, use } from "react";
-import { ModalContext } from "../../context/contexts";
+import { CSSProperties, PropsWithChildren, ReactNode } from "react";
+import InfoModal from "../../InfoModal";
 import { rem } from "../../util/util";
-import { ModalContent } from "../Modal/Modal";
 import styles from "./Toggle.module.scss";
 
 interface SelectedCSSProperties extends CSSProperties {
@@ -50,8 +49,6 @@ export default function Toggle({
   disabled,
   info,
 }: PropsWithChildren<ToggleProps>) {
-  const { openModal } = use(ModalContext);
-
   let toggleStyle = getToggleStyle(selected);
   return (
     <label
@@ -66,32 +63,9 @@ export default function Toggle({
       ></input>
       {children}
       {info ? (
-        <div
-          className="popupIcon"
-          style={{
-            fontSize: rem(16),
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            openModal(
-              <ModalContent
-                title={
-                  <div
-                    className="flexRow"
-                    style={{ fontSize: rem(40), gap: rem(20) }}
-                  >
-                    {info.title}
-                  </div>
-                }
-              >
-                <InfoContent description={info.description} />
-              </ModalContent>
-            );
-          }}
-        >
-          &#x24D8;
-        </div>
+        <InfoModal title={info.title} style={{ marginLeft: rem(8) }}>
+          <InfoContent description={info.description} />
+        </InfoModal>
       ) : null}
     </label>
   );
