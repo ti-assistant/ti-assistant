@@ -57,7 +57,6 @@ export default function NumberInput({
       )}
       <div
         className={styles.InputBox}
-        style={inputStyle}
         contentEditable={!viewOnly}
         suppressContentEditableWarning
         onClick={
@@ -69,9 +68,10 @@ export default function NumberInput({
         }
         onBlur={(e) => updateValue(e.currentTarget)}
         style={
-          borderColor
-            ? ({ "--input-border-color": borderColor } as CSSProperties)
-            : undefined
+          {
+            "--input-border-color": borderColor,
+            ...inputStyle,
+          } as CSSProperties
         }
       >
         {value}
