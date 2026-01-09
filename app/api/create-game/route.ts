@@ -151,6 +151,11 @@ export async function POST(req: Request) {
         units: {},
       };
       startsWith.choice = {
+        description: intl.formatMessage({
+          id: "Winnu.Tech Choice",
+          description: "Text of Winnu's tech choice.",
+          defaultMessage: "Choose any 1 technology that has no prerequisites.",
+        }),
         select: 1,
         options: [
           "Neural Motivator",
