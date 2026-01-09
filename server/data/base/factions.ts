@@ -2360,6 +2360,12 @@ export default function getBaseFactions(
       }),
       startswith: {
         choice: {
+          description: intl.formatMessage({
+            id: "Winnu.Tech Choice",
+            description: "Text of Winnu's tech choice.",
+            defaultMessage:
+              "Choose any 1 technology that has no prerequisites.",
+          }),
           options: [
             "AI Development Algorithm",
             "Antimass Deflectors",

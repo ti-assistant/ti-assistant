@@ -2223,6 +2223,10 @@
     "defaultMessage": "Argent",
     "description": "Shortened version of Faction name: Argent Flight"
   },
+  "Argent Flight.Tech Choice": {
+    "defaultMessage": "Choose two of the following:{br}Neural Motivator{br}Sarween Tools{br}Plasma Scoring",
+    "description": "Text of Argent's tech choice."
+  },
   "Argent Flight.Techs.Aerie Hololattice.Description": {
     "defaultMessage": "Other players cannot move ships through systems that contain your structures.{br}Each planet that contains 1 or more of your structures gains the PRODUCTION 1 ability as if it were a unit.",
     "description": "Description for Tech: Aerie Hololattice"
@@ -3087,6 +3091,10 @@
     "defaultMessage": "Keleres",
     "description": "Shortened version of Faction name: Council Keleres"
   },
+  "Council Keleres.Tech Choice": {
+    "defaultMessage": "Choose 2 non-faction technologies owned by other players.",
+    "description": "Text of Keleres's tech choice."
+  },
   "Council Keleres.Techs.Agency Supply Network.Description": {
     "defaultMessage": "Whenever you resolve one of your PRODUCTION abilities, you may resolve an additional one of your PRODUCTION abilities in any system; the additional use does not trigger this ability.",
     "description": "Description for Tech: Agency Supply Network"
@@ -3211,6 +3219,10 @@
     "defaultMessage": "Rebellion",
     "description": "Shortened version of Faction name: Crimson Rebellion"
   },
+  "Crimson Rebellion.Tech Choice": {
+    "defaultMessage": "Choose one red or blue technology that has no prerequisites.",
+    "description": "Text of Rebellion's tech choice."
+  },
   "Crimson Rebellion.Techs.Exile II.Description": {
     "defaultMessage": "At the end of any player's combat in this unit's system or up to 2 systems away, you may place 1 active or inactive breach in that system.",
     "description": "Description for Tech: Exile II"
@@ -3334,6 +3346,10 @@
   "Deepwrought Scholarate.Shortname": {
     "defaultMessage": "Deepwrought",
     "description": "Shortened version of Faction name: Deepwrought Scholarate"
+  },
+  "Deepwrought Scholarate.Tech Choice": {
+    "defaultMessage": "During setup, research technology twice.",
+    "description": "Text of Deepwrought's tech choice."
   },
   "Deepwrought Scholarate.Techs.Hydrothermal Mining.Description": {
     "defaultMessage": "At the start of the status phase, gain 1 trade good for each ocean card in play.",
@@ -4115,6 +4131,10 @@
     "defaultMessage": "Firmament",
     "description": "Shortened version of Faction name: Firmament"
   },
+  "Firmament.Tech Choice": {
+    "defaultMessage": "Choose one green or yellow technology that has no prerequisites.",
+    "description": "Text of Firmament's tech choice."
+  },
   "Firmament.Techs.Neural Parasite.Description": {
     "defaultMessage": "At the start of the status phase, you may place 1 infantry from your reinforcements on a planet you control in your home system.{br}Flip this card if the Obsidian faction is in play.",
     "description": "Description for Tech: Neural Parasite"
@@ -4630,6 +4650,10 @@
   "Last Bastion.Shortname": {
     "defaultMessage": "Last Bastion",
     "description": "Shortened version of Faction name: Last Bastion"
+  },
+  "Last Bastion.Tech Choice": {
+    "defaultMessage": "Choose one blue or yellow technology that has no prerequisites.",
+    "description": "Text of Bastion's tech choice."
   },
   "Last Bastion.Techs.Proxima Targeting VI.Description": {
     "defaultMessage": "Cancel 1 hit produced by BOMBARDMENT rolls made against your ground forces for each of your galvanized units present.{br}At the start of a round of ground combat, you may resolve BOMBARDMENT 8 (x3) against your opponent's ground forces; if you do, make an identical roll against your own ground forces.",
@@ -6610,6 +6634,10 @@
   "Ral Nel Consortium.Shortname": {
     "defaultMessage": "Ral Nel",
     "description": "Shortened version of Faction name: Ral Nel Consortium"
+  },
+  "Ral Nel Consortium.Tech Choice": {
+    "defaultMessage": "Choose one green or red technology that has no prerequisites.",
+    "description": "Text of Ral Nel's tech choice."
   },
   "Ral Nel Consortium.Techs.Linkship II.Description": {
     "defaultMessage": "This unit can use the SPACE CANNON ability of one of your structures in its space area; each linkship can trigger the same structure.",
@@ -9682,6 +9710,10 @@
   "Winnu.Shortname": {
     "defaultMessage": "Winnu",
     "description": "Shortened version of Faction name: Winnu"
+  },
+  "Winnu.Tech Choice": {
+    "defaultMessage": "Choose any 1 technology that has no prerequisites.",
+    "description": "Text of Winnu's tech choice."
   },
   "Winnu.Techs.Hegemonic Trade Policy.Description": {
     "defaultMessage": "Exhaust this card when 1 or more of your units use PRODUCTION; swap the resource and influence values of 1 planet you control until the end of your turn.",

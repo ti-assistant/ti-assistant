@@ -33,6 +33,8 @@ import { objectEntries, rem } from "../../src/util/util";
 import ColorPicker from "./components/ColorPicker";
 import PlayerNameInput from "./components/PlayerNameInput";
 import styles from "./setup.module.scss";
+import TechSkipIcon from "../../src/components/TechSkipIcon/TechSkipIcon";
+import TFCardIcon from "../../src/components/TFCardIcon/TFCardIcon";
 
 const SetupFactionPanel = dynamic(
   () => import("../../src/components/SetupFactionPanel"),
@@ -69,10 +71,12 @@ interface OptionsProps {
 function createOptions(setupOptions: SetupOptions) {
   const expansions = Array.from(setupOptions.expansions);
   const events = Array.from(setupOptions.events);
+  const hide = Array.from(setupOptions.hide);
   const optionsToSend: Options = {
     ...setupOptions,
     expansions,
     events,
+    hide,
   };
   return optionsToSend;
 }
@@ -174,7 +178,7 @@ function MobileOptions({
       </label>
       <div
         className="flexRow"
-        style={{ gap: rem(4), fontFamily: "Myriad Pro" }}
+        style={{ gap: rem(4), fontFamily: "Source Sans" }}
       >
         {[...Array(maxFactions - 2)].map((e, index) => {
           const number = index + 3;
@@ -228,7 +232,7 @@ function MobileOptions({
           />
         }
       >
-        <div className="flexColumn" style={{ alignItems: "center" }}>
+        <div className="flexRow" style={{ flexWrap: "wrap" }}>
           <Toggle
             selected={options.expansions.has("POK")}
             toggleFn={(prevValue) => {
@@ -240,7 +244,9 @@ function MobileOptions({
               description="Text on a button that will enable/disable the Prophecy of Kings expansion."
               defaultMessage="Prophecy of Kings"
             />
-            <ProphecyofKingsSVG />
+            <div style={{ width: rem(12), marginLeft: rem(4) }}>
+              <ProphecyofKingsSVG />
+            </div>
           </Toggle>
           <Toggle
             selected={options.expansions.has("THUNDERS EDGE")}
@@ -253,17 +259,23 @@ function MobileOptions({
               description="Text on a button that will enable/disable the Thunder's Edge expansion."
               defaultMessage="Thunder's Edge"
             />
+            <div style={{ width: rem(14), marginLeft: rem(4) }}>
+              <ThundersEdgeMenuSVG />
+            </div>
           </Toggle>
           {!options.expansions.has("THUNDERS EDGE") ? (
             <div
               className="flexRow"
               style={{
                 justifyContent: "flex-start",
-                fontFamily: "Myriad Pro",
+                fontFamily: "Source Sans",
                 gap: rem(4),
               }}
             >
-              Codices:
+              Codices{" "}
+              <div style={{ width: rem(12) }}>
+                <CodexSVG />
+              </div>
               <Toggle
                 selected={options.expansions.has("CODEX ONE")}
                 toggleFn={(prevValue) => {
@@ -345,7 +357,7 @@ function MobileOptions({
                   style={{
                     justifyContent: "flex-start",
                     padding: `0 ${rem(16)}`,
-                    fontFamily: "Myriad Pro",
+                    fontFamily: "Source Sans",
                   }}
                 >
                   <Toggle
@@ -378,7 +390,7 @@ function MobileOptions({
                       gridTemplateColumns: "repeat(5, 1fr)",
                       justifyContent: "flex-start",
                       alignContent: "flex-start",
-                      fontFamily: "Myriad Pro",
+                      fontFamily: "Source Sans",
                       gap: rem(4),
                       overflowX: "scroll",
                       width: "100%",
@@ -418,7 +430,7 @@ function MobileOptions({
                 <div
                   className="flexColumn"
                   style={{
-                    fontFamily: "Myriad Pro",
+                    fontFamily: "Source Sans",
                     padding: `${rem(8)} ${rem(16)}`,
                     alignItems: "flex-start",
                     whiteSpace: "pre-wrap",
@@ -565,7 +577,7 @@ function Options({
       </label>
       <div
         className="flexRow"
-        style={{ gap: rem(4), fontFamily: "Myriad Pro" }}
+        style={{ gap: rem(4), fontFamily: "Source Sans" }}
       >
         {[...Array(maxFactions - 2)].map((e, index) => {
           const number = index + 3;
@@ -657,7 +669,7 @@ function Options({
               className="flexRow"
               style={{
                 justifyContent: "flex-start",
-                fontFamily: "Myriad Pro",
+                fontFamily: "Source Sans",
                 gap: rem(4),
               }}
             >
@@ -743,7 +755,7 @@ function Options({
                 style={{
                   justifyContent: "flex-start",
                   padding: `0 ${rem(20)}`,
-                  fontFamily: "Myriad Pro",
+                  fontFamily: "Source Sans",
                 }}
               >
                 <Toggle
@@ -777,7 +789,7 @@ function Options({
                     justifyContent: "flex-start",
                     alignContent: "flex-start",
                     padding: `0 ${rem(20)}`,
-                    fontFamily: "Myriad Pro",
+                    fontFamily: "Source Sans",
                     gap: rem(4),
                   }}
                 >
@@ -818,7 +830,7 @@ function Options({
                     alignItems: "flex-start",
                     padding: `0 ${rem(20)}`,
                     gap: rem(4),
-                    fontFamily: "Myriad Pro",
+                    fontFamily: "Source Sans",
                   }}
                 >
                   {variants.map((variant) => {
@@ -1282,6 +1294,7 @@ const INITIAL_OPTIONS: SetupOptions = {
   "hide-objectives": false,
   "hide-planets": false,
   "hide-techs": false,
+  hide: new Set<AppSection>(),
   "victory-points": 10,
   "secondary-victory-points": 10,
 };
@@ -1579,10 +1592,12 @@ export default function SetupPage({
 
     const expansions = Array.from(options.expansions);
     const events = Array.from(options.events);
+    const hide = Array.from(options.hide);
     const optionsToSend: Options = {
       ...options,
       expansions,
       events,
+      hide,
     };
 
     const res = await fetch("/api/create-game", {
@@ -1654,6 +1669,16 @@ export default function SetupPage({
       currentOptions.events.add(event);
     } else {
       currentOptions.events.delete(event);
+    }
+    setOptions(currentOptions);
+  }
+
+  function toggleHide(value: boolean, hide: AppSection) {
+    const currentOptions = { ...options };
+    if (value) {
+      currentOptions.hide.add(hide);
+    } else {
+      currentOptions.hide.delete(hide);
     }
     setOptions(currentOptions);
   }
@@ -1890,7 +1915,7 @@ export default function SetupPage({
                 display: "grid",
                 gridTemplateColumns: "min-content 1fr",
                 gridAutoFlow: "row",
-                fontFamily: "Myriad Pro",
+                fontFamily: "Source Sans",
                 fontSize: rem(12),
                 width: "100%",
                 whiteSpace: "nowrap",
@@ -1964,7 +1989,7 @@ export default function SetupPage({
                 style={{
                   width: "100%",
                   fontSize: rem(12),
-                  fontFamily: "Myriad Pro",
+                  fontFamily: "Source Sans",
                 }}
                 value={options["map-string"]}
                 onChange={(event) => {
@@ -2142,6 +2167,50 @@ export default function SetupPage({
             </div>
           ) : null}
         </div>
+        {/* Custom UI Section */}
+        <div className="flexRow" style={{ gridArea: "trac", flexWrap: "wrap" }}>
+          <LabeledDiv label="Track">
+            <div
+              className="flexRow"
+              style={{
+                flexWrap: "wrap",
+                justifyContent: "flex-start",
+                gap: rem(4),
+              }}
+            >
+              <Toggle
+                selected={!options.hide.has("TECHS")}
+                toggleFn={() => toggleHide(!options.hide.has("TECHS"), "TECHS")}
+              >
+                {options.expansions.has("TWILIGHTS FALL") ? "Cards" : "Techs"}
+              </Toggle>
+              <Toggle
+                selected={!options.hide.has("PLANETS")}
+                toggleFn={() =>
+                  toggleHide(!options.hide.has("PLANETS"), "PLANETS")
+                }
+              >
+                Planets
+              </Toggle>
+              <Toggle
+                selected={!options.hide.has("OBJECTIVES")}
+                toggleFn={() =>
+                  toggleHide(!options.hide.has("OBJECTIVES"), "OBJECTIVES")
+                }
+              >
+                Objectives
+              </Toggle>
+              <Toggle
+                selected={!options.hide.has("RELICS")}
+                toggleFn={() =>
+                  toggleHide(!options.hide.has("RELICS"), "RELICS")
+                }
+              >
+                Relics
+              </Toggle>
+            </div>
+          </LabeledDiv>
+        </div>
         {/* Start Game Section */}
         <div
           className="flexColumn"
@@ -2236,7 +2305,7 @@ export default function SetupPage({
               style={{
                 color: "firebrick",
                 maxWidth: rem(240),
-                fontFamily: "Myriad Pro",
+                fontFamily: "Source Sans",
               }}
             >
               <FormattedMessage
@@ -2323,6 +2392,35 @@ export default function SetupPage({
 
             {/* </div> */}
           </div>
+          <LabeledDiv label="Track">
+            <div
+              className="flexRow"
+              style={{ gridArea: "trac", flexWrap: "wrap" }}
+            >
+              <Toggle
+                selected={!options.hide.has("TECHS")}
+                toggleFn={() => toggleHide(!options.hide.has("TECHS"), "TECHS")}
+              >
+                {options.expansions.has("TWILIGHTS FALL") ? "Cards" : "Techs"}
+              </Toggle>
+              <Toggle
+                selected={!options.hide.has("PLANETS")}
+                toggleFn={() =>
+                  toggleHide(!options.hide.has("PLANETS"), "PLANETS")
+                }
+              >
+                Planets
+              </Toggle>
+              <Toggle
+                selected={!options.hide.has("OBJECTIVES")}
+                toggleFn={() =>
+                  toggleHide(!options.hide.has("OBJECTIVES"), "OBJECTIVES")
+                }
+              >
+                Objectives
+              </Toggle>
+            </div>
+          </LabeledDiv>
           <div className="flexColumn" style={{ width: "100%" }}>
             <div className="flexRow">
               Speaker:

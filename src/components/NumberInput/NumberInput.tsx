@@ -16,6 +16,7 @@ export default function NumberInput({
   minValue = Number.MIN_SAFE_INTEGER,
   onChange,
   viewOnly,
+  inputStyle = {},
 }: {
   borderColor?: string;
   onChange: (value: number) => void;
@@ -25,6 +26,7 @@ export default function NumberInput({
   minValue?: number;
   value: number;
   viewOnly?: boolean;
+  inputStyle?: CSSProperties;
 }) {
   function updateValue(element: HTMLDivElement) {
     if (element.innerText !== "") {
@@ -55,6 +57,7 @@ export default function NumberInput({
       )}
       <div
         className={styles.InputBox}
+        style={inputStyle}
         contentEditable={!viewOnly}
         suppressContentEditableWarning
         onClick={

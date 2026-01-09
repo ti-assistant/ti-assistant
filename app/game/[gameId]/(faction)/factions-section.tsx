@@ -7,6 +7,7 @@ import FactionCircle from "../../../../src/components/FactionCircle/FactionCircl
 import {
   useCurrentTurn,
   useGameId,
+  useOptions,
   useStrategyCards,
   useViewOnly,
 } from "../../../../src/context/dataHooks";
@@ -38,6 +39,7 @@ function NextPhaseButtons({}) {
   const currentTurn = useCurrentTurn();
   const factions = useFactions();
   const gameId = useGameId();
+  const options = useOptions();
   const state = useGameState();
   const viewOnly = useViewOnly();
 
@@ -53,7 +55,7 @@ function NextPhaseButtons({}) {
       return (
         <div className="flexColumn" style={{ marginTop: rem(8) }}>
           <LockedButtons
-            unlocked={setupPhaseComplete(factions, revealedObjectives)}
+            unlocked={setupPhaseComplete(factions, revealedObjectives, options)}
             buttons={[
               {
                 text: intl.formatMessage({

@@ -7,6 +7,20 @@ export function getTechColor(tech: Tech) {
   return getTechTypeColor(tech.type);
 }
 
+export function colorForTech(color: string) {
+  switch (color) {
+    case "red":
+      return "indianred";
+    case "yellow":
+      return "gold";
+    case "blue":
+      return "cornflowerblue";
+    case "green":
+      return "seagreen";
+  }
+  return "#eee";
+}
+
 export function getTechTypeColor(type: TechType) {
   switch (type) {
     case "RED":

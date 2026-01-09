@@ -42,6 +42,7 @@ import ScoreObjectiveRow from "./ObjectiveRow/ScoreObjectiveRow";
 import ObjectiveSelectHoverMenu from "./ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import styles from "./TacticalAction.module.scss";
 import TechResearchSection from "./TechResearchSection/TechResearchSection";
+import Conditional from "./Conditional/Conditional";
 
 export function TacticalAction({
   activeFactionId,
@@ -123,87 +124,91 @@ export function TacticalAction({
           defaultMessage="+1 VP for Custodians Token"
         />
       ) : null}
-      {(scoredObjectives.length > 0 && !hasCustodiansPoint) ||
-      scoredObjectives.length > 1 ? (
-        <LabeledDiv
-          label={
-            <FormattedMessage
-              id="DGs6vS"
-              description="Label for section of scored action phase objectives."
-              defaultMessage="Scored Action Phase {count, plural, one {Objective} other {Objectives}}"
-              values={{ count: scoredObjectives.length }}
-            />
-          }
-          blur
-        >
-          <div
-            className="flexColumn"
-            style={{ alignItems: "stretch", paddingLeft: rem(4) }}
+      <Conditional appSection="OBJECTIVES">
+        {(scoredObjectives.length > 0 && !hasCustodiansPoint) ||
+        scoredObjectives.length > 1 ? (
+          <LabeledDiv
+            label={
+              <FormattedMessage
+                id="DGs6vS"
+                description="Label for section of scored action phase objectives."
+                defaultMessage="Scored Action Phase {count, plural, one {Objective} other {Objectives}}"
+                values={{ count: scoredObjectives.length }}
+              />
+            }
+            blur
           >
-            {scoredObjectives.map((objective) => {
-              if (!objectives) {
-                return null;
-              }
-              if (
-                objective === "Custodians Token" ||
-                objective === "Support for the Throne"
-              ) {
-                return null;
-              }
-              const objectiveObj = objectives[objective];
-              if (!objectiveObj) {
-                return null;
-              }
-              return (
-                <ObjectiveRow
-                  key={objective}
-                  hideScorers={true}
-                  objective={objectiveObj}
-                  removeObjective={() =>
-                    unscoreObjectiveAsync(gameId, activeFactionId, objective)
-                  }
-                />
-              );
-            })}
-          </div>
-        </LabeledDiv>
-      ) : null}
-      {scorableObjectives.length > 0 && scoredObjectives.length < 4 ? (
-        <ObjectiveSelectHoverMenu
-          action={(_, objectiveId) => {
-            scoreObjectiveAsync(gameId, activeFactionId, objectiveId);
-          }}
-          label={
-            <FormattedMessage
-              id="fCdj3q"
-              description="Text on a hover menu allowing a player to score an action phase objective."
-              defaultMessage="Score Action Phase Objective"
-            />
-          }
-          objectives={scorableObjectives}
-        />
-      ) : null}
+            <div
+              className="flexColumn"
+              style={{ alignItems: "stretch", paddingLeft: rem(4) }}
+            >
+              {scoredObjectives.map((objective) => {
+                if (!objectives) {
+                  return null;
+                }
+                if (
+                  objective === "Custodians Token" ||
+                  objective === "Support for the Throne"
+                ) {
+                  return null;
+                }
+                const objectiveObj = objectives[objective];
+                if (!objectiveObj) {
+                  return null;
+                }
+                return (
+                  <ObjectiveRow
+                    key={objective}
+                    hideScorers={true}
+                    objective={objectiveObj}
+                    removeObjective={() =>
+                      unscoreObjectiveAsync(gameId, activeFactionId, objective)
+                    }
+                  />
+                );
+              })}
+            </div>
+          </LabeledDiv>
+        ) : null}
+        {scorableObjectives.length > 0 && scoredObjectives.length < 4 ? (
+          <ObjectiveSelectHoverMenu
+            action={(_, objectiveId) => {
+              scoreObjectiveAsync(gameId, activeFactionId, objectiveId);
+            }}
+            label={
+              <FormattedMessage
+                id="fCdj3q"
+                description="Text on a hover menu allowing a player to score an action phase objective."
+                defaultMessage="Score Action Phase Objective"
+              />
+            }
+            objectives={scorableObjectives}
+          />
+        ) : null}
+      </Conditional>
       {relic && frontier && conqueredPlanets.length === 0 ? (
         <GainRelic factionId={activeFactionId} blur />
       ) : null}
-      {activeFactionId === "Nekro Virus" &&
-      (nekroTechs.length > 0 || nekroPossibleTechs.size > 0) ? (
-        <React.Fragment>
-          <TechResearchSection
-            factionId={activeFactionId}
-            label={intl.formatMessage({
-              id: "Nekro Virus.Abilities.Technological Singularity.Title",
-              description:
-                "Title of Faction Ability: Technological Singularity",
-              defaultMessage: "Technological Singularity",
-            })}
-            filter={(tech) => nekroPossibleTechs.has(tech.id)}
-            numTechs={4}
-            gain
-            style={{ alignItems: "center" }}
-          />
-        </React.Fragment>
-      ) : null}
+      <Conditional appSection="TECHS">
+        {activeFactionId === "Nekro Virus" &&
+        (nekroTechs.length > 0 || nekroPossibleTechs.size > 0) ? (
+          <React.Fragment>
+            <TechResearchSection
+              factionId={activeFactionId}
+              label={intl.formatMessage({
+                id: "Nekro Virus.Abilities.Technological Singularity.Title",
+                description:
+                  "Title of Faction Ability: Technological Singularity",
+                defaultMessage: "Technological Singularity",
+              })}
+              filter={(tech) => nekroPossibleTechs.has(tech.id)}
+              numTechs={4}
+              gain
+              style={{ alignItems: "center" }}
+            />
+          </React.Fragment>
+        ) : null}
+      </Conditional>
       {frontier &&
       hasTech(faction, techs["Dark Energy Tap"]) &&
       conqueredPlanets.length === 0 &&

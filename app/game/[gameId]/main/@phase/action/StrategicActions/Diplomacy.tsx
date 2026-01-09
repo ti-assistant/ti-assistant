@@ -2,9 +2,13 @@ import { FormattedMessage } from "react-intl";
 import ClaimPlanetsSection from "../../../../../../../src/components/ClaimPlanetsSection/ClaimPlanetsSection";
 import FactionComponents from "../../../../../../../src/components/FactionComponents/FactionComponents";
 import LabeledDiv from "../../../../../../../src/components/LabeledDiv/LabeledDiv";
-import { usePlanets } from "../../../../../../../src/context/dataHooks";
+import {
+  useOptions,
+  usePlanets,
+} from "../../../../../../../src/context/dataHooks";
 import { useOrderedFactionIds } from "../../../../../../../src/context/gameDataHooks";
 import { getColorForFaction } from "../../../../../../../src/util/factions";
+import Conditional from "../../../../../../../src/components/Conditional/Conditional";
 
 const Diplomacy = {
   Primary,
@@ -37,23 +41,25 @@ function Primary({ factionId }: { factionId: FactionId }) {
     .sort((a, b) => (a.name > b.name ? 1 : -1));
 
   return (
-    <LabeledDiv
-      label={
-        <FormattedMessage
-          id="Xxcha Kingdom.Abilities.Peace Accords.Title"
-          defaultMessage="Peace Accords"
-          description="Title of Faction Ability: Peace Accords"
+    <Conditional appSection="PLANETS">
+      <LabeledDiv
+        label={
+          <FormattedMessage
+            id="Xxcha Kingdom.Abilities.Peace Accords.Title"
+            defaultMessage="Peace Accords"
+            description="Title of Faction Ability: Peace Accords"
+          />
+        }
+        blur
+      >
+        <ClaimPlanetsSection
+          availablePlanets={peaceAccordsPlanets}
+          factionId="Xxcha Kingdom"
+          numPlanets={1}
+          hideWrapper
         />
-      }
-      blur
-    >
-      <ClaimPlanetsSection
-        availablePlanets={peaceAccordsPlanets}
-        factionId="Xxcha Kingdom"
-        numPlanets={1}
-        hideWrapper
-      />
-    </LabeledDiv>
+      </LabeledDiv>
+    </Conditional>
   );
 }
 
@@ -80,24 +86,26 @@ function Secondary({ factionId }: { factionId: FactionId }) {
     .sort((a, b) => (a.name > b.name ? 1 : -1));
 
   return (
-    <LabeledDiv
-      label={`${(<FactionComponents.Name factionId={factionId} />)} - ${(
-        <FormattedMessage
-          id="Xxcha Kingdom.Abilities.Peace Accords.Title"
-          defaultMessage="Peace Accords"
-          description="Title of Faction Ability: Peace Accords"
-        />
-      )}
+    <Conditional appSection="PLANETS">
+      <LabeledDiv
+        label={`${(<FactionComponents.Name factionId={factionId} />)} - ${(
+          <FormattedMessage
+            id="Xxcha Kingdom.Abilities.Peace Accords.Title"
+            defaultMessage="Peace Accords"
+            description="Title of Faction Ability: Peace Accords"
+          />
+        )}
       )}`}
-      color={getColorForFaction(factionId)}
-      blur
-    >
-      <ClaimPlanetsSection
-        availablePlanets={peaceAccordsPlanets}
-        factionId="Xxcha Kingdom"
-        numPlanets={1}
-      />
-    </LabeledDiv>
+        color={getColorForFaction(factionId)}
+        blur
+      >
+        <ClaimPlanetsSection
+          availablePlanets={peaceAccordsPlanets}
+          factionId="Xxcha Kingdom"
+          numPlanets={1}
+        />
+      </LabeledDiv>
+    </Conditional>
   );
 }
 

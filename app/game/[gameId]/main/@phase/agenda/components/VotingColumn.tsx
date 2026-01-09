@@ -8,6 +8,7 @@ import {
   useAgendas,
   useCurrentTurn,
   useGameId,
+  useOptions,
   usePlanets,
   useStrategyCards,
   useViewOnly,
@@ -151,6 +152,7 @@ function SpeakerTieBreak({ speaker }: { speaker: FactionId }) {
   const gameId = useGameId();
   const intl = useIntl();
   const objectives = useObjectives();
+  const options = useOptions();
   const planets = usePlanets();
   const strategyCards = useStrategyCards();
   const viewOnly = useViewOnly();
@@ -197,6 +199,7 @@ function SpeakerTieBreak({ speaker }: { speaker: FactionId }) {
     planets,
     agendas,
     objectives,
+    options,
     intl
   );
 

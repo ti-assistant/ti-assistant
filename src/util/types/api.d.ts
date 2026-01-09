@@ -36,6 +36,7 @@ type GameUpdateData =
   | (AddAttachmentData | RemoveAttachmentData)
   | (EndGameData | ContinueGameData)
   | ManualVPUpdateData
+  | ManualVoteUpdateData
   | (RevealAgendaData | HideAgendaData)
   | CastVotesData
   | (ResolveAgendaData | RepealAgendaData)
@@ -489,6 +490,16 @@ interface ManualVPUpdateEvent {
 interface ManualVPUpdateData {
   action: "MANUAL_VP_UPDATE";
   event: ManualVPUpdateEvent;
+}
+
+interface ManualVoteUpdateEvent {
+  faction: FactionId;
+  votes: number;
+}
+
+interface ManualVoteUpdateData {
+  action: "MANUAL_VOTE_UPDATE";
+  event: ManualVoteUpdateEvent;
 }
 
 interface MarkPrimaryEvent {

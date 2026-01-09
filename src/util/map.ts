@@ -497,11 +497,15 @@ export function getFactionSystemNumber(
     name?: string;
     startswith?: {
       faction?: FactionId;
+      planetFaction?: FactionId;
     };
   }>
 ) {
   if (!faction?.id) {
     return "299";
+  }
+  if (faction.startswith?.planetFaction) {
+    return FACTION_TO_SYSTEM_NUMBER[faction.startswith.planetFaction] ?? "299";
   }
   if (faction.id === "Council Keleres") {
     switch (faction.startswith?.faction) {
@@ -586,6 +590,9 @@ const FACTION_TO_SYSTEM_ID: Partial<Record<FactionId, SystemId>> = {
 } as const;
 
 export function getFactionSystemId(faction: Faction): Optional<SystemId> {
+  if (faction.startswith?.planetFaction) {
+    return FACTION_TO_SYSTEM_ID[faction.startswith.planetFaction];
+  }
   if (faction.id === "Council Keleres") {
     switch (faction.startswith?.faction) {
       case "Argent Flight":

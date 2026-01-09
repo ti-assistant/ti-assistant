@@ -138,6 +138,12 @@ export default function getCodexThreeFactions(
       }),
       startswith: {
         choice: {
+          description: intl.formatMessage({
+            id: "Council Keleres.Tech Choice",
+            description: "Text of Keleres's tech choice.",
+            defaultMessage:
+              "Choose 2 non-faction technologies owned by other players.",
+          }),
           options: [],
           select: 2,
         },

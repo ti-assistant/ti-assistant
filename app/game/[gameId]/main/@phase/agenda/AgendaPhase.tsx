@@ -3,6 +3,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { ClientOnlyHoverMenu } from "../../../../../../src/HoverMenu";
 import { LockedButtons } from "../../../../../../src/LockedButton";
 import AgendaTimer from "../../../../../../src/components/AgendaTimer/AgendaTimer";
+import Conditional from "../../../../../../src/components/Conditional/Conditional";
 import FactionComponents from "../../../../../../src/components/FactionComponents/FactionComponents";
 import FactionIcon from "../../../../../../src/components/FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../../../../../../src/components/FactionSelectRadialMenu/FactionSelectRadialMenu";
@@ -16,6 +17,7 @@ import {
   useAgendas,
   useCurrentTurn,
   useGameId,
+  useOptions,
   usePlanets,
   useStrategyCards,
   useViewOnly,
@@ -203,66 +205,68 @@ function AgendaSteps() {
           }}
         >
           {(!currentAgenda && agendaNum === 1) || ancientBurialSites ? (
-            <ClientOnlyHoverMenu
-              label={
-                <FormattedMessage
-                  id="4PYolM"
-                  description="Text showing that something will occur at the start of a specific phase."
-                  defaultMessage="Start of {phase} Phase"
-                  values={{ phase: phaseString("AGENDA", intl) }}
-                />
-              }
-              style={{ width: "100%" }}
-            >
-              <div
-                className="flexColumn"
-                style={{
-                  width: "100%",
-                  alignItems: "flex-start",
-                  padding: rem(8),
-                  paddingTop: 0,
-                }}
+            <Conditional appSection="PLANETS">
+              <ClientOnlyHoverMenu
+                label={
+                  <FormattedMessage
+                    id="4PYolM"
+                    description="Text showing that something will occur at the start of a specific phase."
+                    defaultMessage="Start of {phase} Phase"
+                    values={{ phase: phaseString("AGENDA", intl) }}
+                  />
+                }
+                style={{ width: "100%" }}
               >
-                <Selector
-                  hoverMenuLabel={
-                    <FormattedMessage
-                      id="Components.Ancient Burial Sites.Title"
-                      description="Title of Component: Ancient Burial Sites"
-                      defaultMessage="Ancient Burial Sites"
-                    />
-                  }
-                  selectedLabel={
-                    <FormattedMessage
-                      id="AO8lj8"
-                      description="Label for section explaining which player has had their cultural planets exhausted."
-                      defaultMessage="Cultural Planets Exhausted"
-                    />
-                  }
-                  options={Object.values(factions)}
-                  toggleItem={(factionId, add) => {
-                    if (!gameId) {
-                      return;
-                    }
-                    if (add) {
-                      playActionCardAsync(
-                        gameId,
-                        "Ancient Burial Sites",
-                        factionId
-                      );
-                    } else {
-                      unplayActionCardAsync(
-                        gameId,
-                        "Ancient Burial Sites",
-                        factionId
-                      );
-                    }
+                <div
+                  className="flexColumn"
+                  style={{
+                    width: "100%",
+                    alignItems: "flex-start",
+                    padding: rem(8),
+                    paddingTop: 0,
                   }}
-                  selectedItem={ancientBurialSites}
-                  viewOnly={viewOnly}
-                />
-                <MawOfWorlds />
-              </div>
-            </ClientOnlyHoverMenu>
+                >
+                  <Selector
+                    hoverMenuLabel={
+                      <FormattedMessage
+                        id="Components.Ancient Burial Sites.Title"
+                        description="Title of Component: Ancient Burial Sites"
+                        defaultMessage="Ancient Burial Sites"
+                      />
+                    }
+                    selectedLabel={
+                      <FormattedMessage
+                        id="AO8lj8"
+                        description="Label for section explaining which player has had their cultural planets exhausted."
+                        defaultMessage="Cultural Planets Exhausted"
+                      />
+                    }
+                    options={Object.values(factions)}
+                    toggleItem={(factionId, add) => {
+                      if (!gameId) {
+                        return;
+                      }
+                      if (add) {
+                        playActionCardAsync(
+                          gameId,
+                          "Ancient Burial Sites",
+                          factionId
+                        );
+                      } else {
+                        unplayActionCardAsync(
+                          gameId,
+                          "Ancient Burial Sites",
+                          factionId
+                        );
+                      }
+                    }}
+                    selectedItem={ancientBurialSites}
+                    viewOnly={viewOnly}
+                  />
+                  <MawOfWorlds />
+                </div>
+              </ClientOnlyHoverMenu>
+            </Conditional>
           ) : null}
           <div
             className="flexColumn mediumFont"
@@ -430,6 +434,7 @@ export default function AgendaPhase() {
   const factions = useFactions();
   const gameId = useGameId();
   const objectives = useObjectives();
+  const options = useOptions();
   const planets = usePlanets();
   const state = useGameState();
   const strategyCards = useStrategyCards();
@@ -481,6 +486,7 @@ export default function AgendaPhase() {
     planets,
     agendas,
     objectives,
+    options,
     intl
   );
 

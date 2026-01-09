@@ -3,6 +3,7 @@ import { FormattedMessage } from "react-intl";
 import {
   useCurrentTurn,
   useGameId,
+  useOptions,
   useRelics,
   useViewOnly,
 } from "../../context/dataHooks";
@@ -30,8 +31,13 @@ export default function GainRelic({
 }) {
   const currentTurn = useCurrentTurn();
   const gameId = useGameId();
+  const options = useOptions();
   const relics = useRelics();
   const viewOnly = useViewOnly();
+
+  if (options.hide?.includes("RELICS")) {
+    return null;
+  }
 
   const gainedRelic = getGainedRelic(currentTurn, planetId);
   const unownedRelics = Object.values(relics)

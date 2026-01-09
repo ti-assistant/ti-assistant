@@ -4931,6 +4931,36 @@
       "value": "Argent"
     }
   ],
+  "Argent Flight.Tech Choice": [
+    {
+      "type": 0,
+      "value": "Choose two of the following:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Neural Motivator"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Sarween Tools"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Plasma Scoring"
+    }
+  ],
   "Argent Flight.Techs.Aerie Hololattice.Description": [
     {
       "type": 0,
@@ -6619,6 +6649,12 @@
       "value": "Keleres"
     }
   ],
+  "Council Keleres.Tech Choice": [
+    {
+      "type": 0,
+      "value": "Choose 2 non-faction technologies owned by other players."
+    }
+  ],
   "Council Keleres.Techs.Agency Supply Network.Description": [
     {
       "type": 0,
@@ -6851,6 +6887,12 @@
     {
       "type": 0,
       "value": "Rebellion"
+    }
+  ],
+  "Crimson Rebellion.Tech Choice": [
+    {
+      "type": 0,
+      "value": "Choose one red or blue technology that has no prerequisites."
     }
   ],
   "Crimson Rebellion.Techs.Exile II.Description": [
@@ -7097,6 +7139,12 @@
     {
       "type": 0,
       "value": "Deepwrought"
+    }
+  ],
+  "Deepwrought Scholarate.Tech Choice": [
+    {
+      "type": 0,
+      "value": "During setup, research technology twice."
     }
   ],
   "Deepwrought Scholarate.Techs.Hydrothermal Mining.Description": [
@@ -8961,6 +9009,12 @@
       "value": "Firmament"
     }
   ],
+  "Firmament.Tech Choice": [
+    {
+      "type": 0,
+      "value": "Choose one green or yellow technology that has no prerequisites."
+    }
+  ],
   "Firmament.Techs.Neural Parasite.Description": [
     {
       "type": 0,
@@ -10005,6 +10059,12 @@
     {
       "type": 0,
       "value": "Last Bastion"
+    }
+  ],
+  "Last Bastion.Tech Choice": [
+    {
+      "type": 0,
+      "value": "Choose one blue or yellow technology that has no prerequisites."
     }
   ],
   "Last Bastion.Techs.Proxima Targeting VI.Description": [
@@ -13591,6 +13651,12 @@
     {
       "type": 0,
       "value": "Ral Nel"
+    }
+  ],
+  "Ral Nel Consortium.Tech Choice": [
+    {
+      "type": 0,
+      "value": "Choose one green or red technology that has no prerequisites."
     }
   ],
   "Ral Nel Consortium.Techs.Linkship II.Description": [
@@ -19995,6 +20061,12 @@
     {
       "type": 0,
       "value": "Winnu"
+    }
+  ],
+  "Winnu.Tech Choice": [
+    {
+      "type": 0,
+      "value": "Choose any 1 technology that has no prerequisites."
     }
   ],
   "Winnu.Techs.Hegemonic Trade Policy.Description": [

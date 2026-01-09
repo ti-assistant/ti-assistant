@@ -23,6 +23,7 @@ interface StartsWith {
   units: Units;
   faction?: SubFaction;
   choice?: {
+    description: string;
     options: TechId[];
     select: number;
   };
@@ -101,6 +102,7 @@ interface TFFaction {
 interface GameFaction {
   alliancePartner?: FactionId;
   alliances?: FactionId[];
+  availableVotes?: number;
   breakthrough?: Partial<Breakthrough>;
   color: string;
   commander: LeaderState;

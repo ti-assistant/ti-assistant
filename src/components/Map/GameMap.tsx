@@ -93,6 +93,7 @@ interface MapProps {
     name?: string;
     startswith?: {
       faction?: FactionId;
+      planetFaction?: FactionId;
     };
   }[];
   planets?: Partial<Record<PlanetId, Planet>>;

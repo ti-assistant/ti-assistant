@@ -54,6 +54,7 @@ function getSupportScorer(factionId: FactionId, support: Objective) {
 
 export default function ThundersEdgePanel() {
   const options = useOptions();
+
   return (
     <div className={styles.ThundersEdgeGrid}>
       {options.expansions.includes("THUNDERS EDGE") &&
@@ -152,8 +153,13 @@ function ExpeditionRadialSelector({
 function RelicsSection() {
   const gameId = useGameId();
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
+  const options = useOptions();
   const relics = useRelics();
   const viewOnly = useViewOnly();
+
+  if (options.hide?.includes("RELICS")) {
+    return null;
+  }
 
   const ownedRelics = Object.values(relics)
     .filter((relic) => relic.owner && relic.state !== "purged")

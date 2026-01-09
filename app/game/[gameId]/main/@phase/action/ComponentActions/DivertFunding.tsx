@@ -5,6 +5,7 @@ import TechSelectHoverMenu from "../../../../../../../src/components/TechSelectH
 import {
   useCurrentTurn,
   useGameId,
+  useOptions,
   useTechs,
 } from "../../../../../../../src/context/dataHooks";
 import { useFaction } from "../../../../../../../src/context/factionDataHooks";
@@ -25,9 +26,14 @@ export default function DivertFunding({ factionId }: { factionId: FactionId }) {
   const faction = useFaction(factionId);
   const gameId = useGameId();
   const intl = useIntl();
+  const options = useOptions();
   const techs = useTechs();
 
   if (!faction || !techs) {
+    return null;
+  }
+
+  if (options.hide?.includes("TECHS")) {
     return null;
   }
 

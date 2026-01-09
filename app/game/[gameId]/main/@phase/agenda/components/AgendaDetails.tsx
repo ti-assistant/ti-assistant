@@ -9,6 +9,7 @@ import {
   useActionLog,
   useAgendas,
   useGameId,
+  useOptions,
   usePlanets,
   useRelics,
   useViewOnly,
@@ -87,6 +88,7 @@ export default function AgendaDetails({
   const factions = useFactions();
   const gameId = useGameId();
   const objectives = useObjectives();
+  const options = useOptions();
   const planets = usePlanets();
   const relics = useRelics();
   const currentTurn = getCurrentTurnLogEntries(actionLog);
@@ -168,7 +170,7 @@ export default function AgendaDetails({
   }
 
   const driveObj = (objectives ?? {})["Drive the Debate"];
-  if (driveTheDebate && driveObj) {
+  if (driveTheDebate && driveObj && !options.hide?.includes("OBJECTIVES")) {
     let canScoreDrive = canScoreObjective(
       driveTheDebate,
       "Drive the Debate",
@@ -251,6 +253,9 @@ export default function AgendaDetails({
   let agendaSelection = null;
   switch (agendaId) {
     case "Incentive Program": {
+      if (options.hide?.includes("OBJECTIVES")) {
+        break;
+      }
       const type = selectedOutcome === "For" ? "STAGE ONE" : "STAGE TWO";
       const availableObjectives = Object.values(objectives ?? {}).filter(
         (objective) => {
@@ -304,6 +309,9 @@ export default function AgendaDetails({
       break;
     }
     case "Colonial Redistribution": {
+      if (options.hide?.includes("PLANETS")) {
+        break;
+      }
       const minVPs = Object.values(factions ?? {}).reduce((minVal, faction) => {
         return Math.min(
           minVal,
@@ -356,6 +364,9 @@ export default function AgendaDetails({
       break;
     }
     case "Minister of Antiques": {
+      if (options.hide?.includes("RELICS")) {
+        break;
+      }
       const gainedRelic = getGainedRelic(currentTurn);
       const unownedRelics = Object.values(relics ?? {}).filter(
         (relic) => !relic.owner || relic.id === gainedRelic

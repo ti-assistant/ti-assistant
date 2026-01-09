@@ -1,8 +1,10 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 import { LockedButtons } from "../../../../../../src/LockedButton";
 import { NumberedItem } from "../../../../../../src/NumberedItem";
 import { SelectableRow } from "../../../../../../src/SelectableRow";
+import Chip from "../../../../../../src/components/Chip/Chip";
+import Conditional from "../../../../../../src/components/Conditional/Conditional";
 import FactionDiv from "../../../../../../src/components/LabeledDiv/FactionDiv";
 import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
 import ObjectiveRow from "../../../../../../src/components/ObjectiveRow/ObjectiveRow";
@@ -65,24 +67,30 @@ function factionSubFactionChoicesComplete(
 
 export function setupPhaseComplete(
   factions: Partial<Record<FactionId, Faction>>,
-  revealedObjectives: string[]
+  revealedObjectives: string[],
+  options: Options
 ): boolean {
+  const hideObjectives = options.hide?.includes("OBJECTIVES");
+  const hideTechs = options.hide?.includes("TECHS");
   return (
     factionSubFactionChoicesComplete(factions) &&
-    factionTechChoicesComplete(factions) &&
-    revealedObjectives.length === 2
+    (factionTechChoicesComplete(factions) || !!hideTechs) &&
+    (revealedObjectives.length === 2 || !!hideObjectives)
   );
 }
 
 function getSetupPhaseText(
   factions: Partial<Record<FactionId, Faction>>,
   revealedObjectives: string[],
-  intl: IntlShape
+  intl: IntlShape,
+  options: Options
 ) {
+  const hideObjectives = options.hide?.includes("OBJECTIVES");
+  const hideTechs = options.hide?.includes("TECHS");
   const textSections = [];
   if (
     !factionSubFactionChoicesComplete(factions) ||
-    !factionTechChoicesComplete(factions)
+    (!factionTechChoicesComplete(factions) && !hideTechs)
   ) {
     textSections.push(
       intl.formatMessage({
@@ -93,7 +101,7 @@ function getSetupPhaseText(
       })
     );
   }
-  if (revealedObjectives.length !== 2) {
+  if (!hideObjectives && revealedObjectives.length !== 2) {
     textSections.push(
       intl.formatMessage(
         {
@@ -141,7 +149,6 @@ function setMapString(
 }
 
 export default function SetupPhase() {
-  // const factions = useFactions();
   const gameId = useGameId();
   const objectives = useObjectives();
   const options = useOptions();
@@ -158,6 +165,9 @@ export default function SetupPhase() {
   const intl = useIntl();
 
   const mapStringRef = useRef<HTMLInputElement>(null);
+
+  const [showInauguralSplice, setShowInauguralSplice] =
+    useState<boolean>(false);
 
   const userMapString = options["map-string"];
 
@@ -176,10 +186,6 @@ export default function SetupPhase() {
       );
     });
   }, [revealedObjectives, objectives]);
-
-  const showInauguralSplice =
-    revealedObjectives.length >= 2 &&
-    options.expansions.includes("TWILIGHTS FALL");
 
   return (
     <>
@@ -201,7 +207,7 @@ export default function SetupPhase() {
             <div
               className="flexColumn mediumFont"
               style={{
-                fontFamily: "Myriad Pro",
+                fontFamily: "Source Sans",
                 paddingTop: rem(8),
                 alignItems: "flex-start",
                 whiteSpace: "nowrap",
@@ -301,81 +307,101 @@ export default function SetupPhase() {
             />
           </NumberedItem>
           <NumberedItem>
-            <div className="flexColumn">
-              {revealedObjectives.length > 0 ? (
-                <LabeledDiv
-                  label={
-                    <FormattedMessage
-                      id="RBlsAq"
-                      description="A label for the stage I objectives that have been revealed"
-                      defaultMessage="Revealed stage I {count, plural, one {objective} other {objectives}}"
-                      values={{ count: revealedObjectives.length }}
-                    />
-                  }
-                >
-                  <div className="flexColumn" style={{ alignItems: "stretch" }}>
-                    {revealedObjectives.map((objectiveId) => {
-                      const objective = objectives[objectiveId];
-                      if (!objective) {
-                        return (
-                          <SelectableRow
-                            key={objectiveId}
-                            itemId={objectiveId}
-                            removeItem={() => {
-                              hideObjectiveAsync(gameId, objectiveId);
-                            }}
-                            viewOnly={viewOnly}
-                          >
-                            {objectiveId}
-                          </SelectableRow>
-                        );
-                      }
-                      return (
-                        <ObjectiveRow
-                          key={objectiveId}
-                          objective={objective}
-                          removeObjective={() => {
-                            hideObjectiveAsync(gameId, objectiveId);
-                          }}
-                          viewing={true}
-                        />
-                      );
-                    })}
-                  </div>
-                </LabeledDiv>
-              ) : null}
-              {revealedObjectives.length < 2 ? (
-                <FactionDiv factionId={speaker}>
-                  <ObjectiveSelectHoverMenu
-                    action={revealObjectiveAsync}
+            <Conditional
+              appSection="OBJECTIVES"
+              fallback={
+                <FormattedMessage
+                  id="lDBTCO"
+                  description="Instruction telling the speaker to reveal objectives."
+                  defaultMessage="Reveal {count, number} {type} {count, plural, one {objective} other {objectives}}"
+                  values={{
+                    count: 2,
+                    type: objectiveTypeString("STAGE ONE", intl),
+                  }}
+                />
+              }
+            >
+              <div className="flexColumn">
+                {revealedObjectives.length > 0 ? (
+                  <LabeledDiv
                     label={
                       <FormattedMessage
-                        id="lDBTCO"
-                        description="Instruction telling the speaker to reveal objectives."
-                        defaultMessage="Reveal {count, number} {type} {count, plural, one {objective} other {objectives}}"
-                        values={{
-                          count: 2,
-                          type: objectiveTypeString("STAGE ONE", intl),
-                        }}
+                        id="RBlsAq"
+                        description="A label for the stage I objectives that have been revealed"
+                        defaultMessage="Revealed stage I {count, plural, one {objective} other {objectives}}"
+                        values={{ count: revealedObjectives.length }}
                       />
                     }
-                    objectives={Object.values(availableObjectives).filter(
-                      (objective) => {
-                        return objective.type === "STAGE ONE";
+                  >
+                    <div
+                      className="flexColumn"
+                      style={{ alignItems: "stretch" }}
+                    >
+                      {revealedObjectives.map((objectiveId) => {
+                        const objective = objectives[objectiveId];
+                        if (!objective) {
+                          return (
+                            <SelectableRow
+                              key={objectiveId}
+                              itemId={objectiveId}
+                              removeItem={() => {
+                                hideObjectiveAsync(gameId, objectiveId);
+                              }}
+                              viewOnly={viewOnly}
+                            >
+                              {objectiveId}
+                            </SelectableRow>
+                          );
+                        }
+                        return (
+                          <ObjectiveRow
+                            key={objectiveId}
+                            objective={objective}
+                            removeObjective={() => {
+                              hideObjectiveAsync(gameId, objectiveId);
+                            }}
+                            viewing={true}
+                          />
+                        );
+                      })}
+                    </div>
+                  </LabeledDiv>
+                ) : null}
+                {revealedObjectives.length < 2 ? (
+                  <FactionDiv factionId={speaker}>
+                    <ObjectiveSelectHoverMenu
+                      action={revealObjectiveAsync}
+                      label={
+                        <FormattedMessage
+                          id="lDBTCO"
+                          description="Instruction telling the speaker to reveal objectives."
+                          defaultMessage="Reveal {count, number} {type} {count, plural, one {objective} other {objectives}}"
+                          values={{
+                            count: 2,
+                            type: objectiveTypeString("STAGE ONE", intl),
+                          }}
+                        />
                       }
-                    )}
-                  />
-                </FactionDiv>
-              ) : null}
-            </div>
+                      objectives={Object.values(availableObjectives).filter(
+                        (objective) => {
+                          return objective.type === "STAGE ONE";
+                        }
+                      )}
+                    />
+                  </FactionDiv>
+                ) : null}
+              </div>
+            </Conditional>
           </NumberedItem>
-          <NumberedItem>
-            <FormattedMessage
-              id="fHRZ5N"
-              description="A step in the setup phase: The inaugural splice."
-              defaultMessage="Inaugural Splice"
-            />
-          </NumberedItem>
+          {options.expansions.includes("TWILIGHTS FALL") ? (
+            <NumberedItem>
+              <FormattedMessage
+                id="fHRZ5N"
+                description="A step in the setup phase: The inaugural splice."
+                defaultMessage="Inaugural Splice"
+              />
+            </NumberedItem>
+          ) : null}
           <FinishPhaseButton embedded />
         </ol>
       </div>
@@ -391,13 +417,36 @@ export default function SetupPhase() {
             gap: rem(8),
           }}
         >
-          <div className="flexColumn" style={{ width: "100%" }}>
-            {showInauguralSplice ? (
-              <FormattedMessage
-                id="fHRZ5N"
-                description="A step in the setup phase: The inaugural splice."
-                defaultMessage="Inaugural Splice"
-              />
+          <div
+            className="flexRow"
+            style={{ width: "100%", justifyContent: "center" }}
+          >
+            {options.expansions.includes("TWILIGHTS FALL") &&
+            !options.hide?.includes("TECHS") ? (
+              <>
+                <Chip
+                  toggleFn={() => setShowInauguralSplice(false)}
+                  selected={!showInauguralSplice}
+                  fontSize={16}
+                >
+                  <FormattedMessage
+                    id="rlGbdz"
+                    description="A label for a section of components that a faction starts with."
+                    defaultMessage="Starting Components"
+                  />
+                </Chip>
+                <Chip
+                  toggleFn={() => setShowInauguralSplice(true)}
+                  selected={showInauguralSplice}
+                  fontSize={16}
+                >
+                  <FormattedMessage
+                    id="fHRZ5N"
+                    description="A step in the setup phase: The inaugural splice."
+                    defaultMessage="Inaugural Splice"
+                  />
+                </Chip>
+              </>
             ) : (
               <FormattedMessage
                 id="rlGbdz"
@@ -471,6 +520,7 @@ function FinishPhaseButton({ embedded }: { embedded?: boolean }) {
   const factions = useFactions();
   const gameId = useGameId();
   const intl = useIntl();
+  const options = useOptions();
   const viewOnly = useViewOnly();
   const revealedObjectives = useLogEntries<RevealObjectiveData>(
     "REVEAL_OBJECTIVE"
@@ -478,7 +528,7 @@ function FinishPhaseButton({ embedded }: { embedded?: boolean }) {
 
   return (
     <div className={`flexColumn ${embedded ? styles.Embedded : ""}`}>
-      {!setupPhaseComplete(factions, revealedObjectives) ? (
+      {!setupPhaseComplete(factions, revealedObjectives, options) ? (
         <div
           style={{
             color: "firebrick",
@@ -486,11 +536,11 @@ function FinishPhaseButton({ embedded }: { embedded?: boolean }) {
             fontWeight: "bold",
           }}
         >
-          {getSetupPhaseText(factions, revealedObjectives, intl)}
+          {getSetupPhaseText(factions, revealedObjectives, intl, options)}
         </div>
       ) : null}
       <LockedButtons
-        unlocked={setupPhaseComplete(factions, revealedObjectives)}
+        unlocked={setupPhaseComplete(factions, revealedObjectives, options)}
         buttons={[
           {
             text: intl.formatMessage({
