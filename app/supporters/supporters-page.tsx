@@ -44,6 +44,13 @@ export default function Supporters() {
                 values={{ name: "BuzZoiDk24" }}
               />
             </div>
+            <div>
+              <FormattedMessage
+                defaultMessage="Programming: {name}"
+                description="Credit for helping to program TI Assistant."
+                values={{ name: "NoahPeres" }}
+              />
+            </div>
           </div>
         </LabeledDiv>
         <LabeledDiv
@@ -88,6 +95,15 @@ export default function Supporters() {
             <div className="flexRow centered" style={{ width: "100%" }}>
               Meanswell
             </div>
+            <div className="flexRow centered" style={{ width: "100%" }}>
+              Justin
+            </div>
+            <div className="flexRow centered" style={{ width: "100%" }}>
+              Michael J.
+            </div>
+            <div className="flexRow centered" style={{ width: "100%" }}>
+              Ian W.
+            </div>
           </div>
         </LabeledDiv>
         <LabeledDiv
@@ -124,10 +140,10 @@ export default function Supporters() {
             }}
           >
             <div className="flexRow centered" style={{ width: "100%" }}>
-              Grant
+              Grant W.
             </div>
             <div className="flexRow centered" style={{ width: "100%" }}>
-              Ha
+              Ha N.
             </div>
             <div className="flexRow centered" style={{ width: "100%" }}>
               Michael
@@ -142,13 +158,31 @@ export default function Supporters() {
               Worldly-Charity-9737
             </div>
             <div className="flexRow centered" style={{ width: "100%" }}>
-              Benjamin
+              Benjamin H.
             </div>
             <div className="flexRow centered" style={{ width: "100%" }}>
               Mike
             </div>
             <div className="flexRow centered" style={{ width: "100%" }}>
-              Gregory
+              Gregory L.
+            </div>
+            <div className="flexRow centered" style={{ width: "100%" }}>
+              John H.
+            </div>
+            <div className="flexRow centered" style={{ width: "100%" }}>
+              Ben G.
+            </div>
+            <div className="flexRow centered" style={{ width: "100%" }}>
+              Gregory B.
+            </div>
+            <div className="flexRow centered" style={{ width: "100%" }}>
+              Joe M.
+            </div>
+            <div className="flexRow centered" style={{ width: "100%" }}>
+              TJ
+            </div>
+            <div className="flexRow centered" style={{ width: "100%" }}>
+              Froggy
             </div>
           </div>
         </LabeledDiv>
