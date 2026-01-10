@@ -8,7 +8,12 @@ export default function BlueTechSVG({
   const fill = outline ? "none" : "#005384";
   const stroke = outline ? color : "#00aed9";
   return (
-    <svg viewBox="0 0 58 58" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width="100%"
+      height="100%"
+      viewBox="0 0 58 58"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <g transform="translate(-58.824 -112.13)" fill={fill} stroke={stroke}>
         <path d="m72.628 114.09h29.837l-14.748 27.344z" strokeWidth="2.5" />
         <path

@@ -4,7 +4,13 @@ export default function ThundersEdgeMenuSVG({
   color?: string;
 }) {
   return (
-    <svg version="1.1" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width="100%"
+      height="100%"
+      version="1.1"
+      viewBox="0 0 60 60"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <g transform="translate(89.06 34.14)">
         <path
           d="m-54.47-19.29v5.92l14.6 8.427v24.04l-20.19 11.66v5.769l27.34-15.78v-27.58z"

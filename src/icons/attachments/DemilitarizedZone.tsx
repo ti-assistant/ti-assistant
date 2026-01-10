@@ -1,6 +1,8 @@
 export default function DemilitarizedZoneSVG() {
   return (
     <svg
+      width="100%"
+      height="100%"
       viewBox="0 0 45.906757 45.906757"
       xmlns="http://www.w3.org/2000/svg"
       fill="#f7301a"

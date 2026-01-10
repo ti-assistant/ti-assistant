@@ -1,8 +1,8 @@
 export default function TripleTradeGoodSVG({ color }: { color?: string }) {
   return (
     <svg
-      width="16.43mm"
-      height="15.71mm"
+      width="100%"
+      height="100%"
       version="1.1"
       viewBox="0 0 16.43 15.71"
       xmlns="http://www.w3.org/2000/svg"

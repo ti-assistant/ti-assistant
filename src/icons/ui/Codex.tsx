@@ -1,6 +1,8 @@
 export default function CodexSVG({ color = "#eee" }: { color?: string }) {
   return (
     <svg
+      width="100%"
+      height="100%"
       version="1.1"
       viewBox="0 0 21.83 31.5"
       xmlns="http://www.w3.org/2000/svg"
