@@ -31,17 +31,17 @@ import { fracturePlanetsOwned } from "../../util/planets";
 import { Optional } from "../../util/types/types";
 import { rem } from "../../util/util";
 import Chip from "../Chip/Chip";
+import Conditional from "../Conditional/Conditional";
 import FactionName from "../FactionComponents/FactionName";
 import FactionRow from "../FactionRow/FactionRow";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import GameMap from "../Map/GameMap";
+import TFCardIcon from "../TFCardIcon/TFCardIcon";
 import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
 import ThundersEdgePanel from "../ThundersEdgePanel";
 import { Strings } from "../strings";
 import styles from "./Footer.module.scss";
-import TFCardIcon from "../TFCardIcon/TFCardIcon";
-import Conditional from "../Conditional/Conditional";
 
 const ObjectivePanel = dynamic(
   () => import("../ObjectivePanel/ObjectivePanel"),
@@ -134,10 +134,6 @@ export default function Footer() {
   const tyrant = useTyrant();
   const strategyCards = useStrategyCards();
   const viewOnly = useViewOnly();
-
-  const hideObjectives = options.hide?.includes("OBJECTIVES");
-  const hidePlanets = options.hide?.includes("PLANETS");
-  const hideTechs = options.hide?.includes("TECHS");
 
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 

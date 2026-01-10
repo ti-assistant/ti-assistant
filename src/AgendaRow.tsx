@@ -1,10 +1,8 @@
-import { use } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import FormattedDescription from "./components/FormattedDescription/FormattedDescription";
-import { ModalContent } from "./components/Modal/Modal";
 import { useOutcome } from "./context/agendaDataHooks";
-import { ModalContext } from "./context/contexts";
 import { useViewOnly } from "./context/dataHooks";
+import { InfoRow } from "./InfoRow";
 import { SelectableRow } from "./SelectableRow";
 import { agendaTypeString, outcomeString } from "./util/strings";
 import { rem } from "./util/util";
@@ -58,8 +56,6 @@ export function AgendaRow({
 
   const outcome = useOutcome(agenda.id, intl);
 
-  const { openModal } = use(ModalContext);
-
   const textColor = "#eee";
 
   return (
@@ -68,43 +64,29 @@ export function AgendaRow({
       removeItem={removeAgenda}
       viewOnly={viewOnly}
     >
-      <div>
-        <div className="flexRow">
-          <div
-            className="flexColumn"
-            style={{
-              color: textColor,
-              alignItems: "flex-start",
-              whiteSpace: "nowrap",
-            }}
-          >
-            <div>{agenda.name}</div>
-            {agenda.target && !hideOutcome ? <div>[{outcome}]</div> : null}
+      <InfoRow
+        infoTitle={
+          <div className="flexColumn" style={{ fontSize: rem(40) }}>
+            {agenda.name}
+            <div style={{ fontSize: rem(24) }}>
+              [{agendaTypeString(agenda.type, intl)}]
+            </div>
           </div>
-          <div
-            className="popupIcon"
-            onClick={() =>
-              openModal(
-                <ModalContent
-                  title={
-                    <div className="flexColumn" style={{ fontSize: rem(40) }}>
-                      {agenda.name}
-                      <div style={{ fontSize: rem(24) }}>
-                        [{agendaTypeString(agenda.type, intl)}]
-                      </div>
-                    </div>
-                  }
-                >
-                  <InfoContent agenda={agenda} />
-                </ModalContent>
-              )
-            }
-            style={{ fontSize: rem(16) }}
-          >
-            &#x24D8;
-          </div>
+        }
+        infoContent={<InfoContent agenda={agenda} />}
+      >
+        <div
+          className="flexColumn"
+          style={{
+            color: textColor,
+            alignItems: "flex-start",
+            whiteSpace: "nowrap",
+          }}
+        >
+          <div>{agenda.name}</div>
+          {agenda.target && !hideOutcome ? <div>[{outcome}]</div> : null}
         </div>
-      </div>
+      </InfoRow>
     </SelectableRow>
   );
 }

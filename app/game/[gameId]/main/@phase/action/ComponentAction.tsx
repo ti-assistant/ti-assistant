@@ -1,8 +1,9 @@
 "use client";
 
-import React, { CSSProperties, ReactNode, use } from "react";
+import React, { CSSProperties, ReactNode } from "react";
 import { FormattedMessage } from "react-intl";
 import { ClientOnlyHoverMenu } from "../../../../../../src/HoverMenu";
+import { InfoRow } from "../../../../../../src/InfoRow";
 import { SelectableRow } from "../../../../../../src/SelectableRow";
 import GainRelic from "../../../../../../src/components/Actions/GainRelic";
 import GainTFCard from "../../../../../../src/components/Actions/GainSplicedCard";
@@ -12,10 +13,8 @@ import FormattedDescription from "../../../../../../src/components/FormattedDesc
 import FrontierExploration from "../../../../../../src/components/FrontierExploration/FrontierExploration";
 import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
 import LabeledLine from "../../../../../../src/components/LabeledLine/LabeledLine";
-import { ModalContent } from "../../../../../../src/components/Modal/Modal";
 import { Selector } from "../../../../../../src/components/Selector/Selector";
 import TechResearchSection from "../../../../../../src/components/TechResearchSection/TechResearchSection";
-import { ModalContext } from "../../../../../../src/context/contexts";
 import {
   useActionCards,
   useActionLog,
@@ -944,8 +943,6 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);
 
-  const { openModal } = use(ModalContext);
-
   const playedComponent = currentTurn
     .filter((logEntry) => logEntry.data.action === "PLAY_COMPONENT")
     .map((logEntry) => (logEntry.data as PlayComponentData).event.name)[0];
@@ -1145,26 +1142,16 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
             removeItem={() => unselectComponent(component.id)}
             viewOnly={viewOnly}
           >
-            {component.name}
-            <div
-              className="popupIcon"
-              onClick={() =>
-                openModal(
-                  <ModalContent
-                    title={
-                      <div className="flexColumn" style={{ fontSize: rem(40) }}>
-                        {component.name}
-                      </div>
-                    }
-                  >
-                    <InfoContent component={component} />
-                  </ModalContent>
-                )
+            <InfoRow
+              infoTitle={
+                <div className="flexColumn" style={{ fontSize: rem(40) }}>
+                  {component.name}
+                </div>
               }
-              style={{ fontSize: rem(16) }}
+              infoContent={<InfoContent component={component} />}
             >
-              &#x24D8;
-            </div>
+              {component.name}
+            </InfoRow>
           </SelectableRow>
           {component.id === "Ssruu" ? (
             <div className="flexRow" style={{ paddingLeft: rem(16) }}>

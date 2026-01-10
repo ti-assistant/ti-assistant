@@ -1,6 +1,12 @@
 export default function SynergySVG() {
   return (
-    <svg version="1.1" viewBox="0 0 40 30" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width="100%"
+      height="100%"
+      version="1.1"
+      viewBox="0 0 40 30"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <g fill="#eee">
         <path d="m1.732 11.19 8.496-8.524h19.73l3.369 3.55 2.311-2.86 2.768 11.31-10.77-2.914 2.726-2.432-2.165-2.165h-16.17l-5.319 5.613z" />
         <path d="m38.47 18.25-8.496 8.524h-19.73l-3.369-3.55-2.311 2.86-2.768-11.31 10.77 2.914-2.726 2.432 2.165 2.165h16.17l5.319-5.613z" />

@@ -1,0 +1,26 @@
+.infoIcon {
+  position: relative;
+  cursor: pointer;
+
+  font-size: 1rem;
+}
+
+.infoContent {
+  font-family: "Myriad Pro";
+
+  min-width: 20rem;
+  max-width: 50rem;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0.25rem;
+  white-space: pre-line;
+  text-align: center;
+  font-size: 2rem;
+  gap: 2rem;
+
+  box-sizing: border-box;
+}

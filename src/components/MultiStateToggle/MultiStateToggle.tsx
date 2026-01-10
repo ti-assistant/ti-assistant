@@ -1,8 +1,7 @@
-import { CSSProperties, PropsWithChildren, ReactNode, use } from "react";
-import { ModalContext } from "../../context/contexts";
+import { CSSProperties, PropsWithChildren, ReactNode } from "react";
+import InfoModal from "../../InfoModal";
 import { Optional } from "../../util/types/types";
 import { rem } from "../../util/util";
-import { ModalContent } from "../Modal/Modal";
 import styles from "./MultiStateToggle.module.scss";
 
 interface PositiveCSSProperties extends CSSProperties {
@@ -85,8 +84,6 @@ export default function MultiStateToggle({
   disabled,
   info,
 }: PropsWithChildren<ToggleProps>) {
-  const { openModal } = use(ModalContext);
-
   return (
     <label
       className={`${styles.ToggleContainer} ${getToggleClass(selected)} ${
@@ -102,32 +99,9 @@ export default function MultiStateToggle({
       ></input>
       {children}
       {info ? (
-        <div
-          className="popupIcon"
-          style={{
-            fontSize: rem(16),
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            openModal(
-              <ModalContent
-                title={
-                  <div
-                    className="flexRow"
-                    style={{ fontSize: rem(40), gap: rem(20) }}
-                  >
-                    {info.title}
-                  </div>
-                }
-              >
-                <InfoContent description={info.description} />
-              </ModalContent>
-            );
-          }}
-        >
-          &#x24D8;
-        </div>
+        <InfoModal title={info.title}>
+          <InfoContent description={info.description} />
+        </InfoModal>
       ) : null}
     </label>
   );

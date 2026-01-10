@@ -8,7 +8,12 @@ export default function YellowTechSVG({
   const fill = outline ? "none" : "#757700";
   const stroke = outline ? color : "#f3e739";
   return (
-    <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width="100%"
+      height="100%"
+      viewBox="0 0 50 50"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <g transform="translate(-120.95 -105.13)" fill={fill} stroke={stroke}>
         <path
           transform="matrix(.26458 0 0 .26458 120.95 105.13)"

@@ -10,6 +10,7 @@ import {
   StaticFactionTimer,
 } from "../../../../../../src/Timer";
 import Chip from "../../../../../../src/components/Chip/Chip";
+import Conditional from "../../../../../../src/components/Conditional/Conditional";
 import ExpeditionSelector from "../../../../../../src/components/Expedition/ExpeditionSelector";
 import FactionCard from "../../../../../../src/components/FactionCard/FactionCard";
 import FactionCircle from "../../../../../../src/components/FactionCircle/FactionCircle";
@@ -81,7 +82,6 @@ import { rem } from "../../../../../../src/util/util";
 import styles from "./ActionPhase.module.scss";
 import { ComponentAction } from "./ComponentAction";
 import StrategicActions from "./StrategicActions/StrategicActions";
-import Conditional from "../../../../../../src/components/Conditional/Conditional";
 
 interface FactionActionButtonsProps {
   factionId: FactionId;

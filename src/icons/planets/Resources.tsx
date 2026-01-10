@@ -9,6 +9,8 @@ export default function ResourcesSVG({
   const fontY = resources > 9 ? "172.5" : "173.33505";
   return (
     <svg
+      width="100%"
+      height="100%"
       version="1.1"
       viewBox="0 0 20.5 21.75"
       xmlns="http://www.w3.org/2000/svg"

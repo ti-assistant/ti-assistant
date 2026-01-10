@@ -1,6 +1,7 @@
-import React, { PropsWithChildren, use, useState } from "react";
+import React, { PropsWithChildren, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ClientOnlyHoverMenu } from "../../../../../../src/HoverMenu";
+import { InfoRow } from "../../../../../../src/InfoRow";
 import { NumberedItem } from "../../../../../../src/NumberedItem";
 import { FactionTimer, StaticFactionTimer } from "../../../../../../src/Timer";
 import FactionCard from "../../../../../../src/components/FactionCard/FactionCard";
@@ -8,10 +9,8 @@ import FactionComponents from "../../../../../../src/components/FactionComponent
 import FactionSelectRadialMenu from "../../../../../../src/components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import FormattedDescription from "../../../../../../src/components/FormattedDescription/FormattedDescription";
 import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
-import { ModalContent } from "../../../../../../src/components/Modal/Modal";
 import { Selector } from "../../../../../../src/components/Selector/Selector";
 import { StrategyCardElement } from "../../../../../../src/components/StrategyCardElement/StrategyCardElement";
-import { ModalContext } from "../../../../../../src/context/contexts";
 import {
   useAgenda,
   useGameId,
@@ -515,8 +514,6 @@ export default function StrategyPhase() {
   const onDeckFactionId = useOnDeckFactionId();
   const round = useRound();
 
-  const { openModal } = use(ModalContext);
-
   interface Ability {
     name: string;
     description: string;
@@ -695,31 +692,19 @@ export default function StrategyPhase() {
                         >
                           {abilities.map((ability) => {
                             return (
-                              <div key={ability.name} className="flexRow">
+                              <InfoRow
+                                key={ability.name}
+                                infoTitle={ability.name}
+                                infoContent={
+                                  <InfoContent>
+                                    <FormattedDescription
+                                      description={ability.description}
+                                    />
+                                  </InfoContent>
+                                }
+                              >
                                 {ability.name}
-                                <div
-                                  className="popupIcon"
-                                  onClick={() =>
-                                    openModal(
-                                      <ModalContent
-                                        title={
-                                          <div style={{ fontSize: rem(40) }}>
-                                            {ability.name}
-                                          </div>
-                                        }
-                                      >
-                                        <InfoContent>
-                                          <FormattedDescription
-                                            description={ability.description}
-                                          />
-                                        </InfoContent>
-                                      </ModalContent>
-                                    )
-                                  }
-                                >
-                                  &#x24D8;
-                                </div>
-                              </div>
+                              </InfoRow>
                             );
                           })}
                         </div>

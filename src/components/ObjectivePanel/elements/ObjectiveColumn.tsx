@@ -1,11 +1,11 @@
 import { use } from "react";
-import { ModalContext, SettingsContext } from "../../../context/contexts";
+import { SettingsContext } from "../../../context/contexts";
 import { useGameId, useViewOnly } from "../../../context/dataHooks";
 import { hideObjectiveAsync } from "../../../dynamic/api";
+import InfoModal from "../../../InfoModal";
 import { Optional } from "../../../util/types/types";
 import { rem } from "../../../util/util";
 import FormattedDescription from "../../FormattedDescription/FormattedDescription";
-import { ModalContent } from "../../Modal/Modal";
 import GridHeader from "./GridHeader";
 import ScorableFactionIcon from "./ScorableFactionIcon";
 
@@ -39,7 +39,6 @@ export default function ObjectiveColumn({
   const gameId = useGameId();
   const viewOnly = useViewOnly();
 
-  const { openModal } = use(ModalContext);
   const { settings } = use(SettingsContext);
 
   if (!objective) {
@@ -96,23 +95,9 @@ export default function ObjectiveColumn({
             objective.name
           )}
           {description ? null : (
-            <div
-              className="popupIcon"
-              style={{ paddingRight: rem(8) }}
-              onClick={() =>
-                openModal(
-                  <ModalContent
-                    title={
-                      <div style={{ fontSize: rem(40) }}>{objective.name}</div>
-                    }
-                  >
-                    <InfoContent objective={objective} />
-                  </ModalContent>
-                )
-              }
-            >
-              &#x24D8;
-            </div>
+            <InfoModal title={objective.name}>
+              <InfoContent objective={objective} />
+            </InfoModal>
           )}
         </div>
       </GridHeader>

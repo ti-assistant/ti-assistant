@@ -1,15 +1,13 @@
-import { use } from "react";
-import { ModalContext } from "../../../context/contexts";
 import { useGameId, useOptions, useViewOnly } from "../../../context/dataHooks";
 import { useObjective } from "../../../context/objectiveDataHooks";
 import {
   scoreObjectiveAsync,
   unscoreObjectiveAsync,
 } from "../../../dynamic/api";
+import InfoModal from "../../../InfoModal";
 import { getColorForFaction } from "../../../util/factions";
 import { rem } from "../../../util/util";
 import FactionSelectRadialMenu from "../../FactionSelectRadialMenu/FactionSelectRadialMenu";
-import { ModalContent } from "../../Modal/Modal";
 
 function getNumPotentialScorers(objective: Objective, options: Options) {
   const includesPoK = options.expansions.includes("POK");
@@ -38,8 +36,6 @@ export default function SimpleScorable({
   const objective = useObjective(objectiveId);
   const options = useOptions();
   const viewOnly = useViewOnly();
-
-  const { openModal } = use(ModalContext);
 
   if (!objective) {
     return null;
@@ -99,39 +95,7 @@ export default function SimpleScorable({
                 size={size}
                 tag={
                   showTag ? (
-                    <div
-                      className="popupIcon hoverParent"
-                      style={{ marginLeft: 0, color: "#999" }}
-                      onClick={() =>
-                        openModal(
-                          <ModalContent
-                            title={
-                              <div style={{ fontSize: rem(40) }}>
-                                {objective.name}
-                              </div>
-                            }
-                          >
-                            <div
-                              className="flexRow myriadPro"
-                              style={{
-                                boxSizing: "border-box",
-                                maxWidth: rem(800),
-                                width: "100%",
-                                minWidth: rem(320),
-                                padding: rem(4),
-                                whiteSpace: "pre-line",
-                                textAlign: "center",
-                                fontSize: rem(32),
-                              }}
-                            >
-                              {info}
-                            </div>
-                          </ModalContent>
-                        )
-                      }
-                    >
-                      &#x24D8;
-                    </div>
+                    <InfoModal title={objective.name}>{info}</InfoModal>
                   ) : undefined
                 }
                 viewOnly={viewOnly}
