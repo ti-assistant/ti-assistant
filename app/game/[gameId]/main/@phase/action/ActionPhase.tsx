@@ -76,6 +76,7 @@ import {
   getFactionName,
 } from "../../../../../../src/util/factions";
 import { getStrategyCardsForFaction } from "../../../../../../src/util/helpers";
+import { sortStrategyCards } from "../../../../../../src/util/strategyCards";
 import { phaseString } from "../../../../../../src/util/strings";
 import { Optional } from "../../../../../../src/util/types/types";
 import { rem } from "../../../../../../src/util/util";
@@ -1572,9 +1573,7 @@ function StrategyCardColumn({
 }) {
   const strategyCards = useStrategyCards();
 
-  const orderedStrategyCards = Object.values(strategyCards).sort(
-    (a, b) => a.order - b.order
-  );
+  const orderedStrategyCards = sortStrategyCards(Object.values(strategyCards));
 
   const cardsByFaction: Partial<Record<FactionId, CardWithFaction[]>> = {};
   orderedStrategyCards.forEach((card) => {

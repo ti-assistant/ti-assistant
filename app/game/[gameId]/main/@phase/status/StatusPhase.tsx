@@ -68,6 +68,7 @@ import { getCurrentTurnLogEntries } from "../../../../../../src/util/api/actionL
 import { hasTech } from "../../../../../../src/util/api/techs";
 import { getColorForFaction } from "../../../../../../src/util/factions";
 import { getInitiativeForFaction } from "../../../../../../src/util/helpers";
+import { sortStrategyCards } from "../../../../../../src/util/strategyCards";
 import {
   objectiveTypeString,
   phaseString,
@@ -85,9 +86,9 @@ function CommandTokenGains() {
   const hyperState = useTechState("Hyper Metabolism");
   const strategyCards = useStrategyCards();
 
-  const orderedStrategyCards = Object.values(strategyCards)
-    .filter((card) => card.faction)
-    .sort((a, b) => a.order - b.order);
+  const orderedStrategyCards = sortStrategyCards(
+    Object.values(strategyCards).filter((card) => card.faction)
+  );
   const filteredStrategyCards = orderedStrategyCards.filter((card, index) => {
     return (
       card.faction &&
@@ -187,9 +188,9 @@ function ActionCardDraws() {
   const neuralState = useTechState("Neural Motivator");
   const strategyCards = useStrategyCards();
 
-  const orderedStrategyCards = Object.values(strategyCards)
-    .filter((card) => card.faction)
-    .sort((a, b) => a.order - b.order);
+  const orderedStrategyCards = sortStrategyCards(
+    Object.values(strategyCards).filter((card) => card.faction)
+  );
   const filteredStrategyCards = orderedStrategyCards.filter((card, index) => {
     return (
       card.faction &&
@@ -301,9 +302,9 @@ function MiddleColumn() {
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);
 
-  const orderedStrategyCards = Object.values(strategyCards)
-    .filter((card) => card.faction)
-    .sort((a, b) => a.order - b.order);
+  const orderedStrategyCards = sortStrategyCards(
+    Object.values(strategyCards).filter((card) => card.faction)
+  );
   const filteredStrategyCards = orderedStrategyCards.filter((card, index) => {
     return (
       card.faction &&

@@ -34,6 +34,7 @@ import {
   swapStrategyCardsAsync,
 } from "../../../../../../src/dynamic/api";
 import { getColorForFaction } from "../../../../../../src/util/factions";
+import { sortStrategyCards } from "../../../../../../src/util/strategyCards";
 import { phaseString } from "../../../../../../src/util/strings";
 import { Optional } from "../../../../../../src/util/types/types";
 import { objectEntries, rem } from "../../../../../../src/util/util";
@@ -424,8 +425,9 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
   const strategyCards = useStrategyCards();
   const viewOnly = useViewOnly();
 
-  const orderedStrategyCards = Object.values(strategyCards).sort((a, b) =>
-    a.order > b.order ? 1 : -1
+  const orderedStrategyCards = sortStrategyCards(
+    Object.values(strategyCards),
+    /* ignoreZero */ true
   );
 
   const checksAndBalances =
@@ -639,8 +641,9 @@ export default function StrategyPhase() {
     return updatedCard;
   });
 
-  const orderedStrategyCards = updatedStrategyCards.sort(
-    (a, b) => a.order - b.order
+  const orderedStrategyCards = sortStrategyCards(
+    updatedStrategyCards,
+    /* ignoreZero= */ true
   );
 
   const giftFaction = Object.values(strategyCards).reduce(
