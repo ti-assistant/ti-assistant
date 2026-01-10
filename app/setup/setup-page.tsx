@@ -33,6 +33,7 @@ import { objectEntries, rem } from "../../src/util/util";
 import ColorPicker from "./components/ColorPicker";
 import PlayerNameInput from "./components/PlayerNameInput";
 import styles from "./setup.module.scss";
+import TwilightsFallSVG from "../../src/icons/ui/TwilightsFall";
 
 const SetupFactionPanel = dynamic(
   () => import("../../src/components/SetupFactionPanel"),
@@ -319,6 +320,9 @@ function MobileOptions({
                 description="Text on a button that will enable/disable the Twilight's Fall gamemode."
                 defaultMessage="Twilight's Fall"
               />
+              <div style={{ width: rem(16), marginLeft: rem(4) }}>
+                <TwilightsFallSVG />
+              </div>
             </Toggle>
           )}
         </div>
@@ -721,6 +725,9 @@ function Options({
                 description="Text on a button that will enable/disable the Twilight's Fall gamemode."
                 defaultMessage="Twilight's Fall"
               />
+              <div style={{ width: rem(16), marginLeft: rem(4) }}>
+                <TwilightsFallSVG />
+              </div>
             </Toggle>
           )}
         </div>
