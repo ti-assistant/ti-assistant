@@ -205,7 +205,7 @@ export default function getProphecyOfKingsTechs(
         description: "Title of Tech: Hel Titan II",
         defaultMessage: "Hel Titan II",
       }),
-      prereqs: ["RED", "YELLOW"],
+      prereqs: ["YELLOW", "RED"],
       replaces: "PDS II",
       stats: {
         combat: 6,

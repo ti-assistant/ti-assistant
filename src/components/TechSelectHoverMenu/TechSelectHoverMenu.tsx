@@ -21,6 +21,7 @@ import {
 } from "../../util/techs";
 import { rem } from "../../util/util";
 import UnitIcon from "../Units/Icons";
+import TechPrereqDots from "./TechPrereqDots";
 import styles from "./TechSelectHoverMenu.module.scss";
 
 interface InnerTechSelectHoverMenuProps {
@@ -97,17 +98,20 @@ function InnerTechSelectHoverMenu({
                 disabled={viewOnly}
               >
                 {tech.name}
-                {tech.type === "UPGRADE" ? (
-                  <UnitIcon
-                    type={tech.unitType}
-                    size={16}
-                    color={
-                      ignorePrereqs || canResearch
-                        ? undefined
-                        : "var(--disabled-fg)"
-                    }
-                  />
-                ) : null}
+                <div className="flexRow" style={{ gap: rem(4) }}>
+                  {tech.type === "UPGRADE" ? (
+                    <UnitIcon
+                      type={tech.unitType}
+                      size={16}
+                      color={
+                        ignorePrereqs || canResearch
+                          ? undefined
+                          : "var(--disabled-fg)"
+                      }
+                    />
+                  ) : null}
+                  <TechPrereqDots prereqs={tech.prereqs} />
+                </div>
               </button>
             );
           })}
