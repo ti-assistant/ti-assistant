@@ -853,7 +853,7 @@ export default function getBaseTechs(
         description: "Title of Tech: PDS II",
         defaultMessage: "PDS II",
       }),
-      prereqs: ["RED", "YELLOW"],
+      prereqs: ["YELLOW", "RED"],
       stats: {},
       type: "UPGRADE",
       unitType: "PDS",

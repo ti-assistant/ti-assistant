@@ -314,7 +314,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
       faction: "Gledge Union",
       id: "Orion Platform II",
       name: "Orion Platform II",
-      prereqs: ["RED", "YELLOW"],
+      prereqs: ["YELLOW", "RED"],
       stats: {},
       replaces: "PDS II",
       type: "UPGRADE",
@@ -682,7 +682,7 @@ export const DISCORDANT_STARS_TECHS: Record<DiscordantStars.TechId, BaseTech> =
       faction: "Mirveda Protectorate",
       id: "Gauss Cannon II",
       name: "Gauss Cannon II",
-      prereqs: ["RED", "YELLOW"],
+      prereqs: ["YELLOW", "RED"],
       replaces: "PDS II",
       stats: {
         capacity: 1,

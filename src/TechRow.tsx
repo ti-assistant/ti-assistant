@@ -6,6 +6,7 @@ import FactionIcon from "./components/FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "./components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import FormattedDescription from "./components/FormattedDescription/FormattedDescription";
 import TechIcon from "./components/TechIcon/TechIcon";
+import TechPrereqDots from "./components/TechSelectHoverMenu/TechPrereqDots";
 import UnitStats from "./components/UnitStats/UnitStats";
 import UnitIcon from "./components/Units/Icons";
 import {
@@ -164,6 +165,7 @@ export function TechRow({
                 </div>
               </div>
             ) : null}
+            <TechPrereqDots prereqs={tech.prereqs} />
           </div>
           <InfoModal
             title={
@@ -175,6 +177,7 @@ export function TechRow({
                 {tech.type === "UPGRADE" ? (
                   <UnitIcon type={tech.unitType} size={40} />
                 ) : null}
+                <TechPrereqDots prereqs={tech.prereqs} width={8} />
               </div>
             }
             style={{ marginLeft: rem(8) }}

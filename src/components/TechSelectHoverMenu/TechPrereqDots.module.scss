@@ -1,0 +1,23 @@
+.TechPrereqGrid {
+  display: grid;
+  grid-template: repeat(2, 1fr) / repeat(2, 1fr);
+}
+
+.TechPrereqColumn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.TechDot {
+  width: var(--width);
+  height: var(--width);
+
+  box-sizing: border-box;
+
+  border-radius: 50%;
+
+  background-color: var(--color);
+  border: 1px solid var(--color);
+}

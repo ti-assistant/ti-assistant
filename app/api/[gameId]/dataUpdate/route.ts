@@ -353,7 +353,8 @@ function updateInTransaction(
     const gameData = await getGameDataInTransaction(gameRef, t);
     gameData.actionLog = await getCurrentTurnLogEntriesInTransaction(
       gameRef,
-      t
+      t,
+      gameData.state.phase
     );
     const timers = await getTimersInTransaction(timerRef, t);
 
