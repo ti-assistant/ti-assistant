@@ -9,6 +9,8 @@ export const TURN_BOUNDARIES = [
   "END_GAME",
 ];
 
+export const ACTION_TURN_BOUNDARIES = ["ADVANCE_PHASE", "END_TURN", "END_GAME"];
+
 export const PHASE_BOUNDARIES = ["ADVANCE_PHASE", "END_GAME"];
 
 // Assumes that the actionLog is sorted from newest to oldest.

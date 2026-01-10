@@ -2,10 +2,14 @@ import crypto from "crypto";
 import {
   DocumentData,
   DocumentReference,
+  QuerySnapshot,
   Transaction,
   getFirestore,
 } from "firebase-admin/firestore";
-import { TURN_BOUNDARIES } from "../../src/util/api/actionLog";
+import {
+  ACTION_TURN_BOUNDARIES,
+  TURN_BOUNDARIES,
+} from "../../src/util/api/actionLog";
 import { getSessionIdFromCookie } from "../../src/util/server";
 import { ActionLog, Optional } from "../../src/util/types/types";
 import { BASE_OPTIONS } from "../data/options";
@@ -111,15 +115,27 @@ export async function getGameDataInTransaction(
 
 export async function getCurrentTurnLogEntriesInTransaction(
   gameRef: DocumentReference<DocumentData>,
-  t: Transaction
+  t: Transaction,
+  phase: Phase
 ) {
-  const turnBoundary = await t.get(
-    gameRef
-      .collection("actionLog")
-      .orderBy("timestampMillis", "desc")
-      .where("data.action", "in", TURN_BOUNDARIES)
-      .limit(1)
-  );
+  let turnBoundary: QuerySnapshot<DocumentData, DocumentData>;
+  if (phase === "ACTION") {
+    turnBoundary = await t.get(
+      gameRef
+        .collection("actionLog")
+        .orderBy("timestampMillis", "desc")
+        .where("data.action", "in", ACTION_TURN_BOUNDARIES)
+        .limit(1)
+    );
+  } else {
+    turnBoundary = await t.get(
+      gameRef
+        .collection("actionLog")
+        .orderBy("timestampMillis", "desc")
+        .where("data.action", "in", TURN_BOUNDARIES)
+        .limit(1)
+    );
+  }
 
   let timestamp = 0;
   turnBoundary.forEach((logEntry) => {
