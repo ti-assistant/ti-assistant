@@ -35,13 +35,13 @@ export class AddTechHandler implements Handler {
     const updates: Record<string, any> = {
       [`state.paused`]: false,
       [`sequenceNum`]: "INCREMENT",
-      [`factions.${this.data.event.faction}.techs.${this.data.event.tech}.ready`]:
-        true,
+      [`factions.${this.data.event.faction}.techs.${this.data.event.tech}.state`]:
+        "ready",
     };
 
     for (const factionId of this.data.event.additionalFactions ?? []) {
-      updates[`factions.${factionId}.techs.${this.data.event.tech}.ready`] =
-        true;
+      updates[`factions.${factionId}.techs.${this.data.event.tech}.state`] =
+        "ready";
     }
 
     if (this.data.event.shareKnowledge) {

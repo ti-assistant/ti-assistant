@@ -111,7 +111,7 @@ interface GameFaction {
   mapPosition: number;
   order: number;
   secondary?: Secondary;
-  planets: Partial<Record<PlanetId, { ready: boolean }>>;
+  planets: Partial<Record<PlanetId, { state: PlanetState }>>;
   playerName?: string;
   startswith?: StartsWith;
   techs: Partial<Record<TechId, GameTech>>;

@@ -59,7 +59,6 @@ interface BasePlanet {
 
 interface GamePlanet {
   owner?: FactionId;
-  ready?: boolean;
   state?: PlanetState;
   attachments?: AttachmentId[];
   // Manual adjustments

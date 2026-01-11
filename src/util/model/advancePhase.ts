@@ -117,9 +117,6 @@ export class AdvancePhaseHandler implements Handler {
             if (tech.state === "exhausted") {
               updates[`factions.${factionId}.techs.${techId}.state`] = "ready";
             }
-            if (!tech.ready) {
-              updates[`factions.${factionId}.techs.${techId}.ready`] = true;
-            }
           }
           if (faction.breakthrough?.state === "exhausted") {
             updates[`factions.${factionId}.breakthrough.state`] = "readied";

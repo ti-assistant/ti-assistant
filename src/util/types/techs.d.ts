@@ -54,7 +54,6 @@ type BaseTech = BaseNormalTech | BaseUpgradeTech | BaseOtherTech;
 type TechState = "ready" | "exhausted" | "purged";
 
 interface GameTech {
-  ready?: boolean;
   shareKnowledge?: boolean;
   state?: TechState;
 }

@@ -240,10 +240,10 @@ function buildInitialGameData(
       const homeBasePlanets = Object.values(getPlanets(intl)).filter(
         (planet) => planet.faction === faction.name && planet.home
       );
-      const homePlanets: Partial<Record<PlanetId, { ready: boolean }>> = {};
+      const homePlanets: Partial<Record<PlanetId, { state: PlanetState }>> = {};
       homeBasePlanets.forEach((planet) => {
         homePlanets[planet.id] = {
-          ready: true,
+          state: "READIED",
         };
       });
 
@@ -267,10 +267,10 @@ function buildInitialGameData(
           commander: "locked",
         };
       }
-      const startingTechs: Partial<Record<TechId, { ready: boolean }>> = {};
+      const startingTechs: Partial<Record<TechId, { state: TechState }>> = {};
       (baseFaction.startswith?.techs ?? []).forEach((tech) => {
         startingTechs[tech] = {
-          ready: true,
+          state: "ready",
         };
       });
 

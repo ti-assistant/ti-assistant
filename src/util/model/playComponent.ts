@@ -101,8 +101,8 @@ export class PlayComponentHandler implements Handler {
           break;
         }
         updates[
-          `factions.${state.activeplayer}.techs.${this.data.event.name}.ready`
-        ] = false;
+          `factions.${state.activeplayer}.techs.${this.data.event.name}.state`
+        ] = "exhausted";
         break;
       case "PROMISSORY":
         switch (component.id) {
@@ -439,8 +439,8 @@ export class UnplayComponentHandler implements Handler {
       const state = buildState(this.gameData);
       if (state.activeplayer && state.activeplayer !== "None") {
         updates[
-          `factions.${state.activeplayer}.techs.${this.data.event.name}.ready`
-        ] = true;
+          `factions.${state.activeplayer}.techs.${this.data.event.name}.state`
+        ] = "ready";
       }
     }
     if (component.type === "BREAKTHROUGH") {

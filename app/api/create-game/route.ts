@@ -52,10 +52,10 @@ export async function POST(req: Request) {
     const homeBasePlanets = Object.values(getPlanets(intl)).filter(
       (planet) => planet.faction === faction.id && planet.home
     );
-    const homePlanets: Partial<Record<PlanetId, { ready: boolean }>> = {};
+    const homePlanets: Partial<Record<PlanetId, { state: PlanetState }>> = {};
     homeBasePlanets.forEach((planet) => {
       homePlanets[planet.id] = {
-        ready: true,
+        state: "READIED",
       };
     });
 
@@ -65,7 +65,6 @@ export async function POST(req: Request) {
     (baseFaction.startswith?.techs ?? []).forEach((tech) => {
       startingTechs[tech] = {
         state: "ready",
-        ready: true,
       };
     });
 
@@ -73,7 +72,6 @@ export async function POST(req: Request) {
     if (events.includes("Advent of the War Sun")) {
       if (faction.id !== "Embers of Muaat") {
         startingTechs["War Sun"] = {
-          ready: true,
           state: "ready",
         };
       }
@@ -81,12 +79,10 @@ export async function POST(req: Request) {
     if (events.includes("Age of Fighters")) {
       if (faction.id === "Naalu Collective") {
         startingTechs["Hybrid Crystal Fighter II"] = {
-          ready: true,
           state: "ready",
         };
       } else {
         startingTechs["Fighter II"] = {
-          ready: true,
           state: "ready",
         };
       }
