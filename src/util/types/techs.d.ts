@@ -7,12 +7,6 @@ interface UnitStats {
   move?: number;
 }
 
-interface OmegaTech {
-  description: string;
-  expansion: Expansion;
-  name: string;
-}
-
 interface BaseNormalTech {
   description: string;
   expansion: Expansion;
