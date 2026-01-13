@@ -824,16 +824,28 @@ function FactionPanelContent({
             }
             style={{ width: "100%" }}
           >
-            {faction.promissories.map((promissory) => {
-              return (
-                <AbilitySection
-                  key={promissory.name}
-                  leftLabel={promissory.name}
-                >
-                  <FormattedDescription description={promissory.description} />
-                </AbilitySection>
-              );
-            })}
+            <div
+              className="flexColumn"
+              style={{
+                width: "100%",
+                gap: rem(4),
+                padding: `0 ${rem(4)} ${rem(4)}`,
+                fontSize: rem(14),
+              }}
+            >
+              {faction.promissories.map((promissory) => {
+                return (
+                  <AbilitySection
+                    key={promissory.name}
+                    leftLabel={promissory.name}
+                  >
+                    <FormattedDescription
+                      description={promissory.description}
+                    />
+                  </AbilitySection>
+                );
+              })}
+            </div>
           </CollapsibleSection>
         ) : null}
       </div>

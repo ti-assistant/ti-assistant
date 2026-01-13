@@ -21,22 +21,6 @@ type PlanetAttribute =
 
 type PlanetType = "INDUSTRIAL" | "CULTURAL" | "HAZARDOUS";
 
-type PlanetUpdateAction =
-  | "ADD_PLANET"
-  | "REMOVE_PLANET"
-  | "ADD_ATTACHMENT"
-  | "REMOVE_ATTACHMENT"
-  | "PURGE_PLANET"
-  | "UNPURGE_PLANET";
-
-interface PlanetUpdateData {
-  action?: PlanetUpdateAction;
-  attachment?: string;
-  faction?: FactionId;
-  planet?: string;
-  timestamp?: number;
-}
-
 interface BasePlanet {
   expansion: Expansion;
   ability?: string;
