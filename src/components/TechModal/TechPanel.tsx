@@ -10,52 +10,56 @@ import {
   useTechs,
   useUpgrades,
   useViewOnly,
-} from "../context/dataHooks";
-import { useFaction, useFactions } from "../context/factionDataHooks";
-import { useOrderedFactionIds } from "../context/gameDataHooks";
+} from "../../context/dataHooks";
+import { useFaction, useFactions } from "../../context/factionDataHooks";
+import { useOrderedFactionIds } from "../../context/gameDataHooks";
 import {
   useFactionsWithTech,
   useOrderedTechIds,
   useTechState,
-} from "../context/techDataHooks";
-import { addTechAsync, loseTFCardAsync, removeTechAsync } from "../dynamic/api";
-import { InfoRow } from "../InfoRow";
-import { SelectableRow } from "../SelectableRow";
-import { TechRow } from "../TechRow";
-import { hasTech, isTechPurged } from "../util/api/techs";
+} from "../../context/techDataHooks";
+import {
+  addTechAsync,
+  loseTFCardAsync,
+  removeTechAsync,
+} from "../../dynamic/api";
+import { InfoRow } from "../../InfoRow";
+import { SelectableRow } from "../../SelectableRow";
+import { TechRow } from "../../TechRow";
+import { hasTech, isTechPurged } from "../../util/api/techs";
 import {
   getColorForFaction,
   getFactionColor,
   getFactionName,
-} from "../util/factions";
-import { techTypeString } from "../util/strings";
+} from "../../util/factions";
+import { techTypeString } from "../../util/strings";
 import {
   ableToResearchTech,
   getTechTypeColor,
   sortByTechOrder,
   sortTechs,
-} from "../util/techs";
-import { Optional } from "../util/types/types";
-import { objectEntries, objectKeys, rem } from "../util/util";
+} from "../../util/techs";
+import { Optional } from "../../util/types/types";
+import { objectEntries, objectKeys, rem } from "../../util/util";
 import {
   GainAbilitySection,
   GainGenomeSection,
   GainParadigmSection,
   GainUpgradeSection,
-} from "./Actions/GainSplicedCard";
-import { CollapsibleSection } from "./CollapsibleSection";
-import FactionComponents from "./FactionComponents/FactionComponents";
-import FactionIcon from "./FactionIcon/FactionIcon";
-import FormattedDescription from "./FormattedDescription/FormattedDescription";
-import LabeledDiv from "./LabeledDiv/LabeledDiv";
-import { Selector } from "./Selector/Selector";
-import TechIcon from "./TechIcon/TechIcon";
+} from "../Actions/GainSplicedCard";
+import { CollapsibleSection } from "../CollapsibleSection";
+import FactionComponents from "../FactionComponents/FactionComponents";
+import FactionIcon from "../FactionIcon/FactionIcon";
+import FormattedDescription from "../FormattedDescription/FormattedDescription";
+import LabeledDiv from "../LabeledDiv/LabeledDiv";
+import { Selector } from "../Selector/Selector";
+import TechIcon from "../TechIcon/TechIcon";
 import styles from "./TechPanel.module.scss";
-import TechSelectHoverMenu from "./TechSelectHoverMenu/TechSelectHoverMenu";
-import { FullTechSummary, FullTFTechSummary } from "./TechSummary/TechSummary";
-import Toggle from "./Toggle/Toggle";
-import UnitIcon from "./Units/Icons";
-import UnitStats from "./UnitStats/UnitStats";
+import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
+import { FullTechSummary, FullTFTechSummary } from "../TechSummary/TechSummary";
+import Toggle from "../Toggle/Toggle";
+import UnitIcon from "../Units/Icons";
+import UnitStats from "../UnitStats/UnitStats";
 
 function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
   const factions = useFactions();

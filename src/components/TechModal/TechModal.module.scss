@@ -1,0 +1,56 @@
+.TechModal {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5rem;
+
+  max-height: calc(100dvh - 1.5rem);
+}
+
+.TechModalTitleSection {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+
+  font-size: 1.5rem;
+}
+
+.TechModalTitle {
+  background-color: var(--background-color);
+  border-radius: 0.25rem;
+  border: 1px solid var(--neutral-border);
+  padding: 0.25rem 0.5rem;
+  width: min-content;
+
+  white-space: nowrap;
+}
+
+.TechModalSettings {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  gap: 0.25rem;
+}
+
+.TechModalBody {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5rem;
+
+  width: clamp(80vw, 70rem, calc(100vw - 1.5rem));
+  font-size: 1.125rem;
+}
+
+@media only screen and (max-width: 56.25rem) {
+  .TechModalTitleSection {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+}
