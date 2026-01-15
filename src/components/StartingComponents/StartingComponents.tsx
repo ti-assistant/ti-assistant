@@ -204,12 +204,12 @@ export default function StartingComponents({
       {options.expansions.includes("TWILIGHTS FALL") ? (
         <>
           {options.hide?.includes("PLANETS") && !mapString ? null : (
-            <div className="flexRow" style={{ fontFamily: "Myriad Pro" }}>
+            <div className={styles.TFFactionSelect}>
               Planet Faction:{" "}
               <TFFactionSelect factionId={factionId} type="Planet" />
             </div>
           )}
-          <div className="flexRow" style={{ fontFamily: "Myriad Pro" }}>
+          <div className={styles.TFFactionSelect}>
             Unit Faction: <TFFactionSelect factionId={factionId} type="Unit" />
           </div>
         </>

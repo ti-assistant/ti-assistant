@@ -36,6 +36,7 @@ import FactionRow from "../FactionRow/FactionRow";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import GameMap from "../Map/GameMap";
+import ObjectiveModalContent from "../ObjectiveModal/ObjectiveModal";
 import TFCardIcon from "../TFCardIcon/TFCardIcon";
 import TechModalContent from "../TechModal/TechModal";
 import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
@@ -43,17 +44,6 @@ import ThundersEdgePanel from "../ThundersEdgePanel";
 import { Strings } from "../strings";
 import styles from "./Footer.module.scss";
 
-const ObjectivePanel = dynamic(
-  () => import("../ObjectivePanel/ObjectivePanel"),
-  {
-    loading: () => <Loader />,
-    ssr: false,
-  }
-);
-const TechPanel = dynamic(() => import("../TechModal/TechPanel"), {
-  loading: () => <Loader />,
-  ssr: false,
-});
 const PlanetPanel = dynamic(() => import("../PlanetPanel"), {
   loading: () => <Loader />,
   ssr: false,
@@ -292,9 +282,7 @@ export default function Footer() {
         </div>
         <div
           className="flexRow"
-          onClick={() =>
-            openModal(<ObjectiveModalContent viewOnly={viewOnly} />)
-          }
+          onClick={() => openModal(<ObjectiveModalContent />)}
         >
           <button>
             <div
@@ -433,9 +421,7 @@ export default function Footer() {
         <Conditional appSection="OBJECTIVES">
           <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
             <button
-              onClick={() =>
-                openModal(<ObjectiveModalContent viewOnly={viewOnly} />)
-              }
+              onClick={() => openModal(<ObjectiveModalContent />)}
               style={{
                 position: "relative",
                 width: rem(34),
@@ -600,47 +586,47 @@ export default function Footer() {
   );
 }
 
-function ObjectiveModalContent({ viewOnly }: { viewOnly?: boolean }) {
-  return (
-    <div
-      className="flexColumn"
-      style={{
-        justifyContent: "flex-start",
-        height: `calc(100dvh - ${rem(24)})`,
-      }}
-    >
-      <div
-        className="centered extraLargeFont"
-        style={{
-          backgroundColor: "var(--background-color)",
-          border: "1px solid var(--neutral-border)",
-          padding: `${rem(4)} ${rem(8)}`,
-          borderRadius: rem(4),
-          width: "min-content",
-        }}
-      >
-        <FormattedMessage
-          id="5Bl4Ek"
-          description="Cards that define how to score victory points."
-          defaultMessage="Objectives"
-        />
-      </div>
-      <div
-        className="flexColumn largeFont"
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          width: `clamp(80vw, 75rem, calc(100vw - ${rem(24)}))`,
-          justifyContent: "flex-start",
-          overflow: "auto",
-          height: "fit-content",
-          paddingBottom: rem(28),
-        }}
-      >
-        <ObjectivePanel asModal />
-      </div>
-    </div>
-  );
-}
+// function ObjectiveModalContent({ viewOnly }: { viewOnly?: boolean }) {
+//   return (
+//     <div
+//       className="flexColumn"
+//       style={{
+//         justifyContent: "flex-start",
+//         height: `calc(100dvh - ${rem(24)})`,
+//       }}
+//     >
+//       <div
+//         className="centered extraLargeFont"
+//         style={{
+//           backgroundColor: "var(--background-color)",
+//           border: "1px solid var(--neutral-border)",
+//           padding: `${rem(4)} ${rem(8)}`,
+//           borderRadius: rem(4),
+//           width: "min-content",
+//         }}
+//       >
+//         <FormattedMessage
+//           id="5Bl4Ek"
+//           description="Cards that define how to score victory points."
+//           defaultMessage="Objectives"
+//         />
+//       </div>
+//       <div
+//         className="flexColumn largeFont"
+//         onClick={(e) => e.stopPropagation()}
+//         style={{
+//           width: `clamp(80vw, 75rem, calc(100vw - ${rem(24)}))`,
+//           justifyContent: "flex-start",
+//           overflow: "auto",
+//           height: "fit-content",
+//           paddingBottom: rem(28),
+//         }}
+//       >
+//         <ObjectivePanel asModal />
+//       </div>
+//     </div>
+//   );
+// }
 
 function PlanetModalContent() {
   return (

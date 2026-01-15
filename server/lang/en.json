@@ -3220,7 +3220,7 @@
     "description": "Shortened version of Faction name: Crimson Rebellion"
   },
   "Crimson Rebellion.Tech Choice": {
-    "defaultMessage": "Choose one red or blue technology that has no prerequisites.",
+    "defaultMessage": "Choose one blue or red technology with no prerequisites.",
     "description": "Text of Rebellion's tech choice."
   },
   "Crimson Rebellion.Techs.Exile II.Description": {
@@ -4652,7 +4652,7 @@
     "description": "Shortened version of Faction name: Last Bastion"
   },
   "Last Bastion.Tech Choice": {
-    "defaultMessage": "Choose one blue or yellow technology that has no prerequisites.",
+    "defaultMessage": "Choose 1 blue or yellow technology with no prerequisites.",
     "description": "Text of Bastion's tech choice."
   },
   "Last Bastion.Techs.Proxima Targeting VI.Description": {
@@ -6636,7 +6636,7 @@
     "description": "Shortened version of Faction name: Ral Nel Consortium"
   },
   "Ral Nel Consortium.Tech Choice": {
-    "defaultMessage": "Choose one green or red technology that has no prerequisites.",
+    "defaultMessage": "Choose 1 green or red technology with no prerequisites.",
     "description": "Text of Ral Nel's tech choice."
   },
   "Ral Nel Consortium.Techs.Linkship II.Description": {
@@ -9491,6 +9491,10 @@
     "defaultMessage": "Votes",
     "description": "Header for column listing how many votes players have cast."
   },
+  "VZ+RJH": {
+    "defaultMessage": "Programming: {name}",
+    "description": "Credit for helping to program TI Assistant."
+  },
   "VjlCY0": {
     "defaultMessage": "Update",
     "description": "Text specifying a section that includes update operations."
@@ -10191,6 +10195,10 @@
     "defaultMessage": "Y'sia Y'ssrila",
     "description": "Title of Faction Unit: Y'sia Y'ssrila"
   },
+  "Z66nNr": {
+    "defaultMessage": "View",
+    "description": "Label for group of things you can view."
+  },
   "Z6gLCK": {
     "defaultMessage": "Stage II",
     "description": "The title of public objectives that grant 2 victory points."
@@ -10366,6 +10374,10 @@
   "i4Uu4m": {
     "defaultMessage": "Hyperspace",
     "description": "Text on a button that will show/hide hyperspace tiles."
+  },
+  "i9uwBj": {
+    "defaultMessage": "{count, plural, one {Paradigm} other {Paradigms}}",
+    "description": "Header for a section listing out paradigms."
   },
   "iFF5UN": {
     "defaultMessage": "Claim {planet}",
@@ -10554,6 +10566,10 @@
   "vTtJ6S": {
     "defaultMessage": "Active Player",
     "description": "Label showing that the specific player is the current player."
+  },
+  "vi7bc7": {
+    "defaultMessage": "{count, plural, one {Genome} other {Genomes}}",
+    "description": "Header for a section listing out genomes."
   },
   "vsuOf1": {
     "defaultMessage": "End Game",

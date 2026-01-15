@@ -1,14 +1,14 @@
-.TechModal {
+.Modal {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   gap: 0.5rem;
 
-  max-height: calc(100dvh - 1.5rem);
+  height: calc(100dvh - 1.5rem);
 }
 
-.TechModalTitleSection {
+.ModalTitleSection {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -18,17 +18,19 @@
   font-size: 1.5rem;
 }
 
-.TechModalTitle {
+.ModalTitle {
   background-color: var(--background-color);
   border-radius: 0.25rem;
   border: 1px solid var(--neutral-border);
   padding: 0.25rem 0.5rem;
   width: min-content;
 
+  font-size: 1.5rem;
+
   white-space: nowrap;
 }
 
-.TechModalSettings {
+.ModalSettings {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -37,7 +39,7 @@
   gap: 0.25rem;
 }
 
-.TechModalBody {
+.ModalBody {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -45,12 +47,17 @@
   gap: 0.5rem;
 
   width: clamp(80vw, 70rem, calc(100vw - 1.5rem));
+  height: fit-content;
   font-size: 1.125rem;
 }
 
 @media only screen and (max-width: 56.25rem) {
-  .TechModalTitleSection {
+  .ModalTitleSection {
     flex-direction: column;
     gap: 0.25rem;
+  }
+
+  .Modal {
+    overflow-y: auto;
   }
 }

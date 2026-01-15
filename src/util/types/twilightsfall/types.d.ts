@@ -1,0 +1,1 @@
+type TFCardType = "ABILITY" | "GENOME" | "UNIT_UPGRADE" | "PARADIGM";
