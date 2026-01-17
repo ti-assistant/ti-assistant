@@ -1,6 +1,6 @@
 .ThundersEdgeGrid {
   width: 100%;
-  height: 100%;
+  height: calc(100dvh - 3.75rem);
   min-height: calc(50dvh);
   display: grid;
   gap: 0.5rem;

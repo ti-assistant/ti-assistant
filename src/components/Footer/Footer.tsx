@@ -40,11 +40,13 @@ import ObjectiveModalContent from "../ObjectiveModal/ObjectiveModal";
 import TFCardIcon from "../TFCardIcon/TFCardIcon";
 import TechModalContent from "../TechModal/TechModal";
 import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
-import ThundersEdgePanel from "../ThundersEdgePanel";
+import ThundersEdgePanel from "../OtherModal/OtherPanel";
 import { Strings } from "../strings";
 import styles from "./Footer.module.scss";
+import PlanetModal from "../PlanetModal/PlanetModal";
+import OtherModalContent from "../OtherModal/OtherModal";
 
-const PlanetPanel = dynamic(() => import("../PlanetPanel"), {
+const PlanetPanel = dynamic(() => import("../PlanetModal/PlanetPanel"), {
   loading: () => <Loader />,
   ssr: false,
 });
@@ -302,10 +304,7 @@ export default function Footer() {
             defaultMessage="Update Objectives"
           />
         </div>
-        <div
-          className="flexRow"
-          onClick={() => openModal(<PlanetModalContent />)}
-        >
+        <div className="flexRow" onClick={() => openModal(<PlanetModal />)}>
           <button>
             <div
               className="flexRow"
@@ -329,7 +328,7 @@ export default function Footer() {
         !hideThundersEdgeModalButton ? (
           <div
             className="flexRow"
-            onClick={() => openModal(<ThundersEdgeModalContent />)}
+            onClick={() => openModal(<OtherModalContent />)}
           >
             <button>
               <div
@@ -447,7 +446,7 @@ export default function Footer() {
         <Conditional appSection="PLANETS">
           <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
             <button
-              onClick={() => openModal(<PlanetModalContent />)}
+              onClick={() => openModal(<PlanetModal />)}
               style={{
                 position: "relative",
                 width: rem(34),
@@ -475,7 +474,7 @@ export default function Footer() {
         !hideThundersEdgeModalButton ? (
           <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
             <button
-              onClick={() => openModal(<ThundersEdgeModalContent />)}
+              onClick={() => openModal(<OtherModalContent />)}
               style={{
                 display: "flex",
                 position: "relative",
@@ -583,130 +582,6 @@ export default function Footer() {
         </LabeledDiv>
       </div>
     </>
-  );
-}
-
-// function ObjectiveModalContent({ viewOnly }: { viewOnly?: boolean }) {
-//   return (
-//     <div
-//       className="flexColumn"
-//       style={{
-//         justifyContent: "flex-start",
-//         height: `calc(100dvh - ${rem(24)})`,
-//       }}
-//     >
-//       <div
-//         className="centered extraLargeFont"
-//         style={{
-//           backgroundColor: "var(--background-color)",
-//           border: "1px solid var(--neutral-border)",
-//           padding: `${rem(4)} ${rem(8)}`,
-//           borderRadius: rem(4),
-//           width: "min-content",
-//         }}
-//       >
-//         <FormattedMessage
-//           id="5Bl4Ek"
-//           description="Cards that define how to score victory points."
-//           defaultMessage="Objectives"
-//         />
-//       </div>
-//       <div
-//         className="flexColumn largeFont"
-//         onClick={(e) => e.stopPropagation()}
-//         style={{
-//           width: `clamp(80vw, 75rem, calc(100vw - ${rem(24)}))`,
-//           justifyContent: "flex-start",
-//           overflow: "auto",
-//           height: "fit-content",
-//           paddingBottom: rem(28),
-//         }}
-//       >
-//         <ObjectivePanel asModal />
-//       </div>
-//     </div>
-//   );
-// }
-
-function PlanetModalContent() {
-  return (
-    <div
-      className="flexColumn"
-      style={{
-        justifyContent: "flex-start",
-        maxHeight: `calc(100dvh - ${rem(24)})`,
-      }}
-    >
-      <div
-        className="centered extraLargeFont"
-        style={{
-          backgroundColor: "var(--background-color)",
-          border: "1px solid var(--neutral-border)",
-          padding: `${rem(4)} ${rem(8)}`,
-          borderRadius: rem(4),
-          width: "min-content",
-        }}
-      >
-        <FormattedMessage
-          id="1fNqTf"
-          description="Planets."
-          defaultMessage="Planets"
-        />
-      </div>
-      <div
-        className="flexColumn largeFont"
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          width: `clamp(80vw, 75rem, calc(100vw - ${rem(24)}))`,
-          justifyContent: "flex-start",
-          overflow: "auto",
-          height: "100%",
-        }}
-      >
-        <PlanetPanel />
-      </div>
-    </div>
-  );
-}
-
-function ThundersEdgeModalContent() {
-  return (
-    <div
-      className="flexColumn"
-      style={{
-        justifyContent: "flex-start",
-        maxHeight: `calc(100dvh - ${rem(24)})`,
-      }}
-    >
-      <div
-        className="centered extraLargeFont"
-        style={{
-          backgroundColor: "var(--background-color)",
-          border: "1px solid var(--neutral-border)",
-          padding: `${rem(4)} ${rem(8)}`,
-          borderRadius: rem(4),
-          width: "min-content",
-        }}
-      >
-        <FormattedMessage
-          id="sgqLYB"
-          defaultMessage="Other"
-          description="Text on a button used to select a non-listed value"
-        />
-      </div>
-      <div
-        className="flexColumn largeFont"
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          width: `clamp(80vw, 75rem, calc(100vw - ${rem(24)}))`,
-          justifyContent: "flex-start",
-          overflow: "auto",
-          height: "100%",
-        }}
-      >
-        <ThundersEdgePanel />
-      </div>
-    </div>
   );
 }
 
