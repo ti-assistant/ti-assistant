@@ -18,9 +18,9 @@ import { rem } from "../../util/util";
 import { CollapsibleSection } from "../CollapsibleSection";
 import FactionComponents from "../FactionComponents/FactionComponents";
 import { FactionSelectHoverMenu } from "../FactionSelect";
-import styles from "./PlanetPanel.module.scss";
 import PlanetRow from "../PlanetRow/PlanetRow";
 import PlanetSummary from "../PlanetSummary/PlanetSummary";
+import styles from "./PlanetPanel.module.scss";
 
 function PlanetSection({
   factionId,
