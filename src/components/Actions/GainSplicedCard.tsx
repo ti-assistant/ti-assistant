@@ -504,7 +504,6 @@ function InnerAbilitySelectMenu({
       borderColor={getTechTypeColor(abilities[0]?.type ?? "UPGRADE")}
       renderProps={(innerCloseFn) => (
         <div
-          className="flexColumn"
           style={{
             display: "grid",
             gridAutoFlow: "column",
@@ -512,6 +511,8 @@ function InnerAbilitySelectMenu({
             padding: rem(8),
             gap: rem(4),
             alignItems: "stretch",
+            maxWidth: "88vw",
+            overflowX: "auto",
           }}
         >
           {abilities.map((ability) => {
@@ -758,7 +759,6 @@ export function GainUpgradeSection({
       buttonStyle={{ fontSize: rem(14) }}
       renderProps={(innerCloseFn) => (
         <div
-          className="flexColumn"
           style={{
             display: "grid",
             gridAutoFlow: "column",
@@ -769,6 +769,8 @@ export function GainUpgradeSection({
             padding: rem(8),
             gap: rem(4),
             alignItems: "stretch",
+            maxWidth: "88vw",
+            overflowX: "auto",
           }}
         >
           {availableUpgrades.map((upgrade) => {
@@ -799,49 +801,5 @@ export function GainUpgradeSection({
         </div>
       )}
     ></ClientOnlyHoverMenu>
-  );
-
-  return (
-    <Selector
-      hoverMenuLabel={
-        steal ? (
-          <div className="flexRow" style={{ gap: rem(6) }}>
-            <span style={{ width: "0.52em" }}>
-              <UpgradeSVG />
-            </span>
-            <FormattedMessage
-              id="Components.Steal Unit Upgrade.Title"
-              description="Title of Component: Steal Unit Upgrade"
-              defaultMessage="Steal Unit Upgrade"
-            />
-          </div>
-        ) : (
-          <div className="flexRow" style={{ gap: rem(6) }}>
-            <span style={{ width: "0.52em" }}>
-              <UpgradeSVG />
-            </span>
-            <FormattedMessage
-              id="Components.Gain Unit Upgrade.Title"
-              description="Title of Component: Gain Unit Upgrade"
-              defaultMessage="Gain Unit Upgrade"
-            />
-          </div>
-        )
-      }
-      // icon={<RelicPlanetIcon />}
-      hoverMenuStyle={{ fontSize: rem(14) }}
-      options={availableUpgrades}
-      toggleItem={(upgradeId, add) => {
-        if (add) {
-          gainTFCardAsync(gameId, factionId, {
-            upgrade: upgradeId,
-            type: "UNIT_UPGRADE",
-          });
-        }
-      }}
-      viewOnly={viewOnly}
-      style={style}
-      itemsPerColumn={11}
-    />
   );
 }

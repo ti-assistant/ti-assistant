@@ -10,15 +10,17 @@ interface FactionSelectProps {
   options: FactionId[];
   onSelect: (
     factionId: Optional<FactionId>,
-    prevFaction: Optional<FactionId>
+    prevFaction: Optional<FactionId>,
   ) => void;
   size: number;
+  forceDirection?: "column" | "row";
 }
 
 export function FactionSelectHoverMenu({
   options,
   onSelect,
   size,
+  forceDirection,
 }: PropsWithChildren<FactionSelectProps>) {
   const menu = useRef<HTMLDivElement>(null);
   const innerMenu = useRef<HTMLDivElement>(null);
@@ -37,6 +39,7 @@ export function FactionSelectHoverMenu({
     left: 0,
     borderRadius: rem(Math.floor(size / 2)),
     border: `var(--border-size) solid var(--neutral-border)`,
+    flexDirection: forceDirection,
   };
 
   return (

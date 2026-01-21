@@ -1,16 +1,16 @@
 import { CSSProperties } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { getFactions } from "../../server/data/factions";
+import { getFactions } from "../../../server/data/factions";
 import {
   useExpedition,
   useGameId,
   useOptions,
   useRelics,
   useViewOnly,
-} from "../context/dataHooks";
-import { useFactions } from "../context/factionDataHooks";
-import { useOrderedFactionIds } from "../context/gameDataHooks";
-import { useObjective } from "../context/objectiveDataHooks";
+} from "../../context/dataHooks";
+import { useFactions } from "../../context/factionDataHooks";
+import { useOrderedFactionIds } from "../../context/gameDataHooks";
+import { useObjective } from "../../context/objectiveDataHooks";
 import {
   commitToExpeditionAsync,
   gainAllianceAsync,
@@ -20,26 +20,26 @@ import {
   scoreObjectiveAsync,
   unplayComponentAsync,
   unscoreObjectiveAsync,
-} from "../dynamic/api";
-import PromissoryMenuSVG from "../icons/ui/PromissoryMenu";
-import RelicMenuSVG from "../icons/ui/RelicMenu";
-import ThundersEdgeMenuSVG from "../icons/ui/ThundersEdgeMenu";
-import { InfoRow } from "../InfoRow";
-import { SelectableRow } from "../SelectableRow";
-import { buildMergeFunction } from "../util/expansions";
-import { getColorForFaction, getFactionColor } from "../util/factions";
-import { Optional } from "../util/types/types";
-import { rem } from "../util/util";
-import { CollapsibleSection } from "./CollapsibleSection";
-import ExpeditionIcon from "./Expedition/ExpeditionIcon";
-import FactionCircle from "./FactionCircle/FactionCircle";
-import FactionIcon from "./FactionIcon/FactionIcon";
-import FactionSelectRadialMenu from "./FactionSelectRadialMenu/FactionSelectRadialMenu";
-import FormattedDescription from "./FormattedDescription/FormattedDescription";
-import LabeledDiv from "./LabeledDiv/LabeledDiv";
-import LabeledLine from "./LabeledLine/LabeledLine";
-import OptionalLine from "./LineWithChildren/OptionalLine";
-import styles from "./ThundersEdgePanel.module.scss";
+} from "../../dynamic/api";
+import PromissoryMenuSVG from "../../icons/ui/PromissoryMenu";
+import RelicMenuSVG from "../../icons/ui/RelicMenu";
+import ThundersEdgeMenuSVG from "../../icons/ui/ThundersEdgeMenu";
+import { InfoRow } from "../../InfoRow";
+import { SelectableRow } from "../../SelectableRow";
+import { buildMergeFunction } from "../../util/expansions";
+import { getColorForFaction, getFactionColor } from "../../util/factions";
+import { Optional } from "../../util/types/types";
+import { rem } from "../../util/util";
+import { CollapsibleSection } from "../CollapsibleSection";
+import ExpeditionIcon from "../Expedition/ExpeditionIcon";
+import FactionCircle from "../FactionCircle/FactionCircle";
+import FactionIcon from "../FactionIcon/FactionIcon";
+import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
+import FormattedDescription from "../FormattedDescription/FormattedDescription";
+import LabeledDiv from "../LabeledDiv/LabeledDiv";
+import LabeledLine from "../LabeledLine/LabeledLine";
+import OptionalLine from "../LineWithChildren/OptionalLine";
+import styles from "./OtherPanel.module.scss";
 
 function getSupportScorer(factionId: FactionId, support: Objective) {
   if (!support.keyedScorers) {
@@ -52,7 +52,7 @@ function getSupportScorer(factionId: FactionId, support: Objective) {
   return scorers[0];
 }
 
-export default function ThundersEdgePanel() {
+export default function OtherPanel() {
   const options = useOptions();
 
   return (

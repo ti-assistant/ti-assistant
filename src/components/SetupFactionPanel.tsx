@@ -19,6 +19,7 @@ import TechIcon from "./TechIcon/TechIcon";
 import UnitIcon from "./Units/Icons";
 import UnitType from "./Units/Types";
 import UnitStats from "./UnitStats/UnitStats";
+import FullScreenModal from "../modals/FullScreenModal";
 
 function AbilitySection({
   leftLabel,
@@ -75,7 +76,7 @@ function FactionPanelContent({
   const leaders = buildBaseLeaders(options, intl);
 
   const factionTechs = Object.values(techs).filter(
-    (tech) => tech.faction === faction.id
+    (tech) => tech.faction === faction.id,
   );
   sortTechsByPreReqAndExpansion(factionTechs);
   const factionLeaders = Object.values(leaders)
@@ -83,7 +84,7 @@ function FactionPanelContent({
     .filter((leader) =>
       faction.startswith?.faction && leader.subFaction
         ? leader.subFaction === faction.startswith.faction
-        : true
+        : true,
     )
     .sort((a, b) => {
       if (a.type !== b.type) {
@@ -222,7 +223,7 @@ function FactionPanelContent({
                     leftLabel={leftLabel}
                     rightLabel={leaderTypeString(
                       leader.type,
-                      intl
+                      intl,
                     ).toUpperCase()}
                   >
                     {innerContent}
@@ -601,7 +602,7 @@ export default function SetupFactionPanel({
               faction={faction}
               options={options}
               altFaction={altFaction}
-            />
+            />,
           )
         }
       >
@@ -625,50 +626,83 @@ function SetupFactionPanelModal({
   const selectedFaction = !viewAlt || !altFaction ? faction : altFaction;
 
   return (
-    <div
-      className="flexColumn"
-      style={{
-        whiteSpace: "normal",
-        textShadow: "none",
-        width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}}))`,
-        justifyContent: "flex-start",
-        height: `calc(100dvh - ${rem(24)})`,
-      }}
-    >
-      <div
-        className="flexRow centered extraLargeFont"
-        style={{
-          backgroundColor: "var(--background-color)",
-          padding: `${rem(4)} ${rem(8)}`,
-          borderRadius: rem(4),
-        }}
-      >
-        <FactionIcon factionId={selectedFaction.id} size={36} />
-        {selectedFaction.name}
-        <FactionIcon factionId={selectedFaction.id} size={36} />
-      </div>
-      {altFaction ? (
-        <div className="flexRow" onClick={(e) => e.stopPropagation()}>
-          <Chip selected={!viewAlt} toggleFn={() => setViewAlt(false)}>
-            {faction.name}
-          </Chip>
-          <Chip selected={viewAlt} toggleFn={() => setViewAlt(true)}>
-            {altFaction.name}
-          </Chip>
+    <FullScreenModal
+      title={
+        <div
+          className="flexRow centered extraLargeFont"
+          style={{
+            backgroundColor: "var(--background-color)",
+            padding: `${rem(4)} ${rem(8)}`,
+            borderRadius: rem(4),
+          }}
+        >
+          <FactionIcon factionId={selectedFaction.id} size={30} />
+          {selectedFaction.name}
+          <FactionIcon factionId={selectedFaction.id} size={30} />
         </div>
-      ) : null}
-      <div
-        className="flexColumn largeFont"
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
-          justifyContent: "flex-start",
-          overflow: "auto",
-          height: "fit-content",
-        }}
-      >
-        <FactionPanelContent faction={selectedFaction} options={options} />
-      </div>
-    </div>
+      }
+      settings={
+        altFaction ? (
+          <div className="flexRow" onClick={(e) => e.stopPropagation()}>
+            <Chip selected={!viewAlt} toggleFn={() => setViewAlt(false)}>
+              {faction.name}
+            </Chip>
+            <Chip selected={viewAlt} toggleFn={() => setViewAlt(true)}>
+              {altFaction.name}
+            </Chip>
+          </div>
+        ) : undefined
+      }
+    >
+      <FactionPanelContent faction={selectedFaction} options={options} />
+    </FullScreenModal>
   );
+
+  // return (
+  //   <div
+  //     className="flexColumn"
+  //     style={{
+  //       whiteSpace: "normal",
+  //       textShadow: "none",
+  //       width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}}))`,
+  //       justifyContent: "flex-start",
+  //       height: `calc(100dvh - ${rem(24)})`,
+  //     }}
+  //   >
+  //     <div
+  //       className="flexRow centered extraLargeFont"
+  //       style={{
+  //         backgroundColor: "var(--background-color)",
+  //         padding: `${rem(4)} ${rem(8)}`,
+  //         borderRadius: rem(4),
+  //       }}
+  //     >
+  //       <FactionIcon factionId={selectedFaction.id} size={36} />
+  //       {selectedFaction.name}
+  //       <FactionIcon factionId={selectedFaction.id} size={36} />
+  //     </div>
+  //     {altFaction ? (
+  //       <div className="flexRow" onClick={(e) => e.stopPropagation()}>
+  //         <Chip selected={!viewAlt} toggleFn={() => setViewAlt(false)}>
+  //           {faction.name}
+  //         </Chip>
+  //         <Chip selected={viewAlt} toggleFn={() => setViewAlt(true)}>
+  //           {altFaction.name}
+  //         </Chip>
+  //       </div>
+  //     ) : null}
+  //     <div
+  //       className="flexColumn largeFont"
+  //       onClick={(e) => e.stopPropagation()}
+  //       style={{
+  //         width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
+  //         justifyContent: "flex-start",
+  //         overflow: "auto",
+  //         height: "fit-content",
+  //       }}
+  //     >
+  //       <FactionPanelContent faction={selectedFaction} options={options} />
+  //     </div>
+  //   </div>
+  // );
 }

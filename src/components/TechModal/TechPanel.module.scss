@@ -58,6 +58,14 @@
   height: 1.5rem;
 }
 
+.GainCardMenu {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+}
+
 @media (hover: hover) and (pointer: fine) {
   .factionIcon:not(.viewOnly):not(.selected):hover {
     opacity: 0.75;
@@ -209,6 +217,12 @@
   justify-content: center;
 }
 
+.factionTechListWrapper {
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+}
+
 .factionTechList {
   display: flex;
   flex-direction: column;
@@ -218,8 +232,7 @@
   padding: 0 0.25rem;
   font-size: 0.875rem;
   width: 100%;
-  max-height: 12rem;
-  overflow-y: auto;
+  max-height: 0;
 }
 
 .TFFactionTechList {
@@ -256,6 +269,7 @@
 
   .factionTechList {
     height: unset;
+    max-height: unset;
   }
 
   .factionTechsColumn {
@@ -272,6 +286,11 @@
 @media only screen and (max-width: 37.5rem) {
   .collapsibleTechColumn {
     overflow: hidden;
+  }
+
+  .GainCardMenu {
+    justify-content: flex-start;
+    margin-left: 0.75rem;
   }
 
   .techGrid {

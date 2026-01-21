@@ -273,7 +273,7 @@ function ComponentSelect({
                 <button
                   key={component.id}
                   style={{ writingMode: "horizontal-tb" }}
-                  className={gameTech && !gameTech.ready ? "faded" : ""}
+                  className={gameTech?.state === "exhausted" ? "faded" : ""}
                   onClick={() => selectComponent(component.id)}
                   disabled={viewOnly}
                 >

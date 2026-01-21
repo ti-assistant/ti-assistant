@@ -53,9 +53,9 @@
 }
 
 .InfluenceSymbol {
-  --size: calc(var(--height) * 0.44);
+  --size: calc(var(--height) * 0.55);
   --font-size: var(--size);
-  --width: calc(var(--height) * 0.56);
+  --width: var(--size);
 
   bottom: 0;
   right: 0;

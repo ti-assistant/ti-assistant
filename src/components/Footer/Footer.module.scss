@@ -6,7 +6,7 @@
 }
 
 div.UpdateBox {
-  --num-buttons: 4;
+  --num-buttons: 5;
 
   position: fixed;
   bottom: 1.3rem;
@@ -130,7 +130,9 @@ div.UpdateBox {
     border-radius: 0.5rem;
     border: 2px solid var(--neutral-border);
 
-    transition: bottom 400ms, opacity 400ms;
+    transition:
+      bottom 400ms,
+      opacity 400ms;
   }
 
   .MobileMenu.shown {
@@ -138,7 +140,9 @@ div.UpdateBox {
     bottom: 4.375rem;
     pointer-events: auto;
 
-    transition: bottom 400ms, opacity 100ms;
+    transition:
+      bottom 400ms,
+      opacity 100ms;
   }
 
   .MobileMenu button {

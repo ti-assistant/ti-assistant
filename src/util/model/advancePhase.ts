@@ -110,15 +110,12 @@ export class AdvancePhaseHandler implements Handler {
         }
         for (const [factionId, faction] of objectEntries(factions ?? {})) {
           for (const [techId, tech] of objectEntries(faction.techs ?? {})) {
-            if (tech.shareKnowledge) {
+            if (tech.shareKnowledge && tech.state !== "purged") {
               updates[`factions.${factionId}.techs.${techId}`] = "DELETE";
               continue;
             }
             if (tech.state === "exhausted") {
               updates[`factions.${factionId}.techs.${techId}.state`] = "ready";
-            }
-            if (!tech.ready) {
-              updates[`factions.${factionId}.techs.${techId}.ready`] = true;
             }
           }
           if (faction.breakthrough?.state === "exhausted") {

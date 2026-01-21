@@ -32,6 +32,7 @@ import LabeledLine from "./LabeledLine/LabeledLine";
 import TechIcon from "./TechIcon/TechIcon";
 import UnitIcon from "./Units/Icons";
 import UnitStats from "./UnitStats/UnitStats";
+import FullScreenModal from "../modals/FullScreenModal";
 
 export function UnitStat({
   name,
@@ -473,7 +474,7 @@ function FactionPanelContent({
   }
 
   const factionTechs = Object.values(techs).filter(
-    (tech) => tech.faction === faction.id && tech.type !== "UPGRADE"
+    (tech) => tech.faction === faction.id && tech.type !== "UPGRADE",
   );
   sortTechs(factionTechs);
   const factionLeaders = Object.values(leaders)
@@ -481,7 +482,7 @@ function FactionPanelContent({
     .filter((leader) =>
       faction.startswith?.faction && leader.subFaction
         ? leader.subFaction === faction.startswith.faction
-        : true
+        : true,
     )
     .sort((a, b) => {
       if (a.type !== b.type) {
@@ -707,7 +708,7 @@ function FactionPanelContent({
                                   updateLeaderStateAsync(
                                     gameId,
                                     leader.id,
-                                    "readied"
+                                    "readied",
                                   );
                                 }
                           }
@@ -725,7 +726,7 @@ function FactionPanelContent({
                     label={label}
                     rightLabel={leaderTypeString(
                       leader.type,
-                      intl
+                      intl,
                     ).toUpperCase()}
                   >
                     {innerContent}
@@ -824,16 +825,28 @@ function FactionPanelContent({
             }
             style={{ width: "100%" }}
           >
-            {faction.promissories.map((promissory) => {
-              return (
-                <AbilitySection
-                  key={promissory.name}
-                  leftLabel={promissory.name}
-                >
-                  <FormattedDescription description={promissory.description} />
-                </AbilitySection>
-              );
-            })}
+            <div
+              className="flexColumn"
+              style={{
+                width: "100%",
+                gap: rem(4),
+                padding: `0 ${rem(4)} ${rem(4)}`,
+                fontSize: rem(14),
+              }}
+            >
+              {faction.promissories.map((promissory) => {
+                return (
+                  <AbilitySection
+                    key={promissory.name}
+                    leftLabel={promissory.name}
+                  >
+                    <FormattedDescription
+                      description={promissory.description}
+                    />
+                  </AbilitySection>
+                );
+              })}
+            </div>
           </CollapsibleSection>
         ) : null}
       </div>
@@ -1016,7 +1029,7 @@ export default function FactionPanel({
         }}
         onClick={() =>
           openModal(
-            <FactionPanelModal factionId={factionId} options={options} />
+            <FactionPanelModal factionId={factionId} options={options} />,
           )
         }
       >
@@ -1034,41 +1047,16 @@ function FactionPanelModal({
   options: Options;
 }) {
   return (
-    <div
-      className="flexColumn"
-      style={{
-        whiteSpace: "normal",
-        textShadow: "none",
-        width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
-        justifyContent: "flex-start",
-        height: `calc(100dvh - ${rem(24)})`,
-      }}
+    <FullScreenModal
+      title={
+        <div className="flexRow">
+          <FactionComponents.Icon factionId={factionId} size={36} />
+          <FactionComponents.Name factionId={factionId} />
+          <FactionComponents.Icon factionId={factionId} size={36} />
+        </div>
+      }
     >
-      <div
-        className="flexRow centered extraLargeFont"
-        style={{
-          backgroundColor: "var(--background-color)",
-          border: `1px solid ${getColorForFaction(factionId)}`,
-          padding: `${rem(4)} ${rem(8)}`,
-          borderRadius: rem(4),
-        }}
-      >
-        <FactionComponents.Icon factionId={factionId} size={36} />
-        <FactionComponents.Name factionId={factionId} />
-        <FactionComponents.Icon factionId={factionId} size={36} />
-      </div>
-      <div
-        className="flexColumn largeFont"
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
-          justifyContent: "flex-start",
-          overflow: "auto",
-          height: "fit-content",
-        }}
-      >
-        <FactionPanelContent factionId={factionId} options={options} />
-      </div>
-    </div>
+      <FactionPanelContent factionId={factionId} options={options} />
+    </FullScreenModal>
   );
 }

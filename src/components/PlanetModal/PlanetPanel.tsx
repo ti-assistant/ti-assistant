@@ -6,21 +6,21 @@ import {
   useLeader,
   usePlanets,
   useViewOnly,
-} from "../context/dataHooks";
-import { useFactionColor } from "../context/factionDataHooks";
-import { useOrderedFactionIds } from "../context/gameDataHooks";
-import { claimPlanetAsync, unclaimPlanetAsync } from "../dynamic/api";
+} from "../../context/dataHooks";
+import { useFactionColor } from "../../context/factionDataHooks";
+import { useOrderedFactionIds } from "../../context/gameDataHooks";
+import { claimPlanetAsync, unclaimPlanetAsync } from "../../dynamic/api";
 import {
   applyAllPlanetAttachments,
   filterToClaimedPlanets,
-} from "../util/planets";
-import { rem } from "../util/util";
-import { CollapsibleSection } from "./CollapsibleSection";
-import FactionComponents from "./FactionComponents/FactionComponents";
-import { FactionSelectHoverMenu } from "./FactionSelect";
+} from "../../util/planets";
+import { rem } from "../../util/util";
+import { CollapsibleSection } from "../CollapsibleSection";
+import FactionComponents from "../FactionComponents/FactionComponents";
+import { FactionSelectHoverMenu } from "../FactionSelect";
 import styles from "./PlanetPanel.module.scss";
-import PlanetRow from "./PlanetRow/PlanetRow";
-import PlanetSummary from "./PlanetSummary/PlanetSummary";
+import PlanetRow from "../PlanetRow/PlanetRow";
+import PlanetSummary from "../PlanetSummary/PlanetSummary";
 
 function PlanetSection({
   factionId,
@@ -170,6 +170,7 @@ function UnclaimedPlanetSection() {
                       claimPlanetAsync(gameId, factionId, planet.id);
                     }}
                     size={32}
+                    forceDirection="row"
                   />
                 )}
                 <div style={{ width: "100%" }}>

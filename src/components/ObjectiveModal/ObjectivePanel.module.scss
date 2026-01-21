@@ -10,6 +10,11 @@
   height: 1.25rem;
 }
 
+.ObjectiveModalBody {
+  padding-bottom: 1.75rem;
+  overflow-y: auto;
+}
+
 .factionIconWrapper {
   width: 100%;
   height: 1.5rem;
@@ -184,6 +189,11 @@
   // .collapsed > .collapsibleRow {
   //   overflow: hidden;
   // }
+
+  .ObjectiveModalBody {
+    padding-bottom: 0px;
+    overflow-y: unset;
+  }
 
   .objRow {
     display: grid;

@@ -255,7 +255,10 @@ export default function MobileObjectiveGrid() {
             </div>
           </CollapsibleSection>
         )}
-        <div className="flexRow" style={{ width: "95%" }}>
+        <div
+          className="flexRow"
+          style={{ width: "95%", justifyContent: "center", gap: rem(16) }}
+        >
           <CustodiansToken />
           <Styx />
         </div>

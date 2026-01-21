@@ -1,11 +1,10 @@
 import { CSSProperties } from "react";
-import TechIcon from "../TechIcon/TechIcon";
-import styles from "./TFCardIcon.module.scss";
-import { rem } from "../../util/util";
 import AbilitySVG from "../../icons/twilightsfall/ability";
 import GenomeSVG from "../../icons/twilightsfall/genome";
-import UpgradeSVG from "../../icons/twilightsfall/upgrade";
 import ParadigmSVG from "../../icons/twilightsfall/paradigm";
+import UpgradeSVG from "../../icons/twilightsfall/upgrade";
+import { rem } from "../../util/util";
+import styles from "./TFCardIcon.module.scss";
 
 interface TFCardIconCSS extends CSSProperties {
   "--size": string;
