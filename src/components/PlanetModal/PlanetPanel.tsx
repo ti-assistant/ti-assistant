@@ -170,6 +170,7 @@ function UnclaimedPlanetSection() {
                       claimPlanetAsync(gameId, factionId, planet.id);
                     }}
                     size={32}
+                    forceDirection="row"
                   />
                 )}
                 <div style={{ width: "100%" }}>

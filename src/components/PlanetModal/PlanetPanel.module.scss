@@ -22,7 +22,9 @@
   display: grid;
   gap: 0.5rem;
   grid-template-rows: repeat(2, minmax(0, 1fr));
-  grid-template-columns: repeat(calc(var(--num-columns) - 1), minmax(0, 2fr)) 3fr;
+  grid-template-columns:
+    repeat(calc(var(--num-columns) - 1), minmax(0, 2fr))
+    3fr;
   grid-auto-flow: row;
 
   overflow: hidden;
@@ -143,6 +145,8 @@
     flex-direction: column;
     grid-auto-flow: row;
     grid-template-columns: repeat(1, minmax(0, 1fr));
+
+    height: unset;
   }
 
   .planetColumn {
@@ -151,6 +155,7 @@
 
   .unclaimedColumn {
     grid-row: unset;
+    max-height: unset;
   }
 
   .collapsiblePlanetColumn {

@@ -53,16 +53,18 @@ export default function GenericModal({
           classNames="modal"
           nodeRef={innerNodeRef}
         >
-          <div
-            className={styles.Content}
-            onClick={closeMenu}
-            ref={innerNodeRef}
-          >
+          <>
             <div className={styles.Button} onClick={closeMenu}>
               <div>&#x2715;</div>
             </div>
-            {children}
-          </div>
+            <div
+              className={styles.Content}
+              onClick={closeMenu}
+              ref={innerNodeRef}
+            >
+              {children}
+            </div>
+          </>
         </CSSTransition>
       </div>
     </CSSTransition>

@@ -3,6 +3,8 @@
 import { FormattedMessage } from "react-intl";
 import ObjectivesMenuSVG from "../../icons/ui/ObjectivesMenu";
 import PlanetMenuSVG from "../../icons/ui/PlanetMenu";
+import RelicMenuSVG from "../../icons/ui/RelicMenu";
+import ThundersEdgeMenuSVG from "../../icons/ui/ThundersEdgeMenu";
 import { rem } from "../../util/util";
 import FactionCircle from "../FactionCircle/FactionCircle";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
@@ -105,6 +107,51 @@ export default function LoadingFooter() {
             </div>
           </button>
           <span className={styles.ButtonLabel}>Planets</span>
+        </div>
+        <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
+          <button
+            style={{
+              width: rem(34),
+              padding: rem(2),
+              aspectRatio: 1,
+              borderRadius: "100%",
+            }}
+          >
+            <div
+              className="flexRow"
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(4, 1fr)",
+                gridAutoFlow: "row",
+                position: "relative",
+                width: rem(30),
+                height: rem(30),
+                gap: rem(1),
+              }}
+            >
+              <div
+                style={{
+                  width: "calc(1.875rem / 2)",
+                  height: "100%",
+                  gridColumn: "2 / 4",
+                }}
+              >
+                <RelicMenuSVG />
+              </div>
+              <div
+                style={{
+                  width: "calc(1.875rem / 2)",
+                  height: "100%",
+                  gridColumn: "3 / 4",
+                }}
+              >
+                <ThundersEdgeMenuSVG />
+              </div>
+            </div>
+          </button>
+          <span className={styles.ButtonLabel} style={{ whiteSpace: "wrap" }}>
+            Other
+          </span>
         </div>
       </LabeledDiv>
     </>

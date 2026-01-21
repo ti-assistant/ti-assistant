@@ -92,7 +92,7 @@ export default function StartingComponents({
   const startswith: StartsWith = faction.startswith ?? { units: {} };
 
   const orderedUnits = objectEntries(startswith.units ?? {}).sort(
-    (a, b) => unitOrder.indexOf(a[0]) - unitOrder.indexOf(b[0])
+    (a, b) => unitOrder.indexOf(a[0]) - unitOrder.indexOf(b[0]),
   );
   const orderedTechs = techs
     ? (startswith.techs ?? [])
@@ -126,7 +126,7 @@ export default function StartingComponents({
       techs,
       options,
       /* planets= */ [],
-      /* relics= */ {}
+      /* relics= */ {},
     );
     choices = Object.values(techs)
       .filter((tech) => {
@@ -137,7 +137,7 @@ export default function StartingComponents({
             factionPreReqs,
             faction,
             false,
-            techs
+            techs,
           ) &&
           (!tech.faction || tech.faction === faction.id)
         );
@@ -156,7 +156,7 @@ export default function StartingComponents({
         return true;
       }
       const selectedTypes = (startswith.techs ?? []).map(
-        (tech) => techs[tech]?.type
+        (tech) => techs[tech]?.type,
       );
       return !selectedTypes.includes(techs[tech]?.type);
     })
@@ -246,7 +246,7 @@ export default function StartingComponents({
           />
         </div>
       ) : null}
-      <>
+      <div>
         {orderedTechs.length === 0 &&
         !startswith.choice &&
         !options.expansions.includes("TWILIGHTS FALL") ? (
@@ -297,7 +297,7 @@ export default function StartingComponents({
             </div>
           );
         })}
-      </>
+      </div>
       {numToChoose > 0 ? (
         <div>
           <Conditional
@@ -358,7 +358,7 @@ export default function StartingComponents({
           display: "grid",
           gridAutoFlow: "column",
           gridTemplateRows: `repeat(${Math.ceil(
-            orderedUnits.length / 2
+            orderedUnits.length / 2,
           )}, 1fr)`,
           fontFamily: "Myriad Pro",
           columnGap: rem(8),
@@ -514,7 +514,7 @@ function TFFactionSelect({
           gridAutoFlow: "column",
           gridTemplateRows: `repeat(${Math.min(
             filteredFactions.length,
-            10
+            10,
           )}, minmax(0, 1fr))`,
           gap: rem(4),
           padding: rem(8),

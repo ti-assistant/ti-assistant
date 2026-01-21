@@ -5,7 +5,7 @@
   align-items: center;
   gap: 0.5rem;
 
-  height: calc(100dvh - 1.5rem);
+  // height: calc(100dvh - 1.5rem);
 }
 
 .ModalTitleSection {
@@ -57,7 +57,7 @@
     gap: 0.25rem;
   }
 
-  .Modal {
-    overflow-y: auto;
-  }
+  // .Modal {
+  //   overflow-y: auto;
+  // }
 }
