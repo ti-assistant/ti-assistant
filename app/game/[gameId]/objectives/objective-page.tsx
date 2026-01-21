@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import ObjectivePanel from "../../../../src/components/ObjectivePanel/ObjectivePanel";
+import ObjectivePanel from "../../../../src/components/ObjectiveModal/ObjectivePanel";
 import { useGameId } from "../../../../src/context/dataHooks";
 import { setGameId } from "../../../../src/util/api/util";
 import { rem } from "../../../../src/util/util";
