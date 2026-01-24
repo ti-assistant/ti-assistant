@@ -23,10 +23,10 @@ import { rem } from "../../util/util";
 import FormattedDescription from "../FormattedDescription/FormattedDescription";
 import IconDiv from "../LabeledDiv/IconDiv";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
-import AbilityIcon from "../LegendaryPlanetIcon/AbilityIcon";
-import GenomeIcon from "../LegendaryPlanetIcon/GenomeIcon";
-import ParadigmIcon from "../LegendaryPlanetIcon/ParadigmIcon";
-import UpgradeIcon from "../LegendaryPlanetIcon/UpgradeIcon";
+import AbilityIcon from "../PlanetIcons/AbilityIcon";
+import GenomeIcon from "../PlanetIcons/GenomeIcon";
+import ParadigmIcon from "../PlanetIcons/ParadigmIcon";
+import UpgradeIcon from "../PlanetIcons/UpgradeIcon";
 import { Selector } from "../Selector/Selector";
 import UnitIcon from "../Units/Icons";
 import UnitStats from "../UnitStats/UnitStats";
@@ -376,16 +376,16 @@ export function GainAbilitySection({
   }
 
   const redAbilities = availableAbilities.filter(
-    (ability) => ability.type === "RED"
+    (ability) => ability.type === "RED",
   );
   const yellowAbilities = availableAbilities.filter(
-    (ability) => ability.type === "YELLOW"
+    (ability) => ability.type === "YELLOW",
   );
   const blueAbilities = availableAbilities.filter(
-    (ability) => ability.type === "BLUE"
+    (ability) => ability.type === "BLUE",
   );
   const greenAbilities = availableAbilities.filter(
-    (ability) => ability.type === "GREEN"
+    (ability) => ability.type === "GREEN",
   );
 
   function selectAbility(ability: TFAbility) {
@@ -764,7 +764,7 @@ export function GainUpgradeSection({
             gridAutoFlow: "column",
             gridTemplateRows: `repeat(${Math.min(
               availableUpgrades.length,
-              11
+              11,
             )}, auto)`,
             padding: rem(8),
             gap: rem(4),

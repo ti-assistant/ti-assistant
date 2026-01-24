@@ -11,7 +11,7 @@ export default function YellowTechSVG({
     <svg
       width="100%"
       height="100%"
-      viewBox="0 0 50 50"
+      viewBox="0 0 50 52"
       xmlns="http://www.w3.org/2000/svg"
     >
       <g transform="translate(-120.95 -105.13)" fill={fill} stroke={stroke}>

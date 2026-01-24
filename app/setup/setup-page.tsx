@@ -24,6 +24,7 @@ import { ModalContext } from "../../src/context/contexts";
 import CodexSVG from "../../src/icons/ui/Codex";
 import ProphecyofKingsSVG from "../../src/icons/ui/ProphecyOfKings";
 import ThundersEdgeMenuSVG from "../../src/icons/ui/ThundersEdgeMenu";
+import TwilightsFallSVG from "../../src/icons/ui/TwilightsFall";
 import { buildMergeFunction } from "../../src/util/expansions";
 import { convertToFactionColor } from "../../src/util/factions";
 import { extractFactionIds, processMapString } from "../../src/util/map";
@@ -33,7 +34,6 @@ import { objectEntries, rem } from "../../src/util/util";
 import ColorPicker from "./components/ColorPicker";
 import PlayerNameInput from "./components/PlayerNameInput";
 import styles from "./setup.module.scss";
-import TwilightsFallSVG from "../../src/icons/ui/TwilightsFall";
 
 const SetupFactionPanel = dynamic(
   () => import("../../src/components/SetupFactionPanel"),
@@ -49,7 +49,7 @@ const SetupFactionPanel = dynamic(
       </div>
     ),
     ssr: false,
-  }
+  },
 );
 
 export function capitalizeFirstLetter(string: string) {
@@ -462,9 +462,9 @@ function MobileOptions({
                                     options["map-string"],
                                     style,
                                     numFactions,
-                                    options.expansions.has("THUNDERS EDGE")
+                                    options.expansions.has("THUNDERS EDGE"),
                                   ),
-                                  "processed-map-string"
+                                  "processed-map-string",
                                 );
                               }}
                             >
@@ -503,9 +503,9 @@ function MobileOptions({
                           event.currentTarget.value,
                           options["map-style"],
                           numFactions,
-                          options.expansions.has("THUNDERS EDGE")
+                          options.expansions.has("THUNDERS EDGE"),
                         ),
-                        "processed-map-string"
+                        "processed-map-string",
                       );
                     }}
                   ></input>
@@ -878,7 +878,7 @@ function Options({
 function getFactionIndex(
   numFactions: number,
   position: number,
-  options: SetupOptions
+  options: SetupOptions,
 ) {
   switch (numFactions) {
     case 3:
@@ -975,7 +975,7 @@ interface FactionSelectProps {
   setPlayerName: (index: number, playerName: string) => void;
   setAlliancePartner: (
     index: number,
-    alliancePartner: Optional<number>
+    alliancePartner: Optional<number>,
   ) => void;
   options: SetupOptions;
 }
@@ -1082,7 +1082,7 @@ function FactionSelect({
         }
         return alliance;
       },
-      undefined
+      undefined,
     );
     setAlliancePartner(factionIndex, index);
   }
@@ -1194,7 +1194,7 @@ function FactionSelect({
                     gridAutoFlow: "column",
                     gridTemplateRows: `repeat(${Math.min(
                       filteredFactions.length,
-                      10
+                      10,
                     )}, minmax(0, 1fr))`,
                     gap: rem(4),
                     padding: rem(8),
@@ -1256,7 +1256,7 @@ function FactionSelect({
                     .map((faction) => faction.id as FactionId)}
                   factions={
                     selectedFactions.filter(
-                      (factionName) => factionName !== faction.id
+                      (factionName) => factionName !== faction.id,
                     ) as FactionId[]
                   }
                   onSelect={(factionName) => {
@@ -1265,7 +1265,7 @@ function FactionSelect({
                   borderColor={
                     faction.alliancePartner != undefined
                       ? convertToFactionColor(
-                          factions[faction.alliancePartner]?.color
+                          factions[faction.alliancePartner]?.color,
                         )
                       : undefined
                   }
@@ -1299,7 +1299,7 @@ const INITIAL_OPTIONS: SetupOptions = {
   "hide-objectives": false,
   "hide-planets": false,
   "hide-techs": false,
-  hide: new Set<AppSection>(),
+  hide: new Set<AppSection>(["PLANET_STATE", "STRUCTURES"]),
   "victory-points": 10,
   "secondary-victory-points": 10,
 };
@@ -1354,9 +1354,9 @@ export default function SetupPage({
         options["map-string"],
         "standard",
         count,
-        options.expansions.has("THUNDERS EDGE")
+        options.expansions.has("THUNDERS EDGE"),
       ),
-      "processed-map-string"
+      "processed-map-string",
     );
 
     if (speaker > count) {
@@ -1366,7 +1366,7 @@ export default function SetupPage({
 
   function getBestRemainingColor(
     factionId: FactionId,
-    usedColors: Set<string>
+    usedColors: Set<string>,
   ) {
     const color = factions[factionId].color;
     if (color) {
@@ -1412,7 +1412,7 @@ export default function SetupPage({
             ...faction,
             name: factionId,
             id: factionId,
-            color: !factionId ? undefined : faction.color ?? color,
+            color: !factionId ? undefined : (faction.color ?? color),
           };
         }
         if (factionId && faction.id === factionId) {
@@ -1424,7 +1424,7 @@ export default function SetupPage({
           };
         }
         return faction;
-      })
+      }),
     );
   }
 
@@ -1465,7 +1465,7 @@ export default function SetupPage({
           return { ...faction, color: prevValue };
         }
         return faction;
-      })
+      }),
     );
   }
 
@@ -1476,13 +1476,13 @@ export default function SetupPage({
           return { ...faction, playerName: playerName };
         }
         return faction;
-      })
+      }),
     );
   }
 
   function updateAlliancePartner(
     index: number,
-    alliancePartner: Optional<number>
+    alliancePartner: Optional<number>,
   ) {
     setFactions(
       setupFactions.map((faction, i) => {
@@ -1499,7 +1499,7 @@ export default function SetupPage({
           return { ...faction, alliancePartner: undefined };
         }
         return faction;
-      })
+      }),
     );
   }
 
@@ -1540,7 +1540,7 @@ export default function SetupPage({
           return false;
         }
         return true;
-      }
+      },
     );
     const factionKeys = filteredFactions.map((faction) => faction.id);
     for (let index = 0; index < numFactions; index++) {
@@ -1583,7 +1583,7 @@ export default function SetupPage({
           id: factionId,
           color: selectedColors[index],
         };
-      })
+      }),
     );
   }
 
@@ -1727,7 +1727,7 @@ export default function SetupPage({
             delete tempFaction.color;
           }
           return tempFaction;
-        })
+        }),
       );
     } else {
       currentOptions.expansions.delete(expansion);
@@ -1764,7 +1764,7 @@ export default function SetupPage({
             delete tempFaction.color;
           }
           return tempFaction;
-        })
+        }),
       );
       if (!currentOptions.expansions.has("POK")) {
         if (numFactions > 6) {
@@ -1955,15 +1955,15 @@ export default function SetupPage({
                                 options["map-string"],
                                 style,
                                 numFactions,
-                                options.expansions.has("THUNDERS EDGE")
+                                options.expansions.has("THUNDERS EDGE"),
                               ),
-                              "processed-map-string"
+                              "processed-map-string",
                             );
                             const factionIds = extractFactionIds(
                               options["map-string"],
                               style,
                               numFactions,
-                              options.expansions.has("THUNDERS EDGE")
+                              options.expansions.has("THUNDERS EDGE"),
                             );
                             if (factionIds) {
                               updateAllPlayerFactions(factionIds);
@@ -2004,15 +2004,15 @@ export default function SetupPage({
                       event.currentTarget.value,
                       options["map-style"],
                       numFactions,
-                      options.expansions.has("THUNDERS EDGE")
+                      options.expansions.has("THUNDERS EDGE"),
                     ),
-                    "processed-map-string"
+                    "processed-map-string",
                   );
                   const factionIds = extractFactionIds(
                     event.currentTarget.value,
                     options["map-style"],
                     numFactions,
-                    options.expansions.has("THUNDERS EDGE")
+                    options.expansions.has("THUNDERS EDGE"),
                   );
                   if (factionIds) {
                     updateAllPlayerFactions(factionIds);
@@ -2235,7 +2235,7 @@ export default function SetupPage({
                 .map((faction) => faction.id as FactionId)}
               onSelect={(factionId) => {
                 const index = setupFactions.findIndex(
-                  (faction) => faction.id === factionId
+                  (faction) => faction.id === factionId,
                 );
                 setSpeaker(index);
               }}
@@ -2432,7 +2432,7 @@ export default function SetupPage({
               <FactionSelectRadialMenu
                 selectedFaction={setupFactions[speaker]?.id}
                 borderColor={convertToFactionColor(
-                  setupFactions[speaker]?.color
+                  setupFactions[speaker]?.color,
                 )}
                 size={36}
                 invalidFactions={
@@ -2443,7 +2443,7 @@ export default function SetupPage({
                   .map((faction) => faction.id as FactionId)}
                 onSelect={(factionId) => {
                   const index = setupFactions.findIndex(
-                    (faction) => faction.id === factionId
+                    (faction) => faction.id === factionId,
                   );
                   setSpeaker(index);
                 }}

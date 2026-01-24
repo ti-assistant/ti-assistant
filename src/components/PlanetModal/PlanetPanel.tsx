@@ -1,5 +1,6 @@
-import { CSSProperties } from "react";
+import { CSSProperties, use } from "react";
 import { FormattedMessage } from "react-intl";
+import { SettingsContext } from "../../context/contexts";
 import {
   useAttachments,
   useGameId,
@@ -18,9 +19,12 @@ import { rem } from "../../util/util";
 import { CollapsibleSection } from "../CollapsibleSection";
 import FactionComponents from "../FactionComponents/FactionComponents";
 import { FactionSelectHoverMenu } from "../FactionSelect";
+import PlanetDiv from "../PlanetRow/PlanetDiv";
 import PlanetRow from "../PlanetRow/PlanetRow";
 import PlanetSummary from "../PlanetSummary/PlanetSummary";
 import styles from "./PlanetPanel.module.scss";
+
+export type PlanetPanelView = "CLASSIC" | "GRID";
 
 function PlanetSection({
   factionId,
@@ -35,6 +39,9 @@ function PlanetSection({
   const planets = usePlanets();
   const viewOnly = useViewOnly();
   const xxekirGrom = useLeader("Xxekir Grom");
+  const { settings } = use(SettingsContext);
+
+  const view = settings["planet-panel-view"];
 
   const ownedPlanets = filterToClaimedPlanets(planets, factionId);
 
@@ -63,9 +70,6 @@ function PlanetSection({
     >
       <div
         style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 1001,
           backgroundColor: "var(--background-color)",
           paddingBottom: rem(4),
           borderBottom: "1px solid var(--neutral-border)",
@@ -78,35 +82,38 @@ function PlanetSection({
           hasXxchaHero={hasXxchaHero}
         />
       </div>
-      <div
-        className={styles.planetList}
-        style={{
-          minHeight: rem(40),
-        }}
-      >
-        {updatedPlanets.map((planet) => {
-          return (
-            <PlanetRow
-              key={planet.id}
-              planet={planet}
-              factionId={factionId}
-              removePlanet={
-                viewOnly
-                  ? undefined
-                  : (planetId) => {
-                      if (!gameId) {
-                        return;
+      {view === "GRID" ? (
+        <div className={styles.planetListGrid}>
+          {updatedPlanets.map((planet) => {
+            return <PlanetDiv key={planet.id} planet={planet} />;
+          })}
+        </div>
+      ) : (
+        <div className={styles.planetList}>
+          {updatedPlanets.map((planet) => {
+            return (
+              <PlanetRow
+                key={planet.id}
+                planet={planet}
+                factionId={factionId}
+                removePlanet={
+                  viewOnly
+                    ? undefined
+                    : (planetId) => {
+                        if (!gameId) {
+                          return;
+                        }
+                        unclaimPlanetAsync(gameId, factionId, planetId);
                       }
-                      unclaimPlanetAsync(gameId, factionId, planetId);
-                    }
-              }
-              opts={{
-                hideAttachButton: viewOnly,
-              }}
-            />
-          );
-        })}
-      </div>
+                }
+                opts={{
+                  hideAttachButton: viewOnly,
+                }}
+              />
+            );
+          })}
+        </div>
+      )}
     </CollapsibleSection>
   );
 }
@@ -169,7 +176,7 @@ function UnclaimedPlanetSection() {
                       }
                       claimPlanetAsync(gameId, factionId, planet.id);
                     }}
-                    size={32}
+                    size={24}
                     forceDirection="row"
                   />
                 )}

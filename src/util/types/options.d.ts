@@ -9,7 +9,13 @@ type Expansion =
   | "TWILIGHTS FALL"
   | "DISCORDANT STARS";
 
-type AppSection = "PLANETS" | "OBJECTIVES" | "TECHS" | "RELICS";
+type AppSection =
+  | "PLANETS"
+  | "OBJECTIVES"
+  | "TECHS"
+  | "RELICS"
+  | "PLANET_STATE"
+  | "STRUCTURES";
 
 type OptionUpdateAction = "SET_OPTION";
 

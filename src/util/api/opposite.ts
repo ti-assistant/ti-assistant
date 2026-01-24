@@ -59,7 +59,7 @@ import { SpeakerTieBreakHandler } from "../model/speakerTieBreak";
 import { UnstartVotingHandler } from "../model/startVoting";
 import { SwapMapTilesHandler } from "../model/swapMapTiles";
 import { UnswapStrategyCardsHandler } from "../model/swapStrategyCards";
-import { ToggleStructureHandler } from "../model/toggleSpaceDock";
+import { ToggleStructureHandler } from "../model/toggleStructure";
 import { PassHandler, UnpassHandler } from "../model/unpass";
 import { UpdateBreakthroughStateHandler } from "../model/updateBreakthroughState";
 import { UpdateLeaderStateHandler } from "../model/updateLeaderState";
@@ -67,7 +67,7 @@ import { UpdatePlanetStateHandler } from "../model/updatePlanetState";
 
 export function getOppositeHandler(
   gameData: StoredGameData,
-  data: GameUpdateData
+  data: GameUpdateData,
 ) {
   switch (data.action) {
     case "ADD_TECH": {
@@ -115,12 +115,12 @@ export function getOppositeHandler(
       };
       return new UnassignStrategyCardHandler(
         gameData,
-        unassignStrategyCardData
+        unassignStrategyCardData,
       );
     }
     case "UNASSIGN_STRATEGY_CARD": {
       throw new Error(
-        "Somehow a UNASSIGN_STRATEGY_CARD action wound up in the log."
+        "Somehow a UNASSIGN_STRATEGY_CARD action wound up in the log.",
       );
     }
     case "CLAIM_PLANET": {

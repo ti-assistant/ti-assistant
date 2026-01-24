@@ -1,11 +1,11 @@
-import { ToggleStructureHandler } from "../model/toggleSpaceDock";
+import { ToggleStructureHandler } from "../model/toggleStructure";
 import dataUpdate from "./dataUpdate";
 
 export function toggleStructure(
   gameId: string,
   planetId: PlanetId,
   structure: "Space Dock" | "PDS",
-  change: "Add" | "Remove"
+  change: "Add" | "Remove",
 ) {
   const data: GameUpdateData = {
     action: "TOGGLE_STRUCTURE",

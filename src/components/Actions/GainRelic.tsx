@@ -14,7 +14,7 @@ import { getGainedRelic } from "../../util/actionLog";
 import { rem } from "../../util/util";
 import FormattedDescription from "../FormattedDescription/FormattedDescription";
 import IconDiv from "../LabeledDiv/IconDiv";
-import RelicPlanetIcon from "../LegendaryPlanetIcon/RelicPlanetIcon";
+import RelicPlanetIcon from "../PlanetIcons/RelicPlanetIcon";
 import { Selector } from "../Selector/Selector";
 import TechResearchSection from "../TechResearchSection/TechResearchSection";
 

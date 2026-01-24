@@ -1,0 +1,73 @@
+.PlanetDiv {
+  position: relative;
+  width: 4.25rem;
+  height: 4.25rem;
+
+  border: 2px solid var(--color);
+  border-color: var(--border-color);
+  border-radius: 100%;
+
+  margin: 0.25rem 0.25rem;
+
+  // isolation: isolate;
+}
+
+.PlanetDivWrapper {
+  // isolation: isolate;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 5.125rem;
+  // margin: 0.25rem 0.5rem;
+}
+
+.StructureDiv {
+  z-index: 2;
+
+  transition:
+    transform 200ms,
+    z-index 0ms;
+}
+
+.PlanetDivWrapper:hover > .StructureDiv {
+  z-index: 4;
+  transform: translateY(calc(1rem + 2px));
+  transition:
+    transform 200ms,
+    z-index 0ms 200ms;
+}
+
+.BottomSection {
+  position: absolute;
+  bottom: 0;
+  width: fit-content;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  border: 2px solid var(--color);
+  border-radius: 0.25rem;
+  background-color: var(--background-color);
+  text-align: center;
+  font-size: 0.6875rem;
+  padding: 0.125rem 0.25rem;
+  font-family: "Myriad Pro";
+  font-weight: bold;
+  letter-spacing: 0.5;
+  white-space: nowrap;
+  gap: 0.25rem;
+}
+
+.FloatingButton {
+  position: absolute;
+  width: 0.875rem;
+  height: 0.875rem;
+  padding: 0.125rem;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+}
