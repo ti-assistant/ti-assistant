@@ -2,12 +2,12 @@ import { CSSProperties } from "react";
 import { useGameId, useOptions, useViewOnly } from "../../context/dataHooks";
 import { useOceans } from "../../context/planetDataHooks";
 import { claimPlanetAsync, unclaimPlanetAsync } from "../../dynamic/api";
-import LegendaryPlanetIcon from "../LegendaryPlanetIcon/LegendaryPlanetIcon";
+import { getRadialPosition } from "../../util/util";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
+import LegendaryPlanetIcon from "../PlanetIcons/LegendaryPlanetIcon";
 import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
 import styles from "./PlanetSummary.module.scss";
-import { getRadialPosition, rem } from "../../util/util";
 
 interface PlanetSummaryProps {
   factionId: FactionId;
@@ -100,7 +100,7 @@ export default function PlanetSummary({
                   /* numOptions= */ 9,
                   /* offset= */ -0.3,
                   /* circleSize= */ 26,
-                  /* size= */ 4
+                  /* size= */ 4,
                 );
                 return (
                   <div

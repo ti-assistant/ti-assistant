@@ -83,7 +83,7 @@ import {
   SwapStrategyCardsHandler,
   UnswapStrategyCardsHandler,
 } from "../model/swapStrategyCards";
-import { ToggleStructureHandler } from "../model/toggleSpaceDock";
+import { ToggleStructureHandler } from "../model/toggleStructure";
 import { PassHandler, UnpassHandler } from "../model/unpass";
 import { UpdateBreakthroughStateHandler } from "../model/updateBreakthroughState";
 import { UpdateLeaderStateHandler } from "../model/updateLeaderState";

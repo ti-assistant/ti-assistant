@@ -17,8 +17,8 @@ import {
 import FlipSVG from "../icons/ui/Flip";
 import HitSVG from "../icons/ui/Hit";
 import SynergySVG from "../icons/ui/Synergy";
+import FullScreenModal from "../modals/FullScreenModal";
 import { hasTech } from "../util/api/techs";
-import { getColorForFaction } from "../util/factions";
 import { leaderTypeString } from "../util/strings";
 import { sortTechs } from "../util/techs";
 import { Optional } from "../util/types/types";
@@ -32,7 +32,6 @@ import LabeledLine from "./LabeledLine/LabeledLine";
 import TechIcon from "./TechIcon/TechIcon";
 import UnitIcon from "./Units/Icons";
 import UnitStats from "./UnitStats/UnitStats";
-import FullScreenModal from "../modals/FullScreenModal";
 
 export function UnitStat({
   name,

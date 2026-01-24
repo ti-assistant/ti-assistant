@@ -47,6 +47,7 @@ interface GamePlanet {
   attachments?: AttachmentId[];
   // Manual adjustments
   spaceDock?: boolean;
+  pds?: number;
 }
 
 type Planet = BasePlanet & GamePlanet;

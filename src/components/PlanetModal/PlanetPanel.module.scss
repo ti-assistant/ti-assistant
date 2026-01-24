@@ -22,9 +22,7 @@
   display: grid;
   gap: 0.5rem;
   grid-template-rows: repeat(2, minmax(0, 1fr));
-  grid-template-columns:
-    repeat(calc(var(--num-columns) - 1), minmax(0, 2fr))
-    3fr;
+  grid-template-columns: repeat(calc(var(--num-columns)), minmax(0, 2fr));
   grid-auto-flow: row;
 
   overflow: hidden;
@@ -55,9 +53,30 @@
   font-size: 0.875rem;
   padding: 0 0.375rem;
 
+  min-height: 2.5rem;
   height: calc(100dvh - 31rem);
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+.planetListGrid {
+  width: 100%;
+  font-size: 0.875rem;
+  padding: 0 0.125rem;
+
+  max-height: calc(100dvh - 31rem);
+  min-height: 2.5rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  row-gap: 0.5rem;
+  column-gap: 0.25rem;
+  justify-content: space-evenly;
+  padding-bottom: 1.125rem;
 }
 
 .planetColumn > .collapsible {

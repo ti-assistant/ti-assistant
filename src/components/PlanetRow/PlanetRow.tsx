@@ -5,7 +5,6 @@ import {
   useAttachments,
   useGameId,
   usePlanet,
-  useTech,
   useViewOnly,
 } from "../../context/dataHooks";
 import { useFactionsWithTech } from "../../context/techDataHooks";
@@ -19,20 +18,17 @@ import CouncilPreserveSVG from "../../icons/attachments/CouncilPreserve";
 import DemilitarizedZoneSVG from "../../icons/attachments/DemilitarizedZone";
 import OrbitalFoundriesSVG from "../../icons/attachments/OrbitalFoundries";
 import TombOfEmphidiaSVG from "../../icons/attachments/TombOfEmphidia";
-import BlueTechSVG from "../../icons/techs/BlueTech";
-import GreenTechSVG from "../../icons/techs/GreenTech";
-import RedTechSVG from "../../icons/techs/RedTech";
-import YellowTechSVG from "../../icons/techs/YellowTech";
 import HitSVG from "../../icons/ui/Hit";
 import { SelectableRow } from "../../SelectableRow";
 import { getColorForFaction } from "../../util/factions";
 import { applyPlanetAttachments } from "../../util/planets";
 import { Optional } from "../../util/types/types";
 import { rem } from "../../util/util";
-import LegendaryPlanetIcon from "../LegendaryPlanetIcon/LegendaryPlanetIcon";
-import RelicPlanetIcon from "../LegendaryPlanetIcon/RelicPlanetIcon";
 import { ModalContent } from "../Modal/Modal";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
+import LegendaryPlanetIcon from "../PlanetIcons/LegendaryPlanetIcon";
+import RelicPlanetIcon from "../PlanetIcons/RelicPlanetIcon";
+import TechPlanetIcon from "../PlanetIcons/TechPlanetIcon";
 import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 import Toggle from "../Toggle/Toggle";
 import UnitIcon from "../Units/Icons";
@@ -222,7 +218,7 @@ export default function PlanetRow({
                 gameId,
                 planet.id,
                 "Space Dock",
-                prevValue ? "Remove" : "Add"
+                prevValue ? "Remove" : "Add",
               )
             }
             disabled={viewOnly}
@@ -305,58 +301,61 @@ interface PlanetAttributesProps {
   ability?: string;
 }
 
-function PlanetAttributes({
+export function getAttributeIcon(
+  attribute: PlanetAttribute,
+  planetName?: string,
+  ability?: string,
+) {
+  switch (attribute) {
+    case "legendary":
+      return <LegendaryPlanetIcon planetName={planetName} ability={ability} />;
+    case "red-skip":
+      return <TechPlanetIcon techType="RED" />;
+    case "yellow-skip":
+      return <TechPlanetIcon techType="YELLOW" />;
+    case "blue-skip":
+      return <TechPlanetIcon techType="BLUE" />;
+    case "green-skip":
+      return <TechPlanetIcon techType="GREEN" />;
+    case "demilitarized":
+      return <DemilitarizedZoneSVG />;
+    case "tomb":
+      return <TombOfEmphidiaSVG />;
+    case "extra-votes":
+      return <CouncilPreserveSVG />;
+    case "infantry":
+      return <ArcaneCitadelSVG />;
+    case "production":
+      return <OrbitalFoundriesSVG />;
+    case "space-cannon":
+      return (
+        <div
+          className="flexRow"
+          style={{
+            gap: 0,
+            width: rem(36),
+            height: rem(22),
+          }}
+        >
+          <HitSVG />
+          <HitSVG />
+          <HitSVG />
+        </div>
+      );
+    case "relic":
+      return <RelicPlanetIcon />;
+    default:
+      return null;
+  }
+}
+
+export function PlanetAttributes({
   planetName,
   attributes,
   ability,
 }: PlanetAttributesProps) {
   if (attributes.length === 0) {
     return null;
-  }
-  function getAttributeIcon(attribute: PlanetAttribute) {
-    switch (attribute) {
-      case "legendary":
-        return (
-          <LegendaryPlanetIcon planetName={planetName} ability={ability} />
-        );
-      case "red-skip":
-        return <RedTechSVG />;
-      case "yellow-skip":
-        return <YellowTechSVG />;
-      case "blue-skip":
-        return <BlueTechSVG />;
-      case "green-skip":
-        return <GreenTechSVG />;
-      case "demilitarized":
-        return <DemilitarizedZoneSVG />;
-      case "tomb":
-        return <TombOfEmphidiaSVG />;
-      case "extra-votes":
-        return <CouncilPreserveSVG />;
-      case "infantry":
-        return <ArcaneCitadelSVG />;
-      case "production":
-        return <OrbitalFoundriesSVG />;
-      case "space-cannon":
-        return (
-          <div
-            className="flexRow"
-            style={{
-              gap: 0,
-              width: rem(36),
-              height: rem(22),
-            }}
-          >
-            <HitSVG />
-            <HitSVG />
-            <HitSVG />
-          </div>
-        );
-      case "relic":
-        return <RelicPlanetIcon />;
-      default:
-        return null;
-    }
   }
 
   return (
@@ -381,7 +380,7 @@ function PlanetAttributes({
               position: "relative",
             }}
           >
-            {getAttributeIcon(attribute)}
+            {getAttributeIcon(attribute, planetName, ability)}
           </div>
         );
       })}
@@ -393,7 +392,7 @@ interface AttachMenuProps {
   planetId: PlanetId;
 }
 
-function AttachMenu({ planetId }: AttachMenuProps) {
+export function AttachMenu({ planetId }: AttachMenuProps) {
   const attachments = useAttachments();
   const planet = usePlanet(planetId);
 

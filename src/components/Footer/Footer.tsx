@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 import { CSSProperties, use, useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { FactionSummary } from "../../FactionSummary";
-import { Loader } from "../../Loader";
 import { ModalContext } from "../../context/contexts";
 import {
   useAllPlanets,
@@ -37,19 +36,14 @@ import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRad
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import GameMap from "../Map/GameMap";
 import ObjectiveModalContent from "../ObjectiveModal/ObjectiveModal";
+import OtherModalContent from "../OtherModal/OtherModal";
+import PlanetModal from "../PlanetModal/PlanetModal";
 import TFCardIcon from "../TFCardIcon/TFCardIcon";
 import TechModalContent from "../TechModal/TechModal";
 import TechSkipIcon from "../TechSkipIcon/TechSkipIcon";
-import ThundersEdgePanel from "../OtherModal/OtherPanel";
 import { Strings } from "../strings";
 import styles from "./Footer.module.scss";
-import PlanetModal from "../PlanetModal/PlanetModal";
-import OtherModalContent from "../OtherModal/OtherModal";
 
-const PlanetPanel = dynamic(() => import("../PlanetModal/PlanetPanel"), {
-  loading: () => <Loader />,
-  ssr: false,
-});
 const FactionPanel = dynamic(() => import("../FactionPanel"), {
   loading: () => (
     <div
@@ -66,7 +60,7 @@ const FactionPanel = dynamic(() => import("../FactionPanel"), {
 
 function shouldBlockSpeakerUpdates(
   phase: Phase,
-  strategyCards: Partial<Record<StrategyCardId, StrategyCard>>
+  strategyCards: Partial<Record<StrategyCardId, StrategyCard>>,
 ) {
   if (phase === "END") {
     return true;
@@ -76,7 +70,7 @@ function shouldBlockSpeakerUpdates(
   }
 
   const selectedCards = Object.values(strategyCards).filter(
-    (card) => !!card.faction
+    (card) => !!card.faction,
   );
 
   return selectedCards.length !== 0;
@@ -86,7 +80,7 @@ function getNumButtons(
   phase: Phase,
   strategyCards: Partial<Record<StrategyCardId, StrategyCard>>,
   options: Options,
-  tyrant: boolean
+  tyrant: boolean,
 ) {
   const hideThundersEdgeModalButton =
     options.expansions.includes("TWILIGHTS FALL") &&
@@ -152,7 +146,7 @@ export default function Footer() {
     }
 
     const selectedCards = Object.values(strategyCards).filter(
-      (card) => !!card.faction
+      (card) => !!card.faction,
     );
 
     return selectedCards.length !== 0;
@@ -356,11 +350,19 @@ export default function Footer() {
         className={styles.UpdateBox}
         innerClass={styles.UpdateBoxContent}
         label={
-          <FormattedMessage
-            id="VjlCY0"
-            description="Text specifying a section that includes update operations."
-            defaultMessage="Update"
-          />
+          viewOnly ? (
+            <FormattedMessage
+              id="Z66nNr"
+              description="Label for group of things you can view."
+              defaultMessage="View"
+            />
+          ) : (
+            <FormattedMessage
+              id="VjlCY0"
+              description="Text specifying a section that includes update operations."
+              defaultMessage="Update"
+            />
+          )
         }
         style={{ "--num-buttons": numButtons } as CSSProperties}
       >
@@ -594,7 +596,7 @@ function MapWrapper() {
   const { openModal } = use(ModalContext);
 
   const orderedFactions = Object.values(factions).sort((a, b) =>
-    a.mapPosition > b.mapPosition ? 1 : -1
+    a.mapPosition > b.mapPosition ? 1 : -1,
   );
 
   const mapString = getMapString(options, orderedFactions.length);
@@ -624,7 +626,7 @@ function MapWrapper() {
                 wormholeNexus={getWormholeNexusSystemNumber(
                   options,
                   planets,
-                  factions
+                  factions,
                 )}
                 mapString={mapString ?? ""}
                 mapStyle={options["map-style"] ?? "standard"}
@@ -633,7 +635,7 @@ function MapWrapper() {
                 hideFracture={!fracturePlanetsOwned(allPlanets)}
               />
             </div>
-          </div>
+          </div>,
         )
       }
     >

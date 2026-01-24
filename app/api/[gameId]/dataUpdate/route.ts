@@ -125,7 +125,7 @@ import { SpeakerTieBreakHandler } from "../../../../src/util/model/speakerTieBre
 import { StartVotingHandler } from "../../../../src/util/model/startVoting";
 import { SwapMapTilesHandler } from "../../../../src/util/model/swapMapTiles";
 import { SwapStrategyCardsHandler } from "../../../../src/util/model/swapStrategyCards";
-import { ToggleStructureHandler } from "../../../../src/util/model/toggleSpaceDock";
+import { ToggleStructureHandler } from "../../../../src/util/model/toggleStructure";
 import { PassHandler, UnpassHandler } from "../../../../src/util/model/unpass";
 import { UpdateBreakthroughStateHandler } from "../../../../src/util/model/updateBreakthroughState";
 import { UpdateLeaderStateHandler } from "../../../../src/util/model/updateLeaderState";
@@ -134,7 +134,7 @@ import { Optional } from "../../../../src/util/types/types";
 
 export async function POST(
   req: Request,
-  { params }: { params: Promise<{ gameId: string }> }
+  { params }: { params: Promise<{ gameId: string }> },
 ) {
   const { gameId } = await params;
 
@@ -187,7 +187,7 @@ export async function POST(
         gameRef,
         timerRef,
         data,
-        gameTime
+        gameTime,
       );
       if (shouldRetry) {
         // Backoff after failures to potentially allow other updates to complete.
@@ -226,7 +226,7 @@ async function updateActionLog(
   gameRef: DocumentReference<DocumentData>,
   t: Transaction,
   handler: Handler,
-  gameTime: number
+  gameTime: number,
 ) {
   const currentTimestampMillis = Date.now();
   const turnBoundary = await t.get(
@@ -234,7 +234,7 @@ async function updateActionLog(
       .collection("actionLog")
       .orderBy("timestampMillis", "desc")
       .where("data.action", "in", TURN_BOUNDARIES)
-      .limit(1)
+      .limit(1),
   );
 
   let timestamp = 0;
@@ -247,7 +247,7 @@ async function updateActionLog(
     gameRef
       .collection("actionLog")
       .orderBy("timestampMillis", "desc")
-      .where("timestampMillis", ">=", timestamp)
+      .where("timestampMillis", ">=", timestamp),
   );
 
   let foundLogEntry = false;
@@ -279,7 +279,7 @@ async function updateActionLog(
         logEntry.timestampMillis = currentTimestampMillis;
         t.update(
           gameRef.collection("actionLog").doc(storedLogEntry.id),
-          logEntry as Record<string, any>
+          logEntry as Record<string, any>,
         );
         foundLogEntry = true;
         return;
@@ -311,7 +311,7 @@ async function updateActionLog(
         logEntry.timestampMillis = currentTimestampMillis;
         t.update(
           gameRef.collection("actionLog").doc(storedLogEntry.id),
-          logEntry as Record<string, any>
+          logEntry as Record<string, any>,
         );
         foundLogEntry = true;
         return;
@@ -333,7 +333,7 @@ function insertLogEntry(
   t: Transaction,
   handler: Handler,
   gameTime: number,
-  timestampMillis: number
+  timestampMillis: number,
 ) {
   const logEntry = handler.getLogEntry();
   logEntry.gameSeconds = gameTime;
@@ -347,14 +347,14 @@ function updateInTransaction(
   gameRef: DocumentReference<DocumentData>,
   timerRef: DocumentReference<DocumentData>,
   data: GameUpdateData & { timestamp: number },
-  gameTime: number
+  gameTime: number,
 ) {
   return db.runTransaction(async (t) => {
     const gameData = await getGameDataInTransaction(gameRef, t);
     gameData.actionLog = await getCurrentTurnLogEntriesInTransaction(
       gameRef,
       t,
-      gameData.state.phase
+      gameData.state.phase,
     );
     const timers = await getTimersInTransaction(timerRef, t);
 

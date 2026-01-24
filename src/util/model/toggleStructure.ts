@@ -1,7 +1,7 @@
 export class ToggleStructureHandler implements Handler {
   constructor(
     public gameData: StoredGameData,
-    public data: ToggleStructureData
+    public data: ToggleStructureData,
   ) {}
 
   validate(): boolean {
@@ -19,8 +19,19 @@ export class ToggleStructureHandler implements Handler {
         const update = this.data.event.change === "Add" ? true : "DELETE";
         updates[`planets.${this.data.event.planetId}.spaceDock`] = update;
         break;
-      case "PDS":
-        return updates;
+      case "PDS": {
+        const numPds =
+          this.gameData.planets[this.data.event.planetId]?.pds ?? 0;
+        let update: number | "DELETE" =
+          this.data.event.change === "Add"
+            ? Math.min(numPds + 1, 2)
+            : numPds - 1;
+        if (update <= 0) {
+          update = "DELETE";
+        }
+        updates[`planets.${this.data.event.planetId}.pds`] = update;
+        break;
+      }
     }
 
     return updates;

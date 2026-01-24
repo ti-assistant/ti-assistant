@@ -24,7 +24,6 @@ function InnerObjectivesPage() {
       className="flexColumn"
       style={{ height: "100%", alignItems: "center" }}
     >
-      {/* <Updater /> */}
       <div
         style={{
           position: "relative",
