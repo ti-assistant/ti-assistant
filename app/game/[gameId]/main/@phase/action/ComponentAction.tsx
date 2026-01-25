@@ -176,7 +176,7 @@ function ComponentSelect({
     )
     .filter(
       (component) =>
-        component.type !== "ABILITY" || component.owner === factionId
+        component.type !== "ABILITY" || component.owner === factionId || component.faction === factionId
     )
     .sort((a, b) => (a.name > b.name ? 1 : -1));
 
