@@ -78,7 +78,7 @@ function canUseBloodPact(currentTurn: ActionLog, factionId: FactionId) {
   }
   const bloodPactUser = getPromissoryTargets(
     currentTurn,
-    "Blood Pact"
+    "Blood Pact",
   )[0] as Optional<FactionId>;
 
   if (bloodPactUser && bloodPactUser !== factionId) {
@@ -90,7 +90,7 @@ function canUseBloodPact(currentTurn: ActionLog, factionId: FactionId) {
 
 function hasCouncilPreserve(
   factionId: FactionId,
-  planets: Partial<Record<PlanetId, Planet>>
+  planets: Partial<Record<PlanetId, Planet>>,
 ) {
   for (const planet of Object.values(planets)) {
     if (
@@ -111,7 +111,7 @@ export function getTargets(
   agendas: Partial<Record<AgendaId, Agenda>>,
   objectives: Partial<Record<ObjectiveId, Objective>>,
   options: Options,
-  intl: IntlShape
+  intl: IntlShape,
 ) {
   if (!agenda) {
     return [];
@@ -165,7 +165,7 @@ export function getTargets(
         .filter(
           (planet) =>
             !planet.attributes.includes("ocean") &&
-            !planet.attributes.includes("space-station")
+            !planet.attributes.includes("space-station"),
         )
         .map((planet) => {
           return { id: planet.id, name: planet.name };
@@ -202,7 +202,7 @@ export function getTargets(
         .filter(
           (planet) =>
             !planet.attributes.includes("ocean") &&
-            !planet.attributes.includes("space-station")
+            !planet.attributes.includes("space-station"),
         )
         .map((planet) => {
           return { id: planet.id, name: planet.name };
@@ -248,7 +248,7 @@ export function translateOutcome(
   objectives: Partial<Record<ObjectiveId, Objective>>,
   agendas: Partial<Record<AgendaId, Agenda>>,
   strategyCards: Partial<Record<StrategyCardId, StrategyCard>>,
-  intl: IntlShape
+  intl: IntlShape,
 ) {
   if (!target || !elect) {
     return undefined;
@@ -312,11 +312,11 @@ export function translateOutcome(
 
 export function canFactionPredict(
   factionId: FactionId,
-  currentTurn: ActionLog
+  currentTurn: ActionLog,
 ) {
   const politicalSecrets = getPromissoryTargets(
     currentTurn,
-    "Political Secret"
+    "Political Secret",
   );
   return !politicalSecrets.includes(factionId);
 }
@@ -326,7 +326,7 @@ export function canFactionVote(
   agendas: Partial<Record<AgendaId, Agenda>>,
   state: GameState,
   currentTurn: ActionLog,
-  leaders: Partial<Record<LeaderId, Leader>>
+  leaders: Partial<Record<LeaderId, Leader>>,
 ) {
   if (faction.id === "Nekro Virus") {
     return false;
@@ -337,14 +337,14 @@ export function canFactionVote(
   }
   const politicalSecrets = getPromissoryTargets(
     currentTurn,
-    "Political Secret"
+    "Political Secret",
   );
   if (politicalSecrets.includes(faction.id)) {
     return false;
   }
   const assassinatedRep = getActionCardTargets(
     currentTurn,
-    "Assassinate Representative"
+    "Assassinate Representative",
   )[0];
   if (assassinatedRep === faction.id) {
     return false;
@@ -377,7 +377,7 @@ export function computeRemainingVotes(
   state: GameState,
   currentPhasePrevious: ActionLog,
   leaders: Partial<Record<LeaderId, Leader>>,
-  techs: Techs
+  techs: Techs,
 ) {
   const representativeGovernment = agendas["Representative Government"];
 
@@ -476,7 +476,7 @@ export function computeRemainingVotes(
   }
   const hasPredictiveIntelligence = hasTech(
     faction,
-    techs["Predictive Intelligence"]
+    techs["Predictive Intelligence"],
   );
   if (hasPredictiveIntelligence) {
     extraVotes += 3;
@@ -594,7 +594,7 @@ export default function VoteBlock({
                 objectives,
                 agendas,
                 strategyCards,
-                intl
+                intl,
               )}
             </div>
           );
@@ -739,7 +739,7 @@ function PredictionSection({
     agendas,
     objectives,
     options,
-    intl
+    intl,
   ).filter((target) => target.id !== "Abstain");
 
   if (!canFactionPredict(factionId, currentTurn)) {
@@ -838,6 +838,9 @@ function VotingSection({
   const currentTurn = getCurrentTurnLogEntries(actionLog);
   const currentPhase = getCurrentPhaseLogEntries(actionLog);
 
+  const representativeGovernmentPassed =
+    agendas["Representative Government"]?.passed;
+
   const faction = factions[factionId];
 
   if (!faction) {
@@ -847,7 +850,7 @@ function VotingSection({
   function castVotesLocal(
     target: Optional<string>,
     votes: number,
-    extraVotes: number
+    extraVotes: number,
   ) {
     if (!gameId) {
       return;
@@ -868,7 +871,7 @@ function VotingSection({
     agendas,
     objectives,
     options,
-    intl
+    intl,
   );
   const factionVotes = getFactionVotes(currentTurn, factionId);
 
@@ -885,14 +888,14 @@ function VotingSection({
     state,
     getCurrentPhasePreviousLogEntries(actionLog ?? []),
     leaders,
-    techs
+    techs,
   );
 
   const mawOfWorlds = relics["Maw of Worlds"];
   if (mawOfWorlds && mawOfWorlds.owner === factionId) {
     const mawEvent: Optional<MawOfWorldsEvent> = getPlayedRelic(
       currentPhase,
-      "Maw of Worlds"
+      "Maw of Worlds",
     ) as Optional<MawOfWorldsEvent>;
     if (mawEvent) {
       influence = 0;
@@ -901,20 +904,20 @@ function VotingSection({
   let castExtraVotes = factionVotes?.extraVotes ?? 0;
   const usingPredictive = getActionCardTargets(
     currentTurn,
-    "Predictive Intelligence"
+    "Predictive Intelligence",
   ) as FactionId[];
   const currentCouncilor = getActionCardTargets(
     currentTurn,
-    "Distinguished Councilor"
+    "Distinguished Councilor",
   )[0] as Optional<FactionId>;
   // Technically not an action card, but easiest to use as this.
   const councilPreservePlayer = getActionCardTargets(
     currentTurn,
-    "Council Preserve"
+    "Council Preserve",
   )[0] as Optional<FactionId>;
   const bloodPactUser = getPromissoryTargets(
     currentTurn,
-    "Blood Pact"
+    "Blood Pact",
   )[0] as Optional<FactionId>;
   if (factionId === bloodPactUser) {
     castExtraVotes += 4;
@@ -930,7 +933,11 @@ function VotingSection({
   }
   switch (factionId) {
     case "Argent Flight":
-      if (factionVotes && factionVotes.votes > 0) {
+      if (
+        factionVotes &&
+        factionVotes.votes > 0 &&
+        !representativeGovernmentPassed
+      ) {
         castExtraVotes += Object.keys(factions).length;
       }
       break;
@@ -988,7 +995,7 @@ function VotingSection({
               alignItems: "flex-start",
             }}
           >
-            {factionId === "Argent Flight"
+            {factionId === "Argent Flight" && !representativeGovernmentPassed
               ? `+${
                   factionVotes.votes > 0 ? Object.keys(factions).length : 0
                 } votes from Zeal`
@@ -1023,13 +1030,13 @@ function VotingSection({
                     unplayActionCardAsync(
                       gameId,
                       "Predictive Intelligence",
-                      factionId
+                      factionId,
                     );
                   } else {
                     playActionCardAsync(
                       gameId,
                       "Predictive Intelligence",
-                      factionId
+                      factionId,
                     );
                   }
                 }}
@@ -1051,13 +1058,13 @@ function VotingSection({
                       unplayActionCardAsync(
                         gameId,
                         "Council Preserve",
-                        factionId
+                        factionId,
                       );
                     } else {
                       playActionCardAsync(
                         gameId,
                         "Council Preserve",
-                        factionId
+                        factionId,
                       );
                     }
                   }}
@@ -1083,13 +1090,13 @@ function VotingSection({
                     unplayActionCardAsync(
                       gameId,
                       "Distinguished Councilor",
-                      factionId
+                      factionId,
                     );
                   } else {
                     playActionCardAsync(
                       gameId,
                       "Distinguished Councilor",
-                      factionId
+                      factionId,
                     );
                   }
                 }}
@@ -1119,7 +1126,7 @@ function VotingSection({
                     castVotesLocal(
                       factionVotes.target,
                       factionVotes.votes,
-                      votes
+                      votes,
                     );
                   }}
                   viewOnly={viewOnly}
@@ -1170,13 +1177,13 @@ function AvailableVotes({
     state,
     getCurrentPhasePreviousLogEntries(actionLog),
     leaders,
-    techs
+    techs,
   );
   const mawOfWorlds = relics["Maw of Worlds"];
   if (mawOfWorlds && mawOfWorlds.owner === factionId) {
     const mawEvent: Optional<MawOfWorldsEvent> = getPlayedRelic(
       currentPhase,
-      "Maw of Worlds"
+      "Maw of Worlds",
     ) as Optional<MawOfWorldsEvent>;
     if (mawEvent) {
       influence = 0;

@@ -52,7 +52,7 @@ function canScoreObjective(
   factionId: FactionId,
   objectiveId: ObjectiveId,
   objectives: Partial<Record<ObjectiveId, Objective>>,
-  currentTurn: ActionLog
+  currentTurn: ActionLog,
 ) {
   const scored = getScoredObjectives(currentTurn, factionId);
   if (scored.includes(objectiveId)) {
@@ -116,7 +116,15 @@ export default function AgendaDetails({
 
   const agenda = agendaId ? (agendas ?? {})[agendaId] : undefined;
 
-  const votes = computeVotes(agenda, currentTurn, Object.keys(factions).length);
+  const representativeGovernmentPassed =
+    agendas["Representative Government"]?.passed;
+
+  const votes = computeVotes(
+    agenda,
+    currentTurn,
+    Object.keys(factions).length,
+    !!representativeGovernmentPassed,
+  );
   const maxVotes = Object.values(votes).reduce((maxVotes, voteCount) => {
     return Math.max(maxVotes, voteCount);
   }, 0);
@@ -175,7 +183,7 @@ export default function AgendaDetails({
       driveTheDebate,
       "Drive the Debate",
       objectives ?? {},
-      currentTurn
+      currentTurn,
     );
     if (canScoreDrive) {
       const scored = getScoredObjectives(currentTurn, driveTheDebate);
@@ -260,7 +268,7 @@ export default function AgendaDetails({
       const availableObjectives = Object.values(objectives ?? {}).filter(
         (objective) => {
           return objective.type === type && !objective.selected;
-        }
+        },
       );
       const revealedObjective = getRevealedObjectives(currentTurn)[0];
       const revealedObjectiveObj = revealedObjective
@@ -315,7 +323,7 @@ export default function AgendaDetails({
       const minVPs = Object.values(factions ?? {}).reduce((minVal, faction) => {
         return Math.min(
           minVal,
-          computeVPs(factions ?? {}, faction.id, objectives ?? {})
+          computeVPs(factions ?? {}, faction.id, objectives ?? {}),
         );
       }, Number.MAX_SAFE_INTEGER);
       const availableFactions = Object.values(factions ?? {}).filter(
@@ -323,7 +331,7 @@ export default function AgendaDetails({
           return (
             computeVPs(factions ?? {}, faction.id, objectives ?? {}) === minVPs
           );
-        }
+        },
       );
       const selectedFaction = getNewOwner(currentTurn, selectedOutcome);
       agendaSelection = (
@@ -354,7 +362,7 @@ export default function AgendaDetails({
               unclaimPlanetAsync(
                 gameId,
                 factionId,
-                selectedOutcome as PlanetId
+                selectedOutcome as PlanetId,
               );
             }
           }}
@@ -369,7 +377,7 @@ export default function AgendaDetails({
       }
       const gainedRelic = getGainedRelic(currentTurn);
       const unownedRelics = Object.values(relics ?? {}).filter(
-        (relic) => !relic.owner || relic.id === gainedRelic
+        (relic) => !relic.owner || relic.id === gainedRelic,
       );
       agendaSelection = (
         <Selector

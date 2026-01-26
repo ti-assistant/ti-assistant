@@ -79,7 +79,7 @@ export default function FactionAgendaPhase({
           factionId,
           numerical,
           factionVotes?.extraVotes ?? 0,
-          factionVotes?.target
+          factionVotes?.target,
         );
         element.innerText = numerical.toString();
       }
@@ -173,6 +173,8 @@ export default function FactionAgendaPhase({
   if (localAgenda && eligibleOutcomes && eligibleOutcomes !== "None") {
     localAgenda.elect = eligibleOutcomes;
   }
+  const representativeGovernmentPassed =
+    agendas["Representative Government"]?.passed;
   const targets = getTargets(
     localAgenda,
     factions,
@@ -181,12 +183,13 @@ export default function FactionAgendaPhase({
     agendas,
     objectives,
     options,
-    intl
+    intl,
   );
   const totalVotes = computeVotes(
     currentAgenda,
     currentTurn,
-    Object.keys(factions).length
+    Object.keys(factions).length,
+    !!representativeGovernmentPassed,
   );
   const maxVotes = Object.values(totalVotes).reduce((maxVotes, voteCount) => {
     return Math.max(maxVotes, voteCount);
@@ -210,7 +213,7 @@ export default function FactionAgendaPhase({
     state,
     getCurrentPhasePreviousLogEntries(actionLog),
     leaders,
-    techs
+    techs,
   );
   const agendaNum = state.agendaNum ?? 1;
   if (agendaNum > 2) {
@@ -390,7 +393,7 @@ export default function FactionAgendaPhase({
                     paddingLeft: rem(12),
                   }}
                 >
-                  {factionVotes?.votes ?? 0 > 0 ? (
+                  {(factionVotes?.votes ?? 0 > 0) ? (
                     <div
                       className="arrowDown"
                       onClick={() =>
@@ -399,7 +402,7 @@ export default function FactionAgendaPhase({
                           factionId,
                           (factionVotes?.votes ?? 0) - 1,
                           factionVotes?.extraVotes ?? 0,
-                          factionVotes?.target
+                          factionVotes?.target,
                         )
                       }
                     ></div>
@@ -432,7 +435,7 @@ export default function FactionAgendaPhase({
                           factionId,
                           (factionVotes?.votes ?? 0) + 1,
                           factionVotes?.extraVotes ?? 0,
-                          factionVotes?.target
+                          factionVotes?.target,
                         )
                       }
                     ></div>

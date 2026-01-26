@@ -64,21 +64,22 @@ import WhenAnAgendaIsRevealed from "./components/WhenAnAgendaIsRevealed";
 export function computeVotes(
   agenda: Optional<Agenda>,
   currentTurn: ActionLog,
-  numFactions: number
+  numFactions: number,
+  representativeGovernmentPassed: boolean,
 ) {
   const currentCouncilor = getActionCardTargets(
     currentTurn,
-    "Distinguished Councilor"
+    "Distinguished Councilor",
   )[0] as Optional<FactionId>;
   const councilPreservePlayer = getActionCardTargets(
     currentTurn,
-    "Council Preserve"
+    "Council Preserve",
   )[0] as Optional<FactionId>;
   const bloodPactUsed =
     getPromissoryTargets(currentTurn, "Blood Pact").length > 0;
   const usingPredictive = getActionCardTargets(
     currentTurn,
-    "Predictive Intelligence"
+    "Predictive Intelligence",
   ) as FactionId[];
   const castVotes: { [key: string]: number } =
     agenda && agenda.elect === "For/Against" ? { For: 0, Against: 0 } : {};
@@ -104,7 +105,10 @@ export function computeVotes(
       if (usingPredictive.includes(voteEvent.faction)) {
         votes += 3;
       }
-      if (voteEvent.faction === "Argent Flight") {
+      if (
+        voteEvent.faction === "Argent Flight" &&
+        !representativeGovernmentPassed
+      ) {
         votes += numFactions;
       }
       castVotes[voteEvent.target] = votes;
@@ -125,14 +129,17 @@ export function computeVotes(
       }
       return 1;
     })
-    .reduce((obj, key) => {
-      const votes = castVotes[key];
-      if (!votes) {
+    .reduce(
+      (obj, key) => {
+        const votes = castVotes[key];
+        if (!votes) {
+          return obj;
+        }
+        obj[key] = votes;
         return obj;
-      }
-      obj[key] = votes;
-      return obj;
-    }, {} as { [key: string]: number });
+      },
+      {} as { [key: string]: number },
+    );
   return orderedVotes;
 }
 
@@ -158,7 +165,7 @@ function AgendaSteps() {
 
   let ancientBurialSites = getActionCardTargets(
     currentTurn,
-    "Ancient Burial Sites"
+    "Ancient Burial Sites",
   )[0];
   if (ancientBurialSites === "None") {
     ancientBurialSites = undefined;
@@ -250,13 +257,13 @@ function AgendaSteps() {
                         playActionCardAsync(
                           gameId,
                           "Ancient Burial Sites",
-                          factionId
+                          factionId,
                         );
                       } else {
                         unplayActionCardAsync(
                           gameId,
                           "Ancient Burial Sites",
-                          factionId
+                          factionId,
                         );
                       }
                     }}
@@ -304,7 +311,7 @@ function DictatePolicy({}) {
   }).length;
   const currentDictators = getObjectiveScorers(
     currentTurn,
-    "Dictate Policy"
+    "Dictate Policy",
   ) as FactionId[];
   const dictatePolicy = (objectives ?? {})["Dictate Policy"];
   const possibleDictators = new Set(currentDictators);
@@ -353,7 +360,7 @@ function DictatePolicy({}) {
           borderColor={getFactionColor(
             currentDictators[0]
               ? (factions ?? {})[currentDictators[0]]
-              : undefined
+              : undefined,
           )}
           factions={orderedDictators}
           selectedFaction={currentDictators[0] as Optional<FactionId>}
@@ -454,10 +461,14 @@ export default function AgendaPhase() {
     currentAgenda = agendas[activeAgenda];
   }
 
+  const representativeGovernmentPassed =
+    agendas["Representative Government"]?.passed;
+
   const votes = computeVotes(
     currentAgenda,
     currentTurn,
-    Object.keys(factions).length
+    Object.keys(factions).length,
+    !!representativeGovernmentPassed,
   );
   const maxVotes = Object.values(votes).reduce((maxVotes, voteCount) => {
     return Math.max(maxVotes, voteCount);
@@ -487,7 +498,7 @@ export default function AgendaPhase() {
     agendas,
     objectives,
     options,
-    intl
+    intl,
   );
 
   function selectSpeakerTieBreak(tieBreak: Optional<string>) {

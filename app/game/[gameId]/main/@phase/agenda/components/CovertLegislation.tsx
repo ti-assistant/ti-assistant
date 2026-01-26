@@ -96,7 +96,15 @@ function RevealAgenda() {
   }
   const currentAgenda = agendas[activeAgenda];
 
-  const votes = computeVotes(currentAgenda, currentTurn, numFactions);
+  const representativeGovernmentPassed =
+    agendas["Representative Government"]?.passed;
+
+  const votes = computeVotes(
+    currentAgenda,
+    currentTurn,
+    numFactions,
+    !!representativeGovernmentPassed,
+  );
   const maxVotes = Object.values(votes).reduce((maxVotes, voteCount) => {
     return Math.max(maxVotes, voteCount);
   }, 0);
@@ -117,7 +125,7 @@ function RevealAgenda() {
 
   const eligibleOutcomes = getSelectedEligibleOutcomes(currentTurn);
   const possibleSubAgendas = Object.values(agendas ?? {}).filter(
-    (agenda) => agenda.elect === eligibleOutcomes
+    (agenda) => agenda.elect === eligibleOutcomes,
   );
   const selectedSubAgenda = getSelectedSubAgenda(currentTurn);
   const subAgenda = selectedSubAgenda ? agendas[selectedSubAgenda] : undefined;

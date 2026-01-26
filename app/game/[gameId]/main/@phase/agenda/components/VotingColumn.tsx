@@ -171,10 +171,14 @@ function SpeakerTieBreak({ speaker }: { speaker: FactionId }) {
     localAgenda.elect = eligibleOutcomes;
   }
 
+  const representativeGovernmentPassed =
+    agendas["Representative Government"]?.passed;
+
   const votes = computeVotes(
     currentAgenda,
     currentTurn,
-    objectKeys(factions).length
+    objectKeys(factions).length,
+    !!representativeGovernmentPassed,
   );
   const maxVotes = Object.values(votes).reduce((maxVotes, voteCount) => {
     return Math.max(maxVotes, voteCount);
@@ -200,7 +204,7 @@ function SpeakerTieBreak({ speaker }: { speaker: FactionId }) {
     agendas,
     objectives,
     options,
-    intl
+    intl,
   );
 
   let items = selectedTargets.length;
