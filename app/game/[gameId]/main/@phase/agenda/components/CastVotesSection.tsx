@@ -81,6 +81,9 @@ export function CastVotesSection({
     localAgenda.elect = eligibleOutcomes;
   }
 
+  const representativeGovernmentPassed =
+    agendas["Representative Government"]?.passed;
+
   let totalVotes = 0;
   for (const faction of Object.values(factions)) {
     if (
@@ -89,7 +92,7 @@ export function CastVotesSection({
         agendas,
         state,
         getCurrentTurnLogEntries(actionLog),
-        leaders
+        leaders,
       )
     ) {
       continue;
@@ -104,7 +107,7 @@ export function CastVotesSection({
       state,
       getCurrentPhasePreviousLogEntries(actionLog),
       leaders,
-      techs
+      techs,
     );
     totalVotes += factionVotes.influence;
     totalVotes += factionVotes.extraVotes;
@@ -113,7 +116,8 @@ export function CastVotesSection({
   const votes = computeVotes(
     currentAgenda,
     currentTurn,
-    objectKeys(factions).length
+    objectKeys(factions).length,
+    !!representativeGovernmentPassed,
   );
   const maxVotes = Object.values(votes).reduce((maxVotes, voteCount) => {
     return Math.max(maxVotes, voteCount);
@@ -136,7 +140,7 @@ export function CastVotesSection({
 
   function getSelectedOutcome(
     selectedTargets: string[],
-    currentTurn: ActionLog
+    currentTurn: ActionLog,
   ) {
     if (selectedTargets.length === 1) {
       return selectedTargets[0];
@@ -199,7 +203,7 @@ export function CastVotesSection({
               objectives,
               agendas,
               strategyCards,
-              intl
+              intl,
             );
             return (
               <div key={target}>
@@ -231,7 +235,7 @@ export function CastVotesSection({
                   objectives,
                   agendas,
                   strategyCards,
-                  intl
+                  intl,
                 ),
               }}
             />
