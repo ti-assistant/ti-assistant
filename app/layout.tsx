@@ -25,7 +25,7 @@ export const viewport: Viewport = {
   colorScheme: "dark",
 };
 
-const SUPPORTED_LOCALES = ["en", "de"];
+const SUPPORTED_LOCALES = ["en", "de", "fr"];
 
 export default async function RootLayout({ children }: PropsWithChildren) {
   const locale = await getLocale();
