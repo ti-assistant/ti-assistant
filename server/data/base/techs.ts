@@ -14,7 +14,7 @@ function buildBaseTech(tech: BaseTech): BaseTech {
 }
 
 export default function getBaseTechs(
-  intl: IntlShape
+  intl: IntlShape,
 ): Record<BaseGame.TechId, BaseTech> {
   return {
     "Advanced Carrier II": buildBaseTech({
@@ -47,7 +47,7 @@ export default function getBaseTechs(
           defaultMessage:
             "Your ships can move into and through asteroid fields.{br}When other players' units use SPACE CANNON against your units, apply -1 to the result of each die roll.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "BASE",
       id: "Antimass Deflectors",
@@ -122,7 +122,7 @@ export default function getBaseTechs(
           defaultMessage:
             "Other players cannot activate asteroid fields that contain 1 or more of your ships.{br}At the start of your turn during the action phase, you may produce 1 unit in a system that contains at least 1 of your units that has PRODUCTION.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "BASE",
       faction: "Clan of Saar",
@@ -276,7 +276,7 @@ export default function getBaseTechs(
           defaultMessage:
             'After a round of space combat, you may destroy this unit to destroy up to 2 ships in this system.{br}"Direct Hit" cards are no longer effective against this type of ship.',
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "BASE",
       faction: "Sardakk N'orr",
@@ -578,7 +578,7 @@ export default function getBaseTechs(
           defaultMessage:
             "During your tactical actions, if you do not control Mecatol Rex, treat its systems as if it has both an α and β wormhole.{br}ACTION: If you control Mecatol Rex, exhaust this card to place 1 infantry from your reinforcements on Mecatol Rex.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "BASE",
       faction: "Winnu",
@@ -670,7 +670,7 @@ export default function getBaseTechs(
               defaultMessage:
                 "When any player activates a system that contains 1 or more of your structures, place 1 infantry from your reinforcements with each of those structures.{br}At the start of ground combat on a planet that contains 1 or more of your structures, produce 1 hit and assign it to 1 of your opponent's ground forces.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
           expansion: "CODEX FOUR",
           name: intl.formatMessage({
@@ -709,7 +709,7 @@ export default function getBaseTechs(
           defaultMessage:
             "Your ships can move into supernovas.{br}After 1 or more of your units use PRODUCTION in a system that either contains a war sun or is adjacent to a supernova, gain 1 trade good.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "BASE",
       faction: "Embers of Muaat",
@@ -728,7 +728,7 @@ export default function getBaseTechs(
               defaultMessage:
                 "Your ships can move into supernovas.{br}Each supernova that contains 1 or more of your units gains the PRODUCTION 5 ability as if it were one of your units.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
           expansion: "CODEX ONE",
           name: intl.formatMessage({
@@ -982,7 +982,7 @@ export default function getBaseTechs(
           defaultMessage:
             "This unit's PRODUCTION value is equal to 4 more than the resource value of this planet.{br}Up to 3 fighters in this system do not count against your ships' capacity.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "BASE",
       id: "Space Dock II",
@@ -1224,11 +1224,11 @@ export default function getBaseTechs(
               defaultMessage:
                 "Double the hits produced by your units' BOMBARDMENT and ground combat rolls.{br}Exhaust each planet you use BOMBARDMENT against.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
           expansion: "CODEX FOUR",
           name: intl.formatMessage({
-            id: "Techs.X-89 Bacterial Weapon.Tech",
+            id: "Techs.X-89 Bacterial Weapon.Title",
             description: "Title of Tech: X-89 Bacterial Weapon",
             defaultMessage: "X-89 Bacterial Weapon",
           }),

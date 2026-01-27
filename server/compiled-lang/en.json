@@ -6892,7 +6892,7 @@
   "Crimson Rebellion.Tech Choice": [
     {
       "type": 0,
-      "value": "Choose one red or blue technology that has no prerequisites."
+      "value": "Choose one blue or red technology with no prerequisites."
     }
   ],
   "Crimson Rebellion.Techs.Exile II.Description": [
@@ -10064,7 +10064,7 @@
   "Last Bastion.Tech Choice": [
     {
       "type": 0,
-      "value": "Choose one blue or yellow technology that has no prerequisites."
+      "value": "Choose 1 blue or yellow technology with no prerequisites."
     }
   ],
   "Last Bastion.Techs.Proxima Targeting VI.Description": [
@@ -13163,6 +13163,12 @@
       "value": "count"
     }
   ],
+  "PXA3op": [
+    {
+      "type": 0,
+      "value": "Track"
+    }
+  ],
   "Phase.Action": [
     {
       "type": 0,
@@ -13656,7 +13662,7 @@
   "Ral Nel Consortium.Tech Choice": [
     {
       "type": 0,
-      "value": "Choose one green or red technology that has no prerequisites."
+      "value": "Choose 1 green or red technology with no prerequisites."
     }
   ],
   "Ral Nel Consortium.Techs.Linkship II.Description": [
@@ -18905,12 +18911,6 @@
       "value": "X-89 Bacterial Weapon Ω"
     }
   ],
-  "Techs.X-89 Bacterial Weapon.Tech": [
-    {
-      "type": 0,
-      "value": "X-89 Bacterial Weapon"
-    }
-  ],
   "Techs.X-89 Bacterial Weapon.Title": [
     {
       "type": 0,
@@ -19579,6 +19579,16 @@
     {
       "type": 0,
       "value": "Votes"
+    }
+  ],
+  "VZ+RJH": [
+    {
+      "type": 0,
+      "value": "Programming: "
+    },
+    {
+      "type": 1,
+      "value": "name"
     }
   ],
   "VjlCY0": [
@@ -21007,6 +21017,12 @@
       "value": "Y'sia Y'ssrila"
     }
   ],
+  "Z66nNr": [
+    {
+      "type": 0,
+      "value": "View"
+    }
+  ],
   "Z6gLCK": [
     {
       "type": 0,
@@ -21383,6 +21399,32 @@
       "value": "Hyperspace"
     }
   ],
+  "i9uwBj": [
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Paradigm"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Paradigms"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
   "iFF5UN": [
     {
       "type": 0,
@@ -21455,6 +21497,12 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "count"
+    }
+  ],
+  "kGGZS+": [
+    {
+      "type": 0,
+      "value": "Cards"
     }
   ],
   "knYKVl": [
@@ -21974,6 +22022,32 @@
     {
       "type": 0,
       "value": "Active Player"
+    }
+  ],
+  "vi7bc7": [
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Genome"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Genomes"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
   "vsuOf1": [

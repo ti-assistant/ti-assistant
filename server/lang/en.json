@@ -6415,6 +6415,10 @@
     "defaultMessage": "Defense Ranking: {val} of {count}",
     "description": "Statistic ranking how defensive a faction is."
   },
+  "PXA3op": {
+    "defaultMessage": "Track",
+    "description": "Label for a section where users can decide what information to track."
+  },
   "Phase.Action": {
     "defaultMessage": "Action",
     "description": "Phase title for Action phase."
@@ -9099,10 +9103,6 @@
     "defaultMessage": "X-89 Bacterial Weapon Ω",
     "description": "Title of Tech: X-89 Bacterial Weapon Ω"
   },
-  "Techs.X-89 Bacterial Weapon.Tech": {
-    "defaultMessage": "X-89 Bacterial Weapon",
-    "description": "Title of Tech: X-89 Bacterial Weapon"
-  },
   "Techs.X-89 Bacterial Weapon.Title": {
     "defaultMessage": "X-89 Bacterial Weapon",
     "description": "Title of Tech: X-89 Bacterial Weapon"
@@ -10406,6 +10406,10 @@
   "jgVoqe": {
     "defaultMessage": "{count} {count, plural, one {Carrier} other {Carriers}}",
     "description": "A number of Carrier units."
+  },
+  "kGGZS+": {
+    "defaultMessage": "Cards",
+    "description": "Cards."
   },
   "knYKVl": {
     "defaultMessage": "Codex II",

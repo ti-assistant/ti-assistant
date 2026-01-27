@@ -2187,7 +2187,19 @@ export default function SetupPage({
                 selected={!options.hide.has("TECHS")}
                 toggleFn={() => toggleHide(!options.hide.has("TECHS"), "TECHS")}
               >
-                {options.expansions.has("TWILIGHTS FALL") ? "Cards" : "Techs"}
+                {options.expansions.has("TWILIGHTS FALL") ? (
+                  <FormattedMessage
+                    id="kGGZS+"
+                    description="Cards."
+                    defaultMessage="Cards"
+                  />
+                ) : (
+                  <FormattedMessage
+                    id="ys7uwX"
+                    description="Shortened version of technologies."
+                    defaultMessage="Techs"
+                  />
+                )}
               </Toggle>
               <Toggle
                 selected={!options.hide.has("PLANETS")}
@@ -2195,7 +2207,11 @@ export default function SetupPage({
                   toggleHide(!options.hide.has("PLANETS"), "PLANETS")
                 }
               >
-                Planets
+                <FormattedMessage
+                  id="1fNqTf"
+                  description="Planets."
+                  defaultMessage="Planets"
+                />
               </Toggle>
               <Toggle
                 selected={!options.hide.has("OBJECTIVES")}
@@ -2203,7 +2219,11 @@ export default function SetupPage({
                   toggleHide(!options.hide.has("OBJECTIVES"), "OBJECTIVES")
                 }
               >
-                Objectives
+                <FormattedMessage
+                  id="5Bl4Ek"
+                  description="Cards that define how to score victory points."
+                  defaultMessage="Objectives"
+                />
               </Toggle>
               <Toggle
                 selected={!options.hide.has("RELICS")}
@@ -2211,7 +2231,11 @@ export default function SetupPage({
                   toggleHide(!options.hide.has("RELICS"), "RELICS")
                 }
               >
-                Relics
+                <FormattedMessage
+                  id="pPpzkR"
+                  description="The title of relic cards."
+                  defaultMessage="Relics"
+                />
               </Toggle>
             </div>
           </LabeledDiv>
@@ -2394,10 +2418,16 @@ export default function SetupPage({
                 </button>
               </div>
             </LabeledDiv>
-
-            {/* </div> */}
           </div>
-          <LabeledDiv label="Track">
+          <LabeledDiv
+            label={
+              <FormattedMessage
+                id="PXA3op"
+                description="Label for a section where users can decide what information to track."
+                defaultMessage="Track"
+              />
+            }
+          >
             <div
               className="flexRow"
               style={{ gridArea: "trac", flexWrap: "wrap" }}
