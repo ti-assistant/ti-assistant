@@ -3,92 +3,14 @@ import { getTechs } from "../../../server/data/techs";
 import { getTechTypeColor } from "../../util/techs";
 import { Optional } from "../../util/types/types";
 import styles from "./FormattedDescription.module.scss";
+import { KEYWORDS_LIST } from "./keywords";
+import { ABILITY_LIST } from "./abilities";
+import { TECH_MAPPING } from "./techs";
 
-const TECH_REGEX_LIST = [
-  // Techs
-  /Neural Motivator/gi,
-  /Sarween Tools/gi,
-  /Plasma Scoring/gi,
-];
-
-const KEYWORDS_REGEX_LIST = [
-  // ACTION
-  /ACTION:/gi,
-  /AKTION:/gi,
-  // DEPLOY
-  /DEPLOY:/gi,
-  /EINSATZ:/gi,
-  // UNLOCK
-  /UNLOCK:/gi,
-  // For
-  // Against
-  /For:/gi,
-  /Against:/gi,
-];
-
-const ABILITY_REGEX_LIST = [
-  // PRODUCTION
-  /PRODUCTION(?: [1-9]| X)?/gi,
-  /PRODUKTION(?: [1-9]| X)?/gi,
-  // ANTI-FIGHTER BARRAGE
-  /ANTI-FIGHTER BARRAGE(?: [1-9] \(x[1-9]\))?/gi,
-  // BOMBARDMENT
-  /BOMBARDMENT(?: [1-9] \(x[1-9]\))?/,
-  /BOMBARDEMENT(?: [1-9] \(x[1-9]\))?/gi,
-  // SPACE CANNON
-  /SPACE CANNON(?: [1-9](?: \(x[1-9]\))?)?/gi,
-  /WELTRAUMKANONE(?: [1-9](?: \(x[1-9]\))?)?/gi,
-  // SUSTAIN DAMAGE
-  /SUSTAIN DAMAGE/gi,
-  /SCHADENSRESISTENZ/gi,
-  // PLANETARY SHIELD
-  /PLANETARY SHIELD/gi,
-  /PLANETARER SCHILD/gi,
-  // Unit values
-  /MOVE/gi,
-  /COMBAT/gi,
-  /CAPACITY/gi,
-  /COST/gi,
-  // Faction specific keywords
-  /MITOSIS/gi,
-  /ZELLTEILUNG/gi,
-  /AWAKEN/gi,
-  /COALESCENCE/gi,
-  /ERWECKEN/gi,
-  /STAR FORGE/gi,
-  /STERNENSCHMIEDE/gi,
-  /ORBITAL DROP/gi,
-  /ORBITALE LANDUNG/gi,
-  /PILLAGE/gi,
-  /PLÜNDERN/gi,
-  /TELEPATHIC/gi,
-  /TELEPATHIE/gi,
-  /TECHNOLOGICAL SINGULARITY/gi,
-  /TECHNOLOGISCHE SINGULARITÄT/gi,
-  /FRAGILE/gi,
-  /ZERBRECHLICH/gi,
-  /INDOCTRINATION/gi,
-  /MISSIONIEREN/gi,
-  /SCHEMING/gi,
-  /STALL TACTICS/gi,
-  /VERZÖGERUNGSTAKTIK/gi,
-  /FABRICATION/gi,
-  /BLACK MARKET FORGERY/gi,
-  // Tech specific keywords
-  /DARK ENERGY TAP/gi,
-  /X-89 BACTERIAL WEAPON/gi,
-  // DS Faction specific keywords
-  /RALLY TO THE CAUSE/gi,
-  /RECYCLED MATERIALS/gi,
-  /AUTONETIC MEMORY/gi,
-  // Other
-  /SYNERGY/gi,
-];
-
-const FULL_REGEX_LIST = [
-  ...KEYWORDS_REGEX_LIST,
-  ...ABILITY_REGEX_LIST,
-  ...TECH_REGEX_LIST,
+const FULL_LIST = [
+  ...KEYWORDS_LIST,
+  ...ABILITY_LIST,
+  ...Object.keys(TECH_MAPPING),
 ];
 
 export default function FormattedDescription({
@@ -102,22 +24,10 @@ export default function FormattedDescription({
     return null;
   }
   const sections = description.split("\n\n");
-  const abilityRegex = new RegExp(
-    `(${ABILITY_REGEX_LIST.map((exp) => exp.source).join("|")})`,
-    "g"
-  );
-  const keywordRegex = new RegExp(
-    `${KEYWORDS_REGEX_LIST.map((exp) => exp.source).join("|")}`,
-    "g"
-  );
-  const techRegex = new RegExp(
-    `(${TECH_REGEX_LIST.map((exp) => exp.source).join("|")})`,
-    "g"
-  );
-  const fullRegex = new RegExp(
-    `(${FULL_REGEX_LIST.map((exp) => exp.source).join("|")})`,
-    "g"
-  );
+  const abilityRegex = new RegExp(`(${ABILITY_LIST.join("|")})`, "g");
+  const keywordRegex = new RegExp(`${KEYWORDS_LIST.join("|")}`, "g");
+  const techRegex = new RegExp(`(${Object.keys(TECH_MAPPING).join("|")})`, "g");
+  const fullRegex = new RegExp(`(${FULL_LIST.join("|")})`, "g");
   return (
     <>
       {sections.map((section, index) => {
@@ -145,7 +55,8 @@ export default function FormattedDescription({
                   </i>
                 );
               } else if (techRegex.test(chunk)) {
-                const tech = techs[chunk as TechId];
+                const techId = TECH_MAPPING[chunk];
+                const tech = techId ? techs[techId] : undefined;
                 if (!tech) {
                   return <span key={index}>{chunk}</span>;
                 }
