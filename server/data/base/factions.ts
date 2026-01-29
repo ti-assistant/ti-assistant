@@ -1,5 +1,6 @@
 import { IntlShape } from "react-intl";
 import {
+  antiFighterBarrage,
   bombardment,
   planetaryShield,
   production,
@@ -8,7 +9,7 @@ import {
 } from "../../../src/util/strings";
 
 export default function getBaseFactions(
-  intl: IntlShape
+  intl: IntlShape,
 ): Record<BaseGame.FactionId, BaseFaction> {
   return {
     Arborec: {
@@ -40,7 +41,7 @@ export default function getBaseFactions(
             defaultMessage:
               "ACTION: Exhaust this card to remove a command token from a system that contains 1 or more of your infantry and return it to your reinforcements.{br}Then, place 1 infantry in that system.",
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "Psychospore",
         synergy: { left: "RED", right: "GREEN" },
@@ -78,7 +79,7 @@ export default function getBaseFactions(
               defaultMessage:
                 "ACTION: Place this card face up in your play area.{br}While this card is in your play area, the Arborec player cannot produce units in or adjacent to non-home systems that contain 1 or more of your units.{br}If you activate a system that contains 1 or more of the Arborec player's units, return this card to the Arborec player.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
           omegas: [
             {
@@ -94,7 +95,7 @@ export default function getBaseFactions(
                   defaultMessage:
                     "After another player moves ships into a system that contains 1 or more of your units:{br}You may place 1 command token from that player's reinforcements in any non-home system.{br}Then, return this card to the Arborec player.",
                 },
-                { br: "\n\n" }
+                { br: "\n\n" },
               ),
               expansion: "CODEX ONE",
             },
@@ -234,7 +235,7 @@ export default function getBaseFactions(
             defaultMessage:
               "Before you roll dice during space combat, apply +1 to the results of 1 of your ship's rolls, where X is the number of ship types you have in the combat.{br}During movement, your non-fighter ships' move values are equal to the highest move value amongst moving ships in the system they started in.",
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "Gravleash Maneuvers",
         synergy: { left: "BLUE", right: "RED" },
@@ -272,7 +273,7 @@ export default function getBaseFactions(
               defaultMessage:
                 "At the start of a round of space combat:{br}The Letnev player loses 2 trade goods.{br}During this combat round, re-roll any number of your dice.{br}Then, return this card to the Letnev player.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
           omegas: [
             {
@@ -289,7 +290,7 @@ export default function getBaseFactions(
                   defaultMessage:
                     "After you and your opponent roll dice during space combat:{br}You may reroll all of your opponent's dice.{br}You may reroll any number of your dice.{br}Then, return this card to the Letnev player.",
                 },
-                { br: "\n\n" }
+                { br: "\n\n" },
               ),
               expansion: "CODEX ONE",
             },
@@ -409,7 +410,7 @@ export default function getBaseFactions(
             defaultMessage:
               "ACTION: Exhaust this card and spend any amount of resources to choose a planet up to 2 systems away from an asteroid field that contains your ships; roll a number of dice equal to the amount spent and assign 1 hit to a ground force on that planet for each roll of 4 or greater.",
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "Deorbit Barrage",
         synergy: { left: "BLUE", right: "RED" },
@@ -447,7 +448,7 @@ export default function getBaseFactions(
               defaultMessage:
                 "After you commit 1 or more units to land on a planet:{br}Remove all of the Saar player's ground forces from that planet and place them on a planet controlled by the Saar player.{br}Then return this card to the Saar player.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
         },
       ],
@@ -470,7 +471,7 @@ export default function getBaseFactions(
       },
       units: [
         {
-          abilities: [sustainDamage(intl), "ANTI-FIGHTER BARRAGE 6 (x4)"],
+          abilities: [sustainDamage(intl), antiFighterBarrage("6 (x4)", intl)],
           expansion: "BASE",
           name: intl.formatMessage({
             id: "Clan of Saar.Units.Son of Ragh.Title",
@@ -569,7 +570,7 @@ export default function getBaseFactions(
             defaultMessage:
               "When you gain this card, place the Avernus planet token into a non-home system that is adjacent to a planet you control; gain control of and ready it.{br}After you move 1 of your War Suns out of or through Avernus's system and into a non-home system, you may move the Avernus token with it.",
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "Stellar Genesis",
         synergy: { left: "RED", right: "YELLOW" },
@@ -748,7 +749,7 @@ export default function getBaseFactions(
             defaultMessage:
               "When you produce 3 or more non-fighter ships, place 1 command token from your reinforcements into your fleet pool.",
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "Auto-Factories",
         synergy: { left: "RED", right: "YELLOW" },
@@ -786,7 +787,7 @@ export default function getBaseFactions(
               defaultMessage:
                 "ACTION: Place this card face-up in your play area.{br}While this card is in your play area, you may negotiate transactions with players who are not your neighbor.{br}If you activate a system that contains 1 or more of the Hacan player's units, return this card to the Hacan player.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
         },
       ],
@@ -895,7 +896,7 @@ export default function getBaseFactions(
             defaultMessage:
               "When you produce a ship that has capacity, you may also produce any combination of ground forces or fighters up to that ship's capacity; they do not count against your PRODUCTION limit.",
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "Bellum Gloriosum",
         synergy: { left: "YELLOW", right: "GREEN" },
@@ -934,7 +935,7 @@ export default function getBaseFactions(
               defaultMessage:
                 "At the start of the Sol player's turn:{br}Remove 1 token from the Sol player's strategy pool, if able, and return it to their reinforcements.  Then, you may place 2 infantry from your reinforcements on any planet you control.{br}Then return this card to the Sol player.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
         },
       ],
@@ -1089,7 +1090,7 @@ export default function getBaseFactions(
             defaultMessage:
               "Each wormhole in a system that contains your ships gains PRODUCTION 1 as if it were a unit you control.{br}Reduce the combined cost of units you produce in systems that contain wormholes by 1 for each wormhole in that system.",
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "Particle Synthesis",
         synergy: { left: "BLUE", right: "YELLOW" },
@@ -1127,7 +1128,7 @@ export default function getBaseFactions(
               defaultMessage:
                 "At the start of your turn during the action phase:{br}Place or move a Creuss wormhole token into either a system that contains a planet you control or a non-home system that does not contain another player's ships.{br}Then, return this card to the Creuss player.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
         },
       ],
@@ -1235,7 +1236,7 @@ export default function getBaseFactions(
             defaultMessage:
               "When you gain control of a planet, place infantry from your reinforcements equal to that planet's influence value onto that planet.",
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "Fealty Uplink",
         synergy: { left: "RED", right: "GREEN" },
@@ -1274,7 +1275,7 @@ export default function getBaseFactions(
               defaultMessage:
                 "At the start of your turn:{br}Remove 1 token from the L1Z1X player's strategy pool and return it to their reinforcements. Then, place 1 command token from your reinforcements in your strategy pool.{br}Then, return this card to the L1Z1X player.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
           omegas: [
             {
@@ -1292,7 +1293,7 @@ export default function getBaseFactions(
                   defaultMessage:
                     "When you gain command tokens during the status phase:{br}Gain 1 additional command token.{br}Then, return this card to the L1Z1X player.",
                 },
-                { br: "\n\n" }
+                { br: "\n\n" },
               ),
               expansion: "CODEX ONE",
             },
@@ -1431,7 +1432,7 @@ export default function getBaseFactions(
             defaultMessage:
               "If you have the Cruiser II unit upgrade technology, flip this card and place it on top of Cruiser II.",
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "The Table's Grace",
         synergy: { left: "YELLOW", right: "GREEN" },
@@ -1492,7 +1493,7 @@ export default function getBaseFactions(
               defaultMessage:
                 "ACTION: Place this card face-up in your play area.{br}While this card is in your play area, the Mentak player cannot use their PILLAGE faction ability against you.{br}If you activate a system that contains 1 or more of the Mentak player's units, return this card to the Mentak player.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
         },
       ],
@@ -1601,7 +1602,7 @@ export default function getBaseFactions(
             defaultMessage:
               "When you would resolve the secondary ability of another player's strategy card, you may give them a promissory note to resolve it without spending a command token.",
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "Mindsieve",
         synergy: { left: "RED", right: "GREEN" },
@@ -1640,7 +1641,7 @@ export default function getBaseFactions(
               defaultMessage:
                 'At the end of the strategy phase:{br}Place this card face-up in your play area and place the Naalu "0" token on your strategy card;  you are first in the initiative order.  The Naalu player cannot use their TELEPATHIC faction ability during this game round.{br}Return this card to the Naalu player at the end of the status phase.',
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
         },
       ],
@@ -1809,7 +1810,7 @@ export default function getBaseFactions(
             defaultMessage:
               "When you would gain another player's technology using one of your faction abilities, you may instead place one of your \"Z\" assimilator tokens on that player's faction sheet. Your flagship gains the text abilities of that faction's flagship in addition to its own.",
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "Valefar Assimilator Z",
         timing: "PASSIVE",
@@ -1846,7 +1847,7 @@ export default function getBaseFactions(
               defaultMessage:
                 "At the start of a combat:{br}Place this card face-up in your play area.{br}While this card is in your play area, the Nekro player cannot use their TECHNOLOGICAL SINGULARITY faction ability against you.{br}If you activate a system that contains 1 or more of the Nekro player's units, return this card to the Nekro player.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
         },
       ],
@@ -1942,7 +1943,7 @@ export default function getBaseFactions(
             defaultMessage:
               "After you win a combat, either gain 1 command token or research a unit upgrade technology.",
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "N'orr Supremacy",
         synergy: { left: "BLUE", right: "RED" },
@@ -1980,7 +1981,7 @@ export default function getBaseFactions(
               defaultMessage:
                 "At the start of an invasion combat:{br}Apply +1 to the result of each of your unit's combat rolls during this combat.  If your opponent is the N'orr player, apply -1 to the result of each of their unit's combat rolls during this combat.{br}Then, return this card to the N'orr player.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
         },
       ],
@@ -2119,7 +2120,7 @@ export default function getBaseFactions(
             defaultMessage:
               'When you research technology using the "Technology" strategy card, you may exhaust a planet that has a technology specialty instead of spending resources; if you do, you must research a technology of that color.',
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "Specialized Compounds",
         synergy: { left: "YELLOW", right: "GREEN" },
@@ -2158,7 +2159,7 @@ export default function getBaseFactions(
               defaultMessage:
                 "After the Jol-Nar player researches a technology that is not a faction technology:{br}Gain that technology.{br}Then, return this card to the Jol-Nar player.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
         },
       ],
@@ -2273,7 +2274,7 @@ export default function getBaseFactions(
             defaultMessage:
               "Apply +1 to the results of each of your unit's combat rolls for each \"Support for the Throne\" in your opponent's play area.{br}After you activate a system that contains a legendary planet, apply +1 to the move value of 1 of your ships during the tactical action.",
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "Imperator",
         synergy: { left: "BLUE", right: "RED" },
@@ -2311,7 +2312,7 @@ export default function getBaseFactions(
               defaultMessage:
                 "At the end of the strategy phase:{br}Exchange 1 of your strategy cards with a strategy card that was chosen by the Winnu player.{br}Then, return this card to the Winnu player.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
           omegas: [
             {
@@ -2328,7 +2329,7 @@ export default function getBaseFactions(
                   defaultMessage:
                     "When the Winnu player resolves a strategic action:{br}You do not have to spend or place a command token to resolve the secondary ability of that strategy card.{br}Then, return this card to the Winnu player.",
                 },
-                { br: "\n\n" }
+                { br: "\n\n" },
               ),
               expansion: "CODEX ONE",
             },
@@ -2345,7 +2346,7 @@ export default function getBaseFactions(
                   defaultMessage:
                     "When the Winnu player resolves a strategic action:{br}You do not have to spend a command token to resolve the secondary ability of that strategy card.{br}Then, return this card to the Winnu player.",
                 },
-                { br: "\n\n" }
+                { br: "\n\n" },
               ),
               expansion: "THUNDERS EDGE",
             },
@@ -2475,7 +2476,7 @@ export default function getBaseFactions(
             defaultMessage:
               "You can spend influence as if it were resources.{br}You can spend resources as if it were influence.",
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "Archon's Gift",
         synergy: { left: "YELLOW", right: "GREEN" },
@@ -2514,7 +2515,7 @@ export default function getBaseFactions(
               defaultMessage:
                 "When an agenda is revealed:{br}Remove 1 token from the Xxcha player's strategy pool and return it to their reinforcements.  Then, discard the revealed agenda and reveal 1 agenda from the top of the deck.  Players vote on this agenda instead.{br}Then, return this card to the Xxcha player.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
         },
       ],
@@ -2662,7 +2663,7 @@ export default function getBaseFactions(
               defaultMessage:
                 "After a system is activated:{br}The Yin player cannot use faction abilities or faction technology during this tactical action.{br}Then, return this card to the Yin player.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
           omegas: [
             {
@@ -2679,7 +2680,7 @@ export default function getBaseFactions(
                   defaultMessage:
                     "At the start of a ground combat against 2 or more ground forces that are not controlled by the Yin player:{br}Replace 1 of your opponent's infantry with 1 infantry from your reinforcements.{br}Then, return this card to the Yin player.",
                 },
-                { br: "\n\n" }
+                { br: "\n\n" },
               ),
               expansion: "CODEX ONE",
             },
@@ -2811,7 +2812,7 @@ export default function getBaseFactions(
             defaultMessage:
               "You can allow other players to use your STALL TACTICS or SCHEMING faction abilities; when you do, you may resolve a transaction with that player. During the action phase, that transaction does not count against the once per player transaction limit for that turn.",
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "Deepgloom Executable",
         synergy: { left: "YELLOW", right: "GREEN" },
@@ -2849,7 +2850,7 @@ export default function getBaseFactions(
               defaultMessage:
                 "At the start of your turn:{br}Look at the Yssaril player's hand of action cards.  Choose 1 of those cards and add it to your hand.{br}Then, return this card to the Yssaril player.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
         },
       ],

@@ -23,6 +23,10 @@
     "defaultMessage": "Billet à ordre",
     "description": "Promissory note actions."
   },
+  "+L4gCQ": {
+    "defaultMessage": "{num, selectordinal, one {#st} two {#nd} few {#rd} other {#th}}",
+    "description": "Table header showing the order of a given player."
+  },
   "+WkrHz": {
     "defaultMessage": "ET",
     "description": "Text between two fields linking them together."
@@ -52,7 +56,7 @@
     "description": "Text on a button that will select a tactical action."
   },
   "/LAhkb": {
-    "defaultMessage": "Agressivité",
+    "defaultMessage": "Agressivité: {val} sur {count}",
     "description": "Statistic ranking how aggressive a faction is."
   },
   "/MkeMw": {
@@ -89,7 +93,7 @@
   },
   "1fNqTf": {
     "defaultMessage": "Planètes",
-    "description": "Planets"
+    "description": "Planets."
   },
   "1odgd1": {
     "defaultMessage": "Planètes attachées",
@@ -99,17 +103,9 @@
     "defaultMessage": "Système Natal",
     "description": "Home system planets."
   },
-  "2HJ0k5": {
-    "defaultMessage": "S",
-    "description": "The letter used to identify secret objectives."
-  },
   "2I5JBO": {
     "defaultMessage": "Biotique",
     "description": "Title of green techs."
-  },
-  "2dmEIv": {
-    "defaultMessage": "Capacités",
-    "description": "Header for a section listing out abilities."
   },
   "2fB0Ox": {
     "defaultMessage": "Jeu de Base",
@@ -134,6 +130,10 @@
   "3qIvsL": {
     "defaultMessage": "Recherche Technologique",
     "description": "Label on a hover menu used to research tech."
+  },
+  "3xEbCN": {
+    "defaultMessage": "Codex IV",
+    "description": "Text on a button that will enable/disable Codex IV."
   },
   "43UU69": {
     "defaultMessage": "Action d'Elément de jeu",
@@ -200,7 +200,7 @@
     "description": "Label for a section that includes map details."
   },
   "64NLXu": {
-    "defaultMessage": " +1 PV pour le jeton Gardien",
+    "defaultMessage": " +1 PV pour le Jeton Gardien",
     "description": "Text telling the player that they gained a victory point for removing the Custodians Token."
   },
   "6Dhyu4": {
@@ -227,6 +227,10 @@
     "defaultMessage": "Retour au Jeu",
     "description": "Text shown on a button that will return to the game."
   },
+  "8/FTsP": {
+    "defaultMessage": "Planètes purgez",
+    "description": "Label for a planet that has been purged."
+  },
   "8/h2ME": {
     "defaultMessage": "Avancez à la phase : {phase}",
     "description": "Text on a button that will advance the game to a specific phase."
@@ -246,6 +250,10 @@
   "9DZz2w": {
     "defaultMessage": "Mise en Place",
     "description": "Text identifying that this is the setup step."
+  },
+  "9F+GVy": {
+    "defaultMessage": "Fini",
+    "description": "Text on a button for marking something completed."
   },
   "9eqKm5": {
     "defaultMessage": "{count, plural, one {Unité} other {Unités}} Unique",
@@ -271,8 +279,624 @@
     "defaultMessage": "Planètes Culturelles Epuisées",
     "description": "Label for section explaining which player has had their cultural planets exhausted."
   },
+  "Action Cards.Ancient Burial Sites.Description": {
+    "defaultMessage": "Au début de la phase projet:{br}Choisissez 1 joueur. Épuisez chaque planète culturelle appartenant à ce joueur.",
+    "description": "Description of action card: Ancient Burial Sites"
+  },
+  "Action Cards.Ancient Burial Sites.Name": {
+    "defaultMessage": "Anciens Sites Funéraires",
+    "description": "Name of action card: Ancient Burial Sites"
+  },
+  "Action Cards.Archaeological Expedition.Description": {
+    "defaultMessage": "ACTION : Révélez les 3 premières cartes d’un  paquet Exploration correspondant à une planète que vous contrôlez ; gagnez les Morceaux de relique que vous révélez et défaussez le reste.",
+    "description": "Description of action card: Archaeological Expedition"
+  },
+  "Action Cards.Archaeological Expedition.Name": {
+    "defaultMessage": "Expédition Archéologique",
+    "description": "Name of action card: Archaeological Expedition"
+  },
+  "Action Cards.Assassinate Representative.Description": {
+    "defaultMessage": "Après qu'un projet a été révélé: {br}Choisissez 1 joueur. Ce joueur ne peut pas voter pour ce projet.",
+    "description": "Description of action card: Assassinate Representative"
+  },
+  "Action Cards.Assassinate Representative.Name": {
+    "defaultMessage": "Assassinat de Représentant",
+    "description": "Name of action card: Assassinate Representative"
+  },
+  "Action Cards.Bribery.Description": {
+    "defaultMessage": "Après que l'orateur a voté dans le cadre d'un projet:{br}Dépensez n'importe quel nombre de biens commerciaux. Pour chaque bien commercial dépensé, exprimez 1 vote supplémentaire pour l'issue pour laquelle vous avez voté.",
+    "description": "Description of action card: Bribery"
+  },
+  "Action Cards.Bribery.Name": {
+    "defaultMessage": "Corruption",
+    "description": "Name of action card: Bribery"
+  },
+  "Action Cards.Bunker.Description": {
+    "defaultMessage": "Au début d'une invasion :{br}Pendant cette invasion, appliquez -4 au résultat de lancer BOMBARDEMENT contre des planètes que vous contrôlez.",
+    "description": "Description of action card: Bunker"
+  },
+  "Action Cards.Bunker.Name": {
+    "defaultMessage": "Bunker",
+    "description": "Name of action card: Bunker"
+  },
+  "Action Cards.Confounding Legal Text.Description": {
+    "defaultMessage": "Lorsqu'un autre joueur est élu comme issue d'un projet : {br}Vous êtes élu à la place",
+    "description": "Description of action card: Confounding Legal Text"
+  },
+  "Action Cards.Confounding Legal Text.Name": {
+    "defaultMessage": "Texte légal imcompréhensible",
+    "description": "Name of action card: Confounding Legal Text"
+  },
+  "Action Cards.Confusing Legal Text.Description": {
+    "defaultMessage": "Lorsque vous êtes élu comme issue d'un projet : {br}choisissez un jouieur. ce joueur est élu à la place.",
+    "description": "Description of action card: Confusing Legal Text"
+  },
+  "Action Cards.Confusing Legal Text.Name": {
+    "defaultMessage": "Texte de loi confus",
+    "description": "Name of action card: Confusing Legal Text"
+  },
+  "Action Cards.Construction Rider.Description": {
+    "defaultMessage": "Une fois un projet révélé:{br} vous ne pouvez pas voter dans le cadre de ce projet. Prédisez à voix haute l'issue de ce projet.{br}Si votre prédiction est correcte, placez un dock spatial de vos renforts sur une planète que vous contrôlez.",
+    "description": "Description of action card: Construction Rider"
+  },
+  "Action Cards.Construction Rider.Name": {
+    "defaultMessage": "Génie de la construction",
+    "description": "Name of action card: Construction Rider"
+  },
+  "Action Cards.Coup d'Etat.Description": {
+    "defaultMessage": "Lorsqu'un autre joueur devrait effectuer une action stratégique : {br}Mettez fin au tour de ce joueur ; cette action stratégique n'est pas résolue et la carte stratégie n'est pas épuisée.",
+    "description": "Description of action card: Coup d'Etat"
+  },
+  "Action Cards.Coup d'Etat.Name": {
+    "defaultMessage": "Coup d'Etat",
+    "description": "Name of action card: Coup d'Etat"
+  },
+  "Action Cards.Courageous to the End.Description": {
+    "defaultMessage": "Après la destruction d'un de vos vaisseaux lors d'un combat spatial : lancez 2 dés. Pour chaque résultat égal ou supérieur à la valeur de combat de ce vaisseau, votre adversaire doit choisir et détruire un de ses vaisseaux.",
+    "description": "Description of action card: Courageous to the End"
+  },
+  "Action Cards.Courageous to the End.Name": {
+    "defaultMessage": "Brave jusqu'au bout",
+    "description": "Name of action card: Courageous to the End"
+  },
+  "Action Cards.Create.Description": {
+    "defaultMessage": "Action: Gagnez 1 relique.",
+    "description": "Description of action card: Create"
+  },
+  "Action Cards.Cripple Defenses.Description": {
+    "defaultMessage": "ACTION : Choisissez 1 planète. Détruisez chaque SDP présent sur cette planète.",
+    "description": "Description of action card: Cripple Defenses"
+  },
+  "Action Cards.Cripple Defenses.Name": {
+    "defaultMessage": "Défenses paralysées",
+    "description": "Name of action card: Cripple Defenses"
+  },
+  "Action Cards.Crisis.Name": {
+    "defaultMessage": "Crise",
+    "description": "Name of action card: Crisis"
+  },
+  "Action Cards.Deadly Plot.Description": {
+    "defaultMessage": "Pendant la phase de projet, lorsqu'une devrait être résolue :{br}Si vous avez voté ou prédit une autre issue, Défaussez le projet ; le projet est résolu sans avoir d'effet et n'est pas remplacé.{br}Ensuite, épuisez toutes vos planètes.",
+    "description": "Description of action card: Deadly Plot"
+  },
+  "Action Cards.Deadly Plot.Name": {
+    "defaultMessage": "Funeste Complot",
+    "description": "Name of action card: Deadly Plot"
+  },
+  "Action Cards.Decoy Operation.Description": {
+    "defaultMessage": "Après qu'un autre joueur active un système contenant 1 ou plusieurs de vos structures :{br}Retirez jusqu'à 2 de vos forces terrestres du plateau et placez-les sur une planète que vous contrôlez dans le système actif.",
+    "description": "Description of action card: Decoy Operation"
+  },
+  "Action Cards.Decoy Operation.Name": {
+    "defaultMessage": "Utilisation d'un leurre",
+    "description": "Name of action card: Decoy Operation"
+  },
+  "Action Cards.Diplomacy Rider.Description": {
+    "defaultMessage": "Une fois qu'un projet a été révélé : vous ne pouvez pas voter poru ce projet. Prédisez à voix haute son issue. Si votre prédiction est correcte, choisissez un système contenant une planète que vous contrôlez. Chaque autre joueur place un Pion commandement de ses renforts dans ce système.",
+    "description": "Description of action card: Diplomacy Rider"
+  },
+  "Action Cards.Diplomacy Rider.Name": {
+    "defaultMessage": "Génie de diplomatie",
+    "description": "Name of action card: Diplomacy Rider"
+  },
+  "Action Cards.Diplomatic Pressure.Description": {
+    "defaultMessage": "Lorsqu'un projet est révélé :{br}Choisissez un autre joueur ; ce joueur doit vous donner 1 billet à ordre de sa main.",
+    "description": "Description of action card: Diplomatic Pressure"
+  },
+  "Action Cards.Diplomatic Pressure.Name": {
+    "defaultMessage": "Pression diplomatique",
+    "description": "Name of action card: Diplomatic Pressure"
+  },
+  "Action Cards.Direct Hit.Description": {
+    "defaultMessage": "Après qu'un autre vaisseau de joueur utilise DEGATS ENCAISSES pour annuler une touche obtenue par vos unités ou compétences :{br}Détruisez ce vaisseau.",
+    "description": "Description of action card: Direct Hit"
+  },
+  "Action Cards.Direct Hit.Name": {
+    "defaultMessage": "Coup direct",
+    "description": "Name of action card: Direct Hit"
+  },
+  "Action Cards.Disable.Description": {
+    "defaultMessage": "Au début d'une invasion dans un système contenant 1 ou plusieurs  unités SDP de votre adversaires :{br}Les unités SDP de votre adversaires perdent BOUCLIER PLANÉTAIRE et CANON SPATIAL pendant cette invasion.",
+    "description": "Description of action card: Disable"
+  },
+  "Action Cards.Disable.Name": {
+    "defaultMessage": "Désactivé",
+    "description": "Name of action card: Disable"
+  },
+  "Action Cards.Distinguished Councilor.Description": {
+    "defaultMessage": "Après avoir exprimez vos votes sur l'issue d'un projet : {br}Exprimez 5 votes supplémentaires pour cette issue.",
+    "description": "Description of action card: Distinguished Councilor"
+  },
+  "Action Cards.Distinguished Councilor.Name": {
+    "defaultMessage": "Conseiller distingué",
+    "description": "Name of action card: Distinguished Councilor"
+  },
+  "Action Cards.Divert Funding.Description": {
+    "defaultMessage": "ACTION : Remettez dans votre paquet technologie une technologie qui n’est ni une amélioration d’unité ni une technologie de faction. Ensuite, recherchez une autre technologie.",
+    "description": "Description of action card: Divert Funding"
+  },
+  "Action Cards.Divert Funding.Name": {
+    "defaultMessage": "Réaffectation de fonds",
+    "description": "Name of action card: Divert Funding"
+  },
+  "Action Cards.Economic Initiative.Description": {
+    "defaultMessage": "ACTION : Restaurez chaque planète culturelle que vous contrôlez.",
+    "description": "Description of action card: Economic Initiative"
+  },
+  "Action Cards.Economic Initiative.Name": {
+    "defaultMessage": "initiative économique",
+    "description": "Name of action card: Economic Initiative"
+  },
+  "Action Cards.Emergency Repairs.Description": {
+    "defaultMessage": "Au début ou à la fin d'un round de combat :{br}Réparez toutes vos unités qui ont DEGATS ENCAISSES dans le système actif",
+    "description": "Description of action card: Emergency Repairs"
+  },
+  "Action Cards.Emergency Repairs.Name": {
+    "defaultMessage": "Réparation d'urgence",
+    "description": "Name of action card: Emergency Repairs"
+  },
+  "Action Cards.Experimental Battlestation.Description": {
+    "defaultMessage": "Lorsqu'un autre joueur déplace des vaisseaux dans un système lors d'une action tactique : choisissez l'un de vos docks spatiaux situé dans ce système ou adjacent à ce dernier. Ce dock spatial utilise le CANON SPATIAL 5 (x3) contre les vaisseaux présents dans le système actif.",
+    "description": "Description of action card: Experimental Battlestation"
+  },
+  "Action Cards.Experimental Battlestation.Name": {
+    "defaultMessage": "Poste de combat expérimental",
+    "description": "Name of action card: Experimental Battlestation"
+  },
+  "Action Cards.Exploration Probe.Description": {
+    "defaultMessage": "ACTION : Explorez un pion frontière situé dans ou à adjacent a un système contenant au moins un de vos vaisseaux.",
+    "description": "Description of action card: Exploration Probe"
+  },
+  "Action Cards.Exploration Probe.Name": {
+    "defaultMessage": "Sonde d'exploration",
+    "description": "Name of action card: Exploration Probe"
+  },
+  "Action Cards.Fighter Prototype.Description": {
+    "defaultMessage": "Au début du premier round d'un combat spatial :{br}Appliquez +2 au résultat de chacun des lancers de combat de vos chasseurs pendant ce round de combat.",
+    "description": "Description of action card: Fighter Prototype"
+  },
+  "Action Cards.Fighter Prototype.Name": {
+    "defaultMessage": "Prototype de chasseur",
+    "description": "Name of action card: Fighter Prototype"
+  },
+  "Action Cards.Fire Team.Description": {
+    "defaultMessage": "Après que vos forces terrestres aient effectué des lancers de combat pendant un round de combat terrestre : {br}Relancez un n'importe quel nombre de vos dés.",
+    "description": "Description of action card: Fire Team"
+  },
+  "Action Cards.Fire Team.Name": {
+    "defaultMessage": "Groupe d'appui",
+    "description": "Name of action card: Fire Team"
+  },
+  "Action Cards.Flank Speed.Description": {
+    "defaultMessage": "Après avoir activé un système : Appliquez +1 à la valeur de mouvement de chacun de vos vaisseaux pendant cette action tactique",
+    "description": "Description of action card: Flank Speed"
+  },
+  "Action Cards.Flank Speed.Name": {
+    "defaultMessage": "Vitesse maximale",
+    "description": "Name of action card: Flank Speed"
+  },
+  "Action Cards.Focused Research.Description": {
+    "defaultMessage": "ACTION : Dépensez 4 bien commerciaux pour rechercher 1 technologie.",
+    "description": "Description of action card: Focused Research"
+  },
+  "Action Cards.Focused Research.Name": {
+    "defaultMessage": "Recherche ciblée",
+    "description": "Name of action card: Focused Research"
+  },
+  "Action Cards.Frontline Deployment.Description": {
+    "defaultMessage": "ACTION : Placez 3 infanteries de vos renforts sur une planète que vous contrôlez.",
+    "description": "Description of action card: Frontline Deployment"
+  },
+  "Action Cards.Frontline Deployment.Name": {
+    "defaultMessage": "Déploiement sur la ligne de front",
+    "description": "Name of action card: Frontline Deployment"
+  },
+  "Action Cards.Ghost Ship.Description": {
+    "defaultMessage": "ACTION : Placez 1 destroyer de vos renforts dans un système autre qu'unsystème natal, qui contient un trou de ver et qui ne contient pas de vaisseaux d'autres joueurs.",
+    "description": "Description of action card: Ghost Ship"
+  },
+  "Action Cards.Ghost Ship.Name": {
+    "defaultMessage": "Vaisseau Fantôme",
+    "description": "Name of action card: Ghost Ship"
+  },
+  "Action Cards.Imperial Rider.Description": {
+    "defaultMessage": "Une fois un projet révélé : vous ne pouvez pas voter pour ce projet. Prédisez à voix haute l'issue de ce projet. Si votre prédiction est correcte, gagnez 1 point de victoire.",
+    "description": "Description of action card: Imperial Rider"
+  },
+  "Action Cards.Imperial Rider.Name": {
+    "defaultMessage": "Intrigant génie",
+    "description": "Name of action card: Imperial Rider"
+  },
+  "Action Cards.In The Silence Of Space.Description": {
+    "defaultMessage": "Après avoir activé un système : {br}Choisissez 1 système. Durant cette action tactique, vos vaisseaux dans le système choisi peuvent se déplacer à travers les systèmes contenant des vaisseaux d'autres joueurs.",
+    "description": "Description of action card: In The Silence Of Space"
+  },
+  "Action Cards.In The Silence Of Space.Name": {
+    "defaultMessage": "Dans le silence de l'espace",
+    "description": "Name of action card: In The Silence Of Space"
+  },
+  "Action Cards.Industrial Initiative.Description": {
+    "defaultMessage": "ACTION : Gagnez 1 bien commercial pour chaque planète industrielle que vous contrôlez.",
+    "description": "Description of action card: Industrial Initiative"
+  },
+  "Action Cards.Industrial Initiative.Name": {
+    "defaultMessage": "Initiative industrielle",
+    "description": "Name of action card: Industrial Initiative"
+  },
+  "Action Cards.Infiltrate.Description": {
+    "defaultMessage": "Lorsque vous prenez le contrôle d'une planète : {br}Remplacez chaque SDP et chaque dock spatial présent sur cette planète par une unité correspondante de vos renforts.",
+    "description": "Description of action card: Infiltrate"
+  },
+  "Action Cards.Infiltrate.Name": {
+    "defaultMessage": "Infiltration",
+    "description": "Name of action card: Infiltrate"
+  },
+  "Action Cards.Insubordination.Description": {
+    "defaultMessage": "ACTION : Retirez 1 pion de la réserve tactique d'un autre joueur et remettez-le dans ses renforts.",
+    "description": "Description of action card: Insubordination"
+  },
+  "Action Cards.Insubordination.Name": {
+    "defaultMessage": "Insubordination",
+    "description": "Name of action card: Insubordination"
+  },
+  "Action Cards.Intercept.Description": {
+    "defaultMessage": "Après que votre adversaire ait déclaré une retraite pendant un combat spatial :{br}Votre adversaire ne peut pas se retirer pendant ce round de combat spatial.",
+    "description": "Description of action card: Intercept"
+  },
+  "Action Cards.Intercept.Name": {
+    "defaultMessage": "Interception",
+    "description": "Name of action card: Intercept"
+  },
+  "Action Cards.Leadership Rider.Description": {
+    "defaultMessage": "Une fois un projet révélé : vous ne pouvez pas voterpour ce projet. Prédisez à voix haute l'issue de ce projet. Si votre prédiction est correcte, gagnez 3  pions de commandement.",
+    "description": "Description of action card: Leadership Rider"
+  },
+  "Action Cards.Leadership Rider.Name": {
+    "defaultMessage": "Génie de la gourvernance",
+    "description": "Name of action card: Leadership Rider"
+  },
+  "Action Cards.Lost Star Chart.Description": {
+    "defaultMessage": "Après l'activation d'un système : lors de cette action tactique, les systèmes contenant des trous de ver alpha et bêta sont adjacents les uns aux autres.\n\n",
+    "description": "Description of action card: Lost Star Chart"
+  },
+  "Action Cards.Lost Star Chart.Name": {
+    "defaultMessage": "Perdu dans les étoiles",
+    "description": "Name of action card: Lost Star Chart"
+  },
+  "Action Cards.Lucky Shot.Description": {
+    "defaultMessage": "ACTION : Détruisez 1 cuirassé, croiseur ou destroyer dans un système contenant une planète que vous contrôlez.",
+    "description": "Description of action card: Lucky Shot"
+  },
+  "Action Cards.Lucky Shot.Name": {
+    "defaultMessage": "Tir Chanceux",
+    "description": "Name of action card: Lucky Shot"
+  },
+  "Action Cards.Maneuvering Jets.Description": {
+    "defaultMessage": "Avant d'attribuer les touches obtenues par le lancer de CANON SPATIAL d'un autre joueur : {br}Annulez 1 touche.\n\n",
+    "description": "Description of action card: Maneuvering Jets"
+  },
+  "Action Cards.Maneuvering Jets.Name": {
+    "defaultMessage": "Réacteurs de manoeuvre",
+    "description": "Name of action card: Maneuvering Jets"
+  },
+  "Action Cards.Manipulate Investments.Description": {
+    "defaultMessage": "Au début de la phase de stratégie :{br}Placez un total de 5 biens commerciaux de la réserve sur des cartes de stratégie de votre choix ; vous devez placer ces jetons sur au moins 3 cartes différentes.",
+    "description": "Description of action card: Manipulate Investments"
+  },
+  "Action Cards.Manipulate Investments.Name": {
+    "defaultMessage": "Manipulation des investissements",
+    "description": "Name of action card: Manipulate Investments"
+  },
+  "Action Cards.Mining Initiative.Description": {
+    "defaultMessage": "ACTION : Gagnez des biens commerciaux égaux à la valeur de ressources d'une planète que vous contrôlez.",
+    "description": "Description of action card: Mining Initiative"
+  },
+  "Action Cards.Mining Initiative.Name": {
+    "defaultMessage": "Initiative minière",
+    "description": "Name of action card: Mining Initiative"
+  },
+  "Action Cards.Morale Boost.Description": {
+    "defaultMessage": "Au début d'un round de combat : Appliquez +1 au résultat de chacun des lancers de combat de vos unités pendant ce round de combat.",
+    "description": "Description of action card: Morale Boost"
+  },
+  "Action Cards.Morale Boost.Name": {
+    "defaultMessage": "Soutien moral",
+    "description": "Name of action card: Morale Boost"
+  },
+  "Action Cards.Nav Suite.Description": {
+    "defaultMessage": "Après avoir activé un système :{br}Pendant l’étape « déplacement » de cette action tactique, ignorez l’effet des anomalies.\n\n",
+    "description": "Description of action card: Nav Suite"
+  },
+  "Action Cards.Nav Suite.Name": {
+    "defaultMessage": "Programme de navigation",
+    "description": "Name of action card: Nav Suite"
+  },
+  "Action Cards.Parley.Description": {
+    "defaultMessage": "Après qu'un autre joueur a fait attérir des unités sur une planète que vous contrôlez :{br}Remettez les unités qui viennent d'attérir dans la partie espace.",
+    "description": "Description of action card: Parley"
+  },
+  "Action Cards.Parley.Name": {
+    "defaultMessage": "Pourparlers",
+    "description": "Name of action card: Parley"
+  },
+  "Action Cards.Plague.Description": {
+    "defaultMessage": "ACTION : Choisissez une planète contrôlée par un autre joueur. Lancez un dé pour chaque unité d’infanterie présente sur cette planète. Pour chaque résultat de 6 ou plus, détruisez une de ces unités.\n",
+    "description": "Description of action card: Plague"
+  },
+  "Action Cards.Plague.Name": {
+    "defaultMessage": "Peste",
+    "description": "Name of action card: Plague"
+  },
+  "Action Cards.Political Stability.Description": {
+    "defaultMessage": "Lorsque vous devriez rendre votre ou vos cartes Stratégie pendant la phase de statut : {br}Ne rendez pas votre ou vos cartes Stratégie. Vous ne choisirez pas de cartes Stratégie à la prochaine phase de stratégie.\n\n",
+    "description": "Description of action card: Political Stability"
+  },
+  "Action Cards.Political Stability.Name": {
+    "defaultMessage": "Stabilité politique",
+    "description": "Name of action card: Political Stability"
+  },
+  "Action Cards.Politics Rider.Description": {
+    "defaultMessage": "Une fois un projet révélé : vous ne pouvez pas voter pour ce projet. Prédisez à voix haute l'issue de ceprojet. Si votre prédiction est correcte, piochez 3 cartes Action et gagnez le pion Orateur.",
+    "description": "Description of action card: Politics Rider"
+  },
+  "Action Cards.Politics Rider.Name": {
+    "defaultMessage": "Génie politique",
+    "description": "Name of action card: Politics Rider"
+  },
+  "Action Cards.Public Disgrace.Description": {
+    "defaultMessage": "Lorsqu'un autre joueur choisit une carte stratégie pendant la phase de stratégie :{br}Ce joueur doit choisir une carte stratégie différente à la place, si possible.",
+    "description": "Description of action card: Public Disgrace"
+  },
+  "Action Cards.Public Disgrace.Name": {
+    "defaultMessage": "Disgrace publique",
+    "description": "Name of action card: Public Disgrace"
+  },
+  "Action Cards.Reactor Meltdown.Description": {
+    "defaultMessage": "ACTION : Détruire 1 dock spatial dans un système autre qu'un système natal.",
+    "description": "Description of action card: Reactor Meltdown"
+  },
+  "Action Cards.Reactor Meltdown.Name": {
+    "defaultMessage": "Réacteur en fusion",
+    "description": "Name of action card: Reactor Meltdown"
+  },
+  "Action Cards.Refit Troops.Description": {
+    "defaultMessage": "ACTION : Choisissez 1 ou 2 de vos infanteries sur le plateau; remplacez chacune de ces infanteries par des Mechas.\n\n",
+    "description": "Description of action card: Refit Troops"
+  },
+  "Action Cards.Refit Troops.Name": {
+    "defaultMessage": "Rééquipement des troupes",
+    "description": "Name of action card: Refit Troops"
+  },
+  "Action Cards.Reparations.Description": {
+    "defaultMessage": "Après qu'un autre joueur prenne le contrôle d'une planète que vous contrôlez :{br}Épuisez 1 planète que ce joueur contrôle et restaurez 1 planète que vous contrôlez.",
+    "description": "Description of action card: Reparations"
+  },
+  "Action Cards.Reparations.Name": {
+    "defaultMessage": "Réparations",
+    "description": "Name of action card: Reparations"
+  },
+  "Action Cards.Repeal Law.Description": {
+    "defaultMessage": "ACTION : Défaussez 1 loi du jeu.",
+    "description": "Description of action card: Repeal Law"
+  },
+  "Action Cards.Repeal Law.Name": {
+    "defaultMessage": "Abrogation de loi",
+    "description": "Name of action card: Repeal Law"
+  },
+  "Action Cards.Rescue.Description": {
+    "defaultMessage": "Après que vous avez gagné un combat spatial:{br} Votre adversaire vous donne toute ses commoditiés.",
+    "description": "Description of action card: Rescue"
+  },
+  "Action Cards.Rescue.Name": {
+    "defaultMessage": "Sauvetage",
+    "description": "Name of action card: Rescue"
+  },
+  "Action Cards.Reveal Prototype.Description": {
+    "defaultMessage": "Au début d'un combat :{br}Dépensez 4 ressources pour rechercher une technologie d'amélioration d'unité du même type que l'une de vos unités qui participe à ce combat.",
+    "description": "Description of action card: Reveal Prototype"
+  },
+  "Action Cards.Reveal Prototype.Name": {
+    "defaultMessage": "Révélation d'un prototype",
+    "description": "Name of action card: Reveal Prototype"
+  },
+  "Action Cards.Reverse Engineer.Description": {
+    "defaultMessage": "Après qu'un autre joueur ait défaussé une carte Action disposant d'une action d'élément de jeu : {br}Prenez cette carte Action de la pile de défausse.",
+    "description": "Description of action card: Reverse Engineer"
+  },
+  "Action Cards.Reverse Engineer.Name": {
+    "defaultMessage": "Rétro-ingénierie",
+    "description": "Name of action card: Reverse Engineer"
+  },
+  "Action Cards.Rise of a Messiah.Description": {
+    "defaultMessage": "ACTION : Placez 1 infanterie de vos renforts sur chaque planète que vous contrôlez.",
+    "description": "Description of action card: Rise of a Messiah"
+  },
+  "Action Cards.Rise of a Messiah.Name": {
+    "defaultMessage": "Arrivée du messie",
+    "description": "Name of action card: Rise of a Messiah"
+  },
+  "Action Cards.Rout.Description": {
+    "defaultMessage": "Au début de l'étape « Annonce de retraite » d'un combat spatial, si vous êtes le défenseur :{br}Votre adversaire doit annoncer une retraite, si possible.",
+    "description": "Description of action card: Rout"
+  },
+  "Action Cards.Rout.Name": {
+    "defaultMessage": "Déroute",
+    "description": "Name of action card: Rout"
+  },
+  "Action Cards.Sabotage.Description": {
+    "defaultMessage": "Lorsqu'un autre joueur joue une carte action autre que \"Sabotage\": {br}Annulez cette carte Action",
+    "description": "Description of action card: Sabotage"
+  },
+  "Action Cards.Sabotage.Name": {
+    "defaultMessage": "Sabotage",
+    "description": "Name of action card: Sabotage"
+  },
+  "Action Cards.Scuttle.Description": {
+    "defaultMessage": "ACTION : Choisissez 1 ou 2 de vos vaisseaux autres que chasseurs sur le plateau et remettez-les dans vos renforts ; gagnez un nombre de bien commerciaux d’une valeur égale au coût combiné de ces vaisseaux.",
+    "description": "Description of action card: Scuttle"
+  },
+  "Action Cards.Scuttle.Name": {
+    "defaultMessage": "Fuite immédiate",
+    "description": "Name of action card: Scuttle"
+  },
+  "Action Cards.Seize Artifact.Description": {
+    "defaultMessage": "ACTION : Choisissez un de vos voisins possédant au moins un morceaux de relique. Ce joueur doit vous donner un morceaux de relique de votre choix.",
+    "description": "Description of action card: Seize Artifact"
+  },
+  "Action Cards.Seize Artifact.Name": {
+    "defaultMessage": "S'emparer de l'artefact",
+    "description": "Name of action card: Seize Artifact"
+  },
+  "Action Cards.Shields Holding.Description": {
+    "defaultMessage": "Avant d'attribuer des touches à vos vaisseaux pendant un combat spatial : {br}Annulez jusqu'à 2 tocuhes.",
+    "description": "Description of action card: Shields Holding"
+  },
+  "Action Cards.Shields Holding.Name": {
+    "defaultMessage": "Boucliers résistants",
+    "description": "Name of action card: Shields Holding"
+  },
+  "Action Cards.Signal Jamming.Description": {
+    "defaultMessage": "ACTION : Choisissez un système autre qu'un système natal qui contient ou est adjacent à l'un de vos vaisseaux. Placez un pion commandement provenant des renforts d'un autre joueur dans ce système.",
+    "description": "Description of action card: Signal Jamming"
+  },
+  "Action Cards.Signal Jamming.Name": {
+    "defaultMessage": "Brouillage de signal",
+    "description": "Name of action card: Signal Jamming"
+  },
+  "Action Cards.Skilled Retreat.Description": {
+    "defaultMessage": "Au début d'un round de combat :{br}Déplacez tous vos vaisseaux du système actif vers un système adjacent ne contenant aucun vaisseau adverse ; le combat spatial se termine par une égalité. Placez ensuite un pion commandement de vos renforts dans ce système.\n\n",
+    "description": "Description of action card: Skilled Retreat"
+  },
+  "Action Cards.Skilled Retreat.Name": {
+    "defaultMessage": "Retraite habile",
+    "description": "Name of action card: Skilled Retreat"
+  },
+  "Action Cards.Spy.Description": {
+    "defaultMessage": "ACTION : Choisissez 1 joueur. Ce joueur vous donne 1 carte Action au hasard de sa main.",
+    "description": "Description of action card: Spy"
+  },
+  "Action Cards.Spy.Name": {
+    "defaultMessage": "Espion",
+    "description": "Name of action card: Spy"
+  },
+  "Action Cards.Summit.Description": {
+    "defaultMessage": "Au début de la phase de stratégie : {br}Gagnez 2 pions commandement.",
+    "description": "Description of action card: Summit"
+  },
+  "Action Cards.Summit.Name": {
+    "defaultMessage": "Sommet",
+    "description": "Name of action card: Summit"
+  },
+  "Action Cards.Tactical Bombardment.Description": {
+    "defaultMessage": "ACTION : Choisissez un système contenant au moins une de vos unités disposant de BOMBARDEMENT. Épuisez toutes les planètes contrôlées par d’autres joueurs dans ce système.",
+    "description": "Description of action card: Tactical Bombardment"
+  },
+  "Action Cards.Tactical Bombardment.Name": {
+    "defaultMessage": "Bombardement tactique",
+    "description": "Name of action card: Tactical Bombardment"
+  },
+  "Action Cards.Technology Rider.Description": {
+    "defaultMessage": "Une fois un projet révélé : vous ne pouvez pas voter pour ce projet. Prédisez à voix haute l'issue de ce projet. Si votre prédiction est correcte, recherchez 1 technologie.",
+    "description": "Description of action card: Technology Rider"
+  },
+  "Action Cards.Technology Rider.Name": {
+    "defaultMessage": "Génie technologique",
+    "description": "Name of action card: Technology Rider"
+  },
+  "Action Cards.Trade Rider.Description": {
+    "defaultMessage": "Une fois un projet révélé : vous ne pouvez pas voter sur ce projet. Prédisez à voix haute l'issue de ce projet. Si votre prédiction est correcte, gagnez 5 biens commerciaux.",
+    "description": "Description of action card: Trade Rider"
+  },
+  "Action Cards.Trade Rider.Name": {
+    "defaultMessage": "Marchand de génie",
+    "description": "Name of action card: Trade Rider"
+  },
+  "Action Cards.Unexpected Action.Description": {
+    "defaultMessage": "ACTION : Retirez 1 de vos pions commandement du plateau de jeu et remettez-le dans vos renforts.",
+    "description": "Description of action card: Unexpected Action"
+  },
+  "Action Cards.Unexpected Action.Name": {
+    "defaultMessage": "Action surprise",
+    "description": "Name of action card: Unexpected Action"
+  },
+  "Action Cards.Unstable Planet.Description": {
+    "defaultMessage": "ACTION : Choisissez une planète dangereuse. Épuisez cette planète et détruisez jusqu’à 3 infanteries s’y trouvant.",
+    "description": "Description of action card: Unstable Planet"
+  },
+  "Action Cards.Unstable Planet.Name": {
+    "defaultMessage": "Planète instable",
+    "description": "Name of action card: Unstable Planet"
+  },
+  "Action Cards.Upgrade.Description": {
+    "defaultMessage": "Après avoir activé un système contenant 1 ou plusieurs de vos vaisseaux :{br}Remplacez l'un de vos croiseurs dans ce système par 1 cuirassés provenant de vos renforts.",
+    "description": "Description of action card: Upgrade"
+  },
+  "Action Cards.Upgrade.Name": {
+    "defaultMessage": "Amélioration",
+    "description": "Name of action card: Upgrade"
+  },
+  "Action Cards.Uprising.Description": {
+    "defaultMessage": "ACTION : Épuiser 1 planète autre qu'une planète natal, contrôlée par un autre joueur. Gagnez ensuite un nombre de bien commerciaux d’une valeur égale à sa valeur de ressources.",
+    "description": "Description of action card: Uprising"
+  },
+  "Action Cards.Uprising.Name": {
+    "defaultMessage": "Révolte",
+    "description": "Name of action card: Uprising"
+  },
+  "Action Cards.Veto.Description": {
+    "defaultMessage": "Lorsqu'un projet est révélé:{br} défaussez-le et révélez un projet du dessus de la pioche. Les joueurs votent alors sur ce projet.",
+    "description": "Description of action card: Veto"
+  },
+  "Action Cards.Veto.Name": {
+    "defaultMessage": "Veto",
+    "description": "Name of action card: Veto"
+  },
+  "Action Cards.War Effort.Description": {
+    "defaultMessage": "ACTION : Placez 1 croiseur de vos renforts dans un système contenant 1 ou plusieurs de vos vaisseaux.",
+    "description": "Description of action card: War Effort"
+  },
+  "Action Cards.War Effort.Name": {
+    "defaultMessage": "Effort de guerre",
+    "description": "Name of action card: War Effort"
+  },
+  "Action Cards.Warfare Rider.Description": {
+    "defaultMessage": "Une fois un projet révélé : Vous ne pouvez pas voter pour ce projet. Prédisez à voix haute l'issue de ce projet. Si votre prédiction est correcte, placez un cuirassé de vos renforts dans un système contenant au moins un de vos vaisseaux.",
+    "description": "Description of action card: Warfare Rider"
+  },
+  "Action Cards.Warfare Rider.Name": {
+    "defaultMessage": "Génie de la guerre",
+    "description": "Name of action card: Warfare Rider"
+  },
+  "Action Cards.Waylay.Description": {
+    "defaultMessage": "Avant votre lancer de dés de BARRAGE ANTI-CHASSEUR : les touches de ce lancer peuvent être attribuées à tous les vaisseaux (et pas seulement aux chasseurs).",
+    "description": "Description of action card: Waylay"
+  },
+  "Action Cards.Waylay.Name": {
+    "defaultMessage": "Coup fourré",
+    "description": "Name of action card: Waylay"
+  },
   "Agendas.Anti-Intellectual Revolution.Description": {
-    "defaultMessage": "POUR : Après qu'un joueur recherche une technologie, il doit détruire 1 de ses vaisseaux non-chasseurs {br}CONTRE : Au début de la prochaine phase Stratégie, chaque joueur choisit et épuise 1 planète pour chaque technologie qu'ils possèdent.",
+    "defaultMessage": "Pour : Après qu'un joueur recherche une technologie, il doit détruire 1 de ses vaisseaux non-chasseurs {br}Contre : Au début de la prochaine phase Stratégie, chaque joueur choisit et épuise 1 planète pour chaque technologie qu'ils possèdent.",
     "description": "Description for Agenda Card: Anti-Intellectual Revolution"
   },
   "Agendas.Anti-Intellectual Revolution.Title": {
@@ -296,7 +920,7 @@
     "description": "Title of Agenda Card: Armed Forces Standardization"
   },
   "Agendas.Arms Reduction.Description": {
-    "defaultMessage": "\nPOUR : Chaque joueur détruit tous ses cuirassés sauf 2 et tous ses croiseurs sauf 4.{br}CONTRE : Au début de la phase stratégique suivante, chaque joueur épuise chacune de ses planètes possédant une spécialité technologique.",
+    "defaultMessage": "\nPour : Chaque joueur détruit tous ses cuirassés sauf 2 et tous ses croiseurs sauf 4.{br}Contre : Au début de la phase stratégique suivante, chaque joueur épuise chacune de ses planètes possédant une spécialité technologique.",
     "description": "Description for Agenda Card: Arms Reduction"
   },
   "Agendas.Arms Reduction.Title": {
@@ -304,7 +928,7 @@
     "description": "Title of Agenda Card: Arms Reduction"
   },
   "Agendas.Articles of War.Description": {
-    "defaultMessage": "POUR : Tous les mecha perdent leurs compétences imprimées, sauf DEGATS ENCAISSES. {br}CONTRE : Chaque joueur qui a voté « Pour » gagne 3 bien commerciaux.",
+    "defaultMessage": "Pour : Tous les mecha perdent leurs compétences imprimées, sauf DEGATS ENCAISSES. {br}Contre : Chaque joueur qui a voté « Pour » gagne 3 bien commerciaux.",
     "description": "Description for Agenda Card: Articles of War"
   },
   "Agendas.Articles of War.Title": {
@@ -312,7 +936,7 @@
     "description": "Title of Agenda Card: Articles of War"
   },
   "Agendas.Checks and Balances.Description": {
-    "defaultMessage": "POUR : Lorsqu'un joueur choisit une carte Stratégie pendant la phase de Stratégie, il donne cette carte Stratégie à un autre joueur qui n'en possède pas (ou qui n'en a pas 2 dans les parties à 3 ou 4 joueurs), si possible. \nCONTRE : Chaque joueur ne restaure que 3 de ses planètes à la fin de cette Phase de Projet",
+    "defaultMessage": "Pour : Lorsqu'un joueur choisit une carte Stratégie pendant la phase de Stratégie, il donne cette carte Stratégie à un autre joueur qui n'en possède pas (ou qui n'en a pas 2 dans les parties à 3 ou 4 joueurs), si possible. \nContre : Chaque joueur ne restaure que 3 de ses planètes à la fin de cette Phase de Projet",
     "description": "Description for Agenda Card: Checks and Balances"
   },
   "Agendas.Checks and Balances.Title": {
@@ -320,7 +944,7 @@
     "description": "Title of Agenda Card: Checks and Balances"
   },
   "Agendas.Clandestine Operations.Description": {
-    "defaultMessage": "POUR : Chaque joueur retire 2 pions Commandement de sa Fiche Commandement et ses pions dans ses renforts.{br}CONTRE : Chaque joueur retire 1 jeton de commandement de sa réserve de flotte et le remet à ses renforts.",
+    "defaultMessage": "Pour : Chaque joueur retire 2 pions Commandement de sa Fiche Commandement et ses pions dans ses renforts.{br}Contre : Chaque joueur retire 1 jeton de commandement de sa réserve de flotte et le remet à ses renforts.",
     "description": "Description for Agenda Card: Clandestine Operations"
   },
   "Agendas.Clandestine Operations.Title": {
@@ -360,7 +984,7 @@
     "description": "Title of Agenda Card: Compensated Disarmament"
   },
   "Agendas.Conventions of War.Description": {
-    "defaultMessage": "POUR : Les joueurs ne peuvent pas utiliser le BOMBARDEMENT contre les unités qui se trouvent sur des planètes culturelles. CONTRE : Chaque joueur qui a voté « Contre » défausse toutes ses cartes d'action.",
+    "defaultMessage": "Pour : Les joueurs ne peuvent pas utiliser le BOMBARDEMENT contre les unités qui se trouvent sur des planètes culturelles.{br}Contre : Chaque joueur qui a voté « Contre » défausse toutes ses cartes d'action.",
     "description": "Description for Agenda Card: Conventions of War"
   },
   "Agendas.Conventions of War.Title": {
@@ -392,7 +1016,7 @@
     "description": "Title of Agenda Card: Demilitarized Zone"
   },
   "Agendas.Economic Equality.Description": {
-    "defaultMessage": "POUR : Chaque joueur remet toutes ses marchandises dans la réserve. Ensuite, chaque joueur gagne 5 marchandises.{br}CONTRE : Chaque joueur remet toutes ses marchandises dans la réserve.",
+    "defaultMessage": "Pour : Chaque joueur remet toutes ses marchandises dans la réserve. Ensuite, chaque joueur gagne 5 marchandises.{br}Contre : Chaque joueur remet toutes ses marchandises dans la réserve.",
     "description": "Description for Agenda Card: Economic Equality"
   },
   "Agendas.Economic Equality.Title": {
@@ -400,7 +1024,7 @@
     "description": "Description for Agenda Card: Economic Equality"
   },
   "Agendas.Enforced Travel Ban.Description": {
-    "defaultMessage": "POUR : Les trous de ver alpha et bêta n'ont aucun effet pendant le déplacement.{br}CONTRE : Détruisez chaque SDP dans ou adjacent à chaque système contenant un trou de ver.",
+    "defaultMessage": "Pour : Les trous de ver alpha et bêta n'ont aucun effet pendant le déplacement.{br}Contre : Détruisez chaque SDP dans ou adjacent à chaque système contenant un trou de ver.",
     "description": "Description for Agenda Card: Enforced Travel Ban"
   },
   "Agendas.Enforced Travel Ban.Title": {
@@ -408,7 +1032,7 @@
     "description": "Title of Agenda Card: Enforced Travel Ban"
   },
   "Agendas.Executive Sanctions.Description": {
-    "defaultMessage": "\nPOUR : Chaque joueur peut avoir un maximum de 3 cartes Action en main.{br}CONTRE : Chaque joueur défausse 1 carte Action au hasard de sa main.",
+    "defaultMessage": "\nPour : Chaque joueur peut avoir un maximum de 3 cartes Action en main.{br}Contre : Chaque joueur défausse 1 carte Action au hasard de sa main.",
     "description": "Description for Agenda Card: Executive Sanctions"
   },
   "Agendas.Executive Sanctions.Title": {
@@ -416,7 +1040,7 @@
     "description": "Title of Agenda Card: Executive Sanctions"
   },
   "Agendas.Fleet Regulations.Description": {
-    "defaultMessage": "\nPOUR : Chaque joueur ne peut pas avoir plus de 4 jetons dans sa réserve de flotte.{br}CONTRE : Chaque joueur place 1 pion Commandement de ses renforts dans sa réserve de flotte.",
+    "defaultMessage": "\nPour : Chaque joueur ne peut pas avoir plus de 4 jetons dans sa réserve de flotte.{br}Contre : Chaque joueur place 1 pion Commandement de ses renforts dans sa réserve de flotte.",
     "description": "Description for Agenda Card: Fleet Regulations"
   },
   "Agendas.Fleet Regulations.Title": {
@@ -440,7 +1064,7 @@
     "description": "Title of Agenda Card: Holy Planet of Ixth"
   },
   "Agendas.Homeland Defense Act.Description": {
-    "defaultMessage": "POUR : Chaque joueur peut avoir n'importe quel nombre d'unités SDP sur les planètes qu'il contrôle.{br}CONTRE : Chaque joueur détruit 1 de ses unités SDP.",
+    "defaultMessage": "Pour : Chaque joueur peut avoir n'importe quel nombre d'unités SDP sur les planètes qu'il contrôle.{br}Contre : Chaque joueur détruit 1 de ses unités SDP.",
     "description": "Description for Agenda Card: Homeland Defense Act"
   },
   "Agendas.Homeland Defense Act.Title": {
@@ -456,7 +1080,7 @@
     "description": "Title of Agenda Card: Imperial Arbiter"
   },
   "Agendas.Incentive Program.Description": {
-    "defaultMessage": "\nPOUR : Piochez et révélez 1 objectif public de niveau I du paquet et placez-le à côté des objectifs publics.{br}CONTRE : Piochez et révélez 1 objectif public de niveau II depuis du paquet et placez-le à coté des objectifs publics.",
+    "defaultMessage": "\nPour : Piochez et révélez 1 objectif public de niveau I du paquet et placez-le à côté des objectifs publics.{br}Contre : Piochez et révélez 1 objectif public de niveau II depuis du paquet et placez-le à coté des objectifs publics.",
     "description": "Description for Agenda Card: Incentive Program"
   },
   "Agendas.Incentive Program.Title": {
@@ -464,7 +1088,7 @@
     "description": "Title for Agenda Card: Incentive Program"
   },
   "Agendas.Ixthian Artifact.Description": {
-    "defaultMessage": "POUR : Le joueur lance un dé. Si le résultat est de 6 à 10, chaque joueur peut rechercher 2 technologies. Si le résultat est de 1 à 5, détruisez toutes les unités du système de Mecatol Rex, et chaque joueur possédant des unités dans des systèmes adjacents à celui de Mecatol Rex détruit 3 de ses unités dans chacun de ces systèmes.{br}CONTRE : Aucun effet.",
+    "defaultMessage": "Pour : Le joueur lance un dé. Si le résultat est de 6 à 10, chaque joueur peut rechercher 2 technologies. Si le résultat est de 1 à 5, détruisez toutes les unités du système de Mecatol Rex, et chaque joueur possédant des unités dans des systèmes adjacents à celui de Mecatol Rex détruit 3 de ses unités dans chacun de ces systèmes.{br}Contre : Aucun effet.",
     "description": "Description for Agenda Card: Ixthian Artifact"
   },
   "Agendas.Ixthian Artifact.Title": {
@@ -552,7 +1176,7 @@
     "description": "Title of Agenda Card: Miscount Disclosed"
   },
   "Agendas.Mutiny.Description": {
-    "defaultMessage": "POUR : Chaque joueur qui a voté « Pour » gagne 1 point de victoire.{br}CONTRE : Chaque joueur qui a voté « Pour » perd 1 point de victoire.",
+    "defaultMessage": "Pour : Chaque joueur qui a voté « Pour » gagne 1 point de victoire.{br}Contre : Chaque joueur qui a voté « Pour » perd 1 point de victoire.",
     "description": "Description for Agenda Card: Mutiny"
   },
   "Agendas.Mutiny.Title": {
@@ -560,7 +1184,7 @@
     "description": "Title of Agenda Card: Mutiny"
   },
   "Agendas.New Constitution.Description": {
-    "defaultMessage": "Lorsque ce projet est révélé, s'il n'y a aucune loi en jeu, défaussez cette carte et révélez un autre projet du dessus du paquet.{br}POUR : Défaussez toutes les lois en jeu. Au début de la prochaine phase de stratégie, chaque joueur épuise toutes les planètes de son système natal.{br}CONTRE : Aucun effet.",
+    "defaultMessage": "Lorsque ce projet est révélé, s'il n'y a aucune loi en jeu, défaussez cette carte et révélez un autre projet du dessus du paquet.{br}Pour : Défaussez toutes les lois en jeu. Au début de la prochaine phase de stratégie, chaque joueur épuise toutes les planètes de son système natal.{br}Contre : Aucun effet.",
     "description": "Description for Agenda Card: New Constitution"
   },
   "Agendas.New Constitution.Title": {
@@ -568,7 +1192,7 @@
     "description": "Title of Agenda Card: New Constitution"
   },
   "Agendas.Nexus Sovereignty.Description": {
-    "defaultMessage": "POUR : Les trous de ver alpha et bêta qui se trouve dans l'oeil du trou de ver n'ont aucun effet pendant les déplacements. CONTRE : Placez un pion de trou de ver gamma dans le système Mecatol Rex.",
+    "defaultMessage": "Pour : Les trous de ver alpha et bêta qui se trouve dans l'oeil du trou de ver n'ont aucun effet pendant les déplacements. Contre : Placez un pion de trou de ver gamma dans le système Mecatol Rex.",
     "description": "Description for Agenda Card: Nexus Sovereignty"
   },
   "Agendas.Nexus Sovereignty.Title": {
@@ -600,7 +1224,7 @@
     "description": "Title of Agenda Card: Public Execution"
   },
   "Agendas.Publicize Weapon Schematics.Description": {
-    "defaultMessage": "\nPOUR : Si un joueur possède une technologie de soleil de guerre, tous les joueurs peuvent ignorer tous les prérequis des technologies de Soleil de Guerre. Tous les soleils de guerre perdent DEGATS ENCAISSES.{br}CONTRE : Chaque joueur possédant une technologie de soleil de guerre défausse toutes ses cartes Action.",
+    "defaultMessage": "\nPour : Si un joueur possède une technologie de soleil de guerre, tous les joueurs peuvent ignorer tous les prérequis des technologies de Soleil de Guerre. Tous les soleils de guerre perdent DEGATS ENCAISSES.{br}Contre : Chaque joueur possédant une technologie de soleil de guerre défausse toutes ses cartes Action.",
     "description": "Description for Agenda Card: Publicize Weapon Schematics"
   },
   "Agendas.Publicize Weapon Schematics.Title": {
@@ -608,7 +1232,7 @@
     "description": "Title of Agenda Card: Publicize Weapon Schematics"
   },
   "Agendas.Rearmament Agreement.Description": {
-    "defaultMessage": "POUR : Chaque joueur place 1 Mécha de ses renforts sur une planète qu'il contrôle dans son système natal.{br}CONTRE : Chaque joueur remplace chacun de ses Mécha par 1 infanterie de ses Renforts.",
+    "defaultMessage": "Pour : Chaque joueur place 1 Mécha de ses renforts sur une planète qu'il contrôle dans son système natal.{br}Contre : Chaque joueur remplace chacun de ses Mécha par 1 infanterie de ses Renforts.",
     "description": "Description for Agenda Card: Rearmament Agreement"
   },
   "Agendas.Rearmament Agreement.Title": {
@@ -616,7 +1240,7 @@
     "description": "Title of Agenda Card: Rearmament Agreement"
   },
   "Agendas.Regulated Conscription.Description": {
-    "defaultMessage": "POUR : Lorsqu'un joueur produit des unités, il ne produit que 1 Chasseur ou Infanterie pour leur coût au lieu de 2.{br}CONTRE : Aucun effet.",
+    "defaultMessage": "Pour : Lorsqu'un joueur produit des unités, il ne produit que 1 Chasseur ou Infanterie pour leur coût au lieu de 2.{br}Contre : Aucun effet.",
     "description": "Description for Agenda Card: Regulated Conscription"
   },
   "Agendas.Regulated Conscription.Title": {
@@ -624,11 +1248,11 @@
     "description": "Title of Agenda Card: Regulated Conscription"
   },
   "Agendas.Representative Government.Description": {
-    "defaultMessage": "POUR : Les joueurs ne peuvent pas épuiser leurs planètes pour voter pendant la phase Projet. Chaque joueur peut voter une fois sur chaque projet à la place.{br}CONTRE : Au début de la phase de stratégie suivante, chaque joueur ayant voté « Contre » épuise toutes ses planètes culturelles.",
+    "defaultMessage": "Pour : Les joueurs ne peuvent pas épuiser leurs planètes pour voter pendant la phase Projet. Chaque joueur peut voter une fois sur chaque projet à la place.{br}Contre : Au début de la phase de stratégie suivante, chaque joueur ayant voté « Contre » épuise toutes ses planètes culturelles.",
     "description": "Description for Agenda Card: Representative Government"
   },
   "Agendas.Representative Government.Omega.Description": {
-    "defaultMessage": "POUR : Les joueurs ne peuvent pas épuiser leurs planètes pour voter pendant la phase de projet; chaque joueur peut exprimer 1 vote sur chaque projet à la place. Les joueurs ne peuvent pas exprimer de votes supplémentaires.{br}CONTRE : Au début de la phase de la prochaine phase de stratégie, chaque joueur ayant voté « Contre » épuise toutes ses planètes culturelles.",
+    "defaultMessage": "Pour : Les joueurs ne peuvent pas épuiser leurs planètes pour voter pendant la phase de projet; chaque joueur peut exprimer 1 vote sur chaque projet à la place. Les joueurs ne peuvent pas exprimer de votes supplémentaires.{br}Contre : Au début de la phase de la prochaine phase de stratégie, chaque joueur ayant voté « Contre » épuise toutes ses planètes culturelles.",
     "description": "Omega description for Agenda Card: Representative Government"
   },
   "Agendas.Representative Government.Title": {
@@ -684,7 +1308,7 @@
     "description": "Title of Agenda Card: Search Warrant"
   },
   "Agendas.Seed of an Empire.Description": {
-    "defaultMessage": "POUR : Le joueur ayant le plus de points de victoire gagne 1 point de victoire.{br}CONTRE : Le joueur ayant le moins de points de victoire gagne 1 point de victoire.",
+    "defaultMessage": "Pour : Le joueur ayant le plus de points de victoire gagne 1 point de victoire.{br}Contre : Le joueur ayant le moins de points de victoire gagne 1 point de victoire.",
     "description": "Description for Agenda Card: Seed of an Empire"
   },
   "Agendas.Seed of an Empire.Title": {
@@ -708,7 +1332,7 @@
     "description": "Title of Agenda Card: Shard of the Throne"
   },
   "Agendas.Shared Research.Description": {
-    "defaultMessage": "POUR : Les unités de chaque joueur peuvent se déplacer à travers les nébuleuses.{br}CONTRE : Chaque joueur place un pion Commandement de ses Renforts dans son système natal, si possible.",
+    "defaultMessage": "Pour : Les unités de chaque joueur peuvent se déplacer à travers les nébuleuses.{br}Contre : Chaque joueur place un pion Commandement de ses Renforts dans son système natal, si possible.",
     "description": "Description for Agenda Card: Shared Research"
   },
   "Agendas.Shared Research.Title": {
@@ -716,7 +1340,7 @@
     "description": "Title of Agenda Card: Shared Research"
   },
   "Agendas.Swords to Plowshares.Description": {
-    "defaultMessage": "POUR : Chaque joueur détruit la moitié de son infanterie sur chaque planète qu'il contrôle (arrondi à l'entier supérieur). Ensuite, chaque joueur gagne des biens commerciaux en quantité égale au nombre d'infanteries détruites.{br}CONTRE : Chaque joueur place 1 unité d'infanterie de ses renforts sur chaque planète qu'il contrôle.",
+    "defaultMessage": "Pour : Chaque joueur détruit la moitié de son infanterie sur chaque planète qu'il contrôle (arrondi à l'entier supérieur). Ensuite, chaque joueur gagne des biens commerciaux en quantité égale au nombre d'infanteries détruites.{br}Contre : Chaque joueur place 1 unité d'infanterie de ses renforts sur chaque planète qu'il contrôle.",
     "description": "Description for Agenda Card: Swords to Plowshares"
   },
   "Agendas.Swords to Plowshares.Title": {
@@ -748,7 +1372,7 @@
     "description": "Title of Agenda Card: The Crown of Thalnos"
   },
   "Agendas.Unconventional Measures.Description": {
-    "defaultMessage": "POUR : Chaque joueur qui a voté « Pour » pioche 2 cartes Action.{br}CONTRE : Chaque joueur qui a voté « Pour » défausse toutes ses cartes Action.",
+    "defaultMessage": "Pour : Chaque joueur qui a voté « Pour » pioche 2 cartes Action.{br}Contre : Chaque joueur qui a voté « Pour » défausse toutes ses cartes Action.",
     "description": "Description for Agenda Card: Unconventional Measures"
   },
   "Agendas.Unconventional Measures.Title": {
@@ -756,7 +1380,7 @@
     "description": "Title of Agenda Card: Unconventional Measures"
   },
   "Agendas.Wormhole Reconstruction.Description": {
-    "defaultMessage": "\nPOUR : Tous les systèmes contenant un trou de ver alpha ou bêta sont adjacents les uns aux autres.{br}CONTRE : Chaque joueur place un pion Commandement de ses Renforts dans chaque système contenant un trou de ver et 1 ou plusieurs de ses vaisseaux.",
+    "defaultMessage": "\nPour : Tous les systèmes contenant un trou de ver alpha ou bêta sont adjacents les uns aux autres.{br}Contre : Chaque joueur place un pion Commandement de ses Renforts dans chaque système contenant un trou de ver et 1 ou plusieurs de ses vaisseaux.",
     "description": "Description for Agenda Card: Wormhole Reconstruction"
   },
   "Agendas.Wormhole Reconstruction.Title": {
@@ -764,28 +1388,12 @@
     "description": "Title of Agenda Card: Wormhole Reconstruction"
   },
   "Agendas.Wormhole Research.Description": {
-    "defaultMessage": "POUR : Chaque joueur possédant au moins un vaisseau dans un système contenant un trou de ver peut rechercher 1 technologie. Ensuite, détruisez tous les vaisseaux présents dans les systèmes contenant un trou de ver alpha ou bêta.{br}CONTRE : Chaque joueur ayant voté « Contre » retire un pion Commandement de sa fiche de Commandement et le remet dans ses Renforts.",
+    "defaultMessage": "Pour : Chaque joueur possédant au moins un vaisseau dans un système contenant un trou de ver peut rechercher 1 technologie. Ensuite, détruisez tous les vaisseaux présents dans les systèmes contenant un trou de ver alpha ou bêta.{br}Contre : Chaque joueur ayant voté « Contre » retire un pion Commandement de sa fiche de Commandement et le remet dans ses Renforts.",
     "description": "Description for Agenda Card: Wormhole Research"
   },
   "Agendas.Wormhole Research.Title": {
     "defaultMessage": "Recherche de trou de ver",
     "description": "Title of Agenda Card: Wormhole Research"
-  },
-  "Agenda.Secret Archive.Description": {
-    "defaultMessage": "Elisez un joueur.{br}Le joueur elu Pioche 1 objectif secret",
-    "description": "Description for Agenda Card: Secret Archive"
-  },
-  "Agenda.Secret Archive.Title": {
-    "defaultMessage": "Archive secrète",
-    "description": "Title of Agenda Card: Secret Archive"
-  },
-  "Agenda.Anti-intellectual revolution.Description": {
-    "defaultMessage": "POUR: après qu'un joueur a recherché une technologie, il doit détruire 1 de ses Vaisseaux autres que chasseurs.{br}CONTRE: au début de la prochaine Phase de Stratégie, chaque joueur choisit et épuise 1 planète par technologie qu'il détient.",
-    "description": "Description for Agenda Card: Anti-intellectual revolution"
-  },
-  "Agenda.Anti-intellectual revolution.Title": {
-    "defaultMessage": "Révolution anti-intellectuelle",
-    "description": "Title of Agenda Card: Anti-intellectual revolution"
   },
   "Alcp4i": {
     "defaultMessage": "Achete-moi un café",
@@ -822,10 +1430,6 @@
   "Arborec.Leaders.Letani Miasmiala.Name": {
     "defaultMessage": "Miasmiala Letani ",
     "description": "Name of Arborec Hero: Letani Miasmiala"
-  },
-  "Arborec.Leaders.Letani Miasmiala.Unlock": {
-    "defaultMessage": "Avoir validé 3 objectifs",
-    "description": "Unlock condition for Arborec Hero: Masmalia Letani"
   },
   "Arborec.Leaders.Letani Ospha.Description": {
     "defaultMessage": "ACTION : Épuisez cette carte et choisissez un vaisseau autre que chasseur d'un joueur ; ce joueur peut remplacer ce vaisseau par un vaisseau de ses renforts coûtant jusqu'à 2 de plus que le vaisseau remplacé.",
@@ -1080,7 +1684,7 @@
     "description": "Title of Faction Ability: Munitions Reserve"
   },
   "Barony of Letnev.Leaders.Darktalon Treilla.AbilityName": {
-    "defaultMessage": "Affinité avec la Matière Noire",
+    "defaultMessage": "AFFINITÉ AVEC LA MATIÈRE NOIRE",
     "description": "Ability name for Letnev Hero: Darktalon Treilla"
   },
   "Barony of Letnev.Leaders.Darktalon Treilla.Description": {
@@ -1171,6 +1775,10 @@
     "defaultMessage": "Fin de la phase {Phase}",
     "description": "Text showing that something will occur at the end of a specific phase."
   },
+  "CH11Yw": {
+    "defaultMessage": "Billets à ordre",
+    "description": "The title of promissory notes."
+  },
   "CKpFBk": {
     "defaultMessage": "Piocher 2 objectifs secrets; n'en garder qu'1",
     "description": "A step in the setup phase: Draw 2 secret objectives and keep 1."
@@ -1236,7 +1844,7 @@
     "description": "Unlock condition for Saar Hero: Rowl Sarrig"
   },
   "Clan of Saar.Name": {
-    "defaultMessage": "Le Clan de Saar",
+    "defaultMessage": "Le clan de Saar",
     "description": "Name of Faction: Clan of Saar"
   },
   "Clan of Saar.Promissories.Ragh's Call.Description": {
@@ -1291,25 +1899,9 @@
     "defaultMessage": "Ne peut pas valider d'objectifs Publics",
     "description": "Message telling a player that they cannot score public objectives."
   },
-  "Components.Immediate escape.Description": {
-    "defaultMessage": "ACTION: Choisissez sur le plateau 1 ou 2 de vos Vaisseaux autres que des chasseurs et remettez les dans vos renforts; gagnez un nombre de bien commerciaux égal au coût combiné de ces vaisseaux.",
-    "description": "Description for Component:  Immediate escape"
-  },
-  "Components.Immediate escape.Title": {
-    "defaultMessage": "Fuite immédiate",
-    "description": "Tittle component: Immediate escape"
-  },
   "Components.Ancient Burial Sites.Title": {
     "defaultMessage": "Anciens sites funéraires",
     "description": "Title of Component: Ancient Burial Sites"
-  },
-  "Components.Archaeological Expedition.Description": {
-    "defaultMessage": "ACTION : Révélez les 3 premières cartes du paquet exploration correspondant à une planète que vous contrôlez ; gagnez les Morceaux de Relique que vous révélez et défaussez le reste.",
-    "description": "Description for Component: Archaeological Expedition"
-  },
-  "Components.Archaeological Expedition.Title": {
-    "defaultMessage": "Expédition archéologique",
-    "description": "Title of Component: Archaeological Expedition"
   },
   "Components.Assassinate Representative.Title": {
     "defaultMessage": "Assassinat de représentant",
@@ -1331,14 +1923,6 @@
     "defaultMessage": "Pacte de sang",
     "description": "Title of Component: Blood Pact"
   },
-  "Components.Cripple Defenses.Description": {
-    "defaultMessage": "ACTION : Choisissez une planète. Détruisez tous les SDP présents sur cette planète.",
-    "description": "Description for Component: Cripple Defenses"
-  },
-  "Components.Cripple Defenses.Title": {
-    "defaultMessage": "Défenses paralyséees",
-    "description": "Title of Component: Cripple Defenses"
-  },
   "Components.Dark Pact.Description": {
     "defaultMessage": "ACTION : Placez cette carte face visible dans votre zone de jeu.{br}Lorsque vous donnez au joueur Empyréen un nombre de commodités égal à votre valeur de commodité maximale, vous gagnez chacun 1 bien commercial.{br}Si vous activez un système contenant 1 ou plusieurs unités du joueur Empyréen, rendez cette carte au joueur Empyréen.",
     "description": "Description for Component: Dark Pact"
@@ -1351,14 +1935,6 @@
     "defaultMessage": "Conseiller distingué",
     "description": "Title of Component: Distinguished Councilor"
   },
-  "Components.Economic Initiative.Description": {
-    "defaultMessage": "ACTION: Restaurez chaque planète culturelle que vous contrôlez.",
-    "description": "Description for Component: Economic Initiative"
-  },
-  "Components.Economic Initiative.Title": {
-    "defaultMessage": "Initiative économique",
-    "description": "Title of Component: Economic Initiative"
-  },
   "Components.Enigmatic Device.Description": {
     "defaultMessage": "ACTION : Vous pouvez dépenser 6 ressources et purger cette carte pour rechercher 1 technologie.",
     "description": "Description for Component: Enigmatic Device"
@@ -1366,14 +1942,6 @@
   "Components.Enigmatic Device.Title": {
     "defaultMessage": "Mystérieux dispositif",
     "description": "Title of Component: Enigmatic Device"
-  },
-  "Components.Exploration Probe.Description": {
-    "defaultMessage": "ACTION : Explorez un pion Frontière situé dans ou adjacent à un système contenant au moins un de vos vaisseaux.",
-    "description": "Description for Component: Exploration Probe"
-  },
-  "Components.Exploration Probe.Title": {
-    "defaultMessage": "Sonde d'exploration",
-    "description": "Title of Component: Exploration Probe"
   },
   "Components.Fabrication.Description": {
     "defaultMessage": "ACTION : Soit vous purgez 2 de vos Morceaux de relique du même type pour gagner 1 relique ; soit vous purgez 1 de vos Morceaux de relique pour gagner 1 pion commandement.",
@@ -1391,65 +1959,21 @@
     "defaultMessage": "Feux des Gashlai",
     "description": "Title of Component: Fires of the Gashlai"
   },
-  "Components.Focused Research.Description": {
-    "defaultMessage": "ACTION : Dépensez 4 biens commerciaux pour rechercher 1 technologie.",
-    "description": "Description for Component: Focused Research"
-  },
-  "Components.Focused Research.Title": {
-    "defaultMessage": "Recherche ciblée",
-    "description": "Title of Component: Focused Research"
-  },
-  "Components.Frontline Deployment.Description": {
-    "defaultMessage": "ACTION : Placez 3 infanteries de vos renforts sur une planète que vous contrôlez.",
-    "description": "Description for Component: Frontline Deployment"
-  },
-  "Components.Frontline Deployment.Title": {
-    "defaultMessage": "Déploiement sur la ligne de front",
-    "description": "Title of Component: Frontline Deployment"
-  },
   "Components.Gain Relic.Description": {
     "defaultMessage": "ACTION : Purgez 3 de vos Morceaux de relique du même type pour obtenir 1 relique.",
     "description": "Description for Component: Gain Relic"
   },
   "Components.Gain Relic.Title": {
-    "defaultMessage": "Obtenir une relique",
+    "defaultMessage": "Gagner une relique",
     "description": "Title of Component: Gain Relic"
   },
-  "Components.Ghost Ship.Description": {
-    "defaultMessage": "ACTION : Placez 1 destroyer de vos renforts dans un système autre que votre système natal qui contient un trou de ver et qui ne contient pas de vaisseaux d'autres joueurs.",
-    "description": "Description for Component: Ghost Ship"
-  },
-  "Components.Ghost Ship.Title": {
-    "defaultMessage": "Vaisseau fantôme",
-    "description": "Title of Component: Ghost Ship"
+  "Components.Gain Unit Upgrade.Title": {
+    "defaultMessage": "Gagner une amélioration d'unité",
+    "description": "Title of Component: Gain Unit Upgrade"
   },
   "Components.Hack Election.Title": {
     "defaultMessage": "Election truquée",
     "description": "Title of Component: Hack Election"
-  },
-  "Components.Impersonation.Description": {
-    "defaultMessage": "ACTION : Dépensez 3 points d'influence pour piochert 1 objectif secret.",
-    "description": "Description for Component: Impersonation"
-  },
-  "Components.Impersonation.Title": {
-    "defaultMessage": "Imitation",
-    "description": "Title of Component: Impersonation"
-  },
-  "Components.Industrial Initiative.Description": {
-    "defaultMessage": "ACTION : Gagnez 1 bien commercial pour chaque planète industrielle que vous contrôlez.",
-    "description": "Description for Component: Industrial Initiative"
-  },
-  "Components.Industrial Initiative.Title": {
-    "defaultMessage": "Initiative industrielle",
-    "description": "Title of Component: Industrial Initiative"
-  },
-  "Components.Insubordination.Description": {
-    "defaultMessage": "ACTION : Retirez 1 pion de la réserve tactique d'un autre joueur et remettez-le dans ses renforts",
-    "description": "Description for Component: Insubordination"
-  },
-  "Components.Insubordination.Title": {
-    "defaultMessage": "Insubordination",
-    "description": "Title of Component: Insubordination"
   },
   "Components.Lazax Gate Folding.Description": {
     "defaultMessage": "ACTION : Si vous contrôlez Mecatol Rex, épuisez cette carte pour placer 1 infanterie de vos renforts sur Mecatol Rex.",
@@ -1459,14 +1983,6 @@
     "defaultMessage": "Fermeture de la porte Lazax",
     "description": "Title of Component: Lazax Gate Folding"
   },
-  "Components.Lucky Shot.Description": {
-    "defaultMessage": "ACTION : Détruisez 1 cuirassé, croiseur ou destroyer dans un système contenant une planète que vous contrôlez.",
-    "description": "Description for Component: Lucky Shot"
-  },
-  "Components.Lucky Shot.Title": {
-    "defaultMessage": "Tir chanceux",
-    "description": "Title of Component: Lucky Shot"
-  },
   "Components.Mageon Implants.Description": {
     "defaultMessage": "ACTION : Utilisez cette carte pour regarder la main d’un autre joueur. Choisissez-en une et ajoutez-la à votre main.",
     "description": "Description for Component: Mageon Implants"
@@ -1475,14 +1991,6 @@
     "defaultMessage": "Implants mageon",
     "description": "Title of Component: Mageon Implants"
   },
-  "Components.Mining Initiative.Description": {
-    "defaultMessage": "ACTION : Obtenez des biens commerciaux d'une valeur équivalente à la valeur des ressources d'une planète que vous contrôlez.",
-    "description": "Description for Component: Mining Initiative"
-  },
-  "Components.Mining Initiative.Title": {
-    "defaultMessage": "Initiative minière",
-    "description": "Title of Component: Mining Initiative"
-  },
   "Components.Orbital Drop.Description": {
     "defaultMessage": "ACTION : Dépensez 1 jeton de votre réserve stratégique pour placer 2 infanteries de vos renforts sur 1 planète que vous contrôlez.",
     "description": "Description for Component: Orbital Drop"
@@ -1490,22 +1998,6 @@
   "Components.Orbital Drop.Title": {
     "defaultMessage": "Largage orbital",
     "description": "Title of Component: Orbital Drop"
-  },
-  "Components.Plagiarize.Description": {
-    "defaultMessage": "ACTION : Dépensez 5 points d’influence et choisissez une technologie non liée à une faction, détenue par l’un de vos voisins ; obtenez cette technologie.",
-    "description": "Description for Component: Plagiarize"
-  },
-  "Components.Plagiarize.Title": {
-    "defaultMessage": "Plagiat",
-    "description": "Title of Component: Plagiarize"
-  },
-  "Components.Plague.Description": {
-    "defaultMessage": "ACTION : Choisissez une planète contrôlée par un autre joueur. Lancez un dé pour chaque unité d’infanterie présente sur cette planète. Pour chaque résultat de 6 ou plus, détruisez une de ces unités.",
-    "description": "Description for Component: Plague"
-  },
-  "Components.Plague.Title": {
-    "defaultMessage": "Peste",
-    "description": "Title of Component: Plague"
   },
   "Components.Production Biomes.Description": {
     "defaultMessage": "ACTION : Épuisez cette carte et dépensez 1 jeton de votre réserve stratégique pour gagner 4 bien commerciaux et choisir 1 autre joueur ; ce joueur gagne 2 biens commerciaux.",
@@ -1523,62 +2015,6 @@
     "defaultMessage": "Promesse de protection",
     "description": "Title of Component: Promise of Protection"
   },
-  "Components.Reactor Meltdown.Description": {
-    "defaultMessage": "ACTION : Détruire 1 Dock spatial dans un système autre qu'un système natal.",
-    "description": "Description for Component: Reactor Meltdown"
-  },
-  "Components.Reactor Meltdown.Title": {
-    "defaultMessage": "Réacteur en fusion",
-    "description": "Title of Component: Reactor Meltdown"
-  },
-  "Components.Refit Troops.Description": {
-    "defaultMessage": "ACTION : Choisissez 1 ou 2 de vos infanteries sur le plateau de jeu ; remplacez chacun de ces infanteries par des Mecha.",
-    "description": "Description for Component: Refit Troops"
-  },
-  "Components.Refit Troops.Title": {
-    "defaultMessage": "Rééquipement des troupes",
-    "description": "Title of Component: Refit Troops"
-  },
-  "Components.Repeal Law.Description": {
-    "defaultMessage": "ACTION : Défaussez 1 loi du jeu.",
-    "description": "Description for Component: Repeal Law"
-  },
-  "Components.Repeal Law.Title": {
-    "defaultMessage": "Abrogation de loi",
-    "description": "Title of Component: Repeal Law"
-  },
-  "Components.Rise of a Messiah.Description": {
-    "defaultMessage": "ACTION : Placez 1 infanterie de vos renforts sur chaque planète que vous contrôlez.",
-    "description": "Description for Component: Rise of a Messiah"
-  },
-  "Components.Rise of a Messiah.Title": {
-    "defaultMessage": "Arrivée du Messie",
-    "description": "Title of Component: Rise of a Messiah"
-  },
-  "Components.Scuttle.Description": {
-    "defaultMessage": "Lorsqu'un autre joueur joue une carte Action autre que \"Sabotage\": Annulez cette carte Action",
-    "description": "Description for Component: Scuttle"
-  },
-  "Components.Scuttle.Title": {
-    "defaultMessage": "Sabotage",
-    "description": "Title of Component: Scuttle"
-  },
-  "Components.Seize Artifact.Description": {
-    "defaultMessage": "ACTION : Choisissez un de vos voisins possédant au moins un Morceaux de Relique. Ce joueur doit vous donner un Morceaux de relique de votre choix.",
-    "description": "Description for Component: Seize Artifact"
-  },
-  "Components.Seize Artifact.Title": {
-    "defaultMessage": "S'emparer de l'artefact",
-    "description": "Title of Component: Seize Artifact"
-  },
-  "Components.Signal Jamming.Description": {
-    "defaultMessage": "ACTION : Choisissez un système autre que votre système natal qui contient ou est adjacent à l'un de vos vaisseaux. Placez un pion commandement provenant des renforts d'un autre joueur dans ce système.",
-    "description": "Description for Component: Signal Jamming"
-  },
-  "Components.Signal Jamming.Title": {
-    "defaultMessage": "Brouillage des signaux",
-    "description": "Title of Component: Signal Jamming"
-  },
   "Components.Sling Relay.Description": {
     "defaultMessage": "ACTION : épuisez cette carte pour produire 1 vaisseau dans n'importe quel système contenant l'un de vos Docks Spatiaux.",
     "description": "Description for Component: Sling Relay"
@@ -1586,14 +2022,6 @@
   "Components.Sling Relay.Title": {
     "defaultMessage": "Annexe de relais",
     "description": "Title of Component: Sling Relay"
-  },
-  "Components.Spy.Description": {
-    "defaultMessage": "ACTION : Choisissez 1 joueur. Ce joueur vous donne 1 carte Action aléatoire de sa main.",
-    "description": "Description for Component: Spy"
-  },
-  "Components.Spy.Title": {
-    "defaultMessage": "Espion",
-    "description": "Title of Component: Spy"
   },
   "Components.Stall Tactics.Description": {
     "defaultMessage": "ACTION : Défaussez 1 carte Action de votre main",
@@ -1611,6 +2039,10 @@
     "defaultMessage": "Forge stéllaire",
     "description": "Title of Component: Star Forge"
   },
+  "Components.Steal Unit Upgrade.Title": {
+    "defaultMessage": "Voler une amélioration d'unité",
+    "description": "Title of Component: Steal Unit Upgrade"
+  },
   "Components.Stymie.Description": {
     "defaultMessage": "ACTION : Placez cette carte face visible dans votre zone de jeu. Tant que cette carte est dans votre zone de jeu, le joueur Arborec ne peut pas produire d'unités dans ou adjacent à des systèmes non natal contenant au moins une de vos unités. Si vous activez un système contenant au moins une unité du joueur Arborec, rendez cette carte au joueur Arborec.",
     "description": "Description for Component: Stymie"
@@ -1618,14 +2050,6 @@
   "Components.Stymie.Title": {
     "defaultMessage": "Stymie",
     "description": "Title of Component: Stymie"
-  },
-  "Components.Tactical Bombardment.Description": {
-    "defaultMessage": "ACTION : Choisissez un système contenant au moins une de vos unités dotées de la capacité Bombardement. Épuisez chaque planète contrôlée par d’autres joueurs qui se trouve dans ce système.",
-    "description": "Description for Component: Tactical Bombardment"
-  },
-  "Components.Tactical Bombardment.Title": {
-    "defaultMessage": "Bombardement tactique",
-    "description": "Title of Component: Tactical Bombardment"
   },
   "Components.Terraform.Description": {
     "defaultMessage": "ACTION : Attachez cette carte à une planète autre que Mecatol Rex que vous contrôlez et qui n'est pas votre planète natal. Ses valeurs de ressources et d'influence sont augmentées de 1 et elle est considérée comme ayant les 3 caractéristiques planétaires (Culturelle, Dangereuse et Industrielle).",
@@ -1651,30 +2075,6 @@
     "defaultMessage": "Convois commerciaux",
     "description": "Title of Component: Trade Convoys"
   },
-  "Components.Unexpected Action.Description": {
-    "defaultMessage": "ACTION : Retirez 1 de vos pions Commandement du plateau de jeu et remettez-le dans vos renforts.",
-    "description": "Description for Component: Unexpected Action"
-  },
-  "Components.Unexpected Action.Title": {
-    "defaultMessage": "Action surprise",
-    "description": "Title of Component: Unexpected Action"
-  },
-  "Components.Unstable Planet.Description": {
-    "defaultMessage": "ACTION : Choisissez 1 planète dangereuse. Épuisez les ressources de cette planète et détruisez jusqu'à 3 unités d'infanterie qui s'y trouvent.",
-    "description": "Description for Component: Unstable Planet"
-  },
-  "Components.Unstable Planet.Title": {
-    "defaultMessage": "Planète instable",
-    "description": "Title of Component: Unstable Planet"
-  },
-  "Components.Uprising.Description": {
-    "defaultMessage": "ACTION : Épuiser une planète autre que votre planète natal, contrôlée par un autre joueur. Obtenir ensuite des bien commerciaux d’une valeur égale à celle de ses ressources.",
-    "description": "Description for Component: Uprising"
-  },
-  "Components.Uprising.Title": {
-    "defaultMessage": "Révolte",
-    "description": "Title of Component: Uprising"
-  },
   "Components.Veto.Title": {
     "defaultMessage": "Veto",
     "description": "Title of Component: Veto"
@@ -1686,14 +2086,6 @@
   "Components.Vortex.Title": {
     "defaultMessage": "Vortex",
     "description": "Title of Component: Vortex"
-  },
-  "Components.War Effort.Description": {
-    "defaultMessage": "ACTION : Placez 1 croiseur de vos renforts dans un système contenant 1 ou plusieurs de vos vaisseaux.",
-    "description": "Description for Component: War Effort"
-  },
-  "Components.War Effort.Title": {
-    "defaultMessage": "Effort de guerre",
-    "description": "Title of Component: War Effort"
   },
   "Components.X-89 Bacterial Weapon.Description": {
     "defaultMessage": "ACTION : Épuisez cette carte et choisissez 1 planète dans un système qui contient 1 ou plusieurs de vos vaisseaux dotés de la compétence BOMBARDEMENT ; détruisez toute les infanteries présente sur cette planète.",
@@ -1708,7 +2100,7 @@
     "description": "Text on a hover menu for selecting a player's faction"
   },
   "D82kvD": {
-    "defaultMessage": "BARRAGE ANTI-CHASSEURS",
+    "defaultMessage": "BARRAGE ANTI-CHASSEURS {value}",
     "description": "A unit ability that allows a unit to destroy fighters."
   },
   "DGs6vS": {
@@ -2156,7 +2548,7 @@
     "description": "Title of Faction Unit: Spec Ops I"
   },
   "Federation of Sol.Units.ZS Thunderbolt M2.Description": {
-    "defaultMessage": "DÉPLOIEMENT : Après avoir utilisé votre compétence de faction LARGAGE ORBITALL, vous pouvez dépenser 3 ressources pour placer 1 Mécha sur cette planète.",
+    "defaultMessage": "DÉPLOIEMENT : Après avoir utilisé votre compétence de faction LARGAGE ORBITAL, vous pouvez dépenser 3 ressources pour placer 1 Mécha sur cette planète.",
     "description": "Description for Faction Unit: ZS Thunderbolt M2"
   },
   "Federation of Sol.Units.ZS Thunderbolt M2.Title": {
@@ -2311,6 +2703,10 @@
     "defaultMessage": "Cartes Action",
     "description": "Cards that are used to make actions."
   },
+  "IG7CG4": {
+    "defaultMessage": "{count} {count, plural, one {Dock Spatial} other {Docks Spatial}}",
+    "description": "A number of Space Dock units."
+  },
   "IfyaDZ": {
     "defaultMessage": "Objectifsrévélés",
     "description": "A label for revealed objectives."
@@ -2323,10 +2719,6 @@
     "defaultMessage": "Objectif I",
     "description": "The title of public objectives that grant 1 victory point."
   },
-  "JS92Jj": {
-    "defaultMessage": "Score moyen par partie",
-    "description": "Text on a button that will make a faction the speaker."
-  },
   "Jdx9F+": {
     "defaultMessage": "Retirer les pions commandement",
     "description": "Instruction telling players to remove command tokens."
@@ -2336,7 +2728,7 @@
     "description": "Label for a selector to change the number of players"
   },
   "K1ks2a": {
-    "defaultMessage": "CANON SPATIAL",
+    "defaultMessage": "CANON SPATIAL {value}",
     "description": "A unit ability that allows a unit to use SPACE CANNON."
   },
   "KiioBO": {
@@ -2668,7 +3060,7 @@
     "description": "Name of Mentak Agent: Suffi An"
   },
   "Mentak Coalition.Name": {
-    "defaultMessage": "La Coalition Mentak",
+    "defaultMessage": "La coalition Mentak",
     "description": "Name of Faction: Mentak Coalition"
   },
   "Mentak Coalition.Promissories.Promise of Protection.Description": {
@@ -2900,7 +3292,7 @@
     "description": "Name of Naaz-Rokha Hero: Hesh and Prit"
   },
   "Naaz-Rokha Alliance.Name": {
-    "defaultMessage": "L'Alliance Naaz-Rokha",
+    "defaultMessage": "l'Alliance Naaz-Rokha",
     "description": "Name of Faction: Naaz-Rokha Alliance"
   },
   "Naaz-Rokha Alliance.Promissories.Black Market Forgery.Description": {
@@ -3675,14 +4067,6 @@
     "defaultMessage": "Monopolisez la production",
     "description": "Title of Objective: Monopolize Production"
   },
-  "Objectives.Mark Your Territory.Description": {
-    "defaultMessage": "Contrôler une planète dans un système qui contient une planète contrôlée par un autre joueur.",
-    "description": "Description for Objective: Mark your territory"
-  },
-  "Objectives.Mark Your Territory.Title": {
-    "defaultMessage": "Marquez votre territoire",
-    "description": "Title of Objective: Mark your territory"
-  },
   "Objectives.Negotiate Trade Routes.Description": {
     "defaultMessage": "Dépenser 5 biens commerciaux.",
     "description": "Description for Objective: Negotiate Trade Routes"
@@ -3931,10 +4315,6 @@
     "defaultMessage": "PRODUCTION {value}",
     "description": "A unit ability that allows a unit to produce other units."
   },
-  "OpsE1E": {
-    "defaultMessage": "{num, select, 1 {First} 2 {Second} other {First}} Projet",
-    "description": "Label specifying which agenda this is."
-  },
   "Outcomes.Cultural Planet": {
     "defaultMessage": "Planète culturelle",
     "description": "Outcome type: Cultural Planet"
@@ -3972,8 +4352,12 @@
     "description": "Outcome type: Scored Secret Objective"
   },
   "Outcomes.Strategy Card": {
-    "defaultMessage": "Carte stratégique",
+    "defaultMessage": "Carte stratégie",
     "description": "Outcome type: Strategy Card"
+  },
+  "P/Y6Fo": {
+    "defaultMessage": "Gagner une technologie de faction",
+    "description": "Message shown when a faction can gain a faction tech."
   },
   "PBW6vs": {
     "defaultMessage": "Secondaire",
@@ -3982,6 +4366,10 @@
   "PWXbsW": {
     "defaultMessage": "Valeur de défense",
     "description": "Statistic ranking how defensive a faction is."
+  },
+  "PXA3op": {
+    "defaultMessage": "Suivre",
+    "description": "Label for a section where users can decide what information to track."
   },
   "Phase.Action": {
     "defaultMessage": "Action",
@@ -4019,6 +4407,10 @@
     "defaultMessage": "Ou",
     "description": "Text between two fields linking them together."
   },
+  "PptkAD": {
+    "defaultMessage": "{count} {count, plural, one {Mech} other {Mechs}}",
+    "description": "A number of Mech units."
+  },
   "PrGqwQ": {
     "defaultMessage": "Ajouter une planète",
     "description": "Label for adding a planet."
@@ -4030,6 +4422,10 @@
   "QFhw/l": {
     "defaultMessage": "Rejoindre une partie",
     "description": "A button that will join the game with a specified ID."
+  },
+  "Qo4+d0": {
+    "defaultMessage": "avec tech",
+    "description": "Label for a section for a stat with a tech."
   },
   "QrrIrN": {
     "defaultMessage": "Secrets",
@@ -4122,6 +4518,46 @@
   "Relics.The Prophet's Tears.Title": {
     "defaultMessage": "Les larmes du prophète",
     "description": "Title of Relic: The Prophet's Tears"
+  },
+  "Riders.Construction Rider.Title": {
+    "defaultMessage": "Génie de la construction",
+    "description": "Title of Rider: Construction Rider"
+  },
+  "Riders.Diplomacy Rider.Title": {
+    "defaultMessage": "Génie de la diplomatie",
+    "description": "Title of Rider: Diplomacy Rider"
+  },
+  "Riders.Imperial Rider.Title": {
+    "defaultMessage": "Intrigant de génie",
+    "description": "Title of Rider: Imperial Rider"
+  },
+  "Riders.Leadership Rider.Title": {
+    "defaultMessage": "Génie de la gouvernance",
+    "description": "Title of Rider: Leadership Rider"
+  },
+  "Riders.Politics Rider.Title": {
+    "defaultMessage": "Génie Politique",
+    "description": "Title of Rider: Politics Rider"
+  },
+  "Riders.Sanction.Title": {
+    "defaultMessage": "Sanction",
+    "description": "Title of Rider: Sanction"
+  },
+  "Riders.Technology Rider.Title": {
+    "defaultMessage": "Génie technologique",
+    "description": "Title of Rider: Technology Rider"
+  },
+  "Riders.Trade Rider.Title": {
+    "defaultMessage": "Marchand de génie",
+    "description": "Title of Rider: Trade Rider"
+  },
+  "Riders.Warfare Rider.Title": {
+    "defaultMessage": "Génie de la guerre",
+    "description": "Title of Rider: Warfare Rider"
+  },
+  "S0vXJt": {
+    "defaultMessage": "Joueur suivant",
+    "description": "Label showing that the specific player is up next."
   },
   "SOC2Bh": {
     "defaultMessage": "Contre",
@@ -4219,33 +4655,109 @@
     "defaultMessage": "Exosquelette Valkyrie",
     "description": "Title of Faction Unit: Valkyrie Exoskeleton"
   },
+  "Strategy Cards.Construction.POK.Secondary": {
+    "defaultMessage": "Dépensez 1 pion de votre réserve stratégique et placez le dans n'importe quel système ; vous pouvez placer soit 1 dock spatial, soit 1 SDP sur une planète que vous contrôlez dans ce système.",
+    "description": "Secondary of Strategy Card: Construction"
+  },
+  "Strategy Cards.Construction.Primary": {
+    "defaultMessage": "Placez 1 SPD ou 1 Dock spatial sur une planète que vous contrôlez.{br}Placez 1 SPD sur une planète que vous contrôlez.",
+    "description": "Primary of Strategy Card: Construction"
+  },
+  "Strategy Cards.Construction.Secondary": {
+    "defaultMessage": "Placez 1 pion de votre réserve stratégique dans n'importe quel système ; vous pouvez placer soit 1 dock spatial, soit 1 SDP sur une planète que vous contrôlez dans ce système.",
+    "description": "Secondary of Strategy Card: Construction"
+  },
   "Strategy Cards.Construction.Title": {
     "defaultMessage": "Construction",
     "description": "Title of Strategy Card: Construction"
+  },
+  "Strategy Cards.Diplomacy.Codex I.Primary": {
+    "defaultMessage": "Choisissez un système autre que celui de Mecatol Rex contenant une planète que vous contrôlez ; chaque autre joueur place un pion commandement de ses renforts dans le système choisi. Ensuite, restaurez jusqu’à deux planètes épuisées que vous contrôlez.",
+    "description": "Primary of Strategy Card: Diplomacy"
+  },
+  "Strategy Cards.Diplomacy.Codex I.Secondary": {
+    "defaultMessage": "Dépensez 1 pion de votre réserve stratégique pour Restaurer jusqu'à 2 planètes épuisées que vous contrôlez.",
+    "description": "Secondary of Strategy Card: Diplomacy"
+  },
+  "Strategy Cards.Diplomacy.Codex One.Primary": {
+    "defaultMessage": "Choisissez un système autre que celui de Mecatol Rex contenant une planète que vous contrôlez ; chaque autre joueur place un pion commandement de ses renforts dans le système choisi. Ensuite, restaurez jusqu’à deux planètes épuisées que vous contrôlez.",
+    "description": "Primary of Strategy Card: Diplomacy"
+  },
+  "Strategy Cards.Diplomacy.Secondary": {
+    "defaultMessage": "Dépensez 1 pion de votre réserve stratégique pour Restaurer jusqu'à 2 planètes épuisées que vous contrôlez.",
+    "description": "Secondary of Strategy Card: Diplomacy"
   },
   "Strategy Cards.Diplomacy.Title": {
     "defaultMessage": "Diplomatie",
     "description": "Title of Strategy Card: Diplomacy"
   },
+  "Strategy Cards.Imperial.Primary": {
+    "defaultMessage": "Validez immédiatement 1 objectif public si vous remplissez ses prérequis.{br}Gagnez 1 point de victoire si vous contrôlez Mecatol Rex ; sinon, piochez 1 objectif secret.",
+    "description": "Primary of Strategy Card: Imperial"
+  },
+  "Strategy Cards.Imperial.Secondary": {
+    "defaultMessage": "Dépensez 1 pion de votre réserve stratégique pour piocher 1 objectif secret.",
+    "description": "Secondary of Strategy Card: Imperial"
+  },
   "Strategy Cards.Imperial.Title": {
     "defaultMessage": "Intrigue",
     "description": "Title of Strategy Card: Imperial"
+  },
+  "Strategy Cards.Leadership.Primary": {
+    "defaultMessage": "Gagnez 3 pions commandement.{br}Dépensez n'importe quelle quantité d'influence pour gagner 1 pion commandement par lot de 3 points d'influence dépensés.",
+    "description": "Primary of Strategy Card: Leadership"
+  },
+  "Strategy Cards.Leadership.Secondary": {
+    "defaultMessage": "Dépensez n'importe quelle quantité d'influence pour obtenir 1 pion commandement pour lot de 3 points d'influence dépensés.",
+    "description": "Secondary of Strategy Card: Leadership"
   },
   "Strategy Cards.Leadership.Title": {
     "defaultMessage": "Gouvernance",
     "description": "Title of Strategy Card: Leadership"
   },
+  "Strategy Cards.Politics.Primary": {
+    "defaultMessage": "Choisissez un joueur autre que l'orateur. Ce joueur gagne le pion Orateur.{br}Piochez 2 cartes Action.{br}Regardez les 2 premières cartes du paquet Projet. Placez chaque carte au-dessus ou en dessous de paquet dans n'importe quel ordre.",
+    "description": "Primary of Strategy Card: Politics"
+  },
+  "Strategy Cards.Politics.Secondary": {
+    "defaultMessage": "Dépensez 1 pion de votre Réserve stratégique pour piocher 2 cartes Action.",
+    "description": "Secondary of Strategy Card: Politics"
+  },
   "Strategy Cards.Politics.Title": {
     "defaultMessage": "Politique",
     "description": "Title of Strategy Card: Politics"
+  },
+  "Strategy Cards.Technology.Primary": {
+    "defaultMessage": "Rechercher 1 technologie.{br}Dépensez 6 ressources pour rechercher 1 technologie.",
+    "description": "Primary of Strategy Card: Technology"
+  },
+  "Strategy Cards.Technology.Secondary": {
+    "defaultMessage": "Dépensez 1 pion votre réserve stratégique et 4 ressources pour rechercher 1 technologie.",
+    "description": "Secondary of Strategy Card: Technology"
   },
   "Strategy Cards.Technology.Title": {
     "defaultMessage": "Technologie",
     "description": "Title of Strategy Card: Technology"
   },
+  "Strategy Cards.Trade.Primary": {
+    "defaultMessage": "Gagnez 3 biens commerciaux.{br}Réapprovisionnez vos commodités.{br}Choisissez autant d'autres joueurs que vous le souhaitez. Ces joueurs utilisent la compétence secondaire de cette carte Stratégie sans dépenser de jeton de commandement.",
+    "description": "Primary of Strategy Card: Trade"
+  },
+  "Strategy Cards.Trade.Secondary": {
+    "defaultMessage": "Dépensez 1 pion de votre réserve stratégique pour réapprovisionner vos commodités.\n",
+    "description": "Secondary of Strategy Card: Trade"
+  },
   "Strategy Cards.Trade.Title": {
     "defaultMessage": "Commerce",
     "description": "Title of Strategy Card: Trade"
+  },
+  "Strategy Cards.Warfare.Primary": {
+    "defaultMessage": "Retirez 1 de vos pions commandement du plateau ; puis, gagnez 1 pion commandement.{br}Redistribuez autant de pions commandement que vous le souhaitez de votre fiche commandement.",
+    "description": "Primary of Strategy Card: Warfare"
+  },
+  "Strategy Cards.Warfare.Secondary": {
+    "defaultMessage": "Dépensez 1 pion votre réserve stratégique pour utiliser la compétence PRODUCTION de 1 de vos docks spatiaux dans votre système natal.",
+    "description": "Secondary of Strategy Card: Warfare"
   },
   "Strategy Cards.Warfare.Title": {
     "defaultMessage": "Guerre",
@@ -4254,6 +4766,18 @@
   "Sw+CbI": {
     "defaultMessage": "Héro",
     "description": "The title of a hero: a leader that gets used once per game."
+  },
+  "SyY9is": {
+    "defaultMessage": "{count} {count, plural, one {Schlachtschiff} other {Schlachtschiffe}}",
+    "description": "A number of Dreadnought units."
+  },
+  "Techs.4X4IC Helios V2.Description": {
+    "defaultMessage": "La valeur de PRODUCTION de cette unité est égale à 4 de plus que la valeur de la ressource de cette planète.  Jusqu'à 3 chasseurs dans ce système ne comptent pas dans la capacité de vos vaisseaux.",
+    "description": "Description for Tech: 4X4IC Helios V2"
+  },
+  "Techs.4X4IC Helios V2.Title": {
+    "defaultMessage": "Dock spatial II",
+    "description": "Title of Tech: 4X4IC Helios V2"
   },
   "Techs.AI Development Algorithm.Description": {
     "defaultMessage": "Lorsque vous recherchez une technologie d'amélioration d'unité, vous pouvez épuiser cette carte pour ignorer 1 prérequis de votre choix. Lorsqu'une ou plusieurs de vos unités utilisent PRODUCTION, vous pouvez épuiser cette carte pour réduire le coût combiné des unités produites du nombre de technologies d'amélioration d'unité que vous possédez.",
@@ -4300,7 +4824,7 @@
     "description": "Description for Tech: Dark Energy Tap"
   },
   "Techs.Dark Energy Tap.Title": {
-    "defaultMessage": "Biostimulants",
+    "defaultMessage": "Source d'énergie noire",
     "description": "Title of Tech: Dark Energy Tap"
   },
   "Techs.Daxcive Animators.Description": {
@@ -4416,7 +4940,7 @@
     "description": "Description for Tech: Neural Motivator"
   },
   "Techs.Neural Motivator.Title": {
-    "defaultMessage": "Motivateur neuronal",
+    "defaultMessage": "Motivateur Neuronal",
     "description": "Title of Tech: Neural Motivator"
   },
   "Techs.PDS II.Description": {
@@ -4532,7 +5056,7 @@
     "description": "Title of Faction Ability: Awaken"
   },
   "Titans of Ul.Abilities.Coalescence.Description": {
-    "defaultMessage": "Si votre vaisseau amiral ou votre capacité de faction REVEIL place vos unités dans la même partie espace ou sur la même planète que les unités d'un autre joueur, vos unités doivent participer au combat pendant l'étapes de « Combat spatial » ou « Combat terrestre ».",
+    "defaultMessage": "Si votre vaisseau amiral ou votre capacité de faction RÉVEIL place vos unités dans la même partie espace ou sur la même planète que les unités d'un autre joueur, vos unités doivent participer au combat pendant l'étapes de « Combat spatial » ou « Combat terrestre ».",
     "description": "Description for Faction Ability: Coalescence"
   },
   "Titans of Ul.Abilities.Coalescence.Title": {
@@ -4635,9 +5159,9 @@
     "defaultMessage": "Moteur Saturne II",
     "description": "Title of Faction Unit: Saturn Engine I"
   },
-  "UJs3kj": {
-    "defaultMessage": "Revendiquer une planète épuisée",
-    "description": "Text on a hover menu for claiming an empty planet."
+  "UJSVtn": {
+    "defaultMessage": "Codage carte",
+    "description": "Label for a textbox used to specify the map string."
   },
   "USnh0f": {
     "defaultMessage": "Rechercher une technologie",
@@ -4815,6 +5339,10 @@
     "defaultMessage": "Votes",
     "description": "Header for column listing how many votes players have cast."
   },
+  "VZ+RJH": {
+    "defaultMessage": "Programmation",
+    "description": "Credit for helping to program TI Assistant."
+  },
   "VjlCY0": {
     "defaultMessage": "Mise à jour",
     "description": "Text specifying a section that includes update operations."
@@ -4939,6 +5467,10 @@
     "defaultMessage": "Valider objectifs",
     "description": "Text telling the players to score objectives."
   },
+  "WVs5Hr": {
+    "defaultMessage": "Événements",
+    "description": "Event actions."
+  },
   "Winnu.Abilities.Blood Ties.Description": {
     "defaultMessage": "Vous n'avez pas besoin de dépenser d'influence pour retirer le pion gardien de Mecatol Rex.",
     "description": "Description for Faction Ability: Blood Ties"
@@ -5011,6 +5543,10 @@
     "defaultMessage": "Winnu",
     "description": "Shortened version of Faction name: Winnu"
   },
+  "Winnu.Tech Choice": {
+    "defaultMessage": "Choisissez une technologie qui n'a pas de prérequis.",
+    "description": "Text of Winnu's tech choice."
+  },
   "Winnu.Techs.Hegemonic Trade Policy.Description": {
     "defaultMessage": "Épuisez cette carte lorsqu'une ou plusieurs de vos unités utilisent PRODUCTION ; échangez les valeurs de ressource et d'influence de 1 planète que vous contrôlez pendant cette utilisation de PRODUCTION.",
     "description": "Description for Tech: Hegemonic Trade Policy"
@@ -5042,6 +5578,10 @@
   "Winnu.Units.Salai Sai Corian.Title": {
     "defaultMessage": "Salai Sai Corian",
     "description": "Title of Faction Unit: Salai Sai Corian"
+  },
+  "WpoPPE": {
+    "defaultMessage": "{count} {count, plural, one {SDP} other {SDP}}",
+    "description": "A number of PDS units."
   },
   "WvbM4Q": {
     "defaultMessage": "Grouper par",
@@ -5100,7 +5640,7 @@
     "description": "Name of Xxcha Agent: Ggrocuto Rinn"
   },
   "Xxcha Kingdom.Leaders.Xxekir Grom.AbilityName": {
-    "defaultMessage": "Centre de données politiques",
+    "defaultMessage": "CENTRE DE DONNÉES POLITIQUES",
     "description": "Ability name for Xxcha Hero: Xxekir Grom"
   },
   "Xxcha Kingdom.Leaders.Xxekir Grom.Description": {
@@ -5112,7 +5652,7 @@
     "description": "Name of Xxcha Hero: Xxekir Grom"
   },
   "Xxcha Kingdom.Leaders.Xxekir Grom.Omega.AbilityName": {
-    "defaultMessage": "Centre de données politiques Ω",
+    "defaultMessage": "CENTRE DE DONNÉES POLITIQUES Ω",
     "description": "Ability name for Xxcha Hero: Xxekir Grom Ω"
   },
   "Xxcha Kingdom.Leaders.Xxekir Grom.Omega.Description": {
@@ -5170,6 +5710,10 @@
   "Xxcha Kingdom.Units.Loncara Ssodu.Title": {
     "defaultMessage": "Loncara Ssodu",
     "description": "Title of Faction Unit: Loncara Ssodu"
+  },
+  "YKYdmA": {
+    "defaultMessage": "{count} {count, plural, one {Infanterie} other {Infanterie}}",
+    "description": "A number of Infantry units."
   },
   "YKkcsO": {
     "defaultMessage": "Rejeter l'échange",
@@ -5248,7 +5792,7 @@
     "description": "Name of Yin Hero: Dannel of the Tenth"
   },
   "Yin Brotherhood.Leaders.Dannel of the Tenth.Omega.AbilityName": {
-    "defaultMessage": "Dissémination quantique Ω",
+    "defaultMessage": "DISSÉMINATION QUANTIQUE Ω",
     "description": "Ability name for Yin Hero: Dannel of the Tenth Ω"
   },
   "Yin Brotherhood.Leaders.Dannel of the Tenth.Omega.Description": {
@@ -5258,6 +5802,10 @@
   "Yin Brotherhood.Leaders.Dannel of the Tenth.Omega.Name": {
     "defaultMessage": "Dannel de la dixième Ω",
     "description": "Name of Yin Hero: Dannel of the Tenth Ω"
+  },
+  "Yin Brotherhood.Leaders.Dannel of the Tenth.TE.AbilityName": {
+    "defaultMessage": "DISSÉMINATION QUANTIQUE",
+    "description": "Ability name for Yin Hero: Dannel of the Tenth"
   },
   "Yin Brotherhood.Name": {
     "defaultMessage": "La Fraternité de Yin",
@@ -5435,6 +5983,10 @@
     "defaultMessage": "Y'sia Y'ssrila",
     "description": "Title of Faction Unit: Y'sia Y'ssrila"
   },
+  "Z66nNr": {
+    "defaultMessage": "Vue",
+    "description": "Label for group of things you can view."
+  },
   "Z6gLCK": {
     "defaultMessage": "Objectif II",
     "description": "The title of public objectives that grant 2 victory points."
@@ -5467,6 +6019,10 @@
     "defaultMessage": "Stats",
     "description": "A button that will open the statistics page."
   },
+  "bPVF6s": {
+    "defaultMessage": "Epuiser une planète",
+    "description": "Label for a selector for choosing a planet to purge."
+  },
   "c4LYqr": {
     "defaultMessage": "Ne peut pas voter",
     "description": "Text informing a player that they cannot vote."
@@ -5474,10 +6030,6 @@
   "c6uq+j": {
     "defaultMessage": "Séléctioner la Faction",
     "description": "Instruction telling the user to select their faction."
-  },
-  "c9hO6S": {
-    "defaultMessage": "Représentant assassiné",
-    "description": "Label for section describing the faction that has Assassinate Representative played on them."
   },
   "cHsAYk": {
     "defaultMessage": "Selectionner une issue",
@@ -5523,6 +6075,10 @@
     "defaultMessage": "Descriptions",
     "description": "Text on a button that will display descriptions."
   },
+  "e8vqxH": {
+    "defaultMessage": "{count} {count, plural, one {Chasseur} other {Chasseurs}}",
+    "description": "A number of Fighter units."
+  },
   "eGEjSH": {
     "defaultMessage": "Points carte stratégique \"Intrigue\"",
     "description": "The title of points granted from using Imperial."
@@ -5548,7 +6104,7 @@
     "description": "Label for a section containing additional details."
   },
   "fW7Ivs": {
-    "defaultMessage": "Moyenne de Secrets validé {name}",
+    "defaultMessage": "Moyenne de Secrets validé {number}",
     "description": "Statistic for the average number of scored secrets."
   },
   "fpD/Z6": {
@@ -5556,7 +6112,7 @@
     "description": "Text on a menu allowing a player to select a planet."
   },
   "frzrrT": {
-    "defaultMessage": "Débloquer:",
+    "defaultMessage": "DÉBLOQUER :",
     "description": "Text that gets pre-fixed to a leader unlock condition."
   },
   "fxKsk7": {
@@ -5570,10 +6126,6 @@
   "ggO0Am": {
     "defaultMessage": "Objectif Secret",
     "description": "Label for selecting a secret objective."
-  },
-  "hCXyLw": {
-    "defaultMessage": "Choisisser une Carte Stratégie",
-    "description": "Label telling a player to select a strategy card."
   },
   "hIFcXI": {
     "defaultMessage": "BOUCLIER PLANETAIRE",
@@ -5600,7 +6152,7 @@
     "description": "Text on a button that will show/hide hyperspace tiles."
   },
   "iFF5UN": {
-    "defaultMessage": "Réclamer {planet}",
+    "defaultMessage": "Réclamer {planète}",
     "description": "Text on a button that allows a player to claim a planet."
   },
   "iL4f7y": {
@@ -5615,9 +6167,21 @@
     "defaultMessage": "Spécialités Technologiques",
     "description": "Text on a button that will show planets with tech skips."
   },
+  "jGX605": {
+    "defaultMessage": "Jouer un génie",
+    "description": "Text on hover menu for selecting a rider to play."
+  },
   "jOsJY8": {
     "defaultMessage": "Cartes Stratégies",
     "description": "Strategy Cards."
+  },
+  "jgVoqe": {
+    "defaultMessage": "{count} {count, plural, one {Transporteur} other {Transporteurs}}",
+    "description": "A number of Carrier units."
+  },
+  "kGGZS+": {
+    "defaultMessage": "Cartes",
+    "description": "Cards."
   },
   "knYKVl": {
     "defaultMessage": "Codex II",
@@ -5629,7 +6193,7 @@
   },
   "kq4/fY": {
     "defaultMessage": "Traduction Française: Bibox",
-    "description": "Credit for the French translation of TI Assistant."
+    "description": "Credit for the german translation of TI Assistant."
   },
   "l6pQCt": {
     "defaultMessage": "Echanger {firstCard} avec {secondCard}",
@@ -5639,9 +6203,9 @@
     "defaultMessage": "Commencer une Partie",
     "description": "Text on a button that will start a game."
   },
-  "m5acGq": {
-    "defaultMessage": "Voter (ou s'abstenir)",
-    "description": "Text label telling players to cast votes or abstain."
+  "mcZgiQ": {
+    "defaultMessage": "{count} {count, plural, one {Destroyer} other {Destroyers}}",
+    "description": "A number of Destroyer units."
   },
   "mhqGMn": {
     "defaultMessage": "Primaire",
@@ -5666,6 +6230,10 @@
   "nxPdWZ": {
     "defaultMessage": "Autre Points de Victoire",
     "description": "The title of a section for assorted victory points."
+  },
+  "o+O/Bq": {
+    "defaultMessage": "Epuiser une technologie",
+    "description": "Label on a hover menu used to purge a tech."
   },
   "p4V2Yv": {
     "defaultMessage": "Piocher 5 objectifs de Niveau 1",
@@ -5695,6 +6263,10 @@
     "defaultMessage": "Taux de victoire de la faction",
     "description": "Label for a chart showing the win rate per faction."
   },
+  "rEazHY": {
+    "defaultMessage": "{count} {count, plural, one {Soleil de Guerre} other {Soleils de Guerre}}",
+    "description": "A number of War Sun units."
+  },
   "rbtRWF": {
     "defaultMessage": "Ordre du Vote",
     "description": "An ordering of factions based on voting."
@@ -5703,9 +6275,9 @@
     "defaultMessage": "Matériel de départ",
     "description": "A label for a section of components that a faction starts with."
   },
-  "sZua2x": {
-    "defaultMessage": "L'Age de l'exploration",
-    "description": "Name of scenario in which players can add new tiles to the map."
+  "sJ5zBj": {
+    "defaultMessage": "{count} {count, plural, one {Croiseur} other {Croiseurs}}",
+    "description": "A number of Cruiser units."
   },
   "sgqLYB": {
     "defaultMessage": "Autre",
@@ -5760,7 +6332,7 @@
     "description": "Text on a button that will show planet types."
   },
   "wHhicR": {
-    "defaultMessage": " Recherches {count, plural, one {Tech} other {Techs}}",
+    "defaultMessage": "Recherches {count, plural, one {Tech} other {Techs}}",
     "description": "Label for a section listing researched techs."
   },
   "wOb6Wx": {
@@ -5768,15 +6340,19 @@
     "description": "A button that will open the Patreon page."
   },
   "weIxIg": {
-    "defaultMessage": "Fait-Maison",
+    "defaultMessage": "Fait-Maison :",
     "description": "A label for a selector specifying expansions that are homemade."
   },
   "x42AMg": {
     "defaultMessage": "Aléatoire",
     "description": "Label for a section that involves randomly selecting things."
   },
+  "x5JPkJ": {
+    "defaultMessage": "{count} {count, plural, one {Vaisseau Amiral} other {Vaisseaux Amiral}}",
+    "description": "A number of Flagship units."
+  },
   "xDzJ9/": {
-    "defaultMessage": "Voir la carte",
+    "defaultMessage": "Voir la Carte",
     "description": "Text shown on a button that opens the map."
   },
   "xhMq82": {
@@ -5796,7 +6372,7 @@
     "description": "Text on a button that opens the main screen of the assistant."
   },
   "yXj5iL": {
-    "defaultMessage": "Billets à ordre {count, plural, one {Note} other {Notes}}",
+    "defaultMessage": "{count, plural, one {Billet} other {Billets}} à Ordre",
     "description": "Header for a section listing out promissory notes."
   },
   "yctdL8": {

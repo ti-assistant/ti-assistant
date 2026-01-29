@@ -9,7 +9,7 @@ import {
 } from "../../../src/util/strings";
 
 export default function getProphecyOfKingsFactions(
-  intl: IntlShape
+  intl: IntlShape,
 ): Record<ProphecyOfKings.FactionId, BaseFaction> {
   return {
     "Argent Flight": {
@@ -54,7 +54,7 @@ export default function getProphecyOfKingsFactions(
             defaultMessage:
               "When you activate a system that contains only your units, you may place command tokens from your reinforcements into any systems adjacent to that system that contain only your units; at the end of this action, you may move ships among the active system and systems adjacent to it that contain your command tokens.",
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "Wing Transfer",
         synergy: { left: "BLUE", right: "YELLOW" },
@@ -93,7 +93,7 @@ export default function getProphecyOfKingsFactions(
               defaultMessage:
                 "When 1 or more of your units make a roll for a unit ability:{br}Choose 1 of those units to roll 1 additional die{br}Then, return this card to the Argent player",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
         },
       ],
@@ -112,7 +112,7 @@ export default function getProphecyOfKingsFactions(
               defaultMessage:
                 "Choose two of the following:{br}Neural Motivator{br}Sarween Tools{br}Plasma Scoring",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
           options: ["Neural Motivator", "Plasma Scoring", "Sarween Tools"],
           select: 2,
@@ -171,7 +171,7 @@ export default function getProphecyOfKingsFactions(
           type: "Mech",
         },
         {
-          abilities: ["ANTI-FIGHTER BARRAGE 9 (x2)"],
+          abilities: [antiFighterBarrage("9 (x2)", intl)],
           expansion: "POK",
           name: intl.formatMessage({
             id: "Argent Flight.Units.Strike Wing Alpha I.Title",
@@ -243,7 +243,7 @@ export default function getProphecyOfKingsFactions(
             defaultMessage:
               "When you activate a system that contains or is adjacent to a unit or planet you control, you may place or move 1 of your void tether tokens onto a border that system shares with another system; other players do not treat those systems as adjacent to each other unless you allow it.",
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "Void Tether",
         synergy: { left: "GREEN", right: "BLUE" },
@@ -281,7 +281,7 @@ export default function getProphecyOfKingsFactions(
               defaultMessage:
                 "ACTION: Place this card face up in your play area.{br}When you and the Empyrean player cast votes for the same outcome, cast 4 additional votes for that outcome.{br}If you activate a system that contains 1 or more of the Empyrean player's units, return this card to the Empyrean player.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
         },
         {
@@ -297,7 +297,7 @@ export default function getProphecyOfKingsFactions(
               defaultMessage:
                 "ACTION: Place this card face up in your play area.{br}When you give a number of commodities to the Empyrean player equal to your maximum commodity value, you each gain 1 trade good.{br}If you activate a system that contains 1 or more of the Empyrean player's units, return this card to the Empyrean player.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
         },
       ],
@@ -419,7 +419,7 @@ export default function getProphecyOfKingsFactions(
             defaultMessage:
               "ACTION: Exhaust this card and purge 1 of your technologies to gain 1 relic.",
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "Vaults of the Heir",
         synergy: { left: "YELLOW", right: "GREEN" },
@@ -458,7 +458,7 @@ export default function getProphecyOfKingsFactions(
               defaultMessage:
                 "At the start of the strategy phase:{br}Choose 1 non-home system that contains your units; each other player who has a token on the Mahact player's command sheet places a token from their reinforcements in that system{br}Then, return this card to the Mahact player.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
         },
       ],
@@ -588,7 +588,7 @@ export default function getProphecyOfKingsFactions(
             defaultMessage:
               "When you have 4 mechs in the same system, you may return 3 of those mechs to your reinforcements to flip this card and place it on top of your mech card.",
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "Absolute Synergy",
         synergy: { left: "GREEN", right: "BLUE" },
@@ -602,7 +602,7 @@ export default function getProphecyOfKingsFactions(
               defaultMessage:
                 "This unit is both a ship and a ground force. It cannot be assigned hits from unit abilities. Repair it at the start of every combat round. Game effects cannot place or produce your mechs. When this unit is destroyed or removed, flip this card and return it to your play area.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
           expansion: "THUNDERS EDGE",
           name: intl.formatMessage({
@@ -650,7 +650,7 @@ export default function getProphecyOfKingsFactions(
               defaultMessage:
                 "ACTION: Purge 2 of your relic fragments of the same type to gain 1 relic.{br}Then return this card to the Naaz-Rokha player.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
         },
       ],
@@ -704,7 +704,7 @@ export default function getProphecyOfKingsFactions(
               defaultMessage:
                 "If this unit is in the space area of the active system at the start of a space combat, flip this card.{br}(This card begins the game with this side face up)",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
           expansion: "POK",
           name: intl.formatMessage({
@@ -725,7 +725,7 @@ export default function getProphecyOfKingsFactions(
                 defaultMessage:
                   "If this unit is in the space area of the active system, it is also a ship. At the end of a space battle in the active system, flip this card.{br}(This card begins the game with this side face down)",
               },
-              { br: "\n\n" }
+              { br: "\n\n" },
             ),
             expansion: "POK",
             name: intl.formatMessage({
@@ -785,7 +785,7 @@ export default function getProphecyOfKingsFactions(
             defaultMessage:
               "At the start of any player's turn, you may exhaust 1 of your agents to ready any other agent.",
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "Thunder's Paradox",
         synergy: { left: "YELLOW", right: "GREEN" },
@@ -823,7 +823,7 @@ export default function getProphecyOfKingsFactions(
               defaultMessage:
                 "At the start of a space combat against a player other than the Nomad:{br}During this combat, treat 1 of your non-fighter ships as if it has the SUSTAIN DAMAGE ability, combat value, and ANTI-FIGHTER BARRAGE value of the Nomad's flagship.{br}Return this card to the Nomad player at the end of this combat.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
         },
       ],
@@ -947,7 +947,7 @@ export default function getProphecyOfKingsFactions(
             defaultMessage:
               "When COALESCENCE results in a ground combat, if you commit no other units, you may choose for your units to coexist instead. During the status phase, for each player you are coexisting with, you and that player each draw 1 additional action card.{br}Other players may allow you to place a sleeper token on a planet they control.",
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "Slumberstate Computing",
         synergy: { left: "YELLOW", right: "GREEN" },
@@ -985,7 +985,7 @@ export default function getProphecyOfKingsFactions(
               defaultMessage:
                 "ACTION: Attach this card to a non-home planet you control other than Mecatol Rex.{br}Its resource and influence values are each increased by 1 and it is treated as having all 3 planet traits (Cultural, Hazardous, and Industrial).",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
         },
       ],
@@ -1148,7 +1148,7 @@ export default function getProphecyOfKingsFactions(
             defaultMessage:
               "This breakthrough causes The Fracture to enter play without a roll, if it is not already in play. After this card enters play, move up to 2 ingress tokens into systems that contain gravity rifts.{br}Apply +1 to the MOVE value of each of your ships that start their movement in The Fracture.",
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "Al'raith Ix Ianovar",
         synergy: { left: "RED", right: "GREEN" },
@@ -1186,7 +1186,7 @@ export default function getProphecyOfKingsFactions(
               defaultMessage:
                 "After you activate a system:{br}Your ships do not roll for gravity rifts during this movement; apply an additional +1 to the move values of your ships that would move out of or through a gravity rift instead.{br}Then, return this card to the Vuil'raith player.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
         },
       ],
@@ -1260,7 +1260,7 @@ export default function getProphecyOfKingsFactions(
               defaultMessage:
                 "This system is a gravity rift; your ships do not roll for this gravity rift.{br}Place a dimensional tear token beneath this unit as a reminder.{br}Up to 6 fighters in this system do not count against your ships' capacity.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
           expansion: "POK",
           name: intl.formatMessage({
