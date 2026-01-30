@@ -40,7 +40,10 @@
   width: 66%;
   height: 66%;
   border-radius: 100%;
-  transition: width 50ms, height 50ms, opacity 50ms;
+  transition:
+    width 50ms,
+    height 50ms,
+    opacity 50ms;
 }
 
 .factionIcon:not(.viewOnly) {

@@ -1,19 +1,19 @@
 import { PropsWithChildren } from "react";
-import {
-  useFactionColor,
-  useFactionDisplayName,
-} from "../../context/factionDataHooks";
+import { useFactionColor } from "../../context/factionDataHooks";
+import FactionComponents from "../FactionComponents/FactionComponents";
 import LabeledDiv from "./LabeledDiv";
 
 export default function FactionDiv({
   children,
   factionId,
 }: PropsWithChildren<{ factionId: FactionId }>) {
-  const name = useFactionDisplayName(factionId);
   const color = useFactionColor(factionId);
 
   return (
-    <LabeledDiv label={name} color={color}>
+    <LabeledDiv
+      label={<FactionComponents.Name factionId={factionId} />}
+      color={color}
+    >
       {children}
     </LabeledDiv>
   );
