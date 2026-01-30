@@ -36,7 +36,7 @@ import { rem } from "../../../../../../src/util/util";
 import styles from "./SetupPhase.module.scss";
 
 function factionTechChoicesComplete(
-  factions: Partial<Record<FactionId, Faction>>
+  factions: Partial<Record<FactionId, Faction>>,
 ): boolean {
   let complete = true;
   Object.values(factions).forEach((faction) => {
@@ -57,7 +57,7 @@ function factionTechChoicesComplete(
 }
 
 function factionSubFactionChoicesComplete(
-  factions: Partial<Record<FactionId, Faction>>
+  factions: Partial<Record<FactionId, Faction>>,
 ): boolean {
   if (!factions["Council Keleres"]) {
     return true;
@@ -68,7 +68,7 @@ function factionSubFactionChoicesComplete(
 export function setupPhaseComplete(
   factions: Partial<Record<FactionId, Faction>>,
   revealedObjectives: string[],
-  options: Options
+  options: Options,
 ): boolean {
   const hideObjectives = options.hide?.includes("OBJECTIVES");
   const hideTechs = options.hide?.includes("TECHS");
@@ -83,7 +83,7 @@ function getSetupPhaseText(
   factions: Partial<Record<FactionId, Faction>>,
   revealedObjectives: string[],
   intl: IntlShape,
-  options: Options
+  options: Options,
 ) {
   const hideObjectives = options.hide?.includes("OBJECTIVES");
   const hideTechs = options.hide?.includes("TECHS");
@@ -98,7 +98,7 @@ function getSetupPhaseText(
         defaultMessage: "Select all Faction Choices",
         description:
           "Error message telling the user to select all faction choices.",
-      })
+      }),
     );
   }
   if (!hideObjectives && revealedObjectives.length !== 2) {
@@ -113,8 +113,8 @@ function getSetupPhaseText(
         {
           count: 2,
           type: objectiveTypeString("STAGE ONE", intl),
-        }
-      )
+        },
+      ),
     );
   }
   return textSections.join(
@@ -124,7 +124,7 @@ function getSetupPhaseText(
         defaultMessage: "AND",
         description: "Text between two fields linking them together.",
       })
-      .toLowerCase()} `
+      .toLowerCase()} `,
   );
 }
 
@@ -133,7 +133,7 @@ function setMapString(
   mapString: string,
   mapStyle: MapStyle,
   numFactions: number,
-  thundersEdge: boolean
+  thundersEdge: boolean,
 ) {
   changeOptionAsync(gameId, "map-string", mapString);
   if (mapString === "") {
@@ -144,7 +144,7 @@ function setMapString(
   changeOptionAsync(
     gameId,
     "processed-map-string",
-    processMapString(mapString, mapStyle, numFactions, thundersEdge)
+    processMapString(mapString, mapStyle, numFactions, thundersEdge),
   );
 }
 
@@ -158,7 +158,7 @@ export default function SetupPhase() {
   const numFactions = useNumFactions();
 
   const revealedObjectives = useLogEntries<RevealObjectiveData>(
-    "REVEAL_OBJECTIVE"
+    "REVEAL_OBJECTIVE",
   ).map((entry) => entry.data.event.objective);
   const speaker = useSpeaker();
 
@@ -237,7 +237,7 @@ export default function SetupPhase() {
                     event.currentTarget.value,
                     options["map-style"],
                     numFactions,
-                    options.expansions.includes("THUNDERS EDGE")
+                    options.expansions.includes("THUNDERS EDGE"),
                   )
                 }
               ></input>
@@ -321,7 +321,10 @@ export default function SetupPhase() {
                 />
               }
             >
-              <div className="flexColumn">
+              <div
+                className="flexColumn"
+                style={{ maxWidth: "calc(100% - 1.25rem)" }}
+              >
                 {revealedObjectives.length > 0 ? (
                   <LabeledDiv
                     label={
@@ -385,7 +388,7 @@ export default function SetupPhase() {
                       objectives={Object.values(availableObjectives).filter(
                         (objective) => {
                           return objective.type === "STAGE ONE";
-                        }
+                        },
                       )}
                     />
                   </FactionDiv>
@@ -410,11 +413,12 @@ export default function SetupPhase() {
           className="flexColumn"
           style={{
             alignItems: "center",
-            marginTop: rem(40),
+            justifyContent: "space-evenly",
             boxSizing: "border-box",
             margin: 0,
             whiteSpace: "nowrap",
             gap: rem(8),
+            width: "100%",
           }}
         >
           <div
@@ -458,8 +462,10 @@ export default function SetupPhase() {
           <div
             style={{
               display: "grid",
+              width: "100%",
               gridAutoFlow: "row",
-              gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+              gridTemplateColumns: "repeat(auto-fit, minmax(14rem, 1fr))",
+              // gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
               gap: rem(8),
               paddingTop: rem(6),
             }}
@@ -523,7 +529,7 @@ function FinishPhaseButton({ embedded }: { embedded?: boolean }) {
   const options = useOptions();
   const viewOnly = useViewOnly();
   const revealedObjectives = useLogEntries<RevealObjectiveData>(
-    "REVEAL_OBJECTIVE"
+    "REVEAL_OBJECTIVE",
   ).map((entry) => entry.data.event.objective);
 
   return (

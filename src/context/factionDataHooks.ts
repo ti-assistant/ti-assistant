@@ -12,7 +12,7 @@ export function useFactions() {
 export function useFaction(factionId: FactionId) {
   return useGameDataValue<Optional<Faction>>(
     `factions.${factionId}`,
-    undefined
+    undefined,
   );
 }
 
@@ -27,9 +27,9 @@ export function useFactionTechs(factionId: FactionId) {
       return new Set(
         objectEntries(faction.techs)
           .filter(([_, tech]) => tech.state !== "purged")
-          .map(([techId, _]) => techId)
+          .map(([techId, _]) => techId),
       );
-    }
+    },
   );
 }
 
@@ -37,7 +37,7 @@ export function useNumFactions() {
   return useMemoizedGameDataValue<Factions, number>(
     "factions",
     6,
-    (factions) => Object.values(factions).length
+    (factions) => Object.values(factions).length,
   );
 }
 
@@ -48,7 +48,7 @@ export function usePassedFactionIds() {
     (factions) =>
       Object.values(factions)
         .filter((faction) => faction.passed)
-        .map((faction) => faction.id)
+        .map((faction) => faction.id),
   );
 }
 
@@ -56,7 +56,7 @@ export function useFactionColor(factionId: FactionId) {
   return useMemoizedGameDataValue<Optional<string>, string>(
     `factions.${factionId}.color`,
     "#555",
-    (color) => convertToFactionColor(color)
+    (color) => convertToFactionColor(color),
   );
 }
 
@@ -68,7 +68,30 @@ export function useFactionDisplayName(factionId: FactionId) {
   return useMemoizedGameDataValue<Optional<Faction>, string>(
     `factions.${factionId}`,
     "Loading Faction...",
-    (faction) => getFactionName(faction)
+    (faction) => getFactionName(faction),
+  );
+}
+
+export interface FactionName {
+  name: string;
+  playerName?: string;
+  shortName: string;
+}
+
+export function useFactionDisplayNameObject(factionId: FactionId) {
+  return useMemoizedGameDataValue<Optional<Faction>, FactionName>(
+    `factions.${factionId}`,
+    {
+      name: "Loading Faction...",
+      shortName: "Loading Faction...",
+    },
+    (faction) => {
+      return {
+        name: faction?.name ?? "Loading Faction...",
+        playerName: faction?.playerName,
+        shortName: faction?.shortname ?? "Loading Faction...",
+      };
+    },
   );
 }
 
@@ -84,7 +107,7 @@ export function useAllSecondariesCompleted() {
         return count;
       }, 0);
       return count === Object.values(factions).length - 1;
-    }
+    },
   );
 }
 
@@ -95,14 +118,14 @@ export function useFactionHasTech(factionId: FactionId, techId: TechId) {
     (factionTechs) => {
       const tech = factionTechs[techId];
       return !!tech && tech.state !== "purged";
-    }
+    },
   );
 }
 
 export function useFactionSecondary(factionId: FactionId) {
   return useGameDataValue<Secondary>(
     `factions.${factionId}.secondary`,
-    "PENDING"
+    "PENDING",
   );
 }
 

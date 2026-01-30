@@ -357,6 +357,7 @@ export default function StartingComponents({
         style={{
           display: "grid",
           gridAutoFlow: "column",
+          // gridTemplateColumns: "repeat(2, 1fr)",
           gridTemplateRows: `repeat(${Math.ceil(
             orderedUnits.length / 2,
           )}, 1fr)`,

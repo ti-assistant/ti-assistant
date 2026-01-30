@@ -50,7 +50,7 @@ export default function LabeledDiv({
           textShadow: color === "Black" ? BLACK_TEXT_GLOW : undefined,
         }}
       >
-        <div>{label}</div>
+        {label}
       </div>
       {!!rightLabel ? (
         <div

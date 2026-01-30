@@ -14,7 +14,7 @@ export function getColorForFaction(factionId: Optional<FactionId>) {
     return "var(--neutral-border)";
   }
   const factionColor = DataStore.getValue<string>(
-    `factions.${factionId}.color`
+    `factions.${factionId}.color`,
   );
   return convertToFactionColor(factionColor);
 }
@@ -42,7 +42,12 @@ export function getFactionName(faction: Optional<Faction>) {
     return "Loading Faction...";
   }
   if (faction.playerName) {
-    return faction.playerName + " - " + faction.shortname;
+    let clipped = faction.playerName;
+    if (clipped.length > 12) {
+      clipped = `${clipped.substring(0, 12).trim()}...`;
+    }
+
+    return `${clipped} - ${faction.shortname}`;
   }
   return faction.name;
 }
@@ -60,7 +65,7 @@ export function getFactionShortName(faction: Optional<Faction>) {
 export function computeVPs(
   factions: Partial<Record<FactionId, GameFaction>>,
   factionId: FactionId,
-  objectives: Partial<Record<ObjectiveId, Objective>>
+  objectives: Partial<Record<ObjectiveId, Objective>>,
 ) {
   const faction = factions[factionId];
   if (!faction) {
@@ -72,7 +77,7 @@ export function computeVPs(
 
 export function computeScoredVPs(
   factionId: FactionId,
-  objectives: Partial<Record<ObjectiveId, Objective>>
+  objectives: Partial<Record<ObjectiveId, Objective>>,
 ) {
   return Object.values(objectives)
     .filter((objective) => {
@@ -92,7 +97,7 @@ export function computeScoredVPs(
 export function computeVPsByCategory(
   factions: Partial<Record<FactionId, GameFaction>>,
   factionId: FactionId,
-  objectives: Partial<Record<ObjectiveId, Objective>>
+  objectives: Partial<Record<ObjectiveId, Objective>>,
 ) {
   const emptyGroup: Record<ObjectiveType, number> = {
     "STAGE ONE": 0,
@@ -124,7 +129,7 @@ export function computeVPsByCategory(
 }
 
 export function getMapOrderedFactionIds(
-  factions: Partial<Record<FactionId, Faction>>
+  factions: Partial<Record<FactionId, Faction>>,
 ) {
   return objectEntries(factions)
     .sort(([_, a], [__, b]) => {
@@ -136,7 +141,7 @@ export function getMapOrderedFactionIds(
 export function hasLeader(
   leaderId: LeaderId,
   faction: Faction,
-  leaders: Partial<Record<LeaderId, Leader>>
+  leaders: Partial<Record<LeaderId, Leader>>,
 ) {
   const leader = leaders[leaderId];
   if (!leader) {

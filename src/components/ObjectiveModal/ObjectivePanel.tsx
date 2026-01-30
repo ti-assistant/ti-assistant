@@ -9,7 +9,7 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
 
   return (
     <>
-      <div className="tabletOnly">
+      <div className="tabletOnly" style={{ width: "100%" }}>
         <MobileObjectiveGrid />
       </div>
       <div

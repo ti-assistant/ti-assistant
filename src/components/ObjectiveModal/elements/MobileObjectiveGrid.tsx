@@ -59,13 +59,13 @@ export default function MobileObjectiveGrid() {
   const objectiveArray = Object.values(objectives);
 
   const stageOneObjectives: Objective[] = objectiveArray.filter(
-    (obj) => obj.type === "STAGE ONE"
+    (obj) => obj.type === "STAGE ONE",
   );
   const stageTwoObjectives: Objective[] = objectiveArray.filter(
-    (obj) => obj.type === "STAGE TWO"
+    (obj) => obj.type === "STAGE TWO",
   );
   const secretObjectives = objectiveArray.filter(
-    (obj) => obj.type === "SECRET"
+    (obj) => obj.type === "SECRET",
   );
 
   const secretsByFaction: Partial<Record<FactionId, Objective[]>> = {};
@@ -100,7 +100,7 @@ export default function MobileObjectiveGrid() {
       return -1;
     });
   const remainingStageOneObjectives = stageOneObjectives.filter(
-    (obj) => !obj.selected
+    (obj) => !obj.selected,
   );
   const selectedStageTwoObjectives = stageTwoObjectives
     .filter((obj) => obj && obj.selected)
@@ -125,10 +125,10 @@ export default function MobileObjectiveGrid() {
       return -1;
     });
   const remainingStageTwoObjectives = stageTwoObjectives.filter(
-    (obj) => !obj.selected
+    (obj) => !obj.selected,
   );
   const remainingSecretObjectives = secretObjectives.filter(
-    (obj) => !obj.selected
+    (obj) => !obj.selected,
   );
 
   const includesPoK = options.expansions.includes("POK");
@@ -158,24 +158,20 @@ export default function MobileObjectiveGrid() {
           paddingBottom: rem(8),
         }}
       >
-        <div>
-          <div
-            style={{
-              display: "grid",
-              gridAutoFlow: "row",
-              gridTemplateColumns: "repeat(2, 1fr)",
-              padding: rem(8),
-              paddingBottom: 0,
-              gap: rem(8),
-              isolation: "isolate",
-            }}
-          >
-            {orderedFactionIds.map((factionId) => {
-              return (
-                <FactionNameAndVPs key={factionId} factionId={factionId} />
-              );
-            })}
-          </div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns:
+              "repeat(auto-fit, minmax(min(100%, 14rem), 1fr))",
+            padding: rem(8),
+            paddingBottom: 0,
+            gap: rem(8),
+            isolation: "isolate",
+          }}
+        >
+          {orderedFactionIds.map((factionId) => {
+            return <FactionNameAndVPs key={factionId} factionId={factionId} />;
+          })}
         </div>
       </CollapsibleSection>
       <div
@@ -202,7 +198,7 @@ export default function MobileObjectiveGrid() {
               className={`flexColumn ${styles.collapsibleRow}`}
               style={{
                 display: "flex",
-                marginLeft: rem(8),
+                margin: `0 ${rem(8)}`,
                 width: "min-content",
                 flexDirection: "column",
                 alignItems: "stretch",
@@ -257,7 +253,12 @@ export default function MobileObjectiveGrid() {
         )}
         <div
           className="flexRow"
-          style={{ width: "95%", justifyContent: "center", gap: rem(16) }}
+          style={{
+            width: "95%",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            gap: rem(16),
+          }}
         >
           <CustodiansToken />
           <Styx />
@@ -435,7 +436,7 @@ export default function MobileObjectiveGrid() {
                                   factionId={name}
                                   gameId={gameId}
                                 />
-                              </ModalContent>
+                              </ModalContent>,
                             );
                           }
                     }
@@ -532,7 +533,7 @@ export default function MobileObjectiveGrid() {
                                 unscoreObjectiveAsync(
                                   gameId,
                                   faction,
-                                  "Imperial Point"
+                                  "Imperial Point",
                                 );
                               }
                         }
@@ -566,7 +567,7 @@ export default function MobileObjectiveGrid() {
                                 scoreObjectiveAsync(
                                   gameId,
                                   faction,
-                                  "Imperial Point"
+                                  "Imperial Point",
                                 );
                               }
                         }
@@ -661,7 +662,7 @@ export default function MobileObjectiveGrid() {
                                   unscoreObjectiveAsync(
                                     gameId,
                                     faction,
-                                    "Total War"
+                                    "Total War",
                                   );
                                 }
                           }
@@ -695,7 +696,7 @@ export default function MobileObjectiveGrid() {
                                   scoreObjectiveAsync(
                                     gameId,
                                     faction,
-                                    "Total War"
+                                    "Total War",
                                   );
                                 }
                           }
@@ -762,7 +763,7 @@ export default function MobileObjectiveGrid() {
                           gameId,
                           scorer,
                           "Support for the Throne",
-                          id
+                          id,
                         );
                       }
                       if (factionId) {
@@ -770,7 +771,7 @@ export default function MobileObjectiveGrid() {
                           gameId,
                           factionId,
                           "Support for the Throne",
-                          id
+                          id,
                         );
                       }
                     }}
@@ -1041,11 +1042,11 @@ function SecretModalContent({
   const viewOnly = useViewOnly();
 
   const secrets = Object.values(objectives ?? {}).filter(
-    (objective) => objective.type === "SECRET"
+    (objective) => objective.type === "SECRET",
   );
 
   const scoredSecrets = secrets.filter((secret) =>
-    (secret.scorers ?? []).includes(factionId)
+    (secret.scorers ?? []).includes(factionId),
   );
   const availableSecrets = secrets
     .filter((secret) => (secret.scorers ?? []).length === 0)
