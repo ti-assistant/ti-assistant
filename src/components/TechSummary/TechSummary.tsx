@@ -9,6 +9,7 @@ import {
 } from "../../context/dataHooks";
 import { Techs } from "../../context/techDataHooks";
 import { rem } from "../../util/util";
+import FactionComponents from "../FactionComponents/FactionComponents";
 import OptionalElement from "../OptionalElement/OptionalElement";
 import TechIcon from "../TechIcon/TechIcon";
 import TechTree from "../TechTree/TechTree";
@@ -30,9 +31,13 @@ export function FullTechSummary({
   let greenTechs = [];
   let redTechs = [];
   let upgradeTechs = [];
+  let factionTechs = [];
   for (const tech of Object.values(techs)) {
     if (!ownedTechs.includes(tech.id)) {
       continue;
+    }
+    if (tech.faction) {
+      factionTechs.push(tech);
     }
     switch (tech.type) {
       case "RED":
@@ -146,18 +151,18 @@ export function FullTechSummary({
           viewOnly={viewOnly}
         />
         <div
-          className={styles.UnitUpgradeText}
-          style={{ whiteSpace: "nowrap" }}
+          className="flexRow"
+          style={{ gridColumn: "span 15", justifyContent: "center" }}
         >
-          {upgradeTechs.length || "-"}{" "}
-          <FormattedMessage
-            id="lGDH2d"
-            description="Unit upgrade techs."
-            defaultMessage="{count, plural, =0 {Upgrades} one {Upgrade} other {Upgrades}}"
-            values={{ count: upgradeTechs.length }}
-          />
-        </div>
-        <div className={styles.UnitUpgradeTree}>
+          <div
+            className="flexRow centered"
+            style={{ height: "100%", width: numberWidth }}
+          >
+            {upgradeTechs.length || "-"}
+          </div>
+          <div className="flexRow" style={{ height: "100%" }}>
+            <TechIcon type={"UPGRADE"} size={iconSize} />
+          </div>
           <TechTree
             type="UPGRADE"
             factionId={factionId}
@@ -165,13 +170,18 @@ export function FullTechSummary({
             ownedTechs={new Set(ownedTechs)}
             viewOnly={viewOnly}
           />
-        </div>
-        <div className={styles.FactionTechTree}>
+          <div>&nbsp;</div>
+          <div className={styles.TechSummaryNumber}>
+            {factionTechs.length || "-"}
+          </div>
+          <div className="flexRow" style={{ height: "100%" }}>
+            <FactionComponents.Icon factionId={factionId} size={16} />
+          </div>
           <TechTree
-            type="FACTION"
             factionId={factionId}
             techs={techs}
             ownedTechs={new Set(ownedTechs)}
+            type="FACTION"
             viewOnly={viewOnly}
           />
         </div>
@@ -202,9 +212,13 @@ export default function TechSummary({
   let greenTechs = [];
   let redTechs = [];
   let upgradeTechs = [];
+  let factionTechs = [];
   for (const tech of Object.values(techs)) {
     if (tech.state === "purged" || !ownedTechs.has(tech.id)) {
       continue;
+    }
+    if (tech.faction) {
+      factionTechs.push(tech);
     }
     switch (tech.type) {
       case "RED":
@@ -337,22 +351,8 @@ export default function TechSummary({
           </OptionalElement>
         </div>
         <div
-          className="flexRow"
-          style={{ height: "100%", gridRow: "1 / 3", gridColumn: "3 / 4" }}
-        >
-          <OptionalElement value={showTrees}>
-            <TechTree
-              factionId={factionId}
-              techs={techs}
-              ownedTechs={ownedTechs}
-              type="FACTION"
-              viewOnly={viewOnly}
-            />
-          </OptionalElement>
-        </div>
-        <div
           className={styles.TechSummarySection}
-          style={{ gridColumn: "span 3" }}
+          style={{ gridColumn: "span 2" }}
         >
           <OptionalElement value={showNumbers}>
             <div className={styles.TechSummaryNumber}>
@@ -360,13 +360,8 @@ export default function TechSummary({
             </div>
           </OptionalElement>
           <OptionalElement value={showIcons}>
-            <div className="flexRow" style={{ fontSize: rem(12) }}>
-              <FormattedMessage
-                id="lGDH2d"
-                description="Unit upgrade techs."
-                defaultMessage="{count, plural, =0 {Upgrades} one {Upgrade} other {Upgrades}}"
-                values={{ count: upgradeTechs.length }}
-              />
+            <div className="flexRow" style={{ height: "100%" }}>
+              <TechIcon type={"UPGRADE"} size={16} />
             </div>
           </OptionalElement>
           <OptionalElement value={showTrees}>
@@ -377,6 +372,25 @@ export default function TechSummary({
               type="UPGRADE"
               viewOnly={viewOnly}
             />
+          </OptionalElement>
+          <OptionalElement value={showIcons}>
+            <div className="flexRow" style={{ height: "100%" }}>
+              <FactionComponents.Icon factionId={factionId} size={16} />
+            </div>
+          </OptionalElement>
+          <OptionalElement value={showTrees}>
+            <TechTree
+              factionId={factionId}
+              techs={techs}
+              ownedTechs={ownedTechs}
+              type="FACTION"
+              viewOnly={viewOnly}
+            />
+          </OptionalElement>
+          <OptionalElement value={showNumbers}>
+            <div className={styles.TechSummaryNumber}>
+              {factionTechs.length || "-"}
+            </div>
           </OptionalElement>
         </div>
       </div>
@@ -407,6 +421,7 @@ export function TFTechSummary({
   let greenTechs = [];
   let redTechs = [];
   let upgradeTechs = [];
+  let factionTechs = [];
   for (const ability of Object.values(abilities)) {
     if (ability.owner !== factionId) {
       continue;
@@ -431,6 +446,15 @@ export function TFTechSummary({
       continue;
     }
     upgradeTechs.push(upgrade);
+  }
+
+  for (const tech of Object.values(techs)) {
+    if (!ownedTechs.has(tech.id)) {
+      continue;
+    }
+    if (tech.faction) {
+      factionTechs.push(tech);
+    }
   }
 
   const showNumbers = settings["fs-tech-summary-display"].includes("NUMBER");
@@ -543,6 +567,7 @@ export function FullTFTechSummary({
   let greenTechs = [];
   let redTechs = [];
   let upgradeTechs = [];
+  let factionTechs = [];
   for (const ability of Object.values(abilities)) {
     if (ability.owner !== factionId) {
       continue;
@@ -586,6 +611,15 @@ export function FullTFTechSummary({
       return 1;
     }
   });
+
+  for (const tech of Object.values(techs)) {
+    if (!ownedTechs.includes(tech.id)) {
+      continue;
+    }
+    if (tech.faction) {
+      factionTechs.push(tech);
+    }
+  }
 
   const numberWidth = rem(10.75 * 1.2);
   const iconSize = 20;
@@ -633,24 +667,39 @@ export function FullTFTechSummary({
         <div className="flexRow" style={{ height: "100%" }}>
           <TechIcon type={"RED"} size={iconSize} />
         </div>
+
         <div
-          className={styles.UnitUpgradeText}
-          style={{ whiteSpace: "nowrap" }}
+          className="flexRow"
+          style={{ gridColumn: "span 15", justifyContent: "center" }}
         >
-          {upgradeTechs.length || "-"}{" "}
-          <FormattedMessage
-            id="lGDH2d"
-            description="Unit upgrade techs."
-            defaultMessage="{count, plural, =0 {Upgrades} one {Upgrade} other {Upgrades}}"
-            values={{ count: upgradeTechs.length }}
-          />
-        </div>
-        <div className={styles.FactionTechTree}>
+          <div
+            className="flexRow centered"
+            style={{ height: "100%", width: numberWidth }}
+          >
+            {upgradeTechs.length || "-"}
+          </div>
+          <div className="flexRow" style={{ height: "100%" }}>
+            <TechIcon type={"UPGRADE"} size={iconSize} />
+          </div>
           <TechTree
-            type="FACTION"
+            type="UPGRADE"
             factionId={factionId}
             techs={techs}
             ownedTechs={new Set(ownedTechs)}
+            viewOnly={viewOnly}
+          />
+          <div>&nbsp;</div>
+          <div className={styles.TechSummaryNumber}>
+            {factionTechs.length || "-"}
+          </div>
+          <div className="flexRow" style={{ height: "100%" }}>
+            <FactionComponents.Icon factionId={factionId} size={16} />
+          </div>
+          <TechTree
+            factionId={factionId}
+            techs={techs}
+            ownedTechs={new Set(ownedTechs)}
+            type="FACTION"
             viewOnly={viewOnly}
           />
         </div>
