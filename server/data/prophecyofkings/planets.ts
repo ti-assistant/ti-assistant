@@ -10,7 +10,7 @@ const TOP_RIGHT = { x: 22, y: -38 };
 const FAR_BOTTOM_RIGHT = { x: 28, y: 42 };
 
 export default function getProphecyOfKingsPlanets(
-  intl: IntlShape
+  intl: IntlShape,
 ): Record<ProphecyOfKings.PlanetId, BasePlanet> {
   return {
     Abaddon: {
@@ -187,8 +187,12 @@ export default function getProphecyOfKingsPlanets(
       types: ["CULTURAL"],
     },
     "Hope's End": {
-      ability:
-        "You may exhaust this card at the end of your turn to place 1 mech from your reinforcements on any planet you control, or draw 1 action card",
+      ability: intl.formatMessage({
+        id: "Planets.Hope's End.Ability",
+        description: "Planet Ability for Hope's End",
+        defaultMessage:
+          "You may exhaust this card at the end of your turn to place 1 mech from your reinforcements on any planet you control, or draw 1 action card.",
+      }),
       attributes: ["legendary"],
       expansion: "POK",
       influence: 0,
@@ -257,8 +261,12 @@ export default function getProphecyOfKingsPlanets(
       types: ["CULTURAL"],
     },
     Mallice: {
-      ability:
-        "You may exhaust this card at the end of your turn to gain 2 trade goods or convert all of your commodities into trade goods",
+      ability: intl.formatMessage({
+        id: "Planets.Mallice.Ability",
+        description: "Planet Ability for Mallice",
+        defaultMessage:
+          "You may exhaust this card at the end of your turn to gain 2 trade goods or convert all of your commodities into trade goods.",
+      }),
       alwaysInclude: true,
       attributes: ["legendary"],
       expansion: "POK",
@@ -271,8 +279,12 @@ export default function getProphecyOfKingsPlanets(
       types: ["CULTURAL"],
     },
     Mirage: {
-      ability:
-        "You may exhaust this card at the end of your turn to place up to 2 fighters from your reinforcements in any system that contains 1 or more of your ships",
+      ability: intl.formatMessage({
+        id: "Planets.Mirage.Ability",
+        description: "Planet Ability for Mirage",
+        defaultMessage:
+          "You may exhaust this card at the end of your turn to place up to 2 fighters from your reinforcements in any system that contains 1 or more of your ships.",
+      }),
       alwaysInclude: true,
       attributes: ["legendary"],
       expansion: "POK",
@@ -307,8 +319,12 @@ export default function getProphecyOfKingsPlanets(
       types: ["INDUSTRIAL"],
     },
     Primor: {
-      ability:
-        "You may exhaust this card at the end of your turn to place up to 2 infantry from your reinforcements on any planet you control",
+      ability: intl.formatMessage({
+        id: "Planets.Primor.Ability",
+        description: "Planet Ability for Primor",
+        defaultMessage:
+          "You may exhaust this card at the end of your turn to place up to 2 infantry from your reinforcements on any planet you control.",
+      }),
       attributes: ["legendary"],
       expansion: "POK",
       influence: 1,

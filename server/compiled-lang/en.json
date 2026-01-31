@@ -9363,6 +9363,12 @@
       "value": "Action Cards"
     }
   ],
+  "Hp1kqe": [
+    {
+      "type": 0,
+      "value": "Turn"
+    }
+  ],
   "I54oy6": [
     {
       "offset": 0,
@@ -13241,16 +13247,40 @@
       "value": "You may exhaust this card when you pass to place 1 action card from the discard pile faceup on this card; you can purge cards on this card to play them as if they were in your hand."
     }
   ],
+  "Planets.Hope's End.Ability": [
+    {
+      "type": 0,
+      "value": "You may exhaust this card at the end of your turn to place 1 mech from your reinforcements on any planet you control, or draw 1 action card."
+    }
+  ],
   "Planets.Industrex.Ability": [
     {
       "type": 0,
       "value": "You may exhaust this card when you pass to place 1 ship that matches a unit upgrade technology you own from your reinforcements into a system that contains your ships."
     }
   ],
+  "Planets.Mallice.Ability": [
+    {
+      "type": 0,
+      "value": "You may exhaust this card at the end of your turn to gain 2 trade goods or convert all of your commodities into trade goods."
+    }
+  ],
+  "Planets.Mirage.Ability": [
+    {
+      "type": 0,
+      "value": "You may exhaust this card at the end of your turn to place up to 2 fighters from your reinforcements in any system that contains 1 or more of your ships."
+    }
+  ],
   "Planets.Ordinian.Ability": [
     {
       "type": 0,
       "value": "You may exhaust this card when you pass to draw 1 action card and gain 1 command token."
+    }
+  ],
+  "Planets.Primor.Ability": [
+    {
+      "type": 0,
+      "value": "You may exhaust this card at the end of your turn to place up to 2 infantry from your reinforcements on any planet you control."
     }
   ],
   "Planets.Styx.Ability": [
@@ -21828,6 +21858,12 @@
     {
       "type": 0,
       "value": "Starting Components"
+    }
+  ],
+  "rmSsKq": [
+    {
+      "type": 0,
+      "value": "Phase"
     }
   ],
   "sJ5zBj": [

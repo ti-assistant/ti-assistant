@@ -4319,6 +4319,10 @@
     "defaultMessage": "Action Cards",
     "description": "Cards that are used to make actions."
   },
+  "Hp1kqe": {
+    "defaultMessage": "Turn",
+    "description": "A single player's turn."
+  },
   "I54oy6": {
     "defaultMessage": "{count, plural, one {Ability} other {Abilities}}",
     "description": "Header for a section listing out abilities."
@@ -6467,13 +6471,29 @@
     "defaultMessage": "You may exhaust this card when you pass to place 1 action card from the discard pile faceup on this card; you can purge cards on this card to play them as if they were in your hand.",
     "description": "Planet Ability for Garbozia"
   },
+  "Planets.Hope's End.Ability": {
+    "defaultMessage": "You may exhaust this card at the end of your turn to place 1 mech from your reinforcements on any planet you control, or draw 1 action card.",
+    "description": "Planet Ability for Hope's End"
+  },
   "Planets.Industrex.Ability": {
     "defaultMessage": "You may exhaust this card when you pass to place 1 ship that matches a unit upgrade technology you own from your reinforcements into a system that contains your ships.",
     "description": "Planet Ability for Industrex"
   },
+  "Planets.Mallice.Ability": {
+    "defaultMessage": "You may exhaust this card at the end of your turn to gain 2 trade goods or convert all of your commodities into trade goods.",
+    "description": "Planet Ability for Mallice"
+  },
+  "Planets.Mirage.Ability": {
+    "defaultMessage": "You may exhaust this card at the end of your turn to place up to 2 fighters from your reinforcements in any system that contains 1 or more of your ships.",
+    "description": "Planet Ability for Mirage"
+  },
   "Planets.Ordinian.Ability": {
     "defaultMessage": "You may exhaust this card when you pass to draw 1 action card and gain 1 command token.",
     "description": "Planet Ability for Ordinian"
+  },
+  "Planets.Primor.Ability": {
+    "defaultMessage": "You may exhaust this card at the end of your turn to place up to 2 infantry from your reinforcements on any planet you control.",
+    "description": "Planet Ability for Primor"
   },
   "Planets.Styx.Ability": {
     "defaultMessage": "When you gain this card, gain 1 victory point.{br}When you lose this card, lose 1 victory point.",
@@ -10514,6 +10534,10 @@
   "rlGbdz": {
     "defaultMessage": "Starting Components",
     "description": "A label for a section of components that a faction starts with."
+  },
+  "rmSsKq": {
+    "defaultMessage": "Phase",
+    "description": "A section of the game (e.g. Strategy Phase)."
   },
   "sJ5zBj": {
     "defaultMessage": "{count} {count, plural, one {Cruiser} other {Cruisers}}",
