@@ -9,14 +9,20 @@ import { rem } from "../../src/util/util";
 
 export default function Supporters() {
   return (
-    <div className="flexColumn" style={{ gap: rem(16) }}>
+    <div
+      className="flexColumn"
+      style={{ gap: rem(16), justifyContent: "flex-start" }}
+    >
       <NonGameHeader leftSidebar="TI ASSISTANT" rightSidebar="SUPPORTERS" />
       <div
         className="flexColumn"
         style={{
           maxWidth: rem(800),
-          height: "100dvh",
+          justifyContent: "center",
+          alignItems: "center",
           width: "100%",
+          marginBlockStart: "3.5rem",
+          minHeight: "calc(100dvh - 7rem)",
         }}
       >
         <LabeledDiv
@@ -46,9 +52,18 @@ export default function Supporters() {
             </div>
             <div>
               <FormattedMessage
+                id="VZ+RJH"
                 defaultMessage="Programming: {name}"
                 description="Credit for helping to program TI Assistant."
                 values={{ name: "NoahPeres" }}
+              />
+            </div>
+            <div>
+              <FormattedMessage
+                id="LCVmZp"
+                defaultMessage="French Translation: {name}"
+                description="Credit for the french translation of TI Assistant."
+                values={{ name: "Bibox" }}
               />
             </div>
           </div>
@@ -81,6 +96,8 @@ export default function Supporters() {
           <div
             className="flexColumn largeFont"
             style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(2, 1fr)",
               paddingBottom: rem(4),
               width: "100%",
               fontSize: rem(20),
@@ -103,6 +120,9 @@ export default function Supporters() {
             </div>
             <div className="flexRow centered" style={{ width: "100%" }}>
               Ian W.
+            </div>
+            <div className="flexRow centered" style={{ width: "100%" }}>
+              Scott P.
             </div>
           </div>
         </LabeledDiv>
@@ -134,6 +154,8 @@ export default function Supporters() {
           <div
             className="flexColumn largeFont"
             style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(3, 1fr)",
               paddingBottom: rem(4),
               width: "100%",
               fontSize: rem(16),
@@ -184,6 +206,15 @@ export default function Supporters() {
             <div className="flexRow centered" style={{ width: "100%" }}>
               Froggy
             </div>
+            <div className="flexRow centered" style={{ width: "100%" }}>
+              Luke
+            </div>
+            <div className="flexRow centered" style={{ width: "100%" }}>
+              CasaAugusto
+            </div>
+            <div className="flexRow centered" style={{ width: "100%" }}>
+              Trang H.
+            </div>
           </div>
         </LabeledDiv>
 
@@ -195,7 +226,11 @@ export default function Supporters() {
                 minWidth: rem(190),
               }}
             >
-              Back
+              <FormattedMessage
+                id="LNmymU"
+                defaultMessage="Back"
+                description="Text on a button that goes back to the previous page."
+              />
             </div>
           </BorderedDiv>
         </Link>

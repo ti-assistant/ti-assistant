@@ -137,7 +137,7 @@ function applyFilters(
     expansions: IncludeExclude<Expansion>;
     playerCounts: Set<number>;
     victoryPoints: Set<number>;
-  }
+  },
 ) {
   const filteredGames: Record<string, ProcessedGame> = {};
 
@@ -217,7 +217,7 @@ export default function StatsPage({
   });
 
   const [victoryPoints, setVictoryPoints] = useState<Set<number>>(
-    new Set([10])
+    new Set([10]),
   );
   const [playerCounts, setPlayerCounts] = useState<Set<number>>(new Set([6]));
 
@@ -227,7 +227,7 @@ export default function StatsPage({
       expansions,
       playerCounts,
       victoryPoints,
-    })
+    }),
   );
 
   useEffect(() => {
@@ -237,13 +237,13 @@ export default function StatsPage({
         expansions,
         playerCounts,
         victoryPoints,
-      })
+      }),
     );
   }, [processedGames, events, expansions, playerCounts, victoryPoints]);
 
   let points = Array.from(victoryPoints).reduce(
     (max, curr) => Math.max(max, curr),
-    0
+    0,
   );
   if (points === 0) {
     points = 14;
@@ -324,6 +324,12 @@ export default function StatsPage({
                 filter="THUNDERS EDGE"
                 setFilters={setExpansions}
                 text={<Strings.Expansion expansion="THUNDERS EDGE" />}
+              />
+              <ThreeWayFilterButton
+                filters={expansions}
+                filter="TWILIGHTS FALL"
+                setFilters={setExpansions}
+                text={<Strings.Expansion expansion="TWILIGHTS FALL" />}
               />
               <ThreeWayFilterButton
                 filters={expansions}

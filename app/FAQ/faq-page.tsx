@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { FormattedMessage } from "react-intl";
 import BorderedDiv from "../../src/components/BorderedDiv/BorderedDiv";
 import LabeledLine from "../../src/components/LabeledLine/LabeledLine";
 import NonGameHeader from "../../src/components/NonGameHeader/NonGameHeader";
@@ -132,7 +133,11 @@ export default function FAQPage() {
                 minWidth: "190px",
               }}
             >
-              Back
+              <FormattedMessage
+                id="LNmymU"
+                defaultMessage="Back"
+                description="Text on a button that goes back to the previous page."
+              />
             </div>
           </BorderedDiv>
         </Link>

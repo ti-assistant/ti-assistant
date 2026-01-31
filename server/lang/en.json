@@ -4567,9 +4567,17 @@
     "defaultMessage": "Speaker Order",
     "description": "An ordering of factions based on the speaker."
   },
+  "LCVmZp": {
+    "defaultMessage": "French Translation: {name}",
+    "description": "Credit for the french translation of TI Assistant."
+  },
   "LD7frS": {
     "defaultMessage": "Gather Starting Components",
     "description": "A step in the setup phase: Gather starting components."
+  },
+  "LNmymU": {
+    "defaultMessage": "Back",
+    "description": "Text on a button that goes back to the previous page."
   },
   "LYA+Dm": {
     "defaultMessage": "Select all factions and colors",

@@ -9899,10 +9899,26 @@
       "value": "Speaker Order"
     }
   ],
+  "LCVmZp": [
+    {
+      "type": 0,
+      "value": "French Translation: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
   "LD7frS": [
     {
       "type": 0,
       "value": "Gather Starting Components"
+    }
+  ],
+  "LNmymU": [
+    {
+      "type": 0,
+      "value": "Back"
     }
   ],
   "LYA+Dm": [

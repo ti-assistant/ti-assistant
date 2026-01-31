@@ -510,22 +510,10 @@ export function TFTechSummary({
               {redTechs.length || "-"}
             </div>
           </OptionalElement>
-        </div>{" "}
-        <div
-          className="flexRow"
-          style={{ height: "100%", gridRow: "1 / 3", gridColumn: "3 / 4" }}
-        >
-          <TechTree
-            factionId={factionId}
-            techs={techs}
-            ownedTechs={ownedTechs}
-            type="FACTION"
-            viewOnly={viewOnly}
-          />
         </div>
         <div
           className={styles.TechSummarySection}
-          style={{ gridColumn: "span 3" }}
+          style={{ gridColumn: "span 2" }}
         >
           <OptionalElement value={showNumbers}>
             <div className={styles.TechSummaryNumber}>
@@ -533,13 +521,25 @@ export function TFTechSummary({
             </div>
           </OptionalElement>
           <OptionalElement value={showIcons}>
-            <div className="flexRow" style={{ fontSize: rem(12) }}>
-              <FormattedMessage
-                id="lGDH2d"
-                description="Unit upgrade techs."
-                defaultMessage="{count, plural, =0 {Upgrades} one {Upgrade} other {Upgrades}}"
-                values={{ count: upgradeTechs.length }}
-              />
+            <div className="flexRow" style={{ height: "100%" }}>
+              <TechIcon type={"UPGRADE"} size={16} />
+            </div>
+          </OptionalElement>
+          <OptionalElement value={showIcons}>
+            <div className="flexRow" style={{ height: "100%" }}>
+              <FactionComponents.Icon factionId={factionId} size={16} />
+            </div>
+          </OptionalElement>
+          <TechTree
+            factionId={factionId}
+            techs={techs}
+            ownedTechs={ownedTechs}
+            type="FACTION"
+            viewOnly={viewOnly}
+          />
+          <OptionalElement value={showNumbers}>
+            <div className={styles.TechSummaryNumber}>
+              {factionTechs.length || "-"}
             </div>
           </OptionalElement>
         </div>

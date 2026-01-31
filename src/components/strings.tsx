@@ -175,6 +175,14 @@ export namespace Strings {
             description="Text on a button that will enable/disable the Thunder's Edge expansion."
           />
         );
+      case "TWILIGHTS FALL":
+        return (
+          <FormattedMessage
+            id="X+daca"
+            defaultMessage="Twilight's Fall"
+            description="Text on a button that will enable/disable the Twilight's Fall gamemode."
+          />
+        );
       case "DISCORDANT STARS":
         return (
           <FormattedMessage
