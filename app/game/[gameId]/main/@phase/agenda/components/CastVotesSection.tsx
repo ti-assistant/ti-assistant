@@ -213,7 +213,16 @@ export function CastVotesSection({
           })}
         </div>
       ) : null}
-      {showRemainingVotes ? <div>Remaining Votes: {totalVotes}</div> : null}
+      {showRemainingVotes ? (
+        <div>
+          <FormattedMessage
+            id="8j6M9c"
+            defaultMessage="Remaining Votes: {votes}"
+            description="Label for a section listing out the remaining votes."
+            values={{ votes: totalVotes }}
+          />
+        </div>
+      ) : null}
       <CovertLegislation.RevealAgenda />
       <AgendaDetails hideObjectives={hideObjectives} />
       {readyToResolve() ? (

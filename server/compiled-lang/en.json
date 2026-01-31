@@ -507,6 +507,16 @@
       "value": "Gain Command Tokens and Redistribute"
     }
   ],
+  "8j6M9c": [
+    {
+      "type": 0,
+      "value": "Remaining Votes: "
+    },
+    {
+      "type": 1,
+      "value": "votes"
+    }
+  ],
   "8ntyP0": [
     {
       "type": 0,
@@ -21994,14 +22004,28 @@
   ],
   "t6v2oN": [
     {
-      "type": 0,
-      "value": "Directives"
-    }
-  ],
-  "tM6gjG": [
-    {
-      "type": 0,
-      "value": "Directive"
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Directive"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Directives"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
   "tocXJ4": [

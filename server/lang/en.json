@@ -255,6 +255,10 @@
     "defaultMessage": "Gain Command Tokens and Redistribute",
     "description": "Text telling the players to gain command tokens and redistribute."
   },
+  "8j6M9c": {
+    "defaultMessage": "Remaining Votes: {votes}",
+    "description": "Label for a section listing out the remaining votes."
+  },
   "8ntyP0": {
     "defaultMessage": "Win Rate",
     "description": "Label for a section describing the win rate."
@@ -10568,12 +10572,8 @@
     "description": "Text telling a player how many command tokens to gain."
   },
   "t6v2oN": {
-    "defaultMessage": "Directives",
+    "defaultMessage": "{count, plural, one {Directive} other {Directives}}",
     "description": "Agenda cards that do not have an ongoing effect."
-  },
-  "tM6gjG": {
-    "defaultMessage": "Directive",
-    "description": "Agenda type that does not have an ongoing effect."
   },
   "tocXJ4": {
     "defaultMessage": "Reset",
