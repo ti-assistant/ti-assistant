@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import { FormattedMessage } from "react-intl";
 import { SettingsContext } from "../../context/contexts";
 import {
   useAbilities,
@@ -15,6 +14,52 @@ import TechIcon from "../TechIcon/TechIcon";
 import TechTree from "../TechTree/TechTree";
 import styles from "./TechSummary.module.scss";
 
+interface TechCounts {
+  red: number;
+  yellow: number;
+  green: number;
+  blue: number;
+  upgrade: number;
+  faction: number;
+}
+
+function getTechCounts(techs: Techs, ownedTechs: TechId[]) {
+  const techsByType: TechCounts = {
+    red: 0,
+    yellow: 0,
+    green: 0,
+    blue: 0,
+    upgrade: 0,
+    faction: 0,
+  };
+  for (const tech of Object.values(techs)) {
+    if (tech.state === "purged" || !ownedTechs.includes(tech.id)) {
+      continue;
+    }
+    if (tech.faction) {
+      techsByType.faction++;
+    }
+    switch (tech.type) {
+      case "RED":
+        techsByType.red++;
+        break;
+      case "YELLOW":
+        techsByType.yellow++;
+        break;
+      case "GREEN":
+        techsByType.green++;
+        break;
+      case "BLUE":
+        techsByType.blue++;
+        break;
+      case "UPGRADE":
+        techsByType.upgrade++;
+        break;
+    }
+  }
+  return techsByType;
+}
+
 export function FullTechSummary({
   techs,
   ownedTechs,
@@ -26,55 +71,7 @@ export function FullTechSummary({
 }) {
   const viewOnly = useViewOnly();
 
-  let blueTechs = [];
-  let yellowTechs = [];
-  let greenTechs = [];
-  let redTechs = [];
-  let upgradeTechs = [];
-  let factionTechs = [];
-  for (const tech of Object.values(techs)) {
-    if (!ownedTechs.includes(tech.id)) {
-      continue;
-    }
-    if (tech.faction) {
-      factionTechs.push(tech);
-    }
-    switch (tech.type) {
-      case "RED":
-        redTechs.push(tech);
-        break;
-      case "YELLOW":
-        yellowTechs.push(tech);
-        break;
-      case "GREEN":
-        greenTechs.push(tech);
-        break;
-      case "BLUE":
-        blueTechs.push(tech);
-        break;
-      case "UPGRADE":
-        upgradeTechs.push(tech);
-        break;
-    }
-  }
-
-  const techOrder: TechType[] = ["GREEN", "BLUE", "YELLOW", "RED", "UPGRADE"];
-
-  Object.values(techs).sort((a, b) => {
-    const typeDiff = techOrder.indexOf(a.type) - techOrder.indexOf(b.type);
-    if (typeDiff !== 0) {
-      return typeDiff;
-    }
-    const prereqDiff: number = a.prereqs.length - b.prereqs.length;
-    if (prereqDiff !== 0) {
-      return prereqDiff;
-    }
-    if (a.name < b.name) {
-      return -1;
-    } else {
-      return 1;
-    }
-  });
+  const techCounts = getTechCounts(techs, ownedTechs);
 
   const numberWidth = rem(10.75 * 1.2);
   const iconSize = 20;
@@ -86,7 +83,7 @@ export function FullTechSummary({
           className="flexRow centered"
           style={{ height: "100%", width: numberWidth }}
         >
-          {greenTechs.length || "-"}
+          {techCounts.green || "-"}
         </div>
         <div className="flexRow" style={{ height: "100%" }}>
           <TechIcon type={"GREEN"} size={iconSize} />
@@ -103,7 +100,7 @@ export function FullTechSummary({
           className="flexRow centered"
           style={{ height: "100%", width: numberWidth }}
         >
-          {blueTechs.length || "-"}
+          {techCounts.blue || "-"}
         </div>
 
         <div className="flexRow" style={{ height: "100%" }}>
@@ -121,7 +118,7 @@ export function FullTechSummary({
           className="flexRow centered"
           style={{ height: "100%", width: numberWidth }}
         >
-          {yellowTechs.length || "-"}
+          {techCounts.yellow || "-"}
         </div>
         <div className="flexRow" style={{ height: "100%" }}>
           <TechIcon type={"YELLOW"} size={iconSize} />
@@ -138,7 +135,7 @@ export function FullTechSummary({
           className="flexRow centered"
           style={{ height: "100%", width: numberWidth }}
         >
-          {redTechs.length || "-"}
+          {techCounts.red || "-"}
         </div>
         <div className="flexRow" style={{ height: "100%" }}>
           <TechIcon type={"RED"} size={iconSize} />
@@ -158,7 +155,7 @@ export function FullTechSummary({
             className="flexRow centered"
             style={{ height: "100%", width: numberWidth }}
           >
-            {upgradeTechs.length || "-"}
+            {techCounts.upgrade || "-"}
           </div>
           <div className="flexRow" style={{ height: "100%" }}>
             <TechIcon type={"UPGRADE"} size={iconSize} />
@@ -172,7 +169,7 @@ export function FullTechSummary({
           />
           <div>&nbsp;</div>
           <div className={styles.TechSummaryNumber}>
-            {factionTechs.length || "-"}
+            {techCounts.faction || "-"}
           </div>
           <div className="flexRow" style={{ height: "100%" }}>
             <FactionComponents.Icon factionId={factionId} size={16} />
@@ -207,55 +204,7 @@ export default function TechSummary({
     return null;
   }
 
-  let blueTechs = [];
-  let yellowTechs = [];
-  let greenTechs = [];
-  let redTechs = [];
-  let upgradeTechs = [];
-  let factionTechs = [];
-  for (const tech of Object.values(techs)) {
-    if (tech.state === "purged" || !ownedTechs.has(tech.id)) {
-      continue;
-    }
-    if (tech.faction) {
-      factionTechs.push(tech);
-    }
-    switch (tech.type) {
-      case "RED":
-        redTechs.push(tech);
-        break;
-      case "YELLOW":
-        yellowTechs.push(tech);
-        break;
-      case "GREEN":
-        greenTechs.push(tech);
-        break;
-      case "BLUE":
-        blueTechs.push(tech);
-        break;
-      case "UPGRADE":
-        upgradeTechs.push(tech);
-        break;
-    }
-  }
-
-  const techOrder: TechType[] = ["GREEN", "BLUE", "YELLOW", "RED", "UPGRADE"];
-
-  Object.values(techs).sort((a, b) => {
-    const typeDiff = techOrder.indexOf(a.type) - techOrder.indexOf(b.type);
-    if (typeDiff !== 0) {
-      return typeDiff;
-    }
-    const prereqDiff: number = a.prereqs.length - b.prereqs.length;
-    if (prereqDiff !== 0) {
-      return prereqDiff;
-    }
-    if (a.name < b.name) {
-      return -1;
-    } else {
-      return 1;
-    }
-  });
+  const techCounts = getTechCounts(techs, Array.from(ownedTechs));
 
   const showNumbers = settings["fs-tech-summary-display"].includes("NUMBER");
   const showIcons = settings["fs-tech-summary-display"].includes("ICON");
@@ -269,7 +218,7 @@ export default function TechSummary({
         <div className={styles.TechSummarySection}>
           <OptionalElement value={showNumbers}>
             <div className={styles.TechSummaryNumber}>
-              {greenTechs.length || "-"}
+              {techCounts.green || "-"}
             </div>
           </OptionalElement>
           <OptionalElement value={showIcons}>
@@ -304,14 +253,14 @@ export default function TechSummary({
           </OptionalElement>
           <OptionalElement value={showNumbers}>
             <div className={styles.TechSummaryNumber}>
-              {blueTechs.length || "-"}
+              {techCounts.blue || "-"}
             </div>
           </OptionalElement>
         </div>
         <div className={styles.TechSummarySection}>
           <OptionalElement value={showNumbers}>
             <div className={styles.TechSummaryNumber}>
-              {yellowTechs.length || "-"}
+              {techCounts.yellow || "-"}
             </div>
           </OptionalElement>
           <OptionalElement value={showIcons}>
@@ -346,7 +295,7 @@ export default function TechSummary({
           </OptionalElement>
           <OptionalElement value={showNumbers}>
             <div className={styles.TechSummaryNumber}>
-              {redTechs.length || "-"}
+              {techCounts.red || "-"}
             </div>
           </OptionalElement>
         </div>
@@ -356,7 +305,7 @@ export default function TechSummary({
         >
           <OptionalElement value={showNumbers}>
             <div className={styles.TechSummaryNumber}>
-              {upgradeTechs.length || "-"}
+              {techCounts.upgrade || "-"}
             </div>
           </OptionalElement>
           <OptionalElement value={showIcons}>
@@ -389,7 +338,7 @@ export default function TechSummary({
           </OptionalElement>
           <OptionalElement value={showNumbers}>
             <div className={styles.TechSummaryNumber}>
-              {factionTechs.length || "-"}
+              {techCounts.faction || "-"}
             </div>
           </OptionalElement>
         </div>
