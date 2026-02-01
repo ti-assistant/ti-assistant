@@ -9,7 +9,6 @@ import { SettingsContext } from "./context/contexts";
 import styles from "./FactionSummary.module.scss";
 import { SummaryLabel, SummarySection } from "./util/settings";
 import { rem } from "./util/util";
-import FactionComponents from "./components/FactionComponents/FactionComponents";
 
 const TOP_RIGHT = { x: 22, y: -38 };
 
@@ -17,8 +16,6 @@ export default function DummyFactionSummary() {
   const intl = useIntl();
   const techs = getTechs(intl);
   const { settings } = use(SettingsContext);
-
-  const [VPs, setVPs] = useState(0);
 
   const ownedTechs: Set<TechId> = new Set(["Sarween Tools"]);
 
@@ -218,6 +215,13 @@ export function DummySummaryLabel({
     case "TIMER":
       return <TimerDisplay time={6454} width={84} />;
     case "VPS":
-      return <>8 VPs</>;
+      return (
+        <FormattedMessage
+          id="PzyYtG"
+          description="Shortened version of Victory Points."
+          defaultMessage="{count, plural, =0 {VPs} one {VP} other {VPs}}"
+          values={{ count: 8 }}
+        />
+      );
   }
 }

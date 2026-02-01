@@ -6,6 +6,7 @@ import RedTechSVG from "../../icons/techs/RedTech";
 import YellowTechSVG from "../../icons/techs/YellowTech";
 import BlueTechSVG from "../../icons/techs/BlueTech";
 import GreenTechSVG from "../../icons/techs/GreenTech";
+import UpgradeSVG from "../../icons/twilightsfall/upgrade";
 
 const RED_RATIO = 61 / 61;
 const GREEN_RATIO = 58 / 58;
@@ -30,20 +31,6 @@ export default function TechIcon({
   type,
   size,
 }: TechIconProps) {
-  const ratio = useMemo(() => {
-    switch (type) {
-      case "RED":
-        return RED_RATIO;
-      case "YELLOW":
-        return YELLOW_RATIO;
-      case "BLUE":
-        return BLUE_RATIO;
-      case "GREEN":
-        return GREEN_RATIO;
-      case "UPGRADE":
-        return 1;
-    }
-  }, [type]);
   const innerContent = useMemo(() => {
     switch (type) {
       case "YELLOW":
@@ -55,7 +42,7 @@ export default function TechIcon({
       case "BLUE":
         return <BlueTechSVG outline={outline} color={color} />;
       case "UPGRADE":
-        return null;
+        return <UpgradeSVG />;
     }
   }, [type, outline, color]);
 
@@ -63,15 +50,9 @@ export default function TechIcon({
     "--width": typeof size === "string" ? size : rem(size),
     "--height": typeof size === "string" ? size : rem(size),
   };
-  const techIconStyle: TechIconCSS = {
-    "--width": typeof size === "string" ? size : rem(size),
-    "--height": typeof size === "string" ? size : rem(size),
-  };
   return (
     <div className={styles.OuterIcon} style={outerIconStyle}>
-      {/* <div className={styles.TechIcon} style={techIconStyle}> */}
       {innerContent}
-      {/* </div> */}
     </div>
   );
 }

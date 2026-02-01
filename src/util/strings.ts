@@ -23,7 +23,7 @@ export function production(value: string, intl: IntlShape) {
       description: "A unit ability that allows a unit to produce other units.",
       defaultMessage: "PRODUCTION {value}",
     },
-    { value }
+    { value },
   );
 }
 
@@ -34,7 +34,7 @@ export function spaceCannon(value: string, intl: IntlShape) {
       description: "A unit ability that allows a unit to use SPACE CANNON.",
       defaultMessage: "SPACE CANNON {value}",
     },
-    { value }
+    { value },
   );
 }
 
@@ -46,7 +46,7 @@ export function bombardment(value: string, intl: IntlShape) {
         "A unit ability that allows a unit to bombard ground forces.",
       defaultMessage: "BOMBARDMENT {value}",
     },
-    { value }
+    { value },
   );
 }
 
@@ -57,7 +57,7 @@ export function antiFighterBarrage(value: string, intl: IntlShape) {
       description: "A unit ability that allows a unit to destroy fighters.",
       defaultMessage: "ANTI-FIGHTER BARRAGE {value}",
     },
-    { value }
+    { value },
   );
 }
 
@@ -460,11 +460,14 @@ export function unitTypeString(type: UnitType, intl: IntlShape) {
 export function agendaTypeString(type: AgendaType, intl: IntlShape) {
   switch (type) {
     case "DIRECTIVE":
-      return intl.formatMessage({
-        id: "tM6gjG",
-        defaultMessage: "Directive",
-        description: "Agenda type that does not have an ongoing effect.",
-      });
+      return intl.formatMessage(
+        {
+          id: "t6v2oN",
+          description: "Agenda cards that do not have an ongoing effect.",
+          defaultMessage: "{count, plural, one {Directive} other {Directives}}",
+        },
+        { count: 1 },
+      );
     case "LAW":
       return intl.formatMessage({
         id: "5/RTAm",

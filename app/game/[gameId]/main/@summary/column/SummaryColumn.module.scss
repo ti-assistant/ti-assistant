@@ -6,6 +6,8 @@
   flex-shrink: 0;
   height: 100svh;
   justify-content: center;
+  position: sticky;
+  top: 0;
 }
 
 @media only screen and (max-width: 56.25rem) {

@@ -108,7 +108,7 @@ function applyFilters(
     expansions: IncludeExclude<Expansion>;
     playerCounts: Set<number>;
     victoryPoints: Set<number>;
-  }
+  },
 ) {
   const filteredGames: Record<string, ProcessedGame> = {};
 
@@ -187,7 +187,7 @@ export default function ArchivePage({
   });
 
   const [victoryPoints, setVictoryPoints] = useState<Set<number>>(
-    new Set([10])
+    new Set([10]),
   );
   const [playerCounts, setPlayerCounts] = useState<Set<number>>(new Set([6]));
   const [localGames, setLocalGames] = useState(
@@ -196,7 +196,7 @@ export default function ArchivePage({
       expansions,
       playerCounts,
       victoryPoints,
-    })
+    }),
   );
 
   useEffect(() => {
@@ -206,7 +206,7 @@ export default function ArchivePage({
         expansions,
         playerCounts,
         victoryPoints,
-      })
+      }),
     );
   }, [processedGames, events, expansions, playerCounts, victoryPoints]);
 
@@ -278,6 +278,12 @@ export default function ArchivePage({
               filter="THUNDERS EDGE"
               setFilters={setExpansions}
               text={<Strings.Expansion expansion="THUNDERS EDGE" />}
+            />
+            <ThreeWayFilterButton
+              filters={expansions}
+              filter="TWILIGHTS FALL"
+              setFilters={setExpansions}
+              text={<Strings.Expansion expansion="TWILIGHTS FALL" />}
             />
             <ThreeWayFilterButton
               filters={expansions}
@@ -482,7 +488,7 @@ export default function ArchivePage({
                 const orderedFactions = objectEntries(game.factions).sort(
                   (a, b) => {
                     return b[1].points - a[1].points;
-                  }
+                  },
                 );
 
                 const date = new Date(game.timestampMillis);

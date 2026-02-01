@@ -123,7 +123,7 @@ function SupportForTheThrone({
                       gameId,
                       scorer,
                       "Support for the Throne",
-                      factionId
+                      factionId,
                     );
                   }
                   if (selectedFactionId) {
@@ -131,7 +131,7 @@ function SupportForTheThrone({
                       gameId,
                       selectedFactionId,
                       "Support for the Throne",
-                      factionId
+                      factionId,
                     );
                   }
                 }}
@@ -171,7 +171,7 @@ function ImperialPoints({
       <div className="flexRow" style={{ width: "100%", height: "100%" }}>
         {orderedFactionIds.map((faction) => {
           const imperialPoints = (imperialPoint?.scorers ?? []).filter(
-            (name) => name === faction
+            (name) => name === faction,
           ).length;
           return (
             <div
@@ -449,7 +449,8 @@ function DirectiveObjectives({
         <FormattedMessage
           id="t6v2oN"
           description="Agenda cards that do not have an ongoing effect."
-          defaultMessage="Directives"
+          defaultMessage="{count, plural, one {Directive} other {Directives}}"
+          values={{ count: 2 }}
         />
       }
       style={{
@@ -649,7 +650,7 @@ function TotalWar({ orderedFactionIds }: { orderedFactionIds: FactionId[] }) {
           display: "grid",
           gridAutoFlow: "row",
           gridTemplateColumns: `repeat(${Math.ceil(
-            orderedFactionIds.length / 2
+            orderedFactionIds.length / 2,
           )}, 1fr)`,
           alignItems: "center",
           justifyItems: "center",
@@ -659,7 +660,7 @@ function TotalWar({ orderedFactionIds }: { orderedFactionIds: FactionId[] }) {
       >
         {orderedFactionIds.map((faction) => {
           const totalWarPoints = (totalWarObjective?.scorers ?? []).filter(
-            (name) => name === faction
+            (name) => name === faction,
           ).length;
           return (
             <div

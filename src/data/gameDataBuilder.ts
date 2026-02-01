@@ -5,7 +5,7 @@ import { objectEntries } from "../util/util";
 
 export function buildCompleteGameData(
   storedGameData: StoredGameData,
-  baseData: BaseData
+  baseData: BaseData,
 ) {
   const completeGameData: GameData = {
     actionCards: buildCompleteActionCards(baseData, storedGameData),
@@ -40,7 +40,7 @@ export function buildCompleteGameData(
 
 export function buildCompleteActionCards(
   baseData: BaseData,
-  storedGameData: StoredGameData
+  storedGameData: StoredGameData,
 ) {
   const actionCards: Partial<Record<ActionCardId, ActionCard>> = {};
 
@@ -70,7 +70,7 @@ export function buildCompleteActionCards(
 
 export function buildCompleteAgendas(
   baseData: BaseData,
-  storedGameData: StoredGameData
+  storedGameData: StoredGameData,
 ) {
   const agendas: Partial<Record<AgendaId, Agenda>> = {};
 
@@ -96,7 +96,7 @@ export function buildCompleteAgendas(
 
 export function buildCompleteAttachments(
   baseData: BaseData,
-  storedGameData: StoredGameData
+  storedGameData: StoredGameData,
 ) {
   const gameAttachments = storedGameData.attachments ?? {};
   const gameFactions = storedGameData.factions ?? {};
@@ -134,7 +134,7 @@ export function buildCompleteAttachments(
 
 export function buildCompleteComponents(
   baseData: BaseData,
-  storedGameData: StoredGameData
+  storedGameData: StoredGameData,
 ) {
   const gameComponents = storedGameData.components ?? {};
   const gameFactions = storedGameData.factions ?? {};
@@ -276,7 +276,7 @@ export function buildCompleteComponents(
 
 export function buildCompleteFactions(
   baseData: BaseData,
-  storedGameData: StoredGameData
+  storedGameData: StoredGameData,
 ) {
   const factions: Partial<Record<FactionId, Faction>> = {};
   objectEntries(storedGameData.factions).forEach(([id, faction]) => {
@@ -331,7 +331,7 @@ export function buildCompleteFactions(
 // TODO: Fix secrets (or remove ability to reveal them)
 export function buildCompleteObjectives(
   baseData: BaseData,
-  storedGameData: StoredGameData
+  storedGameData: StoredGameData,
 ) {
   const gameObjectives = storedGameData.objectives ?? {};
   const expansions = storedGameData.options.expansions;
@@ -378,7 +378,7 @@ export function buildCompleteObjectives(
 export function buildCompletePlanets(
   baseData: BaseData,
   storedGameData: StoredGameData,
-  includePurged?: boolean
+  includePurged?: boolean,
 ) {
   const gamePlanets = storedGameData.planets ?? {};
   const gameFactions = storedGameData.factions ?? {};
@@ -394,7 +394,7 @@ export function buildCompletePlanets(
       (systemNumber) =>
         systemNumber !== "-1" &&
         systemNumber !== "0" &&
-        !isNaN(parseInt(systemNumber))
+        !isNaN(parseInt(systemNumber)),
     )
     .map((system) => parseInt(system) as SystemId);
 
@@ -406,10 +406,16 @@ export function buildCompletePlanets(
     if (planet.id === "Creuss" && inGameSystems.includes(17)) {
       isPlanetInMap = true;
     }
+    if (planet.id === "Ahk Creuxx" && inGameSystems.includes(94)) {
+      isPlanetInMap = true;
+    }
     if (planet.faction && !gameFactions[planet.faction] && !isPlanetInMap) {
       let isPlanetSelected = false;
       for (const faction of Object.values(gameFactions)) {
-        if (faction.startswith?.planetFaction === planet.faction) {
+        if (
+          planet.home &&
+          faction.startswith?.planetFaction === planet.faction
+        ) {
           isPlanetSelected = true;
           break;
         }
@@ -420,7 +426,7 @@ export function buildCompletePlanets(
         }
         if (
           !gameFactions["Council Keleres"].startswith?.planets?.includes(
-            planet.id
+            planet.id,
           )
         ) {
           return;
@@ -473,7 +479,7 @@ export function buildCompletePlanets(
       if (
         !gameFactions["Council Keleres"] ||
         !(gameFactions["Council Keleres"]?.startswith?.planets ?? []).includes(
-          planet.id
+          planet.id,
         )
       ) {
         return;
@@ -520,7 +526,7 @@ export function buildCompletePlanets(
 
 export function buildCompleteRelics(
   baseData: BaseData,
-  storedGameData: StoredGameData
+  storedGameData: StoredGameData,
 ) {
   const gameRelics = storedGameData.relics ?? {};
   const expansions = storedGameData.options.expansions;
@@ -559,7 +565,7 @@ export function buildCompleteState(storedGameData: StoredGameData) {
 
 export function buildCompleteStrategyCards(
   baseData: BaseData,
-  storedGameData: StoredGameData
+  storedGameData: StoredGameData,
 ) {
   const strategyCards = storedGameData.strategycards ?? {};
 
@@ -593,7 +599,7 @@ export function buildCompleteStrategyCards(
 
 export function buildCompleteSystems(
   baseData: BaseData,
-  storedGameData: StoredGameData
+  storedGameData: StoredGameData,
 ) {
   const storedSystems = storedGameData.systems ?? {};
   const systems: Partial<Record<SystemId, BaseSystem>> = {};
@@ -616,7 +622,7 @@ export function buildCompleteSystems(
 
 export function buildCompleteTechs(
   baseData: BaseData,
-  storedGameData: StoredGameData
+  storedGameData: StoredGameData,
 ) {
   const options = storedGameData.options;
   const storedTechs = storedGameData.techs ?? {};
@@ -650,7 +656,7 @@ export function buildCompleteTechs(
 
 export function buildCompleteLeaders(
   baseData: BaseData,
-  storedGameData: StoredGameData
+  storedGameData: StoredGameData,
 ) {
   const factions = storedGameData.factions;
   const options = storedGameData.options;
@@ -687,7 +693,7 @@ export function buildCompleteLeaders(
 
 export function buildCompleteAbilities(
   baseData: BaseData,
-  storedGameData: StoredGameData
+  storedGameData: StoredGameData,
 ) {
   const storedAbilities = storedGameData.abilities ?? {};
   const abilities: Partial<Record<TFAbilityId, TFAbility>> = {};
@@ -711,7 +717,7 @@ export function buildCompleteAbilities(
 
 export function buildCompleteGenomes(
   baseData: BaseData,
-  storedGameData: StoredGameData
+  storedGameData: StoredGameData,
 ) {
   const storedGenomes = storedGameData.genomes ?? {};
   const genomes: Partial<Record<TFGenomeId, TFGenome>> = {};
@@ -735,7 +741,7 @@ export function buildCompleteGenomes(
 
 export function buildCompleteParadigms(
   baseData: BaseData,
-  storedGameData: StoredGameData
+  storedGameData: StoredGameData,
 ) {
   const storedParadigms = storedGameData.paradigms ?? {};
   const paradigms: Partial<Record<TFParadigmId, TFParadigm>> = {};
@@ -759,7 +765,7 @@ export function buildCompleteParadigms(
 
 export function buildCompleteUpgrades(
   baseData: BaseData,
-  storedGameData: StoredGameData
+  storedGameData: StoredGameData,
 ) {
   const storedUpgrades = storedGameData.upgrades ?? {};
   const upgrades: Partial<Record<TFUnitUpgradeId, TFUnitUpgrade>> = {};

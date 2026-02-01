@@ -1,10 +1,10 @@
-import { CSSProperties } from "react";
+import { CSSProperties, ReactNode } from "react";
 import { rem } from "../../util/util";
 
 interface TimerDisplayProps {
   time: number;
   width?: number;
-  label?: string;
+  label?: ReactNode;
   hideHours?: boolean;
   style?: CSSProperties;
 }

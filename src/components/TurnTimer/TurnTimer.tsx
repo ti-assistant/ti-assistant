@@ -5,6 +5,7 @@ import { useGameState } from "../../context/stateDataHooks";
 import { getFinalActionOfPreviousTurn } from "../../util/api/actionLog";
 import { rem } from "../../util/util";
 import TimerDisplay from "../TimerDisplay/TimerDisplay";
+import { FormattedMessage } from "react-intl";
 
 export default function TurnTimer({ gameTime }: { gameTime: number }) {
   const actionLog = useActionLog();
@@ -22,12 +23,23 @@ export default function TurnTimer({ gameTime }: { gameTime: number }) {
   }
 
   const prevTurnStartTime = finalAction.gameSeconds ?? 0;
-
-  let label = "Turn";
+  let label = (
+    <FormattedMessage
+      id="Hp1kqe"
+      defaultMessage="Turn"
+      description="A single player's turn."
+    />
+  );
   switch (state.phase) {
     case "AGENDA":
     case "STATUS":
-      label = "Phase";
+      label = (
+        <FormattedMessage
+          id="rmSsKq"
+          defaultMessage="Phase"
+          description="A section of the game (e.g. Strategy Phase)."
+        />
+      );
       break;
   }
 

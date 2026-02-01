@@ -22,14 +22,6 @@
   width: 100%;
 }
 
-@media only screen and (max-width: 75rem) {
-  .LeftColumn {
-    height: calc(100dvh - 2.5rem);
-    margin: 0;
-    justify-content: center;
-  }
-}
-
 @media only screen and (max-width: 37.5rem) {
   .LeftColumn {
     height: fit-content;

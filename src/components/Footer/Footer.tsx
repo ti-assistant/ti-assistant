@@ -415,7 +415,19 @@ export default function Footer() {
               </div>
             </button>
             <span className={styles.ButtonLabel}>
-              {twilightsFallGame ? "Cards" : "Techs"}
+              {twilightsFallGame ? (
+                <FormattedMessage
+                  id="kGGZS+"
+                  description="Cards."
+                  defaultMessage="Cards"
+                />
+              ) : (
+                <FormattedMessage
+                  id="ys7uwX"
+                  description="Shortened version of technologies."
+                  defaultMessage="Techs"
+                />
+              )}
             </span>
           </div>
         </Conditional>
@@ -442,7 +454,13 @@ export default function Footer() {
                 <ObjectivesMenuSVG />
               </div>
             </button>
-            <span className={styles.ButtonLabel}>Objectives</span>
+            <span className={styles.ButtonLabel}>
+              <FormattedMessage
+                id="5Bl4Ek"
+                description="Cards that define how to score victory points."
+                defaultMessage="Objectives"
+              />
+            </span>
           </div>
         </Conditional>
         <Conditional appSection="PLANETS">
@@ -468,7 +486,13 @@ export default function Footer() {
                 <PlanetMenuSVG />
               </div>
             </button>
-            <span className={styles.ButtonLabel}>Planets</span>
+            <span className={styles.ButtonLabel}>
+              <FormattedMessage
+                id="1fNqTf"
+                description="Planets."
+                defaultMessage="Planets"
+              />
+            </span>
           </div>
         </Conditional>
         {(options.expansions.includes("THUNDERS EDGE") ||
