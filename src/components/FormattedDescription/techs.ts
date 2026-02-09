@@ -11,4 +11,8 @@ export const TECH_MAPPING: Record<string, TechId> = {
   "Motivateur Neuronal": "Neural Motivator",
   "Outils Sarween": "Sarween Tools",
   "Ciblage Plasma": "Plasma Scoring",
+  // Russian
+  Нейромотиваторы: "Neural Motivator",
+  "Сарвинские Инструменты": "Sarween Tools",
+  "Плазменные Боеголовки": "Plasma Scoring",
 } as const;

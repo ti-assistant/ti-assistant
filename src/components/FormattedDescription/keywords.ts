@@ -17,4 +17,10 @@ export const KEYWORDS_LIST = [
   "DÉBLOQUER :",
   "Pour :",
   "Contre :",
+  // Russian
+  "ДЕЙСТВИЕ:",
+  "РАЗВЕРТЫВАНИЕ:",
+  "РАЗБЛОКИРОВКА:",
+  "За:",
+  "Против:",
 ] as const;
