@@ -4,7 +4,10 @@
   align-items: center;
   justify-content: center;
   width: 17.5rem;
-  height: 100svh;
+
+  position: sticky;
+  top: 3.25rem;
+  min-height: calc(100dvh - 6.5rem);
 }
 
 .MainColumn {
@@ -15,8 +18,7 @@
   align-items: center;
 
   gap: 0.5rem;
-  margin-top: 2.5rem;
-  height: calc(100svh - 2.5rem);
+  min-height: calc(100dvh - 6.5rem);
 }
 
 @media only screen and (max-width: 56.25rem) {

@@ -65,6 +65,8 @@ namespace TwilightsFall {
     | "Magus"
     | "Aeterna";
 
+  type ObjectiveId = "Unravel";
+
   type TechId =
     | "Wavelength Red"
     | "Antimatter Red"
@@ -78,8 +80,8 @@ namespace TwilightsFall {
     | "Antimatter Blue"
     | "Wavelength Purple"
     | "Antimatter Purple"
-    | "Wavelength Magenta"
-    | "Antimatter Magenta"
+    | "Wavelength Pink"
+    | "Antimatter Pink"
     | "Wavelength Black"
     | "Antimatter Black";
 

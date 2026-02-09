@@ -32,4 +32,5 @@ type ObjectiveId =
   | BaseGame.ObjectiveId
   | ProphecyOfKings.ObjectiveId
   | CodexFour.ObjectiveId
-  | ThundersEdge.ObjectiveId;
+  | ThundersEdge.ObjectiveId
+  | TwilightsFall.ObjectiveId;

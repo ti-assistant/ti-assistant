@@ -20,7 +20,7 @@ interface SetupOptions {
 
 interface SetupFaction {
   alliancePartner?: number;
-  color?: string;
+  color?: FactionColor;
   id?: FactionId;
   name?: string;
   playerName?: string;

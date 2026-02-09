@@ -32,7 +32,7 @@ const FactionPanel = dynamic(
   {
     loading: () => <div className="popupIcon">&#x24D8;</div>,
     ssr: false,
-  }
+  },
 );
 
 export default function SummaryColumn() {
@@ -76,7 +76,7 @@ export default function SummaryColumn() {
       className={styles.SummaryColumn}
       style={{
         gap: numFactions < 8 ? rem(12) : 0,
-        paddingTop: numFactions === 8 ? rem(48) : undefined,
+        paddingTop: undefined, // numFactions === 8 ? rem(48) : undefined,
       }}
     >
       {numFactions < 8 ? <div className="flexRow">{title}</div> : null}

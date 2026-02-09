@@ -1,4 +1,4 @@
-export const BASE_COLORS: string[] = [
+export const BASE_COLORS: FactionColor[] = [
   "Red",
   "Black",
   "Orange",

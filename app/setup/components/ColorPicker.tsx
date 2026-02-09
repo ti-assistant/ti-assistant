@@ -7,7 +7,7 @@ import styles from "./ColorPicker.module.scss";
 export interface ColorPickerParams {
   pickedColor?: string;
   selectedColors: string[];
-  updateColor: (color: string) => void;
+  updateColor: (color: FactionColor) => void;
 }
 
 export default function ColorPicker({

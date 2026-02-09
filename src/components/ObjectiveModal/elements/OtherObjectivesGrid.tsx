@@ -291,7 +291,12 @@ function OtherObjectives({
         fontSize: zealousOrthodoxy ? rem(12) : undefined,
       }}
     >
-      {options.expansions.includes("TWILIGHTS FALL") ? null : (
+      {options.expansions.includes("TWILIGHTS FALL") ? (
+        <SimpleScorable
+          objectiveId="Unravel"
+          orderedFactionIds={orderedFactionIds}
+        />
+      ) : (
         <SimpleScorable
           objectiveId="Imperial Rider"
           orderedFactionIds={orderedFactionIds}

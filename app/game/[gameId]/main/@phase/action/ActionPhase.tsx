@@ -107,8 +107,8 @@ function SecondaryFactionCheck({
           secondaryState === "DONE"
             ? "Positive"
             : secondaryState === "SKIPPED"
-            ? "Negative"
-            : undefined
+              ? "Negative"
+              : undefined
         }
         toggleFn={(nextVal) => {
           if (viewOnly) {
@@ -324,7 +324,7 @@ export function AdditionalActions({
   const orderedFactionIds = useOrderedFactionIds(
     "SPEAKER",
     undefined,
-    factionId
+    factionId,
   );
   const passedFactionIds = usePassedFactionIds();
 
@@ -383,7 +383,7 @@ export function AdditionalActions({
     .filter(
       (logEntry) =>
         logEntry.data.action === "SCORE_OBJECTIVE" &&
-        logEntry.data.event.faction === factionId
+        logEntry.data.event.faction === factionId,
     )
     .map((logEntry) => (logEntry.data as ScoreObjectiveData).event.objective);
   const scoredActionPhaseObjectives = scoredObjectives.filter((objective) => {
@@ -1222,7 +1222,7 @@ export function AdditionalActions({
                       unscoreObjectiveAsync(
                         gameId,
                         factionId,
-                        "Prove Endurance"
+                        "Prove Endurance",
                       );
                     } else {
                       scoreObjectiveAsync(gameId, factionId, "Prove Endurance");
@@ -1289,7 +1289,7 @@ export function AdditionalActions({
             return false;
           }
           return objective.phase === "ACTION";
-        }
+        },
       );
       return (
         <TacticalAction
@@ -1369,7 +1369,7 @@ export function NextPlayerButtons({
 function PuppetsOnAString({ activeFactionId }: { activeFactionId: FactionId }) {
   const gameId = useGameId();
   const passedFactions = usePassedFactionIds().filter(
-    (factionId) => factionId !== activeFactionId
+    (factionId) => factionId !== activeFactionId,
   );
   const puppets = useActionCard("Puppets on a String");
 
@@ -1426,7 +1426,7 @@ function ActivePlayerColumn({
   const secondaryRef = useRef<HTMLDivElement>(null);
 
   const onDeckFactionColor = useFactionColor(
-    onDeckFactionId ?? "Vuil'raith Cabal"
+    onDeckFactionId ?? "Vuil'raith Cabal",
   );
 
   return (
@@ -1551,7 +1551,7 @@ function ActivePlayerColumn({
                 description:
                   "Text on a button that will advance the game to a specific phase.",
               },
-              { phase: phaseString("STATUS", intl) }
+              { phase: phaseString("STATUS", intl) },
             ),
             onClick: () => {
               advancePhaseAsync(gameId);
@@ -1662,7 +1662,7 @@ export default function ActionPhase() {
                         description:
                           "Text on a button that will advance the game to a specific phase.",
                       },
-                      { phase: phaseString("STATUS", intl) }
+                      { phase: phaseString("STATUS", intl) },
                     ),
                     onClick: () => {
                       advancePhaseAsync(gameId);

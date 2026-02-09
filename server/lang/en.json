@@ -3279,6 +3279,358 @@
     "defaultMessage": "Scored Action Phase {count, plural, one {Objective} other {Objectives}}",
     "description": "Label for section of scored action phase objectives."
   },
+  "DS.Planets.Abyssus.Name": {
+    "defaultMessage": "Abyssus",
+    "description": "Name of Planet: Abyssus"
+  },
+  "DS.Planets.Aldra.Name": {
+    "defaultMessage": "Aldra",
+    "description": "Name of Planet: Aldra"
+  },
+  "DS.Planets.Alesna.Name": {
+    "defaultMessage": "Alesna",
+    "description": "Name of Planet: Alesna"
+  },
+  "DS.Planets.Arche.Name": {
+    "defaultMessage": "Arche",
+    "description": "Name of Planet: Arche"
+  },
+  "DS.Planets.Auldane.Name": {
+    "defaultMessage": "Auldane",
+    "description": "Name of Planet: Auldane"
+  },
+  "DS.Planets.Avicenna.Name": {
+    "defaultMessage": "Avicenna",
+    "description": "Name of Planet: Avicenna"
+  },
+  "DS.Planets.Axis.Name": {
+    "defaultMessage": "Axis",
+    "description": "Name of Planet: Axis"
+  },
+  "DS.Planets.Aysis' Rest.Name": {
+    "defaultMessage": "Aysis' Rest",
+    "description": "Name of Planet: Aysis' Rest"
+  },
+  "DS.Planets.Azle.Name": {
+    "defaultMessage": "Azle",
+    "description": "Name of Planet: Azle"
+  },
+  "DS.Planets.Beata.Name": {
+    "defaultMessage": "Beata",
+    "description": "Name of Planet: Beata"
+  },
+  "DS.Planets.Benc.Name": {
+    "defaultMessage": "Benc",
+    "description": "Name of Planet: Benc"
+  },
+  "DS.Planets.Biaheo.Name": {
+    "defaultMessage": "Biaheo",
+    "description": "Name of Planet: Biaheo"
+  },
+  "DS.Planets.Bohl-Dhur.Name": {
+    "defaultMessage": "Bohl-Dhur",
+    "description": "Name of Planet: Bohl-Dhur"
+  },
+  "DS.Planets.Brthkul.Name": {
+    "defaultMessage": "Brthkul",
+    "description": "Name of Planet: Brthkul"
+  },
+  "DS.Planets.Chrion.Name": {
+    "defaultMessage": "Chrion",
+    "description": "Name of Planet: Chrion"
+  },
+  "DS.Planets.Cymiae.Name": {
+    "defaultMessage": "Cymiae",
+    "description": "Name of Planet: Cymiae"
+  },
+  "DS.Planets.Cyrra.Name": {
+    "defaultMessage": "Cyrra",
+    "description": "Name of Planet: Cyrra"
+  },
+  "DS.Planets.Delmor.Name": {
+    "defaultMessage": "Delmor",
+    "description": "Name of Planet: Delmor"
+  },
+  "DS.Planets.Demis.Name": {
+    "defaultMessage": "Demis",
+    "description": "Name of Planet: Demis"
+  },
+  "DS.Planets.Derbrae.Name": {
+    "defaultMessage": "Derbrae",
+    "description": "Name of Planet: Derbrae"
+  },
+  "DS.Planets.Detic.Name": {
+    "defaultMessage": "Detic",
+    "description": "Name of Planet: Detic"
+  },
+  "DS.Planets.Discordia.Name": {
+    "defaultMessage": "Discordia",
+    "description": "Name of Planet: Discordia"
+  },
+  "DS.Planets.Domna.Ability": {
+    "defaultMessage": "You may exhaust this card at the end of your turn to remove 1 of your ships from the game board and place that unit in an adjacent system that does not contain another player's ships.",
+    "description": "Planet Ability for Domna"
+  },
+  "DS.Planets.Domna.Name": {
+    "defaultMessage": "Domna",
+    "description": "Name of Planet: Domna"
+  },
+  "DS.Planets.Dorvok.Name": {
+    "defaultMessage": "Dorvok",
+    "description": "Name of Planet: Dorvok"
+  },
+  "DS.Planets.Drah.Name": {
+    "defaultMessage": "Drah",
+    "description": "Name of Planet: Drah"
+  },
+  "DS.Planets.Echo.Ability": {
+    "defaultMessage": "You may exhaust this card at the end of your turn to place 1 frontier token in a system that does not contain a planet.",
+    "description": "Planet Ability for Echo"
+  },
+  "DS.Planets.Echo.Name": {
+    "defaultMessage": "Echo",
+    "description": "Name of Planet: Echo"
+  },
+  "DS.Planets.Edyn.Name": {
+    "defaultMessage": "Edyn",
+    "description": "Name of Planet: Edyn"
+  },
+  "DS.Planets.Ekko.Name": {
+    "defaultMessage": "Ekko",
+    "description": "Name of Planet: Ekko"
+  },
+  "DS.Planets.Ellas.Name": {
+    "defaultMessage": "Ellas",
+    "description": "Name of Planet: Ellas"
+  },
+  "DS.Planets.Empero.Name": {
+    "defaultMessage": "Empero",
+    "description": "Name of Planet: Empero"
+  },
+  "DS.Planets.Etir V.Name": {
+    "defaultMessage": "Etir V",
+    "description": "Name of Planet: Etir V"
+  },
+  "DS.Planets.Fakrenn.Name": {
+    "defaultMessage": "Fakrenn",
+    "description": "Name of Planet: Fakrenn"
+  },
+  "DS.Planets.Gen.Name": {
+    "defaultMessage": "Gen",
+    "description": "Name of Planet: Gen"
+  },
+  "DS.Planets.Gghurn Theta.Name": {
+    "defaultMessage": "Gghurn Theta",
+    "description": "Name of Planet: Gghurn Theta"
+  },
+  "DS.Planets.Ghoti.Name": {
+    "defaultMessage": "Ghoti",
+    "description": "Name of Planet: Ghoti"
+  },
+  "DS.Planets.Gwiyun.Name": {
+    "defaultMessage": "Gwiyun",
+    "description": "Name of Planet: Gwiyun"
+  },
+  "DS.Planets.Hau.Name": {
+    "defaultMessage": "Hau",
+    "description": "Name of Planet: Hau"
+  },
+  "DS.Planets.Hulgade.Name": {
+    "defaultMessage": "Hulgade",
+    "description": "Name of Planet: Hulgade"
+  },
+  "DS.Planets.Idyn.Name": {
+    "defaultMessage": "Idyn",
+    "description": "Name of Planet: Idyn"
+  },
+  "DS.Planets.Inan.Name": {
+    "defaultMessage": "Inan",
+    "description": "Name of Planet: Inan"
+  },
+  "DS.Planets.Kjalengard.Name": {
+    "defaultMessage": "Kjalengard",
+    "description": "Name of Planet: Kjalengard"
+  },
+  "DS.Planets.Kroll.Name": {
+    "defaultMessage": "Kroll",
+    "description": "Name of Planet: Kroll"
+  },
+  "DS.Planets.Kyd.Name": {
+    "defaultMessage": "Kyd",
+    "description": "Name of Planet: Kyd"
+  },
+  "DS.Planets.Kyr.Name": {
+    "defaultMessage": "Kyr",
+    "description": "Name of Planet: Kyr"
+  },
+  "DS.Planets.Larred.Name": {
+    "defaultMessage": "Larred",
+    "description": "Name of Planet: Larred"
+  },
+  "DS.Planets.Last Stop.Name": {
+    "defaultMessage": "Last Stop",
+    "description": "Name of Planet: Last Stop"
+  },
+  "DS.Planets.Lliot.Name": {
+    "defaultMessage": "Lliot",
+    "description": "Name of Planet: Lliot"
+  },
+  "DS.Planets.Lodran.Name": {
+    "defaultMessage": "Lodran",
+    "description": "Name of Planet: Lodran"
+  },
+  "DS.Planets.Louk.Name": {
+    "defaultMessage": "Louk",
+    "description": "Name of Planet: Louk"
+  },
+  "DS.Planets.Mandle.Name": {
+    "defaultMessage": "Mandle",
+    "description": "Name of Planet: Mandle"
+  },
+  "DS.Planets.Moln.Name": {
+    "defaultMessage": "Moln",
+    "description": "Name of Planet: Moln"
+  },
+  "DS.Planets.Nairb.Name": {
+    "defaultMessage": "Nairb",
+    "description": "Name of Planet: Nairb"
+  },
+  "DS.Planets.Nokk.Name": {
+    "defaultMessage": "Nokk",
+    "description": "Name of Planet: Nokk"
+  },
+  "DS.Planets.Norvus.Name": {
+    "defaultMessage": "Norvus",
+    "description": "Name of Planet: Norvus"
+  },
+  "DS.Planets.Ogdun.Name": {
+    "defaultMessage": "Ogdun",
+    "description": "Name of Planet: Ogdun"
+  },
+  "DS.Planets.Okke.Name": {
+    "defaultMessage": "Okke",
+    "description": "Name of Planet: Okke"
+  },
+  "DS.Planets.Orad.Name": {
+    "defaultMessage": "Orad",
+    "description": "Name of Planet: Orad"
+  },
+  "DS.Planets.Pax.Name": {
+    "defaultMessage": "Pax",
+    "description": "Name of Planet: Pax"
+  },
+  "DS.Planets.Poh.Name": {
+    "defaultMessage": "Poh",
+    "description": "Name of Planet: Poh"
+  },
+  "DS.Planets.Prind.Name": {
+    "defaultMessage": "Prind",
+    "description": "Name of Planet: Prind"
+  },
+  "DS.Planets.Prism.Ability": {
+    "defaultMessage": "ACTION: Exhaust this card to replace 1 of your non-faction non-unit upgrade technologies with another technology from your technology deck with the same number of prerequisites.",
+    "description": "Planet Ability for Prism"
+  },
+  "DS.Planets.Prism.Name": {
+    "defaultMessage": "Prism",
+    "description": "Name of Planet: Prism"
+  },
+  "DS.Planets.Qaak.Name": {
+    "defaultMessage": "Qaak",
+    "description": "Name of Planet: Qaak"
+  },
+  "DS.Planets.Regnem.Name": {
+    "defaultMessage": "Regnem",
+    "description": "Name of Planet: Regnem"
+  },
+  "DS.Planets.Rhune.Name": {
+    "defaultMessage": "Rhune",
+    "description": "Name of Planet: Rhune"
+  },
+  "DS.Planets.Rysaa.Name": {
+    "defaultMessage": "Rysaa",
+    "description": "Name of Planet: Rysaa"
+  },
+  "DS.Planets.Salin.Name": {
+    "defaultMessage": "Salin",
+    "description": "Name of Planet: Salin"
+  },
+  "DS.Planets.San-Vit.Name": {
+    "defaultMessage": "San-Vit",
+    "description": "Name of Planet: San-Vit"
+  },
+  "DS.Planets.Sanctuary.Name": {
+    "defaultMessage": "Sanctuary",
+    "description": "Name of Planet: Sanctuary"
+  },
+  "DS.Planets.Shi-Halaum.Name": {
+    "defaultMessage": "Shi-Halaum",
+    "description": "Name of Planet: Shi-Halaum"
+  },
+  "DS.Planets.Sierpin.Name": {
+    "defaultMessage": "Sierpin",
+    "description": "Name of Planet: Sierpin"
+  },
+  "DS.Planets.Silence.Ability": {
+    "defaultMessage": "You may exhaust this card at the end of your turn to place 1 cruiser from your reinforcements in any system that contains 1 or more of your ships.",
+    "description": "Planet Ability for Silence"
+  },
+  "DS.Planets.Silence.Name": {
+    "defaultMessage": "Silence",
+    "description": "Name of Planet: Silence"
+  },
+  "DS.Planets.Solitude.Name": {
+    "defaultMessage": "Solitude",
+    "description": "Name of Planet: Solitude"
+  },
+  "DS.Planets.Susuros.Name": {
+    "defaultMessage": "Susuros",
+    "description": "Name of Planet: Susuros"
+  },
+  "DS.Planets.Swog.Name": {
+    "defaultMessage": "Swog",
+    "description": "Name of Planet: Swog"
+  },
+  "DS.Planets.Tarrock.Ability": {
+    "defaultMessage": "After an agenda is revealed, you may exhaust this card to predict aloud an outcome of that agenda. If your prediction is correct, draw 1 secret objective.",
+    "description": "Planet Ability for Tarrock"
+  },
+  "DS.Planets.Tarrock.Name": {
+    "defaultMessage": "Tarrock",
+    "description": "Name of Planet: Tarrock"
+  },
+  "DS.Planets.Troac.Name": {
+    "defaultMessage": "Troac",
+    "description": "Name of Planet: Troac"
+  },
+  "DS.Planets.Trykk.Name": {
+    "defaultMessage": "Trykk",
+    "description": "Name of Planet: Trykk"
+  },
+  "DS.Planets.Vadarian.Name": {
+    "defaultMessage": "Vadarian",
+    "description": "Name of Planet: Vadarian"
+  },
+  "DS.Planets.Vaylar.Name": {
+    "defaultMessage": "Vaylar",
+    "description": "Name of Planet: Vaylar"
+  },
+  "DS.Planets.Vess.Name": {
+    "defaultMessage": "Vess",
+    "description": "Name of Planet: Vess"
+  },
+  "DS.Planets.Vioss.Name": {
+    "defaultMessage": "Vioss",
+    "description": "Name of Planet: Vioss"
+  },
+  "DS.Planets.Zarr.Name": {
+    "defaultMessage": "Zarr",
+    "description": "Name of Planet: Zarr"
+  },
+  "DS.Planets.Zelian.Name": {
+    "defaultMessage": "Zelian",
+    "description": "Name of Planet: Zelian"
+  },
   "Deepwrought Scholarate.Abilities.Oceanbound.Description": {
     "defaultMessage": "When your units begin coexisting on a planet, gain an ocean card and ready it. Any time you have more ocean cards than there are planets that have your coexisting units, discard ocean cards until you do not.",
     "description": "Description for Faction Ability: Oceanbound"
@@ -3411,13 +3763,13 @@
     "defaultMessage": "Janovet",
     "description": "Shortened version of Faction name: El Nen Janovet"
   },
-  "El Nen Janovet.Techs.Antimatter Magenta.Title": {
-    "defaultMessage": "Antimatter: Magenta",
-    "description": "Title of Tech: Antimatter Magenta"
+  "El Nen Janovet.Techs.Antimatter Pink.Title": {
+    "defaultMessage": "Antimatter: Pink",
+    "description": "Title of Tech: Antimatter Pink"
   },
-  "El Nen Janovet.Techs.Wavelength Magenta.Title": {
-    "defaultMessage": "Wavelength: Magenta",
-    "description": "Title of Tech: Wavelength Magenta"
+  "El Nen Janovet.Techs.Wavelength Pink.Title": {
+    "defaultMessage": "Wavelength: Pink",
+    "description": "Title of Tech: Wavelength Pink"
   },
   "El Nen Janovet.Units.Analyzer.Description": {
     "defaultMessage": "After you win a ground combat in which this unit participated, you may return this unit to your reinforcements to draw 1 unit upgrade.",
@@ -4706,6 +5058,10 @@
   "Leaders.Hero.Unlock": {
     "defaultMessage": "Have 3 scored objectives.",
     "description": "Unlock condition for all heroes."
+  },
+  "LkSYQA": {
+    "defaultMessage": "Fleet Pool Tokens",
+    "description": "Tokens that determine how many non-fighter ships can be in a system."
   },
   "Lm8L7/": {
     "defaultMessage": "Color",
@@ -6467,57 +6823,645 @@
     "defaultMessage": "Unknown",
     "description": "Phase text shown while game is loading."
   },
+  "Planets.Abaddon.Name": {
+    "defaultMessage": "Abaddon",
+    "description": "Name of Planet: Abaddon"
+  },
+  "Planets.Abyz.Name": {
+    "defaultMessage": "Abyz",
+    "description": "Name of Planet: Abyz"
+  },
+  "Planets.Accoen.Name": {
+    "defaultMessage": "Accoen",
+    "description": "Name of Planet: Accoen"
+  },
+  "Planets.Acheron.Name": {
+    "defaultMessage": "Acheron",
+    "description": "Name of Planet: Acheron"
+  },
+  "Planets.Ahk Creuxx.Name": {
+    "defaultMessage": "Ahk Creuxx",
+    "description": "Name of Planet: Ahk Creuxx"
+  },
+  "Planets.Alio Prima.Name": {
+    "defaultMessage": "Alio Prima",
+    "description": "Name of Planet: Alio Prima"
+  },
+  "Planets.Andeara.Name": {
+    "defaultMessage": "Andeara",
+    "description": "Name of Planet: Andeara"
+  },
+  "Planets.Ang.Name": {
+    "defaultMessage": "Ang",
+    "description": "Name of Planet: Ang"
+  },
+  "Planets.Arc Prime.Name": {
+    "defaultMessage": "Arc Prime",
+    "description": "Name of Planet: Arc Prime"
+  },
+  "Planets.Archon Ren.Name": {
+    "defaultMessage": "Archon Ren",
+    "description": "Name of Planet: Archon Ren"
+  },
+  "Planets.Archon Tau.Name": {
+    "defaultMessage": "Archon Tau",
+    "description": "Name of Planet: Archon Tau"
+  },
+  "Planets.Archon Vail.Name": {
+    "defaultMessage": "Archon Vail",
+    "description": "Name of Planet: Archon Vail"
+  },
+  "Planets.Arcturus.Name": {
+    "defaultMessage": "Arcturus",
+    "description": "Name of Planet: Arcturus"
+  },
+  "Planets.Arinam.Name": {
+    "defaultMessage": "Arinam",
+    "description": "Name of Planet: Arinam"
+  },
+  "Planets.Arnor.Name": {
+    "defaultMessage": "Arnor",
+    "description": "Name of Planet: Arnor"
+  },
+  "Planets.Arretze.Name": {
+    "defaultMessage": "Arretze",
+    "description": "Name of Planet: Arretze"
+  },
+  "Planets.Ashtroth.Name": {
+    "defaultMessage": "Ashtroth",
+    "description": "Name of Planet: Ashtroth"
+  },
+  "Planets.Atlas.Name": {
+    "defaultMessage": "Atlas",
+    "description": "Name of Planet: Atlas"
+  },
+  "Planets.Avar.Name": {
+    "defaultMessage": "Avar",
+    "description": "Name of Planet: Avar"
+  },
   "Planets.Avernus.Ability": {
     "defaultMessage": "ACTION: Exhaust this card to use the Embers of Muaat's STAR FORGE faction ability without spending a command token.",
     "description": "Planet Ability for Avernus"
+  },
+  "Planets.Avernus.Name": {
+    "defaultMessage": "Avernus",
+    "description": "Name of Planet: Avernus"
+  },
+  "Planets.Ba'kal.Name": {
+    "defaultMessage": "Ba'kal",
+    "description": "Name of Planet: Ba'kal"
+  },
+  "Planets.Bellatrix.Name": {
+    "defaultMessage": "Bellatrix",
+    "description": "Name of Planet: Bellatrix"
+  },
+  "Planets.Bereg.Name": {
+    "defaultMessage": "Bereg",
+    "description": "Name of Planet: Bereg"
+  },
+  "Planets.Brine Pool.Name": {
+    "defaultMessage": "Brine Pool",
+    "description": "Name of Planet: Brine Pool"
+  },
+  "Planets.Capha.Name": {
+    "defaultMessage": "Capha",
+    "description": "Name of Planet: Capha"
+  },
+  "Planets.Cealdri.Name": {
+    "defaultMessage": "Cealdri",
+    "description": "Name of Planet: Cealdri"
+  },
+  "Planets.Centauri.Name": {
+    "defaultMessage": "Centauri",
+    "description": "Name of Planet: Centauri"
+  },
+  "Planets.Cocytus.Name": {
+    "defaultMessage": "Cocytus",
+    "description": "Name of Planet: Cocytus"
+  },
+  "Planets.Coral Reef.Name": {
+    "defaultMessage": "Coral Reef",
+    "description": "Name of Planet: Coral Reef"
+  },
+  "Planets.Cormund.Name": {
+    "defaultMessage": "Cormund",
+    "description": "Name of Planet: Cormund"
+  },
+  "Planets.Corneeq.Name": {
+    "defaultMessage": "Corneeq",
+    "description": "Name of Planet: Corneeq"
+  },
+  "Planets.Cresius.Name": {
+    "defaultMessage": "Cresius",
+    "description": "Name of Planet: Cresius"
+  },
+  "Planets.Creuss.Name": {
+    "defaultMessage": "Creuss",
+    "description": "Name of Planet: Creuss"
+  },
+  "Planets.Cronos Hollow.Name": {
+    "defaultMessage": "Cronos Hollow",
+    "description": "Name of Planet: Cronos Hollow"
+  },
+  "Planets.Cronos.Name": {
+    "defaultMessage": "Cronos",
+    "description": "Name of Planet: Cronos"
+  },
+  "Planets.Custodia Vigilia.Name": {
+    "defaultMessage": "Custodia Vigilia",
+    "description": "Name of Planet: Custodia Vigilia"
+  },
+  "Planets.Dal Bootha.Name": {
+    "defaultMessage": "Dal Bootha",
+    "description": "Name of Planet: Dal Bootha"
+  },
+  "Planets.Darien.Name": {
+    "defaultMessage": "Darien",
+    "description": "Name of Planet: Darien"
+  },
+  "Planets.Deep Abyss.Name": {
+    "defaultMessage": "Deep Abyss",
+    "description": "Name of Planet: Deep Abyss"
+  },
+  "Planets.Druaa.Name": {
+    "defaultMessage": "Druaa",
+    "description": "Name of Planet: Druaa"
+  },
+  "Planets.El'nath.Name": {
+    "defaultMessage": "El'nath",
+    "description": "Name of Planet: El'nath"
+  },
+  "Planets.Elysium.Name": {
+    "defaultMessage": "Elysium",
+    "description": "Name of Planet: Elysium"
   },
   "Planets.Emelpar.Ability": {
     "defaultMessage": "You may exhaust this card at the end of your turn to ready another component that isn't a strategy card.",
     "description": "Planet Ability for Emelpar"
   },
+  "Planets.Emelpar.Name": {
+    "defaultMessage": "Emelpar",
+    "description": "Name of Planet: Emelpar"
+  },
+  "Planets.Everra.Name": {
+    "defaultMessage": "Everra",
+    "description": "Name of Planet: Everra"
+  },
   "Planets.Faunus.Ability": {
     "defaultMessage": "You may exhaust this card when you pass to gain control of a non-home, non-legendary planet that contains no units and has no attachments.",
     "description": "Planet Ability for Faunus"
+  },
+  "Planets.Faunus.Name": {
+    "defaultMessage": "Faunus",
+    "description": "Name of Planet: Faunus"
+  },
+  "Planets.Fria.Name": {
+    "defaultMessage": "Fria",
+    "description": "Name of Planet: Fria"
   },
   "Planets.Garbozia.Ability": {
     "defaultMessage": "You may exhaust this card when you pass to place 1 action card from the discard pile faceup on this card; you can purge cards on this card to play them as if they were in your hand.",
     "description": "Planet Ability for Garbozia"
   },
+  "Planets.Garbozia.Name": {
+    "defaultMessage": "Garbozia",
+    "description": "Name of Planet: Garbozia"
+  },
+  "Planets.Gral.Name": {
+    "defaultMessage": "Gral",
+    "description": "Name of Planet: Gral"
+  },
+  "Planets.Hercalor.Name": {
+    "defaultMessage": "Hercalor",
+    "description": "Name of Planet: Hercalor"
+  },
+  "Planets.Hercant.Name": {
+    "defaultMessage": "Hercant",
+    "description": "Name of Planet: Hercant"
+  },
   "Planets.Hope's End.Ability": {
     "defaultMessage": "You may exhaust this card at the end of your turn to place 1 mech from your reinforcements on any planet you control, or draw 1 action card.",
     "description": "Planet Ability for Hope's End"
+  },
+  "Planets.Hope's End.Name": {
+    "defaultMessage": "Hope's End",
+    "description": "Name of Planet: Hope's End"
+  },
+  "Planets.Horizon.Name": {
+    "defaultMessage": "Horizon",
+    "description": "Name of Planet: Horizon"
+  },
+  "Planets.Ice Shelf.Name": {
+    "defaultMessage": "Ice Shelf",
+    "description": "Name of Planet: Ice Shelf"
+  },
+  "Planets.Ikatena.Name": {
+    "defaultMessage": "Ikatena",
+    "description": "Name of Planet: Ikatena"
   },
   "Planets.Industrex.Ability": {
     "defaultMessage": "You may exhaust this card when you pass to place 1 ship that matches a unit upgrade technology you own from your reinforcements into a system that contains your ships.",
     "description": "Planet Ability for Industrex"
   },
+  "Planets.Industrex.Name": {
+    "defaultMessage": "Industrex",
+    "description": "Name of Planet: Industrex"
+  },
+  "Planets.Ixth.Name": {
+    "defaultMessage": "Ixth",
+    "description": "Name of Planet: Ixth"
+  },
+  "Planets.Jeol Ir.Name": {
+    "defaultMessage": "Jeol Ir",
+    "description": "Name of Planet: Jeol Ir"
+  },
+  "Planets.Jol.Name": {
+    "defaultMessage": "Jol",
+    "description": "Name of Planet: Jol"
+  },
+  "Planets.Jord.Name": {
+    "defaultMessage": "Jord",
+    "description": "Name of Planet: Jord"
+  },
+  "Planets.Kamdorn.Name": {
+    "defaultMessage": "Kamdorn",
+    "description": "Name of Planet: Kamdorn"
+  },
+  "Planets.Kostboth.Name": {
+    "defaultMessage": "Kostboth",
+    "description": "Name of Planet: Kostboth"
+  },
+  "Planets.Kraag.Name": {
+    "defaultMessage": "Kraag",
+    "description": "Name of Planet: Kraag"
+  },
+  "Planets.Lazar.Name": {
+    "defaultMessage": "Lazar",
+    "description": "Name of Planet: Lazar"
+  },
+  "Planets.Lazul Rex.Name": {
+    "defaultMessage": "Lazul Rex",
+    "description": "Name of Planet: Lazul Rex"
+  },
+  "Planets.Lemox.Name": {
+    "defaultMessage": "Lemox",
+    "description": "Name of Planet: Lemox"
+  },
+  "Planets.Lesab.Name": {
+    "defaultMessage": "Lesab",
+    "description": "Name of Planet: Lesab"
+  },
+  "Planets.Lethe.Name": {
+    "defaultMessage": "Lethe",
+    "description": "Name of Planet: Lethe"
+  },
+  "Planets.Lirta IV.Name": {
+    "defaultMessage": "Lirta IV",
+    "description": "Name of Planet: Lirta IV"
+  },
+  "Planets.Lisis II.Name": {
+    "defaultMessage": "Lisis II",
+    "description": "Name of Planet: Lisis II"
+  },
+  "Planets.Lisis.Name": {
+    "defaultMessage": "Lisis",
+    "description": "Name of Planet: Lisis"
+  },
+  "Planets.Lodor.Name": {
+    "defaultMessage": "Lodor",
+    "description": "Name of Planet: Lodor"
+  },
+  "Planets.Loki.Name": {
+    "defaultMessage": "Loki",
+    "description": "Name of Planet: Loki"
+  },
+  "Planets.Lor.Name": {
+    "defaultMessage": "Lor",
+    "description": "Name of Planet: Lor"
+  },
+  "Planets.Lost Fleet.Name": {
+    "defaultMessage": "Lost Fleet",
+    "description": "Name of Planet: Lost Fleet"
+  },
+  "Planets.Luthien VI.Name": {
+    "defaultMessage": "Luthien VI",
+    "description": "Name of Planet: Luthien VI"
+  },
+  "Planets.Maaluuk.Name": {
+    "defaultMessage": "Maaluuk",
+    "description": "Name of Planet: Maaluuk"
+  },
   "Planets.Mallice.Ability": {
     "defaultMessage": "You may exhaust this card at the end of your turn to gain 2 trade goods or convert all of your commodities into trade goods.",
     "description": "Planet Ability for Mallice"
+  },
+  "Planets.Mallice.Name": {
+    "defaultMessage": "Mallice",
+    "description": "Name of Planet: Mallice"
+  },
+  "Planets.Mecatol Rex.Name": {
+    "defaultMessage": "Mecatol Rex",
+    "description": "Name of Planet: Mecatol Rex"
+  },
+  "Planets.Meer.Name": {
+    "defaultMessage": "Meer",
+    "description": "Name of Planet: Meer"
+  },
+  "Planets.Mehar Xull.Name": {
+    "defaultMessage": "Mehar Xull",
+    "description": "Name of Planet: Mehar Xull"
+  },
+  "Planets.Mellon.Name": {
+    "defaultMessage": "Mellon",
+    "description": "Name of Planet: Mellon"
+  },
+  "Planets.Mez Lo Orz Fei Zsha.Name": {
+    "defaultMessage": "Mez Lo Orz Fei Zsha",
+    "description": "Name of Planet: Mez Lo Orz Fei Zsha"
   },
   "Planets.Mirage.Ability": {
     "defaultMessage": "You may exhaust this card at the end of your turn to place up to 2 fighters from your reinforcements in any system that contains 1 or more of your ships.",
     "description": "Planet Ability for Mirage"
   },
+  "Planets.Mirage.Name": {
+    "defaultMessage": "Mirage",
+    "description": "Name of Planet: Mirage"
+  },
+  "Planets.Moll Primus.Name": {
+    "defaultMessage": "Moll Primus",
+    "description": "Name of Planet: Moll Primus"
+  },
+  "Planets.Mordai II.Name": {
+    "defaultMessage": "Mordai II",
+    "description": "Name of Planet: Mordai II"
+  },
+  "Planets.Muaat.Name": {
+    "defaultMessage": "Muaat",
+    "description": "Name of Planet: Muaat"
+  },
+  "Planets.Naazir.Name": {
+    "defaultMessage": "Naazir",
+    "description": "Name of Planet: Naazir"
+  },
+  "Planets.Nar.Name": {
+    "defaultMessage": "Nar",
+    "description": "Name of Planet: Nar"
+  },
+  "Planets.Nestphar.Name": {
+    "defaultMessage": "Nestphar",
+    "description": "Name of Planet: Nestphar"
+  },
+  "Planets.New Albion.Name": {
+    "defaultMessage": "New Albion",
+    "description": "Name of Planet: New Albion"
+  },
+  "Planets.New Terra.Name": {
+    "defaultMessage": "New Terra",
+    "description": "Name of Planet: New Terra"
+  },
+  "Planets.Olergodt.Name": {
+    "defaultMessage": "Olergodt",
+    "description": "Name of Planet: Olergodt"
+  },
+  "Planets.Oluz Station.Name": {
+    "defaultMessage": "Oluz Station",
+    "description": "Name of Planet: Oluz Station"
+  },
   "Planets.Ordinian.Ability": {
     "defaultMessage": "You may exhaust this card when you pass to draw 1 action card and gain 1 command token.",
     "description": "Planet Ability for Ordinian"
+  },
+  "Planets.Ordinian.Name": {
+    "defaultMessage": "Ordinian",
+    "description": "Name of Planet: Ordinian"
+  },
+  "Planets.Perimeter.Name": {
+    "defaultMessage": "Perimeter",
+    "description": "Name of Planet: Perimeter"
+  },
+  "Planets.Phlegethon.Name": {
+    "defaultMessage": "Phlegethon",
+    "description": "Name of Planet: Phlegethon"
   },
   "Planets.Primor.Ability": {
     "defaultMessage": "You may exhaust this card at the end of your turn to place up to 2 infantry from your reinforcements on any planet you control.",
     "description": "Planet Ability for Primor"
   },
+  "Planets.Primor.Name": {
+    "defaultMessage": "Primor",
+    "description": "Name of Planet: Primor"
+  },
+  "Planets.Quann.Name": {
+    "defaultMessage": "Quann",
+    "description": "Name of Planet: Quann"
+  },
+  "Planets.Qucen'n.Name": {
+    "defaultMessage": "Qucen'n",
+    "description": "Name of Planet: Qucen'n"
+  },
+  "Planets.Quinarra.Name": {
+    "defaultMessage": "Quinarra",
+    "description": "Name of Planet: Quinarra"
+  },
+  "Planets.Ragh.Name": {
+    "defaultMessage": "Ragh",
+    "description": "Name of Planet: Ragh"
+  },
+  "Planets.Rarron.Name": {
+    "defaultMessage": "Rarron",
+    "description": "Name of Planet: Rarron"
+  },
+  "Planets.Rep Lo Oet.Name": {
+    "defaultMessage": "Rep Lo Oet",
+    "description": "Name of Planet: Rep Lo Oet"
+  },
+  "Planets.Resculon.Name": {
+    "defaultMessage": "Resculon",
+    "description": "Name of Planet: Resculon"
+  },
+  "Planets.Retillion.Name": {
+    "defaultMessage": "Retillion",
+    "description": "Name of Planet: Retillion"
+  },
+  "Planets.Revelation.Name": {
+    "defaultMessage": "Revelation",
+    "description": "Name of Planet: Revelation"
+  },
+  "Planets.Rigel I.Name": {
+    "defaultMessage": "Rigel I",
+    "description": "Name of Planet: Rigel I"
+  },
+  "Planets.Rigel II.Name": {
+    "defaultMessage": "Rigel II",
+    "description": "Name of Planet: Rigel II"
+  },
+  "Planets.Rigel III.Name": {
+    "defaultMessage": "Rigel III",
+    "description": "Name of Planet: Rigel III"
+  },
+  "Planets.Rokha.Name": {
+    "defaultMessage": "Rokha",
+    "description": "Name of Planet: Rokha"
+  },
+  "Planets.Sakulag.Name": {
+    "defaultMessage": "Sakulag",
+    "description": "Name of Planet: Sakulag"
+  },
+  "Planets.Saudor.Name": {
+    "defaultMessage": "Saudor",
+    "description": "Name of Planet: Saudor"
+  },
+  "Planets.Sem-Lore.Name": {
+    "defaultMessage": "Sem-Lore",
+    "description": "Name of Planet: Sem-Lore"
+  },
+  "Planets.Shalloq.Name": {
+    "defaultMessage": "Shalloq",
+    "description": "Name of Planet: Shalloq"
+  },
+  "Planets.Siig.Name": {
+    "defaultMessage": "Siig",
+    "description": "Name of Planet: Siig"
+  },
+  "Planets.Starpoint.Name": {
+    "defaultMessage": "Starpoint",
+    "description": "Name of Planet: Starpoint"
+  },
   "Planets.Styx.Ability": {
     "defaultMessage": "When you gain this card, gain 1 victory point.{br}When you lose this card, lose 1 victory point.",
     "description": "Planet Ability for Styx"
+  },
+  "Planets.Styx.Name": {
+    "defaultMessage": "Styx",
+    "description": "Name of Planet: Styx"
+  },
+  "Planets.Tallin Hollow.Name": {
+    "defaultMessage": "Tallin Hollow",
+    "description": "Name of Planet: Tallin Hollow"
+  },
+  "Planets.Tallin.Name": {
+    "defaultMessage": "Tallin",
+    "description": "Name of Planet: Tallin"
+  },
+  "Planets.Tar'Mann.Name": {
+    "defaultMessage": "Tar'Mann",
+    "description": "Name of Planet: Tar'Mann"
+  },
+  "Planets.Tarana.Name": {
+    "defaultMessage": "Tarana",
+    "description": "Name of Planet: Tarana"
   },
   "Planets.Tempesta.Ability": {
     "defaultMessage": "You may exhaust this card after you activate a system to apply +1 to the move value of 1 of your ships during this tactical action.",
     "description": "Planet Ability for Tempesta"
   },
+  "Planets.Tempesta.Name": {
+    "defaultMessage": "Tempesta",
+    "description": "Name of Planet: Tempesta"
+  },
+  "Planets.Tequ'ran.Name": {
+    "defaultMessage": "Tequ'ran",
+    "description": "Name of Planet: Tequ'ran"
+  },
+  "Planets.The Dark.Name": {
+    "defaultMessage": "The Dark",
+    "description": "Name of Planet: The Dark"
+  },
+  "Planets.The Watchtower.Name": {
+    "defaultMessage": "The Watchtower",
+    "description": "Name of Planet: The Watchtower"
+  },
+  "Planets.Thibah.Name": {
+    "defaultMessage": "Thibah",
+    "description": "Name of Planet: Thibah"
+  },
   "Planets.Thunder's Edge.Ability": {
     "defaultMessage": "Gain your breakthrough when you gain this card if you do not already have it.{br}You may exhaust this card at the end of your turn to perform an action.",
     "description": "Planet Ability for Thunder's Edge"
+  },
+  "Planets.Thunder's Edge.Name": {
+    "defaultMessage": "Thunder's Edge",
+    "description": "Name of Planet: Thunder's Edge"
+  },
+  "Planets.Tiamat.Name": {
+    "defaultMessage": "Tiamat",
+    "description": "Name of Planet: Tiamat"
+  },
+  "Planets.Tinnes.Name": {
+    "defaultMessage": "Tinnes",
+    "description": "Name of Planet: Tinnes"
+  },
+  "Planets.Torkan.Name": {
+    "defaultMessage": "Torkan",
+    "description": "Name of Planet: Torkan"
+  },
+  "Planets.Tren'lak.Name": {
+    "defaultMessage": "Tren'lak",
+    "description": "Name of Planet: Tren'lak"
+  },
+  "Planets.Tsion Station.Name": {
+    "defaultMessage": "Tsion Station",
+    "description": "Name of Planet: Tsion Station"
+  },
+  "Planets.Valk.Name": {
+    "defaultMessage": "Valk",
+    "description": "Name of Planet: Valk"
+  },
+  "Planets.Vefut II.Name": {
+    "defaultMessage": "Vefut II",
+    "description": "Name of Planet: Vefut II"
+  },
+  "Planets.Vega Major.Name": {
+    "defaultMessage": "Vega Major",
+    "description": "Name of Planet: Vega Major"
+  },
+  "Planets.Vega Minor.Name": {
+    "defaultMessage": "Vega Minor",
+    "description": "Name of Planet: Vega Minor"
+  },
+  "Planets.Velnor.Name": {
+    "defaultMessage": "Velnor",
+    "description": "Name of Planet: Velnor"
+  },
+  "Planets.Vira-Pics III.Name": {
+    "defaultMessage": "Vira-Pics III",
+    "description": "Name of Planet: Vira-Pics III"
+  },
+  "Planets.Vorhal.Name": {
+    "defaultMessage": "Vorhal",
+    "description": "Name of Planet: Vorhal"
+  },
+  "Planets.Wellon.Name": {
+    "defaultMessage": "Wellon",
+    "description": "Name of Planet: Wellon"
+  },
+  "Planets.Winnu.Name": {
+    "defaultMessage": "Winnu",
+    "description": "Name of Planet: Winnu"
+  },
+  "Planets.Wren Terra.Name": {
+    "defaultMessage": "Wren Terra",
+    "description": "Name of Planet: Wren Terra"
+  },
+  "Planets.Xanhact.Name": {
+    "defaultMessage": "Xanhact",
+    "description": "Name of Planet: Xanhact"
+  },
+  "Planets.Xxehan.Name": {
+    "defaultMessage": "Xxehan",
+    "description": "Name of Planet: Xxehan"
+  },
+  "Planets.Ylir.Name": {
+    "defaultMessage": "Ylir",
+    "description": "Name of Planet: Ylir"
+  },
+  "Planets.Zohbat.Name": {
+    "defaultMessage": "Zohbat",
+    "description": "Name of Planet: Zohbat"
+  },
+  "Planets.[0.0.0].Name": {
+    "defaultMessage": "[0.0.0]",
+    "description": "Name of Planet: [0.0.0]"
   },
   "PmqXSZ": {
     "defaultMessage": "Average Number of Rounds",
@@ -6534,6 +7478,10 @@
   "PrGqwQ": {
     "defaultMessage": "Add Planet",
     "description": "Label for adding a planet."
+  },
+  "Promissories.Alliance.Title": {
+    "defaultMessage": "{count, plural, one {Alliance} other {Alliances}}",
+    "description": "Title of Promissory: Alliance"
   },
   "Promissories.Political Secret.Title": {
     "defaultMessage": "Political Secret",
@@ -9782,6 +10730,10 @@
   "Winnu.Units.Salai Sai Corian.Title": {
     "defaultMessage": "Salai Sai Corian",
     "description": "Title of Faction Unit: Salai Sai Corian"
+  },
+  "WkNCwM": {
+    "defaultMessage": "Unowned {count, plural, one {Relic} other {Relics}}",
+    "description": "Relics which are not owned by anyone."
   },
   "WpoPPE": {
     "defaultMessage": "{count} {count, plural, one {PDS} other {PDS}}",

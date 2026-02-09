@@ -49,7 +49,7 @@ export default function ResourcesSVG({
           x="141.05365"
           y={fontY}
           fill={color === "#555" ? "#555" : "#eee"}
-          fontFamily="Slider"
+          fontFamily="var(--main-font)"
           fontSize={fontSize}
           textAnchor="middle"
         >

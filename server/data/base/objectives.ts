@@ -1,7 +1,7 @@
 import { IntlShape } from "react-intl";
 
 export default function getBaseObjectives(
-  intl: IntlShape
+  intl: IntlShape,
 ): Record<BaseGame.ObjectiveId, BaseObjective> {
   return {
     "Adapt New Strategies": {
@@ -437,7 +437,6 @@ export default function getBaseObjectives(
           "Correctly predict the outcome of an agenda using Imperial Rider.",
       }),
       expansion: "BASE",
-      max: 2,
       id: "Imperial Rider",
       name: intl.formatMessage({
         id: "Objectives.Imperial Rider.Title",
@@ -636,7 +635,7 @@ export default function getBaseObjectives(
           defaultMessage:
             'FOR: Each player who voted "For" gains 1 victory point.{br}AGAINST: Each player who voted "For" loses 1 victory point.',
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "BASE",
       id: "Mutiny",
@@ -646,6 +645,7 @@ export default function getBaseObjectives(
         defaultMessage: "Mutiny",
       }),
       points: 1,
+      removedIn: "TWILIGHTS FALL",
       type: "OTHER",
     },
     "Negotiate Trade Routes": {
@@ -713,6 +713,7 @@ export default function getBaseObjectives(
         defaultMessage: "Seed of an Empire",
       }),
       points: 1,
+      removedIn: "TWILIGHTS FALL",
       type: "OTHER",
     },
     "Shard of the Throne": {

@@ -7,7 +7,6 @@
 }
 
 .SetupGrid {
-  margin: 3rem 0 0 0;
   width: 100%;
   height: calc(100dvh - 4rem);
   display: grid;
@@ -23,7 +22,7 @@
   row-gap: 0.25rem;
 }
 
-@media only screen and (max-width: 56.25rem) {
+@media only screen and (max-width: 68.75rem) {
   .Expansions {
     display: flex;
     flex-direction: column;

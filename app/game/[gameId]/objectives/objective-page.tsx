@@ -22,14 +22,14 @@ function InnerObjectivesPage() {
   return (
     <div
       className="flexColumn"
-      style={{ height: "100%", alignItems: "center" }}
+      style={{ height: "100%", alignItems: "flex-start", width: "100%" }}
     >
       <div
         style={{
           position: "relative",
-          margin: `${rem(64)} 0 0 0`,
           padding: `0 0 ${rem(24)} 0`,
-          height: `calc(100dvh - ${rem(64)})`,
+          height: `calc(100dvh - 4rem})`,
+          width: "100%",
         }}
       >
         <ObjectivePanel />

@@ -40,7 +40,7 @@ function getSupportScorer(factionId: FactionId, support: Objective) {
 
 function getAlliancePartner(
   factionId: FactionId,
-  allAlliances: Partial<Record<FactionId, FactionId[]>>
+  allAlliances: Partial<Record<FactionId, FactionId[]>>,
 ) {
   for (const [id, alliances] of objectEntries(allAlliances)) {
     if (factionId === id) {
@@ -111,7 +111,7 @@ export default function PromissoryMenu({
                   gameId,
                   supportGivenTo,
                   "Support for the Throne",
-                  factionId
+                  factionId,
                 );
               }
               if (newSupport) {
@@ -119,7 +119,7 @@ export default function PromissoryMenu({
                   gameId,
                   newSupport,
                   "Support for the Throne",
-                  factionId
+                  factionId,
                 );
               }
             }}
@@ -136,7 +136,13 @@ export default function PromissoryMenu({
             className="flexRow"
             style={{ width: "100%", justifyContent: "flex-start" }}
           >
-            Alliance:{" "}
+            <FormattedMessage
+              id="Promissories.Alliance.Title"
+              defaultMessage="{count, plural, one {Alliance} other {Alliances}}"
+              description="Title of Promissory: Alliance"
+              values={{ count: 1 }}
+            />
+            :{" "}
             <FactionSelectRadialMenu
               factions={mapOrderedFactionIds}
               invalidFactions={[factionId, "Mahact Gene-Sorcerers"]}
@@ -198,14 +204,14 @@ export default function PromissoryMenu({
                               gameId,
                               factionId,
                               "Support for the Throne",
-                              id
+                              id,
                             );
                           } else {
                             scoreObjectiveAsync(
                               gameId,
                               factionId,
                               "Support for the Throne",
-                              id
+                              id,
                             );
                           }
                         }
@@ -227,9 +233,20 @@ export default function PromissoryMenu({
               );
             })}
           </div>
-          {factionId !== "Mahact Gene-Sorcerers"
-            ? "Alliances"
-            : "Fleet Pool Tokens"}
+          {factionId !== "Mahact Gene-Sorcerers" ? (
+            <FormattedMessage
+              id="Promissories.Alliance.Title"
+              defaultMessage="{count, plural, one {Alliance} other {Alliances}}"
+              description="Title of Promissory: Alliance"
+              values={{ count: 2 }}
+            />
+          ) : (
+            <FormattedMessage
+              id="LkSYQA"
+              defaultMessage="Fleet Pool Tokens"
+              description="Tokens that determine how many non-fighter ships can be in a system."
+            />
+          )}
           <div
             className={styles.factionIconRow}
             style={

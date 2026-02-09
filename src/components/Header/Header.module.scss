@@ -1,22 +1,3 @@
-.HomeLink {
-  display: flex;
-  flex-direction: row;
-  cursor: pointer;
-  position: fixed;
-  justify-content: center;
-  background-color: var(--background-color);
-  top: 1rem;
-  left: 6rem;
-  font-size: 1.5rem;
-  gap: 0.5rem;
-}
-
-.HomeLink > div {
-  position: relative;
-  width: 2rem;
-  height: 2rem;
-}
-
 .LangSelect {
   display: flex;
   position: fixed;
@@ -31,16 +12,18 @@
   gap: 0.5rem;
 
   position: fixed;
-  top: 3.25rem;
+  top: 3.75rem;
   left: 14rem;
-  padding-left: 0.75rem;
+  // padding-left: 0.75rem;
   align-items: center;
   justify-content: center;
+  background-color: var(--background-color);
+  border-radius: 0.3125rem;
 }
 
 .PassedLaws {
   position: fixed;
-  top: 1.25rem;
+  top: 0.625rem;
   right: 26.25rem;
 
   z-index: 1;
@@ -62,8 +45,8 @@
   align-items: center;
 
   position: fixed;
-  top: 1rem;
-  left: 29.375rem;
+  top: 0.5rem;
+  left: 28.875rem;
   font-size: 1.5rem;
 
   z-index: 2;
@@ -71,8 +54,8 @@
 
 .Map {
   position: fixed;
-  top: 6.75rem;
-  left: 4rem;
+  top: 5.75rem;
+  left: 3.75rem;
 
   display: flex;
   flex-direction: row;
@@ -81,57 +64,7 @@
   gap: 0.5rem;
 }
 
-@media only screen and (max-width: 75rem) {
-  .HomeLink {
-    left: 4rem;
-  }
-
-  .LangSelect {
-    left: 0.875rem;
-  }
-
-  .GameTimer {
-    left: 13.875rem;
-  }
-
-  .PassedLaws {
-    right: 24.25rem;
-  }
-
-  .QRCode {
-    left: 4rem;
-  }
-
-  .ControlButtons {
-    left: 27.375rem;
-  }
-
-  .Map {
-    left: 4rem;
-  }
-}
-
-@media only screen and (max-width: 56.25rem) {
-  .HomeLink {
-    text-align: center;
-    position: sticky;
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
-    top: 0;
-    left: 0;
-    width: 100%;
-    box-sizing: border-box;
-
-    background-color: var(--background-color);
-    z-index: 1;
-  }
-
-  .HomeLink > div {
-    position: relative;
-    width: 1.75rem;
-    height: 1.75rem;
-  }
-
+@media only screen and (max-width: 68.75rem) {
   .LangSelect {
     bottom: 2.25rem;
     right: 2.25rem;
@@ -145,7 +78,6 @@
     padding: 0.25rem;
     z-index: 1;
     backdrop-filter: blur(0.5rem);
-    border-radius: 0.5rem;
     border: 0.25rem solid var(--background-color);
     // display: none;
     // TODO: Decide whether or not to display game timer on mobile.

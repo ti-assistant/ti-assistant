@@ -12,7 +12,16 @@ export default function Wrapper({
   children,
 }: PropsWithChildren<{ messages: Record<string, string>; locale: string }>) {
   return (
-    <IntlProvider locale={locale} messages={messages} onError={() => {}}>
+    <IntlProvider
+      locale={locale}
+      messages={messages}
+      onError={(err) => {
+        if (err.code === "MISSING_TRANSLATION") {
+          return;
+        }
+        console.log(err);
+      }}
+    >
       {children}
     </IntlProvider>
   );
@@ -28,7 +37,7 @@ export function SettingsProvider({
 
   function updateSetting<T extends keyof Settings>(
     setting: T,
-    value: Settings[T]
+    value: Settings[T],
   ) {
     setSettings((settings) => {
       const newSettings: Settings = {

@@ -50,13 +50,13 @@ export default function ObjectiveGrid({ asModal }: { asModal?: boolean }) {
   const objectiveArray = Object.values(objectives);
 
   const stageOneObjectives: Objective[] = objectiveArray.filter(
-    (obj) => obj.type === "STAGE ONE"
+    (obj) => obj.type === "STAGE ONE",
   );
   const stageTwoObjectives: Objective[] = objectiveArray.filter(
-    (obj) => obj.type === "STAGE TWO"
+    (obj) => obj.type === "STAGE TWO",
   );
   const secretObjectives = objectiveArray.filter(
-    (obj) => obj.type === "SECRET"
+    (obj) => obj.type === "SECRET",
   );
 
   const secretsByFaction: Partial<Record<FactionId, Objective[]>> = {};
@@ -91,7 +91,7 @@ export default function ObjectiveGrid({ asModal }: { asModal?: boolean }) {
       return -1;
     });
   const remainingStageOneObjectives = stageOneObjectives.filter(
-    (obj) => !obj.selected
+    (obj) => !obj.selected,
   );
   const selectedStageTwoObjectives = stageTwoObjectives
     .filter((obj) => obj && obj.selected)
@@ -116,10 +116,10 @@ export default function ObjectiveGrid({ asModal }: { asModal?: boolean }) {
       return -1;
     });
   const remainingStageTwoObjectives = stageTwoObjectives.filter(
-    (obj) => !obj.selected
+    (obj) => !obj.selected,
   );
   const remainingSecretObjectives = secretObjectives.filter(
-    (obj) => !obj.selected
+    (obj) => !obj.selected,
   );
 
   const supportForTheThrone = objectives["Support for the Throne"];
@@ -207,7 +207,12 @@ export default function ObjectiveGrid({ asModal }: { asModal?: boolean }) {
                   padding: `0 ${rem(4)}`,
                 }}
               >
-                Alliance
+                <FormattedMessage
+                  id="Promissories.Alliance.Title"
+                  defaultMessage="{count, plural, one {Alliance} other {Alliances}}"
+                  description="Title of Promissory: Alliance"
+                  values={{ count: 1 }}
+                />
               </div>
             ) : null}
             <div

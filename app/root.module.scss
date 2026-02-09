@@ -1,15 +1,18 @@
 .NavBar {
+  position: sticky;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  width: 100%;
+  background-color: var(--background-color);
+  z-index: 1;
+
   display: flex;
   flex-direction: row;
-  position: fixed;
   justify-content: space-between;
+  padding-inline: 0.25rem;
+  padding-block: 0.5rem;
   align-items: center;
-  top: 1rem;
-  left: 4rem;
   font-size: 1.5rem;
-  gap: 0.5rem;
-  z-index: 1;
-  width: calc(100% - 8rem);
 }
 
 .HomeLink {
@@ -18,21 +21,19 @@
   cursor: pointer;
   justify-content: center;
   align-items: center;
-  background-color: var(--background-color);
   gap: 0.5rem;
 }
 
 .FullName {
-  display: inline-block;
+  display: none;
+  // Should not require other fonts.
+  font-family: "Slider";
 }
 
 .ShortName {
-  display: none;
-}
-
-.LangSelect {
-  position: relative;
-  z-index: 4;
+  display: inline-block;
+  // Should not require other fonts.
+  font-family: "Slider";
 }
 
 .Logo {
@@ -41,48 +42,12 @@
   height: 2rem;
 }
 
-@media only screen and (max-width: 75rem) {
-  .HomeLink {
-    left: 4rem;
-  }
-}
-
-@media only screen and (max-width: 56.25rem) {
-  .NavBar {
-    position: sticky;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: var(--background-color);
-
-    z-index: 4;
-  }
-
+@media only screen and (min-width: 68.75rem) {
   .FullName {
-    display: none;
-  }
-
-  .ShortName {
     display: inline-block;
   }
 
-  .HomeLink {
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
-    padding-left: 0.5rem;
-    box-sizing: border-box;
-
-    background-color: var(--background-color);
-    z-index: 1;
-  }
-
-  .Settings {
-    margin-right: 0.25rem;
-  }
-
-  .HomeLink > div {
-    position: relative;
-    width: 1.75rem;
-    height: 1.75rem;
+  .ShortName {
+    display: none;
   }
 }

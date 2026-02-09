@@ -202,7 +202,7 @@ export default function StartingComponents({
         </div>
       ) : null}
       {options.expansions.includes("TWILIGHTS FALL") ? (
-        <>
+        <div className={styles.TFFactionSelectSection}>
           {options.hide?.includes("PLANETS") && !mapString ? null : (
             <div className={styles.TFFactionSelect}>
               Planet Faction:{" "}
@@ -212,7 +212,7 @@ export default function StartingComponents({
           <div className={styles.TFFactionSelect}>
             Unit Faction: <TFFactionSelect factionId={factionId} type="Unit" />
           </div>
-        </>
+        </div>
       ) : null}
       {startswith.planetchoice ? (
         <div
@@ -354,13 +354,14 @@ export default function StartingComponents({
       ) : null}
       {/* Units */}
       <div
+        className={styles.StartingUnits}
         style={{
           display: "grid",
-          gridAutoFlow: "column",
+          gridAutoFlow: "row",
           // gridTemplateColumns: "repeat(2, 1fr)",
-          gridTemplateRows: `repeat(${Math.ceil(
-            orderedUnits.length / 2,
-          )}, 1fr)`,
+          // gridTemplateRows: `repeat(${Math.ceil(
+          //   orderedUnits.length / 2,
+          // )}, 1fr)`,
           fontFamily: "Myriad Pro",
           columnGap: rem(8),
           fontSize: rem(14),

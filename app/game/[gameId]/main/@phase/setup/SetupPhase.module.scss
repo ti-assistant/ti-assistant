@@ -1,9 +1,11 @@
 .LeftColumn {
-  margin-top: 7.5rem;
+  display: flex;
+  flex-direction: column;
   align-items: stretch;
-  justify-content: flex-start;
-  width: min-content;
+  justify-content: center;
   white-space: normal;
+
+  min-height: calc(100dvh - 6.5rem);
 }
 
 .SetupList {
@@ -17,15 +19,30 @@
 }
 
 .MainColumn {
-  margin-top: 3.2rem;
-  min-height: calc(100dvh - 6.4rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(100dvh - 6.5rem);
+  padding-block-end: 0.75rem;
   width: 100%;
 }
 
-@media only screen and (max-width: 37.5rem) {
+@media only screen and (max-width: 68.75rem) {
+  .MainColumn {
+    margin-top: 1rem;
+    min-height: unset;
+  }
+
+  .LeftColumn {
+    margin-top: 1rem;
+  }
+}
+
+@media only screen and (max-width: 44rem) {
   .LeftColumn {
     height: fit-content;
     width: 100%;
+    margin-top: 0;
   }
 
   .MainColumn {

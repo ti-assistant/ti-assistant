@@ -1,7 +1,6 @@
 import { PropsWithChildren, ReactNode } from "react";
 
 import InfoModal from "./InfoModal";
-import { rem } from "./util/util";
 
 interface InfoRowProps {
   infoContent: ReactNode;
@@ -15,13 +14,15 @@ export function InfoRow({
 }: PropsWithChildren<InfoRowProps>) {
   return (
     <div
-      className="flexRow"
-      style={{ width: "100%", justifyContent: "stretch" }}
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        gap: "0.5rem",
+        alignItems: "center",
+      }}
     >
       {children}
-      <InfoModal title={infoTitle} style={{ marginLeft: rem(8) }}>
-        {infoContent}
-      </InfoModal>
+      <InfoModal title={infoTitle}>{infoContent}</InfoModal>
     </div>
   );
 }

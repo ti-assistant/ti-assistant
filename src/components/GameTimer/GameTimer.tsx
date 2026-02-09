@@ -2,12 +2,12 @@ import { use, useEffect } from "react";
 import { FormattedMessage } from "react-intl";
 import { TimerContext } from "../../context/contexts";
 import { useGameId, useTimers, useViewOnly } from "../../context/dataHooks";
+import { usePhase } from "../../context/stateDataHooks";
 import { setGlobalPauseAsync } from "../../dynamic/api";
 import { rem } from "../../util/util";
 import TimerDisplay from "../TimerDisplay/TimerDisplay";
 import TurnTimer from "../TurnTimer/TurnTimer";
 import styles from "./GameTimer.module.scss";
-import { useGameState, usePhase } from "../../context/stateDataHooks";
 
 export default function GameTimer({ frozen = false }) {
   const gameId = useGameId();

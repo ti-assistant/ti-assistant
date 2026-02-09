@@ -1,10 +1,13 @@
 .LeftColumn {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 0.5rem;
 
-  margin-top: 7.5rem;
-  padding-top: 1.75rem;
+  position: sticky;
+
+  top: 9rem;
+  min-height: calc(100dvh - 18rem);
 }
 
 .ActivePlayerColumn {
@@ -14,7 +17,7 @@
   justify-content: flex-start;
   gap: 0.5rem;
 
-  padding-top: 5rem;
+  padding-top: 1.75rem;
 }
 
 .ActivePlayerSection {
@@ -42,13 +45,8 @@
 
 @media only screen and (max-width: 75rem) {
   .ActivePlayerColumn {
-    padding-top: 7.5rem;
+    padding-top: 2.5rem;
   }
-
-  .ActivePlayerSection {
-    min-width: 17.5rem;
-  }
-
   .EndTurnButton {
     font-size: 1.25rem;
   }
@@ -58,21 +56,9 @@
     left: 0;
   }
 }
-
-@media only screen and (max-width: 56.25rem) {
+@media only screen and (max-width: 68.75rem) {
   .LeftColumn {
-    height: calc(100svh - 12.5rem);
-    justify-content: center;
-
-    padding-top: 0;
-    margin-top: 0;
-  }
-  .ActivePlayerColumn {
-    padding-top: 0;
-  }
-
-  .ActivePlayerSection {
-    min-width: 17.5rem;
+    min-height: calc(100dvh - 12.5rem);
   }
 
   .EndTurnButton {
@@ -80,7 +66,7 @@
   }
 }
 
-@media only screen and (max-width: 37.5rem) {
+@media only screen and (max-width: 44rem) {
   .LeftColumn {
     display: none;
   }

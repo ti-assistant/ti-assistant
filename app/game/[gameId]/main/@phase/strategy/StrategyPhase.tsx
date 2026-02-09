@@ -213,7 +213,7 @@ function QuantumDatahubNode({
                   }
                   options={strategyCards
                     .filter(
-                      (card) => card.faction && card.faction !== factionId
+                      (card) => card.faction && card.faction !== factionId,
                     )
                     .map((card) => {
                       return { id: card.id, name: card.name };
@@ -353,7 +353,7 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
                   }
                   options={strategyCards
                     .filter(
-                      (card) => card.faction && card.faction !== factionId
+                      (card) => card.faction && card.faction !== factionId,
                     )
                     .map((card) => {
                       return { id: card.id, name: card.name };
@@ -427,7 +427,7 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
 
   const orderedStrategyCards = sortStrategyCards(
     Object.values(strategyCards),
-    /* ignoreZero */ true
+    /* ignoreZero */ true,
   );
 
   const checksAndBalances =
@@ -437,7 +437,7 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
     <div
       style={{
         display: "grid",
-        gridTemplate: "repeat(8, 1fr) / 14% 2fr 2fr 1fr",
+        gridTemplate: "repeat(8, 1fr) / 2.8rem auto auto auto",
         gridAutoFlow: "column",
         gap: rem(4),
       }}
@@ -462,7 +462,7 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
                       gameId,
                       activeFactionId,
                       card.id,
-                      activeFactionId
+                      activeFactionId,
                     )
             }
             fontSize={mobile ? 20 : 24}
@@ -478,7 +478,7 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
                   gameId,
                   factionId,
                   card.id,
-                  activeFactionId
+                  activeFactionId,
                 );
               }}
             />
@@ -500,11 +500,11 @@ export default function StrategyPhase() {
   // Techs
   const hacanHasQuantum = useFactionHasTech(
     "Emirates of Hacan",
-    "Quantum Datahub Node"
+    "Quantum Datahub Node",
   );
   const nekroHasQuantum = useFactionHasTech(
     "Nekro Virus",
-    "Quantum Datahub Node"
+    "Quantum Datahub Node",
   );
 
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
@@ -643,7 +643,7 @@ export default function StrategyPhase() {
 
   const orderedStrategyCards = sortStrategyCards(
     updatedStrategyCards,
-    /* ignoreZero= */ true
+    /* ignoreZero= */ true,
   );
 
   const giftFaction = Object.values(strategyCards).reduce(
@@ -653,7 +653,7 @@ export default function StrategyPhase() {
       }
       return faction;
     },
-    undefined
+    undefined,
   );
 
   return (
@@ -714,7 +714,7 @@ export default function StrategyPhase() {
                       </LabeledDiv>
                     </NumberedItem>
                   );
-                }
+                },
               )}
             </ol>
           </div>
@@ -752,7 +752,7 @@ export default function StrategyPhase() {
                   const newFaction = add ? factionId : undefined;
                   giftOfPrescienceAsync(
                     gameId,
-                    newFaction ?? "Naalu Collective"
+                    newFaction ?? "Naalu Collective",
                   );
                 }}
                 selectedItem={giftFaction}

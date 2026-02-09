@@ -149,7 +149,7 @@ function SettingsModalContent() {
                 >
                   <div
                     className="flexRow"
-                    style={{ gap: rem(4), fontFamily: "Slider" }}
+                    style={{ gap: rem(4), fontFamily: "var(--main-font)" }}
                   >
                     2<TechIcon type="GREEN" size={16} />
                     <DummyTechTree />
@@ -164,7 +164,7 @@ function SettingsModalContent() {
                 >
                   <div
                     className="flexRow"
-                    style={{ gap: rem(4), fontFamily: "Slider" }}
+                    style={{ gap: rem(4), fontFamily: "var(--main-font)" }}
                   >
                     2<TechIcon type="GREEN" size={16} />
                   </div>
@@ -178,7 +178,7 @@ function SettingsModalContent() {
                 >
                   <div
                     className="flexRow"
-                    style={{ gap: rem(4), fontFamily: "Slider" }}
+                    style={{ gap: rem(4), fontFamily: "var(--main-font)" }}
                   >
                     <TechIcon type="GREEN" size={16} />
                     <DummyTechTree />
@@ -193,7 +193,7 @@ function SettingsModalContent() {
                 >
                   <div
                     className="flexRow"
-                    style={{ gap: rem(4), fontFamily: "Slider" }}
+                    style={{ gap: rem(4), fontFamily: "var(--main-font)" }}
                   >
                     2
                     <DummyTechTree />
@@ -208,7 +208,7 @@ function SettingsModalContent() {
                 >
                   <div
                     className="flexRow"
-                    style={{ gap: rem(4), fontFamily: "Slider" }}
+                    style={{ gap: rem(4), fontFamily: "var(--main-font)" }}
                   >
                     <DummyTechTree />
                   </div>
@@ -388,7 +388,7 @@ function GameSettings({ gameId }: { gameId: string }) {
   const options = useOptions();
 
   const selectedColors = Object.values(factions).map(
-    (faction) => faction.color
+    (faction) => faction.color,
   );
 
   return (

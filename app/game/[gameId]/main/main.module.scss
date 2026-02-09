@@ -5,9 +5,10 @@
   gap: 1.5rem;
   justify-content: space-between;
   width: 100%;
+  padding: 0.25rem;
 }
 
-@media only screen and (max-width: 56.25rem) {
+@media only screen and (max-width: 68.75rem) {
   .Main {
     gap: 1.5rem;
   }

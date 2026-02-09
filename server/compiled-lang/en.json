@@ -7011,6 +7011,534 @@
       "value": "count"
     }
   ],
+  "DS.Planets.Abyssus.Name": [
+    {
+      "type": 0,
+      "value": "Abyssus"
+    }
+  ],
+  "DS.Planets.Aldra.Name": [
+    {
+      "type": 0,
+      "value": "Aldra"
+    }
+  ],
+  "DS.Planets.Alesna.Name": [
+    {
+      "type": 0,
+      "value": "Alesna"
+    }
+  ],
+  "DS.Planets.Arche.Name": [
+    {
+      "type": 0,
+      "value": "Arche"
+    }
+  ],
+  "DS.Planets.Auldane.Name": [
+    {
+      "type": 0,
+      "value": "Auldane"
+    }
+  ],
+  "DS.Planets.Avicenna.Name": [
+    {
+      "type": 0,
+      "value": "Avicenna"
+    }
+  ],
+  "DS.Planets.Axis.Name": [
+    {
+      "type": 0,
+      "value": "Axis"
+    }
+  ],
+  "DS.Planets.Aysis' Rest.Name": [
+    {
+      "type": 0,
+      "value": "Aysis' Rest"
+    }
+  ],
+  "DS.Planets.Azle.Name": [
+    {
+      "type": 0,
+      "value": "Azle"
+    }
+  ],
+  "DS.Planets.Beata.Name": [
+    {
+      "type": 0,
+      "value": "Beata"
+    }
+  ],
+  "DS.Planets.Benc.Name": [
+    {
+      "type": 0,
+      "value": "Benc"
+    }
+  ],
+  "DS.Planets.Biaheo.Name": [
+    {
+      "type": 0,
+      "value": "Biaheo"
+    }
+  ],
+  "DS.Planets.Bohl-Dhur.Name": [
+    {
+      "type": 0,
+      "value": "Bohl-Dhur"
+    }
+  ],
+  "DS.Planets.Brthkul.Name": [
+    {
+      "type": 0,
+      "value": "Brthkul"
+    }
+  ],
+  "DS.Planets.Chrion.Name": [
+    {
+      "type": 0,
+      "value": "Chrion"
+    }
+  ],
+  "DS.Planets.Cymiae.Name": [
+    {
+      "type": 0,
+      "value": "Cymiae"
+    }
+  ],
+  "DS.Planets.Cyrra.Name": [
+    {
+      "type": 0,
+      "value": "Cyrra"
+    }
+  ],
+  "DS.Planets.Delmor.Name": [
+    {
+      "type": 0,
+      "value": "Delmor"
+    }
+  ],
+  "DS.Planets.Demis.Name": [
+    {
+      "type": 0,
+      "value": "Demis"
+    }
+  ],
+  "DS.Planets.Derbrae.Name": [
+    {
+      "type": 0,
+      "value": "Derbrae"
+    }
+  ],
+  "DS.Planets.Detic.Name": [
+    {
+      "type": 0,
+      "value": "Detic"
+    }
+  ],
+  "DS.Planets.Discordia.Name": [
+    {
+      "type": 0,
+      "value": "Discordia"
+    }
+  ],
+  "DS.Planets.Domna.Ability": [
+    {
+      "type": 0,
+      "value": "You may exhaust this card at the end of your turn to remove 1 of your ships from the game board and place that unit in an adjacent system that does not contain another player's ships."
+    }
+  ],
+  "DS.Planets.Domna.Name": [
+    {
+      "type": 0,
+      "value": "Domna"
+    }
+  ],
+  "DS.Planets.Dorvok.Name": [
+    {
+      "type": 0,
+      "value": "Dorvok"
+    }
+  ],
+  "DS.Planets.Drah.Name": [
+    {
+      "type": 0,
+      "value": "Drah"
+    }
+  ],
+  "DS.Planets.Echo.Ability": [
+    {
+      "type": 0,
+      "value": "You may exhaust this card at the end of your turn to place 1 frontier token in a system that does not contain a planet."
+    }
+  ],
+  "DS.Planets.Echo.Name": [
+    {
+      "type": 0,
+      "value": "Echo"
+    }
+  ],
+  "DS.Planets.Edyn.Name": [
+    {
+      "type": 0,
+      "value": "Edyn"
+    }
+  ],
+  "DS.Planets.Ekko.Name": [
+    {
+      "type": 0,
+      "value": "Ekko"
+    }
+  ],
+  "DS.Planets.Ellas.Name": [
+    {
+      "type": 0,
+      "value": "Ellas"
+    }
+  ],
+  "DS.Planets.Empero.Name": [
+    {
+      "type": 0,
+      "value": "Empero"
+    }
+  ],
+  "DS.Planets.Etir V.Name": [
+    {
+      "type": 0,
+      "value": "Etir V"
+    }
+  ],
+  "DS.Planets.Fakrenn.Name": [
+    {
+      "type": 0,
+      "value": "Fakrenn"
+    }
+  ],
+  "DS.Planets.Gen.Name": [
+    {
+      "type": 0,
+      "value": "Gen"
+    }
+  ],
+  "DS.Planets.Gghurn Theta.Name": [
+    {
+      "type": 0,
+      "value": "Gghurn Theta"
+    }
+  ],
+  "DS.Planets.Ghoti.Name": [
+    {
+      "type": 0,
+      "value": "Ghoti"
+    }
+  ],
+  "DS.Planets.Gwiyun.Name": [
+    {
+      "type": 0,
+      "value": "Gwiyun"
+    }
+  ],
+  "DS.Planets.Hau.Name": [
+    {
+      "type": 0,
+      "value": "Hau"
+    }
+  ],
+  "DS.Planets.Hulgade.Name": [
+    {
+      "type": 0,
+      "value": "Hulgade"
+    }
+  ],
+  "DS.Planets.Idyn.Name": [
+    {
+      "type": 0,
+      "value": "Idyn"
+    }
+  ],
+  "DS.Planets.Inan.Name": [
+    {
+      "type": 0,
+      "value": "Inan"
+    }
+  ],
+  "DS.Planets.Kjalengard.Name": [
+    {
+      "type": 0,
+      "value": "Kjalengard"
+    }
+  ],
+  "DS.Planets.Kroll.Name": [
+    {
+      "type": 0,
+      "value": "Kroll"
+    }
+  ],
+  "DS.Planets.Kyd.Name": [
+    {
+      "type": 0,
+      "value": "Kyd"
+    }
+  ],
+  "DS.Planets.Kyr.Name": [
+    {
+      "type": 0,
+      "value": "Kyr"
+    }
+  ],
+  "DS.Planets.Larred.Name": [
+    {
+      "type": 0,
+      "value": "Larred"
+    }
+  ],
+  "DS.Planets.Last Stop.Name": [
+    {
+      "type": 0,
+      "value": "Last Stop"
+    }
+  ],
+  "DS.Planets.Lliot.Name": [
+    {
+      "type": 0,
+      "value": "Lliot"
+    }
+  ],
+  "DS.Planets.Lodran.Name": [
+    {
+      "type": 0,
+      "value": "Lodran"
+    }
+  ],
+  "DS.Planets.Louk.Name": [
+    {
+      "type": 0,
+      "value": "Louk"
+    }
+  ],
+  "DS.Planets.Mandle.Name": [
+    {
+      "type": 0,
+      "value": "Mandle"
+    }
+  ],
+  "DS.Planets.Moln.Name": [
+    {
+      "type": 0,
+      "value": "Moln"
+    }
+  ],
+  "DS.Planets.Nairb.Name": [
+    {
+      "type": 0,
+      "value": "Nairb"
+    }
+  ],
+  "DS.Planets.Nokk.Name": [
+    {
+      "type": 0,
+      "value": "Nokk"
+    }
+  ],
+  "DS.Planets.Norvus.Name": [
+    {
+      "type": 0,
+      "value": "Norvus"
+    }
+  ],
+  "DS.Planets.Ogdun.Name": [
+    {
+      "type": 0,
+      "value": "Ogdun"
+    }
+  ],
+  "DS.Planets.Okke.Name": [
+    {
+      "type": 0,
+      "value": "Okke"
+    }
+  ],
+  "DS.Planets.Orad.Name": [
+    {
+      "type": 0,
+      "value": "Orad"
+    }
+  ],
+  "DS.Planets.Pax.Name": [
+    {
+      "type": 0,
+      "value": "Pax"
+    }
+  ],
+  "DS.Planets.Poh.Name": [
+    {
+      "type": 0,
+      "value": "Poh"
+    }
+  ],
+  "DS.Planets.Prind.Name": [
+    {
+      "type": 0,
+      "value": "Prind"
+    }
+  ],
+  "DS.Planets.Prism.Ability": [
+    {
+      "type": 0,
+      "value": "ACTION: Exhaust this card to replace 1 of your non-faction non-unit upgrade technologies with another technology from your technology deck with the same number of prerequisites."
+    }
+  ],
+  "DS.Planets.Prism.Name": [
+    {
+      "type": 0,
+      "value": "Prism"
+    }
+  ],
+  "DS.Planets.Qaak.Name": [
+    {
+      "type": 0,
+      "value": "Qaak"
+    }
+  ],
+  "DS.Planets.Regnem.Name": [
+    {
+      "type": 0,
+      "value": "Regnem"
+    }
+  ],
+  "DS.Planets.Rhune.Name": [
+    {
+      "type": 0,
+      "value": "Rhune"
+    }
+  ],
+  "DS.Planets.Rysaa.Name": [
+    {
+      "type": 0,
+      "value": "Rysaa"
+    }
+  ],
+  "DS.Planets.Salin.Name": [
+    {
+      "type": 0,
+      "value": "Salin"
+    }
+  ],
+  "DS.Planets.San-Vit.Name": [
+    {
+      "type": 0,
+      "value": "San-Vit"
+    }
+  ],
+  "DS.Planets.Sanctuary.Name": [
+    {
+      "type": 0,
+      "value": "Sanctuary"
+    }
+  ],
+  "DS.Planets.Shi-Halaum.Name": [
+    {
+      "type": 0,
+      "value": "Shi-Halaum"
+    }
+  ],
+  "DS.Planets.Sierpin.Name": [
+    {
+      "type": 0,
+      "value": "Sierpin"
+    }
+  ],
+  "DS.Planets.Silence.Ability": [
+    {
+      "type": 0,
+      "value": "You may exhaust this card at the end of your turn to place 1 cruiser from your reinforcements in any system that contains 1 or more of your ships."
+    }
+  ],
+  "DS.Planets.Silence.Name": [
+    {
+      "type": 0,
+      "value": "Silence"
+    }
+  ],
+  "DS.Planets.Solitude.Name": [
+    {
+      "type": 0,
+      "value": "Solitude"
+    }
+  ],
+  "DS.Planets.Susuros.Name": [
+    {
+      "type": 0,
+      "value": "Susuros"
+    }
+  ],
+  "DS.Planets.Swog.Name": [
+    {
+      "type": 0,
+      "value": "Swog"
+    }
+  ],
+  "DS.Planets.Tarrock.Ability": [
+    {
+      "type": 0,
+      "value": "After an agenda is revealed, you may exhaust this card to predict aloud an outcome of that agenda. If your prediction is correct, draw 1 secret objective."
+    }
+  ],
+  "DS.Planets.Tarrock.Name": [
+    {
+      "type": 0,
+      "value": "Tarrock"
+    }
+  ],
+  "DS.Planets.Troac.Name": [
+    {
+      "type": 0,
+      "value": "Troac"
+    }
+  ],
+  "DS.Planets.Trykk.Name": [
+    {
+      "type": 0,
+      "value": "Trykk"
+    }
+  ],
+  "DS.Planets.Vadarian.Name": [
+    {
+      "type": 0,
+      "value": "Vadarian"
+    }
+  ],
+  "DS.Planets.Vaylar.Name": [
+    {
+      "type": 0,
+      "value": "Vaylar"
+    }
+  ],
+  "DS.Planets.Vess.Name": [
+    {
+      "type": 0,
+      "value": "Vess"
+    }
+  ],
+  "DS.Planets.Vioss.Name": [
+    {
+      "type": 0,
+      "value": "Vioss"
+    }
+  ],
+  "DS.Planets.Zarr.Name": [
+    {
+      "type": 0,
+      "value": "Zarr"
+    }
+  ],
+  "DS.Planets.Zelian.Name": [
+    {
+      "type": 0,
+      "value": "Zelian"
+    }
+  ],
   "Deepwrought Scholarate.Abilities.Oceanbound.Description": [
     {
       "type": 0,
@@ -7269,16 +7797,16 @@
       "value": "Janovet"
     }
   ],
-  "El Nen Janovet.Techs.Antimatter Magenta.Title": [
+  "El Nen Janovet.Techs.Antimatter Pink.Title": [
     {
       "type": 0,
-      "value": "Antimatter: Magenta"
+      "value": "Antimatter: Pink"
     }
   ],
-  "El Nen Janovet.Techs.Wavelength Magenta.Title": [
+  "El Nen Janovet.Techs.Wavelength Pink.Title": [
     {
       "type": 0,
-      "value": "Wavelength: Magenta"
+      "value": "Wavelength: Pink"
     }
   ],
   "El Nen Janovet.Units.Analyzer.Description": [
@@ -13249,10 +13777,262 @@
       "value": "Unknown"
     }
   ],
+  "Planets.Abaddon.Name": [
+    {
+      "type": 0,
+      "value": "Abaddon"
+    }
+  ],
+  "Planets.Abyz.Name": [
+    {
+      "type": 0,
+      "value": "Abyz"
+    }
+  ],
+  "Planets.Accoen.Name": [
+    {
+      "type": 0,
+      "value": "Accoen"
+    }
+  ],
+  "Planets.Acheron.Name": [
+    {
+      "type": 0,
+      "value": "Acheron"
+    }
+  ],
+  "Planets.Ahk Creuxx.Name": [
+    {
+      "type": 0,
+      "value": "Ahk Creuxx"
+    }
+  ],
+  "Planets.Alio Prima.Name": [
+    {
+      "type": 0,
+      "value": "Alio Prima"
+    }
+  ],
+  "Planets.Andeara.Name": [
+    {
+      "type": 0,
+      "value": "Andeara"
+    }
+  ],
+  "Planets.Ang.Name": [
+    {
+      "type": 0,
+      "value": "Ang"
+    }
+  ],
+  "Planets.Arc Prime.Name": [
+    {
+      "type": 0,
+      "value": "Arc Prime"
+    }
+  ],
+  "Planets.Archon Ren.Name": [
+    {
+      "type": 0,
+      "value": "Archon Ren"
+    }
+  ],
+  "Planets.Archon Tau.Name": [
+    {
+      "type": 0,
+      "value": "Archon Tau"
+    }
+  ],
+  "Planets.Archon Vail.Name": [
+    {
+      "type": 0,
+      "value": "Archon Vail"
+    }
+  ],
+  "Planets.Arcturus.Name": [
+    {
+      "type": 0,
+      "value": "Arcturus"
+    }
+  ],
+  "Planets.Arinam.Name": [
+    {
+      "type": 0,
+      "value": "Arinam"
+    }
+  ],
+  "Planets.Arnor.Name": [
+    {
+      "type": 0,
+      "value": "Arnor"
+    }
+  ],
+  "Planets.Arretze.Name": [
+    {
+      "type": 0,
+      "value": "Arretze"
+    }
+  ],
+  "Planets.Ashtroth.Name": [
+    {
+      "type": 0,
+      "value": "Ashtroth"
+    }
+  ],
+  "Planets.Atlas.Name": [
+    {
+      "type": 0,
+      "value": "Atlas"
+    }
+  ],
+  "Planets.Avar.Name": [
+    {
+      "type": 0,
+      "value": "Avar"
+    }
+  ],
   "Planets.Avernus.Ability": [
     {
       "type": 0,
       "value": "ACTION: Exhaust this card to use the Embers of Muaat's STAR FORGE faction ability without spending a command token."
+    }
+  ],
+  "Planets.Avernus.Name": [
+    {
+      "type": 0,
+      "value": "Avernus"
+    }
+  ],
+  "Planets.Ba'kal.Name": [
+    {
+      "type": 0,
+      "value": "Ba'kal"
+    }
+  ],
+  "Planets.Bellatrix.Name": [
+    {
+      "type": 0,
+      "value": "Bellatrix"
+    }
+  ],
+  "Planets.Bereg.Name": [
+    {
+      "type": 0,
+      "value": "Bereg"
+    }
+  ],
+  "Planets.Brine Pool.Name": [
+    {
+      "type": 0,
+      "value": "Brine Pool"
+    }
+  ],
+  "Planets.Capha.Name": [
+    {
+      "type": 0,
+      "value": "Capha"
+    }
+  ],
+  "Planets.Cealdri.Name": [
+    {
+      "type": 0,
+      "value": "Cealdri"
+    }
+  ],
+  "Planets.Centauri.Name": [
+    {
+      "type": 0,
+      "value": "Centauri"
+    }
+  ],
+  "Planets.Cocytus.Name": [
+    {
+      "type": 0,
+      "value": "Cocytus"
+    }
+  ],
+  "Planets.Coral Reef.Name": [
+    {
+      "type": 0,
+      "value": "Coral Reef"
+    }
+  ],
+  "Planets.Cormund.Name": [
+    {
+      "type": 0,
+      "value": "Cormund"
+    }
+  ],
+  "Planets.Corneeq.Name": [
+    {
+      "type": 0,
+      "value": "Corneeq"
+    }
+  ],
+  "Planets.Cresius.Name": [
+    {
+      "type": 0,
+      "value": "Cresius"
+    }
+  ],
+  "Planets.Creuss.Name": [
+    {
+      "type": 0,
+      "value": "Creuss"
+    }
+  ],
+  "Planets.Cronos Hollow.Name": [
+    {
+      "type": 0,
+      "value": "Cronos Hollow"
+    }
+  ],
+  "Planets.Cronos.Name": [
+    {
+      "type": 0,
+      "value": "Cronos"
+    }
+  ],
+  "Planets.Custodia Vigilia.Name": [
+    {
+      "type": 0,
+      "value": "Custodia Vigilia"
+    }
+  ],
+  "Planets.Dal Bootha.Name": [
+    {
+      "type": 0,
+      "value": "Dal Bootha"
+    }
+  ],
+  "Planets.Darien.Name": [
+    {
+      "type": 0,
+      "value": "Darien"
+    }
+  ],
+  "Planets.Deep Abyss.Name": [
+    {
+      "type": 0,
+      "value": "Deep Abyss"
+    }
+  ],
+  "Planets.Druaa.Name": [
+    {
+      "type": 0,
+      "value": "Druaa"
+    }
+  ],
+  "Planets.El'nath.Name": [
+    {
+      "type": 0,
+      "value": "El'nath"
+    }
+  ],
+  "Planets.Elysium.Name": [
+    {
+      "type": 0,
+      "value": "Elysium"
     }
   ],
   "Planets.Emelpar.Ability": [
@@ -13261,10 +14041,34 @@
       "value": "You may exhaust this card at the end of your turn to ready another component that isn't a strategy card."
     }
   ],
+  "Planets.Emelpar.Name": [
+    {
+      "type": 0,
+      "value": "Emelpar"
+    }
+  ],
+  "Planets.Everra.Name": [
+    {
+      "type": 0,
+      "value": "Everra"
+    }
+  ],
   "Planets.Faunus.Ability": [
     {
       "type": 0,
       "value": "You may exhaust this card when you pass to gain control of a non-home, non-legendary planet that contains no units and has no attachments."
+    }
+  ],
+  "Planets.Faunus.Name": [
+    {
+      "type": 0,
+      "value": "Faunus"
+    }
+  ],
+  "Planets.Fria.Name": [
+    {
+      "type": 0,
+      "value": "Fria"
     }
   ],
   "Planets.Garbozia.Ability": [
@@ -13273,10 +14077,58 @@
       "value": "You may exhaust this card when you pass to place 1 action card from the discard pile faceup on this card; you can purge cards on this card to play them as if they were in your hand."
     }
   ],
+  "Planets.Garbozia.Name": [
+    {
+      "type": 0,
+      "value": "Garbozia"
+    }
+  ],
+  "Planets.Gral.Name": [
+    {
+      "type": 0,
+      "value": "Gral"
+    }
+  ],
+  "Planets.Hercalor.Name": [
+    {
+      "type": 0,
+      "value": "Hercalor"
+    }
+  ],
+  "Planets.Hercant.Name": [
+    {
+      "type": 0,
+      "value": "Hercant"
+    }
+  ],
   "Planets.Hope's End.Ability": [
     {
       "type": 0,
       "value": "You may exhaust this card at the end of your turn to place 1 mech from your reinforcements on any planet you control, or draw 1 action card."
+    }
+  ],
+  "Planets.Hope's End.Name": [
+    {
+      "type": 0,
+      "value": "Hope's End"
+    }
+  ],
+  "Planets.Horizon.Name": [
+    {
+      "type": 0,
+      "value": "Horizon"
+    }
+  ],
+  "Planets.Ice Shelf.Name": [
+    {
+      "type": 0,
+      "value": "Ice Shelf"
+    }
+  ],
+  "Planets.Ikatena.Name": [
+    {
+      "type": 0,
+      "value": "Ikatena"
     }
   ],
   "Planets.Industrex.Ability": [
@@ -13285,10 +14137,178 @@
       "value": "You may exhaust this card when you pass to place 1 ship that matches a unit upgrade technology you own from your reinforcements into a system that contains your ships."
     }
   ],
+  "Planets.Industrex.Name": [
+    {
+      "type": 0,
+      "value": "Industrex"
+    }
+  ],
+  "Planets.Ixth.Name": [
+    {
+      "type": 0,
+      "value": "Ixth"
+    }
+  ],
+  "Planets.Jeol Ir.Name": [
+    {
+      "type": 0,
+      "value": "Jeol Ir"
+    }
+  ],
+  "Planets.Jol.Name": [
+    {
+      "type": 0,
+      "value": "Jol"
+    }
+  ],
+  "Planets.Jord.Name": [
+    {
+      "type": 0,
+      "value": "Jord"
+    }
+  ],
+  "Planets.Kamdorn.Name": [
+    {
+      "type": 0,
+      "value": "Kamdorn"
+    }
+  ],
+  "Planets.Kostboth.Name": [
+    {
+      "type": 0,
+      "value": "Kostboth"
+    }
+  ],
+  "Planets.Kraag.Name": [
+    {
+      "type": 0,
+      "value": "Kraag"
+    }
+  ],
+  "Planets.Lazar.Name": [
+    {
+      "type": 0,
+      "value": "Lazar"
+    }
+  ],
+  "Planets.Lazul Rex.Name": [
+    {
+      "type": 0,
+      "value": "Lazul Rex"
+    }
+  ],
+  "Planets.Lemox.Name": [
+    {
+      "type": 0,
+      "value": "Lemox"
+    }
+  ],
+  "Planets.Lesab.Name": [
+    {
+      "type": 0,
+      "value": "Lesab"
+    }
+  ],
+  "Planets.Lethe.Name": [
+    {
+      "type": 0,
+      "value": "Lethe"
+    }
+  ],
+  "Planets.Lirta IV.Name": [
+    {
+      "type": 0,
+      "value": "Lirta IV"
+    }
+  ],
+  "Planets.Lisis II.Name": [
+    {
+      "type": 0,
+      "value": "Lisis II"
+    }
+  ],
+  "Planets.Lisis.Name": [
+    {
+      "type": 0,
+      "value": "Lisis"
+    }
+  ],
+  "Planets.Lodor.Name": [
+    {
+      "type": 0,
+      "value": "Lodor"
+    }
+  ],
+  "Planets.Loki.Name": [
+    {
+      "type": 0,
+      "value": "Loki"
+    }
+  ],
+  "Planets.Lor.Name": [
+    {
+      "type": 0,
+      "value": "Lor"
+    }
+  ],
+  "Planets.Lost Fleet.Name": [
+    {
+      "type": 0,
+      "value": "Lost Fleet"
+    }
+  ],
+  "Planets.Luthien VI.Name": [
+    {
+      "type": 0,
+      "value": "Luthien VI"
+    }
+  ],
+  "Planets.Maaluuk.Name": [
+    {
+      "type": 0,
+      "value": "Maaluuk"
+    }
+  ],
   "Planets.Mallice.Ability": [
     {
       "type": 0,
       "value": "You may exhaust this card at the end of your turn to gain 2 trade goods or convert all of your commodities into trade goods."
+    }
+  ],
+  "Planets.Mallice.Name": [
+    {
+      "type": 0,
+      "value": "Mallice"
+    }
+  ],
+  "Planets.Mecatol Rex.Name": [
+    {
+      "type": 0,
+      "value": "Mecatol Rex"
+    }
+  ],
+  "Planets.Meer.Name": [
+    {
+      "type": 0,
+      "value": "Meer"
+    }
+  ],
+  "Planets.Mehar Xull.Name": [
+    {
+      "type": 0,
+      "value": "Mehar Xull"
+    }
+  ],
+  "Planets.Mellon.Name": [
+    {
+      "type": 0,
+      "value": "Mellon"
+    }
+  ],
+  "Planets.Mez Lo Orz Fei Zsha.Name": [
+    {
+      "type": 0,
+      "value": "Mez Lo Orz Fei Zsha"
     }
   ],
   "Planets.Mirage.Ability": [
@@ -13297,16 +14317,220 @@
       "value": "You may exhaust this card at the end of your turn to place up to 2 fighters from your reinforcements in any system that contains 1 or more of your ships."
     }
   ],
+  "Planets.Mirage.Name": [
+    {
+      "type": 0,
+      "value": "Mirage"
+    }
+  ],
+  "Planets.Moll Primus.Name": [
+    {
+      "type": 0,
+      "value": "Moll Primus"
+    }
+  ],
+  "Planets.Mordai II.Name": [
+    {
+      "type": 0,
+      "value": "Mordai II"
+    }
+  ],
+  "Planets.Muaat.Name": [
+    {
+      "type": 0,
+      "value": "Muaat"
+    }
+  ],
+  "Planets.Naazir.Name": [
+    {
+      "type": 0,
+      "value": "Naazir"
+    }
+  ],
+  "Planets.Nar.Name": [
+    {
+      "type": 0,
+      "value": "Nar"
+    }
+  ],
+  "Planets.Nestphar.Name": [
+    {
+      "type": 0,
+      "value": "Nestphar"
+    }
+  ],
+  "Planets.New Albion.Name": [
+    {
+      "type": 0,
+      "value": "New Albion"
+    }
+  ],
+  "Planets.New Terra.Name": [
+    {
+      "type": 0,
+      "value": "New Terra"
+    }
+  ],
+  "Planets.Olergodt.Name": [
+    {
+      "type": 0,
+      "value": "Olergodt"
+    }
+  ],
+  "Planets.Oluz Station.Name": [
+    {
+      "type": 0,
+      "value": "Oluz Station"
+    }
+  ],
   "Planets.Ordinian.Ability": [
     {
       "type": 0,
       "value": "You may exhaust this card when you pass to draw 1 action card and gain 1 command token."
     }
   ],
+  "Planets.Ordinian.Name": [
+    {
+      "type": 0,
+      "value": "Ordinian"
+    }
+  ],
+  "Planets.Perimeter.Name": [
+    {
+      "type": 0,
+      "value": "Perimeter"
+    }
+  ],
+  "Planets.Phlegethon.Name": [
+    {
+      "type": 0,
+      "value": "Phlegethon"
+    }
+  ],
   "Planets.Primor.Ability": [
     {
       "type": 0,
       "value": "You may exhaust this card at the end of your turn to place up to 2 infantry from your reinforcements on any planet you control."
+    }
+  ],
+  "Planets.Primor.Name": [
+    {
+      "type": 0,
+      "value": "Primor"
+    }
+  ],
+  "Planets.Quann.Name": [
+    {
+      "type": 0,
+      "value": "Quann"
+    }
+  ],
+  "Planets.Qucen'n.Name": [
+    {
+      "type": 0,
+      "value": "Qucen'n"
+    }
+  ],
+  "Planets.Quinarra.Name": [
+    {
+      "type": 0,
+      "value": "Quinarra"
+    }
+  ],
+  "Planets.Ragh.Name": [
+    {
+      "type": 0,
+      "value": "Ragh"
+    }
+  ],
+  "Planets.Rarron.Name": [
+    {
+      "type": 0,
+      "value": "Rarron"
+    }
+  ],
+  "Planets.Rep Lo Oet.Name": [
+    {
+      "type": 0,
+      "value": "Rep Lo Oet"
+    }
+  ],
+  "Planets.Resculon.Name": [
+    {
+      "type": 0,
+      "value": "Resculon"
+    }
+  ],
+  "Planets.Retillion.Name": [
+    {
+      "type": 0,
+      "value": "Retillion"
+    }
+  ],
+  "Planets.Revelation.Name": [
+    {
+      "type": 0,
+      "value": "Revelation"
+    }
+  ],
+  "Planets.Rigel I.Name": [
+    {
+      "type": 0,
+      "value": "Rigel I"
+    }
+  ],
+  "Planets.Rigel II.Name": [
+    {
+      "type": 0,
+      "value": "Rigel II"
+    }
+  ],
+  "Planets.Rigel III.Name": [
+    {
+      "type": 0,
+      "value": "Rigel III"
+    }
+  ],
+  "Planets.Rokha.Name": [
+    {
+      "type": 0,
+      "value": "Rokha"
+    }
+  ],
+  "Planets.Sakulag.Name": [
+    {
+      "type": 0,
+      "value": "Sakulag"
+    }
+  ],
+  "Planets.Saudor.Name": [
+    {
+      "type": 0,
+      "value": "Saudor"
+    }
+  ],
+  "Planets.Sem-Lore.Name": [
+    {
+      "type": 0,
+      "value": "Sem-Lore"
+    }
+  ],
+  "Planets.Shalloq.Name": [
+    {
+      "type": 0,
+      "value": "Shalloq"
+    }
+  ],
+  "Planets.Siig.Name": [
+    {
+      "type": 0,
+      "value": "Siig"
+    }
+  ],
+  "Planets.Starpoint.Name": [
+    {
+      "type": 0,
+      "value": "Starpoint"
     }
   ],
   "Planets.Styx.Ability": [
@@ -13323,10 +14547,70 @@
       "value": "When you lose this card, lose 1 victory point."
     }
   ],
+  "Planets.Styx.Name": [
+    {
+      "type": 0,
+      "value": "Styx"
+    }
+  ],
+  "Planets.Tallin Hollow.Name": [
+    {
+      "type": 0,
+      "value": "Tallin Hollow"
+    }
+  ],
+  "Planets.Tallin.Name": [
+    {
+      "type": 0,
+      "value": "Tallin"
+    }
+  ],
+  "Planets.Tar'Mann.Name": [
+    {
+      "type": 0,
+      "value": "Tar'Mann"
+    }
+  ],
+  "Planets.Tarana.Name": [
+    {
+      "type": 0,
+      "value": "Tarana"
+    }
+  ],
   "Planets.Tempesta.Ability": [
     {
       "type": 0,
       "value": "You may exhaust this card after you activate a system to apply +1 to the move value of 1 of your ships during this tactical action."
+    }
+  ],
+  "Planets.Tempesta.Name": [
+    {
+      "type": 0,
+      "value": "Tempesta"
+    }
+  ],
+  "Planets.Tequ'ran.Name": [
+    {
+      "type": 0,
+      "value": "Tequ'ran"
+    }
+  ],
+  "Planets.The Dark.Name": [
+    {
+      "type": 0,
+      "value": "The Dark"
+    }
+  ],
+  "Planets.The Watchtower.Name": [
+    {
+      "type": 0,
+      "value": "The Watchtower"
+    }
+  ],
+  "Planets.Thibah.Name": [
+    {
+      "type": 0,
+      "value": "Thibah"
     }
   ],
   "Planets.Thunder's Edge.Ability": [
@@ -13341,6 +14625,132 @@
     {
       "type": 0,
       "value": "You may exhaust this card at the end of your turn to perform an action."
+    }
+  ],
+  "Planets.Thunder's Edge.Name": [
+    {
+      "type": 0,
+      "value": "Thunder's Edge"
+    }
+  ],
+  "Planets.Tiamat.Name": [
+    {
+      "type": 0,
+      "value": "Tiamat"
+    }
+  ],
+  "Planets.Tinnes.Name": [
+    {
+      "type": 0,
+      "value": "Tinnes"
+    }
+  ],
+  "Planets.Torkan.Name": [
+    {
+      "type": 0,
+      "value": "Torkan"
+    }
+  ],
+  "Planets.Tren'lak.Name": [
+    {
+      "type": 0,
+      "value": "Tren'lak"
+    }
+  ],
+  "Planets.Tsion Station.Name": [
+    {
+      "type": 0,
+      "value": "Tsion Station"
+    }
+  ],
+  "Planets.Valk.Name": [
+    {
+      "type": 0,
+      "value": "Valk"
+    }
+  ],
+  "Planets.Vefut II.Name": [
+    {
+      "type": 0,
+      "value": "Vefut II"
+    }
+  ],
+  "Planets.Vega Major.Name": [
+    {
+      "type": 0,
+      "value": "Vega Major"
+    }
+  ],
+  "Planets.Vega Minor.Name": [
+    {
+      "type": 0,
+      "value": "Vega Minor"
+    }
+  ],
+  "Planets.Velnor.Name": [
+    {
+      "type": 0,
+      "value": "Velnor"
+    }
+  ],
+  "Planets.Vira-Pics III.Name": [
+    {
+      "type": 0,
+      "value": "Vira-Pics III"
+    }
+  ],
+  "Planets.Vorhal.Name": [
+    {
+      "type": 0,
+      "value": "Vorhal"
+    }
+  ],
+  "Planets.Wellon.Name": [
+    {
+      "type": 0,
+      "value": "Wellon"
+    }
+  ],
+  "Planets.Winnu.Name": [
+    {
+      "type": 0,
+      "value": "Winnu"
+    }
+  ],
+  "Planets.Wren Terra.Name": [
+    {
+      "type": 0,
+      "value": "Wren Terra"
+    }
+  ],
+  "Planets.Xanhact.Name": [
+    {
+      "type": 0,
+      "value": "Xanhact"
+    }
+  ],
+  "Planets.Xxehan.Name": [
+    {
+      "type": 0,
+      "value": "Xxehan"
+    }
+  ],
+  "Planets.Ylir.Name": [
+    {
+      "type": 0,
+      "value": "Ylir"
+    }
+  ],
+  "Planets.Zohbat.Name": [
+    {
+      "type": 0,
+      "value": "Zohbat"
+    }
+  ],
+  "Planets.[0.0.0].Name": [
+    {
+      "type": 0,
+      "value": "[0.0.0]"
     }
   ],
   "PmqXSZ": [

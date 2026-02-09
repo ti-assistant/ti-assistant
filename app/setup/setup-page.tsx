@@ -970,7 +970,7 @@ interface FactionSelectProps {
   numFactions: number;
   speaker: number;
   setFaction: (index: number, factionId: Optional<FactionId>) => void;
-  setColor: (index: number, colorName: Optional<string>) => void;
+  setColor: (index: number, colorName: Optional<FactionColor>) => void;
   setSpeaker: (index: number) => void;
   setPlayerName: (index: number, playerName: string) => void;
   setAlliancePartner: (
@@ -1063,7 +1063,7 @@ function FactionSelect({
     setFaction(factionIndex, factionId);
   }
 
-  function selectColor(color: Optional<string>) {
+  function selectColor(color: Optional<FactionColor>) {
     setColor(factionIndex, color);
   }
 
@@ -1450,7 +1450,7 @@ export default function SetupPage({
     });
   }
 
-  function updatePlayerColor(index: number, color: Optional<string>) {
+  function updatePlayerColor(index: number, color: Optional<FactionColor>) {
     const faction = setupFactions[index];
     if (!faction) {
       return;
@@ -1508,9 +1508,9 @@ export default function SetupPage({
   }
 
   function randomFactions() {
-    const usedColors = new Set<string>();
+    const usedColors = new Set<FactionColor>();
     let selectedFactions: FactionId[] = [];
-    let selectedColors: string[] = [];
+    let selectedColors: FactionColor[] = [];
     for (let index = 0; index < numFactions; index++) {
       const faction = setupFactions[index];
       if (!faction) {
@@ -2174,7 +2174,15 @@ export default function SetupPage({
         </div>
         {/* Custom UI Section */}
         <div className="flexRow" style={{ gridArea: "trac", flexWrap: "wrap" }}>
-          <LabeledDiv label="Track">
+          <LabeledDiv
+            label={
+              <FormattedMessage
+                id="PXA3op"
+                description="Label for a section where users can decide what information to track."
+                defaultMessage="Track"
+              />
+            }
+          >
             <div
               className="flexRow"
               style={{
@@ -2291,7 +2299,7 @@ export default function SetupPage({
           <button
             style={{
               fontSize: rem(40),
-              fontFamily: "Slider",
+              fontFamily: "var(--main-font)",
               color: creatingGame ? "var(--disabled-bg)" : undefined,
               position: "relative",
             }}
@@ -2454,6 +2462,18 @@ export default function SetupPage({
               >
                 Objectives
               </Toggle>
+              <Toggle
+                selected={!options.hide.has("RELICS")}
+                toggleFn={() =>
+                  toggleHide(!options.hide.has("RELICS"), "RELICS")
+                }
+              >
+                <FormattedMessage
+                  id="pPpzkR"
+                  description="The title of relic cards."
+                  defaultMessage="Relics"
+                />
+              </Toggle>
             </div>
           </LabeledDiv>
           <div className="flexColumn" style={{ width: "100%" }}>
@@ -2505,7 +2525,7 @@ export default function SetupPage({
             <button
               style={{
                 fontSize: rem(40),
-                fontFamily: "Slider",
+                fontFamily: "var(--main-font)",
                 color: creatingGame ? "var(--disabled-bg)" : undefined,
                 position: "relative",
               }}

@@ -13,6 +13,7 @@ import {
   getMessages,
   getSessionIdFromCookie,
 } from "../../../src/util/server";
+import { intlErrorFn } from "../../../src/util/util";
 import DynamicSidebars from "../../game/[gameId]/dynamic-sidebars";
 import GameLoader from "../../game/[gameId]/game-loader";
 import styles from "./main.module.scss";
@@ -37,7 +38,7 @@ async function getIntl() {
   const locale = await getLocale();
   const messages = await getMessages(locale);
   const cache = createIntlCache();
-  return createIntl({ locale, messages }, cache);
+  return createIntl({ locale, messages, onError: intlErrorFn as any }, cache);
 }
 
 export default async function Layout({

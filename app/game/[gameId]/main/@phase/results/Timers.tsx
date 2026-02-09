@@ -17,6 +17,9 @@ export default function Timers({
 }) {
   const timers = useTimers();
   const factions = useFactions();
+
+  console.log("Timers", timers);
+  console.log("Tiemr data", timerData);
   return (
     <div
       className="flexColumn"
@@ -44,20 +47,17 @@ export default function Timers({
         }
 
         const data = timerData[key];
-        if (!data) {
-          return null;
-        }
 
         let time = val;
         let secondary = timers[`${key}-secondary`];
-        let numTurns = data.numTurns;
-        let longestTurn = data.longestTurn;
+        let numTurns = data?.numTurns ?? 0;
+        let longestTurn = data?.longestTurn ?? 0;
 
         if (key === "Obsidian") {
           numTurns += timerData["Firmament"]?.numTurns ?? 0;
           longestTurn = Math.max(
             longestTurn,
-            timerData["Firmament"]?.longestTurn ?? 0
+            timerData["Firmament"]?.longestTurn ?? 0,
           );
           time += timers["Firmament"] ?? 0;
           secondary += timers["Firmament-secondary"] ?? 0;
@@ -77,16 +77,23 @@ export default function Timers({
                 Total Time:
                 <TimerDisplay time={time} width={100} />
               </div>
-              <div className="flexRow">Turns Taken: {numTurns}</div>
+              {data ? (
+                <>
+                  <div className="flexRow">Turns Taken: {numTurns}</div>
 
-              <div className="flexRow">
-                Longest Turn:
-                <TimerDisplay time={longestTurn} width={100} />
-              </div>
-              <div className="flexRow">
-                Average per Turn:
-                <TimerDisplay time={Math.floor(time / numTurns)} width={100} />
-              </div>
+                  <div className="flexRow">
+                    Longest Turn:
+                    <TimerDisplay time={longestTurn} width={100} />
+                  </div>
+                  <div className="flexRow">
+                    Average per Turn:
+                    <TimerDisplay
+                      time={Math.floor(time / numTurns)}
+                      width={100}
+                    />
+                  </div>
+                </>
+              ) : null}
               {secondary ? (
                 <div className="flexRow">
                   Secondary:

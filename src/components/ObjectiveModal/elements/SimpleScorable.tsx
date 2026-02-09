@@ -76,7 +76,7 @@ export default function SimpleScorable({
             if (!prevScored) {
               return null;
             }
-            const showTag = index > 0;
+            const showTag = true;
             const scorer = objectiveScorers[index];
             return (
               <FactionSelectRadialMenu
@@ -95,7 +95,9 @@ export default function SimpleScorable({
                 size={size}
                 tag={
                   showTag ? (
-                    <InfoModal title={objective.name}>{info}</InfoModal>
+                    <InfoModal title={objective.name}>
+                      {info ?? objective.description}
+                    </InfoModal>
                   ) : undefined
                 }
                 viewOnly={viewOnly}

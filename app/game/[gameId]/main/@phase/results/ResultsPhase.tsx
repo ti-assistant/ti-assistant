@@ -34,14 +34,17 @@ export default function ResultsPhase() {
   const [viewing, setViewing] = useState<View>("Game Log");
 
   const mapOrderedFactions = Object.values(factions ?? {}).sort(
-    (a, b) => a.mapPosition - b.mapPosition
+    (a, b) => a.mapPosition - b.mapPosition,
   );
 
   const mapString = getMapString(options, mapOrderedFactions.length);
 
   return (
     <React.Fragment>
-      <div className="flexColumn" style={{ height: "100svh", width: "25%" }}>
+      <div
+        className="flexColumn"
+        style={{ minHeight: "calc(100dvh - 6.25rem)", width: "25%" }}
+      >
         <LabeledDiv label="View">
           <Chip
             selected={viewing === "Game Log"}
@@ -84,7 +87,7 @@ export default function ResultsPhase() {
           <BorderedDiv>Download Game Data</BorderedDiv>
         </a>
       </div>
-      <div style={{ marginTop: rem(96), width: "100%" }}>
+      <div style={{ marginTop: "2.5rem", width: "100%" }}>
         <InnerContent viewing={viewing} />
       </div>
     </React.Fragment>
@@ -145,7 +148,7 @@ function InnerContent({ viewing }: { viewing: View }) {
       {
         name: "game-log",
         type: "module",
-      }
+      },
     );
 
     worker.current.postMessage({
@@ -221,7 +224,7 @@ function buildInitialGameData(
     speaker: number;
     options: Options;
   },
-  intl: IntlShape
+  intl: IntlShape,
 ) {
   const gameFactions: GameFaction[] = setupData.factions.map(
     (faction, index) => {
@@ -238,7 +241,7 @@ function buildInitialGameData(
 
       // Get home planets for each faction.
       const homeBasePlanets = Object.values(getPlanets(intl)).filter(
-        (planet) => planet.faction === faction.name && planet.home
+        (planet) => planet.faction === faction.name && planet.home,
       );
       const homePlanets: Partial<Record<PlanetId, { state: PlanetState }>> = {};
       homeBasePlanets.forEach((planet) => {
@@ -290,7 +293,7 @@ function buildInitialGameData(
         hero: "locked",
         commander: "locked",
       };
-    }
+    },
   );
 
   let baseFactions: Partial<Record<FactionId, GameFaction>> = {};
@@ -395,7 +398,7 @@ function buildSetupGameData(gameData: GameData): {
     options["map-string"] ?? "",
     options["map-style"],
     factions.length,
-    options.expansions.includes("THUNDERS EDGE")
+    options.expansions.includes("THUNDERS EDGE"),
   );
 
   return {
