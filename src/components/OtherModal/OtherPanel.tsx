@@ -240,7 +240,16 @@ function RelicsSection() {
             );
           })}
         </OptionalLine>
-        <OptionalLine label="Unowned Relics">
+        <OptionalLine
+          label={
+            <FormattedMessage
+              id="WkNCwM"
+              defaultMessage="Unowned {count, plural, one {Relic} other {Relics}}"
+              description="Relics which are not owned by anyone."
+              values={{ count: 2 }}
+            />
+          }
+        >
           {unownedRelics.map((relic) => {
             return (
               <div
@@ -410,7 +419,15 @@ function PromissoriesSection() {
       }}
     >
       <div className="flexColumn">
-        <LabeledLine leftLabel="Support for the Throne" />
+        <LabeledLine
+          leftLabel={
+            <FormattedMessage
+              id="Objectives.Support for the Throne.Title"
+              description="Title of Objective: Support for the Throne"
+              defaultMessage="Support for the Throne"
+            />
+          }
+        />
         <div
           className="flexColumn"
           style={{
@@ -469,7 +486,16 @@ function PromissoriesSection() {
             );
           })}
         </div>
-        <LabeledLine leftLabel="Alliance" />
+        <LabeledLine
+          leftLabel={
+            <FormattedMessage
+              id="Promissories.Alliance.Title"
+              defaultMessage="{count, plural, one {Alliance} other {Alliances}}"
+              description="Title of Promissory: Alliance"
+              values={{ count: 1 }}
+            />
+          }
+        />
         <div className="flexColumn" style={{ gap: rem(12), width: "100%" }}>
           <div
             className="flexColumn"
@@ -539,7 +565,11 @@ function PromissoriesSection() {
                   style={{ fontSize: rem(16), gap: rem(4) }}
                 >
                   <FactionIcon factionId="Mahact Gene-Sorcerers" size={16} />
-                  Fleet Pool Tokens
+                  <FormattedMessage
+                    id="LkSYQA"
+                    defaultMessage="Fleet Pool Tokens"
+                    description="Tokens that determine how many non-fighter ships can be in a system."
+                  />
                 </div>
               }
             >
@@ -611,7 +641,12 @@ function PromissoriesSection() {
                   style={{ fontSize: rem(16), gap: rem(4) }}
                 >
                   <FactionIcon factionId="Yin Brotherhood" size={16} />
-                  Breakthrough Alliances
+                  <FormattedMessage
+                    id="Promissories.Alliance.Title"
+                    defaultMessage="{count, plural, one {Alliance} other {Alliances}}"
+                    description="Title of Promissory: Alliance"
+                    values={{ count: 2 }}
+                  />
                 </div>
               }
             >

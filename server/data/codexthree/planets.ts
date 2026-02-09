@@ -10,7 +10,7 @@ const TOP_RIGHT = { x: 22, y: -38 };
 const FAR_BOTTOM_RIGHT = { x: 28, y: 42 };
 
 export default function getCodexThreePlanets(
-  intl: IntlShape
+  intl: IntlShape,
 ): Record<CodexThree.PlanetId, BasePlanet> {
   return {
     "Archon Ren Keleres": {
@@ -20,7 +20,11 @@ export default function getCodexThreePlanets(
       home: true,
       influence: 3,
       id: "Archon Ren Keleres",
-      name: "Archon Ren",
+      name: intl.formatMessage({
+        id: "Planets.Archon Ren.Name",
+        description: "Name of Planet: Archon Ren",
+        defaultMessage: "Archon Ren",
+      }),
       position: TOP_LEFT,
       resources: 2,
       subFaction: "Xxcha Kingdom",
@@ -34,7 +38,11 @@ export default function getCodexThreePlanets(
       home: true,
       influence: 1,
       id: "Archon Tau Keleres",
-      name: "Archon Tau",
+      name: intl.formatMessage({
+        id: "Planets.Archon Tau.Name",
+        description: "Name of Planet: Archon Tau",
+        defaultMessage: "Archon Tau",
+      }),
       position: HOME_BOTTOM_RIGHT,
       resources: 1,
       subFaction: "Xxcha Kingdom",
@@ -48,7 +56,11 @@ export default function getCodexThreePlanets(
       home: true,
       influence: 1,
       id: "Avar Keleres",
-      name: "Avar",
+      name: intl.formatMessage({
+        id: "Planets.Avar.Name",
+        description: "Name of Planet: Avar",
+        defaultMessage: "Avar",
+      }),
       position: FAR_BOTTOM_RIGHT,
       resources: 1,
       subFaction: "Argent Flight",
@@ -64,7 +76,11 @@ export default function getCodexThreePlanets(
       influence: 3,
       locked: true,
       id: "Custodia Vigilia",
-      name: "Custodia Vigilia",
+      name: intl.formatMessage({
+        id: "Planets.Custodia Vigilia.Name",
+        description: "Name of Planet: Custodia Vigilia",
+        defaultMessage: "Custodia Vigilia",
+      }),
       omegas: [
         {
           ability:
@@ -83,7 +99,11 @@ export default function getCodexThreePlanets(
       home: true,
       influence: 1,
       id: "Moll Primus Keleres",
-      name: "Moll Primus",
+      name: intl.formatMessage({
+        id: "Planets.Moll Primus.Name",
+        description: "Name of Planet: Moll Primus",
+        defaultMessage: "Moll Primus",
+      }),
       position: HOME_MIDDLE,
       resources: 4,
       system: 202,
@@ -97,7 +117,11 @@ export default function getCodexThreePlanets(
       home: true,
       influence: 0,
       id: "Valk Keleres",
-      name: "Valk",
+      name: intl.formatMessage({
+        id: "Planets.Valk.Name",
+        description: "Name of Planet: Valk",
+        defaultMessage: "Valk",
+      }),
       position: MIDDLE_LEFT,
       resources: 2,
       subFaction: "Argent Flight",
@@ -111,7 +135,11 @@ export default function getCodexThreePlanets(
       home: true,
       influence: 2,
       id: "Ylir Keleres",
-      name: "Ylir",
+      name: intl.formatMessage({
+        id: "Planets.Ylir.Name",
+        description: "Name of Planet: Ylir",
+        defaultMessage: "Ylir",
+      }),
       position: TOP_RIGHT,
       resources: 0,
       subFaction: "Argent Flight",
