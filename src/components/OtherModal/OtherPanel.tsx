@@ -129,7 +129,7 @@ function ExpeditionRadialSelector({
         style={{
           position: "relative",
           height: rem(28),
-          fontFamily: "Slider",
+          fontFamily: "var(--main-font)",
           gap: rem(4),
           justifyContent: "center",
           alignItems: "center",
@@ -200,7 +200,7 @@ function RelicsSection() {
         overflowX: "hidden",
       }}
     >
-      <div className="flexColumn">
+      <div className="flexColumn" style={{ paddingBlockEnd: "0.5rem" }}>
         <OptionalLine label="Owned Relics">
           {ownedRelics.map((relic) => {
             const owner = relic.owner;
@@ -249,6 +249,7 @@ function RelicsSection() {
                 style={{
                   width: "100%",
                   padding: `0 ${rem(8)}`,
+                  justifyContent: "space-between",
                 }}
               >
                 <InfoRow
@@ -424,7 +425,7 @@ function PromissoriesSection() {
           {mapOrderedFactionIds.map((factionId) => {
             const supportHolder = getSupportScorer(
               factionId,
-              supportForTheThrone
+              supportForTheThrone,
             );
             return (
               <div
@@ -443,7 +444,7 @@ function PromissoriesSection() {
                         gameId,
                         newFaction,
                         "Support for the Throne",
-                        factionId
+                        factionId,
                       );
                     }
                     if (prevFaction) {
@@ -451,13 +452,13 @@ function PromissoriesSection() {
                         gameId,
                         prevFaction,
                         "Support for the Throne",
-                        factionId
+                        factionId,
                       );
                     }
                   }}
                   selectedFaction={supportHolder}
                   borderColor={getFactionColor(
-                    supportHolder ? factions[supportHolder] : undefined
+                    supportHolder ? factions[supportHolder] : undefined,
                   )}
                   tag={<FactionIcon factionId={factionId} size="100%" />}
                   tagBorderColor={getFactionColor(factions[factionId])}
@@ -494,7 +495,7 @@ function PromissoriesSection() {
                   }
                   return owner;
                 },
-                undefined
+                undefined,
               );
               return (
                 <div
@@ -571,13 +572,13 @@ function PromissoriesSection() {
                                 loseAllianceAsync(
                                   gameId,
                                   "Mahact Gene-Sorcerers",
-                                  factionId
+                                  factionId,
                                 );
                               } else {
                                 gainAllianceAsync(
                                   gameId,
                                   "Mahact Gene-Sorcerers",
-                                  factionId
+                                  factionId,
                                 );
                               }
                             }
@@ -586,8 +587,8 @@ function PromissoriesSection() {
                       <div
                         className={`
                   ${styles.factionIcon} ${selected ? styles.selected : ""} ${
-                          viewOnly ? styles.viewOnly : ""
-                        }`}
+                    viewOnly ? styles.viewOnly : ""
+                  }`}
                         style={
                           {
                             "--color": getFactionColor(factions[factionId]),
@@ -640,13 +641,13 @@ function PromissoriesSection() {
                                 loseAllianceAsync(
                                   gameId,
                                   "Yin Brotherhood",
-                                  faction.id
+                                  faction.id,
                                 );
                               } else {
                                 gainAllianceAsync(
                                   gameId,
                                   "Yin Brotherhood",
-                                  faction.id
+                                  faction.id,
                                 );
                               }
                             }
@@ -655,8 +656,8 @@ function PromissoriesSection() {
                       <div
                         className={`
                   ${styles.factionIcon} ${selected ? styles.selected : ""} ${
-                          viewOnly ? styles.viewOnly : ""
-                        }`}
+                    viewOnly ? styles.viewOnly : ""
+                  }`}
                       >
                         <FactionIcon factionId={faction.id} size="100%" />
                       </div>

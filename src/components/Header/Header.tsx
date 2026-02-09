@@ -74,12 +74,12 @@ export default function Header({ archive }: { archive?: boolean }) {
           throw err;
         }
         setQrCode(url);
-      }
+      },
     );
   }
 
   const mapOrderedFactions = Object.values(factions ?? {}).sort(
-    (a, b) => a.mapPosition - b.mapPosition
+    (a, b) => a.mapPosition - b.mapPosition,
   );
 
   let gameFinished = false;
@@ -152,13 +152,13 @@ export default function Header({ archive }: { archive?: boolean }) {
                   wormholeNexus={getWormholeNexusSystemNumber(
                     options,
                     planets,
-                    factions
+                    factions,
                   )}
                   planets={allPlanets}
                   expansions={options.expansions}
                   hideFracture={!fracturePlanetsOwned(allPlanets)}
                 />
-              </div>
+              </div>,
             )
           }
         >
@@ -219,7 +219,7 @@ export default function Header({ archive }: { archive?: boolean }) {
               </button>
             ) : (
               <button
-                style={{ fontFamily: "Slider", fontSize: rem(32) }}
+                style={{ fontFamily: "var(--main-font)", fontSize: rem(32) }}
                 onClick={() => {
                   if (!gameId) {
                     return;

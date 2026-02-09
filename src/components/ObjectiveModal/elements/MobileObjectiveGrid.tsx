@@ -252,10 +252,8 @@ export default function MobileObjectiveGrid() {
           </CollapsibleSection>
         )}
         <div
-          className="flexRow"
+          className="flexColumn"
           style={{
-            width: "95%",
-            flexWrap: "wrap",
             justifyContent: "center",
             gap: rem(16),
           }}
@@ -816,15 +814,24 @@ export default function MobileObjectiveGrid() {
               alignItems: "flex-start",
             }}
           >
-            <SimpleScorable
-              objectiveId="Imperial Rider"
-              orderedFactionIds={orderedFactionIds}
-              info="Can be scored multiple times via The Codex, Ral Nel's Breakthrough, and Garbozia's ability."
-            />
-            <SimpleScorable
-              objectiveId="Political Censure"
-              orderedFactionIds={orderedFactionIds}
-            />
+            {options.expansions.includes("TWILIGHTS FALL") ? (
+              <SimpleScorable
+                objectiveId="Unravel"
+                orderedFactionIds={orderedFactionIds}
+              />
+            ) : (
+              <>
+                <SimpleScorable
+                  objectiveId="Imperial Rider"
+                  orderedFactionIds={orderedFactionIds}
+                  info="Can be scored multiple times via The Codex, Ral Nel's Breakthrough, and Garbozia's ability."
+                />
+                <SimpleScorable
+                  objectiveId="Political Censure"
+                  orderedFactionIds={orderedFactionIds}
+                />
+              </>
+            )}
           </div>
           {includesPoK || includesTE ? (
             <div
@@ -863,6 +870,26 @@ export default function MobileObjectiveGrid() {
             orderedFactionIds={orderedFactionIds}
             info="Can be scored 2x due to Miscount Disclosed."
           />
+          {includesTE ? (
+            <div
+              className="flexRow"
+              style={{
+                height: "100%",
+                gap: 0,
+                width: "100%",
+                alignItems: "flex-start",
+              }}
+            >
+              <SimpleScorable
+                objectiveId="Book of Latvinia"
+                orderedFactionIds={orderedFactionIds}
+              />
+              <SimpleScorable
+                objectiveId="The Silver Flame"
+                orderedFactionIds={orderedFactionIds}
+              />
+            </div>
+          ) : null}
           {!mutiny ? null : (
             <div
               className="flexColumn mediumFont"

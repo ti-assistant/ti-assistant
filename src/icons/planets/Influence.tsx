@@ -50,7 +50,7 @@ export default function InfluenceSVG({
           x="140.481"
           y={fontY}
           fill={color === "#555" ? "#555" : "#eee"}
-          fontFamily="Slider"
+          fontFamily="var(--main-font)"
           fontSize={fontSize}
           textAnchor="middle"
         >

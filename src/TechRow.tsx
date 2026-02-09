@@ -43,7 +43,7 @@ function InfoContent({ tech }: { tech: Tech }) {
               className={styles.UpgradeTechAbilities}
               style={{
                 whiteSpace: "nowrap",
-                fontFamily: "Slider",
+                fontFamily: "var(--main-font)",
                 paddingLeft: rem(8),
                 rowGap: rem(2),
                 width: "100%",
@@ -210,7 +210,7 @@ function ResearchAgreement({ tech }: { tech: Tech }) {
   const researchAgreement = useLogEntries<AddTechData>(
     "ADD_TECH",
     (entry) =>
-      !!entry.data.event.researchAgreement && entry.data.event.tech === tech.id
+      !!entry.data.event.researchAgreement && entry.data.event.tech === tech.id,
   )[0];
   const factions = useFactions();
   const gameId = useGameId();

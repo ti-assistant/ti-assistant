@@ -3,7 +3,7 @@
   grid-auto-flow: column;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.05em;
-  font-family: "Slider";
+  font-family: var(--main-font);
   width: fit-content;
   box-sizing: border-box;
 }

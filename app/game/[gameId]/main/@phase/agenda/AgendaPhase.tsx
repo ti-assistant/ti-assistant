@@ -178,7 +178,6 @@ function AgendaSteps() {
           style={{
             width: "90%",
             justifyContent: "space-evenly",
-            paddingTop: rem(16),
           }}
         >
           <AgendaTimer agendaNum={1} />
@@ -564,7 +563,7 @@ export default function AgendaPhase() {
       <div
         className={`flexColumn ${styles.MiddleColumn}`}
         style={{
-          paddingTop: agendaNum > 2 ? rem(160) : undefined,
+          // paddingTop: agendaNum > 2 ? rem(160) : undefined,
           gap: numFactions > 7 ? 0 : rem(8),
         }}
       >
@@ -583,7 +582,6 @@ export default function AgendaPhase() {
               style={{
                 fontSize: rem(40),
                 textAlign: "center",
-                marginTop: rem(120),
               }}
             >
               <FormattedMessage

@@ -4,13 +4,14 @@
   gap: 0.5rem;
 
   flex-shrink: 0;
-  height: 100svh;
   justify-content: center;
   position: sticky;
-  top: 0;
+  top: 3.5rem;
+
+  min-height: calc(100dvh - 7rem);
 }
 
-@media only screen and (max-width: 56.25rem) {
+@media only screen and (max-width: 68.75rem) {
   .SummaryColumn {
     display: none;
   }

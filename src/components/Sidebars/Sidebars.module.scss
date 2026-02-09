@@ -31,17 +31,7 @@
   transform-origin: 100% 0px;
 }
 
-@media only screen and (max-width: 75rem) {
-  .Sidebar {
-    --edge-distance: 0.5rem;
-    color: #eee;
-    font-size: 1.5rem;
-    line-height: 1.5rem;
-    padding: 0.5rem 0;
-  }
-}
-
-@media only screen and (max-width: 56.25rem) {
+@media only screen and (max-width: 68.75rem) {
   .Sidebar {
     display: none;
   }

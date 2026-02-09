@@ -321,10 +321,7 @@ export default function SetupPhase() {
                 />
               }
             >
-              <div
-                className="flexColumn"
-                style={{ maxWidth: "calc(100% - 1.25rem)" }}
-              >
+              <div className="flexColumn">
                 {revealedObjectives.length > 0 ? (
                   <LabeledDiv
                     label={
@@ -464,7 +461,7 @@ export default function SetupPhase() {
               display: "grid",
               width: "100%",
               gridAutoFlow: "row",
-              gridTemplateColumns: "repeat(auto-fit, minmax(14rem, 1fr))",
+              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
               // gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
               gap: rem(8),
               paddingTop: rem(6),

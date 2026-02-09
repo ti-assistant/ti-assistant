@@ -1,3 +1,4 @@
+import { Techs } from "../../context/techDataHooks";
 import { Optional } from "../types/types";
 
 /**
@@ -15,6 +16,23 @@ export function hasTech(faction: Optional<Faction>, tech: Optional<Tech>) {
   }
   const factionTech = faction.techs[tech.id];
   return !!factionTech && factionTech.state !== "purged";
+}
+
+export function canExploreFrontierTokens(
+  faction: Optional<Faction>,
+  techs: Techs,
+) {
+  if (!faction) {
+    return false;
+  }
+  if (hasTech(faction, techs["Dark Energy Tap"])) {
+    return true;
+  }
+  const color: Exclude<FactionColor, "Magenta"> | "Pink" =
+    faction.color === "Magenta" ? "Pink" : faction.color;
+  const antimatterTechId: TechId = `Antimatter ${color}`;
+
+  return hasTech(faction, techs[antimatterTechId]);
 }
 
 export function isTechPurged(faction: Faction, tech: Tech) {
@@ -58,7 +76,7 @@ export function isTechReplaced(factionId: FactionId, techId: TechId) {
 
 export function getReplacementTech(
   factionId: FactionId,
-  techId: TechId
+  techId: TechId,
 ): Optional<TechId> {
   switch (techId) {
     case "Carrier II":

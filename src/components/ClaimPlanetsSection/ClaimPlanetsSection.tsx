@@ -63,7 +63,7 @@ export default function ClaimPlanetsSection({
     gridAutoFlow: "column",
     gridTemplateRows: `repeat(${Math.min(
       maxPlanets,
-      availablePlanets.length
+      availablePlanets.length,
     )}, auto)`,
     gap: rem(4),
     justifyContent: "flex-start",
@@ -77,7 +77,10 @@ export default function ClaimPlanetsSection({
   }
 
   return (
-    <div className="flexColumn" style={{ width: "100%" }}>
+    <div
+      className={`flexColumn ${styles.ClaimPlanetsSection}`}
+      style={{ width: "100%" }}
+    >
       <ClaimedPlanetsSection factionId={factionId} hideWrapper={hideWrapper} />
       {!complete && availablePlanets.length > 0 ? (
         <ClientOnlyHoverMenu
@@ -251,7 +254,7 @@ function AddAttachment({ event }: { event: ClaimPlanetEvent }) {
         attachment.required.type &&
         adjustedPlanet.types.includes(attachment.required.type) &&
         (attachment.id === currentAttachment ||
-          !claimedAttachments.has(attachment.id))
+          !claimedAttachments.has(attachment.id)),
     )
     .map((attachment) => attachment.id);
 

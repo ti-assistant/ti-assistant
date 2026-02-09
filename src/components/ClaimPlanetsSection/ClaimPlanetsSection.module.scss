@@ -13,3 +13,9 @@ div.ClaimedPlanetsSection {
   gap: 0.25rem;
   padding-left: 0.25rem;
 }
+
+@media only screen and (max-width: 44rem) {
+  div.ClaimPlanetsSection {
+    align-items: flex-start;
+  }
+}

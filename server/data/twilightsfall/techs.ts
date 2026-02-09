@@ -1,7 +1,7 @@
 import { IntlShape } from "react-intl";
 
 export default function getTwilightsFallTechs(
-  intl: IntlShape
+  intl: IntlShape,
 ): Record<TwilightsFall.TechId, BaseTech> {
   return {
     // The Ruby Monarch
@@ -13,7 +13,7 @@ export default function getTwilightsFallTechs(
           defaultMessage:
             "Your ships can move into and through asteroid fields.{br}When you activate a system, you may explore 1 planet in that system that contains 1 or more of your units.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "TWILIGHTS FALL",
       faction: "The Ruby Monarch",
@@ -34,7 +34,7 @@ export default function getTwilightsFallTechs(
           defaultMessage:
             "Your ships can retreat into adjacent systems that do not contain other players' units, even if you do not have units or control planets in that system.{br}After you perform a tactical action in a system that contains a frontier token, if you have 1 or more ships in that system, explore that token.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "TWILIGHTS FALL",
       faction: "The Ruby Monarch",
@@ -56,7 +56,7 @@ export default function getTwilightsFallTechs(
           defaultMessage:
             "Your ships can move into and through asteroid fields.{br}When you activate a system, you may explore 1 planet in that system that contains 1 or more of your units.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "TWILIGHTS FALL",
       faction: "Radiant Aur",
@@ -77,7 +77,7 @@ export default function getTwilightsFallTechs(
           defaultMessage:
             "Your ships can retreat into adjacent systems that do not contain other players' units, even if you do not have units or control planets in that system.{br}After you perform a tactical action in a system that contains a frontier token, if you have 1 or more ships in that system, explore that token.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "TWILIGHTS FALL",
       faction: "Radiant Aur",
@@ -99,7 +99,7 @@ export default function getTwilightsFallTechs(
           defaultMessage:
             "Your ships can move into and through asteroid fields.{br}When you activate a system, you may explore 1 planet in that system that contains 1 or more of your units.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "TWILIGHTS FALL",
       faction: "Avarice Rex",
@@ -120,7 +120,7 @@ export default function getTwilightsFallTechs(
           defaultMessage:
             "Your ships can retreat into adjacent systems that do not contain other players' units, even if you do not have units or control planets in that system.{br}After you perform a tactical action in a system that contains a frontier token, if you have 1 or more ships in that system, explore that token.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "TWILIGHTS FALL",
       faction: "Avarice Rex",
@@ -142,7 +142,7 @@ export default function getTwilightsFallTechs(
           defaultMessage:
             "Your ships can move into and through asteroid fields.{br}When you activate a system, you may explore 1 planet in that system that contains 1 or more of your units.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "TWILIGHTS FALL",
       faction: "Il Sai Lakoe",
@@ -163,7 +163,7 @@ export default function getTwilightsFallTechs(
           defaultMessage:
             "Your ships can retreat into adjacent systems that do not contain other players' units, even if you do not have units or control planets in that system.{br}After you perform a tactical action in a system that contains a frontier token, if you have 1 or more ships in that system, explore that token.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "TWILIGHTS FALL",
       faction: "Il Sai Lakoe",
@@ -185,7 +185,7 @@ export default function getTwilightsFallTechs(
           defaultMessage:
             "Your ships can move into and through asteroid fields.{br}When you activate a system, you may explore 1 planet in that system that contains 1 or more of your units.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "TWILIGHTS FALL",
       faction: "The Saint of Swords",
@@ -206,7 +206,7 @@ export default function getTwilightsFallTechs(
           defaultMessage:
             "Your ships can retreat into adjacent systems that do not contain other players' units, even if you do not have units or control planets in that system.{br}After you perform a tactical action in a system that contains a frontier token, if you have 1 or more ships in that system, explore that token.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "TWILIGHTS FALL",
       faction: "The Saint of Swords",
@@ -228,7 +228,7 @@ export default function getTwilightsFallTechs(
           defaultMessage:
             "Your ships can move into and through asteroid fields.{br}When you activate a system, you may explore 1 planet in that system that contains 1 or more of your units.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "TWILIGHTS FALL",
       faction: "Il Na Viroset",
@@ -249,7 +249,7 @@ export default function getTwilightsFallTechs(
           defaultMessage:
             "Your ships can retreat into adjacent systems that do not contain other players' units, even if you do not have units or control planets in that system.{br}After you perform a tactical action in a system that contains a frontier token, if you have 1 or more ships in that system, explore that token.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "TWILIGHTS FALL",
       faction: "Il Na Viroset",
@@ -263,7 +263,7 @@ export default function getTwilightsFallTechs(
       type: "OTHER",
     },
     // El Nen Janovet
-    "Wavelength Magenta": {
+    "Wavelength Pink": {
       description: intl.formatMessage(
         {
           id: "Twilight's Fall.Techs.Wavelength.Description",
@@ -271,20 +271,20 @@ export default function getTwilightsFallTechs(
           defaultMessage:
             "Your ships can move into and through asteroid fields.{br}When you activate a system, you may explore 1 planet in that system that contains 1 or more of your units.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "TWILIGHTS FALL",
       faction: "El Nen Janovet",
-      id: "Wavelength Magenta",
+      id: "Wavelength Pink",
       name: intl.formatMessage({
-        id: "El Nen Janovet.Techs.Wavelength Magenta.Title",
-        description: "Title of Tech: Wavelength Magenta",
-        defaultMessage: "Wavelength: Magenta",
+        id: "El Nen Janovet.Techs.Wavelength Pink.Title",
+        description: "Title of Tech: Wavelength Pink",
+        defaultMessage: "Wavelength: Pink",
       }),
       prereqs: [],
       type: "OTHER",
     },
-    "Antimatter Magenta": {
+    "Antimatter Pink": {
       description: intl.formatMessage(
         {
           id: "Twilight's Fall.Techs.Antimatter.Description",
@@ -292,15 +292,15 @@ export default function getTwilightsFallTechs(
           defaultMessage:
             "Your ships can retreat into adjacent systems that do not contain other players' units, even if you do not have units or control planets in that system.{br}After you perform a tactical action in a system that contains a frontier token, if you have 1 or more ships in that system, explore that token.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "TWILIGHTS FALL",
       faction: "El Nen Janovet",
-      id: "Antimatter Magenta",
+      id: "Antimatter Pink",
       name: intl.formatMessage({
-        id: "El Nen Janovet.Techs.Antimatter Magenta.Title",
-        description: "Title of Tech: Antimatter Magenta",
-        defaultMessage: "Antimatter: Magenta",
+        id: "El Nen Janovet.Techs.Antimatter Pink.Title",
+        description: "Title of Tech: Antimatter Pink",
+        defaultMessage: "Antimatter: Pink",
       }),
       prereqs: [],
       type: "OTHER",
@@ -314,7 +314,7 @@ export default function getTwilightsFallTechs(
           defaultMessage:
             "Your ships can move into and through asteroid fields.{br}When you activate a system, you may explore 1 planet in that system that contains 1 or more of your units.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "TWILIGHTS FALL",
       faction: "A Sickening Lurch",
@@ -335,7 +335,7 @@ export default function getTwilightsFallTechs(
           defaultMessage:
             "Your ships can retreat into adjacent systems that do not contain other players' units, even if you do not have units or control planets in that system.{br}After you perform a tactical action in a system that contains a frontier token, if you have 1 or more ships in that system, explore that token.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "TWILIGHTS FALL",
       faction: "A Sickening Lurch",

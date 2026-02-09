@@ -10,6 +10,18 @@
   gap: 0.25rem;
 
   font-size: 0.875rem;
+
+  container-type: inline-size;
+}
+
+.StartingUnits {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@container (inline-size > 23rem) {
+  .StartingUnits {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .FactionIcon {
@@ -26,19 +38,24 @@
   user-select: none;
 }
 
+.TFFactionSelectSection {
+  display: flex;
+  flex-direction: column;
+  font-family: "Myriad Pro";
+  width: 100%;
+  gap: 0.5rem;
+}
+
 .TFFactionSelect {
   display: flex;
   flex-direction: row;
-  font-family: "Myriad Pro";
-  justify-content: space-evenly;
   align-items: center;
   gap: 0.5rem;
 }
 
-@media only screen and (max-width: 37.5rem) {
-  .TFFactionSelect {
-    flex-direction: column;
-    gap: 0.25rem;
-    justify-content: flex-start;
+@container (inline-size > 18rem) {
+  .TFFactionSelectSection {
+    flex-direction: row;
+    justify-content: space-evenly;
   }
 }

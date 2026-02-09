@@ -14,7 +14,7 @@ export default function FAQPage() {
         className="flexColumn"
         style={{
           maxWidth: "800px",
-          height: "100dvh",
+          minHeight: "calc(100dvh - 6.5rem)",
           width: "100%",
         }}
       >

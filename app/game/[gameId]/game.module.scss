@@ -1,30 +1,26 @@
 .QRCode {
+  display: none;
   position: fixed;
-  top: 4rem;
-  left: 4rem;
-
-  z-index: 3;
+  z-index: 1;
 }
 
 .MobileQRCode {
   display: block;
   position: fixed;
-  top: 1rem;
-  right: 7rem;
-  z-index: 4;
+  inset-block-start: 0.5rem;
+  inset-inline-end: 3.4rem;
+  z-index: 1;
 }
 
-@media only screen and (max-width: 56.25rem) {
+@media only screen and (min-width: 68.75rem) {
   .QRCode {
-    display: none;
-    // TODO: Decide whether or not to display QR code on mobile.
+    display: block;
+    inset-block-start: 3.25rem;
+    inset-inline-start: 3.75rem;
   }
 
   .MobileQRCode {
-    display: block;
-    position: fixed;
-    top: 0.6rem;
-    right: 3.4rem;
-    z-index: 4;
+    inset-block-start: 0.5rem;
+    inset-inline-end: 6rem;
   }
 }

@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { FormattedMessage } from "react-intl";
 import BorderedDiv from "../../../src/components/BorderedDiv/BorderedDiv";
+import Conditional from "../../../src/components/Conditional/Conditional";
 import FactionComponents from "../../../src/components/FactionComponents/FactionComponents";
-import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
 import { useGameId, useViewOnly } from "../../../src/context/dataHooks";
 import { useFactionColor } from "../../../src/context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../src/context/gameDataHooks";
@@ -16,7 +16,6 @@ import { setGameId } from "../../../src/util/api/util";
 import { BLACK_BORDER_GLOW } from "../../../src/util/borderGlow";
 import { rem } from "../../../src/util/util";
 import styles from "./game-page.module.scss";
-import Conditional from "../../../src/components/Conditional/Conditional";
 
 export default function SelectFactionPage() {
   const router = useRouter();

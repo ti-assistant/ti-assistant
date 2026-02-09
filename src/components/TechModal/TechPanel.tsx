@@ -72,12 +72,12 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
   const [collapsed, setCollapsed] = useState(!openedByDefault);
 
   const typedTechs = Object.values(techs).filter(
-    (tech) => tech.faction && !!factions[tech.faction]
+    (tech) => tech.faction && !!factions[tech.faction],
   );
   sortTechs(typedTechs);
 
   const orderedFactions = Object.values(factions).sort(
-    (a, b) => a.mapPosition - b.mapPosition
+    (a, b) => a.mapPosition - b.mapPosition,
   );
 
   const nekroFactionTechIds = objectKeys(factions["Nekro Virus"]?.techs ?? {})
@@ -120,7 +120,7 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
         <div className={styles.collapsibleTechColumn}>
           {mapOrderedFactionIds.map((factionId) => {
             const factionTechs = typedTechs.filter(
-              (tech) => tech.faction === factionId
+              (tech) => tech.faction === factionId,
             );
 
             return (
@@ -165,7 +165,7 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                       <Selector
                         hoverMenuLabel="Valefar Assimilator"
                         options={availableNekroTechs.filter(
-                          (tech) => tech.id !== nekroFactionTechIds[1]
+                          (tech) => tech.id !== nekroFactionTechIds[1],
                         )}
                         toggleItem={(techId, add) => {
                           if (viewOnly) {
@@ -202,7 +202,7 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                       <Selector
                         hoverMenuLabel="Valefar Assimilator"
                         options={availableNekroTechs.filter(
-                          (tech) => tech.id !== nekroFactionTechIds[0]
+                          (tech) => tech.id !== nekroFactionTechIds[0],
                         )}
                         toggleItem={(techId, add) => {
                           if (viewOnly) {
@@ -375,8 +375,8 @@ function TechUpdateIcon({
       <div
         className={`
                   ${styles.factionIcon} ${
-          factionHasTech ? styles.selected : ""
-        } ${viewOnly ? styles.viewOnly : ""}`}
+                    factionHasTech ? styles.selected : ""
+                  } ${viewOnly ? styles.viewOnly : ""}`}
         style={
           {
             "--color": getColorForFaction(factionId),
@@ -401,7 +401,7 @@ function TechSection({
   openedByDefault?: boolean;
 }) {
   const orderedTechIds = useOrderedTechIds(
-    (tech) => tech.type === type && !tech.faction
+    (tech) => tech.type === type && !tech.faction,
   );
   const intl = useIntl();
 
@@ -439,7 +439,7 @@ function TechSection({
 
 function UpgradeTechSection() {
   const upgradeTechIds = useOrderedTechIds(
-    (tech) => tech.type === "UPGRADE" && !tech.faction
+    (tech) => tech.type === "UPGRADE" && !tech.faction,
   );
   const intl = useIntl();
 
@@ -702,17 +702,17 @@ function TFTechList({
   }
 
   const factionAbilities = Object.values(abilities).filter(
-    (ability) => ability.owner === factionId
+    (ability) => ability.owner === factionId,
   );
   sortByTechOrder(factionAbilities);
   const factionGenomes = Object.values(genomes).filter(
-    (genome) => genome.owner === factionId
+    (genome) => genome.owner === factionId,
   );
   const factionUpgrades = Object.values(upgrades).filter(
-    (upgrade) => upgrade.owner === factionId
+    (upgrade) => upgrade.owner === factionId,
   );
   const factionParadigms = Object.values(paradigms).filter(
-    (paradigm) => paradigm.owner === factionId
+    (paradigm) => paradigm.owner === factionId,
   );
 
   let antimatter: Optional<Tech>;
@@ -930,7 +930,7 @@ function TFTechList({
                                 className={styles.UpgradeTechAbilities}
                                 style={{
                                   whiteSpace: "nowrap",
-                                  fontFamily: "Slider",
+                                  fontFamily: "var(--main-font)",
                                   paddingLeft: rem(8),
                                   rowGap: rem(2),
                                   width: "100%",
@@ -975,7 +975,7 @@ function TFTechList({
 
   return (
     <>
-      <div className="flexRow" style={{ zIndex: 1 }}>
+      <div className="flexRow" style={{ zIndex: 1, flexWrap: "wrap" }}>
         {antimatter ? (
           <Toggle
             selected={hasTech(faction, antimatter)}

@@ -40,6 +40,40 @@ interface NumberToGain {
   total?: number;
 }
 
+function canGainMoreCards(
+  numToGain: NumberToGain,
+  cardsByType: GainedCardsByType,
+) {
+  const totalGained =
+    cardsByType.abilities.length +
+    cardsByType.genomes.length +
+    cardsByType.paradigms.length +
+    cardsByType.upgrades.length;
+  if (numToGain.total) {
+    return totalGained < numToGain.total;
+  }
+
+  if (
+    numToGain.abilities &&
+    cardsByType.abilities.length < numToGain.abilities
+  ) {
+    return true;
+  }
+  if (numToGain.genomes && cardsByType.genomes.length < numToGain.genomes) {
+    return true;
+  }
+  if (
+    numToGain.paradigms &&
+    cardsByType.paradigms.length < numToGain.paradigms
+  ) {
+    return true;
+  }
+  if (numToGain.upgrades && cardsByType.upgrades.length < numToGain.upgrades) {
+    return true;
+  }
+  return false;
+}
+
 export default function GainTFCard({
   factionId,
   steal,
@@ -55,12 +89,7 @@ export default function GainTFCard({
 
   const gainedCardsByType = getGainedTFCardsByType(currentTurn, factionId);
 
-  const totalGained =
-    gainedCardsByType.abilities.length +
-    gainedCardsByType.genomes.length +
-    gainedCardsByType.paradigms.length +
-    gainedCardsByType.upgrades.length;
-  const canGainMore = !numToGain.total || totalGained < numToGain.total;
+  const canGainMore = canGainMoreCards(numToGain, gainedCardsByType);
 
   return (
     <div
@@ -266,7 +295,7 @@ function GainedCardsSection({
                             className={styles.UpgradeTechAbilities}
                             style={{
                               whiteSpace: "nowrap",
-                              fontFamily: "Slider",
+                              fontFamily: "var(--main-font)",
                               paddingLeft: rem(8),
                               rowGap: rem(2),
                               width: "100%",

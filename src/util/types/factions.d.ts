@@ -17,6 +17,16 @@ type Units = {
   [key in UnitType]?: number;
 };
 
+type FactionColor =
+  | "Red"
+  | "Orange"
+  | "Yellow"
+  | "Green"
+  | "Blue"
+  | "Purple"
+  | "Magenta"
+  | "Black";
+
 interface StartsWith {
   planets?: PlanetId[];
   techs?: TechId[];
@@ -75,8 +85,8 @@ interface Breakthrough {
 interface BaseFaction {
   abilities?: Ability[];
   breakthrough?: Breakthrough;
-  color?: string;
-  colorList?: string[];
+  color?: FactionColor;
+  colorList?: FactionColor[];
   commodities: number;
   expansion: Expansion;
   removedIn?: Expansion; // Used to remove factions if they do not apply.
@@ -91,7 +101,7 @@ interface BaseFaction {
 }
 
 interface TFFaction {
-  color: string;
+  color: FactionColor;
   commodities: number;
   id: TwilightsFall.FactionId;
   name: string;
@@ -104,7 +114,7 @@ interface GameFaction {
   alliances?: FactionId[];
   availableVotes?: number;
   breakthrough?: Partial<Breakthrough>;
-  color: string;
+  color: FactionColor;
   commander: LeaderState;
   hero: LeaderState;
   id: FactionId;

@@ -25,7 +25,7 @@ export default function ObjectivePanel({ asModal }: { asModal?: boolean }) {
             ? rem(24)
             : rem(8),
           height: "100%",
-          maxHeight: `calc(100dvh - ${rem(98)})`,
+          maxHeight: `calc(100dvh - 6rem)`,
           gap: rem(24),
           isolation: "isolate",
           backgroundColor: "var(--background-color)",

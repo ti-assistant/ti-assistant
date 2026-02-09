@@ -1,5 +1,5 @@
 .CenterColumn {
-  height: 100dvh;
+  min-height: calc(100dvh - 6.5rem);
 
   display: flex;
   flex-direction: column;
@@ -8,10 +8,4 @@
   gap: 1.25rem;
 
   text-align: center;
-}
-
-@media only screen and (max-width: 75rem) {
-  .CenterColumn {
-    height: calc(100dvh - 6.5rem);
-  }
 }

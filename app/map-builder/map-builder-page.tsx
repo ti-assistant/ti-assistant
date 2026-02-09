@@ -128,45 +128,10 @@ function FilterButton({
   );
 }
 
-function mapValuePriority(a?: string, b?: string) {
-  if (!a) {
-    if (!b) {
-      throw new Error("Both values missing!");
-    }
-    return b;
-  }
-  if (!b) {
-    return a;
-  }
-  if (a === "-1") {
-    return b;
-  }
-  if (b === "-1") {
-    return a;
-  }
-  if (a === "0") {
-    return b;
-  }
-  if (b === "0") {
-    return a;
-  }
-
-  const isPA = /^P\d+$/.test(a);
-  const isPB = /^P\d+$/.test(b);
-  if (isPA && !isPB) {
-    return b;
-  }
-  if (!isPA && isPB) {
-    return a;
-  }
-
-  return a;
-}
-
 export default function MapBuilderPage() {
   const intl = useIntl();
   const [mapString, setMapString] = useState(
-    getDefaultMapString(6, "standard", true)
+    getDefaultMapString(6, "standard", true),
   );
   const [rawMapInput, setRawMapInput] = useState(mapString);
   useEffect(() => setRawMapInput(mapString), [mapString]);
@@ -182,7 +147,7 @@ export default function MapBuilderPage() {
       "ONE_PLANET",
       "TWO_PLANETS",
       "THREE_PLANETS",
-    ])
+    ]),
   );
   const [rotation, setRotation] = useState(0);
 
@@ -318,7 +283,7 @@ export default function MapBuilderPage() {
         className="flexRow"
         style={{
           width: "100%",
-          height: `calc(100dvh - ${rem(52)})`,
+          height: `calc(100dvh - 6.5rem)`,
           justifyContent: "flex-start",
           alignItems: "flex-start",
         }}
@@ -327,10 +292,10 @@ export default function MapBuilderPage() {
           <LabeledDiv
             label="Tile Pool"
             style={{
-              marginTop: rem(72),
+              marginTop: "0.5rem",
             }}
             innerStyle={{
-              height: `calc(100dvh - ${rem(140)})`,
+              height: `calc(100dvh - 7.5rem)`,
               justifyContent: "flex-start",
             }}
           >
@@ -521,12 +486,12 @@ export default function MapBuilderPage() {
                         const prevDefault = getDefaultMapString(
                           numFactions,
                           mapStyle,
-                          true
+                          true,
                         );
                         if (
                           mapString !== prevDefault &&
                           !confirm(
-                            "Changing the player count will reset the map."
+                            "Changing the player count will reset the map.",
                           )
                         ) {
                           return;
@@ -534,7 +499,7 @@ export default function MapBuilderPage() {
                         setNumFactions(number);
                         setMapStyle("standard");
                         setMapString(
-                          getDefaultMapString(number, "standard", true)
+                          getDefaultMapString(number, "standard", true),
                         );
                       }}
                       selected={numFactions === number}
@@ -579,19 +544,19 @@ export default function MapBuilderPage() {
                             const prevDefault = getDefaultMapString(
                               numFactions,
                               mapStyle,
-                              true
+                              true,
                             );
                             if (
                               mapString !== prevDefault &&
                               !confirm(
-                                "Changing the map style will reset the map."
+                                "Changing the map style will reset the map.",
                               )
                             ) {
                               return;
                             }
                             setMapStyle(style);
                             setMapString(
-                              getDefaultMapString(numFactions, style, true)
+                              getDefaultMapString(numFactions, style, true),
                             );
                           }}
                           fontSize={16}
@@ -607,7 +572,7 @@ export default function MapBuilderPage() {
             <div
               style={{
                 position: "relative",
-                height: "90%",
+                height: "92%",
                 aspectRatio: 1,
               }}
             >
@@ -641,7 +606,7 @@ export default function MapBuilderPage() {
               <button
                 onClick={() => {
                   setMapString(
-                    getDefaultMapString(numFactions, mapStyle, true)
+                    getDefaultMapString(numFactions, mapStyle, true),
                   );
                 }}
               >
@@ -662,7 +627,7 @@ export default function MapBuilderPage() {
         onChange={(element) => setRawMapInput(element.target.value)}
         onBlur={() => {
           setMapString(
-            processMapString(rawMapInput.trim(), mapStyle, numFactions, false)
+            processMapString(rawMapInput.trim(), mapStyle, numFactions, false),
           );
         }}
       ></input>

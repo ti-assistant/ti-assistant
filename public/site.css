@@ -36,6 +36,14 @@ html {
 }
 
 @font-face {
+  font-family: "Russo One";
+  src: url("RussoOne-Regular.ttf") format("truetype");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: "Myriad Pro";
   font-style: normal;
   font-weight: normal;
@@ -47,13 +55,14 @@ html {
   font-family: "Source Sans";
   font-style: normal;
   font-weight: normal;
-  src: url("SourceSans3-Regular.ttf") format("truetype");
+  src: local("Source Sans"), url("SourceSans3-Regular.ttf") format("truetype");
   font-display: swap;
 }
 
 body {
-  font-family: "Slider";
-  margin: 0px 4rem;
+  --main-font: "Slider";
+  font-family: var(--main-font);
+  margin: 0px 3.25rem;
   background-color: var(--background-color);
   color: #eee;
 }
@@ -315,7 +324,7 @@ input[type="textbox"]:invalid {
 }
 
 .ability {
-  font-family: "Slider";
+  font-family: var(--main-font);
   font-weight: normal;
   font-size: 90%;
 }
@@ -467,13 +476,7 @@ input[type="textbox"]:invalid {
   text-align: center;
 }
 
-@media only screen and (max-width: 75rem) {
-  body {
-    margin: 0px 4rem;
-  }
-}
-
-@media only screen and (max-width: 56.25rem) {
+@media only screen and (max-width: 68.75rem) {
   .tabletOnly {
     display: flex;
   }
@@ -484,9 +487,9 @@ input[type="textbox"]:invalid {
   
 }
 
-@media only screen and (max-width: 56.25rem) {
+@media only screen and (max-width: 68.75rem) {
   body {
-    margin: 0px 0.5rem;
+    margin: 0 0.5rem;
   }
 
   .mobileOnly {

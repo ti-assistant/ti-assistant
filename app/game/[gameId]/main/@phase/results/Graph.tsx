@@ -45,7 +45,7 @@ export default function Graph({
             <text
               fill="#eee"
               fontSize="4"
-              fontFamily="Slider"
+              fontFamily="var(--main-font)"
               x={x}
               y="102"
               textAnchor="middle"
@@ -71,7 +71,7 @@ export default function Graph({
             <text
               fill="#eee"
               fontSize="4"
-              fontFamily="Slider"
+              fontFamily="var(--main-font)"
               x="0"
               y={y}
               textAnchor="middle"

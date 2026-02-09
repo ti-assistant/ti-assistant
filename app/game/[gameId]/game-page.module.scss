@@ -4,7 +4,8 @@
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  height: 100dvh;
+  min-height: calc(100dvh - 6.5rem);
+  // height: 100dvh;
 }
 
 .ControlButtons {
@@ -22,15 +23,9 @@
   z-index: 2;
 }
 
-@media only screen and (max-width: 75rem) {
-  .ControlButtons {
-    left: 27.375rem;
-  }
-}
-
-@media only screen and (max-width: 56.25rem) {
+@media only screen and (max-width: 68.75rem) {
   .GamePage {
-    height: calc(100dvh - 4.625rem);
+    min-height: calc(100dvh - 4.625rem);
   }
 
   .ControlButtons {

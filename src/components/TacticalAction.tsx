@@ -27,7 +27,7 @@ import {
   getLogEntries,
   getResearchedTechs,
 } from "../util/actionLog";
-import { hasTech } from "../util/api/techs";
+import { canExploreFrontierTokens, hasTech } from "../util/api/techs";
 import { getWormholeNexusSystemNumber } from "../util/map";
 import { getMapString } from "../util/options";
 import { objectKeys, rem } from "../util/util";
@@ -81,7 +81,7 @@ export function TacticalAction({
   let hasCustodiansPoint = false;
   const mecatolConquerers = getLogEntries<ClaimPlanetData>(
     currentTurn,
-    "CLAIM_PLANET"
+    "CLAIM_PLANET",
   ).filter((logEntry) => logEntry.data.event.planet === "Mecatol Rex");
   if (mecatolConquerers[0]) {
     const event = mecatolConquerers[0].data.event;
@@ -107,6 +107,8 @@ export function TacticalAction({
 
   const gainedRelic = getGainedRelic(currentTurn);
   const relic = gainedRelic ? relics[gainedRelic] : undefined;
+
+  const canExploreFrontier = canExploreFrontierTokens(faction, techs);
 
   return (
     <div
@@ -210,7 +212,7 @@ export function TacticalAction({
         ) : null}
       </Conditional>
       {frontier &&
-      hasTech(faction, techs["Dark Energy Tap"]) &&
+      canExploreFrontier &&
       conqueredPlanets.length === 0 &&
       !relic ? (
         <React.Fragment>
@@ -270,7 +272,7 @@ function AdjudicatorBaal() {
   const viewOnly = useViewOnly();
 
   const mapOrderedFactions = Object.values(factions).sort(
-    (a, b) => a.mapPosition - b.mapPosition
+    (a, b) => a.mapPosition - b.mapPosition,
   );
 
   const adjudicatorBaalSystem = getAdjudicatorBaalSystem(currentTurn);
@@ -365,7 +367,7 @@ function AdjudicatorBaal() {
           wormholeNexus={getWormholeNexusSystemNumber(
             options,
             planets,
-            factions
+            factions,
           )}
         />
       </div>

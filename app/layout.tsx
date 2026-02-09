@@ -1,6 +1,6 @@
 import { Metadata, Viewport } from "next";
 import Link from "next/link";
-import { PropsWithChildren } from "react";
+import { CSSProperties, PropsWithChildren } from "react";
 import "../public/site.css";
 import LangSelectHoverMenu from "../src/components/LangSelectHoverMenu/LangSelectHoverMenu";
 import SettingsButton from "../src/components/SettingsModal/SettingsButton";
@@ -11,6 +11,7 @@ import TimerProvider from "../src/context/TimerProvider";
 import { getLocale, getMessages, getSettings } from "../src/util/server";
 import styles from "./root.module.scss";
 import Wrapper, { SettingsProvider } from "./wrapper";
+import { Optional } from "../src/util/types/types";
 
 export const metadata: Metadata = {
   title: "Twilight Imperium Assistant",
@@ -25,7 +26,11 @@ export const viewport: Viewport = {
   colorScheme: "dark",
 };
 
-const SUPPORTED_LOCALES = ["en", "de", "fr"];
+const SUPPORTED_LOCALES = ["en", "de", "fr", "ru"];
+
+interface FontStyle extends CSSProperties {
+  "--main-font": string;
+}
 
 export default async function RootLayout({ children }: PropsWithChildren) {
   const locale = await getLocale();
@@ -33,9 +38,16 @@ export default async function RootLayout({ children }: PropsWithChildren) {
 
   const settings = await getSettings();
 
+  const fontSwitchStyle: Optional<FontStyle> =
+    locale === "ru"
+      ? {
+          "--main-font": "Russo One",
+        }
+      : undefined;
+
   return (
     <html lang={locale}>
-      <body>
+      <body style={fontSwitchStyle}>
         <Wrapper locale={locale} messages={messages}>
           <SettingsProvider initialSettings={settings}>
             <DataPubSubProvider>

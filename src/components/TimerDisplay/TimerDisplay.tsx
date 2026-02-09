@@ -40,6 +40,7 @@ export default function TimerDisplay({
     position: "relative",
     width: rem(width),
     gap: 0,
+    // Should not require other fonts.
     fontFamily: "Slider",
     justifyContent: "center",
     display: "grid",
