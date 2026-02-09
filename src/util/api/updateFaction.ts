@@ -6,13 +6,13 @@ import { poster } from "./util";
 interface UpdateFactionData {
   factionId: FactionId;
   playerName?: string;
-  color?: string;
+  color?: FactionColor;
 }
 
 export function updateFaction(
   gameId: string,
   factionId: FactionId,
-  { playerName, color }: { playerName?: string; color?: string }
+  { playerName, color }: { playerName?: string; color?: FactionColor },
 ) {
   const data: UpdateFactionData = {
     factionId,
