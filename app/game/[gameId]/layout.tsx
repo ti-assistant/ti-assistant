@@ -22,6 +22,7 @@ import DynamicSidebars from "./dynamic-sidebars";
 import GameCode from "./game-code";
 import GameLoader from "./game-loader";
 import styles from "./game.module.scss";
+import { intlErrorFn } from "../../../src/util/util";
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
     ? "https://dev-dot-twilight-imperium-360307.wm.r.appspot.com"
@@ -30,7 +31,7 @@ const BASE_URL =
 async function fetchGameData(
   gameId: string,
   sessionId: Optional<string>,
-  intlPromise: Promise<IntlShape>
+  intlPromise: Promise<IntlShape>,
 ) {
   const intl = await intlPromise;
   const dataPromise = getGameData(gameId);
@@ -68,7 +69,7 @@ async function getIntl() {
   const locale = await getLocale();
   const messages = await getMessages(locale);
   const cache = createIntlCache();
-  return createIntl({ locale, messages }, cache);
+  return createIntl({ locale, messages, onError: intlErrorFn as any }, cache);
 }
 
 function getQRCode(gameId: string, size: number): Promise<string> {
@@ -88,7 +89,7 @@ function getQRCode(gameId: string, size: number): Promise<string> {
           throw err;
         }
         resolve(url);
-      }
+      },
     );
   });
 }
