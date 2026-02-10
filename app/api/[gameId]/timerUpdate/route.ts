@@ -2,13 +2,12 @@ import { getFirestore } from "firebase-admin/firestore";
 import { NextResponse } from "next/server";
 import {
   canEditGame,
-  getTimers,
   getTimersInTransaction,
 } from "../../../../server/util/fetch";
 
 export async function POST(
   req: Request,
-  { params }: { params: Promise<{ gameId: string }> }
+  { params }: { params: Promise<{ gameId: string }> },
 ) {
   const { gameId } = await params;
 
@@ -48,7 +47,5 @@ export async function POST(
     console.log("Transaction failed", e);
   }
 
-  const storedTimers = await getTimers(gameId);
-
-  return NextResponse.json(storedTimers);
+  return NextResponse.json({ success: true });
 }

@@ -10705,6 +10705,12 @@
       "value": "Have 3 scored objectives."
     }
   ],
+  "LkSYQA": [
+    {
+      "type": 0,
+      "value": "Fleet Pool Tokens"
+    }
+  ],
   "Lm8L7/": [
     {
       "type": 0,
@@ -14803,6 +14809,32 @@
     {
       "type": 0,
       "value": "Add Planet"
+    }
+  ],
+  "Promissories.Alliance.Title": [
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Alliance"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Alliances"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
   "Promissories.Political Secret.Title": [
@@ -21599,6 +21631,36 @@
     {
       "type": 0,
       "value": "Salai Sai Corian"
+    }
+  ],
+  "WkNCwM": [
+    {
+      "type": 0,
+      "value": "Unowned "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Relic"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Relics"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
   "WpoPPE": [

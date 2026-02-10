@@ -2,12 +2,7 @@ import { Storage } from "@google-cloud/storage";
 import { getFirestore, Timestamp } from "firebase-admin/firestore";
 import { createIntl, createIntlCache } from "react-intl";
 import { Readable } from "stream";
-import {
-  getArchivedTimers,
-  getFullActionLog,
-  getFullArchivedActionLog,
-  getTimers,
-} from "../../server/util/fetch";
+import { getFullActionLog, getTimers } from "../../server/util/fetch";
 import { getBaseData } from "../../src/data/baseData";
 import { buildCompleteObjectives } from "../../src/data/gameDataBuilder";
 import { getHandler } from "../../src/util/api/gameLog";
@@ -107,7 +102,7 @@ function hasWinningFaction(game: StoredGameData, baseData: BaseData) {
 export function isCompletedGame(
   game: StoredGameData,
   baseData: BaseData,
-  log: ActionLog
+  log: ActionLog,
 ) {
   if (!hasWinningFaction(game, baseData)) {
     return false;
@@ -140,7 +135,7 @@ export function isCompletedGame(
 }
 
 async function getJSONFileFromStorage(
-  storage: Storage
+  storage: Storage,
 ): Promise<Record<string, ProcessedGame>> {
   const [file] = await storage
     .bucket("ti-assistant-datastore")
@@ -170,7 +165,7 @@ const REFRESH_TIME = 86400000;
 export async function maybeUpdateProcessedGames(
   storage: Storage,
   processedGames: Record<string, ProcessedGame>,
-  baseData: BaseData
+  baseData: BaseData,
 ) {
   const [metadata] = await storage
     .bucket("ti-assistant-datastore")
@@ -199,22 +194,22 @@ export async function maybeUpdateProcessedGames(
   });
 
   for (const [gameId, game] of Object.entries(allGames)) {
-    const actionLog = await getFullActionLog(gameId);
-    if (!isCompletedGame(game, baseData, actionLog)) {
+    if (!!processedGames[gameId]) {
       continue;
     }
-    if (!!processedGames[gameId]) {
+    const actionLog = await getFullActionLog(gameId, "games");
+    if (!isCompletedGame(game, baseData, actionLog)) {
       continue;
     }
     const fixedGame = fixGame(game, baseData, actionLog);
     if (!fixedGame) {
       continue;
     }
-    const timers = await getTimers(gameId);
+    const timers = await getTimers(gameId, "timers");
     const processedGame = processGame(
       structuredClone(fixedGame),
       baseData,
-      timers
+      timers,
     );
     if (!processedGame) {
       continue;
@@ -266,7 +261,7 @@ export async function reprocessGames() {
   });
 
   for (const [gameId, game] of Object.entries(allGames)) {
-    const actionLog = await getFullArchivedActionLog(gameId);
+    const actionLog = await getFullActionLog(gameId, "archive");
     if (!isCompletedGame(game, baseData, actionLog)) {
       continue;
     }
@@ -274,11 +269,11 @@ export async function reprocessGames() {
     if (!fixedGame) {
       continue;
     }
-    const timers = await getArchivedTimers(gameId);
+    const timers = await getTimers(gameId, "archiveTimers");
     const processedGame = processGame(
       structuredClone(fixedGame),
       baseData,
-      timers
+      timers,
     );
     if (!processedGame) {
       continue;
@@ -300,7 +295,7 @@ export async function reprocessGames() {
 function processGame(
   fixedGame: StoredGameData,
   baseData: BaseData,
-  timers: Timers
+  timers: Timers,
 ): Optional<ProcessedGame> {
   let winner: FactionId = "Vuil'raith Cabal";
   let maxPoints = 0;
@@ -323,7 +318,7 @@ function processGame(
 
   const objectiveInfo: Partial<Record<ObjectiveId, ObjectiveInfo>> = {};
   for (const [objectiveId, objective] of objectEntries(
-    fixedGame.objectives ?? {}
+    fixedGame.objectives ?? {},
   )) {
     const baseObjective = baseData.objectives[objectiveId];
     if (!baseObjective) {
@@ -391,7 +386,7 @@ function isObjectiveGame(game: StoredGameData, baseData: BaseData) {
       }
       return isObjGame;
     },
-    false
+    false,
   );
 }
 
@@ -479,7 +474,7 @@ function rewindGame(game: StoredGameData, baseData: BaseData, log: ActionLog) {
     output,
     handler,
     lastEntry.timestampMillis,
-    lastEntry.gameSeconds ?? 0
+    lastEntry.gameSeconds ?? 0,
   );
 
   (output.actionLog[0] as ActionLogEntry<GameUpdateData>).gameSeconds =
@@ -494,7 +489,7 @@ function rewindGame(game: StoredGameData, baseData: BaseData, log: ActionLog) {
     output,
     endGameHandler,
     finalEntry?.timestampMillis ?? Date.now(),
-    finalEntry?.gameSeconds ?? 0
+    finalEntry?.gameSeconds ?? 0,
   );
 
   output.options["victory-points"] = originalVPs;
@@ -675,7 +670,7 @@ function fixGame(game: StoredGameData, baseData: BaseData, log: ActionLog) {
 async function archiveGame(
   fixedGame: StoredGameData,
   gameId: string,
-  timers: Timers
+  timers: Timers,
 ) {
   const actionLog = fixedGame.actionLog ?? [];
   delete fixedGame.actionLog;

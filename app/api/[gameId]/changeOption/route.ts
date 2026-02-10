@@ -1,6 +1,6 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { NextResponse } from "next/server";
-import { canEditGame, getGameData } from "../../../../server/util/fetch";
+import { canEditGame } from "../../../../server/util/fetch";
 
 interface ChangeOptionData {
   option: string;
@@ -9,7 +9,7 @@ interface ChangeOptionData {
 
 export async function POST(
   req: Request,
-  { params }: { params: Promise<{ gameId: string }> }
+  { params }: { params: Promise<{ gameId: string }> },
 ) {
   const { gameId } = await params;
   const canEdit = await canEditGame(gameId);
@@ -38,7 +38,6 @@ export async function POST(
       [`options.${data.option}`]: data.value,
     });
 
-  const gameData = await getGameData(gameId);
-
-  return NextResponse.json(gameData);
+  // TODO: Consider returning something else.
+  return NextResponse.json({ success: true });
 }

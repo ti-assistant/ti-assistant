@@ -3,6 +3,7 @@
 import {
   collection,
   doc,
+  limit,
   onSnapshot,
   orderBy,
   query,
@@ -12,7 +13,6 @@ import { useEffect } from "react";
 import { DataStore } from "../../src/context/dataStore";
 import DBConnection from "../../src/data/DBConnection";
 import { ActionLog } from "../../src/util/types/types";
-import { objectEntries, objectKeys } from "../util/util";
 
 export default function DBListener({
   gameId,
@@ -31,7 +31,8 @@ export default function DBListener({
 
     const actionLogQuery = query(
       collection(db, gameCollection, gameId, "actionLog"),
-      orderBy("timestampMillis", "desc")
+      orderBy("timestampMillis", "desc"),
+      limit(10000),
     );
     unlistenFns.push(
       onSnapshot(actionLogQuery, (querySnapshot) => {
@@ -44,7 +45,7 @@ export default function DBListener({
           storedData.actionLog = actionLog;
           return storedData;
         }, "SERVER");
-      })
+      }),
     );
 
     unlistenFns.push(
@@ -58,7 +59,7 @@ export default function DBListener({
           storedData.timers = storedTimers;
           return storedData;
         }, "SERVER");
-      })
+      }),
     );
 
     unlistenFns.push(
@@ -73,7 +74,7 @@ export default function DBListener({
           newData.timers = timers;
           return newData;
         }, "SERVER");
-      })
+      }),
     );
     return () => {
       for (const unlistenFn of unlistenFns) {

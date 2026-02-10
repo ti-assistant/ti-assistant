@@ -18,11 +18,11 @@ import {
   getSessionIdFromCookie,
 } from "../../../src/util/server";
 import { Optional } from "../../../src/util/types/types";
+import { intlErrorFn } from "../../../src/util/util";
 import DynamicSidebars from "./dynamic-sidebars";
 import GameCode from "./game-code";
 import GameLoader from "./game-loader";
 import styles from "./game.module.scss";
-import { intlErrorFn } from "../../../src/util/util";
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
     ? "https://dev-dot-twilight-imperium-360307.wm.r.appspot.com"
@@ -34,8 +34,8 @@ async function fetchGameData(
   intlPromise: Promise<IntlShape>,
 ) {
   const intl = await intlPromise;
-  const dataPromise = getGameData(gameId);
-  const timerPromise = getTimers(gameId);
+  const dataPromise = getGameData(gameId, "games");
+  const timerPromise = getTimers(gameId, "timers");
   const passwordPromise = getGamePassword(gameId);
   let sessionPromise: Promise<Optional<TIASession>> =
     Promise.resolve(undefined);
