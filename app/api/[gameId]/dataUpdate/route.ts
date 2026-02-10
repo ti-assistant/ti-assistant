@@ -10,7 +10,6 @@ import { NextResponse } from "next/server";
 import {
   canEditGame,
   getCurrentTurnLogEntriesInTransaction,
-  getGameData,
   getGameDataInTransaction,
   getTimersInTransaction,
 } from "../../../../server/util/fetch";
@@ -203,9 +202,8 @@ export async function POST(
     return NextResponse.error();
   }
 
-  const gameData = await getGameData(gameId);
-
-  return NextResponse.json(gameData);
+  // TODO: Consider returning something else.
+  return NextResponse.json({ success: true });
 }
 
 function convertToServerUpdates(updates: Record<string, any>) {

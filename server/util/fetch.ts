@@ -14,55 +14,18 @@ import { getSessionIdFromCookie } from "../../src/util/server";
 import { ActionLog, Optional } from "../../src/util/types/types";
 import { BASE_OPTIONS } from "../data/options";
 
+type GamePath = "archive" | "games";
+
 /**
  * Returns the game data for a given game.
  */
-export async function getGameData(gameId: string): Promise<StoredGameData> {
-  const db = getFirestore();
-
-  const gameRef = db.collection("games").doc(gameId);
-
-  const game = await gameRef.get();
-
-  if (!game.exists) {
-    return {
-      factions: {},
-      options: BASE_OPTIONS,
-      planets: {},
-      state: {
-        phase: "SETUP",
-        speaker: "Vuil'raith Cabal",
-        round: 1,
-      },
-      sequenceNum: 1,
-    };
-  }
-
-  const gameData = game.data() as StoredGameData;
-
-  const actionLog = await gameRef
-    .collection("actionLog")
-    .orderBy("timestampMillis", "desc")
-    .get();
-
-  const actionLogEntries: ActionLog = [];
-  actionLog.forEach((logEntry) => {
-    const storedLogEntry = logEntry.data() as ActionLogEntry<GameUpdateData>;
-    actionLogEntries.push(storedLogEntry);
-  });
-
-  return {
-    ...gameData,
-    actionLog: actionLogEntries,
-  };
-}
-
-export async function getArchivedGameData(
-  gameId: string
+export async function getGameData(
+  gameId: string,
+  path: GamePath,
 ): Promise<StoredGameData> {
   const db = getFirestore();
 
-  const gameRef = db.collection("archive").doc(gameId);
+  const gameRef = db.collection(path).doc(gameId);
 
   const game = await gameRef.get();
 
@@ -101,7 +64,7 @@ export async function getArchivedGameData(
 
 export async function getGameDataInTransaction(
   gameRef: DocumentReference<DocumentData>,
-  t: Transaction
+  t: Transaction,
 ) {
   const game = await t.get(gameRef);
   if (!game.exists) {
@@ -116,7 +79,7 @@ export async function getGameDataInTransaction(
 export async function getCurrentTurnLogEntriesInTransaction(
   gameRef: DocumentReference<DocumentData>,
   t: Transaction,
-  phase: Phase
+  phase: Phase,
 ) {
   let turnBoundary: QuerySnapshot<DocumentData, DocumentData>;
   if (phase === "ACTION") {
@@ -125,7 +88,7 @@ export async function getCurrentTurnLogEntriesInTransaction(
         .collection("actionLog")
         .orderBy("timestampMillis", "desc")
         .where("data.action", "in", ACTION_TURN_BOUNDARIES)
-        .limit(1)
+        .limit(1),
     );
   } else {
     turnBoundary = await t.get(
@@ -133,7 +96,7 @@ export async function getCurrentTurnLogEntriesInTransaction(
         .collection("actionLog")
         .orderBy("timestampMillis", "desc")
         .where("data.action", "in", TURN_BOUNDARIES)
-        .limit(1)
+        .limit(1),
     );
   }
 
@@ -147,7 +110,7 @@ export async function getCurrentTurnLogEntriesInTransaction(
     gameRef
       .collection("actionLog")
       .orderBy("timestampMillis", "desc")
-      .where("timestampMillis", ">=", timestamp)
+      .where("timestampMillis", ">=", timestamp),
   );
 
   const currentTurnEntries: ActionLog = [];
@@ -161,10 +124,10 @@ export async function getCurrentTurnLogEntriesInTransaction(
 
 export async function getLatestActionLogEntryInTransaction(
   gameRef: DocumentReference<DocumentData>,
-  t: Transaction
+  t: Transaction,
 ) {
   const logEntry = await t.get(
-    gameRef.collection("actionLog").orderBy("timestampMillis", "desc").limit(1)
+    gameRef.collection("actionLog").orderBy("timestampMillis", "desc").limit(1),
   );
   if (logEntry.empty) {
     return undefined;
@@ -178,7 +141,7 @@ export async function getLatestActionLogEntryInTransaction(
   return latestEntry;
 }
 
-export async function getFullActionLog(gameId: string) {
+export async function getFullActionLog(gameId: string, path: GamePath) {
   const db = getFirestore();
 
   const gameRef = db.collection("games").doc(gameId);
@@ -199,31 +162,12 @@ export async function getFullActionLog(gameId: string) {
   return actionLog;
 }
 
-export async function getFullArchivedActionLog(gameId: string) {
+type TimerPath = "timers" | "archiveTimers";
+
+export async function getTimers(gameId: string, path: TimerPath) {
   const db = getFirestore();
 
-  const gameRef = db.collection("archive").doc(gameId);
-  const logEntry = await gameRef
-    .collection("actionLog")
-    .orderBy("timestampMillis", "desc")
-    .get();
-
-  if (logEntry.empty) {
-    return [];
-  }
-
-  let actionLog: ActionLog = [];
-  logEntry.forEach((entry) => {
-    actionLog.push(entry.data() as ActionLogEntry<GameUpdateData>);
-  });
-
-  return actionLog;
-}
-
-export async function getTimers(gameId: string) {
-  const db = getFirestore();
-
-  const timersRef = db.collection("timers").doc(gameId);
+  const timersRef = db.collection(path).doc(gameId);
 
   const timersDoc = await timersRef.get();
 
@@ -240,7 +184,7 @@ export async function getTimers(gameId: string) {
 
 export async function getTimersInTransaction(
   timersRef: DocumentReference<DocumentData>,
-  t: Transaction
+  t: Transaction,
 ) {
   const timerData = await t.get(timersRef);
   if (!timerData.exists) {
@@ -254,30 +198,12 @@ export async function getTimersInTransaction(
   return timers;
 }
 
-export async function getArchivedTimers(gameId: string) {
-  const db = getFirestore();
-
-  const timersRef = db.collection("archiveTimers").doc(gameId);
-
-  const timersDoc = await timersRef.get();
-
-  if (!timersDoc.exists) {
-    return {};
-  }
-
-  const timers = timersDoc.data() as Timers;
-
-  delete timers.deleteAt;
-
-  return timers;
-}
-
 export interface TIASession {
   games?: string[];
 }
 
 export async function getSession(
-  sessionId: string
+  sessionId: string,
 ): Promise<Optional<TIASession>> {
   const db = getFirestore();
 

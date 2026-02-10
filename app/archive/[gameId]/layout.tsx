@@ -1,10 +1,7 @@
 import { Suspense } from "react";
 import { createIntl, createIntlCache, IntlShape } from "react-intl";
 import "server-only";
-import {
-  getArchivedGameData,
-  getArchivedTimers,
-} from "../../../server/util/fetch";
+import { getGameData, getTimers } from "../../../server/util/fetch";
 import Footer from "../../../src/components/Footer/Footer";
 import DataWrapper from "../../../src/context/DataWrapper";
 import { buildBaseData, buildGameData } from "../../../src/data/GameData";
@@ -20,8 +17,8 @@ import styles from "./main.module.scss";
 
 async function fetchGameData(gameId: string, intlPromise: Promise<IntlShape>) {
   const intl = await intlPromise;
-  const dataPromise = getArchivedGameData(gameId);
-  const timerPromise = getArchivedTimers(gameId);
+  const dataPromise = getGameData(gameId, "archive");
+  const timerPromise = getTimers(gameId, "archiveTimers");
 
   const [data, timers] = await Promise.all([dataPromise, timerPromise]);
 

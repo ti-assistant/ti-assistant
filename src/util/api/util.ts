@@ -45,26 +45,10 @@ export function updateArray<Type>(array: Type[], add: Type[], remove: Type[]) {
   return Array.from(set);
 }
 
-export async function fetcher(url: string) {
-  if (!Cookies.get("secret")) {
-    Cookies.set("secret", genCookie(16));
-  }
-  const res = await fetch(url, {
-    method: "GET",
-    credentials: "include",
-  });
-  const data = await res.json();
-
-  if (res.status !== 200) {
-    throw new Error(data.message);
-  }
-  return data;
-}
-
 export async function poster(
   url: string,
   data: any,
-  timestamp: number
+  timestamp: number,
 ): Promise<any> {
   data.gameTime = DataStore.getValue("timers.game") ?? 0;
   data.timestamp = timestamp;

@@ -41,19 +41,20 @@ function buildSetupGameData(gameData: StoredGameData): {
 
 export async function GET(
   _: Request,
-  { params }: { params: Promise<{ gameId: string }> }
+  { params }: { params: Promise<{ gameId: string }> },
 ) {
   const { gameId } = await params;
 
-  const fullActionLog = await getFullActionLog(gameId);
+  // TODO: Fix this - it needs to look at archive after X days.
+  const fullActionLog = await getFullActionLog(gameId, "games");
 
-  const storedGameData = await getGameData(gameId);
+  const storedGameData = await getGameData(gameId, "games");
 
   storedGameData.actionLog = fullActionLog;
 
   const setupData = buildSetupGameData(storedGameData);
 
-  const storedTimers = await getTimers(gameId);
+  const storedTimers = await getTimers(gameId, "timers");
 
   return new Response(
     JSON.stringify({
@@ -65,6 +66,6 @@ export async function GET(
       headers: {
         "Content-Type": "application/json",
       },
-    }
+    },
   );
 }
