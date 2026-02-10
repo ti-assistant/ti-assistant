@@ -150,17 +150,13 @@
   ],
   "+tb/XA": [
     {
-      "type": 0,
-      "value": "Получил "
-    },
-    {
       "offset": 0,
       "options": {
         "one": {
           "value": [
             {
               "type": 0,
-              "value": "Технологию"
+              "value": "Полученная"
             }
           ]
         },
@@ -168,7 +164,7 @@
           "value": [
             {
               "type": 0,
-              "value": "Технологии"
+              "value": "Полученные"
             }
           ]
         }
@@ -176,6 +172,10 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " Техн."
     }
   ],
   "+x4AIR": [
@@ -193,7 +193,7 @@
   "/KXhGz": [
     {
       "type": 0,
-      "value": "Тактическое действие"
+      "value": "Тактическое"
     }
   ],
   "/LAhkb": [
@@ -229,13 +229,13 @@
   "/sF4zW": [
     {
       "type": 0,
-      "value": "Выберите стартовые технологии"
+      "value": "Выберите Стартовые Техн."
     }
   ],
   "09baik": [
     {
       "type": 0,
-      "value": "Порядок хода"
+      "value": "Порядок Хода"
     }
   ],
   "0DDRZv": [
@@ -295,7 +295,7 @@
   "2hHU0G": [
     {
       "type": 0,
-      "value": "Технологии Улучшения"
+      "value": "Техн. Улучшения"
     }
   ],
   "2jNcVD": [
@@ -319,7 +319,7 @@
   "3qIvsL": [
     {
       "type": 0,
-      "value": "Исследовать Технологию"
+      "value": "Исследовать Техн."
     }
   ],
   "3xEbCN": [
@@ -331,7 +331,7 @@
   "43UU69": [
     {
       "type": 0,
-      "value": "Компонент"
+      "value": "Компонентное"
     }
   ],
   "46dzNs": [
@@ -349,13 +349,13 @@
   "49oatW": [
     {
       "type": 0,
-      "value": "Отмена"
+      "value": "Отмена действия"
     }
   ],
   "4PYolM": [
     {
       "type": 0,
-      "value": "Начало фазы "
+      "value": "Начало Фазы "
     },
     {
       "type": 1,
@@ -635,7 +635,7 @@
   "AB4nOe": [
     {
       "type": 0,
-      "value": "Без технологии"
+      "value": "Без Техн."
     }
   ],
   "AO8lj8": [
@@ -4313,7 +4313,7 @@
   "CG2MQj": [
     {
       "type": 0,
-      "value": "Конец фазы "
+      "value": "Конец Фазы "
     },
     {
       "type": 1,
@@ -6409,7 +6409,7 @@
     },
     {
       "type": 0,
-      "value": " завершена"
+      "value": " Завершена"
     }
   ],
   "GyiC2A": [
@@ -7241,7 +7241,7 @@
   "McKqpw": [
     {
       "type": 0,
-      "value": "Получить Технологию"
+      "value": "Получить Техн."
     }
   ],
   "Mentak Coalition.Abilities.Ambush.Description": [
@@ -7415,7 +7415,7 @@
   "NEiUw9": [
     {
       "type": 0,
-      "value": "Без стартовых Технологий"
+      "value": "Без стартовых Техн."
     }
   ],
   "NUNF0C": [
@@ -9501,7 +9501,7 @@
   "P/Y6Fo": [
     {
       "type": 0,
-      "value": "Получить Фракционную Технологию"
+      "value": "Получить Фракционную Техн."
     }
   ],
   "PBW6vs": [
@@ -9537,37 +9537,37 @@
   "Phase.Action": [
     {
       "type": 0,
-      "value": "Фаза Действий"
+      "value": "Действий"
     }
   ],
   "Phase.Agenda": [
     {
       "type": 0,
-      "value": "Фаза Политики"
+      "value": "Политики"
     }
   ],
   "Phase.End": [
     {
       "type": 0,
-      "value": "Итоги"
+      "value": "Итогов"
     }
   ],
   "Phase.Setup": [
     {
       "type": 0,
-      "value": "Подготовка"
+      "value": "Подготовки"
     }
   ],
   "Phase.Status": [
     {
       "type": 0,
-      "value": "Фаза Статуса"
+      "value": "Статуса"
     }
   ],
   "Phase.Strategy": [
     {
       "type": 0,
-      "value": "Фаза Стратегии"
+      "value": "Стратегии"
     }
   ],
   "Phase.Unknown": [
@@ -9576,10 +9576,292 @@
       "value": "Неизвестно"
     }
   ],
+  "Planets.Abaddon.Name": [
+    {
+      "type": 0,
+      "value": "Абаддон"
+    }
+  ],
+  "Planets.Abyz.Name": [
+    {
+      "type": 0,
+      "value": "Абиз"
+    }
+  ],
+  "Planets.Accoen.Name": [
+    {
+      "type": 0,
+      "value": "Аккоен"
+    }
+  ],
+  "Planets.Acheron.Name": [
+    {
+      "type": 0,
+      "value": "Ахерон"
+    }
+  ],
+  "Planets.Alio Prima.Name": [
+    {
+      "type": 0,
+      "value": "Алио-Прима"
+    }
+  ],
+  "Planets.Ang.Name": [
+    {
+      "type": 0,
+      "value": "Анг"
+    }
+  ],
+  "Planets.Arc Prime.Name": [
+    {
+      "type": 0,
+      "value": "Арк-Прайм"
+    }
+  ],
+  "Planets.Archon Ren.Name": [
+    {
+      "type": 0,
+      "value": "Архон-Рэн"
+    }
+  ],
+  "Planets.Archon Tau.Name": [
+    {
+      "type": 0,
+      "value": "Архон-Тау"
+    }
+  ],
+  "Planets.Archon Vail.Name": [
+    {
+      "type": 0,
+      "value": "Архон-Вейл"
+    }
+  ],
+  "Planets.Arcturus.Name": [
+    {
+      "type": 0,
+      "value": "Арктур"
+    }
+  ],
+  "Planets.Arinam.Name": [
+    {
+      "type": 0,
+      "value": "Аринам"
+    }
+  ],
+  "Planets.Arnor.Name": [
+    {
+      "type": 0,
+      "value": "Арнор"
+    }
+  ],
+  "Planets.Arretze.Name": [
+    {
+      "type": 0,
+      "value": "Арретц"
+    }
+  ],
+  "Planets.Ashtroth.Name": [
+    {
+      "type": 0,
+      "value": "Эштрот"
+    }
+  ],
+  "Planets.Atlas.Name": [
+    {
+      "type": 0,
+      "value": "Атлас"
+    }
+  ],
+  "Planets.Avar.Name": [
+    {
+      "type": 0,
+      "value": "Авар"
+    }
+  ],
+  "Planets.Ba'kal.Name": [
+    {
+      "type": 0,
+      "value": "Ба'кал"
+    }
+  ],
+  "Planets.Bereg.Name": [
+    {
+      "type": 0,
+      "value": "Берег"
+    }
+  ],
+  "Planets.Cealdri.Name": [
+    {
+      "type": 0,
+      "value": "Кеалдри"
+    }
+  ],
+  "Planets.Centauri.Name": [
+    {
+      "type": 0,
+      "value": "Центавр"
+    }
+  ],
+  "Planets.Cormund.Name": [
+    {
+      "type": 0,
+      "value": "Кормунд"
+    }
+  ],
+  "Planets.Corneeq.Name": [
+    {
+      "type": 0,
+      "value": "Корник"
+    }
+  ],
+  "Planets.Creuss.Name": [
+    {
+      "type": 0,
+      "value": "Креусс"
+    }
+  ],
+  "Planets.Dal Bootha.Name": [
+    {
+      "type": 0,
+      "value": "Дал-Бута"
+    }
+  ],
+  "Planets.Darien.Name": [
+    {
+      "type": 0,
+      "value": "Дэриэн"
+    }
+  ],
+  "Planets.Druaa.Name": [
+    {
+      "type": 0,
+      "value": "Друаа"
+    }
+  ],
+  "Planets.Elysium.Name": [
+    {
+      "type": 0,
+      "value": "Элизиум"
+    }
+  ],
+  "Planets.Everra.Name": [
+    {
+      "type": 0,
+      "value": "Эверра"
+    }
+  ],
+  "Planets.Fria.Name": [
+    {
+      "type": 0,
+      "value": "Фрия"
+    }
+  ],
+  "Planets.Gral.Name": [
+    {
+      "type": 0,
+      "value": "Грал"
+    }
+  ],
+  "Planets.Hercant.Name": [
+    {
+      "type": 0,
+      "value": "Геркант"
+    }
+  ],
   "Planets.Hope's End.Ability": [
     {
       "type": 0,
       "value": "Вы можете перевернуть эту карту в конце своего хода, чтобы разместить 1 меха из своего снабжения на любой подконтрольной вам планете или взять 1 карту действия."
+    }
+  ],
+  "Planets.Hope's End.Name": [
+    {
+      "type": 0,
+      "value": "Конец Надежды"
+    }
+  ],
+  "Planets.Ixth.Name": [
+    {
+      "type": 0,
+      "value": "Икст"
+    }
+  ],
+  "Planets.Jeol Ir.Name": [
+    {
+      "type": 0,
+      "value": "Джеол Ир"
+    }
+  ],
+  "Planets.Jol.Name": [
+    {
+      "type": 0,
+      "value": "Жол"
+    }
+  ],
+  "Planets.Jord.Name": [
+    {
+      "type": 0,
+      "value": "Земра"
+    }
+  ],
+  "Planets.Kamdorn.Name": [
+    {
+      "type": 0,
+      "value": "Кэмдорн"
+    }
+  ],
+  "Planets.Kraag.Name": [
+    {
+      "type": 0,
+      "value": "Крааг"
+    }
+  ],
+  "Planets.Lazar.Name": [
+    {
+      "type": 0,
+      "value": "Лазар"
+    }
+  ],
+  "Planets.Lirta IV.Name": [
+    {
+      "type": 0,
+      "value": "Лирта IV"
+    }
+  ],
+  "Planets.Lisis II.Name": [
+    {
+      "type": 0,
+      "value": "Лизис II"
+    }
+  ],
+  "Planets.Lisis.Name": [
+    {
+      "type": 0,
+      "value": "Лизис"
+    }
+  ],
+  "Planets.Lodor.Name": [
+    {
+      "type": 0,
+      "value": "Лодор"
+    }
+  ],
+  "Planets.Loki.Name": [
+    {
+      "type": 0,
+      "value": "Локи"
+    }
+  ],
+  "Planets.Lor.Name": [
+    {
+      "type": 0,
+      "value": "Лор"
+    }
+  ],
+  "Planets.Maaluuk.Name": [
+    {
+      "type": 0,
+      "value": "Маалук"
     }
   ],
   "Planets.Mallice.Ability": [
@@ -9588,16 +9870,328 @@
       "value": "Вы можете перевернуть эту карту в конце своего хода, чтобы получить 2 товара или сконвертировать всю свою продукцию в товары."
     }
   ],
+  "Planets.Mallice.Name": [
+    {
+      "type": 0,
+      "value": "Мэллис"
+    }
+  ],
+  "Planets.Mecatol Rex.Name": [
+    {
+      "type": 0,
+      "value": "Мекатол-Рекс"
+    }
+  ],
+  "Planets.Meer.Name": [
+    {
+      "type": 0,
+      "value": "Миэр"
+    }
+  ],
+  "Planets.Mehar Xull.Name": [
+    {
+      "type": 0,
+      "value": "Мехар-Зулл"
+    }
+  ],
+  "Planets.Mellon.Name": [
+    {
+      "type": 0,
+      "value": "Меллон"
+    }
+  ],
   "Planets.Mirage.Ability": [
     {
       "type": 0,
       "value": "Вы можете перевернуть эту карту в конце своего хода, чтобы разместить 2 истребителя или меньше из своего снабжения в любой системе, в которой есть хотя бы 1 ваш корабль."
     }
   ],
+  "Planets.Mirage.Name": [
+    {
+      "type": 0,
+      "value": "Мираж"
+    }
+  ],
+  "Planets.Moll Primus.Name": [
+    {
+      "type": 0,
+      "value": "Молл-Прайм"
+    }
+  ],
+  "Planets.Mordai II.Name": [
+    {
+      "type": 0,
+      "value": "Мордай II"
+    }
+  ],
+  "Planets.Muaat.Name": [
+    {
+      "type": 0,
+      "value": "Муаат"
+    }
+  ],
+  "Planets.Naazir.Name": [
+    {
+      "type": 0,
+      "value": "Наазир"
+    }
+  ],
+  "Planets.Nar.Name": [
+    {
+      "type": 0,
+      "value": "Нар"
+    }
+  ],
+  "Planets.Nestphar.Name": [
+    {
+      "type": 0,
+      "value": "Нестфар"
+    }
+  ],
+  "Planets.New Albion.Name": [
+    {
+      "type": 0,
+      "value": "Новый Альбион"
+    }
+  ],
+  "Planets.Perimeter.Name": [
+    {
+      "type": 0,
+      "value": "Периметр"
+    }
+  ],
   "Planets.Primor.Ability": [
     {
       "type": 0,
       "value": "Вы можете перевернуть эту карту в конце своего хода, чтобы разместить 2 отряда пехоты или меньше из своего снабжения на любой подконтрольной вам планете."
+    }
+  ],
+  "Planets.Primor.Name": [
+    {
+      "type": 0,
+      "value": "Примор"
+    }
+  ],
+  "Planets.Quann.Name": [
+    {
+      "type": 0,
+      "value": "Куанн"
+    }
+  ],
+  "Planets.Qucen'n.Name": [
+    {
+      "type": 0,
+      "value": "Кьюкен'н"
+    }
+  ],
+  "Planets.Quinarra.Name": [
+    {
+      "type": 0,
+      "value": "Квинара"
+    }
+  ],
+  "Planets.Ragh.Name": [
+    {
+      "type": 0,
+      "value": "Раг"
+    }
+  ],
+  "Planets.Rarron.Name": [
+    {
+      "type": 0,
+      "value": "Раррон"
+    }
+  ],
+  "Planets.Resculon.Name": [
+    {
+      "type": 0,
+      "value": "Рескулон"
+    }
+  ],
+  "Planets.Retillion.Name": [
+    {
+      "type": 0,
+      "value": "Ретиллион"
+    }
+  ],
+  "Planets.Rigel I.Name": [
+    {
+      "type": 0,
+      "value": "Ригель-1"
+    }
+  ],
+  "Planets.Rigel II.Name": [
+    {
+      "type": 0,
+      "value": "Ригель-2"
+    }
+  ],
+  "Planets.Rigel III.Name": [
+    {
+      "type": 0,
+      "value": "Ригель-3"
+    }
+  ],
+  "Planets.Rokha.Name": [
+    {
+      "type": 0,
+      "value": "Роха"
+    }
+  ],
+  "Planets.Sakulag.Name": [
+    {
+      "type": 0,
+      "value": "Сакулаг"
+    }
+  ],
+  "Planets.Saudor.Name": [
+    {
+      "type": 0,
+      "value": "Саудор"
+    }
+  ],
+  "Planets.Sem-Lore.Name": [
+    {
+      "type": 0,
+      "value": "Сем-Лор"
+    }
+  ],
+  "Planets.Shalloq.Name": [
+    {
+      "type": 0,
+      "value": "Шеллок"
+    }
+  ],
+  "Planets.Siig.Name": [
+    {
+      "type": 0,
+      "value": "Сииг"
+    }
+  ],
+  "Planets.Starpoint.Name": [
+    {
+      "type": 0,
+      "value": "Старпоинт"
+    }
+  ],
+  "Planets.Tar'Mann.Name": [
+    {
+      "type": 0,
+      "value": "Тар'манн"
+    }
+  ],
+  "Planets.Tequ'ran.Name": [
+    {
+      "type": 0,
+      "value": "Теку'ран"
+    }
+  ],
+  "Planets.The Dark.Name": [
+    {
+      "type": 0,
+      "value": "Тьма"
+    }
+  ],
+  "Planets.Thibah.Name": [
+    {
+      "type": 0,
+      "value": "Тиба"
+    }
+  ],
+  "Planets.Torkan.Name": [
+    {
+      "type": 0,
+      "value": "Торкан"
+    }
+  ],
+  "Planets.Tren'lak.Name": [
+    {
+      "type": 0,
+      "value": "Трен'лак"
+    }
+  ],
+  "Planets.Valk.Name": [
+    {
+      "type": 0,
+      "value": "Валк"
+    }
+  ],
+  "Planets.Vefut II.Name": [
+    {
+      "type": 0,
+      "value": "Вефут II"
+    }
+  ],
+  "Planets.Vega Major.Name": [
+    {
+      "type": 0,
+      "value": "Большая Вега"
+    }
+  ],
+  "Planets.Vega Minor.Name": [
+    {
+      "type": 0,
+      "value": "Малая Вега"
+    }
+  ],
+  "Planets.Velnor.Name": [
+    {
+      "type": 0,
+      "value": "Велнор"
+    }
+  ],
+  "Planets.Vorhal.Name": [
+    {
+      "type": 0,
+      "value": "Ворхал"
+    }
+  ],
+  "Planets.Wellon.Name": [
+    {
+      "type": 0,
+      "value": "Веллон"
+    }
+  ],
+  "Planets.Winnu.Name": [
+    {
+      "type": 0,
+      "value": "Винну"
+    }
+  ],
+  "Planets.Wren Terra.Name": [
+    {
+      "type": 0,
+      "value": "Рен-Терра"
+    }
+  ],
+  "Planets.Xanhact.Name": [
+    {
+      "type": 0,
+      "value": "Занакт"
+    }
+  ],
+  "Planets.Xxehan.Name": [
+    {
+      "type": 0,
+      "value": "Ззехан"
+    }
+  ],
+  "Planets.Ylir.Name": [
+    {
+      "type": 0,
+      "value": "Айлир"
+    }
+  ],
+  "Planets.Zohbat.Name": [
+    {
+      "type": 0,
+      "value": "Зохбат"
+    }
+  ],
+  "Planets.[0.0.0].Name": [
+    {
+      "type": 0,
+      "value": "[0.0.0]"
     }
   ],
   "PmqXSZ": [
@@ -9668,6 +10262,32 @@
       "value": "Добавить Планету"
     }
   ],
+  "Promissories.Alliance.Title": [
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Альянс"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Альянсы"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
   "Promissories.Political Secret.Title": [
     {
       "type": 0,
@@ -9719,7 +10339,7 @@
   "Qo4+d0": [
     {
       "type": 0,
-      "value": "C Технологией"
+      "value": "C Техн."
     }
   ],
   "QrrIrN": [
@@ -11155,7 +11775,7 @@
   "USnh0f": [
     {
       "type": 0,
-      "value": "Обновить Технологии"
+      "value": "Обновить Техн."
     }
   ],
   "Unit.Stats.Capacity": [
@@ -11942,6 +12562,32 @@
       "value": "Салай Сай Кориан"
     }
   ],
+  "WkNCwM": [
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Бесхозная Реликвия"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Бесхозные Реликвии"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
   "WpoPPE": [
     {
       "type": 1,
@@ -11979,7 +12625,7 @@
   "XG4lKH": [
     {
       "type": 0,
-      "value": "Вернуть Технологию"
+      "value": "Вернуть Техн."
     }
   ],
   "Xxcha Kingdom.Abilities.Peace Accords.Description": [
@@ -12774,6 +13420,36 @@
       "value": "Статистика"
     }
   ],
+  "as4lhc": [
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Изгнанная"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Изгнанные"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " Техн."
+    }
+  ],
   "bPVF6s": [
     {
       "type": 0,
@@ -13228,11 +13904,15 @@
     },
     {
       "type": 0,
-      "value": " типа "
+      "value": " \""
     },
     {
       "type": 1,
       "value": "type"
+    },
+    {
+      "type": 0,
+      "value": "\""
     }
   ],
   "lGDH2d": [
@@ -13406,7 +14086,7 @@
   "o+O/Bq": [
     {
       "type": 0,
-      "value": "Изгнать Технологию"
+      "value": "Изгнать Техн."
     }
   ],
   "p4V2Yv": [
@@ -13593,7 +14273,7 @@
           "value": [
             {
               "type": 0,
-              "value": "Возвращенная Технология"
+              "value": "Возвращенная"
             }
           ]
         },
@@ -13601,7 +14281,7 @@
           "value": [
             {
               "type": 0,
-              "value": "Возвращенные Технологии"
+              "value": "Возвращенные"
             }
           ]
         }
@@ -13609,6 +14289,10 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " Техн."
     }
   ],
   "ssIhWl": [
@@ -13777,7 +14461,7 @@
           "value": [
             {
               "type": 0,
-              "value": "Изученная Технология"
+              "value": "Изученная"
             }
           ]
         },
@@ -13785,7 +14469,7 @@
           "value": [
             {
               "type": 0,
-              "value": "Изученные Технологии"
+              "value": "Изученные"
             }
           ]
         }
@@ -13793,6 +14477,10 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " Техн."
     }
   ],
   "wOb6Wx": [
@@ -13804,7 +14492,7 @@
   "x42AMg": [
     {
       "type": 0,
-      "value": "Зарандомить"
+      "value": "Выбрать случайно"
     }
   ],
   "x5JPkJ": [
@@ -13891,14 +14579,6 @@
     {
       "offset": 0,
       "options": {
-        "few": {
-          "value": [
-            {
-              "type": 0,
-              "value": "Карты"
-            }
-          ]
-        },
         "one": {
           "value": [
             {
@@ -13908,14 +14588,6 @@
           ]
         },
         "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "Карт"
-            }
-          ]
-        },
-        "two": {
           "value": [
             {
               "type": 0,
@@ -13936,7 +14608,7 @@
   "yctdL8": [
     {
       "type": 0,
-      "value": "Фракционные Технологии"
+      "value": "Фракционные Техн."
     }
   ],
   "ymJxS0": [
@@ -13948,7 +14620,7 @@
   "ys7uwX": [
     {
       "type": 0,
-      "value": "Техи"
+      "value": "Техн."
     }
   ],
   "zAhkl6": [
