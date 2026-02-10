@@ -3,6 +3,7 @@
 import {
   collection,
   doc,
+  limit,
   onSnapshot,
   orderBy,
   query,
@@ -31,6 +32,7 @@ export default function DBListener({
     const actionLogQuery = query(
       collection(db, gameCollection, gameId, "actionLog"),
       orderBy("timestampMillis", "desc"),
+      limit(10000),
     );
     unlistenFns.push(
       onSnapshot(actionLogQuery, (querySnapshot) => {
