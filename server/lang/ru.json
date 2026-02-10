@@ -45,7 +45,7 @@
   },
   "+tb/XA": {
     "description": "Label for a section listing gained techs.",
-    "defaultMessage": "Получил {count, plural, one {Технологию} other {Технологии}}"
+    "defaultMessage": "{count, plural, one {Полученная} other {Полученные}} Техн."
   },
   "+x4AIR": {
     "description": "Text on a hover menu for selecting a rider target.",
@@ -57,7 +57,7 @@
   },
   "/KXhGz": {
     "description": "Text on a button that will select a tactical action.",
-    "defaultMessage": "Тактическое действие"
+    "defaultMessage": "Тактическое"
   },
   "/LAhkb": {
     "description": "Statistic ranking how aggressive a faction is.",
@@ -73,11 +73,11 @@
   },
   "/sF4zW": {
     "description": "Label on a hover menu used to select starting techs.",
-    "defaultMessage": "Выберите стартовые технологии"
+    "defaultMessage": "Выберите Стартовые Техн."
   },
   "09baik": {
     "description": "An ordering of factions based on initiative.",
-    "defaultMessage": "Порядок хода"
+    "defaultMessage": "Порядок Хода"
   },
   "0DDRZv": {
     "description": "Strategy card.",
@@ -117,7 +117,7 @@
   },
   "2hHU0G": {
     "description": "Title of uprade techs.",
-    "defaultMessage": "Технологии Улучшения"
+    "defaultMessage": "Техн. Улучшения"
   },
   "2jNcVD": {
     "description": "A label for a selector specifying which expansions should be enabled.",
@@ -133,7 +133,7 @@
   },
   "3qIvsL": {
     "description": "Label on a hover menu used to research tech.",
-    "defaultMessage": "Исследовать Технологию"
+    "defaultMessage": "Исследовать Техн."
   },
   "3xEbCN": {
     "description": "Text on a button that will enable/disable Codex IV.",
@@ -141,7 +141,7 @@
   },
   "43UU69": {
     "description": "Text on a button that will select a component action.",
-    "defaultMessage": "Компонент"
+    "defaultMessage": "Компонентное"
   },
   "46dzNs": {
     "description": "A label for a section of options related to the map.",
@@ -153,11 +153,11 @@
   },
   "49oatW": {
     "description": "Text shown on a button that will undo the previous action.",
-    "defaultMessage": "Отмена"
+    "defaultMessage": "Отмена действия"
   },
   "4PYolM": {
     "description": "Text showing that something will occur at the start of a specific phase.",
-    "defaultMessage": "Начало фазы {phase}"
+    "defaultMessage": "Начало Фазы {phase}"
   },
   "4QPpwL": {
     "description": "Label for a selector selecting a new tyrant.",
@@ -285,7 +285,7 @@
   },
   "AB4nOe": {
     "description": "Label for a section for a stat without a tech.",
-    "defaultMessage": "Без технологии"
+    "defaultMessage": "Без Техн."
   },
   "AO8lj8": {
     "description": "Label for section explaining which player has had their cultural planets exhausted.",
@@ -297,7 +297,7 @@
   },
   "CG2MQj": {
     "description": "Text showing that something will occur at the end of a specific phase.",
-    "defaultMessage": "Конец фазы {phase}"
+    "defaultMessage": "Конец Фазы {phase}"
   },
   "CH11Yw": {
     "description": "The title of promissory notes.",
@@ -369,7 +369,7 @@
   },
   "Gns4AS": {
     "description": "Text showing that the current phase is complete",
-    "defaultMessage": "Фаза {phase} завершена"
+    "defaultMessage": "Фаза {phase} Завершена"
   },
   "GyiC2A": {
     "description": "Text on a hover menu for selecting the result of frontier exploration.",
@@ -497,11 +497,11 @@
   },
   "McKqpw": {
     "description": "Label on a hover menu used to gain tech.",
-    "defaultMessage": "Получить Технологию"
+    "defaultMessage": "Получить Техн."
   },
   "NEiUw9": {
     "description": "Message explaining that a faction has no starting tech.",
-    "defaultMessage": "Без стартовых Технологий"
+    "defaultMessage": "Без стартовых Техн."
   },
   "NUNF0C": {
     "description": "Label for a section of faction details.",
@@ -537,7 +537,7 @@
   },
   "P/Y6Fo": {
     "description": "Message shown when a faction can gain a faction tech.",
-    "defaultMessage": "Получить Фракционную Технологию"
+    "defaultMessage": "Получить Фракционную Техн."
   },
   "PBW6vs": {
     "description": "The alternate ability for a strategy card.",
@@ -581,7 +581,7 @@
   },
   "Qo4+d0": {
     "description": "Label for a section for a stat with a tech.",
-    "defaultMessage": "C Технологией"
+    "defaultMessage": "C Техн."
   },
   "QrrIrN": {
     "description": "The title of secret objectives.",
@@ -625,7 +625,7 @@
   },
   "USnh0f": {
     "description": "Text shown on a button that opens the update techs panel.",
-    "defaultMessage": "Обновить Технологии"
+    "defaultMessage": "Обновить Техн."
   },
   "V7viK1": {
     "description": "Header for a section of planets that no player controls.",
@@ -651,6 +651,10 @@
     "description": "Text telling the players to score objectives.",
     "defaultMessage": "Выполните Цели"
   },
+  "WkNCwM": {
+    "description": "Relics which are not owned by anyone.",
+    "defaultMessage": "{count, plural, one {Бесхозная Реликвия} other {Бесхозные Реликвии}}"
+  },
   "WpoPPE": {
     "description": "A number of PDS units.",
     "defaultMessage": "{count} ПСО"
@@ -673,7 +677,7 @@
   },
   "XG4lKH": {
     "description": "Label on a hover menu used to return a tech.",
-    "defaultMessage": "Вернуть Технологию"
+    "defaultMessage": "Вернуть Техн."
   },
   "YKYdmA": {
     "description": "A number of Infantry units.",
@@ -726,6 +730,10 @@
   "aO0PYJ": {
     "description": "A button that will open the statistics page.",
     "defaultMessage": "Статистика"
+  },
+  "as4lhc": {
+    "description": "Label for a section listing purged techs.",
+    "defaultMessage": "{count, plural, one {Изгнанная} other {Изгнанные}} Техн."
   },
   "bPVF6s": {
     "description": "Label for a selector for choosing a planet to purge.",
@@ -909,7 +917,7 @@
   },
   "lDBTCO": {
     "description": "Instruction telling the speaker to reveal objectives.",
-    "defaultMessage": "Раскройте {count, number} {count, plural, one {Цель} other {Цели}} типа {type}"
+    "defaultMessage": "Раскройте {count, number} {count, plural, one {Цель} other {Цели}} \"{type}\""
   },
   "lGDH2d": {
     "description": "Unit upgrade techs.",
@@ -953,7 +961,7 @@
   },
   "o+O/Bq": {
     "description": "Label on a hover menu used to purge a tech.",
-    "defaultMessage": "Изгнать Технологию"
+    "defaultMessage": "Изгнать Техн."
   },
   "p4V2Yv": {
     "description": "A step in the setup phase: Draw 5 stage I objectives.",
@@ -1013,7 +1021,7 @@
   },
   "sngfoO": {
     "description": "Label for a section listing returned techs.",
-    "defaultMessage": "{count, plural, one {Возвращенная Технология} other {Возвращенные Технологии}}"
+    "defaultMessage": "{count, plural, one {Возвращенная} other {Возвращенные}} Техн."
   },
   "ssIhWl": {
     "description": "Label for the average game length.",
@@ -1057,7 +1065,7 @@
   },
   "wHhicR": {
     "description": "Label for a section listing researched techs.",
-    "defaultMessage": "{count, plural, one {Изученная Технология} other {Изученные Технологии}}"
+    "defaultMessage": "{count, plural, one {Изученная} other {Изученные}} Техн."
   },
   "wOb6Wx": {
     "description": "A button that will open the Patreon page.",
@@ -1065,7 +1073,7 @@
   },
   "x42AMg": {
     "description": "Label for a section that involves randomly selecting things.",
-    "defaultMessage": "Зарандомить"
+    "defaultMessage": "Выбрать случайно"
   },
   "x5JPkJ": {
     "description": "A number of Flagship units.",
@@ -1093,11 +1101,11 @@
   },
   "yXj5iL": {
     "description": "Header for a section listing out promissory notes.",
-    "defaultMessage": "{count, plural, one {Карта} two {Карты} few {Карты} other {Карт}} Обещания"
+    "defaultMessage": "{count, plural, one {Карта} other {Карты}} Обещания"
   },
   "yctdL8": {
     "description": "Header for a section listing out various faction technologies.",
-    "defaultMessage": "Фракционные Технологии"
+    "defaultMessage": "Фракционные Техн."
   },
   "ymJxS0": {
     "description": "Outcome choosing to pass a law.",
@@ -1105,7 +1113,7 @@
   },
   "ys7uwX": {
     "description": "Shortened version of technologies.",
-    "defaultMessage": "Техи"
+    "defaultMessage": "Техн."
   },
   "zAhkl6": {
     "description": "Label for the number of completed games.",
@@ -5273,47 +5281,447 @@
   },
   "Phase.Action": {
     "description": "Phase title for Action phase.",
-    "defaultMessage": "Фаза Действий"
+    "defaultMessage": "Действий"
   },
   "Phase.Agenda": {
     "description": "Phase title for Agenda phase.",
-    "defaultMessage": "Фаза Политики"
+    "defaultMessage": "Политики"
   },
   "Phase.End": {
     "description": "Phase title for end of game.",
-    "defaultMessage": "Итоги"
+    "defaultMessage": "Итогов"
   },
   "Phase.Setup": {
     "description": "Phase title for Setup phase.",
-    "defaultMessage": "Подготовка"
+    "defaultMessage": "Подготовки"
   },
   "Phase.Status": {
     "description": "Phase title for Status phase.",
-    "defaultMessage": "Фаза Статуса"
+    "defaultMessage": "Статуса"
   },
   "Phase.Strategy": {
     "description": "Phase title for Strategy phase.",
-    "defaultMessage": "Фаза Стратегии"
+    "defaultMessage": "Стратегии"
   },
   "Phase.Unknown": {
     "description": "Phase text shown while game is loading.",
     "defaultMessage": "Неизвестно"
   },
+  "Planets.[0.0.0].Name": {
+    "description": "Name of Planet: [0.0.0]",
+    "defaultMessage": "[0.0.0]"
+  },
+  "Planets.Abaddon.Name": {
+    "description": "Name of Planet: Abaddon",
+    "defaultMessage": "Абаддон"
+  },
+  "Planets.Abyz.Name": {
+    "description": "Name of Planet: Abyz",
+    "defaultMessage": "Абиз"
+  },
+  "Planets.Accoen.Name": {
+    "description": "Name of Planet: Accoen",
+    "defaultMessage": "Аккоен"
+  },
+  "Planets.Acheron.Name": {
+    "description": "Name of Planet: Acheron",
+    "defaultMessage": "Ахерон"
+  },
+  "Planets.Alio Prima.Name": {
+    "description": "Name of Planet: Alio Prima",
+    "defaultMessage": "Алио-Прима"
+  },
+  "Planets.Ang.Name": {
+    "description": "Name of Planet: Ang",
+    "defaultMessage": "Анг"
+  },
+  "Planets.Arc Prime.Name": {
+    "description": "Name of Planet: Arc Prime",
+    "defaultMessage": "Арк-Прайм"
+  },
+  "Planets.Archon Ren.Name": {
+    "description": "Name of Planet: Archon Ren",
+    "defaultMessage": "Архон-Рэн"
+  },
+  "Planets.Archon Tau.Name": {
+    "description": "Name of Planet: Archon Tau",
+    "defaultMessage": "Архон-Тау"
+  },
+  "Planets.Archon Vail.Name": {
+    "description": "Name of Planet: Archon Vail",
+    "defaultMessage": "Архон-Вейл"
+  },
+  "Planets.Arcturus.Name": {
+    "description": "Name of Planet: Arcturus",
+    "defaultMessage": "Арктур"
+  },
+  "Planets.Arinam.Name": {
+    "description": "Name of Planet: Arinam",
+    "defaultMessage": "Аринам"
+  },
+  "Planets.Arnor.Name": {
+    "description": "Name of Planet: Arnor",
+    "defaultMessage": "Арнор"
+  },
+  "Planets.Arretze.Name": {
+    "description": "Name of Planet: Arretze",
+    "defaultMessage": "Арретц"
+  },
+  "Planets.Ashtroth.Name": {
+    "description": "Name of Planet: Ashtroth",
+    "defaultMessage": "Эштрот"
+  },
+  "Planets.Atlas.Name": {
+    "description": "Name of Planet: Atlas",
+    "defaultMessage": "Атлас"
+  },
+  "Planets.Avar.Name": {
+    "description": "Name of Planet: Avar",
+    "defaultMessage": "Авар"
+  },
+  "Planets.Ba'kal.Name": {
+    "description": "Name of Planet: Ba'kal",
+    "defaultMessage": "Ба'кал"
+  },
+  "Planets.Bereg.Name": {
+    "description": "Name of Planet: Bereg",
+    "defaultMessage": "Берег"
+  },
+  "Planets.Cealdri.Name": {
+    "description": "Name of Planet: Cealdri",
+    "defaultMessage": "Кеалдри"
+  },
+  "Planets.Centauri.Name": {
+    "description": "Name of Planet: Centauri",
+    "defaultMessage": "Центавр"
+  },
+  "Planets.Cormund.Name": {
+    "description": "Name of Planet: Cormund",
+    "defaultMessage": "Кормунд"
+  },
+  "Planets.Corneeq.Name": {
+    "description": "Name of Planet: Corneeq",
+    "defaultMessage": "Корник"
+  },
+  "Planets.Creuss.Name": {
+    "description": "Name of Planet: Creuss",
+    "defaultMessage": "Креусс"
+  },
+  "Planets.Dal Bootha.Name": {
+    "description": "Name of Planet: Dal Bootha",
+    "defaultMessage": "Дал-Бута"
+  },
+  "Planets.Darien.Name": {
+    "description": "Name of Planet: Darien",
+    "defaultMessage": "Дэриэн"
+  },
+  "Planets.Druaa.Name": {
+    "description": "Name of Planet: Druaa",
+    "defaultMessage": "Друаа"
+  },
+  "Planets.Elysium.Name": {
+    "description": "Name of Planet: Elysium",
+    "defaultMessage": "Элизиум"
+  },
+  "Planets.Everra.Name": {
+    "description": "Name of Planet: Everra",
+    "defaultMessage": "Эверра"
+  },
+  "Planets.Fria.Name": {
+    "description": "Name of Planet: Fria",
+    "defaultMessage": "Фрия"
+  },
+  "Planets.Gral.Name": {
+    "description": "Name of Planet: Gral",
+    "defaultMessage": "Грал"
+  },
+  "Planets.Hercant.Name": {
+    "description": "Name of Planet: Hercant",
+    "defaultMessage": "Геркант"
+  },
   "Planets.Hope's End.Ability": {
     "description": "Planet Ability for Hope's End",
     "defaultMessage": "Вы можете перевернуть эту карту в конце своего хода, чтобы разместить 1 меха из своего снабжения на любой подконтрольной вам планете или взять 1 карту действия."
+  },
+  "Planets.Hope's End.Name": {
+    "description": "Name of Planet: Hope's End",
+    "defaultMessage": "Конец Надежды"
+  },
+  "Planets.Ixth.Name": {
+    "description": "Name of Planet: Ixth",
+    "defaultMessage": "Икст"
+  },
+  "Planets.Jeol Ir.Name": {
+    "description": "Name of Planet: Jeol Ir",
+    "defaultMessage": "Джеол Ир"
+  },
+  "Planets.Jol.Name": {
+    "description": "Name of Planet: Jol",
+    "defaultMessage": "Жол"
+  },
+  "Planets.Jord.Name": {
+    "description": "Name of Planet: Jord",
+    "defaultMessage": "Земра"
+  },
+  "Planets.Kamdorn.Name": {
+    "description": "Name of Planet: Kamdorn",
+    "defaultMessage": "Кэмдорн"
+  },
+  "Planets.Kraag.Name": {
+    "description": "Name of Planet: Kraag",
+    "defaultMessage": "Крааг"
+  },
+  "Planets.Lazar.Name": {
+    "description": "Name of Planet: Lazar",
+    "defaultMessage": "Лазар"
+  },
+  "Planets.Lirta IV.Name": {
+    "description": "Name of Planet: Lirta IV",
+    "defaultMessage": "Лирта IV"
+  },
+  "Planets.Lisis.Name": {
+    "description": "Name of Planet: Lisis",
+    "defaultMessage": "Лизис"
+  },
+  "Planets.Lisis II.Name": {
+    "description": "Name of Planet: Lisis II",
+    "defaultMessage": "Лизис II"
+  },
+  "Planets.Lodor.Name": {
+    "description": "Name of Planet: Lodor",
+    "defaultMessage": "Лодор"
+  },
+  "Planets.Loki.Name": {
+    "description": "Name of Planet: Loki",
+    "defaultMessage": "Локи"
+  },
+  "Planets.Lor.Name": {
+    "description": "Name of Planet: Lor",
+    "defaultMessage": "Лор"
+  },
+  "Planets.Maaluuk.Name": {
+    "description": "Name of Planet: Maaluuk",
+    "defaultMessage": "Маалук"
   },
   "Planets.Mallice.Ability": {
     "description": "Planet Ability for Mallice",
     "defaultMessage": "Вы можете перевернуть эту карту в конце своего хода, чтобы получить 2 товара или сконвертировать всю свою продукцию в товары."
   },
+  "Planets.Mallice.Name": {
+    "description": "Name of Planet: Mallice",
+    "defaultMessage": "Мэллис"
+  },
+  "Planets.Mecatol Rex.Name": {
+    "description": "Name of Planet: Mecatol Rex",
+    "defaultMessage": "Мекатол-Рекс"
+  },
+  "Planets.Meer.Name": {
+    "description": "Name of Planet: Meer",
+    "defaultMessage": "Миэр"
+  },
+  "Planets.Mehar Xull.Name": {
+    "description": "Name of Planet: Mehar Xull",
+    "defaultMessage": "Мехар-Зулл"
+  },
+  "Planets.Mellon.Name": {
+    "description": "Name of Planet: Mellon",
+    "defaultMessage": "Меллон"
+  },
   "Planets.Mirage.Ability": {
     "description": "Planet Ability for Mirage",
     "defaultMessage": "Вы можете перевернуть эту карту в конце своего хода, чтобы разместить 2 истребителя или меньше из своего снабжения в любой системе, в которой есть хотя бы 1 ваш корабль."
   },
+  "Planets.Mirage.Name": {
+    "description": "Name of Planet: Mirage",
+    "defaultMessage": "Мираж"
+  },
+  "Planets.Moll Primus.Name": {
+    "description": "Name of Planet: Moll Primus",
+    "defaultMessage": "Молл-Прайм"
+  },
+  "Planets.Mordai II.Name": {
+    "description": "Name of Planet: Mordai II",
+    "defaultMessage": "Мордай II"
+  },
+  "Planets.Muaat.Name": {
+    "description": "Name of Planet: Muaat",
+    "defaultMessage": "Муаат"
+  },
+  "Planets.Naazir.Name": {
+    "description": "Name of Planet: Naazir",
+    "defaultMessage": "Наазир"
+  },
+  "Planets.Nar.Name": {
+    "description": "Name of Planet: Nar",
+    "defaultMessage": "Нар"
+  },
+  "Planets.Nestphar.Name": {
+    "description": "Name of Planet: Nestphar",
+    "defaultMessage": "Нестфар"
+  },
+  "Planets.New Albion.Name": {
+    "description": "Name of Planet: New Albion",
+    "defaultMessage": "Новый Альбион"
+  },
+  "Planets.Perimeter.Name": {
+    "description": "Name of Planet: Perimeter",
+    "defaultMessage": "Периметр"
+  },
   "Planets.Primor.Ability": {
     "description": "Planet Ability for Primor",
     "defaultMessage": "Вы можете перевернуть эту карту в конце своего хода, чтобы разместить 2 отряда пехоты или меньше из своего снабжения на любой подконтрольной вам планете."
+  },
+  "Planets.Primor.Name": {
+    "description": "Name of Planet: Primor",
+    "defaultMessage": "Примор"
+  },
+  "Planets.Quann.Name": {
+    "description": "Name of Planet: Quann",
+    "defaultMessage": "Куанн"
+  },
+  "Planets.Qucen'n.Name": {
+    "description": "Name of Planet: Qucen'n",
+    "defaultMessage": "Кьюкен'н"
+  },
+  "Planets.Quinarra.Name": {
+    "description": "Name of Planet: Quinarra",
+    "defaultMessage": "Квинара"
+  },
+  "Planets.Ragh.Name": {
+    "description": "Name of Planet: Ragh",
+    "defaultMessage": "Раг"
+  },
+  "Planets.Rarron.Name": {
+    "description": "Name of Planet: Rarron",
+    "defaultMessage": "Раррон"
+  },
+  "Planets.Resculon.Name": {
+    "description": "Name of Planet: Resculon",
+    "defaultMessage": "Рескулон"
+  },
+  "Planets.Retillion.Name": {
+    "description": "Name of Planet: Retillion",
+    "defaultMessage": "Ретиллион"
+  },
+  "Planets.Rigel I.Name": {
+    "description": "Name of Planet: Rigel I",
+    "defaultMessage": "Ригель-1"
+  },
+  "Planets.Rigel II.Name": {
+    "description": "Name of Planet: Rigel II",
+    "defaultMessage": "Ригель-2"
+  },
+  "Planets.Rigel III.Name": {
+    "description": "Name of Planet: Rigel III",
+    "defaultMessage": "Ригель-3"
+  },
+  "Planets.Rokha.Name": {
+    "description": "Name of Planet: Rokha",
+    "defaultMessage": "Роха"
+  },
+  "Planets.Sakulag.Name": {
+    "description": "Name of Planet: Sakulag",
+    "defaultMessage": "Сакулаг"
+  },
+  "Planets.Saudor.Name": {
+    "description": "Name of Planet: Saudor",
+    "defaultMessage": "Саудор"
+  },
+  "Planets.Sem-Lore.Name": {
+    "description": "Name of Planet: Sem-Lore",
+    "defaultMessage": "Сем-Лор"
+  },
+  "Planets.Shalloq.Name": {
+    "description": "Name of Planet: Shalloq",
+    "defaultMessage": "Шеллок"
+  },
+  "Planets.Siig.Name": {
+    "description": "Name of Planet: Siig",
+    "defaultMessage": "Сииг"
+  },
+  "Planets.Starpoint.Name": {
+    "description": "Name of Planet: Starpoint",
+    "defaultMessage": "Старпоинт"
+  },
+  "Planets.Tar'Mann.Name": {
+    "description": "Name of Planet: Tar'Mann",
+    "defaultMessage": "Тар'манн"
+  },
+  "Planets.Tequ'ran.Name": {
+    "description": "Name of Planet: Tequ'ran",
+    "defaultMessage": "Теку'ран"
+  },
+  "Planets.The Dark.Name": {
+    "description": "Name of Planet: The Dark",
+    "defaultMessage": "Тьма"
+  },
+  "Planets.Thibah.Name": {
+    "description": "Name of Planet: Thibah",
+    "defaultMessage": "Тиба"
+  },
+  "Planets.Torkan.Name": {
+    "description": "Name of Planet: Torkan",
+    "defaultMessage": "Торкан"
+  },
+  "Planets.Tren'lak.Name": {
+    "description": "Name of Planet: Tren'lak",
+    "defaultMessage": "Трен'лак"
+  },
+  "Planets.Valk.Name": {
+    "description": "Name of Planet: Valk",
+    "defaultMessage": "Валк"
+  },
+  "Planets.Vefut II.Name": {
+    "description": "Name of Planet: Vefut II",
+    "defaultMessage": "Вефут II"
+  },
+  "Planets.Vega Major.Name": {
+    "description": "Name of Planet: Vega Major",
+    "defaultMessage": "Большая Вега"
+  },
+  "Planets.Vega Minor.Name": {
+    "description": "Name of Planet: Vega Minor",
+    "defaultMessage": "Малая Вега"
+  },
+  "Planets.Velnor.Name": {
+    "description": "Name of Planet: Velnor",
+    "defaultMessage": "Велнор"
+  },
+  "Planets.Vorhal.Name": {
+    "description": "Name of Planet: Vorhal",
+    "defaultMessage": "Ворхал"
+  },
+  "Planets.Wellon.Name": {
+    "description": "Name of Planet: Wellon",
+    "defaultMessage": "Веллон"
+  },
+  "Planets.Winnu.Name": {
+    "description": "Name of Planet: Winnu",
+    "defaultMessage": "Винну"
+  },
+  "Planets.Wren Terra.Name": {
+    "description": "Name of Planet: Wren Terra",
+    "defaultMessage": "Рен-Терра"
+  },
+  "Planets.Xanhact.Name": {
+    "description": "Name of Planet: Xanhact",
+    "defaultMessage": "Занакт"
+  },
+  "Planets.Xxehan.Name": {
+    "description": "Name of Planet: Xxehan",
+    "defaultMessage": "Ззехан"
+  },
+  "Planets.Ylir.Name": {
+    "description": "Name of Planet: Ylir",
+    "defaultMessage": "Айлир"
+  },
+  "Planets.Zohbat.Name": {
+    "description": "Name of Planet: Zohbat",
+    "defaultMessage": "Зохбат"
+  },
+  "Promissories.Alliance.Title": {
+    "description": "Title of Promissory: Alliance",
+    "defaultMessage": "{count, plural, one {Альянс} other {Альянсы}}"
   },
   "Promissories.Political Secret.Title": {
     "description": "Title of Promissory: Political Secret",
