@@ -83,6 +83,7 @@ import { rem } from "../../../../../../src/util/util";
 import styles from "./ActionPhase.module.scss";
 import { ComponentAction } from "./ComponentAction";
 import StrategicActions from "./StrategicActions/StrategicActions";
+import Faunus from "./Actions/Faunus";
 
 interface FactionActionButtonsProps {
   factionId: FactionId;
@@ -1187,83 +1188,91 @@ export function AdditionalActions({
         }
         return true;
       }
-      if (!canProveEndurance()) {
-        return null;
-      }
       return (
-        <div
-          className="flexRow largeFont"
-          style={{
-            justifyContent: "center",
-            paddingTop: rem(12),
-            width: "100%",
-            whiteSpace: "nowrap",
-          }}
-        >
-          <FormattedMessage
-            id="Objectives.Prove Endurance.Title"
-            defaultMessage="Prove Endurance"
-            description="Title of Objective: Prove Endurance"
-          />
-          :
-          <FactionCircle
-            key={factionId}
-            blur
-            borderColor={getColorForFaction(factionId)}
-            factionId={factionId}
-            onClick={
-              viewOnly
-                ? undefined
-                : () => {
-                    if (!gameId) {
-                      return;
-                    }
-                    if (hasProveEndurance) {
-                      unscoreObjectiveAsync(
-                        gameId,
-                        factionId,
-                        "Prove Endurance",
-                      );
-                    } else {
-                      scoreObjectiveAsync(gameId, factionId, "Prove Endurance");
-                    }
-                  }
-            }
-            size={52}
-            tag={
-              <div
-                className="flexRow largeFont"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  color: hasProveEndurance ? "green" : "red",
-                }}
-              >
-                {hasProveEndurance ? (
+        <div className="flexColumn largeFont">
+          <div className="flexRow" style={{ width: "100%" }}>
+            <Faunus factionId={factionId} />
+          </div>
+          {!canProveEndurance() ? null : (
+            <div
+              className="flexRow"
+              style={{
+                justifyContent: "center",
+                paddingTop: rem(12),
+                width: "100%",
+                whiteSpace: "nowrap",
+              }}
+            >
+              <FormattedMessage
+                id="Objectives.Prove Endurance.Title"
+                defaultMessage="Prove Endurance"
+                description="Title of Objective: Prove Endurance"
+              />
+              :
+              <FactionCircle
+                key={factionId}
+                blur
+                borderColor={getColorForFaction(factionId)}
+                factionId={factionId}
+                onClick={
+                  viewOnly
+                    ? undefined
+                    : () => {
+                        if (!gameId) {
+                          return;
+                        }
+                        if (hasProveEndurance) {
+                          unscoreObjectiveAsync(
+                            gameId,
+                            factionId,
+                            "Prove Endurance",
+                          );
+                        } else {
+                          scoreObjectiveAsync(
+                            gameId,
+                            factionId,
+                            "Prove Endurance",
+                          );
+                        }
+                      }
+                }
+                size={52}
+                tag={
                   <div
-                    className="symbol"
+                    className="flexRow largeFont"
                     style={{
-                      fontSize: rem(18),
-                      lineHeight: rem(18),
+                      width: "100%",
+                      height: "100%",
+                      color: hasProveEndurance ? "green" : "red",
                     }}
                   >
-                    ✓
+                    {hasProveEndurance ? (
+                      <div
+                        className="symbol"
+                        style={{
+                          fontSize: rem(18),
+                          lineHeight: rem(18),
+                        }}
+                      >
+                        ✓
+                      </div>
+                    ) : (
+                      <div
+                        className="flexRow"
+                        style={{
+                          width: "80%",
+                          height: "80%",
+                        }}
+                      >
+                        <SymbolX color="red" />
+                      </div>
+                    )}
                   </div>
-                ) : (
-                  <div
-                    className="flexRow"
-                    style={{
-                      width: "80%",
-                      height: "80%",
-                    }}
-                  >
-                    <SymbolX color="red" />
-                  </div>
-                )}
-              </div>
-            }
-            tagBorderColor={hasProveEndurance ? "green" : "red"}
-          />
+                }
+                tagBorderColor={hasProveEndurance ? "green" : "red"}
+              />
+            </div>
+          )}
         </div>
       );
     case "Tactical":
