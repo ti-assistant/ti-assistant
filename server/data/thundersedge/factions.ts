@@ -6,7 +6,7 @@ import {
 } from "../../../src/util/strings";
 
 export default function getThundersEdgeFactions(
-  intl: IntlShape
+  intl: IntlShape,
 ): Record<ThundersEdge.FactionId, BaseFaction> {
   return {
     "Crimson Rebellion": {
@@ -65,7 +65,7 @@ export default function getThundersEdgeFactions(
             defaultMessage:
               "During your tactical actions, apply +1 to the move value of each of your ships that starts its movement in your home system or in a system that contains an active breach.{br}ACTION: Exhaust this card to flip any breach or place an active breach in a non-home system that contains your units.",
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "Resonance Generator",
         synergy: { left: "BLUE", right: "RED" },
@@ -103,7 +103,7 @@ export default function getThundersEdgeFactions(
               defaultMessage:
                 "ACTION: Place this card faceup in your play area and place the sever token in a system that contains your units; wormholes in that system have no effect during movement.{br}Remove the sever token and return this card to the Rebellion player at the end of the status phase.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
         },
       ],
@@ -249,7 +249,7 @@ export default function getThundersEdgeFactions(
             defaultMessage:
               "ACTION: Exhaust this card to allow each other player to spend 3 trade goods and give you 1 promissory note. Each player that does may research a non-faction, non-unit upgrade technology. You also gain each technology researched this way.",
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "Visionaria Select",
         synergy: { left: "YELLOW", right: "GREEN" },
@@ -288,7 +288,7 @@ export default function getThundersEdgeFactions(
               defaultMessage:
                 "ACTION: Place this card faceup in your play area and gain 1 non-faction, non-unit upgrade technology that the Deepwrought player owns; place that technology on this card.{br}Return that technology to the deck and this card to the Deepwrought player at the end of the status phase.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
         },
       ],
@@ -392,7 +392,7 @@ export default function getThundersEdgeFactions(
               defaultMessage:
                 "If you have at least 1 plot card in your play area, gain the following ability:{br}ACTION: Purge The Firmament's faction sheet, leaders, planet cards, and promissory note. Then, gain all of the faction components for The Obsidian.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
         },
       ],
@@ -409,7 +409,7 @@ export default function getThundersEdgeFactions(
             defaultMessage:
               "When you gain this card and at the start of the status phase, you may place up to 3 of your trade goods on this card.{br}Flip this card if you become the Obsidian faction.",
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "The Sowing",
         synergy: { left: "YELLOW", right: "GREEN" },
@@ -447,7 +447,7 @@ export default function getThundersEdgeFactions(
               defaultMessage:
                 "When you receive this card, if you are not the Firmament:{br}The Firmament player may place 1 facedown plot card in their play area with your control token on it. Then, gain 2 command tokens, gain 2 trade goods, and purge this card.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
         },
       ],
@@ -583,7 +583,7 @@ export default function getThundersEdgeFactions(
             defaultMessage:
               "When you produce ships, you may exhaust this card to place those ships in a system that contains 1 of your command tokens, at least 1 of your ground forces, and no other player's ships.",
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "The Icon",
         synergy: { left: "RED", right: "YELLOW" },
@@ -622,7 +622,7 @@ export default function getThundersEdgeFactions(
               defaultMessage:
                 "At the end of a combat:{br}Galvanize 1 of your units that participated.{br}Then, return this card to the Last Bastion player.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
         },
       ],
@@ -710,7 +710,7 @@ export default function getThundersEdgeFactions(
               defaultMessage:
                 "This unit's PRODUCTION value is equal to 2 more than the resource value of this planet.{br}The resource value of this planet is increased by 1.{br}Up to 3 fighters in this system do not count against your ships' capacity.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
           expansion: "THUNDERS EDGE",
           name: intl.formatMessage({
@@ -752,7 +752,7 @@ export default function getThundersEdgeFactions(
               defaultMessage:
                 "When this faction comes into play, flip your home system, double-sided faction components, and all of your in-play plot cards. Then, ready Cronos Hollow and Tallin Hollow if you control them.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
         },
         {
@@ -768,7 +768,7 @@ export default function getThundersEdgeFactions(
               defaultMessage:
                 "The player or players whose control tokens are on each plot card are the puppeted players for the plot.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
         },
       ],
@@ -785,7 +785,7 @@ export default function getThundersEdgeFactions(
             defaultMessage:
               "Place 1 trade good from the supply onto this card each time you win a combat against a puppeted player.{br}At the start of the status phase, gain all trade goods on this card, then gain an equal number of trade goods from the supply.",
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "The Reaping",
         synergy: { left: "YELLOW", right: "GREEN" },
@@ -824,7 +824,7 @@ export default function getThundersEdgeFactions(
               defaultMessage:
                 "At the end of one of your tactical actions:{br}Spend 1 influence to give this card to one of your neighbors; you can use this ability even if you are the Obsidian player.{br}At the end of the status phase, if you are not the Obsidian player, remove 1 command token from your fleet pool and return it to your reinforcements.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
         },
       ],
@@ -898,12 +898,15 @@ export default function getThundersEdgeFactions(
             description: "Title of Faction Ability: Miniaturization",
             defaultMessage: "Miniaturization",
           }),
-          description: intl.formatMessage({
-            id: "Ral Nel Consortium.Abilities.Miniaturization.Description",
-            description: "Description for Faction Ability: Miniaturization",
-            defaultMessage:
-              "Your structures can be transported by any ship; this does not require or count against capacity. While your structures are in the space area, they cannot use their unit abilities. At the end of your tactical actions, you may place your structures that are in space areas onto planets you control in their respective systems.",
-          }),
+          description: intl.formatMessage(
+            {
+              id: "Ral Nel Consortium.Abilities.Miniaturization.Description",
+              description: "Description for Faction Ability: Miniaturization",
+              defaultMessage:
+                "Your structures can be transported by any ship; this does not require or count against capacity. While your structures are in the space area, they cannot use their unit abilities. At the end of your tactical actions, you may place your structures that are in space areas onto planets you control in their respective systems.",
+            },
+            { br: "\n\n" },
+          ),
         },
       ],
       breakthrough: {
@@ -919,7 +922,7 @@ export default function getThundersEdgeFactions(
             defaultMessage:
               "During the action phase, if you have not passed, when other players would discard action cards, they are placed on this card instead.{br}When you pass, take 1 action card from this card and discard the rest.",
           },
-          { br: "\n\n" }
+          { br: "\n\n" },
         ),
         id: "Data Skimmer",
         synergy: { left: "YELLOW", right: "GREEN" },
@@ -958,7 +961,7 @@ export default function getThundersEdgeFactions(
               defaultMessage:
                 "After you activate a system:{br}You may move your structures from adjacent systems that do not contain your command tokens onto planets you control in the active system.{br}Then, return this card to the Ral Nel player.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
         },
       ],
@@ -1047,7 +1050,7 @@ export default function getThundersEdgeFactions(
               defaultMessage:
                 "This unit can use the SPACE CANNON ability of one of your structures in its space area; each structure can only be triggered once.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
           expansion: "THUNDERS EDGE",
           name: intl.formatMessage({
