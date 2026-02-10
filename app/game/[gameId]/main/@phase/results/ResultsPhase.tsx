@@ -19,7 +19,6 @@ import { Loader } from "../../../../../../src/Loader";
 import { processMapString } from "../../../../../../src/util/map";
 import { getMapString } from "../../../../../../src/util/options";
 import { ActionLog, Optional } from "../../../../../../src/util/types/types";
-import { rem } from "../../../../../../src/util/util";
 import MapLapse from "./MapLapse";
 import TechGraph from "./TechGraph";
 import Timers from "./Timers";
@@ -265,9 +264,6 @@ function buildInitialGameData(
           planets: homePlanets,
           techs: {},
           startswith: { units: {} },
-          // State values
-          hero: "locked",
-          commander: "locked",
         };
       }
       const startingTechs: Partial<Record<TechId, { state: TechState }>> = {};
@@ -286,7 +282,6 @@ function buildInitialGameData(
         order: order,
         mapPosition: index,
         // Faction specific values
-        planets: homePlanets,
         techs: startingTechs,
         startswith: baseFaction.startswith,
         // State values
@@ -327,12 +322,6 @@ function buildInitialGameData(
       }
     }
     baseFactions[faction.id] = localFaction;
-    Object.entries(faction.planets).forEach(([name, planet]) => {
-      basePlanets[name as PlanetId] = {
-        ...planet,
-        owner: faction.id,
-      };
-    });
   });
 
   let baseObjectives: Partial<Record<ObjectiveId, GameObjective>> = {

@@ -50,7 +50,7 @@ export async function POST(req: Request) {
 
     // Get home planets for each faction.
     const homeBasePlanets = Object.values(getPlanets(intl)).filter(
-      (planet) => planet.faction === faction.id && planet.home
+      (planet) => planet.faction === faction.id && planet.home,
     );
     const homePlanets: Partial<Record<PlanetId, { state: PlanetState }>> = {};
     homeBasePlanets.forEach((planet) => {
@@ -95,13 +95,7 @@ export async function POST(req: Request) {
       order: order,
       mapPosition: index,
       // Faction specific values
-      planets: homePlanets,
       techs: startingTechs,
-      // State values
-      hero: "locked",
-      commander: options["game-variant"].includes("alliance")
-        ? "readied"
-        : "locked",
     };
     if (baseFaction.startswith) {
       gameFaction.startswith = baseFaction.startswith;
@@ -163,13 +157,6 @@ export async function POST(req: Request) {
       localFaction.startswith = startsWith;
     }
     baseFactions[faction.id] = localFaction;
-    objectEntries(faction.planets).forEach(([name, planet]) => {
-      const basePlanet: GamePlanet = { ...planet, owner: baseFaction.id };
-      if (baseFaction.id === "Last Bastion" && name === "Ordinian") {
-        basePlanet.spaceDock = true;
-      }
-      basePlanets[name] = basePlanet;
-    });
   });
 
   let baseObjectives: Partial<Record<ObjectiveId, GameObjective>> = {
