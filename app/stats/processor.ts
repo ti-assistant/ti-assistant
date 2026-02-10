@@ -194,11 +194,11 @@ export async function maybeUpdateProcessedGames(
   });
 
   for (const [gameId, game] of Object.entries(allGames)) {
-    const actionLog = await getFullActionLog(gameId, "games");
-    if (!isCompletedGame(game, baseData, actionLog)) {
+    if (!!processedGames[gameId]) {
       continue;
     }
-    if (!!processedGames[gameId]) {
+    const actionLog = await getFullActionLog(gameId, "games");
+    if (!isCompletedGame(game, baseData, actionLog)) {
       continue;
     }
     const fixedGame = fixGame(game, baseData, actionLog);
