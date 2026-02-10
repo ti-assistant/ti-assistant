@@ -26,7 +26,7 @@ export const viewport: Viewport = {
   colorScheme: "dark",
 };
 
-const SUPPORTED_LOCALES = ["en", "de", "fr", "ru"];
+const SUPPORTED_LOCALES = ["en", "de", "fr", "ru", "pl"];
 
 interface FontStyle extends CSSProperties {
   "--main-font": string;
