@@ -1,7 +1,7 @@
 import { IntlShape } from "react-intl";
 
 export default function getCodexFourComponents(
-  intl: IntlShape
+  intl: IntlShape,
 ): Record<CodexFour.ComponentId, BaseComponent | BaseTechComponent> {
   return {
     "Age of Exploration": {
@@ -15,8 +15,8 @@ export default function getCodexFourComponents(
       event: "Age of Exploration",
       id: "Age of Exploration",
       name: intl.formatMessage({
-        id: "Components.Age of Exploration.Title",
-        description: "Title of Component: Age of Exploration",
+        id: "Events.Age of Exploration.Title",
+        description: "Title of Event: Age of Exploration",
         defaultMessage: "Age of Exploration",
       }),
       requiresTech: "Dark Energy Tap",
@@ -33,8 +33,8 @@ export default function getCodexFourComponents(
       event: "Total War",
       id: "Total War",
       name: intl.formatMessage({
-        id: "Components.Total War.Title",
-        description: "Title of Component: Total War",
+        id: "Events.Total War.Title",
+        description: "Title of Event: Total War",
         defaultMessage: "Total War",
       }),
       type: "EVENT",

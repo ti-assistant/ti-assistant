@@ -33,7 +33,7 @@ export default function AfterAnAgendaIsRevealed() {
 
   let assassinatedRep = getActionCardTargets(
     currentTurn,
-    "Assassinate Representative"
+    "Assassinate Representative",
   )[0];
   assassinatedRep = assassinatedRep === "None" ? undefined : assassinatedRep;
   const electionHacked =
@@ -70,15 +70,15 @@ export default function AfterAnAgendaIsRevealed() {
           disabled={viewOnly}
         >
           <FormattedMessage
-            id="Components.Hack Election.Title"
-            description="Title of Component: Hack Election"
+            id="Action Cards.Hack Election.Name"
+            description="Name of action card: Hack Election"
             defaultMessage="Hack Election"
           />
         </button>
         <div className="flexRow">
           <FormattedMessage
-            id="Components.Assassinate Representative.Title"
-            description="Title of Component: Assassinate Representative"
+            id="Action Cards.Assassinate Representative.Name"
+            description="Name of action card: Assassinate Representative"
             defaultMessage="Assassinate Representative"
           />
           :
@@ -90,14 +90,14 @@ export default function AfterAnAgendaIsRevealed() {
                 unplayActionCardAsync(
                   gameId,
                   "Assassinate Representative",
-                  prevFaction
+                  prevFaction,
                 );
               }
               if (factionId) {
                 playActionCardAsync(
                   gameId,
                   "Assassinate Representative",
-                  factionId
+                  factionId,
                 );
               }
             }}

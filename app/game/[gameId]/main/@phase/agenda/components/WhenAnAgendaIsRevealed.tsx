@@ -75,8 +75,8 @@ function VetoButton() {
 
   const vetoText = !xxcha ? (
     <FormattedMessage
-      id="Components.Veto.Title"
-      description="Title of Component: Veto"
+      id="Action Cards.Veto.Name"
+      description="Name of action card: Veto"
       defaultMessage="Veto"
     />
   ) : (
@@ -105,7 +105,7 @@ function PoliticalSecrets({ speaker }: { speaker: FactionId }) {
 
   const politicalSecrets = getPromissoryTargets(
     currentTurn,
-    "Political Secret"
+    "Political Secret",
   );
   const speakerOrder = factions[speaker]?.order ?? 1;
 
@@ -176,13 +176,13 @@ function PoliticalSecrets({ speaker }: { speaker: FactionId }) {
                     unplayPromissoryNoteAsync(
                       gameId,
                       "Political Secret",
-                      faction.id
+                      faction.id,
                     );
                   } else {
                     playPromissoryNoteAsync(
                       gameId,
                       "Political Secret",
-                      faction.id
+                      faction.id,
                     );
                   }
                 }}

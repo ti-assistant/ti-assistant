@@ -1,7 +1,7 @@
 import { IntlShape } from "react-intl";
 
 export default function getProphecyOfKingsObjectives(
-  intl: IntlShape
+  intl: IntlShape,
 ): Record<ProphecyOfKings.ObjectiveId, BaseObjective> {
   return {
     "Achieve Supremacy": {
@@ -523,16 +523,17 @@ export default function getProphecyOfKingsObjectives(
     },
     "Political Censure": {
       description: intl.formatMessage({
-        id: "Objectives.Political Censure.Description",
-        description: "Description for Objective: Political Censure",
-        defaultMessage: "Given to the player elected for Political Censure.",
+        id: "Agendas.Political Censure.Description",
+        description: "Description for Agenda Card: Political Censure",
+        defaultMessage:
+          "The elected player gains this card and 1 victory point.{br}The elected player cannot play action cards.{br}If the owner of this card loses this card, they lose 1 victory point.",
       }),
       expansion: "POK",
       max: 1,
       id: "Political Censure",
       name: intl.formatMessage({
-        id: "Objectives.Political Censure.Title",
-        description: "Title of Objective: Political Censure",
+        id: "Agendas.Political Censure.Title",
+        description: "Title of Agenda Card: Political Censure",
         defaultMessage: "Political Censure",
       }),
       points: 1,
@@ -729,18 +730,18 @@ export default function getProphecyOfKingsObjectives(
     },
     "Tomb + Crown of Emphidia": {
       description: intl.formatMessage({
-        id: "Objectives.Tomb + Crown of Emphidia.Description",
-        description: "Description for Objective: Tomb + Crown of Emphidia",
+        id: "Relics.The Crown of Emphidia.Description",
+        description: "Description for Relic: The Crown of Emphidia",
         defaultMessage:
-          "Use the Crown of Emphidia at the end of the status phase while in control of the Tomb of Emphidia.",
+          'After you perform a tactical action, you may exhaust this card to explore 1 planet you control.{br}At the end of the status phase, if you control the "Tomb of Emphidia", you may purge this card to gain 1 Victory Point.',
       }),
       expansion: "POK",
       max: 1,
       id: "Tomb + Crown of Emphidia",
       name: intl.formatMessage({
-        id: "Objectives.Tomb + Crown of Emphidia.Title",
-        description: "Title of Objective: Tomb + Crown of Emphidia",
-        defaultMessage: "Crown of Emphidia",
+        id: "Relics.The Crown of Emphidia.Title",
+        description: "Title of Relic: The Crown of Emphidia",
+        defaultMessage: "The Crown of Emphidia",
       }),
       points: 1,
       replaces: "The Crown of Emphidia",

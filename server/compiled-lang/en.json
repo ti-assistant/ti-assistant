@@ -5105,12 +5105,6 @@
       "value": "Gledge Base"
     }
   ],
-  "Attachments.Holy Planet of Ixth.Title": [
-    {
-      "type": 0,
-      "value": "Holy Planet of Ixth"
-    }
-  ],
   "Attachments.Lazax Survivors.Title": [
     {
       "type": 0,
@@ -5147,46 +5141,10 @@
       "value": "Propulsion Research Facility"
     }
   ],
-  "Attachments.Research Team: Biotic.Title": [
-    {
-      "type": 0,
-      "value": "Research Team: Biotic"
-    }
-  ],
-  "Attachments.Research Team: Cybernetic.Title": [
-    {
-      "type": 0,
-      "value": "Research Team: Cybernetic"
-    }
-  ],
-  "Attachments.Research Team: Propulsion.Title": [
-    {
-      "type": 0,
-      "value": "Research Team: Propulsion"
-    }
-  ],
-  "Attachments.Research Team: Warfare.Title": [
-    {
-      "type": 0,
-      "value": "Research Team: Warfare"
-    }
-  ],
   "Attachments.Rich World.Title": [
     {
       "type": 0,
       "value": "Rich World"
-    }
-  ],
-  "Attachments.Senate Sanctuary.Title": [
-    {
-      "type": 0,
-      "value": "Senate Sanctuary"
-    }
-  ],
-  "Attachments.Terraform.Title": [
-    {
-      "type": 0,
-      "value": "Terraform"
     }
   ],
   "Attachments.Terraforming Initiative.Title": [
@@ -5805,122 +5763,10 @@
       "value": "ACTION: Exhaust DARK ENERGY TAP and choose a non-home edge system that contains your ships to roll 1 die. On a result of 1-4, draw a random unused red tile; on a result of 5-10, draw a random unused blue tile. Place that tile adjacent to the chosen system so that it is touching at least 2 non-home systems. Place a frontier token in the system if it does not contain any planets."
     }
   ],
-  "Components.Age of Exploration.Title": [
-    {
-      "type": 0,
-      "value": "Age of Exploration"
-    }
-  ],
-  "Components.Ancient Burial Sites.Title": [
-    {
-      "type": 0,
-      "value": "Ancient Burial Sites"
-    }
-  ],
-  "Components.Assassinate Representative.Title": [
-    {
-      "type": 0,
-      "value": "Assassinate Representative"
-    }
-  ],
-  "Components.Avernus.Title": [
-    {
-      "type": 0,
-      "value": "Avernus"
-    }
-  ],
-  "Components.Black Market Forgery.Description": [
-    {
-      "type": 0,
-      "value": "ACTION: Purge 2 of your relic fragments of the same type to gain 1 relic."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "Then return this card to the Naaz-Rokha player."
-    }
-  ],
-  "Components.Black Market Forgery.Title": [
-    {
-      "type": 0,
-      "value": "Black Market Forgery"
-    }
-  ],
-  "Components.Blood Pact.Description": [
-    {
-      "type": 0,
-      "value": "ACTION: Place this card face up in your play area."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "When you and the Empyrean player cast votes for the same outcome, cast 4 additional votes for that outcome."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "If you activate a system that contains 1 or more of the Empyrean player's units, return this card to the Empyrean player."
-    }
-  ],
-  "Components.Blood Pact.Title": [
-    {
-      "type": 0,
-      "value": "Blood Pact"
-    }
-  ],
   "Components.Conventions of War Abandoned.Description": [
     {
       "type": 0,
       "value": "ACTION: Exhaust X-89 BACTERIAL WEAPON to choose 1 planet in a system that contains 1 of your units that has BOMBARDMENT; purge its planet card and all attachments or legendary planet ability cards associated with it."
-    }
-  ],
-  "Components.Conventions of War Abandoned.Title": [
-    {
-      "type": 0,
-      "value": "Conventions of War Abandoned"
-    }
-  ],
-  "Components.Dark Pact.Description": [
-    {
-      "type": 0,
-      "value": "ACTION: Place this card face up in your play area."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "When you give a number of commodities to the Empyrean player equal to your maximum commodity value, you each gain 1 trade good."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "If you activate a system that contains 1 or more of the Empyrean player's units, return this card to the Empyrean player."
-    }
-  ],
-  "Components.Dark Pact.Title": [
-    {
-      "type": 0,
-      "value": "Dark Pact"
-    }
-  ],
-  "Components.Distinguished Councilor.Title": [
-    {
-      "type": 0,
-      "value": "Distinguished Councilor"
     }
   ],
   "Components.Enigmatic Device.Description": [
@@ -5933,50 +5779,6 @@
     {
       "type": 0,
       "value": "Enigmatic Device"
-    }
-  ],
-  "Components.Executive Order.Description": [
-    {
-      "type": 0,
-      "value": "ACTION: Reveal the top or bottom card of the agenda deck and vote on it, being speaker. You may use trade goods to vote."
-    }
-  ],
-  "Components.Executive Order.Title": [
-    {
-      "type": 0,
-      "value": "Executive Order"
-    }
-  ],
-  "Components.Fabrication.Description": [
-    {
-      "type": 0,
-      "value": "ACTION: Either purge 2 of your relic fragments of the same type to gain 1 relic; or purge 1 of your relic fragments to gain 1 command token."
-    }
-  ],
-  "Components.Fabrication.Title": [
-    {
-      "type": 0,
-      "value": "Fabrication"
-    }
-  ],
-  "Components.Fires of the Gashlai.Description": [
-    {
-      "type": 0,
-      "value": "ACTION: Remove 1 token from the Muaat player's fleet pool and return it to their reinforcements. Then, gain your war sun unit upgrade technology card."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "Then, return this card to the Muaat player."
-    }
-  ],
-  "Components.Fires of the Gashlai.Title": [
-    {
-      "type": 0,
-      "value": "Fires of the Gashlai"
     }
   ],
   "Components.Gain Ability.Title": [
@@ -6015,222 +5817,10 @@
       "value": "Gain Unit Upgrade"
     }
   ],
-  "Components.Hack Election.Title": [
-    {
-      "type": 0,
-      "value": "Hack Election"
-    }
-  ],
-  "Components.Lazax Gate Folding.Description": [
-    {
-      "type": 0,
-      "value": "ACTION: If you control Mecatol Rex, exhaust this card to place 1 infantry from your reinforcements on Mecatol Rex."
-    }
-  ],
-  "Components.Lazax Gate Folding.Title": [
-    {
-      "type": 0,
-      "value": "Lazax Gate Folding"
-    }
-  ],
-  "Components.Mageon Implants.Description": [
-    {
-      "type": 0,
-      "value": "ACTION: Exhaust this card to look at another player's hand of action cards. Choose 1 of those cards and add it to your hand."
-    }
-  ],
-  "Components.Mageon Implants.Title": [
-    {
-      "type": 0,
-      "value": "Mageon Implants"
-    }
-  ],
   "Components.Mercenaries for Hire.Description": [
     {
       "type": 0,
       "value": "ACTION: Spend 3 trade goods to gain the top card of the mercenary deck and place it in your play area."
-    }
-  ],
-  "Components.Mercenaries for Hire.Title": [
-    {
-      "type": 0,
-      "value": "Mercenaries for Hire"
-    }
-  ],
-  "Components.Nanomachines.Description": [
-    {
-      "type": 0,
-      "value": "ACTION: Exhaust this card to place 1 PDS on a planet you control."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "ACTION: Exhaust this card to repair all of your damaged units."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "ACTION: Exhaust this card and discard 1 action card to draw 1 action card."
-    }
-  ],
-  "Components.Nanomachines.Title": [
-    {
-      "type": 0,
-      "value": "Nanomachines"
-    }
-  ],
-  "Components.Orbital Drop.Description": [
-    {
-      "type": 0,
-      "value": "ACTION: Spend 1 token from your strategy pool to place 2 infantry from your reinforcements on 1 planet you control."
-    }
-  ],
-  "Components.Orbital Drop.Title": [
-    {
-      "type": 0,
-      "value": "Orbital Drop"
-    }
-  ],
-  "Components.Production Biomes.Description": [
-    {
-      "type": 0,
-      "value": "ACTION: Exhaust this card and spend 1 token from your strategy pool to gain 4 trade goods and choose 1 other player; that player gains 2 trade goods."
-    }
-  ],
-  "Components.Production Biomes.Title": [
-    {
-      "type": 0,
-      "value": "Production Biomes"
-    }
-  ],
-  "Components.Promise of Protection.Description": [
-    {
-      "type": 0,
-      "value": "ACTION: Place this card face-up in your play area."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "While this card is in your play area, the Mentak player cannot use their PILLAGE faction ability against you."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "If you activate a system that contains 1 or more of the Mentak player's units, return this card to the Mentak player."
-    }
-  ],
-  "Components.Promise of Protection.Title": [
-    {
-      "type": 0,
-      "value": "Promise of Protection"
-    }
-  ],
-  "Components.Puppets of the Blade.Description": [
-    {
-      "type": 0,
-      "value": "If you have at least 1 plot card in your play area, gain the following ability:"
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "ACTION: Purge The Firmament's faction sheet, leaders, planet cards, and promissory note. Then, gain all of the faction components for The Obsidian."
-    }
-  ],
-  "Components.Puppets of the Blade.Title": [
-    {
-      "type": 0,
-      "value": "Puppets of the Blade"
-    }
-  ],
-  "Components.Sever.Description": [
-    {
-      "type": 0,
-      "value": "ACTION: Place this card faceup in your play area and place the sever token in a system that contains your units; wormholes in that system have no effect during movement."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "Remove the sever token and return this card to the Rebellion player at the end of the status phase."
-    }
-  ],
-  "Components.Sever.Title": [
-    {
-      "type": 0,
-      "value": "Sever"
-    }
-  ],
-  "Components.Share Knowledge.Description": [
-    {
-      "type": 0,
-      "value": "ACTION: Place this card faceup in your play area and gain 1 non-faction, non-unit upgrade technology that the Deepwrought player owns; place this technology on this card."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "Return that technology to the deck and this card to the Deepwrought player at the end of the status phase."
-    }
-  ],
-  "Components.Share Knowledge.Title": [
-    {
-      "type": 0,
-      "value": "Share Knowledge"
-    }
-  ],
-  "Components.Sling Relay.Description": [
-    {
-      "type": 0,
-      "value": "ACTION: Exhaust this card to produce 1 ship in any system that contains one of your space docks."
-    }
-  ],
-  "Components.Sling Relay.Title": [
-    {
-      "type": 0,
-      "value": "Sling Relay"
-    }
-  ],
-  "Components.Stall Tactics.Description": [
-    {
-      "type": 0,
-      "value": "ACTION: Discard 1 action card from your hand."
-    }
-  ],
-  "Components.Stall Tactics.Title": [
-    {
-      "type": 0,
-      "value": "Stall Tactics"
-    }
-  ],
-  "Components.Star Forge.Description": [
-    {
-      "type": 0,
-      "value": "ACTION: Spend 1 token from your strategy pool to place either 2 fighters or 1 destroyer from your reinforcements in a system that contains 1 or more of your war suns."
-    }
-  ],
-  "Components.Star Forge.Title": [
-    {
-      "type": 0,
-      "value": "Star Forge"
     }
   ],
   "Components.Steal Ability.Title": [
@@ -6263,152 +5853,10 @@
       "value": "ACTION: Discard your control token from the Stellar Atomics card to destroy all ground forces and structures on any non-home planet."
     }
   ],
-  "Components.Stellar Atomics.Title": [
-    {
-      "type": 0,
-      "value": "Stellar Atomics"
-    }
-  ],
-  "Components.Stymie.Description": [
-    {
-      "type": 0,
-      "value": "ACTION: Place this card face up in your play area."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "While this card is in your play area, the Arborec player cannot produce units in or adjacent to non-home systems that contain 1 or more of your units."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "If you activate a system that contains 1 or more of the Arborec player's units, return this card to the Arborec player."
-    }
-  ],
-  "Components.Stymie.Title": [
-    {
-      "type": 0,
-      "value": "Stymie"
-    }
-  ],
-  "Components.Terraform.Description": [
-    {
-      "type": 0,
-      "value": "ACTION: Attach this card to a non-home planet you control other than Mecatol Rex."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "Its resource and influence values are each increased by 1 and it is treated as having all 3 planet traits (Cultural, Hazardous, and Industrial)."
-    }
-  ],
-  "Components.Terraform.Title": [
-    {
-      "type": 0,
-      "value": "Terraform"
-    }
-  ],
-  "Components.The Inferno.Description": [
-    {
-      "type": 0,
-      "value": "ACTION: Spend 1 token from your strategy pool to place 1 cruiser in this unit's system."
-    }
-  ],
-  "Components.The Inferno.Title": [
-    {
-      "type": 0,
-      "value": "The Inferno"
-    }
-  ],
   "Components.Total War.Description": [
     {
       "type": 0,
       "value": "ACTION: Discard 10 commodities from planets in your home system to gain 1 victory point."
-    }
-  ],
-  "Components.Total War.Title": [
-    {
-      "type": 0,
-      "value": "Total War"
-    }
-  ],
-  "Components.Trade Convoys.Description": [
-    {
-      "type": 0,
-      "value": "ACTION: Place this card face-up in your play area."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "While this card is in your play area, you may negotiate transactions with players who are not your neighbor."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "If you activate a system that contains 1 or more of the Hacan player's units, return this card to the Hacan player."
-    }
-  ],
-  "Components.Trade Convoys.Title": [
-    {
-      "type": 0,
-      "value": "Trade Convoys"
-    }
-  ],
-  "Components.Veto.Title": [
-    {
-      "type": 0,
-      "value": "Veto"
-    }
-  ],
-  "Components.Vortex.Description": [
-    {
-      "type": 0,
-      "value": "ACTION: Exhaust this card to choose another player's non-structure unit in a system that is adjacent to 1 or more of your space docks. Capture 1 unit of that type from that player's reinforcements."
-    }
-  ],
-  "Components.Vortex.Title": [
-    {
-      "type": 0,
-      "value": "Vortex"
-    }
-  ],
-  "Components.Wormhole Generator.Description": [
-    {
-      "type": 0,
-      "value": "ACTION: Exhaust this card to place or move a Creuss wormhole token into either a system that contains a planet you control or a non-home system that does not contain another player's ships."
-    }
-  ],
-  "Components.Wormhole Generator.Title": [
-    {
-      "type": 0,
-      "value": "Wormhole Generator Ω"
-    }
-  ],
-  "Components.X-89 Bacterial Weapon.Description": [
-    {
-      "type": 0,
-      "value": "ACTION: Exhaust this card and choose 1 planet in a system that contains 1 or more of your ships that have BOMBARDMENT; destroy all infantry on that planet."
-    }
-  ],
-  "Components.X-89 Bacterial Weapon.Title": [
-    {
-      "type": 0,
-      "value": "X-89 Bacterial Weapon"
     }
   ],
   "Council Keleres.Abilities.Council Patronage.Description": [
@@ -7950,7 +7398,15 @@
   "Embers of Muaat.Promissories.Fires of the Gashlai.Description": [
     {
       "type": 0,
-      "value": "ACTION: Remove 1 token from the Muaat player's fleet pool and return it to their reinforcements. Then, gain your war sun unit upgrade technology card. Then, return this card to the Muaat player."
+      "value": "ACTION: Remove 1 token from the Muaat player's fleet pool and return it to their reinforcements. Then, gain your war sun unit upgrade technology card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then, return this card to the Muaat player."
     }
   ],
   "Embers of Muaat.Promissories.Fires of the Gashlai.Title": [
@@ -12293,18 +11749,6 @@
       "value": "Betray a Friend"
     }
   ],
-  "Objectives.Book of Latvinia.Description": [
-    {
-      "type": 0,
-      "value": "Use the Book of Latvinia's ACTION while in control of planets with all 4 types of technology specialities."
-    }
-  ],
-  "Objectives.Book of Latvinia.Title": [
-    {
-      "type": 0,
-      "value": "Book of Latvinia"
-    }
-  ],
   "Objectives.Brave the Void.Description": [
     {
       "type": 0,
@@ -12785,18 +12229,6 @@
       "value": "Hold Vast Reserves"
     }
   ],
-  "Objectives.Holy Planet of Ixth.Description": [
-    {
-      "type": 0,
-      "value": "Given to the current owner of the Holy Planet of Ixth."
-    }
-  ],
-  "Objectives.Holy Planet of Ixth.Title": [
-    {
-      "type": 0,
-      "value": "Holy Planet of Ixth"
-    }
-  ],
   "Objectives.Imperial Point.Description": [
     {
       "type": 0,
@@ -12807,18 +12239,6 @@
     {
       "type": 0,
       "value": "Imperial Point"
-    }
-  ],
-  "Objectives.Imperial Rider.Description": [
-    {
-      "type": 0,
-      "value": "Correctly predict the outcome of an agenda using Imperial Rider."
-    }
-  ],
-  "Objectives.Imperial Rider.Title": [
-    {
-      "type": 0,
-      "value": "Imperial Rider"
     }
   ],
   "Objectives.Improve Infrastructure.Description": [
@@ -12977,26 +12397,6 @@
       "value": "Monopolize Production"
     }
   ],
-  "Objectives.Mutiny.Description": [
-    {
-      "type": 0,
-      "value": "FOR: Each player who voted \"For\" gains 1 victory point."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "AGAINST: Each player who voted \"For\" loses 1 victory point."
-    }
-  ],
-  "Objectives.Mutiny.Title": [
-    {
-      "type": 0,
-      "value": "Mutiny"
-    }
-  ],
   "Objectives.Negotiate Trade Routes.Description": [
     {
       "type": 0,
@@ -13043,18 +12443,6 @@
     {
       "type": 0,
       "value": "Patrol Vast Territories"
-    }
-  ],
-  "Objectives.Political Censure.Description": [
-    {
-      "type": 0,
-      "value": "Given to the player elected for Political Censure."
-    }
-  ],
-  "Objectives.Political Censure.Title": [
-    {
-      "type": 0,
-      "value": "Political Censure"
     }
   ],
   "Objectives.Populate the Outer Rim.Description": [
@@ -13165,18 +12553,6 @@
       "value": "Rule Distant Lands"
     }
   ],
-  "Objectives.Seed of an Empire.Description": [
-    {
-      "type": 0,
-      "value": "Have the most victory points when Seed of an Empire passes or the least victory points when Seed of an Empire fails."
-    }
-  ],
-  "Objectives.Seed of an Empire.Title": [
-    {
-      "type": 0,
-      "value": "Seed of an Empire"
-    }
-  ],
   "Objectives.Seize an Icon.Description": [
     {
       "type": 0,
@@ -13187,18 +12563,6 @@
     {
       "type": 0,
       "value": "Seize an Icon"
-    }
-  ],
-  "Objectives.Shard of the Throne.Description": [
-    {
-      "type": 0,
-      "value": "Given to the current holder of the Shard of the Throne."
-    }
-  ],
-  "Objectives.Shard of the Throne.Title": [
-    {
-      "type": 0,
-      "value": "Shard of the Throne"
     }
   ],
   "Objectives.Spark a Rebellion.Description": [
@@ -13237,18 +12601,6 @@
       "value": "Strengthen Bonds"
     }
   ],
-  "Objectives.Styx.Description": [
-    {
-      "type": 0,
-      "value": "Given to the player currently in control of the planet Styx."
-    }
-  ],
-  "Objectives.Styx.Title": [
-    {
-      "type": 0,
-      "value": "Styx"
-    }
-  ],
   "Objectives.Subdue the Galaxy.Description": [
     {
       "type": 0,
@@ -13285,30 +12637,6 @@
       "value": "Sway the Council"
     }
   ],
-  "Objectives.The Crown of Emphidia.Description": [
-    {
-      "type": 0,
-      "value": "Given to the current holder of the Crown of Emphidia."
-    }
-  ],
-  "Objectives.The Crown of Emphidia.Title": [
-    {
-      "type": 0,
-      "value": "The Crown of Emphidia"
-    }
-  ],
-  "Objectives.The Silver Flame.Description": [
-    {
-      "type": 0,
-      "value": "Roll a 10 when using The Silver Flame."
-    }
-  ],
-  "Objectives.The Silver Flame.Title": [
-    {
-      "type": 0,
-      "value": "The Silver Flame"
-    }
-  ],
   "Objectives.Threaten Enemies.Description": [
     {
       "type": 0,
@@ -13321,28 +12649,10 @@
       "value": "Threaten Enemies"
     }
   ],
-  "Objectives.Tomb + Crown of Emphidia.Description": [
-    {
-      "type": 0,
-      "value": "Use the Crown of Emphidia at the end of the status phase while in control of the Tomb of Emphidia."
-    }
-  ],
-  "Objectives.Tomb + Crown of Emphidia.Title": [
-    {
-      "type": 0,
-      "value": "Crown of Emphidia"
-    }
-  ],
   "Objectives.Total War.Description": [
     {
       "type": 0,
       "value": "Discard 10 commodities from planets in your home system."
-    }
-  ],
-  "Objectives.Total War.Title": [
-    {
-      "type": 0,
-      "value": "Total War"
     }
   ],
   "Objectives.Turn Their Fleets to Dust.Description": [
@@ -13397,12 +12707,6 @@
     {
       "type": 0,
       "value": "The first player to score 2 secret objectives gains 1 victory point."
-    }
-  ],
-  "Objectives.Zealous Orthodoxy.Title": [
-    {
-      "type": 0,
-      "value": "Zealous Orthodoxy"
     }
   ],
   "Obsidian.Abilities.Marionettes.Description": [
