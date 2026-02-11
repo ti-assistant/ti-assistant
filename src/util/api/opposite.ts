@@ -20,6 +20,7 @@ import {
 import { GainRelicHandler, LoseRelicHandler } from "../model/gainRelic";
 import { GainTFCardHandler, LoseTFCardHandler } from "../model/gainTFCard";
 import { GiftOfPrescienceHandler } from "../model/giftOfPrescience";
+import { ManualCCUpdateHandler } from "../model/manualCCUpdate";
 import { ManualVoteUpdateHandler } from "../model/manualVoteUpdate";
 import { ManualVPUpdateHandler } from "../model/manualVPUpdate";
 import {
@@ -263,6 +264,16 @@ export function getOppositeHandler(
         },
       };
       return new ManualVPUpdateHandler(gameData, updateData);
+    }
+    case "MANUAL_CC_UPDATE": {
+      const updateData: ManualCCUpdateData = {
+        action: "MANUAL_CC_UPDATE",
+        event: {
+          faction: data.event.faction,
+          commandCounters: 0 - data.event.commandCounters,
+        },
+      };
+      return new ManualCCUpdateHandler(gameData, updateData);
     }
     case "REVEAL_AGENDA": {
       const hideData: HideAgendaData = {

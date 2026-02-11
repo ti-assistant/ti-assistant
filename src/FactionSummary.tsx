@@ -1,11 +1,11 @@
 import React, { use } from "react";
 import { FormattedMessage } from "react-intl";
-import styles from "./FactionSummary.module.scss";
 import FactionIcon from "./components/FactionIcon/FactionIcon";
 import PlanetSummary from "./components/PlanetSummary/PlanetSummary";
 import TechSummary, {
   TFTechSummary,
 } from "./components/TechSummary/TechSummary";
+import { SettingsContext } from "./context/contexts";
 import {
   useAttachments,
   useGameId,
@@ -15,7 +15,7 @@ import {
   useTechs,
   useViewOnly,
 } from "./context/dataHooks";
-import { useFactionTechs } from "./context/factionDataHooks";
+import { useFaction, useFactionTechs } from "./context/factionDataHooks";
 import {
   useManualFactionVPs,
   useScoredFactionVPs,
@@ -26,18 +26,19 @@ import {
 } from "./context/objectiveDataHooks";
 import { usePhase } from "./context/stateDataHooks";
 import {
+  manualCCUpdateAsync,
   manualVPUpdateAsync,
   scoreObjectiveAsync,
   unscoreObjectiveAsync,
 } from "./dynamic/api";
+import styles from "./FactionSummary.module.scss";
+import { StaticFactionTimer } from "./Timer";
 import {
   applyAllPlanetAttachments,
   filterToClaimedPlanets,
 } from "./util/planets";
-import { objectEntries, rem } from "./util/util";
-import { SettingsContext } from "./context/contexts";
-import { StaticFactionTimer } from "./Timer";
 import { SummarySection } from "./util/settings";
+import { objectEntries, rem } from "./util/util";
 
 interface FactionSummaryProps {
   factionId: FactionId;
@@ -63,6 +64,7 @@ export function FactionSummary({ factionId }: FactionSummaryProps) {
         factionId={factionId}
         section={settings["fs-right"]}
       />
+      <FactionCCSummary factionId={factionId} />
     </div>
   );
 }
@@ -102,7 +104,7 @@ function ObjectiveDots({ factionId }: { factionId: FactionId }) {
   }
 
   const stageIs = Object.values(objectives).filter(
-    (obj) => obj.type === "STAGE ONE" && obj.selected
+    (obj) => obj.type === "STAGE ONE" && obj.selected,
   );
   stageIs.sort((a, b) => {
     const aRevealOrder = revealOrder[a.id];
@@ -126,7 +128,7 @@ function ObjectiveDots({ factionId }: { factionId: FactionId }) {
   });
 
   const stageIIs = Object.values(objectives).filter(
-    (obj) => obj.type === "STAGE TWO" && obj.selected
+    (obj) => obj.type === "STAGE TWO" && obj.selected,
   );
   stageIIs.sort((a, b) => {
     const aRevealOrder = revealOrder[a.id];
@@ -150,11 +152,11 @@ function ObjectiveDots({ factionId }: { factionId: FactionId }) {
   });
 
   const secrets = Object.values(objectives).filter(
-    (obj) => obj.type === "SECRET" && (obj.scorers ?? []).includes(factionId)
+    (obj) => obj.type === "SECRET" && (obj.scorers ?? []).includes(factionId),
   );
 
   const others = Object.values(objectives).filter(
-    (obj) => obj.type === "OTHER" && (obj.scorers ?? []).includes(factionId)
+    (obj) => obj.type === "OTHER" && (obj.scorers ?? []).includes(factionId),
   );
 
   return (
@@ -277,7 +279,7 @@ function ObjectiveDots({ factionId }: { factionId: FactionId }) {
                           }}
                         ></div>
                       );
-                    }
+                    },
                   )}
                 </React.Fragment>
               );
@@ -461,5 +463,43 @@ function FactionTechSummary({ factionId }: { factionId: FactionId }) {
       techs={techs}
       ownedTechs={factionTechs}
     />
+  );
+}
+
+function FactionCCSummary({ factionId }: { factionId: FactionId }) {
+  const faction = useFaction(factionId);
+  const gameId = useGameId();
+  const phase = usePhase();
+  const viewOnly = useViewOnly();
+  if (!faction) {
+    return null;
+  }
+
+  const editable = phase !== "END" && !viewOnly;
+
+  return (
+    <div className="flexColumn" style={{ width: "1.25rem" }}>
+      {faction.commandCounters < 16 && editable ? (
+        <div
+          className="arrowUp"
+          onClick={() => {
+            manualCCUpdateAsync(gameId, factionId, 1);
+          }}
+        ></div>
+      ) : (
+        <div style={{ width: rem(12) }}></div>
+      )}
+      {faction.commandCounters}
+      {faction.commandCounters > 0 && editable ? (
+        <div
+          className="arrowDown"
+          onClick={() => {
+            manualCCUpdateAsync(gameId, factionId, -1);
+          }}
+        ></div>
+      ) : (
+        <div style={{ width: rem(12) }}></div>
+      )}
+    </div>
   );
 }

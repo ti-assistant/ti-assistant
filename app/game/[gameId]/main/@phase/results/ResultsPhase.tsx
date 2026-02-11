@@ -261,9 +261,10 @@ function buildInitialGameData(
           order: order,
           mapPosition: index,
           // Faction specific values
-          planets: homePlanets,
           techs: {},
           startswith: { units: {} },
+          // Other
+          commandCounters: 8,
         };
       }
       const startingTechs: Partial<Record<TechId, { state: TechState }>> = {};
@@ -284,9 +285,8 @@ function buildInitialGameData(
         // Faction specific values
         techs: startingTechs,
         startswith: baseFaction.startswith,
-        // State values
-        hero: "locked",
-        commander: "locked",
+        // Other
+        commandCounters: 8,
       };
     },
   );

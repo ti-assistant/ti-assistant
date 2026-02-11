@@ -35,6 +35,7 @@ type GameUpdateData =
   | GiftOfPrescienceData
   | (AddAttachmentData | RemoveAttachmentData)
   | (EndGameData | ContinueGameData)
+  | ManualCCUpdateData
   | ManualVPUpdateData
   | ManualVoteUpdateData
   | (RevealAgendaData | HideAgendaData)
@@ -480,6 +481,16 @@ interface GiftOfPrescienceEvent {
 interface GiftOfPrescienceData {
   action: "GIFT_OF_PRESCIENCE";
   event: GiftOfPrescienceEvent;
+}
+
+interface ManualCCUpdateEvent {
+  faction: FactionId;
+  commandCounters: number;
+}
+
+interface ManualCCUpdateData {
+  action: "MANUAL_CC_UPDATE";
+  event: ManualCCUpdateEvent;
 }
 
 interface ManualVPUpdateEvent {

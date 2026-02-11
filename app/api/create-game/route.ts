@@ -96,6 +96,8 @@ export async function POST(req: Request) {
       mapPosition: index,
       // Faction specific values
       techs: startingTechs,
+      // Generic values
+      commandCounters: 8,
     };
     if (baseFaction.startswith) {
       gameFaction.startswith = baseFaction.startswith;

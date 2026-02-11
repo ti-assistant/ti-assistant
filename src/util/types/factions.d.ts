@@ -115,6 +115,7 @@ interface GameFaction {
   availableVotes?: number;
   breakthrough?: Partial<Breakthrough>;
   color: FactionColor;
+  commandCounters: number;
   id: FactionId;
   mapPosition: number;
   order: number;
@@ -122,9 +123,7 @@ interface GameFaction {
   playerName?: string;
   startswith?: StartsWith;
   techs: Partial<Record<TechId, GameTech>>;
-  castVotes?: number;
   passed?: boolean;
-  votes?: number;
   vps?: number;
 }
 

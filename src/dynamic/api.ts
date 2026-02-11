@@ -357,6 +357,15 @@ export async function loseAllianceAsync(
   return mod.loseAlliance(gameId, faction, fromFaction);
 }
 
+export async function manualCCUpdateAsync(
+  gameId: string,
+  faction: FactionId,
+  commandCounters: number,
+) {
+  const mod = await manualUpdateMod;
+  mod.manualCCUpdate(gameId, faction, commandCounters);
+}
+
 export async function manualVPUpdateAsync(
   gameId: string,
   faction: FactionId,
