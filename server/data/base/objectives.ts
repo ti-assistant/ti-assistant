@@ -108,12 +108,15 @@ export default function getBaseObjectives(
       type: "STAGE ONE",
     },
     "The Crown of Emphidia": {
-      description: intl.formatMessage({
-        id: "Agendas.The Crown of Emphidia.Description",
-        description: "Description for Agenda Card: The Crown of Emphidia",
-        defaultMessage:
-          "The elected player gains this card.{br}A player gains this card and 1 victory point after they gain control of a planet in the home system of this card's owner.{br}Then, the previous owner of this card loses 1 victory point.",
-      }),
+      description: intl.formatMessage(
+        {
+          id: "Agendas.The Crown of Emphidia.Description",
+          description: "Description for Agenda Card: The Crown of Emphidia",
+          defaultMessage:
+            "The elected player gains this card.{br}A player gains this card and 1 victory point after they gain control of a planet in the home system of this card's owner.{br}Then, the previous owner of this card loses 1 victory point.",
+        },
+        { br: "\n\n" },
+      ),
       expansion: "BASE",
       max: 2,
       repeatable: true,
@@ -393,12 +396,15 @@ export default function getBaseObjectives(
       type: "SECRET",
     },
     "Holy Planet of Ixth": {
-      description: intl.formatMessage({
-        id: "Agendas.Holy Planet of Ixth.Description",
-        description: "Description for Agenda Card: Holy Planet of Ixth",
-        defaultMessage:
-          "Attach this card to the elected planet's card.{br}The planet's owner gains 1 victory point.{br}Units on this planet cannot use PRODUCTION.{br}When a player gains control of this planet, they gain 1 victory point.{br}When a player loses control of this planet, they lose 1 victory point.",
-      }),
+      description: intl.formatMessage(
+        {
+          id: "Agendas.Holy Planet of Ixth.Description",
+          description: "Description for Agenda Card: Holy Planet of Ixth",
+          defaultMessage:
+            "Attach this card to the elected planet's card.{br}The planet's owner gains 1 victory point.{br}Units on this planet cannot use PRODUCTION.{br}When a player gains control of this planet, they gain 1 victory point.{br}When a player loses control of this planet, they lose 1 victory point.",
+        },
+        { br: "\n\n" },
+      ),
       expansion: "BASE",
       removedIn: "POK",
       max: 2,
@@ -703,12 +709,15 @@ export default function getBaseObjectives(
       type: "STAGE TWO",
     },
     "Seed of an Empire": {
-      description: intl.formatMessage({
-        id: "Agendas.Seed of an Empire.Description",
-        description: "Description for Agenda Card: Seed of an Empire",
-        defaultMessage:
-          "For: The player with most victory points gains 1 victory point.{br}Against: The player with the fewest victory points gains 1 victory point.",
-      }),
+      description: intl.formatMessage(
+        {
+          id: "Agendas.Seed of an Empire.Description",
+          description: "Description for Agenda Card: Seed of an Empire",
+          defaultMessage:
+            "For: The player with most victory points gains 1 victory point.{br}Against: The player with the fewest victory points gains 1 victory point.",
+        },
+        { br: "\n\n" },
+      ),
       expansion: "BASE",
       id: "Seed of an Empire",
       name: intl.formatMessage({

@@ -26,12 +26,15 @@ export default function getBaseComponents(
       type: "PROMISSORY",
     },
     "Lazax Gate Folding": {
-      description: intl.formatMessage({
-        id: "Winnu.Techs.Lazax Gate Folding.Description",
-        description: "Description for Tech: Lazax Gate Folding",
-        defaultMessage:
-          "During your tactical actions, if you do not control Mecatol Rex, treat its systems as if it has both an α and β wormhole.{br}ACTION: If you control Mecatol Rex, exhaust this card to place 1 infantry from your reinforcements on Mecatol Rex.",
-      }),
+      description: intl.formatMessage(
+        {
+          id: "Winnu.Techs.Lazax Gate Folding.Description",
+          description: "Description for Tech: Lazax Gate Folding",
+          defaultMessage:
+            "During your tactical actions, if you do not control Mecatol Rex, treat its systems as if it has both an α and β wormhole.{br}ACTION: If you control Mecatol Rex, exhaust this card to place 1 infantry from your reinforcements on Mecatol Rex.",
+        },
+        { br: "\n\n" },
+      ),
       expansion: "BASE",
       faction: "Winnu",
       id: "Lazax Gate Folding",
