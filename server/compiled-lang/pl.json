@@ -2,7 +2,7 @@
   "++U8Ff": [
     {
       "type": 0,
-      "value": "Po Odkryciu Karty Agendy"
+      "value": "Po Odkryciu Karty Polityki"
     }
   ],
   "+/Qpw/": [
@@ -200,7 +200,7 @@
   "0MawcE": [
     {
       "type": 0,
-      "value": "Po Ujawnieniu Agendy"
+      "value": "Po Ujawnieniu Karty Polityki"
     }
   ],
   "0NYmNN": [
@@ -1712,15 +1712,7 @@
   "Action Cards.Ignis.Description": [
     {
       "type": 0,
-      "value": "AKCJA: Umieść żeton dowodzenia ze swojej puli strategii na dowolnym nie-narzystnym układzie;"
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "wybierz i zniszcz 1 jednostkę w danym układzie."
+      "value": "AKCJA: Umieść żeton dowodzenia ze swojej puli strategii na dowolnym nie-narzystnym układzie; wybierz i zniszcz 1 jednostkę w danym układzie."
     }
   ],
   "Action Cards.Ignis.Name": [
@@ -2030,15 +2022,7 @@
   "Action Cards.Manifest.Description": [
     {
       "type": 0,
-      "value": "AKCJA: Rozpatrz zdolność PRODUKCJA 1 ze swoich jednostek;"
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "zmniejsz łączny koszt produkowanych jednostek o 3."
+      "value": "AKCJA: Rozpatrz zdolność PRODUKCJA 1 ze swoich jednostek; zmniejsz łączny koszt produkowanych jednostek o 3."
     }
   ],
   "Action Cards.Manifest.Name": [
@@ -2914,15 +2898,7 @@
   "Action Cards.Starflare.Description": [
     {
       "type": 0,
-      "value": "AKCJA: Wybierz supernową;"
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "każdy gracz niszczy 3 swoje jednostki w układzie danej supernowej i każdym sąsiadującym układzie."
+      "value": "AKCJA: Wybierz supernową; każdy gracz niszczy 3 swoje jednostki w układzie danej supernowej i każdym sąsiadującym układzie."
     }
   ],
   "Action Cards.Starflare.Name": [
@@ -5013,6 +4989,96 @@
       "value": "Skrzydło Uderzeniowe Alfa I"
     }
   ],
+  "Attachments.Biotic Research Facility.Title": [
+    {
+      "type": 0,
+      "value": "Placówka Badań Biotycznych"
+    }
+  ],
+  "Attachments.Core Mining.Title": [
+    {
+      "type": 0,
+      "value": "Górnictwo Rdzeniowe"
+    }
+  ],
+  "Attachments.Cybernetic Research Facility.Title": [
+    {
+      "type": 0,
+      "value": "Placówka Badań Cybernetycznych"
+    }
+  ],
+  "Attachments.Demilitarized Zone.Title": [
+    {
+      "type": 0,
+      "value": "Strefa Zdemilitaryzowana"
+    }
+  ],
+  "Attachments.Dyson Sphere.Title": [
+    {
+      "type": 0,
+      "value": "Strefa Dysona"
+    }
+  ],
+  "Attachments.Lazax Survivors.Title": [
+    {
+      "type": 0,
+      "value": "Ocalali Lazaxowie"
+    }
+  ],
+  "Attachments.Mining World.Title": [
+    {
+      "type": 0,
+      "value": "Planeta Górnicza"
+    }
+  ],
+  "Attachments.Nano-Forge.Title": [
+    {
+      "type": 0,
+      "value": "Nano-Kuźnia"
+    }
+  ],
+  "Attachments.Paradise World.Title": [
+    {
+      "type": 0,
+      "value": "Rajski Świat"
+    }
+  ],
+  "Attachments.Propulsion Research Facility.Title": [
+    {
+      "type": 0,
+      "value": "Placówka Badań Napędów"
+    }
+  ],
+  "Attachments.Rich World.Title": [
+    {
+      "type": 0,
+      "value": "Bogaty Świat"
+    }
+  ],
+  "Attachments.Terraforming Initiative.Title": [
+    {
+      "type": 0,
+      "value": "Inicjatywa Terraformacyjna"
+    }
+  ],
+  "Attachments.Tomb of Emphidia.Title": [
+    {
+      "type": 0,
+      "value": "Grobowiec Emfidii"
+    }
+  ],
+  "Attachments.Ul the Progenitor.Title": [
+    {
+      "type": 0,
+      "value": "UL Protoplasta"
+    }
+  ],
+  "Attachments.Warfare Research Facility.Title": [
+    {
+      "type": 0,
+      "value": "Placówka Badań Wojskowych"
+    }
+  ],
   "Avarice Rex.Name": [
     {
       "type": 0,
@@ -5595,6 +5661,54 @@
       "value": "Nie można punktować celów publicznych"
     }
   ],
+  "Components.Enigmatic Device.Description": [
+    {
+      "type": 0,
+      "value": "AKCJA: Możesz wydać 6 zasobów i unicestwić tę kartę aby zbadać 1 technologię"
+    }
+  ],
+  "Components.Enigmatic Device.Title": [
+    {
+      "type": 0,
+      "value": "Enigmatyczne Urządzenie"
+    }
+  ],
+  "Components.Gain Ability.Title": [
+    {
+      "type": 0,
+      "value": "Otrzymaj Zdolność"
+    }
+  ],
+  "Components.Gain Genome.Title": [
+    {
+      "type": 0,
+      "value": "Otrzymaj Genom"
+    }
+  ],
+  "Components.Gain Paradigm.Title": [
+    {
+      "type": 0,
+      "value": "Otrzymaj Wzorzec"
+    }
+  ],
+  "Components.Gain Relic.Description": [
+    {
+      "type": 0,
+      "value": "AKCJA: Unicestwij 3 swoje fragmenty reliktów tego samego typu, aby otrzymać 1 Relikt."
+    }
+  ],
+  "Components.Gain Relic.Title": [
+    {
+      "type": 0,
+      "value": "Otrzymaj Relikt"
+    }
+  ],
+  "Components.Gain Unit Upgrade.Title": [
+    {
+      "type": 0,
+      "value": "Otrzymaj Ulepszenie Jednostki"
+    }
+  ],
   "Council Keleres.Abilities.Council Patronage.Description": [
     {
       "type": 0,
@@ -6167,17 +6281,13 @@
   ],
   "DGs6vS": [
     {
-      "type": 0,
-      "value": "Zapunktowane w Fazie Akcji "
-    },
-    {
       "offset": 0,
       "options": {
         "one": {
           "value": [
             {
               "type": 0,
-              "value": "Cel"
+              "value": "Zrealizowany Cel"
             }
           ]
         },
@@ -6185,7 +6295,7 @@
           "value": [
             {
               "type": 0,
-              "value": "Cele"
+              "value": "Zrealizowane Cele"
             }
           ]
         }
@@ -6193,6 +6303,10 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " w Fazie Akcji"
     }
   ],
   "Deepwrought Scholarate.Abilities.Oceanbound.Description": [
@@ -6428,7 +6542,7 @@
   "EAsvAe": [
     {
       "type": 0,
-      "value": "Elekt "
+      "value": "Wyłońcie "
     },
     {
       "type": 1,
@@ -7153,6 +7267,702 @@
       "value": "Obserwator"
     }
   ],
+  "Events.Advent of the War Sun.Description": [
+    {
+      "type": 0,
+      "value": "Na końcu przygotowania gry wszyscy gracze oprócz gracza prowadzącego Żagwie Muaat otrzymują technologię ulepszenia jednostki Słońce wojny."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Gracz Żagwi Muaat unicestwia weksel swojej rasy, odblokowuje swojego dowódcę i umieszcza 1 dodatkowe słońce wojny w swoim układzie macierzystym."
+    }
+  ],
+  "Events.Advent of the War Sun.Title": [
+    {
+      "type": 0,
+      "value": "Powstanie Słońc Wojny"
+    }
+  ],
+  "Events.Age of Commerce.Description": [
+    {
+      "type": 0,
+      "value": "Gracze nie muszą być sąsiadami, aby zawierać ze sobą transakcje."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Gracze nie mają limitu liczby towarów. Zamiast tego kiedy odświeżają towary, otrzymują liczbę towarów równą swojej wartości towarów."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Gracze mogą dzielić się technologiami nie będącymi technologiami rasy z innymi graczami w ramach transakcji."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Podczas dzielenia się technologią przyjmujący ją gracz otrzymuje ją z własnej talii, a dzielący się gracz nie traci danej technologii."
+    }
+  ],
+  "Events.Age of Commerce.Title": [
+    {
+      "type": 0,
+      "value": "Era Handlu"
+    }
+  ],
+  "Events.Age of Exploration.Description": [
+    {
+      "type": 0,
+      "value": "Relikty wymagają unicestwienia tylko 2 pasujących fragmentów zamiast 3."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Zdolność rasy PODRÓBKA i weksel CZARNORYNKOWA PODRÓBKA Sojuszu Naaz-Rokha nie wymagają, aby unicestwiane fragmenty do siebie pasowały."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Wszyscy gracze mogą wykonać następującą akcję:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AKCJA: Wyczerp KONWERTER CIEMNEJ ENERGII i wybierz nie-macierzysty układ na krawędzi planszy zawierający twoje jednostki, aby rzucić 1 kością. Na wyniku 1-4 wylosuj nieużywany czerwony kafelek; na wyniku 5-10 wylosuj nieużywany niebieski kafelek. Umieść dany kafelek sąsiadująco z wybranym układem, tak aby stykał się z co najmniej 2 nie-macierzystymi układami. Umieść żeton pogranicza w danym układzie, jeśli nie znajdują się w nim żadne planety."
+    }
+  ],
+  "Events.Age of Exploration.Title": [
+    {
+      "type": 0,
+      "value": "Era Eksploracji"
+    }
+  ],
+  "Events.Age of Fighters.Description": [
+    {
+      "type": 0,
+      "value": "Podczas przygotowania gry wszyscy gracze otrzymują technologię ulepszenia jednostki Myśliwiec II. Zamiast tego gracz prowadzący Kolektyw Naalu otrzymuje technologię Hybrydowy kryształowy myśliwiec II."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Myśliwce, które bierze się pod uwagę przy sprawdzaniu limitu puli floty, mają wartość ŁADOWNOŚCI 1. Myśliwce nie mogą transportować myśliwców."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Statki, które nie są myśliwcami, w momencie zniszczenia zostają unicestwione."
+    }
+  ],
+  "Events.Age of Fighters.Title": [
+    {
+      "type": 0,
+      "value": "Era Myśliwców"
+    }
+  ],
+  "Events.Call of the Void.Description": [
+    {
+      "type": 0,
+      "value": "Po tym, jak gracz poruszy 1 lub więcej jednostek do aktywnego układu, a dany układ znajduje się w Szczelinie, otrzymuje 1 żeton dowodzenia."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Kiedy gracz aktywuje układ w Szczelinie, jego wszystkie statki otrzymują +1 do wartości ruchu."
+    }
+  ],
+  "Events.Call of the Void.Title": [
+    {
+      "type": 0,
+      "value": "Zew Pustki"
+    }
+  ],
+  "Events.Civilized Society.Description": [
+    {
+      "type": 0,
+      "value": "Podczas przygotowania gry należy odkryć wszystkie publiczne cele."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Nie ma ograniczenia liczby publicznych celów, które może zrealizować gracz podczas jednej fazy statusu."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Gra nie kończy się natychmiast, kiedy gracz zdobędzie wymaganą liczbę punktów zwycięstwa. Zamiast tego kończy się na końcu fazy statusu danej rundy i wygrywa gracz z największą liczbą punktów zwycięstwa. W razie remisu remisujący gracze sumują wartości wpływów kontrolowanych przez siebie planet i swoje niewydane żetony dóbr – gracz lub gracze z największą sumą wygrywają grę."
+    }
+  ],
+  "Events.Civilized Society.Title": [
+    {
+      "type": 0,
+      "value": "Cywilizowane Społeczeństwo"
+    }
+  ],
+  "Events.Conventions of War Abandoned.Description": [
+    {
+      "type": 0,
+      "value": "Każde trafienie pochodzące z rzutów na BOMBARDOWANIE niszczy 3 jednostki zamiast 1."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Gracze posiadający technologię BROŃ BAKTERIOLOGICZNA X-89 mogą wykonać następującą akcję:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AKCJA: Wyczerp BROŃ BAKTERIOLOGICZNĄ X-89, aby wybrać 1 planetę w układzie, w którym znajduje się 1 z twoich jednostek ze zdolnością BOMBARDOWANIE. Unicestw kartę danej planety i jej wszystkie dodatki lub powiązane z nią karty zdolności legendarnej planety."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Jeśli wszystkie karty planet układu macierzystego gracza zostaną unicestwione, zostaje on wyeliminowany."
+    }
+  ],
+  "Events.Conventions of War Abandoned.Title": [
+    {
+      "type": 0,
+      "value": "Odrzucenie Konwencji Wojennych"
+    }
+  ],
+  "Events.Cosmic Phenomenae.Description": [
+    {
+      "type": 0,
+      "value": "Anomalie zostają zmienione w następujący sposób:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Mgławice: Zamiast normalnej premii statki obrońcy otrzymują +3 do wyników rzutów bitwy w mgławicy."
+    },
+    {
+      "type": 1,
+      "value": "nl"
+    },
+    {
+      "type": 0,
+      "value": "Pola asteroid: Myśliwce bez wartości ruchu nie uczestniczą w bitwie gwiezdnej w polach asteroid."
+    },
+    {
+      "type": 1,
+      "value": "nl"
+    },
+    {
+      "type": 0,
+      "value": "Supernowe: Wartość PRODUKCJI jednostek ze zdolnością PRODUKCJA w supernowych i w sąsiadujących z nimi układach rośnie o 1."
+    },
+    {
+      "type": 1,
+      "value": "nl"
+    },
+    {
+      "type": 0,
+      "value": "Studnie grawitacyjne: Gracz może zwiększyć o dodatkowe +1 wartości RUCHU dowolnych swoich statków poruszających się ze studni grawitacyjnych. Jeśli to zrobi, dane statki zostają usunięte na wyniku 5 lub niższym."
+    },
+    {
+      "type": 1,
+      "value": "nl"
+    },
+    {
+      "type": 0,
+      "value": "Entropiczna blizna: Układy, w których znajdują się entropiczne blizny, sąsiadują ze sobą."
+    }
+  ],
+  "Events.Cosmic Phenomenae.Title": [
+    {
+      "type": 0,
+      "value": "Kosmiczne Zjawiska"
+    }
+  ],
+  "Events.Cultural Exchange Program.Description": [
+    {
+      "type": 0,
+      "value": "Na końcu przygotowania gry należy potasować karty pomocy ras odpowiadające każdej rasie w grze. Każdy gracz dobiera 1 z tych kart i zabiera wszystkich liderów odpowiadających danej rasie. W trakcie tej rozgrywki należą oni do danego gracza. Następnie każdy gracz odblokowuje swojego dowódcę."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Gracz prowadzący Firmament/Obsydian nie uczestniczy w Programie wymiany kulturowej. Zamiast tego rozpoczyna grę z reliktem „Obsydian”."
+    }
+  ],
+  "Events.Cultural Exchange Program.Title": [
+    {
+      "type": 0,
+      "value": "Program Wymiany Kulturowej"
+    }
+  ],
+  "Events.Dangerous Wilds.Description": [
+    {
+      "type": 0,
+      "value": "Podczas przygotowania gry należy umieścić na każdej niegościnnej planecie liczbę neutralnych jednostek piechoty równą wartości zasobów danej planety."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Na końcu każdej rundy na każdej niegościnnej, niekontrolowanej planecie należy uzupełnić neutralne jednostki, jeśli jakiekolwiek zostały zniszczone podczas danej rundy."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Kiedy gracz obejmie kontrolę nad niegościnną planetą z talii planet, może opracować 1 technologię, ignorując liczbę dowolnych wymagań danej technologii równą wartości zasobów danej planety."
+    }
+  ],
+  "Events.Dangerous Wilds.Title": [
+    {
+      "type": 0,
+      "value": "Niebezpieczna Dzicz"
+    }
+  ],
+  "Events.Hidden Agenda.Description": [
+    {
+      "type": 0,
+      "value": "Podczas fazy polityki może się odzywać tylko mówca. Pozostali gracze muszą milczeć poza momentami, kiedy oznajmiają użycie kart akcji. W tej fazie nie można zawierać transakcji."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Podczas głosowania gracze w tajemnicy i jednocześnie zapisują wyniki, na które chcą zagłosować wraz z liczbą głosów i przekazują je mówcy. Po tym, jak wszyscy gracze zagłosują, mówca w tajemnicy podlicza głosy i ujawnia innym graczom tylko ich sumy. Mówca ujawnia, kto zagłosował na który wynik tylko, kiedy wymaga tego rozpatrzenie danego wyniku."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Głosowania gracza prowadzącego Srebrny Klucz są jawne i znane przed głosowaniami pozostałych graczy."
+    }
+  ],
+  "Events.Hidden Agenda.Title": [
+    {
+      "type": 0,
+      "value": "Ukryte Cele"
+    }
+  ],
+  "Events.Mercenaries for Hire.Description": [
+    {
+      "type": 0,
+      "value": "Na początku gry należy potasować karty sojuszy odpowiadające rasom, których nie ma w grze i umieścić je odkryte na wspólnym obszarze gry. Tworzą one talię najemników."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Wszyscy gracze mogą wykonać następującą akcję:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AKCJA: Wydaj 3 żetony dóbr, aby otrzymać wierzchnią kartę z talii najemników i umieścić ją na swoim obszarze gry."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Gracze mogą używać zdolności najemników leżących na ich obszarach gry."
+    }
+  ],
+  "Events.Mercenaries for Hire.Title": [
+    {
+      "type": 0,
+      "value": "Najemnicy Do Wynajęcia"
+    }
+  ],
+  "Events.Minor Factions.Description": [
+    {
+      "type": 0,
+      "value": "Podczas przygotowania gry graczom rozdaje się 1 niebieski kafelek mniej. Przed stworzeniem galaktyki należy potasować karty pomocy ras nie biorących udział w grze i rozdać po 1 każdemu graczowi. Rozpoczynając od mówcy każdy gracz umieszcza układ macierzysty danej rasy w drugim pierścieniu, w równej odległości od układów macierzystych graczy (patrz strona 7 w instrukcji). Następnie dany gracz umieszcza 3 neutralne jednostki piechoty na planetach danego układu, rozdzielone na tyle równo, na ile to możliwe. Te układy to układy słabszych ras i nie traktuje się ich jak układów macierzystych."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Kiedy gracz kontroluje każdą planetę w układzie słabszej rasy, zabiera kartę sojuszu danej rasy z talii lub od gracza, który ją wcześniej posiadał."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Planety w układach słabszych ras otrzymują wszystkie trzy cechy planety (kulturową, przemysłowa i niegościnna)."
+    }
+  ],
+  "Events.Minor Factions.Title": [
+    {
+      "type": 0,
+      "value": "Słabsze Rasy"
+    }
+  ],
+  "Events.Monuments to the Ages.Description": [
+    {
+      "type": 0,
+      "value": "Kiedy gracz miałby umieścić budowlę na nie-macierzystej planecie, może wydać 5 żetonów dóbr, aby zamiast tego umieścić neutralną stocznię kosmiczną. Reprezentuje ona posąg i nie jest traktowana jak jednostka jakiegokolwiek typu. W grze mogą być jednocześnie tylko 3 posągi."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Na początku fazy statusu należy umieścić 1 towar pod każdym posągiem. Każdy posąg zapewnia graczowi kontrolującemu planetę, na której się znajduje, 1 punkt zwycięstwa za każde 3 umieszczone pod sobą towary."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Kiedy gracz obejmie kontrolę nad planetą, na której znajduje się posąg, może zniszczyć dany posąg."
+    }
+  ],
+  "Events.Monuments to the Ages.Title": [
+    {
+      "type": 0,
+      "value": "Ponadczasowe Posągi"
+    }
+  ],
+  "Events.Rapid Mobilization.Description": [
+    {
+      "type": 0,
+      "value": "Po przygotowaniu gry należy wyprowadzić do gry Szczelinę. Następnie każdy gracz jednocześnie rozpatruje następujące efekty w podanej kolejności:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Umieszcza 1 jednostkę piechoty na każdej planecie sąsiadującej z jego układem macierzystym (lub Bramą Creussa/Żalem, w przypadku określonych ras), przejmuje kontrolę nad danymi planetami i przygotowuje je, ale ich nie eksploruje."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Umieszcza 1 stocznię kosmiczną na dowolnej kontrolowanej przez siebie planecie i umieszcza w jej układzie swój okręt flagowy i 3 myśliwce."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Otrzymuje swoją kartę przełomu."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Opracowuje 1 technologię. Jeśli jest graczem prowadzącym Nomadę, opracowuje 1 dodatkową technologię."
+    }
+  ],
+  "Events.Rapid Mobilization.Title": [
+    {
+      "type": 0,
+      "value": "Szybka Mobilizacja"
+    }
+  ],
+  "Events.Stellar Atomics.Description": [
+    {
+      "type": 0,
+      "value": "Podczas przygotowania gry każdy gracz umieszcza na tej karcie jeden ze swoich żetonów kontroli."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Wszyscy gracze mogą wykonać następującą akcję:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AKCJA: Odrzuć swój żeton kontroli z tej karty, aby zniszczyć wszystkie wojska naziemne i budowle na dowolnej, nie-macierzystej planecie."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Jeśli na tej karcie nie ma twojego żetonu kontroli, nie możesz głosować, ani zagrywać kart akcji podczas fazy polityki."
+    }
+  ],
+  "Events.Stellar Atomics.Title": [
+    {
+      "type": 0,
+      "value": "Gwiezdny Arsenał Jądrowy"
+    }
+  ],
+  "Events.Total War.Description": [
+    {
+      "type": 0,
+      "value": "Kiedy gracz zniszczy lub uzyska trafienia, które zniszczą jednostki innego gracza, umieszcza liczbę towarów z puli zaopatrzenia równą łącznemu kosztowi zniszczonych jednostek na kontrolowanej przez siebie planecie w swoim układzie macierzystym (jednostki piechoty i myśliwce są warte 1)."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Kiedy gracz obejmie kontrolę nad planetą macierzystą z towarami, przenosi dane towary na kontrolowaną przez siebie planetę w swoim układzie macierzystym."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Wszyscy gracze mogą wykonać następującą akcję:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AKCJA: Odrzuć 10 towarów z planet w twoim układzie macierzystym, aby otrzymać 1 punkt zwycięstwa."
+    }
+  ],
+  "Events.Total War.Title": [
+    {
+      "type": 0,
+      "value": "Wojna Totalna"
+    }
+  ],
+  "Events.Weird Wormholes.Description": [
+    {
+      "type": 0,
+      "value": "Po tym, jak statek gracza poruszy się korzystając z tunelu czasoprzestrzennego alfa, beta lub gamma, należy rzucić 1 kością i sprawdzić poniższy schemat:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Myśliwiec > niszczyciel > krążownik > pancernik > transportowiec > okręt flagowy > słońce wojny (jeśli opracowane)"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "O ile to możliwe, za każdy wynik 1-5 gracz zastępuje dany statek statkiem ze swojej puli posiłków, znajdującym się wcześniej na schemacie."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "O ile to możliwe, za każdy wynik 6-10 gracz zastępuje dany statek statkiem ze swojej puli posiłków, znajdującym się później na schemacie."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Jeśli w puli posiłków gracza nie ma statków odpowiedniego typu, pomija on dany typ i zastępuje go następnym dostępnym typem."
+    }
+  ],
+  "Events.Weird Wormholes.Title": [
+    {
+      "type": 0,
+      "value": "Dziwne Tunele Czasoprzestrzenne"
+    }
+  ],
+  "Events.Wild Wild Galaxy.Description": [
+    {
+      "type": 0,
+      "value": "Karty akcji zostają zmienione w następujący sposób:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Bezpośrednie trafienie: Może być użyta przeciwko mechom"
+    },
+    {
+      "type": 1,
+      "value": "nl"
+    },
+    {
+      "type": 0,
+      "value": "Manewr flankujący: Zapewnia +2 RUCHU zamiast +1"
+    },
+    {
+      "type": 1,
+      "value": "nl"
+    },
+    {
+      "type": 0,
+      "value": "Silniki manewrowe: Anuluje wszystkie trafienia z DZIAŁA KOSMICZNEGO"
+    },
+    {
+      "type": 1,
+      "value": "nl"
+    },
+    {
+      "type": 0,
+      "value": "Podniesienie morale: Zapewnia +2 do wyników rzutów zamiast +1"
+    },
+    {
+      "type": 1,
+      "value": "nl"
+    },
+    {
+      "type": 0,
+      "value": "Sabotaż: Gracz dodatkowo zabiera anulowaną kartę akcji"
+    },
+    {
+      "type": 1,
+      "value": "nl"
+    },
+    {
+      "type": 0,
+      "value": "Tarcze trzymają: Może być użyta w bitwie naziemnej"
+    },
+    {
+      "type": 1,
+      "value": "nl"
+    },
+    {
+      "type": 0,
+      "value": "Umiejętny odwrót: Nie umieszcza żetonu dowodzenia"
+    },
+    {
+      "type": 1,
+      "value": "nl"
+    },
+    {
+      "type": 0,
+      "value": "Machina wojenna: Obniża koszt o 5 zamiast o 1"
+    },
+    {
+      "type": 1,
+      "value": "nl"
+    },
+    {
+      "type": 0,
+      "value": "Naciski dyplomatyczne: Gracz musi dać 3 weksle"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Dodatkowo Gwiezdny konwerter i Ziarno supernowej mogą być użyte przeciwko dowolnym planetom i układom."
+    }
+  ],
+  "Events.Wild Wild Galaxy.Title": [
+    {
+      "type": 0,
+      "value": "Bardzo Dzika Galaktyka"
+    }
+  ],
+  "Events.Zealous Orthodoxy.Description": [
+    {
+      "type": 0,
+      "value": "Pierwszy gracz, który zrealizuje 2 tajne cele, otrzymuje 1 punkt zwycięstwa."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Następnie należy umieścić kartę sojuszu jego rasy na tej karcie. Wszyscy gracze zyskują opisaną na niej zdolność. Wówczas weksel danej rasy należy unicestwić."
+    }
+  ],
+  "Events.Zealous Orthodoxy.Title": [
+    {
+      "type": 0,
+      "value": "Fanatyczna Ortodoksja"
+    }
+  ],
   "FHUFoZ": [
     {
       "type": 0,
@@ -7802,7 +8612,7 @@
   "Ghosts of Creuss.Techs.Wormhole Generator.Title": [
     {
       "type": 0,
-      "value": "Wormhole Generator"
+      "value": "Generator Tuneli Czasoprzestrzennych"
     }
   ],
   "Ghosts of Creuss.Units.Hil Colish.Description": [
@@ -7864,7 +8674,7 @@
   "HQ3wv9": [
     {
       "type": 0,
-      "value": "Brak Niezapunktowanych Celów Publicznych"
+      "value": "Brak Zrealizowanych Celów Publicznych"
     }
   ],
   "HW1UF8": [
@@ -8092,7 +8902,7 @@
   "J2lfJ4": [
     {
       "type": 0,
-      "value": "Średnia Liczba Punktujących Na Grę: "
+      "value": "Średnia Liczba Zrealizowanych Na Grę: "
     },
     {
       "type": 1,
@@ -9053,6 +9863,12 @@
     {
       "type": 0,
       "value": "Możesz unicestwić tę kartę. Jeśli to zrobisz, za każdy statek innego gracza, który zostanie zniszczony podczas tej bitwy, umieść w aktywnym układzie 1 statek tego samego typu z twojej puli posiłków."
+    }
+  ],
+  "Mentak Coalition.Leaders.Ipswitch, Loose Cannon.Name": [
+    {
+      "type": 0,
+      "value": "Ipswitch, Narwaniec"
     }
   ],
   "Mentak Coalition.Leaders.S'Ula Mentarion.Description": [
@@ -10743,18 +11559,6 @@
       "value": "Zgromadź Ogromne Rezerwy"
     }
   ],
-  "Objectives.Holy Planet of Ixth.Description": [
-    {
-      "type": 0,
-      "value": "Przekazywana aktualnemu właścicielowi Świętej Planety Ixth."
-    }
-  ],
-  "Objectives.Holy Planet of Ixth.Title": [
-    {
-      "type": 0,
-      "value": "Święta Planeta Ixth"
-    }
-  ],
   "Objectives.Imperial Point.Description": [
     {
       "type": 0,
@@ -10765,18 +11569,6 @@
     {
       "type": 0,
       "value": "Punkt z Imperium"
-    }
-  ],
-  "Objectives.Imperial Rider.Description": [
-    {
-      "type": 0,
-      "value": "Poprawnie przewidź wynik głosowania nad kartą polityki, używając karty akcji Imperial Rider."
-    }
-  ],
-  "Objectives.Imperial Rider.Title": [
-    {
-      "type": 0,
-      "value": "Przywilej Imperialny"
     }
   ],
   "Objectives.Improve Infrastructure.Description": [
@@ -11103,18 +11895,6 @@
       "value": "Zdobądź Symbol"
     }
   ],
-  "Objectives.Shard of the Throne.Description": [
-    {
-      "type": 0,
-      "value": "Przekazywana aktualnemu posiadaczowi Odłamka Tronu. "
-    }
-  ],
-  "Objectives.Shard of the Throne.Title": [
-    {
-      "type": 0,
-      "value": "Odłamek Tronu"
-    }
-  ],
   "Objectives.Spark a Rebellion.Description": [
     {
       "type": 0,
@@ -11187,18 +11967,6 @@
       "value": "Przekonaj Radę"
     }
   ],
-  "Objectives.The Crown of Emphidia.Description": [
-    {
-      "type": 0,
-      "value": "Przekazywana aktualnemu posiadaczowi Korony Emphidii."
-    }
-  ],
-  "Objectives.The Crown of Emphidia.Title": [
-    {
-      "type": 0,
-      "value": "Korona Emphidii"
-    }
-  ],
   "Objectives.Threaten Enemies.Description": [
     {
       "type": 0,
@@ -11211,16 +11979,10 @@
       "value": "Zagroź Wrogom"
     }
   ],
-  "Objectives.Tomb + Crown of Emphidia.Description": [
+  "Objectives.Total War.Description": [
     {
       "type": 0,
-      "value": "Użyj Korony Emphidii na końcu fazy statusu, kontrolując Grobowiec Emphidii."
-    }
-  ],
-  "Objectives.Tomb + Crown of Emphidia.Title": [
-    {
-      "type": 0,
-      "value": "Korona Emphidii"
+      "value": "Odrzuć 10 żetonów towarów z twojego układu macieżystego."
     }
   ],
   "Objectives.Turn Their Fleets to Dust.Description": [
@@ -11269,6 +12031,12 @@
     {
       "type": 0,
       "value": "Przetestuj Okręt Flagowy"
+    }
+  ],
+  "Objectives.Zealous Orthodoxy.Description": [
+    {
+      "type": 0,
+      "value": "Pierwszy gracz, który zrealizuje 2 tajne cele, otrzymuje 1 punkt zwycięstwa."
     }
   ],
   "Obsidian.Abilities.Marionettes.Description": [
@@ -11508,7 +12276,7 @@
   "Outcomes.Cultural Planet": [
     {
       "type": 0,
-      "value": "Planeta Kulturowa"
+      "value": "Planetę Kulturową"
     }
   ],
   "Outcomes.For/Against": [
@@ -11520,13 +12288,13 @@
   "Outcomes.Hazardous Planet": [
     {
       "type": 0,
-      "value": "Planeta Niebezpieczna"
+      "value": "Planetę Niebezpieczną"
     }
   ],
   "Outcomes.Industrial Planet": [
     {
       "type": 0,
-      "value": "Planeta Przemysłowa"
+      "value": "Planetę Przemysłową"
     }
   ],
   "Outcomes.Law": [
@@ -11538,19 +12306,19 @@
   "Outcomes.Non-Home Planet Other Than Mecatol Rex": [
     {
       "type": 0,
-      "value": "Planeta Niemacierzysta Inna Niż Mecatol Rex"
+      "value": "Planetę Niemacierzystą Inną Niż Mecatol Rex"
     }
   ],
   "Outcomes.Planet": [
     {
       "type": 0,
-      "value": "Planeta"
+      "value": "Planetę"
     }
   ],
   "Outcomes.Player": [
     {
       "type": 0,
-      "value": "Gracz"
+      "value": "Gracza"
     }
   ],
   "Outcomes.Scored Secret Objective": [
@@ -11562,7 +12330,7 @@
   "Outcomes.Strategy Card": [
     {
       "type": 0,
-      "value": "Karta Strategii"
+      "value": "Kartę Strategii"
     }
   ],
   "P/Y6Fo": [
@@ -11604,19 +12372,19 @@
   "Phase.Action": [
     {
       "type": 0,
-      "value": "Akcja"
+      "value": "Akcji"
     }
   ],
   "Phase.Agenda": [
     {
       "type": 0,
-      "value": "Polityka"
+      "value": "Polityki"
     }
   ],
   "Phase.Edict": [
     {
       "type": 0,
-      "value": "Edykt"
+      "value": "Przychylności"
     }
   ],
   "Phase.End": [
@@ -11634,13 +12402,13 @@
   "Phase.Status": [
     {
       "type": 0,
-      "value": "Status"
+      "value": "Statusu"
     }
   ],
   "Phase.Strategy": [
     {
       "type": 0,
-      "value": "Strategia"
+      "value": "Strategii"
     }
   ],
   "Phase.Unknown": [
@@ -11649,10 +12417,280 @@
       "value": "Unknown"
     }
   ],
+  "Planets.Abaddon.Name": [
+    {
+      "type": 0,
+      "value": "Abaddon"
+    }
+  ],
+  "Planets.Abyz.Name": [
+    {
+      "type": 0,
+      "value": "Abyz"
+    }
+  ],
+  "Planets.Accoen.Name": [
+    {
+      "type": 0,
+      "value": "Accoen"
+    }
+  ],
+  "Planets.Acheron.Name": [
+    {
+      "type": 0,
+      "value": "Acheron"
+    }
+  ],
+  "Planets.Ahk Creuxx.Name": [
+    {
+      "type": 0,
+      "value": "Ahk Creuxx"
+    }
+  ],
+  "Planets.Alio Prima.Name": [
+    {
+      "type": 0,
+      "value": "Alio Prima"
+    }
+  ],
+  "Planets.Andeara.Name": [
+    {
+      "type": 0,
+      "value": "Andeara"
+    }
+  ],
+  "Planets.Ang.Name": [
+    {
+      "type": 0,
+      "value": "Ang"
+    }
+  ],
+  "Planets.Arc Prime.Name": [
+    {
+      "type": 0,
+      "value": "Arc Prime"
+    }
+  ],
+  "Planets.Archon Ren.Name": [
+    {
+      "type": 0,
+      "value": "Archon Ren"
+    }
+  ],
+  "Planets.Archon Tau.Name": [
+    {
+      "type": 0,
+      "value": "Archon Tau"
+    }
+  ],
+  "Planets.Archon Vail.Name": [
+    {
+      "type": 0,
+      "value": "Archon Vail"
+    }
+  ],
+  "Planets.Arcturus.Name": [
+    {
+      "type": 0,
+      "value": "Arcturus"
+    }
+  ],
+  "Planets.Arinam.Name": [
+    {
+      "type": 0,
+      "value": "Arinam"
+    }
+  ],
+  "Planets.Arnor.Name": [
+    {
+      "type": 0,
+      "value": "Arnor"
+    }
+  ],
+  "Planets.Arretze.Name": [
+    {
+      "type": 0,
+      "value": "Arretze"
+    }
+  ],
+  "Planets.Ashtroth.Name": [
+    {
+      "type": 0,
+      "value": "Ashtroth"
+    }
+  ],
+  "Planets.Atlas.Name": [
+    {
+      "type": 0,
+      "value": "Atlas"
+    }
+  ],
+  "Planets.Avar.Name": [
+    {
+      "type": 0,
+      "value": "Avar"
+    }
+  ],
+  "Planets.Avernus.Ability": [
+    {
+      "type": 0,
+      "value": "AKCJA: Wyczerp tę kartę, aby użyć zdolności rasy GWIEZDNA KUŹNIA Żagwi Muaat bez konieczności wydawania żetonu dowodzenia. "
+    }
+  ],
+  "Planets.Avernus.Name": [
+    {
+      "type": 0,
+      "value": "Avernus"
+    }
+  ],
+  "Planets.Ba'kal.Name": [
+    {
+      "type": 0,
+      "value": "Ba'kal"
+    }
+  ],
+  "Planets.Bellatrix.Name": [
+    {
+      "type": 0,
+      "value": "Bellatrix"
+    }
+  ],
+  "Planets.Bereg.Name": [
+    {
+      "type": 0,
+      "value": "Bereg"
+    }
+  ],
+  "Planets.Brine Pool.Name": [
+    {
+      "type": 0,
+      "value": "Słony Zbiornik"
+    }
+  ],
+  "Planets.Capha.Name": [
+    {
+      "type": 0,
+      "value": "Capha"
+    }
+  ],
+  "Planets.Cealdri.Name": [
+    {
+      "type": 0,
+      "value": "Cealdri"
+    }
+  ],
+  "Planets.Centauri.Name": [
+    {
+      "type": 0,
+      "value": "Centauri"
+    }
+  ],
+  "Planets.Cocytus.Name": [
+    {
+      "type": 0,
+      "value": "Kokytos"
+    }
+  ],
+  "Planets.Coral Reef.Name": [
+    {
+      "type": 0,
+      "value": "Rafa Koralowa"
+    }
+  ],
+  "Planets.Cormund.Name": [
+    {
+      "type": 0,
+      "value": "Cormund"
+    }
+  ],
+  "Planets.Corneeq.Name": [
+    {
+      "type": 0,
+      "value": "Corneeq"
+    }
+  ],
+  "Planets.Cresius.Name": [
+    {
+      "type": 0,
+      "value": "Krezus"
+    }
+  ],
+  "Planets.Creuss.Name": [
+    {
+      "type": 0,
+      "value": "Creuss"
+    }
+  ],
+  "Planets.Cronos Hollow.Name": [
+    {
+      "type": 0,
+      "value": "Pusty Kronos"
+    }
+  ],
+  "Planets.Cronos.Name": [
+    {
+      "type": 0,
+      "value": "Kronos"
+    }
+  ],
+  "Planets.Custodia Vigilia.Name": [
+    {
+      "type": 0,
+      "value": "Custodia Vigilia"
+    }
+  ],
+  "Planets.Dal Bootha.Name": [
+    {
+      "type": 0,
+      "value": "Dal Bootha"
+    }
+  ],
+  "Planets.Darien.Name": [
+    {
+      "type": 0,
+      "value": "Darien"
+    }
+  ],
+  "Planets.Deep Abyss.Name": [
+    {
+      "type": 0,
+      "value": "Głęboka Otchłań"
+    }
+  ],
+  "Planets.Druaa.Name": [
+    {
+      "type": 0,
+      "value": "Druaa"
+    }
+  ],
+  "Planets.El'nath.Name": [
+    {
+      "type": 0,
+      "value": "El'nath"
+    }
+  ],
+  "Planets.Elysium.Name": [
+    {
+      "type": 0,
+      "value": "Elizjum"
+    }
+  ],
   "Planets.Emelpar.Ability": [
     {
       "type": 0,
       "value": "Możesz wyczerpać tę kartę na końcu swojej tury, aby przygotować inny komponent, który nie jest kartą strategii."
+    }
+  ],
+  "Planets.Emelpar.Name": [
+    {
+      "type": 0,
+      "value": "Emelpar"
+    }
+  ],
+  "Planets.Everra.Name": [
+    {
+      "type": 0,
+      "value": "Everra"
     }
   ],
   "Planets.Faunus.Ability": [
@@ -11661,10 +12699,46 @@
       "value": "Możesz wyczerpać tę kartę, gdy pasujesz, aby przejąć kontrolę nad planetą niemacierzystą, nielegendarna, która nie zawiera jednostek i nie ma dodatków."
     }
   ],
+  "Planets.Faunus.Name": [
+    {
+      "type": 0,
+      "value": "Faun"
+    }
+  ],
+  "Planets.Fria.Name": [
+    {
+      "type": 0,
+      "value": "Fria"
+    }
+  ],
   "Planets.Garbozia.Ability": [
     {
       "type": 0,
       "value": "Możesz wyczerpać tę kartę, gdy pasujesz, aby umieścić 1 kartę akcji z odrzuconych kart odkrytą na tej karcie; możesz unicestwić karty na tej karcie, aby zagrać je tak, jakby były w twojej ręce."
+    }
+  ],
+  "Planets.Garbozia.Name": [
+    {
+      "type": 0,
+      "value": "Garbozia"
+    }
+  ],
+  "Planets.Gral.Name": [
+    {
+      "type": 0,
+      "value": "Gral"
+    }
+  ],
+  "Planets.Hercalor.Name": [
+    {
+      "type": 0,
+      "value": "Hercalor"
+    }
+  ],
+  "Planets.Hercant.Name": [
+    {
+      "type": 0,
+      "value": "Hercant"
     }
   ],
   "Planets.Hope's End.Ability": [
@@ -11673,10 +12747,166 @@
       "value": "Możesz wyczerpać tę kartę na końcu swojej tury, aby umieścić 1 mecha ze swoich posiłków na dowolnej planecie, którą kontrolujesz, lub dobrać 1 kartę akcji."
     }
   ],
+  "Planets.Hope's End.Name": [
+    {
+      "type": 0,
+      "value": "Kres Nadziei"
+    }
+  ],
+  "Planets.Horizon.Name": [
+    {
+      "type": 0,
+      "value": "Horyzont"
+    }
+  ],
+  "Planets.Ice Shelf.Name": [
+    {
+      "type": 0,
+      "value": "Szelf Polarny"
+    }
+  ],
+  "Planets.Ikatena.Name": [
+    {
+      "type": 0,
+      "value": "Ikatena"
+    }
+  ],
   "Planets.Industrex.Ability": [
     {
       "type": 0,
-      "value": "Możesz wyczerpać tę kartę, gdy pasujesz, aby umieścić 1 statek, który odpowiada technologii ulepszenia jednostki, którą posiadasz, ze swoich posiłków do układu zawierającego twoje statki."
+      "value": "Możesz wyczerpać tę kartę, kiedy pasujesz, aby umieścić 1 statek z twojej puli posiłków, odpowiadający posiadanej przez ciebie technologii ulepszenia jednostki, w układzie, w którym znajdują się twoje statki."
+    }
+  ],
+  "Planets.Industrex.Name": [
+    {
+      "type": 0,
+      "value": "Industrex"
+    }
+  ],
+  "Planets.Ixth.Name": [
+    {
+      "type": 0,
+      "value": "Ixth"
+    }
+  ],
+  "Planets.Jeol Ir.Name": [
+    {
+      "type": 0,
+      "value": "Jeol Ir"
+    }
+  ],
+  "Planets.Jol.Name": [
+    {
+      "type": 0,
+      "value": "Jol"
+    }
+  ],
+  "Planets.Jord.Name": [
+    {
+      "type": 0,
+      "value": "Jord"
+    }
+  ],
+  "Planets.Kamdorn.Name": [
+    {
+      "type": 0,
+      "value": "Kamdorn"
+    }
+  ],
+  "Planets.Kostboth.Name": [
+    {
+      "type": 0,
+      "value": "Kostboth"
+    }
+  ],
+  "Planets.Kraag.Name": [
+    {
+      "type": 0,
+      "value": "Kraag"
+    }
+  ],
+  "Planets.Lazar.Name": [
+    {
+      "type": 0,
+      "value": "Lazar"
+    }
+  ],
+  "Planets.Lazul Rex.Name": [
+    {
+      "type": 0,
+      "value": "Lazul Rex"
+    }
+  ],
+  "Planets.Lemox.Name": [
+    {
+      "type": 0,
+      "value": "Lemox"
+    }
+  ],
+  "Planets.Lesab.Name": [
+    {
+      "type": 0,
+      "value": "Lesab"
+    }
+  ],
+  "Planets.Lethe.Name": [
+    {
+      "type": 0,
+      "value": "Lete"
+    }
+  ],
+  "Planets.Lirta IV.Name": [
+    {
+      "type": 0,
+      "value": "Lirta IV"
+    }
+  ],
+  "Planets.Lisis II.Name": [
+    {
+      "type": 0,
+      "value": "Lisis II"
+    }
+  ],
+  "Planets.Lisis.Name": [
+    {
+      "type": 0,
+      "value": "Lisis"
+    }
+  ],
+  "Planets.Lodor.Name": [
+    {
+      "type": 0,
+      "value": "Lodor"
+    }
+  ],
+  "Planets.Loki.Name": [
+    {
+      "type": 0,
+      "value": "Loki"
+    }
+  ],
+  "Planets.Lor.Name": [
+    {
+      "type": 0,
+      "value": "Lor"
+    }
+  ],
+  "Planets.Lost Fleet.Name": [
+    {
+      "type": 0,
+      "value": "Zaginiona Flota"
+    }
+  ],
+  "Planets.Luthien VI.Name": [
+    {
+      "type": 0,
+      "value": "Luthien VI"
+    }
+  ],
+  "Planets.Maaluuk.Name": [
+    {
+      "type": 0,
+      "value": "Maaluuk"
     }
   ],
   "Planets.Mallice.Ability": [
@@ -11685,10 +12915,112 @@
       "value": "Możesz wyczerpać tę kartę na końcu swojej tury, aby zyskać 2 żetony dóbr lub zamienić wszystkie swoje towary w dobra."
     }
   ],
+  "Planets.Mallice.Name": [
+    {
+      "type": 0,
+      "value": "Mallice"
+    }
+  ],
+  "Planets.Mecatol Rex.Name": [
+    {
+      "type": 0,
+      "value": "Mecatol Rex"
+    }
+  ],
+  "Planets.Meer.Name": [
+    {
+      "type": 0,
+      "value": "Meer"
+    }
+  ],
+  "Planets.Mehar Xull.Name": [
+    {
+      "type": 0,
+      "value": "Mehar Xull"
+    }
+  ],
+  "Planets.Mellon.Name": [
+    {
+      "type": 0,
+      "value": "Mellon"
+    }
+  ],
+  "Planets.Mez Lo Orz Fei Zsha.Name": [
+    {
+      "type": 0,
+      "value": "Mez Lo Orz Fei Zsha"
+    }
+  ],
   "Planets.Mirage.Ability": [
     {
       "type": 0,
       "value": "Możesz wyczerpać tę kartę na końcu swojej tury, aby umieścić do 2 myśliwców ze swoich posiłków w dowolnym układzie, który zawiera 1 lub więcej twoich statków."
+    }
+  ],
+  "Planets.Mirage.Name": [
+    {
+      "type": 0,
+      "value": "Miraż"
+    }
+  ],
+  "Planets.Moll Primus.Name": [
+    {
+      "type": 0,
+      "value": "Moll Primus"
+    }
+  ],
+  "Planets.Mordai II.Name": [
+    {
+      "type": 0,
+      "value": "Mordai II"
+    }
+  ],
+  "Planets.Muaat.Name": [
+    {
+      "type": 0,
+      "value": "Muaat"
+    }
+  ],
+  "Planets.Naazir.Name": [
+    {
+      "type": 0,
+      "value": "Naazir"
+    }
+  ],
+  "Planets.Nar.Name": [
+    {
+      "type": 0,
+      "value": "Nar"
+    }
+  ],
+  "Planets.Nestphar.Name": [
+    {
+      "type": 0,
+      "value": "Nestphar"
+    }
+  ],
+  "Planets.New Albion.Name": [
+    {
+      "type": 0,
+      "value": "New Albion"
+    }
+  ],
+  "Planets.New Terra.Name": [
+    {
+      "type": 0,
+      "value": "Nowa Terra"
+    }
+  ],
+  "Planets.Olergodt.Name": [
+    {
+      "type": 0,
+      "value": "Olergodt"
+    }
+  ],
+  "Planets.Oluz Station.Name": [
+    {
+      "type": 0,
+      "value": "Stacja Oluz"
     }
   ],
   "Planets.Ordinian.Ability": [
@@ -11697,10 +13029,148 @@
       "value": "Możesz wyczerpać tę kartę, gdy pasujesz, aby dobrać 1 kartę akcji i zyskać 1 żeton dowodzenia."
     }
   ],
+  "Planets.Ordinian.Name": [
+    {
+      "type": 0,
+      "value": "Ordinian"
+    }
+  ],
+  "Planets.Perimeter.Name": [
+    {
+      "type": 0,
+      "value": "Perymetr"
+    }
+  ],
+  "Planets.Phlegethon.Name": [
+    {
+      "type": 0,
+      "value": "Flegeton"
+    }
+  ],
   "Planets.Primor.Ability": [
     {
       "type": 0,
       "value": "Możesz wyczerpać tę kartę na końcu swojej tury, aby umieścić do 2 jednostek piechoty ze swoich posiłków na dowolnej planecie, którą kontrolujesz."
+    }
+  ],
+  "Planets.Primor.Name": [
+    {
+      "type": 0,
+      "value": "Primor"
+    }
+  ],
+  "Planets.Quann.Name": [
+    {
+      "type": 0,
+      "value": "Quann"
+    }
+  ],
+  "Planets.Qucen'n.Name": [
+    {
+      "type": 0,
+      "value": "Qucen'n"
+    }
+  ],
+  "Planets.Quinarra.Name": [
+    {
+      "type": 0,
+      "value": "Quinarra"
+    }
+  ],
+  "Planets.Ragh.Name": [
+    {
+      "type": 0,
+      "value": "Ragh"
+    }
+  ],
+  "Planets.Rarron.Name": [
+    {
+      "type": 0,
+      "value": "Rarron"
+    }
+  ],
+  "Planets.Rep Lo Orz Oet.Name": [
+    {
+      "type": 0,
+      "value": "Rep Lo Orz Oet"
+    }
+  ],
+  "Planets.Resculon.Name": [
+    {
+      "type": 0,
+      "value": "Resculon"
+    }
+  ],
+  "Planets.Retillion.Name": [
+    {
+      "type": 0,
+      "value": "Retillion"
+    }
+  ],
+  "Planets.Revelation.Name": [
+    {
+      "type": 0,
+      "value": "Objawienie"
+    }
+  ],
+  "Planets.Rigel I.Name": [
+    {
+      "type": 0,
+      "value": "Rigel I"
+    }
+  ],
+  "Planets.Rigel II.Name": [
+    {
+      "type": 0,
+      "value": "Rigel II"
+    }
+  ],
+  "Planets.Rigel III.Name": [
+    {
+      "type": 0,
+      "value": "Rigel III"
+    }
+  ],
+  "Planets.Rokha.Name": [
+    {
+      "type": 0,
+      "value": "Rokha"
+    }
+  ],
+  "Planets.Sakulag.Name": [
+    {
+      "type": 0,
+      "value": "Sakulag"
+    }
+  ],
+  "Planets.Saudor.Name": [
+    {
+      "type": 0,
+      "value": "Saudor"
+    }
+  ],
+  "Planets.Sem-Lore.Name": [
+    {
+      "type": 0,
+      "value": "Sem-Lore"
+    }
+  ],
+  "Planets.Shalloq.Name": [
+    {
+      "type": 0,
+      "value": "Shalloq"
+    }
+  ],
+  "Planets.Siig.Name": [
+    {
+      "type": 0,
+      "value": "Siig"
+    }
+  ],
+  "Planets.Starpoint.Name": [
+    {
+      "type": 0,
+      "value": "Starpoint"
     }
   ],
   "Planets.Styx.Ability": [
@@ -11717,16 +13187,76 @@
       "value": "Gdy stracisz tę kartę, stracisz 1 punkt zwycięstwa."
     }
   ],
+  "Planets.Styx.Name": [
+    {
+      "type": 0,
+      "value": "Styks"
+    }
+  ],
+  "Planets.Tallin Hollow.Name": [
+    {
+      "type": 0,
+      "value": "Pusty Tallin"
+    }
+  ],
+  "Planets.Tallin.Name": [
+    {
+      "type": 0,
+      "value": "Tallin"
+    }
+  ],
+  "Planets.Tar'Mann.Name": [
+    {
+      "type": 0,
+      "value": "Tar'Mann"
+    }
+  ],
+  "Planets.Tarana.Name": [
+    {
+      "type": 0,
+      "value": "Tarana"
+    }
+  ],
   "Planets.Tempesta.Ability": [
     {
       "type": 0,
       "value": "Możesz wyczerpać tę kartę po aktywacji układu, aby dodać +1 do wartości ruchu 1 ze swoich statków podczas tej akcji taktycznej."
     }
   ],
+  "Planets.Tempesta.Name": [
+    {
+      "type": 0,
+      "value": "Tempesta"
+    }
+  ],
+  "Planets.Tequ'ran.Name": [
+    {
+      "type": 0,
+      "value": "Tequ'ran"
+    }
+  ],
+  "Planets.The Dark.Name": [
+    {
+      "type": 0,
+      "value": "Mrocznia"
+    }
+  ],
+  "Planets.The Watchtower.Name": [
+    {
+      "type": 0,
+      "value": "Strażnica"
+    }
+  ],
+  "Planets.Thibah.Name": [
+    {
+      "type": 0,
+      "value": "Thibah"
+    }
+  ],
   "Planets.Thunder's Edge.Ability": [
     {
       "type": 0,
-      "value": "Zyskaj swój przełom, gdy otrzymasz tę kartę, jeśli jeszcze go nie posiadasz."
+      "value": "Kiedy otrzymasz tę kartę, otrzymujesz swój przełom, jeśli jeszcze go nie masz."
     },
     {
       "type": 1,
@@ -11735,6 +13265,132 @@
     {
       "type": 0,
       "value": "Możesz wyczerpać tę kartę na końcu swojej tury, aby wykonać akcję."
+    }
+  ],
+  "Planets.Thunder's Edge.Name": [
+    {
+      "type": 0,
+      "value": "Kraniec Burzy"
+    }
+  ],
+  "Planets.Tiamat.Name": [
+    {
+      "type": 0,
+      "value": "Tiamat"
+    }
+  ],
+  "Planets.Tinnes.Name": [
+    {
+      "type": 0,
+      "value": "Tinnes"
+    }
+  ],
+  "Planets.Torkan.Name": [
+    {
+      "type": 0,
+      "value": "Torkan"
+    }
+  ],
+  "Planets.Tren'lak.Name": [
+    {
+      "type": 0,
+      "value": "Tren'lak"
+    }
+  ],
+  "Planets.Tsion Station.Name": [
+    {
+      "type": 0,
+      "value": "Stacja Tsion"
+    }
+  ],
+  "Planets.Valk.Name": [
+    {
+      "type": 0,
+      "value": "Valk"
+    }
+  ],
+  "Planets.Vefut II.Name": [
+    {
+      "type": 0,
+      "value": "Vefut II"
+    }
+  ],
+  "Planets.Vega Major.Name": [
+    {
+      "type": 0,
+      "value": "Wielka Vega"
+    }
+  ],
+  "Planets.Vega Minor.Name": [
+    {
+      "type": 0,
+      "value": "Mała Vega"
+    }
+  ],
+  "Planets.Velnor.Name": [
+    {
+      "type": 0,
+      "value": "Velnor"
+    }
+  ],
+  "Planets.Vira-Pics III.Name": [
+    {
+      "type": 0,
+      "value": "Vira-Pics III"
+    }
+  ],
+  "Planets.Vorhal.Name": [
+    {
+      "type": 0,
+      "value": "Vorhal"
+    }
+  ],
+  "Planets.Wellon.Name": [
+    {
+      "type": 0,
+      "value": "Wellon"
+    }
+  ],
+  "Planets.Winnu.Name": [
+    {
+      "type": 0,
+      "value": "Winnu"
+    }
+  ],
+  "Planets.Wren Terra.Name": [
+    {
+      "type": 0,
+      "value": "Wren Terra"
+    }
+  ],
+  "Planets.Xanhact.Name": [
+    {
+      "type": 0,
+      "value": "Xanhact"
+    }
+  ],
+  "Planets.Xxehan.Name": [
+    {
+      "type": 0,
+      "value": "Xxehan"
+    }
+  ],
+  "Planets.Ylir.Name": [
+    {
+      "type": 0,
+      "value": "Ylir"
+    }
+  ],
+  "Planets.Zohbat.Name": [
+    {
+      "type": 0,
+      "value": "Zohbat"
+    }
+  ],
+  "Planets.[0.0.0].Name": [
+    {
+      "type": 0,
+      "value": "[0.0.0]"
     }
   ],
   "PmqXSZ": [
@@ -12233,6 +13889,46 @@
       "value": "Okręt Łącznikowy I"
     }
   ],
+  "Relics.Book of Latvinia.Description": [
+    {
+      "type": 0,
+      "value": "Kiedy otrzymasz tę kartę, opracuj do 2 technologii bez wymagań."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": ".AKCJA: Unicestw tę kartę. Jeśli kontrolujesz planety, które posiadają wszystkie 4 typy specjalizacji technologicznych, otrzymujesz 1 punkt zwycięstwa. W innym razie otrzymujesz żeton mówcy."
+    }
+  ],
+  "Relics.Book of Latvinia.Title": [
+    {
+      "type": 0,
+      "value": "Księga Latvinii"
+    }
+  ],
+  "Relics.Circlet of the Void.Description": [
+    {
+      "type": 0,
+      "value": "Twoje jednostki nie rzucają na studnie grawitacyjne i ignorujesz efekty ruchu innych anomalii."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AKCJA: Wyczerp tę kartę, aby eksplorować żeton pogranicza w układzie, w którym nie znajdują się statki żadnych innych graczy."
+    }
+  ],
+  "Relics.Circlet of the Void.Title": [
+    {
+      "type": 0,
+      "value": "Diadem Próżni"
+    }
+  ],
   "Relics.Dominus Orb.Description": [
     {
       "type": 0,
@@ -12265,6 +13961,18 @@
       "value": "Rdzeń Dynamis"
     }
   ],
+  "Relics.Heart of Ixth.Description": [
+    {
+      "type": 0,
+      "value": "Po dowolnym rzucie kością możesz wyczerpać tę kartę, aby dodać lub odjąć 1 od jej wyniku."
+    }
+  ],
+  "Relics.Heart of Ixth.Title": [
+    {
+      "type": 0,
+      "value": "Serce Ixth"
+    }
+  ],
   "Relics.JR-XS455-O.Description": [
     {
       "type": 0,
@@ -12275,6 +13983,18 @@
     {
       "type": 0,
       "value": "JR-XS455-O"
+    }
+  ],
+  "Relics.Lightrail Ordnance.Description": [
+    {
+      "type": 0,
+      "value": "Twoje stocznie kosmiczne otrzymują zdolność DZIAŁO KOSMICZNE 5 (X2). Możesz używać zdolności DZIAŁO KOSMICZNE twoich stoczni kosmicznych przeciwko statkom sąsiadującym z układami, w których się znajdują."
+    }
+  ],
+  "Relics.Lightrail Ordnance.Title": [
+    {
+      "type": 0,
+      "value": "Artyleria Świetlnomagnetyczna"
     }
   ],
   "Relics.Maw of Worlds.Description": [
@@ -12289,6 +14009,30 @@
       "value": "Paszcza światów"
     }
   ],
+  "Relics.Metali Void Armaments.Description": [
+    {
+      "type": 0,
+      "value": "Podczas kroku „Ostrzał przeciwmyśliwski” bitwy ,kosmicznej możesz rozpatrzyć zdolność OSTRZAŁ PRZECIWMYŚLIWSKI 6 (x3) przeciwko jednostkom twojego przeciwnika."
+    }
+  ],
+  "Relics.Metali Void Armaments.Title": [
+    {
+      "type": 0,
+      "value": "Broń Próżniowa Metali"
+    }
+  ],
+  "Relics.Metali Void Shielding.Description": [
+    {
+      "type": 0,
+      "value": "Za każdym razem, kiedy zostaną uzyskane trafienia ,przeciwko co najmniej 1 twojemu statkowi nie będącemu myśliwcem, 1 z tych statków może użyć zdolności WYTRZYMAŁOŚĆ tak, jakby miał tę zdolność."
+    }
+  ],
+  "Relics.Metali Void Shielding.Title": [
+    {
+      "type": 0,
+      "value": "Tarcze Próżniowe Metali"
+    }
+  ],
   "Relics.Nano-Forge.Description": [
     {
       "type": 0,
@@ -12299,6 +14043,18 @@
     {
       "type": 0,
       "value": "Nano-Kuźnia"
+    }
+  ],
+  "Relics.Neuraloop.Description": [
+    {
+      "type": 0,
+      "value": "Kiedy zostaje odkryty publiczny cel, możesz unicestwić jeden z twoich reliktów, aby odrzucić dany cel i zastąpić go losową kartą celu z dowolnej talii celów. Nowy cel jest uważany za publiczny cel, nawet jeśli to tajny cel."
+    }
+  ],
+  "Relics.Neuraloop.Title": [
+    {
+      "type": 0,
+      "value": "Neuropętla"
     }
   ],
   "Relics.Scepter of Emelpar.Description": [
@@ -12419,6 +14175,58 @@
     {
       "type": 0,
       "value": "Łzy Proroka"
+    }
+  ],
+  "Relics.The Quantumcore.Description": [
+    {
+      "type": 0,
+      "value": "Kiedy otrzymasz tę kartę, otrzymujesz twoją kartę przełomu."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Masz SYNERGIĘ dla wszystkich rodzajów technologii."
+    }
+  ],
+  "Relics.The Quantumcore.Title": [
+    {
+      "type": 0,
+      "value": "Rdzeń Kwantowy"
+    }
+  ],
+  "Relics.The Silver Flame.Description": [
+    {
+      "type": 0,
+      "value": "Srebrny Płomień można wymieniać w ramach transakcji."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": ".AKCJA: Rzuć 1 kością i unicestw tę kartę. Jeśli wynik jest równy 10, otrzymujesz 1 punkt zwycięstwa. W innym razie unicestw twój układ macierzysty i wszystkie znajdujące się w nim jednostki. Nie możesz realizować publicznych celów. Wprowadź do gry Szczelinę, jeśli jeszcze się w niej nie znajduje."
+    }
+  ],
+  "Relics.The Silver Flame.Title": [
+    {
+      "type": 0,
+      "value": "Srebrny Płomień"
+    }
+  ],
+  "Relics.The Triad.Description": [
+    {
+      "type": 0,
+      "value": "Tę kartę można przygotowywać i wydawać tak, jakby była kartą planety. Jej wartości zasobów i wpływów są równe 3 plus liczba różnych typów fragmentów reliktów, które posiadasz."
+    }
+  ],
+  "Relics.The Triad.Title": [
+    {
+      "type": 0,
+      "value": "Triada"
     }
   ],
   "Riders.Construction Rider.Title": [
@@ -13237,6 +15045,1642 @@
       "value": "count"
     }
   ],
+  "TF.Ability.Abundance.Name": [
+    {
+      "type": 0,
+      "value": "Obfitość"
+    }
+  ],
+  "TF.Ability.Abundance.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy 1 lub więcej twoich jednostek użyje zdolności PRODUKCJA, możesz otrzymać 1 żeton dóbr."
+    }
+  ],
+  "TF.Ability.Aerie Hololattice.Name": [
+    {
+      "type": 0,
+      "value": "Holosiatka Niedostępnego Gniazda"
+    }
+  ],
+  "TF.Ability.Aerie Hololattice.Text": [
+    {
+      "type": 0,
+      "value": "Inni gracze nie mogą poruszać statków przez układy, w których znajdują się twoje budowle."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Każda planeta, w której znajduje się 1 lub więcej twoich budowli, otrzymuje zdolność PRODUKCJA 1 tak, jakby była jednostką."
+    }
+  ],
+  "TF.Ability.Aetherstream.Name": [
+    {
+      "type": 0,
+      "value": "Strumień Eteru"
+    }
+  ],
+  "TF.Ability.Aetherstream.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak ty lub jeden z twoich sąsiadów aktywujecie układ, który sąsiaduje z anomalią:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz zdecydować, że podczas tej akcji taktycznej wszystkie statki danego gracza otrzymają +1 do wartości ruchu."
+    }
+  ],
+  "TF.Ability.Agency Supply Network.Name": [
+    {
+      "type": 0,
+      "value": "Sieć Zaopatrzeniowa Agencji"
+    }
+  ],
+  "TF.Ability.Agency Supply Network.Text": [
+    {
+      "type": 0,
+      "value": "Raz na akcję, kiedy rozpatrujesz zdolność PRODUKCJA jednostki:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz rozpatrzyć zdolność PRODUKCJA innej twojej jednostki w dowolnym układzie."
+    }
+  ],
+  "TF.Ability.Amalgamation.Name": [
+    {
+      "type": 0,
+      "value": "Amalgamat"
+    }
+  ],
+  "TF.Ability.Amalgamation.Text": [
+    {
+      "type": 0,
+      "value": "Schwytaj jednostki twojego przeciwnika nie będące budowlami, które zostaną zniszczone podczas bitwy."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Kiedy produkujesz jednostkę, możesz zwrócić 1 schwytaną jednostkę danego typu, aby wyprodukować daną jednostkę bez konieczności wydawania zasobów."
+    }
+  ],
+  "TF.Ability.Ambush.Name": [
+    {
+      "type": 0,
+      "value": "Zasadzka"
+    }
+  ],
+  "TF.Ability.Ambush.Text": [
+    {
+      "type": 0,
+      "value": "Na początku bitwy kosmicznej:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz rzucić po 1 kości za maksymalnie 2 swoje krążowniki lub 2 swoje niszczyciele (lub za 1 krążownik i 1 niszczyciela) znajdujące się w tym układzie. Za każdy wynik równy lub wyższy od wartości walki wybranego statku uzyskujesz 1 trafienie. Twój przeciwnik musi przydzielić takie trafienie 1 ze swoich statków."
+    }
+  ],
+  "TF.Ability.Armada.Name": [
+    {
+      "type": 0,
+      "value": "Armada"
+    }
+  ],
+  "TF.Ability.Armada.Text": [
+    {
+      "type": 0,
+      "value": "Maksymalna liczba statków nie będących myśliwcami, którą możesz mieć w każdym układzie, jest większa o 2 od liczby żetonów dowodzenia w twojej puli floty."
+    }
+  ],
+  "TF.Ability.Assimilate.Name": [
+    {
+      "type": 0,
+      "value": "Asymilacja"
+    }
+  ],
+  "TF.Ability.Assimilate.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy obejmujesz kontrolę nad planetą:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Zamień każdą budowlę na danej planecie na odpowiadającą jej jednostkę z twojej puli posiłków."
+    }
+  ],
+  "TF.Ability.Awaken.Name": [
+    {
+      "type": 0,
+      "value": "Przebudzenie"
+    }
+  ],
+  "TF.Ability.Awaken.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak aktywujesz układ, w którym znajduje się 1 lub więcej twoich jednostek piechoty, możesz zastąpić 1 z tych jednostek 1 PSD z twojej puli posiłków."
+    }
+  ],
+  "TF.Ability.Bio-Synthetic Synergy.Name": [
+    {
+      "type": 0,
+      "value": "Synergia Biosyntetyczna"
+    }
+  ],
+  "TF.Ability.Bio-Synthetic Synergy.Text": [
+    {
+      "type": 0,
+      "value": "Twoje karty akcji nie mogą zostać anulowane kartami akcji „Roztrzaskanie”."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Twoje inne karty zdolności nie mogą zostać zabrane, unicestwione, ani odrzucone przez innych graczy i nie można na nich umieszczać żetonów osobliwości."
+    }
+  ],
+  "TF.Ability.Bioplasmosis.Name": [
+    {
+      "type": 0,
+      "value": "Bioplazmoza"
+    }
+  ],
+  "TF.Ability.Bioplasmosis.Text": [
+    {
+      "type": 0,
+      "value": "Na końcu fazy statusu:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz usunąć dowolną liczbę wojsk naziemnych z kontrolowanych przez ciebie planet i umieścić je na 1 lub więcej kontrolowanej przez ciebie planecie w tym samym lub sąsiednim układzie."
+    }
+  ],
+  "TF.Ability.Chaos Mapping.Name": [
+    {
+      "type": 0,
+      "value": "Mapowanie Chaosu"
+    }
+  ],
+  "TF.Ability.Chaos Mapping.Text": [
+    {
+      "type": 0,
+      "value": "Na początku twojej tury podczas fazy akcji:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz wyprodukować 1 jednostkę w układzie, w którym znajduje się co najmniej 1 twoja jednostka ze zdolnością PRODUKCJA."
+    }
+  ],
+  "TF.Ability.Courier Transport.Name": [
+    {
+      "type": 0,
+      "value": "Transporty Kurierskie"
+    }
+  ],
+  "TF.Ability.Courier Transport.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak aktywujesz układ:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz poruszyć twoje budowle z sąsiednich układów, w których nie znajdują się twoje żetony dowodzenia, na kontrolowane przez ciebie planety w aktywnym układzie."
+    }
+  ],
+  "TF.Ability.Crafty.Name": [
+    {
+      "type": 0,
+      "value": "Chytry"
+    }
+  ],
+  "TF.Ability.Crafty.Text": [
+    {
+      "type": 0,
+      "value": "Możesz mieć na ręce dowolną liczbę kart akcji. Efekty gry nie mogą przeszkodzić ci w korzystaniu z tej zdolności."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Podczas twojej tury w fazie akcji gracze, którzy spasowali, nie mogą zagrywać kart akcji."
+    }
+  ],
+  "TF.Ability.Crucible.Name": [
+    {
+      "type": 0,
+      "value": "Tygiel"
+    }
+  ],
+  "TF.Ability.Crucible.Text": [
+    {
+      "type": 0,
+      "value": "Twoje statki nie wykonują rzutów za studnie grawitacyjne. Zamiast tego otrzymują +1 do wartości ruchu, jeśli poruszają się przez lub ze studni grawitacyjnej."
+    }
+  ],
+  "TF.Ability.Devotion.Name": [
+    {
+      "type": 0,
+      "value": "Oddanie"
+    }
+  ],
+  "TF.Ability.Devotion.Text": [
+    {
+      "type": 0,
+      "value": "Po zakończeniu każdej rundy bitwy kosmicznej:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz zniszczyć 1 swój krążownik lub 1 swojego niszczyciela w aktywnym układzie, aby uzyskać 1 trafienie i przydzielić je 1 ze statków przeciwnika w danym układzie."
+    }
+  ],
+  "TF.Ability.Dimensional Splicer.Name": [
+    {
+      "type": 0,
+      "value": "Sklejarka Międzywymiarowa"
+    }
+  ],
+  "TF.Ability.Dimensional Splicer.Text": [
+    {
+      "type": 0,
+      "value": "Na początku bitwy kosmicznej w układzie zawierającym tunel czasoprzestrzenny i 1 lub więcej twoich statków:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz uzyskać 1 trafienie i przydzielić je 1 ze statków twojego przeciwnika."
+    }
+  ],
+  "TF.Ability.Dimensional Tear.Name": [
+    {
+      "type": 0,
+      "value": "Rozdarcie Wymiarów"
+    }
+  ],
+  "TF.Ability.Dimensional Tear.Text": [
+    {
+      "type": 0,
+      "value": "Układy, w których znajdują się twoje stocznie kosmiczne, są także studniami grawitacyjnymi; twoje statki nie rzucają na te studnie grawitacyjne. Umieść żeton rozdarcia wymiarów pod twoimi stoczniami kosmicznymi, aby o tym pamiętać."
+    }
+  ],
+  "TF.Ability.Distant Suns.Name": [
+    {
+      "type": 0,
+      "value": "Odległe Słońca"
+    }
+  ],
+  "TF.Ability.Distant Suns.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy eksplorujesz planetę, która zawiera 1 lub więcej twoich mechów:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz dobrać 1 dodatkową kartę. Wybierz i rozpatrz 1 kartę i odrzuć pozostałe."
+    }
+  ],
+  "TF.Ability.E-Res Siphons.Name": [
+    {
+      "type": 0,
+      "value": "Systemy Odsysające"
+    }
+  ],
+  "TF.Ability.E-Res Siphons.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak inny gracz aktywuje układ, w którym znajduje się 1 lub więcej twoich statków:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Otrzymujesz 4 żetony dóbr."
+    }
+  ],
+  "TF.Ability.Entropic Harvest.Name": [
+    {
+      "type": 0,
+      "value": "Entropiczne Żniwa"
+    }
+  ],
+  "TF.Ability.Entropic Harvest.Text": [
+    {
+      "type": 0,
+      "value": "Na końcu bitwy dowolnego gracza:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Otrzymujesz 1 towar lub zmieniasz 1 z twoich towarów w żeton dóbr."
+    }
+  ],
+  "TF.Ability.Fabrication.Name": [
+    {
+      "type": 0,
+      "value": "Podróbka"
+    }
+  ],
+  "TF.Ability.Fabrication.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Unicestwij 2 swoje fragmenty reliktów tego samego typu, aby otrzymać 1 relikt, lub unicestwij 1 ze swoich fragmentów reliktów, aby otrzymać 1 żeton dowodzenia."
+    }
+  ],
+  "TF.Ability.Fleet Logistics.Name": [
+    {
+      "type": 0,
+      "value": "Logistyka Floty"
+    }
+  ],
+  "TF.Ability.Fleet Logistics.Text": [
+    {
+      "type": 0,
+      "value": "Podczas każdej ze swoich tur w fazie akcji możesz wykonać 2 akcje zamiast jednej."
+    }
+  ],
+  "TF.Ability.Foresight.Name": [
+    {
+      "type": 0,
+      "value": "Przewidywanie"
+    }
+  ],
+  "TF.Ability.Foresight.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak inny gracz poruszy statki do układu, w którym znajduje się 1 lub więcej twoich statków:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz umieścić 1 żeton dowodzenia ze swojej puli posiłków w sąsiednim układzie, w którym nie ma statków innego gracza. Porusz swoje statki z aktywnego układu do danego układu."
+    }
+  ],
+  "TF.Ability.Future Path.Name": [
+    {
+      "type": 0,
+      "value": "Ścieżka Przyszłości"
+    }
+  ],
+  "TF.Ability.Future Path.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy otrzymasz żetony dóbr za wybranie wcześniej niewybranej karty strategii lub z karty strategii „Amicus”:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Potrój liczbę danych żetonów dóbr."
+    }
+  ],
+  "TF.Ability.Genetic Research.Name": [
+    {
+      "type": 0,
+      "value": "Badania Genetyczne"
+    }
+  ],
+  "TF.Ability.Genetic Research.Text": [
+    {
+      "type": 0,
+      "value": "Na początku fazy statusu:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Wybierz kolor technologii. Otrzymujesz liczbę żetonów dóbr równą liczbie posiadanych zdolności w kolorze wybranej technologii."
+    }
+  ],
+  "TF.Ability.Guild Ships.Name": [
+    {
+      "type": 0,
+      "value": "Statki Gildii"
+    }
+  ],
+  "TF.Ability.Guild Ships.Text": [
+    {
+      "type": 0,
+      "value": "Możesz negocjować transakcje z graczami, którzy nie są twoimi sąsiadami."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz wymieniać karty akcji z innymi graczami w ramach transakcji."
+    }
+  ],
+  "TF.Ability.Harrow.Name": [
+    {
+      "type": 0,
+      "value": "Dręczenie"
+    }
+  ],
+  "TF.Ability.Harrow.Text": [
+    {
+      "type": 0,
+      "value": "Na końcu każdej rundy bitwy naziemnej:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Twoje statki w aktywnym układzie mogą używać swoich zdolności BOMBARDOWANIE przeciwko wojskom naziemnym twojego przeciwnika na atakowanej planecie."
+    }
+  ],
+  "TF.Ability.Hegemonic Trade Policy.Name": [
+    {
+      "type": 0,
+      "value": "Dominująca Polityka Handlowa"
+    }
+  ],
+  "TF.Ability.Hegemonic Trade Policy.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy 1 lub więcej twoich jednostek użyje zdolności PRODUKCJA:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Podczas tego użycia zdolności PRODUKCJA możesz zamienić wartości zasobów i wpływów 1 kontrolowanej przez ciebie planety."
+    }
+  ],
+  "TF.Ability.Indoctrination.Name": [
+    {
+      "type": 0,
+      "value": "Indoktrynacja"
+    }
+  ],
+  "TF.Ability.Indoctrination.Text": [
+    {
+      "type": 0,
+      "value": "Na początku bitwy naziemnej:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz wydać 2 punkty wpływów, aby zastąpić 1 uczestniczącą jednostkę piechoty twojego przeciwnika 1 jednostką piechoty z twojej puli posiłków."
+    }
+  ],
+  "TF.Ability.Inheritance Systems.Name": [
+    {
+      "type": 0,
+      "value": "Systemy Dziedziczenia"
+    }
+  ],
+  "TF.Ability.Inheritance Systems.Text": [
+    {
+      "type": 0,
+      "value": "Podczas fazy statusu:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Dobierasz 1 dodatkową kartę akcji i otrzymujesz 1 dodatkowy żeton dowodzenia."
+    }
+  ],
+  "TF.Ability.Instinct Training.Name": [
+    {
+      "type": 0,
+      "value": "Instynktowna Reakcja"
+    }
+  ],
+  "TF.Ability.Instinct Training.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy inny gracz zagra kartę akcji:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz wydać 1 żeton ze swojej puli strategii, aby anulować daną kartę akcji."
+    }
+  ],
+  "TF.Ability.Lazax Gate Folding.Name": [
+    {
+      "type": 0,
+      "value": "Składanie Wrót Lazaxów"
+    }
+  ],
+  "TF.Ability.Lazax Gate Folding.Text": [
+    {
+      "type": 0,
+      "value": "Podczas twoich akcji taktycznych:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Traktujesz układy zawierające legendarne planety, których nie kontrolujesz, tak jakby zawierały tunele czasoprzestrzenne alfa i beta."
+    }
+  ],
+  "TF.Ability.Liberate.Name": [
+    {
+      "type": 0,
+      "value": "Wyzwolenie"
+    }
+  ],
+  "TF.Ability.Liberate.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy obejmujesz kontrolę nad planetą:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Przygotuj daną planetę, jeśli znajduje się na niej liczba twoich jednostek piechoty równa lub wyższa od wartości zasobów danej planety. W przeciwnym razie umieść 1 jednostkę piechoty na danej planecie."
+    }
+  ],
+  "TF.Ability.Magmus Reactor.Name": [
+    {
+      "type": 0,
+      "value": "Reaktor Magmus"
+    }
+  ],
+  "TF.Ability.Magmus Reactor.Text": [
+    {
+      "type": 0,
+      "value": "Twoje jednostki mogą poruszać się do i przez supernowe."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Każda supernowa, w której nie znajdują się jednostki innych graczy i każdy układ, w którym znajduje się 1 lub więcej twoich słońc wojny otrzymują zdolność PRODUKCJA 5 tak, jakby były jedną z twoich jednostek."
+    }
+  ],
+  "TF.Ability.Mirror Computing.Name": [
+    {
+      "type": 0,
+      "value": "Lustrzane Przetwarzanie"
+    }
+  ],
+  "TF.Ability.Mirror Computing.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy wydajesz żetony dóbr:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Każdy żeton dóbr ma wartość 2 zasobów lub punktów wpływów zamiast 1."
+    }
+  ],
+  "TF.Ability.Mitosis.Name": [
+    {
+      "type": 0,
+      "value": "Mitoza"
+    }
+  ],
+  "TF.Ability.Mitosis.Text": [
+    {
+      "type": 0,
+      "value": "Na początku fazy statusu:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Umieść 1 jednostkę piechoty z twojej puli posiłków na dowolnej kontrolowanej przez ciebie planecie."
+    }
+  ],
+  "TF.Ability.Munitions Reserves.Name": [
+    {
+      "type": 0,
+      "value": "Zapasy Amunicji"
+    }
+  ],
+  "TF.Ability.Munitions Reserves.Text": [
+    {
+      "type": 0,
+      "value": "Na początku każdej rundy bitwy kosmicznej:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz wydać 2 żetony dóbr. Podczas tej rundy bitwy możesz przerzucić dowolną liczbę twoich kości."
+    }
+  ],
+  "TF.Ability.Nanomachines.Name": [
+    {
+      "type": 0,
+      "value": "Nanomaszyny"
+    }
+  ],
+  "TF.Ability.Nanomachines.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Wyczerp tę kartę, aby umieścić 1 PSD na kontrolowanej przez ciebie planecie."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AKCJA: Wyczerp tę kartę, aby naprawić wszystkie swoje uszkodzone jednostki."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "AKCJA: Wyczerp tę kartę i odrzuć 1 kartę akcji, aby dobrać 1 kartę akcji."
+    }
+  ],
+  "TF.Ability.Neural Parasite.Name": [
+    {
+      "type": 0,
+      "value": "Pasożyt Neuronowy"
+    }
+  ],
+  "TF.Ability.Neural Parasite.Text": [
+    {
+      "type": 0,
+      "value": "Na początku twojej tury:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Zniszcz 1 jednostkę piechoty innego gracza w układzie, w którym znajduje się twoia piechota lub w układzie, który z nim sąsiaduje."
+    }
+  ],
+  "TF.Ability.Neuroglaive.Name": [
+    {
+      "type": 0,
+      "value": "Neuroglewia"
+    }
+  ],
+  "TF.Ability.Neuroglaive.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak inny gracz aktywuje układ, w którym znajduje się 1 lub więcej twoich statków:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Dany gracz usuwa 1 żeton ze swojej puli floty i odkłada go do swojej puli posiłków."
+    }
+  ],
+  "TF.Ability.Nomadic.Name": [
+    {
+      "type": 0,
+      "value": "Nomadyczny"
+    }
+  ],
+  "TF.Ability.Nomadic.Text": [
+    {
+      "type": 0,
+      "value": "Możesz realizować cele nawet, jeśli nie kontrolujesz planet w swoim układzie macierzystym."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Inni gracze nie mogą aktywować pól asteroid, w których znajduje się 1 lub więcej twoich statków."
+    }
+  ],
+  "TF.Ability.Non-Euclidean Shielding.Name": [
+    {
+      "type": 0,
+      "value": "Nieeuklidesowe Tarcze"
+    }
+  ],
+  "TF.Ability.Non-Euclidean Shielding.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy 1 z twoich jednostek użyje zdolności WYTRZYMAŁOŚĆ:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Anuluj 2 trafienia zamiast 1."
+    }
+  ],
+  "TF.Ability.Nullification Field.Name": [
+    {
+      "type": 0,
+      "value": "Pole Negacji"
+    }
+  ],
+  "TF.Ability.Nullification Field.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy inny gracz aktywuje układ, w którym znajduje się 1 lub więcej twoich statków:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz wyczerpać tę kartę i wydać 1 żeton ze swojej puli strategii, aby natychmiast zakończyć turę danego gracza."
+    }
+  ],
+  "TF.Ability.Orbital Drop.Name": [
+    {
+      "type": 0,
+      "value": "Desant Orbitalny"
+    }
+  ],
+  "TF.Ability.Orbital Drop.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Wydaj 1 żeton ze swojej puli strategii, aby umieścić 2 jednostki piechoty ze swojej puli posiłków na 1 kontrolowanej przez ciebie planecie."
+    }
+  ],
+  "TF.Ability.Overwatch.Name": [
+    {
+      "type": 0,
+      "value": "Nadzór"
+    }
+  ],
+  "TF.Ability.Overwatch.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak inny gracz poruszy statki do układu, w którym znajduje się 1 z twoich żetonów dowodzenia:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz odłożyć dany żeton do twojej puli posiłków."
+    }
+  ],
+  "TF.Ability.Pacifist.Name": [
+    {
+      "type": 0,
+      "value": "Pacyfista"
+    }
+  ],
+  "TF.Ability.Pacifist.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy wojska naziemne zostają przydzielone:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Jeśli twoje jednostki na danej planecie jeszcze nie współistnieją, możesz zdecydować, że twoje jednostki zaczynają współistnieć."
+    }
+  ],
+  "TF.Ability.Peace Accords.Name": [
+    {
+      "type": 0,
+      "value": "Traktaty Pokojowe"
+    }
+  ],
+  "TF.Ability.Peace Accords.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak wydasz żeton ze swojej puli strategii:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz objąć kontrolę nad 1 planetą, na której nie znajduje się żeton namiestników, ani żadne jednostki, i która sąsiaduje z kontrolowaną przez ciebie planetą."
+    }
+  ],
+  "TF.Ability.Pillage.Name": [
+    {
+      "type": 0,
+      "value": "Grabież"
+    }
+  ],
+  "TF.Ability.Pillage.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak 1 z twoich sąsiadów otrzyma żetony dóbr albo zawrze transakcję:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Jeśli posiada on 3 lub więcej żetonów dóbr, możesz zabrać mu 1 żeton dóbr lub towarów."
+    }
+  ],
+  "TF.Ability.Planesplitter.Name": [
+    {
+      "type": 0,
+      "value": "Rozdzielacz Wymiarów"
+    }
+  ],
+  "TF.Ability.Planesplitter.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy otrzymasz tę kartę, wprowadź do gry Szczelinę."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Wszystkie twoje statki, które zaczynają ruch w Szczelinie, otrzymują +1 do wartości RUCHU."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Wszystkie twoje jednostki otrzymują +2 do wyników rzutów bitwy, kiedy znajdują się w Szczelinie."
+    }
+  ],
+  "TF.Ability.Proxima Targeting VI.Name": [
+    {
+      "type": 0,
+      "value": "Namierzanie Proxima VI"
+    }
+  ],
+  "TF.Ability.Proxima Targeting VI.Text": [
+    {
+      "type": 0,
+      "value": "Anuluj 1 trafienie pochodzące z rzutów na zdolność BOMBARDOWANIE wykonywanych przeciwko twoim jednostkom."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Na początku rundy bitwy naziemnej możesz rozpatrzyć BOMBARDOWANIE 7 (X3) przeciwko wojskom naziemnym twojego przeciwnika. Jeśli to zrobisz, rozpatrz BOMBARDOWANIE 7 (X3) przeciwko własnym wojskom naziemnym."
+    }
+  ],
+  "TF.Ability.Puppet Council.Name": [
+    {
+      "type": 0,
+      "value": "Marionetkowa Rada"
+    }
+  ],
+  "TF.Ability.Puppet Council.Text": [
+    {
+      "type": 0,
+      "value": "Na początku fazy strategii:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Uzupełnij swoje towary. Następnie otrzymujesz 1 żeton dóbr."
+    }
+  ],
+  "TF.Ability.Quantum Datahub Node.Name": [
+    {
+      "type": 0,
+      "value": "Kwantowy Węzeł Danych"
+    }
+  ],
+  "TF.Ability.Quantum Datahub Node.Text": [
+    {
+      "type": 0,
+      "value": "Na końcu fazy strategii:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz wydać 1 żeton z twojej puli strategii i dać innemu graczowi 3 twoje żetony dóbr. Jeśli to zrobisz, daj 1 z twoich kart strategii danemu graczowi i zabierz 1 z jego kart strategii."
+    }
+  ],
+  "TF.Ability.Quantum Drive.Name": [
+    {
+      "type": 0,
+      "value": "Napęd Kwantowy"
+    }
+  ],
+  "TF.Ability.Quantum Drive.Text": [
+    {
+      "type": 0,
+      "value": "Możesz wyprodukować twój flagowy bez konieczności wydawania zasobów."
+    }
+  ],
+  "TF.Ability.Quantum Entanglement.Name": [
+    {
+      "type": 0,
+      "value": "Kwantowe Splątanie"
+    }
+  ],
+  "TF.Ability.Quantum Entanglement.Text": [
+    {
+      "type": 0,
+      "value": "Wszystkie układy, które zawierają tunele czasoprzestrzenne alfa i beta, traktujesz jak układy sąsiadujące. Efekty gry nie mogą przeszkodzić ci w korzystaniu z tej zdolności."
+    }
+  ],
+  "TF.Ability.Radical Advancement.Name": [
+    {
+      "type": 0,
+      "value": "Radykalny Postęp"
+    }
+  ],
+  "TF.Ability.Radical Advancement.Text": [
+    {
+      "type": 0,
+      "value": "Na początku fazy statusu:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz zdecydować, że zastępujesz 1 ze swoich zdolności. Jeśli to zrobisz, odkrywaj zdolności z talii, aż odkryjesz inną zdolność z tym samym kolorem technologii. Otrzymujesz ją. Wtasuj zastępowaną zdolność i pozostałe odkryte zdolności do talii."
+    }
+  ],
+  "TF.Ability.Raid Formation.Name": [
+    {
+      "type": 0,
+      "value": "Formacja Szturmowa"
+    }
+  ],
+  "TF.Ability.Raid Formation.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy 1 lub więcej twoich jednostek użyje zdolności OSTRZAŁ PRZECIWMYŚLIWSKI:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Za każde uzyskane trafienie, przewyższające liczbę myśliwców twojego przeciwnika, wybierz 1 ze statków twojego przeciwnika ze zdolnością WYTRZYMAŁOŚĆ – zostaje on uszkodzony."
+    }
+  ],
+  "TF.Ability.Reclamation.Name": [
+    {
+      "type": 0,
+      "value": "Rekonkwista"
+    }
+  ],
+  "TF.Ability.Reclamation.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak rozpatrzysz akcję, podczas której objąłeś kontrolę nad legendarną planetą:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz umieścić na danej planecie 1 jednostkę PSD i 1 stocznię kosmiczną ze swojej puli posiłków."
+    }
+  ],
+  "TF.Ability.Scavenge.Name": [
+    {
+      "type": 0,
+      "value": "Odzysk"
+    }
+  ],
+  "TF.Ability.Scavenge.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak obejmiesz kontrolę nad planetą:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Otrzymujesz 1 żeton dóbr."
+    }
+  ],
+  "TF.Ability.Scheming.Name": [
+    {
+      "type": 0,
+      "value": "Intrygant"
+    }
+  ],
+  "TF.Ability.Scheming.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy dobierzesz 1 lub więcej kart akcji:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Dobierz 1 dodatkową kartę akcji. Następnie wybierz i odrzuć 1 kartę akcji ze swojej ręki."
+    }
+  ],
+  "TF.Ability.Singularity X.Name": [
+    {
+      "type": 0,
+      "value": "Osobliwość X"
+    }
+  ],
+  "TF.Ability.Singularity X.Text": [
+    {
+      "type": 0,
+      "value": "Raz na bitwę, po tym, jak zostanie zniszczona 1 z jednostek twojego przeciwnika:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz umieścić żeton „Osobliwość X” na jednej ze zdolności twojego przeciwnika. Dopóki ten żeton znajduje się na karcie przeciwnika, ta karta otrzymuje tekst danej karty przeciwnika. Nie możesz umieścić żetonu osobliwości na karcie z żetonem osobliwości."
+    }
+  ],
+  "TF.Ability.Singularity Y.Name": [
+    {
+      "type": 0,
+      "value": "Osobliwość Y"
+    }
+  ],
+  "TF.Ability.Singularity Y.Text": [
+    {
+      "type": 0,
+      "value": "Raz na bitwę, po tym, jak zostanie zniszczona 1 z jednostek twojego przeciwnika:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz umieścić żeton „Osobliwość Y” na jednej ze zdolności twojego przeciwnika. Dopóki ten żeton znajduje się na karcie przeciwnika, ta karta otrzymuje tekst danej karty przeciwnika. Nie możesz umieścić żetonu osobliwości na karcie z żetonem osobliwości."
+    }
+  ],
+  "TF.Ability.Singularity Z.Name": [
+    {
+      "type": 0,
+      "value": "Osobliwość Z"
+    }
+  ],
+  "TF.Ability.Singularity Z.Text": [
+    {
+      "type": 0,
+      "value": "Raz na bitwę, po tym, jak zostanie zniszczona 1 z jednostek twojego przeciwnika:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz umieścić żeton „Osobliwość Z” na jednej ze zdolności twojego przeciwnika. Dopóki ten żeton znajduje się na karcie przeciwnika, ta karta otrzymuje tekst danej karty przeciwnika. Nie możesz umieścić żetonu osobliwości na karcie z żetonem osobliwości."
+    }
+  ],
+  "TF.Ability.Sled Factories.Name": [
+    {
+      "type": 0,
+      "value": "Skoordynowane Fabryki"
+    }
+  ],
+  "TF.Ability.Sled Factories.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy 1 lub więcej twoich jednostek użyje zdolności PRODUKCJA:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Zmniejsz łączny koszt produkowanych jednostek o 2."
+    }
+  ],
+  "TF.Ability.Slipstream.Name": [
+    {
+      "type": 0,
+      "value": "Strumień Czasoprzestrzenny"
+    }
+  ],
+  "TF.Ability.Slipstream.Text": [
+    {
+      "type": 0,
+      "value": "Podczas twoich akcji taktycznych:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Wszystkie twoje statki, które zaczynają ruch w układzie zawierającym tunel czasoprzestrzenny, otrzymują +1 do wartości ruchu."
+    }
+  ],
+  "TF.Ability.Smothering Presence.Name": [
+    {
+      "type": 0,
+      "value": "Przytłaczająca Obecność"
+    }
+  ],
+  "TF.Ability.Smothering Presence.Text": [
+    {
+      "type": 0,
+      "value": "Jednostki innych graczy w układach, w których znajdują się twoje budowle lub w sąsiednich układach tracą wszystkie swoje zdolności jednostek."
+    }
+  ],
+  "TF.Ability.Spatial Conduit Cylinder.Name": [
+    {
+      "type": 0,
+      "value": "Cylinder Przewodnictwa Przestrzennego"
+    }
+  ],
+  "TF.Ability.Spatial Conduit Cylinder.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak aktywujesz układ, w którym znajduje się 1 lub więcej twoich jednostek:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Podczas tej akcji układ sąsiaduje ze wszystkimi innymi układami, w których znajduje się 1 lub więcej twoich jednostek."
+    }
+  ],
+  "TF.Ability.Spec Ops Training.Name": [
+    {
+      "type": 0,
+      "value": "Szkolenie Sił Specjalnych"
+    }
+  ],
+  "TF.Ability.Spec Ops Training.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak 1 z twoich wojsk naziemnych zostanie zniszczone:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Rzuć 1 kością. Jeśli wynik jest równy lub wyższy niż 5, umieść daną jednostkę na tej karcie. Na początku twojej następnej tury umieść wszystkie znajdujące się na tej karcie jednostki na kontrolowanej przez ciebie planecie w twoim układzie macierzystym."
+    }
+  ],
+  "TF.Ability.Stall Tactics.Name": [
+    {
+      "type": 0,
+      "value": "Gra Na Zwłokę"
+    }
+  ],
+  "TF.Ability.Stall Tactics.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Odrzuć 1 kartę akcji ze swojej ręki."
+    }
+  ],
+  "TF.Ability.Star Forge.Name": [
+    {
+      "type": 0,
+      "value": "Gwiezdna Kuźnia"
+    }
+  ],
+  "TF.Ability.Star Forge.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Możesz wydać 1 żeton z twojej puli strategii, aby umieścić 2 myśliwce lub 1 niszczyciela z twojej puli posiłków w układzie, w którym znajduje się 1 lub więcej twoich statków."
+    }
+  ],
+  "TF.Ability.Stellar Genesis.Name": [
+    {
+      "type": 0,
+      "value": "Gwiezdne Narodziny"
+    }
+  ],
+  "TF.Ability.Stellar Genesis.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak wydasz żeton ze swojej puli strategii:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz otrzymać 1 żeton dóbr."
+    }
+  ],
+  "TF.Ability.Stymie.Name": [
+    {
+      "type": 0,
+      "value": "Krzyżowanie Szyków"
+    }
+  ],
+  "TF.Ability.Stymie.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak inny gracz poruszy statki do układu, w którym znajduje się 1 lub więcej twoich jednostek:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz umieścić 1 żeton dowodzenia z puli posiłków danego gracza w dowolnym nie-macierzystym układzie."
+    }
+  ],
+  "TF.Ability.Subatomic Splicer.Name": [
+    {
+      "type": 0,
+      "value": "Sklejarka Subatomowa"
+    }
+  ],
+  "TF.Ability.Subatomic Splicer.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy jeden z twoich statków zostanie zniszczony:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz wyprodukować statek tego samego typu w stoczni kosmicznej w twoim układzie macierzystym."
+    }
+  ],
+  "TF.Ability.Supercharge.Name": [
+    {
+      "type": 0,
+      "value": "Doładowanie"
+    }
+  ],
+  "TF.Ability.Supercharge.Text": [
+    {
+      "type": 0,
+      "value": "Przed wykonaniem rzutu bitwy:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Wybierz 1 twoją jednostkę. Otrzymuje ona +2 do wyniku swojego rzutu bitwy."
+    }
+  ],
+  "TF.Ability.Survival Instinct.Name": [
+    {
+      "type": 0,
+      "value": "Instynkt Przetrwania"
+    }
+  ],
+  "TF.Ability.Survival Instinct.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak gracz aktywuje układ, w którym znajdują się twoje statki:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz poruszyć do 2 twoich statków do aktywnego układu z sąsiednich układów nie zawierających twoich żetonów dowodzenia."
+    }
+  ],
+  "TF.Ability.Tactical Brilliance.Name": [
+    {
+      "type": 0,
+      "value": "Geniusz Taktyczny"
+    }
+  ],
+  "TF.Ability.Tactical Brilliance.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, kiedy rzucisz kośćmi za zdolność jednostki:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz przerzucić dowolną liczbę kości."
+    }
+  ],
+  "TF.Ability.Telepathic.Name": [
+    {
+      "type": 0,
+      "value": "Telepata"
+    }
+  ],
+  "TF.Ability.Telepathic.Text": [
+    {
+      "type": 0,
+      "value": "Na końcu fazy strategii:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Umieść żeton „0” Naalu na swojej karcie strategii. Jesteś pierwszy w kolejności inicjatywy."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Na tej karcie nie można umieścić żetonu osobliwości."
+    }
+  ],
+  "TF.Ability.Temporal Command Suite.Name": [
+    {
+      "type": 0,
+      "value": "Tymczasowe Centrum Dowodzenia"
+    }
+  ],
+  "TF.Ability.Temporal Command Suite.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak zostanie wyczerpany genom dowolnego gracza:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz wydać 3 punkty wpływów, aby przygotować dany genom. Jeśli przygotowujesz genom innego gracza, możesz zawrzeć transakcję z danym graczem."
+    }
+  ],
+  "TF.Ability.Terraform.Name": [
+    {
+      "type": 0,
+      "value": "Terraformacja"
+    }
+  ],
+  "TF.Ability.Terraform.Text": [
+    {
+      "type": 0,
+      "value": "Planety, na których znajdują się twoje budowle, są traktowane tak, jakby miały 3 cechy planety (kulturowa, niegościnna, przemysłowa)."
+    }
+  ],
+  "TF.Ability.The Burning Eye.Name": [
+    {
+      "type": 0,
+      "value": "Płonące Oko"
+    }
+  ],
+  "TF.Ability.The Burning Eye.Text": [
+    {
+      "type": 0,
+      "value": "Na potrzeby realizowania tajnych celów możesz traktować planety w układach, w których znajdują się twoje statki, tak jakbyś je kontrolował."
+    }
+  ],
+  "TF.Ability.Unrelenting.Name": [
+    {
+      "type": 0,
+      "value": "Bezlitosny"
+    }
+  ],
+  "TF.Ability.Unrelenting.Text": [
+    {
+      "type": 0,
+      "value": "Twoje jednostki otrzymują +1 do wyników wszystkich swoich rzutów bitwy."
+    }
+  ],
+  "TF.Ability.Valkyrie Particle Weave.Name": [
+    {
+      "type": 0,
+      "value": "Splot Cząsteczkowy Walkirii"
+    }
+  ],
+  "TF.Ability.Valkyrie Particle Weave.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak wykonasz rzuty bitwy podczas rundy bitwy naziemnej:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Jeśli twój przeciwnik uzyskał 1 lub więcej trafień, uzyskujesz 1 dodatkowe trafienie."
+    }
+  ],
+  "TF.Ability.Valkyrie Vanguard.Name": [
+    {
+      "type": 0,
+      "value": "Forpoczta Walkirii"
+    }
+  ],
+  "TF.Ability.Valkyrie Vanguard.Text": [
+    {
+      "type": 0,
+      "value": "Podczas kroku „Przydzielanie wojsk naziemnych”:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz przydzielić do 1 wojsk naziemnych z każdej planety w aktywnym układzie i każdej planety w sąsiednich układach, w których nie znajduje się 1 z twoich żetonów dowodzenia."
+    }
+  ],
+  "TF.Ability.Versatile.Name": [
+    {
+      "type": 0,
+      "value": "Wszechstronny"
+    }
+  ],
+  "TF.Ability.Versatile.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy otrzymujesz żetony dowodzenia podczas fazy statusu:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Otrzymujesz 1 dodatkowy żeton dowodzenia."
+    }
+  ],
+  "TF.Ability.Voidborn.Name": [
+    {
+      "type": 0,
+      "value": "Dzieci Próżni"
+    }
+  ],
+  "TF.Ability.Voidborn.Text": [
+    {
+      "type": 0,
+      "value": "Mgławice nie wpływają na ruch twoich statków."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz pozwalać innym graczom na poruszanie statków przez układy, w których znajdują się twoje statki."
+    }
+  ],
+  "TF.Ability.Yin Ascendant.Name": [
+    {
+      "type": 0,
+      "value": "Wywyższony Yin"
+    }
+  ],
+  "TF.Ability.Yin Ascendant.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy zrealizujesz cel:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Dobierz 1 genom, zdolność lub ulepszenie jednostki."
+    }
+  ],
+  "TF.Ability.Zealous.Name": [
+    {
+      "type": 0,
+      "value": "Zapalczywy"
+    }
+  ],
+  "TF.Ability.Zealous.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy 1 lub więcej twoich jednostek wykonuje rzut na zdolność jednostki:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz wybrać 1 z tych jednostek, aby rzuciła 1 dodatkową kością."
+    }
+  ],
   "TF.Edict.Arbitrate.Name": [
     {
       "type": 0,
@@ -13403,6 +16847,1608 @@
     {
       "type": 0,
       "value": "Zainicjuj zespolenie dowolnego rodzaju, w którym będą uczestniczyć wszyscy gracze."
+    }
+  ],
+  "TF.Genome.Action Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Działania"
+    }
+  ],
+  "TF.Genome.Action Genome.Text": [
+    {
+      "type": 0,
+      "value": "W dowolnej chwili: "
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": " Możesz wyczerpać tę kartę, aby pozwolić dowolnemu graczowi na wydanie towarów tak, jakby były żetonami dóbr."
+    }
+  ],
+  "TF.Genome.Altruistic Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Altruizmu"
+    }
+  ],
+  "TF.Genome.Altruistic Genome.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy zostanie uzyskane trafienie przeciwko jednostce: "
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": " Możesz wyczerpać tę kartę, aby anulować dane trafienie."
+    }
+  ],
+  "TF.Genome.Aristocratic Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Arystokratyczności"
+    }
+  ],
+  "TF.Genome.Aristocratic Genome.Text": [
+    {
+      "type": 0,
+      "value": "Na początku rundy bitwy kosmicznej: "
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": " Możesz wyczerpać tę kartę, aby wybrać 1 statek w aktywnym układzie. Dany statek rzuca 1 dodatkową kością podczas tej rundy bitwy."
+    }
+  ],
+  "TF.Genome.Breach Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Wyłomu"
+    }
+  ],
+  "TF.Genome.Breach Genome.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Wyczerp tę kartę, aby wybrać 1 gracza. Dany gracz może zamienić miejscami 2 swoje statki w dowolnych układach. Mogą one transportować jednostki podczas zamiany."
+    }
+  ],
+  "TF.Genome.Brutal Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Brutalności"
+    }
+  ],
+  "TF.Genome.Brutal Genome.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak gracz aktywuje układ: "
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": " Możesz wyczerpać tę kartę, aby pozwolić danemu graczowi na zastąpienie 1 jednostki piechoty w aktywnym układzie 1 mechem z jego puli posiłków."
+    }
+  ],
+  "TF.Genome.Captain's Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Kapitana"
+    }
+  ],
+  "TF.Genome.Captain's Genome.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak gracz aktywuje układ: "
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": " Możesz wyczerpać tę kartę, aby zwiększyć wartość ruchu 1 statku danego gracza tak, aby była równa wartości ruchu statku na planszy, który ma największą wartość ruchu."
+    }
+  ],
+  "TF.Genome.Clever Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Przebiegłości"
+    }
+  ],
+  "TF.Genome.Clever Genome.Text": [
+    {
+      "type": 0,
+      "value": "Ta karta posiada tekst zdolności genomów każdego innego gracza nawet, jeśli dane genomy są wyczerpane."
+    }
+  ],
+  "TF.Genome.Cosmic Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Kosmosu"
+    }
+  ],
+  "TF.Genome.Cosmic Genome.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak gracz poruszy statki do układu, w którym nie znajdują się żadne planety: "
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": " Możesz wyczerpać tę kartę. Dany gracz otrzymuje 1 żeton dowodzenia."
+    }
+  ],
+  "TF.Genome.Courier Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Kuriera"
+    }
+  ],
+  "TF.Genome.Courier Genome.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Wyczerp tę kartę, aby dobrać 2 karty akcji. Daj 1 z tych kart innemu graczowi."
+    }
+  ],
+  "TF.Genome.Curious Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Ciekawości"
+    }
+  ],
+  "TF.Genome.Curious Genome.Text": [
+    {
+      "type": 0,
+      "value": "Na końcu tury gracza: "
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": " Możesz wyczerpać tę kartę, aby pozwolić danemu graczowi na eksplorowanie 1 z jego planet."
+    }
+  ],
+  "TF.Genome.Deployment Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Rozmieszczenia"
+    }
+  ],
+  "TF.Genome.Deployment Genome.Text": [
+    {
+      "type": 0,
+      "value": "Na końcu tury gracza: "
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": " Możesz wyczerpać tę kartę, aby pozwolić danemu graczowi na usunięcie do 2 swoich jednostek wojsk naziemnych z planszy i umieszczenie ich na kontrolowanych przez niego planetach w aktywnym układzie."
+    }
+  ],
+  "TF.Genome.Diplomatic Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Dyplomacji"
+    }
+  ],
+  "TF.Genome.Diplomatic Genome.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Wyczerp tę kartę, aby przygotować dowolną planetę. Jeśli dana planeta jest w układzie, który sąsiaduje z kontrolowaną przez ciebie planetą, możesz usunąć 1 jednostkę piechoty z danej planety i odłożyć ją do puli posiłków jej właściciela."
+    }
+  ],
+  "TF.Genome.Divine Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Boskości"
+    }
+  ],
+  "TF.Genome.Divine Genome.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy 1 lub więcej jednostek gracza użyje zdolności PRODUKCJA: "
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": " Możesz wyczerpać tę kartę, aby zmniejszyć łączny koszt produkowanych jednostek o 2."
+    }
+  ],
+  "TF.Genome.Enigmatic Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Zagadkowości"
+    }
+  ],
+  "TF.Genome.Enigmatic Genome.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak gracz aktywuje nie-macierzysty układ, w którym znajduje się tunel czasoprzestrzenny: "
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": " Możesz wyczerpać tę kartę. Jeśli to zrobisz, podczas tej akcji taktycznej dany układ sąsiaduje ze wszystkimi innymi układami, w których znajdują się tunele czasoprzestrzenne."
+    }
+  ],
+  "TF.Genome.Experimental Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Eksperymentowania"
+    }
+  ],
+  "TF.Genome.Experimental Genome.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy gracz wydaje zasoby: "
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": " Możesz wyczerpać tę kartę, aby pozwolić danemu graczowi na usunięcie dowolnej liczby jego jednostek piechoty z planszy. Za każdą usuniętą jednostkę zmniejsz liczbę wydawanych zasobów o 1."
+    }
+  ],
+  "TF.Genome.Human Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Ludzki"
+    }
+  ],
+  "TF.Genome.Human Genome.Text": [
+    {
+      "type": 0,
+      "value": "Na początku rundy bitwy naziemnej: "
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": " Możesz wyczerpać tę kartę, aby wybrać 1 jednostkę wojsk naziemnych w aktywnym układzie. Dana jednostka wojsk naziemnych rzuca 1 dodatkową kością podczas tej rundy bitwy."
+    }
+  ],
+  "TF.Genome.Hyper Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Żywiołowości"
+    }
+  ],
+  "TF.Genome.Hyper Genome.Text": [
+    {
+      "type": 0,
+      "value": "W dowolnej chwili: "
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": " Możesz wyczerpać tę kartę i wybrać innego gracza. O ile to możliwe, dany gracz daje ci 1 żeton dóbr. Następnie ty i dany gracz dobieracie po 1 karcie akcji."
+    }
+  ],
+  "TF.Genome.Investment Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Inwestycji"
+    }
+  ],
+  "TF.Genome.Investment Genome.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy otrzymasz żetony dóbr z puli zaopatrzenia: "
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": " Możesz wyczerpać tę kartę, aby umieścić taką samą liczbę żetonów dóbr na tej karcie. Kiedy ta karta się przygotuje, otrzymasz leżące na niej żetony dóbr."
+    }
+  ],
+  "TF.Genome.Limit Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Ograniczeń"
+    }
+  ],
+  "TF.Genome.Limit Genome.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak żeton dowodzenia dowolnego gracza zostanie umieszczony w układzie: "
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": " Możesz wyczerpać tę kartę, aby odłożyć dany żeton do puli posiłków danego gracza."
+    }
+  ],
+  "TF.Genome.Mirror Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Lustrzany"
+    }
+  ],
+  "TF.Genome.Mirror Genome.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy gracz porusza statki: "
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": " Możesz wyczerpać tę kartę. Jeśli to zrobisz, przeciwko tym statkom nie można użyć zdolności DZIAŁO KOSMICZNE. Jeśli te statki nie transportują jednostek, mogą się też poruszać przez statki innych graczy."
+    }
+  ],
+  "TF.Genome.Molten Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Płynności"
+    }
+  ],
+  "TF.Genome.Molten Genome.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Wyczerp tę kartę, aby wybrać gracza. Dany gracz może wyprodukować do 2 jednostek o koszcie 4 lub mniej każda, w układzie, w którym znajduje się jedno ze słoń wojny lub okręt flagowy danego gracza."
+    }
+  ],
+  "TF.Genome.Pacific Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Pacyfizmu"
+    }
+  ],
+  "TF.Genome.Pacific Genome.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Wyczerp tę kartę i wybierz statek dowolnego gracza nie będący myśliwcem. Dany gracz może zastąpić dany statek innym statkiem ze swojej puli posiłków, którego koszt wynosi do 2 więcej niż koszt zastępowanego statku."
+    }
+  ],
+  "TF.Genome.Ravenous Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Żarłoczności"
+    }
+  ],
+  "TF.Genome.Ravenous Genome.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak inny gracz uzupełni towary: "
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": " Możesz wyczerpać tę kartę, aby zamienić jego towary w żetony dóbr i schwytać 1 jednostkę z jego puli posiłków. Koszt schwytanej jednostki musi być równy lub niższy od wartości towarów danego gracza."
+    }
+  ],
+  "TF.Genome.Recursive Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Rekurencyjności"
+    }
+  ],
+  "TF.Genome.Recursive Genome.Text": [
+    {
+      "type": 0,
+      "value": "Podczas fazy akcji: "
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": " Możesz wyczerpać tę kartę, aby wybrać gracza. Dany gracz może odrzucić 1 kartę akcji lub wydać 1 żeton dowodzenia ze swojego arkusza dowodzenia, aby otrzymać 2 żetony dóbr."
+    }
+  ],
+  "TF.Genome.Research Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Badań"
+    }
+  ],
+  "TF.Genome.Research Genome.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy gracz zainicjuje zespolenie: "
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": " Możesz wyczerpać tę kartę, aby dodać 3 karty do danego zespolenia."
+    }
+  ],
+  "TF.Genome.Scornful Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Pogardy"
+    }
+  ],
+  "TF.Genome.Scornful Genome.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy gracz wyprodukuje wojska naziemne w układzie: "
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": " Możesz wyczerpać tę kartę. Dany gracz może umieścić dane jednostki na dowolnych, kontrolowanych przez siebie planetach w danym układzie lub dowolnych sąsiednich układach."
+    }
+  ],
+  "TF.Genome.Silver Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Srebra"
+    }
+  ],
+  "TF.Genome.Silver Genome.Text": [
+    {
+      "type": 0,
+      "value": "Podczas fazy akcji: "
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": " Możesz wyczerpać tę kartę, aby otrzymać 2 towary lub uzupełnić towary innego gracza."
+    }
+  ],
+  "TF.Genome.Splitting Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Dzielenia"
+    }
+  ],
+  "TF.Genome.Splitting Genome.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak zostanie zniszczony krążownik lub niszczyciel gracza: "
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": " Możesz wyczerpać tę kartę. Jeśli to zrobisz, dany gracz może umieścić do 2 myśliwców ze swojej puli posiłków w układzie danej jednostki."
+    }
+  ],
+  "TF.Genome.Swarm Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Roju"
+    }
+  ],
+  "TF.Genome.Swarm Genome.Text": [
+    {
+      "type": 0,
+      "value": "Na końcu akcji taktycznej gracza: "
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": " Możesz wyczerpać tę kartę. Jeśli to zrobisz, dany gracz może umieścić 2 jednostki piechoty ze swojej puli posiłków na kontrolowanej przez siebie planecie w aktywnym układzie."
+    }
+  ],
+  "TF.Genome.Temporal Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Temporalności"
+    }
+  ],
+  "TF.Genome.Temporal Genome.Text": [
+    {
+      "type": 0,
+      "value": "Po kroku „Wykonanie rzutów” w bitwie: "
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": " Możesz wyczerpać tę kartę. Jeśli to zrobisz, trafienia nie są przydzielane jednostkom żadnego gracza. Należy wrócić do początku kroku „Wykonanie rzutów” tej rundy bitwy."
+    }
+  ],
+  "TF.Genome.Valiant Genome.Name": [
+    {
+      "type": 0,
+      "value": "Genom Dzielności"
+    }
+  ],
+  "TF.Genome.Valiant Genome.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak jednostka gracza zostanie zniszczona w bitwie: "
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": " Możesz wyczerpać tę kartę, aby rzucić 1 kością. Jeśli wynik jest równy lub wyższy od wartości walki danej jednostki, jej przeciwnik musi wybrać i zniszczyć 1 swoją jednostkę."
+    }
+  ],
+  "TF.Paradigm.Artemis Ascendent.Name": [
+    {
+      "type": 0,
+      "value": "Wywyższony Z Artemis"
+    }
+  ],
+  "TF.Paradigm.Artemis Ascendent.Text": [
+    {
+      "type": 0,
+      "value": "Na początku rundy bitwy kosmicznej w układzie zawierającym kontrolowaną przez ciebie planetę:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Umieść w aktywnym układzie twój okręt flagowy i dowolną kombinację do 2 krążowników lub niszczycieli z twojej puli posiłków."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Następnie unicestwij tę kartę."
+    }
+  ],
+  "TF.Paradigm.Awakening.Name": [
+    {
+      "type": 0,
+      "value": "Przebudzenie"
+    }
+  ],
+  "TF.Paradigm.Awakening.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Przygotuj kontrolowaną przez ciebie planetę i dołącz do niej tę kartę. Jej wartości zasobów i wpływów rosną o 3 i otrzymuje ona zdolność DZIAŁO KOSMICZNE 5 (X3) tak, jakby była jednostką."
+    }
+  ],
+  "TF.Paradigm.Blessing of the Yin.Name": [
+    {
+      "type": 0,
+      "value": "Błogosławieństwo Yin"
+    }
+  ],
+  "TF.Paradigm.Blessing of the Yin.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Przydziel do 3 jednostek piechoty z twojej puli posiłków na dowolne nie-macierzyste planety i rozpatrz bitwy naziemne na danych planetach. Gracze nie mogą użyć zdolności DZIAŁO KOSMICZNE przeciwko tym jednostkom."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Następnie unicestwij tę kartę."
+    }
+  ],
+  "TF.Paradigm.Brillance of the Hylar.Name": [
+    {
+      "type": 0,
+      "value": "Geniusz Hylarów"
+    }
+  ],
+  "TF.Paradigm.Brillance of the Hylar.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Dobierz 1 genom, 1 ulepszenie jednostki i 1 zdolność."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Następnie unicestwij tę kartę."
+    }
+  ],
+  "TF.Paradigm.Brood Swarm.Name": [
+    {
+      "type": 0,
+      "value": "Wyrojenie Miotu"
+    }
+  ],
+  "TF.Paradigm.Brood Swarm.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak poruszysz statki do aktywnego układu:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz przejść bezpośrednio do kroku „Przydzielanie wojsk naziemnych”. Jeśli to zrobisz, po tym, jak przydzielisz swoje wojska naziemne do planet, unicestw tę kartę i odłóż każdy z twoich statków w aktywnym układzie do twojej puli posiłków."
+    }
+  ],
+  "TF.Paradigm.Changing the Ways.Name": [
+    {
+      "type": 0,
+      "value": "Zmiana Dróg"
+    }
+  ],
+  "TF.Paradigm.Changing the Ways.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Zamień miejscami 2 dowolne układy nie znajdujące się w Szczelinie, które zawierają tunele czasoprzestrzenne lub twoje jednostki. Nie możesz w ten sposób zamienić układu Creuss, układu Ahk Creuxx, ani węzła tuneli czasoprzestrzennych."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Następnie unicestwij tę kartę."
+    }
+  ],
+  "TF.Paradigm.Devour World.Name": [
+    {
+      "type": 0,
+      "value": "Pożarcie Świata"
+    }
+  ],
+  "TF.Paradigm.Devour World.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Wybierz planetę ze specjalizacją technologiczną w układzie, w którym znajdują się twoje jednostki. Zniszcz wszystkie jednostki innego gracza na danej planecie. Otrzymujesz liczbę żetonów dóbr równą sumie wartości zasobów i wpływów danej planety i dobierasz 1 zdolność. Następnie unicestwij tę kartę."
+    }
+  ],
+  "TF.Paradigm.Diaspora.Name": [
+    {
+      "type": 0,
+      "value": "Diaspora"
+    }
+  ],
+  "TF.Paradigm.Diaspora.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Wybierz 1 układ, w którym nie znajdują się statki innych graczy. Możesz poruszyć twój okręt flagowy i dowolną liczbę twoich pancerników z innych układów do wybranego układu."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Następnie unicestwij tę kartę."
+    }
+  ],
+  "TF.Paradigm.Dimensional Reflection.Name": [
+    {
+      "type": 0,
+      "value": "Odbicie Wymiarów"
+    }
+  ],
+  "TF.Paradigm.Dimensional Reflection.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy produkujesz statki:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz umieścić dowolne z danych statków na tej karcie."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Na początku bitwy możesz unicestwić tę kartę, aby umieścić wszystkie znajdujące się na niej statki w aktywnym układzie."
+    }
+  ],
+  "TF.Paradigm.Eternity's End.Name": [
+    {
+      "type": 0,
+      "value": "Kres Wieczności"
+    }
+  ],
+  "TF.Paradigm.Eternity's End.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Wyszukaj w talii zdolności, ulepszeń jednostek lub genomów dowolną kartę. Otrzymujesz ją."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Następnie unicestwij tę kartę."
+    }
+  ],
+  "TF.Paradigm.Event Horizon.Name": [
+    {
+      "type": 0,
+      "value": "Horyzont Zdarzeń"
+    }
+  ],
+  "TF.Paradigm.Event Horizon.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Każdy z pozostałych graczy rzuca kością za każdy ze swoich statków nie będących myśliwcami, który znajduje się w układzie zawierającym studnię grawitacyjną lub sąsiaduje z takim układem. Na wyniku 1-5 odłóż daną jednostkę do jej puli posiłków."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Następnie unicestwij tę kartę."
+    }
+  ],
+  "TF.Paradigm.Extortion.Name": [
+    {
+      "type": 0,
+      "value": "Wymuszenie"
+    }
+  ],
+  "TF.Paradigm.Extortion.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Każdy z pozostałych graczy pokazuje ci 1 kartę akcji ze swojej ręki. Za każdego gracza możesz wziąć daną kartę lub zmusić danego gracza do odrzucenia 3 losowych kart akcji z własnej ręki."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Następnie unicestwij tę kartę."
+    }
+  ],
+  "TF.Paradigm.Flock Migration.Name": [
+    {
+      "type": 0,
+      "value": "Stadna Migracja"
+    }
+  ],
+  "TF.Paradigm.Flock Migration.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Porusz dowolną liczbę twoich statków z dowolnych układów do dowolnej liczby innych układów, w których znajduje się 1 z twoich żetonów dowodzenia i nie ma tam statków innych graczy."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Następnie unicestwij tę kartę."
+    }
+  ],
+  "TF.Paradigm.Forge Legend.Name": [
+    {
+      "type": 0,
+      "value": "Stworzenie Legendy"
+    }
+  ],
+  "TF.Paradigm.Forge Legend.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Otrzymujesz 1 relikt i 2 żetony dowodzenia."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Następnie unicestwij tę kartę."
+    }
+  ],
+  "TF.Paradigm.Gravitational Collapse.Name": [
+    {
+      "type": 0,
+      "value": "Zapaść Grawitacyjna"
+    }
+  ],
+  "TF.Paradigm.Gravitational Collapse.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak poruszysz słońce wojny do układu innego niż Mecatol Rex i nie będącego układem macierzystym:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz zniszczyć jednostki wszystkich innych graczy w danym układzie i zastąpić jego kafelek kafelkiem supernowej Muaat. Jeśli to zrobisz, unicestw tę kartę i każdą kartę planety, która odpowiada kafelkowi zastąpionego układu."
+    }
+  ],
+  "TF.Paradigm.Insurrection.Name": [
+    {
+      "type": 0,
+      "value": "Powstanie"
+    }
+  ],
+  "TF.Paradigm.Insurrection.Text": [
+    {
+      "type": 0,
+      "value": "Na początku bitwy kosmicznej, w której bierzesz udział:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz unicestwić tę kartę. Jeśli to zrobisz, za każdy statek innego gracza, który zostanie zniszczony podczas tej bitwy, umieszczasz w aktywnym układzie 1 statek tego samego typu z twojej puli posiłków."
+    }
+  ],
+  "TF.Paradigm.Intelligence Unshackled.Name": [
+    {
+      "type": 0,
+      "value": "Uwolniona Inteligencja"
+    }
+  ],
+  "TF.Paradigm.Intelligence Unshackled.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy jedna z twoich jednostek zostanie zniszczona:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz unicestwić tę kartę, aby wyznaczyć daną jednostkę na katalizator. Rzuć 1 kością za każdą jednostkę innego gracza w jej układzie. Za każdy wynik równy lub wyższy od wartości walki katalizatora zniszcz daną jednostkę."
+    }
+  ],
+  "TF.Paradigm.Limit Break.Name": [
+    {
+      "type": 0,
+      "value": "Łamacz Ograniczeń"
+    }
+  ],
+  "TF.Paradigm.Limit Break.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy ostatni gracz spasuje:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz zdecydować, że nie jesteś już graczem, który spasował. Jeśli to zrobisz, otrzymujesz 2 żetony dowodzenia, dobierasz 1 kartę akcji i unicestwiasz tę kartę."
+    }
+  ],
+  "TF.Paradigm.Opening the Eye.Name": [
+    {
+      "type": 0,
+      "value": "Otwarcie Oka"
+    }
+  ],
+  "TF.Paradigm.Opening the Eye.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Umieść 1 żeton pogranicza w każdym układzie, w którym nie znajdują się żadne planety, i w którym nie ma jeszcze żetonu pogranicza. Następnie eksploruj każdy żeton pogranicza w układzie, w którym znajduje się 1 lub więcej twoich statków."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Następnie unicestwij tę kartę."
+    }
+  ],
+  "TF.Paradigm.Overgrowth.Name": [
+    {
+      "type": 0,
+      "value": "Rozrost"
+    }
+  ],
+  "TF.Paradigm.Overgrowth.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Wyprodukuj dowolną liczbę jednostek w dowolnej liczbie układów, w których znajduje się 1 lub więcej twoich wojsk naziemnych."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Następnie unicestwij tę kartę."
+    }
+  ],
+  "TF.Paradigm.Poison of the Nefishh.Name": [
+    {
+      "type": 0,
+      "value": "Trucizna Nefishha"
+    }
+  ],
+  "TF.Paradigm.Poison of the Nefishh.Text": [
+    {
+      "type": 0,
+      "value": "Na końcu fazy statusu:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Możesz wybrać zdolność, której właścicielem jest inny gracz. Dany gracz musi dać ci daną zdolność lub dać ci 2 inne zdolności. Jeśli to zrobisz, unicestwij tę kartę."
+    }
+  ],
+  "TF.Paradigm.Sanction of the Quieron.Name": [
+    {
+      "type": 0,
+      "value": "Sankcje Quierona"
+    }
+  ],
+  "TF.Paradigm.Sanction of the Quieron.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Rozpatrz zdolności PRODUKCJA twoich jednostek w twoim układzie macierzystym. Możesz obniżyć koszt każdej z twoich jednostek do 0 podczas tego użycia zdolności PRODUKCJA. Następnie unicestwij tę kartę."
+    }
+  ],
+  "TF.Paradigm.Sins of the Father.Name": [
+    {
+      "type": 0,
+      "value": "Grzechy Ojca"
+    }
+  ],
+  "TF.Paradigm.Sins of the Father.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Rozpatrz zdolność podstawową dowolnej karty strategii. Następnie wybierz dowolną liczbę innych graczy. Dani gracze mogą rozpatrzyć zdolność drugorzędną danej karty strategii."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Następnie unicestwij tę kartę."
+    }
+  ],
+  "TF.Paradigm.The Laws Unwritten.Name": [
+    {
+      "type": 0,
+      "value": "Niepisane Prawa"
+    }
+  ],
+  "TF.Paradigm.The Laws Unwritten.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Unicestwij zdolność posiadaną przez dowolnego gracza."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Następnie unicestwij tę kartę."
+    }
+  ],
+  "TF.Paradigm.The Lay of Lisis.Name": [
+    {
+      "type": 0,
+      "value": "Pieśń O Lisis"
+    }
+  ],
+  "TF.Paradigm.The Lay of Lisis.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Wybierz 1 układ, który sąsiaduje z 1 z twoich stoczni kosmicznych."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Zniszcz wszystkie jednostki piechoty i myśliwce innych graczy w danym układzie."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Następnie unicestwij tę kartę."
+    }
+  ],
+  "TF.Paradigm.The Winds of Change.Name": [
+    {
+      "type": 0,
+      "value": "Wiatr Zmian"
+    }
+  ],
+  "TF.Paradigm.The Winds of Change.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Odkrywaj karty z talii kart akcji, aż odkryjesz 3 karty akcji zawierające akcje komponentu. Dobierz dane karty i wtasuj resztę kart do talii kart akcji."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Następnie unicestwij tę kartę."
+    }
+  ],
+  "TF.Paradigm.Time Warp.Name": [
+    {
+      "type": 0,
+      "value": "Zakrzywienie Czasu"
+    }
+  ],
+  "TF.Paradigm.Time Warp.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Umieść tę kartę obok planszy. Podczas tej rundy twój okręt flagowy i jednostki, które transportuje, mogą poruszać się z układów, w których znajdują się twoje żetony dowodzenia."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Na końcu tej rundy unicestwij tę kartę."
+    }
+  ],
+  "TF.Paradigm.Twilight Directive.Name": [
+    {
+      "type": 0,
+      "value": "Dyrektywa Zmierzchu"
+    }
+  ],
+  "TF.Paradigm.Twilight Directive.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Usuń wszystkie swoje żetony dowodzenia z planszy i odłóż je do swojej puli posiłków."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Następnie unicestwij tę kartę."
+    }
+  ],
+  "TF.Paradigm.Voice of the Council.Name": [
+    {
+      "type": 0,
+      "value": "Głos Rady"
+    }
+  ],
+  "TF.Paradigm.Voice of the Council.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Odkryj 3 edykty. Wybierz i rozpatrz 1 z nich, a pozostałe wtasuj do talii edyktów."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Następnie unicestwij tę kartę."
+    }
+  ],
+  "TF.Paradigm.Void Transference.Name": [
+    {
+      "type": 0,
+      "value": "Przeniesienie W Próżni"
+    }
+  ],
+  "TF.Paradigm.Void Transference.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Umieść tę kartę obok planszy. Podczas tej rundy liczba statków nie będących myśliwcami, którą możesz mieć w układzie, nie jest ograniczona liczbą żetonów dowodzenia w twojej puli floty."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Na końcu tej rundy unicestwij tę kartę."
+    }
+  ],
+  "TF.Paradigm.Witching Hour.Name": [
+    {
+      "type": 0,
+      "value": "Godzina Duchów"
+    }
+  ],
+  "TF.Paradigm.Witching Hour.Text": [
+    {
+      "type": 0,
+      "value": "AKCJA: Wybierz gracza innego niż obecny mówca. Otrzymuje on żeton mówcy."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Wybierz gracza innego niż tyran. Otrzymuje on żeton przychylności."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Następnie unicestwij tę kartę."
+    }
+  ],
+  "TF.Unit Upgrade.Advanced Carrier.Name": [
+    {
+      "type": 0,
+      "value": "Zaawansowany Transportowiec"
+    }
+  ],
+  "TF.Unit Upgrade.Ahk Syl Fier.Name": [
+    {
+      "type": 0,
+      "value": "Ahk Syl Fier"
+    }
+  ],
+  "TF.Unit Upgrade.Ahk Syl Fier.Text": [
+    {
+      "type": 0,
+      "value": "Na początku swojej tury możesz umieścić w tym układzie lub przesunąć do niego żeton tunelu czasoprzestrzennego Creussów."
+    }
+  ],
+  "TF.Unit Upgrade.Ambassador.Name": [
+    {
+      "type": 0,
+      "value": "Ambasador"
+    }
+  ],
+  "TF.Unit Upgrade.Ambassador.Text": [
+    {
+      "type": 0,
+      "value": "Jeśli po tym, jak przydzielisz jednostki, jednostki transportowane przez Ambasadorów są jedynymi jednostkami przydzielonymi do planety, możesz zamiast tego umieścić dane jednostki jako współistniejące."
+    }
+  ],
+  "TF.Unit Upgrade.Corsair.Name": [
+    {
+      "type": 0,
+      "value": "Korsarz"
+    }
+  ],
+  "TF.Unit Upgrade.Corsair.Text": [
+    {
+      "type": 0,
+      "value": "Jeśli aktywny układ zawiera nie będące myśliwcami statki innego gracza, ta jednostka może poruszać się przez układy, w których znajdują się statki innych graczy."
+    }
+  ],
+  "TF.Unit Upgrade.Dawncrusher.Name": [
+    {
+      "type": 0,
+      "value": "Niszczyciel Świtu"
+    }
+  ],
+  "TF.Unit Upgrade.Dawncrusher.Text": [
+    {
+      "type": 0,
+      "value": "Tej jednostki nie można zniszczyć kartami akcji „Iskra”."
+    }
+  ],
+  "TF.Unit Upgrade.Echo of Ascension.Name": [
+    {
+      "type": 0,
+      "value": "Echo Wywyższenia"
+    }
+  ],
+  "TF.Unit Upgrade.Echo of Ascension.Text": [
+    {
+      "type": 0,
+      "value": "Zachowaj tę kartę na swoim obszarze gry i zmień nadrukowane wartości twojego okrętu flagowego o wskazane liczby."
+    }
+  ],
+  "TF.Unit Upgrade.Eidolon Landwaster.Name": [
+    {
+      "type": 0,
+      "value": "Fantom Burzyciel"
+    }
+  ],
+  "TF.Unit Upgrade.Eidolon Landwaster.Text": [
+    {
+      "type": 0,
+      "value": "Zachowaj tę kartę na swoim obszarze gry. Twoje mechy rzucają 1 dodatkową kością podczas bitwy."
+    }
+  ],
+  "TF.Unit Upgrade.Eidolon Terminus.Name": [
+    {
+      "type": 0,
+      "value": "Ostateczny Fantom"
+    }
+  ],
+  "TF.Unit Upgrade.Eidolon Terminus.Text": [
+    {
+      "type": 0,
+      "value": "Zachowaj tę kartę na swoim obszarze gry. Obniżasz WALKĘ twoich mechów o 1."
+    }
+  ],
+  "TF.Unit Upgrade.Exile.Name": [
+    {
+      "type": 0,
+      "value": "Wygnaniec"
+    }
+  ],
+  "TF.Unit Upgrade.Exile.Text": [
+    {
+      "type": 0,
+      "value": "Ta jednostka może poruszać się przez układy, w których znajdują się statki innych graczy."
+    }
+  ],
+  "TF.Unit Upgrade.Exotrireme.Name": [
+    {
+      "type": 0,
+      "value": "Exotrirema"
+    }
+  ],
+  "TF.Unit Upgrade.Exotrireme.Text": [
+    {
+      "type": 0,
+      "value": "Tej jednostki nie można zniszczyć kartami akcji „Iskra”."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Po rundzie bitwy kosmicznej możesz zniszczyć tę jednostkę, aby zniszczyć do 2 statków w jej układzie."
+    }
+  ],
+  "TF.Unit Upgrade.Floating Factories.Name": [
+    {
+      "type": 0,
+      "value": "Latające Fabryki"
+    }
+  ],
+  "TF.Unit Upgrade.Floating Factories.Text": [
+    {
+      "type": 0,
+      "value": "Tę jednostkę umieszcza się na obszarze przestrzeni kosmicznej zamiast na planecie. Ta jednostka może poruszać się i przeprowadzać odwrót tak, jakby była statkiem. Jeśli ta jednostka zostanie zablokowana, zostaje zniszczona."
+    }
+  ],
+  "TF.Unit Upgrade.Guild Agents.Name": [
+    {
+      "type": 0,
+      "value": "Agenci Gildii"
+    }
+  ],
+  "TF.Unit Upgrade.Guild Agents.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak poruszysz tę jednostkę do układu, w którym znajdują się jednostki innego gracza, możesz podejrzeć karty akcji danego gracza i zabrać 1 z nich."
+    }
+  ],
+  "TF.Unit Upgrade.Hel-Titan.Name": [
+    {
+      "type": 0,
+      "value": "Hel-Tytan"
+    }
+  ],
+  "TF.Unit Upgrade.Hel-Titan.Text": [
+    {
+      "type": 0,
+      "value": "Ta jednostka jest traktowana jednocześnie jak budowla i wojska naziemne. Nie może być transportowana. Możesz używać zdolności DZIAŁO KOSMICZNE tej jednostki przeciwko statkom sąsiadującym z układem, w którym znajduje się ta jednostka."
+    }
+  ],
+  "TF.Unit Upgrade.Helios Entity.Name": [
+    {
+      "type": 0,
+      "value": "Istota Helios"
+    }
+  ],
+  "TF.Unit Upgrade.Helios Entity.Text": [
+    {
+      "type": 0,
+      "value": "Wartość zdolności PRODUKCJA tej jednostki wynosi 2 plus wartość zasobów tej planety."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Wartość zasobów tej planety rośnie o 2."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Do 3 myśliwców znajdujących się w tym układzie nie jest branych pod uwagę podczas sprawdzania limitu ładowności twoich statków."
+    }
+  ],
+  "TF.Unit Upgrade.Hybrid Crystal Fighter.Name": [
+    {
+      "type": 0,
+      "value": "Hybrydowy Kryształowy Myśliwiec"
+    }
+  ],
+  "TF.Unit Upgrade.Hybrid Crystal Fighter.Text": [
+    {
+      "type": 0,
+      "value": "Ta jednostka może się przesuwać, nie będąc transportowaną. Każdy myśliwiec przekraczający limit ładowności twoich statków liczy się jako 1/2 statku przy sprawdzaniu limitu puli floty."
+    }
+  ],
+  "TF.Unit Upgrade.Justiciar Rall.Name": [
+    {
+      "type": 0,
+      "value": "Działo Sprawiedliwości"
+    }
+  ],
+  "TF.Unit Upgrade.Justiciar Rall.Text": [
+    {
+      "type": 0,
+      "value": "Możesz używać zdolności DZIAŁO KOSMICZNE tej jednostki przeciwko statkom sąsiadującym z układem, w którym znajduje się ta jednostka."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "O ile to możliwe, trafienia pochodzące z ostrzału tych jednostek muszą zostać przydzielone statkom niebędącym myśliwcami."
+    }
+  ],
+  "TF.Unit Upgrade.Keeper Matrix.Name": [
+    {
+      "type": 0,
+      "value": "Matryca Strażnika"
+    }
+  ],
+  "TF.Unit Upgrade.Keeper Matrix.Text": [
+    {
+      "type": 0,
+      "value": "Możesz używać zdolności DZIAŁO KOSMICZNE tej jednostki przeciwko statkom sąsiadującym z układem, w którym znajduje się ta jednostka."
+    }
+  ],
+  "TF.Unit Upgrade.Letani Warrior.Name": [
+    {
+      "type": 0,
+      "value": "Wojownik Letani"
+    }
+  ],
+  "TF.Unit Upgrade.Linkship.Name": [
+    {
+      "type": 0,
+      "value": "Okręt Łącznikowy"
+    }
+  ],
+  "TF.Unit Upgrade.Linkship.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy ta jednostka przeprowadza odwrót, możesz zniszczyć 1 statek w aktywnym układzie, który jest uszkodzony lub nie ma zdolności WYTRZYMAŁOŚĆ."
+    }
+  ],
+  "TF.Unit Upgrade.Morphwing.Name": [
+    {
+      "type": 0,
+      "value": "Skrzydłomorf"
+    }
+  ],
+  "TF.Unit Upgrade.Morphwing.Text": [
+    {
+      "type": 0,
+      "value": "Ta jednostka może się przesuwać, nie będąc transportowaną. Myśliwce przekraczające limit ładowności twoich statków bierze się pod uwagę przy sprawdzaniu limitu puli floty. Tej jednostkę możesz przydzielić podczas inwazji. Na końcu bitwy umieść ją z powrotem na obszarze przestrzeni kosmicznej lub zastąp 1 jednostką piechoty."
+    }
+  ],
+  "TF.Unit Upgrade.Production Biomes.Name": [
+    {
+      "type": 0,
+      "value": "Biomy Produkcyjne"
+    }
+  ],
+  "TF.Unit Upgrade.Production Biomes.Text": [
+    {
+      "type": 0,
+      "value": "Do 3 myśliwców znajdujących się w tym układzie nie jest branych pod uwagę podczas sprawdzania limitu ładowności twoich statków."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Kiedy ta jednostka używa zdolności PRODUKCJA, możesz wydać 1 żeton ze swojej puli strategii, aby otrzymać 4 żetony dóbr i wybrać innego gracza, który otrzymuje 2 żetony dóbr."
+    }
+  ],
+  "TF.Unit Upgrade.Prototype War Sun.Name": [
+    {
+      "type": 0,
+      "value": "Prototypowe Słońce Wojny"
+    }
+  ],
+  "TF.Unit Upgrade.Prototype War Sun.Text": [
+    {
+      "type": 0,
+      "value": "Jednostki innych graczy znajdujące się w tym układzie tracą zdolność TARCZA PLANETARNA. Ta jednostka i inne jednostki poruszające się w tym samym czasie mogą poruszać się do i przez supernowe."
+    }
+  ],
+  "TF.Unit Upgrade.Saggitaria.Name": [
+    {
+      "type": 0,
+      "value": "Strzelec"
+    }
+  ],
+  "TF.Unit Upgrade.Strike Wing Alpha.Name": [
+    {
+      "type": 0,
+      "value": "Skrzydło Uderzeniowe Alfa"
+    }
+  ],
+  "TF.Unit Upgrade.Strike Wing Alpha.Text": [
+    {
+      "type": 0,
+      "value": "Kiedy ta jednostka użyje zdolności OSTRZAŁ PRZECIWMYŚLIWSKI, każdy wynik 9 lub 10 niszczy również 1 jednostkę piechoty twojego przeciwnika, znajdującą się na obszarze przestrzeni kosmicznej aktywnego układu."
+    }
+  ],
+  "TF.Unit Upgrade.Super-Dreadnought.Name": [
+    {
+      "type": 0,
+      "value": "Superpancernik"
+    }
+  ],
+  "TF.Unit Upgrade.Super-Dreadnought.Text": [
+    {
+      "type": 0,
+      "value": "Tej jednostki nie można zniszczyć kartami akcji „Iskra”."
+    }
+  ],
+  "TF.Unit Upgrade.The Dragon, Freed.Name": [
+    {
+      "type": 0,
+      "value": "Smok Uwolniony"
+    }
+  ],
+  "TF.Unit Upgrade.The Dragon, Freed.Text": [
+    {
+      "type": 0,
+      "value": "Dopóki posiadasz tę kartę, możesz mieć tylko 1 słońce wojny."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Kiedy ta jednostka używa zdolności BOMBARDOWANIE, używa jej przeciwko każdej planecie (nawet twojej) w swoim układzie i każdym sąsiednim układzie, ignorując zdolność TARCZA PLANETARNA."
+    }
+  ],
+  "TF.Unit Upgrade.Triune.Name": [
+    {
+      "type": 0,
+      "value": "Trójjedyny"
+    }
+  ],
+  "TF.Unit Upgrade.Triune.Text": [
+    {
+      "type": 0,
+      "value": "Ta jednostka może się przesuwać, nie będąc transportowaną. Myśliwce przekraczające limit ładowności twoich statków bierze się pod uwagę przy sprawdzaniu limitu puli floty. Możesz usunąć 3 twoje myśliwce z układów, które zawierają jednostki innego gracza lub które sąsiadują z takimi układami, aby anulować kartę akcji zagraną przez danego gracza."
+    }
+  ],
+  "TF.Unit Upgrade.University War Sun.Name": [
+    {
+      "type": 0,
+      "value": "Słońce Wojny Jol-Nar"
+    }
+  ],
+  "TF.Unit Upgrade.University War Sun.Text": [
+    {
+      "type": 0,
+      "value": "Jednostki innych graczy znajdujące się w tym układzie tracą zdolność TARCZA PLANETARNA."
+    }
+  ],
+  "TF.Unit Upgrade.Valefar Prime.Name": [
+    {
+      "type": 0,
+      "value": "Valefar Prime"
+    }
+  ],
+  "TF.Unit Upgrade.Valefar Prime.Text": [
+    {
+      "type": 0,
+      "value": "Zachowaj tę kartę na swoim obszarze gry. Obniżasz KOSZT twoich mechów o 1."
+    }
+  ],
+  "TF.Unit Upgrade.Vortexer.Name": [
+    {
+      "type": 0,
+      "value": "Wirowiec"
+    }
+  ],
+  "TF.Unit Upgrade.Vortexer.Text": [
+    {
+      "type": 0,
+      "value": "Chwytaj jednostki piechoty i myśliwce innych graczy, które zostaną zniszczone lub usunięte w układzie tej jednostki lub sąsiednim układzie. Na początku swojej tury możesz wydać schwytane jednostki piechoty lub myśliwce, aby umieścić w tym układzie jednostki o takiej samej wartości z twojej puli posiłków."
+    }
+  ],
+  "TF.Unit Upgrade.Yin Clone.Name": [
+    {
+      "type": 0,
+      "value": "Klon Yin"
+    }
+  ],
+  "TF.Unit Upgrade.Yin Clone.Text": [
+    {
+      "type": 0,
+      "value": "Po tym, jak ta jednostka zostanie zniszczona lub usunięta, umieść ją na tej karcie. Na początku fazy statusu umieść wszystkie znajdujące się na tej karcie jednostki na kontrolowanej przez ciebie planecie."
     }
   ],
   "Techs.4X4IC Helios V2.Description": [
@@ -14121,6 +19167,12 @@
       "value": "AKCJA: Przygotuj Elizjum i dołącz do niego tę kartę. Jego wartości zasobów i wpływów rosną o 3 i otrzymuje ono zdolność DZIAŁO KOSMICZNE 5 (X3) tak, jakby było jednostką."
     }
   ],
+  "Titans of Ul.Leaders.Ul the Progenitor.Name": [
+    {
+      "type": 0,
+      "value": "UL Protoplasta"
+    }
+  ],
   "Titans of Ul.Name": [
     {
       "type": 0,
@@ -14211,6 +19263,34 @@
     {
       "type": 0,
       "value": "Silnik Saturna I"
+    }
+  ],
+  "Twilight's Fall.Techs.Antimatter.Description": [
+    {
+      "type": 0,
+      "value": "Twoje statki mogą przeprowadzać odwrót do sąsiednich układów, w których nie znajdują się jednostki innych graczy, nawet jeśli nie znajdują się tam żadne twoje jednostki, ani nie kontrolujesz tam żadnych planet."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Po tym, jak wykonasz akcję taktyczną w układzie, który zawiera żeton pogranicza, eksploruj dany zeton, jeśli masz 1 lub więcej statków w danym układzie."
+    }
+  ],
+  "Twilight's Fall.Techs.Wavelength.Description": [
+    {
+      "type": 0,
+      "value": "Twoje statki mogą przesuwać się na i przez pola asteroid."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Kiedy aktywujesz układ, możesz eksplorować 1 planetę w danym układzie, na której znajduje się 1 lub więcej twoich jednostek."
     }
   ],
   "UJSVtn": [
@@ -14407,6 +19487,12 @@
     {
       "type": 0,
       "value": "Następnie unicestwij tę kartę."
+    }
+  ],
+  "Universities of Jol-Nar.Leaders.Rin, The Master's Legacy.Name": [
+    {
+      "type": 0,
+      "value": "Rin, Spuścizna Reaktora"
     }
   ],
   "Universities of Jol-Nar.Leaders.Ta Zern.Description": [
@@ -14627,6 +19713,12 @@
       "value": "Następnie unicestwij tę kartę."
     }
   ],
+  "Vuil'raith Cabal.Leaders.It Feeds on Carrion.Name": [
+    {
+      "type": 0,
+      "value": "Pożeracz Padliny"
+    }
+  ],
   "Vuil'raith Cabal.Leaders.That Which Molds Flesh.Description": [
     {
       "type": 0,
@@ -14814,7 +19906,7 @@
   "WHJC8f": [
     {
       "type": 0,
-      "value": "Punktuj Cele"
+      "value": "Zrealizuj Cele"
     }
   ],
   "WVs5Hr": [
@@ -14905,6 +19997,12 @@
     {
       "type": 0,
       "value": "Następnie unicestwij tę kartę."
+    }
+  ],
+  "Winnu.Leaders.Mathis Mathinus.Name": [
+    {
+      "type": 0,
+      "value": "Mathis Mathinus"
     }
   ],
   "Winnu.Leaders.Rickar Rickani.Description": [
@@ -15611,6 +20709,12 @@
       "value": "Następnie usuń tę kartę z gry."
     }
   ],
+  "Yin Brotherhood.Leaders.Dannel of the Tenth.Name": [
+    {
+      "type": 0,
+      "value": "Dannel z Dziesiątych"
+    }
+  ],
   "Yin Brotherhood.Leaders.Dannel of the Tenth.Omega.AbilityName": [
     {
       "type": 0,
@@ -15629,6 +20733,12 @@
     {
       "type": 0,
       "value": "Następnie unicestw tę kartę."
+    }
+  ],
+  "Yin Brotherhood.Leaders.Dannel of the Tenth.Omega.Name": [
+    {
+      "type": 0,
+      "value": "Dannel z Dziesiątych Ω"
     }
   ],
   "Yin Brotherhood.Leaders.Dannel of the Tenth.TE.AbilityName": [
@@ -15774,7 +20884,7 @@
   "YotjeE": [
     {
       "type": 0,
-      "value": "Zyskaj I Rozdziel Żetony"
+      "value": "Zyskaj i Rozdziel Żetony"
     }
   ],
   "Yssaril Tribes.Abilities.Crafty.Description": [
@@ -15843,6 +20953,12 @@
     {
       "type": 0,
       "value": "Następnie unicestwij tę kartę."
+    }
+  ],
+  "Yssaril Tribes.Leaders.Kyver, Blade and Key.Name": [
+    {
+      "type": 0,
+      "value": "Kyver, Ostrze i Klucz"
     }
   ],
   "Yssaril Tribes.Leaders.So Ata.Description": [
@@ -15986,7 +21102,7 @@
   "ZAYAbS": [
     {
       "type": 0,
-      "value": "Odkryj I Odczytaj Jedną Agendę"
+      "value": "Odkryj i Odczytaj Jedną Kartę Polityki"
     }
   ],
   "ZZ/Lhe": [
@@ -16228,7 +21344,7 @@
   "fCdj3q": [
     {
       "type": 0,
-      "value": "Zapunktuj Cel Fazy Akcji"
+      "value": "Zrealizuj Cel Fazy Akcji"
     }
   ],
   "fHRZ5N": [
@@ -16246,7 +21362,7 @@
   "fW7Ivs": [
     {
       "type": 0,
-      "value": "Średnia Zapunktowanych Sekretów: "
+      "value": "Średnia Zrealizowanych Sekretów: "
     },
     {
       "type": 1,
@@ -17187,7 +22303,7 @@
   "ymJxS0": [
     {
       "type": 0,
-      "value": "Dla"
+      "value": "Za"
     }
   ],
   "ys7uwX": [
@@ -17223,7 +22339,7 @@
   "zlpl9F": [
     {
       "type": 0,
-      "value": "Zapunktuj Sekretny Cel"
+      "value": "Zrealizuj Sekretny Cel"
     }
   ]
 }
