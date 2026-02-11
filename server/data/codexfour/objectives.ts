@@ -1,7 +1,7 @@
 import { IntlShape } from "react-intl/src/types";
 
 export default function getCodexFourObjectives(
-  intl: IntlShape
+  intl: IntlShape,
 ): Record<CodexFour.ObjectiveId, BaseObjective> {
   return {
     "Total War": {
@@ -15,8 +15,8 @@ export default function getCodexFourObjectives(
       event: "Total War",
       id: "Total War",
       name: intl.formatMessage({
-        id: "Objectives.Total War.Title",
-        description: "Title of Objective: Total War",
+        id: "Events.Total War.Title",
+        description: "Title of Event: Total War",
         defaultMessage: "Total War",
       }),
       repeatable: true,
@@ -26,16 +26,16 @@ export default function getCodexFourObjectives(
     },
     "Book of Latvinia": {
       description: intl.formatMessage({
-        id: "Objectives.Book of Latvinia.Description",
-        description: "Description for Objective: Book of Latvinia",
+        id: "Relics.Book of Latvinia.Description",
+        description: "Description for Relic: Book of Latvinia",
         defaultMessage:
-          "Use the Book of Latvinia's ACTION while in control of planets with all 4 types of technology specialities.",
+          "When you gain this card, research up to 2 technologies that have no prerequisites.{br}ACTION: Purge this card; if you control planets that have all 4 types of technology specialties, gain 1 victory point. Otherwise, gain the speaker token.",
       }),
       expansion: "CODEX FOUR",
       id: "Book of Latvinia",
       name: intl.formatMessage({
-        id: "Objectives.Book of Latvinia.Title",
-        description: "Title of Objective: Book of Latvinia",
+        id: "Relics.Book of Latvinia.Title",
+        description: "Title of Relic: Book of Latvinia",
         defaultMessage: "Book of Latvinia",
       }),
       phase: "ACTION",

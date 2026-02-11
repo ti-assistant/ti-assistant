@@ -1013,8 +1013,8 @@ function VotingSection({
                 disabled={viewOnly}
               >
                 <FormattedMessage
-                  id="Components.Blood Pact.Title"
-                  description="Title of Component: Blood Pact"
+                  id="Empyrean.Promissories.Blood Pact.Title"
+                  description="Title of Faction Promissory: Blood Pact"
                   defaultMessage="Blood Pact"
                 />
               </Toggle>
@@ -1102,8 +1102,8 @@ function VotingSection({
                 }}
               >
                 <FormattedMessage
-                  id="Components.Distinguished Councilor.Title"
-                  description="Title of Component: Distinguished Councilor"
+                  id="Action Cards.Distinguished Councilor.Name"
+                  description="Name of action card: Distinguished Councilor"
                   defaultMessage="Distinguished Councilor"
                 />
               </Toggle>

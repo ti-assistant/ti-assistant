@@ -235,8 +235,8 @@ function AgendaSteps() {
                   <Selector
                     hoverMenuLabel={
                       <FormattedMessage
-                        id="Components.Ancient Burial Sites.Title"
-                        description="Title of Component: Ancient Burial Sites"
+                        id="Action Cards.Ancient Burial Sites.Name"
+                        description="Name of action card: Ancient Burial Sites"
                         defaultMessage="Ancient Burial Sites"
                       />
                     }

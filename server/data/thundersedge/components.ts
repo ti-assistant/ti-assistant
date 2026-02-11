@@ -1,7 +1,7 @@
 import { IntlShape } from "react-intl";
 
 export default function getThundersEdgeComponents(
-  intl: IntlShape
+  intl: IntlShape,
 ): Record<ThundersEdge.ComponentId, BaseComponent | BaseTechComponent> {
   return {
     Avernus: {
@@ -12,14 +12,14 @@ export default function getThundersEdgeComponents(
           defaultMessage:
             "ACTION: Exhaust this card to use the Embers of Muaat's STAR FORGE faction ability without spending a command token.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "THUNDERS EDGE",
       faction: "Embers of Muaat",
       id: "Avernus",
       name: intl.formatMessage({
-        id: "Components.Avernus.Title",
-        description: "Title of Component: Avernus",
+        id: "Planets.Avernus.Name",
+        description: "Name of Planet: Avernus",
         defaultMessage: "Avernus",
       }),
       type: "PLANET",
@@ -35,8 +35,8 @@ export default function getThundersEdgeComponents(
       event: "Conventions of War Abandoned",
       id: "Conventions of War Abandoned",
       name: intl.formatMessage({
-        id: "Components.Conventions of War Abandoned.Title",
-        description: "Title of Component: Conventions of War Abandoned",
+        id: "Events.Conventions of War Abandoned.Title",
+        description: "Title of Event: Conventions of War Abandoned",
         defaultMessage: "Conventions of War Abandoned",
       }),
       requiresTech: "X-89 Bacterial Weapon",
@@ -44,16 +44,16 @@ export default function getThundersEdgeComponents(
     },
     "Executive Order": {
       description: intl.formatMessage({
-        id: "Components.Executive Order.Description",
-        description: "Description for Component: Executive Order",
+        id: "Council Keleres.Techs.Executive Order.Description",
+        description: "Description for Tech: Executive Order",
         defaultMessage:
           "ACTION: Reveal the top or bottom card of the agenda deck and vote on it, being speaker. You may use trade goods to vote.",
       }),
       expansion: "THUNDERS EDGE",
       id: "Executive Order",
       name: intl.formatMessage({
-        id: "Components.Executive Order.Title",
-        description: "Title of Component: Executive Order",
+        id: "Council Keleres.Techs.Executive Order.Title",
+        description: "Title of Tech: Executive Order",
         defaultMessage: "Executive Order",
       }),
       type: "TECH",
@@ -61,18 +61,18 @@ export default function getThundersEdgeComponents(
     Nanomachines: {
       description: intl.formatMessage(
         {
-          id: "Components.Nanomachines.Description",
-          description: "Description for Component: Nanomachines",
+          id: "Ral Nel Consortium.Techs.Nanomachines.Description",
+          description: "Description for Tech: Nanomachines",
           defaultMessage:
             "ACTION: Exhaust this card to place 1 PDS on a planet you control.{br}ACTION: Exhaust this card to repair all of your damaged units.{br}ACTION: Exhaust this card and discard 1 action card to draw 1 action card.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       id: "Nanomachines",
       name: intl.formatMessage({
-        id: "Components.Nanomachines.Title",
-        description: "Title of Component: Nanomachines",
+        id: "Ral Nel Consortium.Techs.Nanomachines.Title",
+        description: "Title of Tech: Nanomachines",
         defaultMessage: "Nanomachines",
       }),
       type: "TECH",
@@ -88,8 +88,8 @@ export default function getThundersEdgeComponents(
       event: "Mercenaries for Hire",
       id: "Mercenaries for Hire",
       name: intl.formatMessage({
-        id: "Components.Mercenaries for Hire.Title",
-        description: "Title of Component: Mercenaries for Hire",
+        id: "Events.Mercenaries for Hire.Title",
+        description: "Title of Event: Mercenaries for Hire",
         defaultMessage: "Mercenaries for Hire",
       }),
       type: "EVENT",
@@ -97,19 +97,19 @@ export default function getThundersEdgeComponents(
     "Puppets of the Blade": {
       description: intl.formatMessage(
         {
-          id: "Components.Puppets of the Blade.Description",
-          description: "Description for Component: Puppets of the Blade",
+          id: "Firmament.Abilities.Puppets of the Blade.Description",
+          description: "Description for Faction Ability: Puppets of the Blade",
           defaultMessage:
             "If you have at least 1 plot card in your play area, gain the following ability:{br}ACTION: Purge The Firmament's faction sheet, leaders, planet cards, and promissory note. Then, gain all of the faction components for The Obsidian.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "THUNDERS EDGE",
       faction: "Firmament",
       id: "Puppets of the Blade",
       name: intl.formatMessage({
-        id: "Components.Puppets of the Blade.Title",
-        description: "Title of Component: Puppets of the Blade",
+        id: "Firmament.Abilities.Puppets of the Blade.Title",
+        description: "Title of Faction Ability: Puppets of the Blade",
         defaultMessage: "Puppets of the Blade",
       }),
       type: "ABILITY",
@@ -117,19 +117,19 @@ export default function getThundersEdgeComponents(
     Sever: {
       description: intl.formatMessage(
         {
-          id: "Components.Sever.Description",
-          description: "Description for Component: Sever",
+          id: "Crimson Rebellion.Promissories.Sever.Description",
+          description: "Description for Faction Promissory: Sever",
           defaultMessage:
             "ACTION: Place this card faceup in your play area and place the sever token in a system that contains your units; wormholes in that system have no effect during movement.{br}Remove the sever token and return this card to the Rebellion player at the end of the status phase.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "THUNDERS EDGE",
       faction: "Crimson Rebellion",
       id: "Sever",
       name: intl.formatMessage({
-        id: "Components.Sever.Title",
-        description: "Title of Component: Sever",
+        id: "Crimson Rebellion.Promissories.Sever.Title",
+        description: "Title of Faction Promissory: Sever",
         defaultMessage: "Sever",
       }),
       type: "PROMISSORY",
@@ -137,19 +137,19 @@ export default function getThundersEdgeComponents(
     "Share Knowledge": {
       description: intl.formatMessage(
         {
-          id: "Components.Share Knowledge.Description",
-          description: "Description for Component: Share Knowledge",
+          id: "Deepwrought Scholarate.Promissories.Share Knowledge.Description",
+          description: "Description for Faction Promissory: Share Knowledge",
           defaultMessage:
-            "ACTION: Place this card faceup in your play area and gain 1 non-faction, non-unit upgrade technology that the Deepwrought player owns; place this technology on this card.{br}Return that technology to the deck and this card to the Deepwrought player at the end of the status phase.",
+            "ACTION: Place this card faceup in your play area and gain 1 non-faction, non-unit upgrade technology that the Deepwrought player owns; place that technology on this card.{br}Return that technology to the deck and this card to the Deepwrought player at the end of the status phase.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "THUNDERS EDGE",
       faction: "Deepwrought Scholarate",
       id: "Share Knowledge",
       name: intl.formatMessage({
-        id: "Components.Share Knowledge.Title",
-        description: "Title of Component: Share Knowledge",
+        id: "Deepwrought Scholarate.Promissories.Share Knowledge.Title",
+        description: "Title of Faction Promissory: Share Knowledge",
         defaultMessage: "Share Knowledge",
       }),
       type: "PROMISSORY",
@@ -165,8 +165,8 @@ export default function getThundersEdgeComponents(
       event: "Stellar Atomics",
       id: "Stellar Atomics",
       name: intl.formatMessage({
-        id: "Components.Stellar Atomics.Title",
-        description: "Title of Component: Stellar Atomics",
+        id: "Events.Stellar Atomics.Title",
+        description: "Title of Event: Stellar Atomics",
         defaultMessage: "Stellar Atomics",
       }),
       type: "EVENT",

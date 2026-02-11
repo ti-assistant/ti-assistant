@@ -1,7 +1,7 @@
 import { IntlShape } from "react-intl";
 
 export default function getBaseAttachments(
-  intl: IntlShape
+  intl: IntlShape,
 ): Record<BaseGame.AttachmentId, BaseAttachment> {
   return {
     "Core Mining": {
@@ -41,8 +41,8 @@ export default function getBaseAttachments(
       influence: 0,
       id: "Holy Planet of Ixth",
       name: intl.formatMessage({
-        id: "Attachments.Holy Planet of Ixth.Title",
-        description: "Title of Attachment: Holy Planet of Ixth",
+        id: "Agendas.Holy Planet of Ixth.Title",
+        description: "Title of Agenda Card: Holy Planet of Ixth",
         defaultMessage: "Holy Planet of Ixth",
       }),
       required: {
@@ -57,8 +57,8 @@ export default function getBaseAttachments(
       influence: 0,
       id: "Research Team: Biotic",
       name: intl.formatMessage({
-        id: "Attachments.Research Team: Biotic.Title",
-        description: "Title of Attachment: Research Team: Biotic",
+        id: "Agendas.Research Team: Biotic.Title",
+        description: "Title of Agenda Card: Research Team: Biotic",
         defaultMessage: "Research Team: Biotic",
       }),
       required: {
@@ -73,8 +73,8 @@ export default function getBaseAttachments(
       influence: 0,
       id: "Research Team: Cybernetic",
       name: intl.formatMessage({
-        id: "Attachments.Research Team: Cybernetic.Title",
-        description: "Title of Attachment: Research Team: Cybernetic",
+        id: "Agendas.Research Team: Cybernetic.Title",
+        description: "Title of Agenda Card: Research Team: Cybernetic",
         defaultMessage: "Research Team: Cybernetic",
       }),
       required: {
@@ -89,8 +89,8 @@ export default function getBaseAttachments(
       influence: 0,
       id: "Research Team: Propulsion",
       name: intl.formatMessage({
-        id: "Attachments.Research Team: Propulsion.Title",
-        description: "Title of Attachment: Research Team: Propulsion",
+        id: "Agendas.Research Team: Propulsion.Title",
+        description: "Title of Agenda Card: Research Team: Propulsion",
         defaultMessage: "Research Team: Propulsion",
       }),
       required: {
@@ -105,8 +105,8 @@ export default function getBaseAttachments(
       influence: 0,
       id: "Research Team: Warfare",
       name: intl.formatMessage({
-        id: "Attachments.Research Team: Warfare.Title",
-        description: "Title of Attachment: Research Team: Warfare",
+        id: "Agendas.Research Team: Warfare.Title",
+        description: "Title of Agenda Card: Research Team: Warfare",
         defaultMessage: "Research Team: Warfare",
       }),
       required: {
@@ -120,8 +120,8 @@ export default function getBaseAttachments(
       influence: 2,
       id: "Senate Sanctuary",
       name: intl.formatMessage({
-        id: "Attachments.Senate Sanctuary.Title",
-        description: "Title of Attachment: Senate Sanctuary",
+        id: "Agendas.Senate Sanctuary.Title",
+        description: "Title of Agenda Card: Senate Sanctuary",
         defaultMessage: "Senate Sanctuary",
       }),
       required: {

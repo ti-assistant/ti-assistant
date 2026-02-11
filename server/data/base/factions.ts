@@ -606,7 +606,7 @@ export default function getBaseFactions(
             description:
               "Description for Faction Promissory: Fires of the Gashlai",
             defaultMessage:
-              "ACTION: Remove 1 token from the Muaat player's fleet pool and return it to their reinforcements. Then, gain your war sun unit upgrade technology card.\n\nThen, return this card to the Muaat player.",
+              "ACTION: Remove 1 token from the Muaat player's fleet pool and return it to their reinforcements. Then, gain your war sun unit upgrade technology card.{br}Then, return this card to the Muaat player.",
           }),
         },
       ],

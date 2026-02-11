@@ -109,17 +109,18 @@ export default function getBaseObjectives(
     },
     "The Crown of Emphidia": {
       description: intl.formatMessage({
-        id: "Objectives.The Crown of Emphidia.Description",
-        description: "Description for Objective: The Crown of Emphidia",
-        defaultMessage: "Given to the current holder of the Crown of Emphidia.",
+        id: "Agendas.The Crown of Emphidia.Description",
+        description: "Description for Agenda Card: The Crown of Emphidia",
+        defaultMessage:
+          "The elected player gains this card.{br}A player gains this card and 1 victory point after they gain control of a planet in the home system of this card's owner.{br}Then, the previous owner of this card loses 1 victory point.",
       }),
       expansion: "BASE",
       max: 2,
       repeatable: true,
       id: "The Crown of Emphidia",
       name: intl.formatMessage({
-        id: "Objectives.The Crown of Emphidia.Title",
-        description: "Title of Objective: The Crown of Emphidia",
+        id: "Agendas.The Crown of Emphidia.Title",
+        description: "Title of Agenda Card: The Crown of Emphidia",
         defaultMessage: "The Crown of Emphidia",
       }),
       points: 1,
@@ -393,10 +394,10 @@ export default function getBaseObjectives(
     },
     "Holy Planet of Ixth": {
       description: intl.formatMessage({
-        id: "Objectives.Holy Planet of Ixth.Description",
-        description: "Description for Objective: Holy Planet of Ixth",
+        id: "Agendas.Holy Planet of Ixth.Description",
+        description: "Description for Agenda Card: Holy Planet of Ixth",
         defaultMessage:
-          "Given to the current owner of the Holy Planet of Ixth.",
+          "Attach this card to the elected planet's card.{br}The planet's owner gains 1 victory point.{br}Units on this planet cannot use PRODUCTION.{br}When a player gains control of this planet, they gain 1 victory point.{br}When a player loses control of this planet, they lose 1 victory point.",
       }),
       expansion: "BASE",
       removedIn: "POK",
@@ -404,8 +405,8 @@ export default function getBaseObjectives(
       repeatable: true,
       id: "Holy Planet of Ixth",
       name: intl.formatMessage({
-        id: "Objectives.Holy Planet of Ixth.Title",
-        description: "Title of Objective: Holy Planet of Ixth",
+        id: "Agendas.Holy Planet of Ixth.Title",
+        description: "Title of Agenda Card: Holy Planet of Ixth",
         defaultMessage: "Holy Planet of Ixth",
       }),
       points: 1,
@@ -430,17 +431,20 @@ export default function getBaseObjectives(
       type: "OTHER",
     },
     "Imperial Rider": {
-      description: intl.formatMessage({
-        id: "Objectives.Imperial Rider.Description",
-        description: "Description for Objective: Imperial Rider",
-        defaultMessage:
-          "Correctly predict the outcome of an agenda using Imperial Rider.",
-      }),
+      description: intl.formatMessage(
+        {
+          id: "Action Cards.Imperial Rider.Description",
+          description: "Description of action card: Imperial Rider",
+          defaultMessage:
+            "After an agenda is revealed:{br}You cannot vote on this agenda. Predict aloud an outcome of this agenda. If your prediction is correct, gain 1 victory point.",
+        },
+        { br: "\n\n" },
+      ),
       expansion: "BASE",
       id: "Imperial Rider",
       name: intl.formatMessage({
-        id: "Objectives.Imperial Rider.Title",
-        description: "Title of Objective: Imperial Rider",
+        id: "Action Cards.Imperial Rider.Name",
+        description: "Name of action card: Imperial Rider",
         defaultMessage: "Imperial Rider",
       }),
       points: 1,
@@ -630,18 +634,18 @@ export default function getBaseObjectives(
     Mutiny: {
       description: intl.formatMessage(
         {
-          id: "Objectives.Mutiny.Description",
-          description: "Description for Objective: Mutiny",
+          id: "Agendas.Mutiny.Description",
+          description: "Description for Agenda Card: Mutiny",
           defaultMessage:
-            'FOR: Each player who voted "For" gains 1 victory point.{br}AGAINST: Each player who voted "For" loses 1 victory point.',
+            'For: Each player who voted "For" gains 1 victory point.{br}Against: Each player who voted "For" loses 1 victory point.',
         },
         { br: "\n\n" },
       ),
       expansion: "BASE",
       id: "Mutiny",
       name: intl.formatMessage({
-        id: "Objectives.Mutiny.Title",
-        description: "Title of Objective: Mutiny",
+        id: "Agendas.Mutiny.Title",
+        description: "Title of Agenda Card: Mutiny",
         defaultMessage: "Mutiny",
       }),
       points: 1,
@@ -700,16 +704,16 @@ export default function getBaseObjectives(
     },
     "Seed of an Empire": {
       description: intl.formatMessage({
-        id: "Objectives.Seed of an Empire.Description",
-        description: "Description for Objective: Seed of an Empire",
+        id: "Agendas.Seed of an Empire.Description",
+        description: "Description for Agenda Card: Seed of an Empire",
         defaultMessage:
-          "Have the most victory points when Seed of an Empire passes or the least victory points when Seed of an Empire fails.",
+          "For: The player with most victory points gains 1 victory point.{br}Against: The player with the fewest victory points gains 1 victory point.",
       }),
       expansion: "BASE",
       id: "Seed of an Empire",
       name: intl.formatMessage({
-        id: "Objectives.Seed of an Empire.Title",
-        description: "Title of Objective: Seed of an Empire",
+        id: "Agendas.Seed of an Empire.Title",
+        description: "Title of Agenda Card: Seed of an Empire",
         defaultMessage: "Seed of an Empire",
       }),
       points: 1,
@@ -717,21 +721,40 @@ export default function getBaseObjectives(
       type: "OTHER",
     },
     "Shard of the Throne": {
-      description: intl.formatMessage({
-        id: "Objectives.Shard of the Throne.Description",
-        description: "Description for Objective: Shard of the Throne",
-        defaultMessage:
-          "Given to the current holder of the Shard of the Throne.",
-      }),
+      description: intl.formatMessage(
+        {
+          id: "Agendas.Shard of the Throne.Description",
+          description: "Description for Agenda Card: Shard of the Throne",
+          defaultMessage:
+            "The elected player gains this card.{br}A player gains this card and 1 victory point when they win a combat against the owner of this card.{br}Then, the previous owner of this card loses 1 victory point.",
+        },
+        { br: "\n\n" },
+      ),
       expansion: "BASE",
       max: 2,
       repeatable: true,
       id: "Shard of the Throne",
       name: intl.formatMessage({
-        id: "Objectives.Shard of the Throne.Title",
-        description: "Title of Objective: Shard of the Throne",
+        id: "Agendas.Shard of the Throne.Title",
+        description: "Title of Agenda Card: Shard of the Throne",
         defaultMessage: "Shard of the Throne",
       }),
+      omegas: [
+        {
+          description: intl.formatMessage(
+            {
+              id: "Relics.Shard of the Throne.Description",
+              description: "Description for Relic: Shard of the Throne",
+              defaultMessage:
+                "When you gain this card, gain 1 victory point. When you lose this card, lose 1 victory point.{br}When a player gains control of a legendary planet you control, or a planet you control in your home system, that player gains this card.",
+            },
+            { br: "\n\n" },
+          ),
+          expansion: "POK",
+          max: 1,
+          repeatable: false,
+        },
+      ],
       points: 1,
       type: "OTHER",
     },

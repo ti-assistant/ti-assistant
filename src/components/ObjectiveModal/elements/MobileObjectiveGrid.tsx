@@ -600,8 +600,8 @@ export default function MobileObjectiveGrid() {
           <CollapsibleSection
             title={
               <FormattedMessage
-                id="Objectives.Total War.Title"
-                description="Title of Objective: Total War"
+                id="Events.Total War.Title"
+                description="Title of Event: Total War"
                 defaultMessage="Total War"
               />
             }

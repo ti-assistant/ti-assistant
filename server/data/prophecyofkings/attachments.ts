@@ -1,7 +1,7 @@
 import { IntlShape } from "react-intl";
 
 export default function getProphecyOfKingsAttachments(
-  intl: IntlShape
+  intl: IntlShape,
 ): Record<ProphecyOfKings.AttachmentId, BaseAttachment> {
   return {
     "Biotic Research Facility": {
@@ -141,8 +141,8 @@ export default function getProphecyOfKingsAttachments(
       influence: 1,
       id: "Terraform",
       name: intl.formatMessage({
-        id: "Attachments.Terraform.Title",
-        description: "Title of Attachment: Terraform",
+        id: "Titans of Ul.Promissories.Terraform.Title",
+        description: "Title of Faction Promissory: Terraform",
         defaultMessage: "Terraform",
       }),
       required: {

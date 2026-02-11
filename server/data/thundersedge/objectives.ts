@@ -1,21 +1,21 @@
 import { IntlShape } from "react-intl";
 
 export default function getThundersEdgeObjectives(
-  intl: IntlShape
+  intl: IntlShape,
 ): Record<ThundersEdge.ObjectiveId, BaseObjective> {
   return {
     Styx: {
       description: intl.formatMessage({
-        id: "Objectives.Styx.Description",
-        description: "Description for Objective: Styx",
+        id: "Planets.Styx.Ability",
+        description: "Planet Ability for Styx",
         defaultMessage:
-          "Given to the player currently in control of the planet Styx.",
+          "When you gain this card, gain 1 victory point.{br}When you lose this card, lose 1 victory point.",
       }),
       expansion: "THUNDERS EDGE",
       id: "Styx",
       name: intl.formatMessage({
-        id: "Objectives.Styx.Title",
-        description: "Title of Objective: Styx",
+        id: "Planets.Styx.Name",
+        description: "Name of Planet: Styx",
         defaultMessage: "Styx",
       }),
       points: 1,
@@ -23,15 +23,16 @@ export default function getThundersEdgeObjectives(
     },
     "The Silver Flame": {
       description: intl.formatMessage({
-        id: "Objectives.The Silver Flame.Description",
-        description: "Description for Objective: The Silver Flame",
-        defaultMessage: "Roll a 10 when using The Silver Flame.",
+        id: "Relics.The Silver Flame.Description",
+        description: "Description for Relic: The Silver Flame",
+        defaultMessage:
+          "The Silver Flame may be exchanged as part of a transaction.{br}ACTION: Roll 1 die and purge this card; if the result is a 10, gain 1 victory point. Otherwise, purge your home system and all units in it; you cannot score public objectives. Put The Fracture into play if it is not already.",
       }),
       expansion: "THUNDERS EDGE",
       id: "The Silver Flame",
       name: intl.formatMessage({
-        id: "Objectives.The Silver Flame.Title",
-        description: "Title of Objective: The Silver Flame",
+        id: "Relics.The Silver Flame.Title",
+        description: "Title of Relic: The Silver Flame",
         defaultMessage: "The Silver Flame",
       }),
       points: 1,
@@ -48,8 +49,8 @@ export default function getThundersEdgeObjectives(
       event: "Zealous Orthodoxy",
       id: "Zealous Orthodoxy",
       name: intl.formatMessage({
-        id: "Objectives.Zealous Orthodoxy.Title",
-        description: "Title of Objective: Zealous Orthodoxy",
+        id: "Events.Zealous Orthodoxy.Title",
+        description: "Title of Event: Zealous Orthodoxy",
         defaultMessage: "Zealous Orthodoxy",
       }),
       phase: "STATUS",
