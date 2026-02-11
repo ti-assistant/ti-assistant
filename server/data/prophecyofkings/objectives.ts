@@ -522,12 +522,15 @@ export default function getProphecyOfKingsObjectives(
       type: "STAGE TWO",
     },
     "Political Censure": {
-      description: intl.formatMessage({
-        id: "Agendas.Political Censure.Description",
-        description: "Description for Agenda Card: Political Censure",
-        defaultMessage:
-          "The elected player gains this card and 1 victory point.{br}The elected player cannot play action cards.{br}If the owner of this card loses this card, they lose 1 victory point.",
-      }),
+      description: intl.formatMessage(
+        {
+          id: "Agendas.Political Censure.Description",
+          description: "Description for Agenda Card: Political Censure",
+          defaultMessage:
+            "The elected player gains this card and 1 victory point.{br}The elected player cannot play action cards.{br}If the owner of this card loses this card, they lose 1 victory point.",
+        },
+        { br: "\n\n" },
+      ),
       expansion: "POK",
       max: 1,
       id: "Political Censure",
@@ -729,12 +732,15 @@ export default function getProphecyOfKingsObjectives(
       type: "SECRET",
     },
     "Tomb + Crown of Emphidia": {
-      description: intl.formatMessage({
-        id: "Relics.The Crown of Emphidia.Description",
-        description: "Description for Relic: The Crown of Emphidia",
-        defaultMessage:
-          'After you perform a tactical action, you may exhaust this card to explore 1 planet you control.{br}At the end of the status phase, if you control the "Tomb of Emphidia", you may purge this card to gain 1 Victory Point.',
-      }),
+      description: intl.formatMessage(
+        {
+          id: "Relics.The Crown of Emphidia.Description",
+          description: "Description for Relic: The Crown of Emphidia",
+          defaultMessage:
+            'After you perform a tactical action, you may exhaust this card to explore 1 planet you control.{br}At the end of the status phase, if you control the "Tomb of Emphidia", you may purge this card to gain 1 Victory Point.',
+        },
+        { br: "\n\n" },
+      ),
       expansion: "POK",
       max: 1,
       id: "Tomb + Crown of Emphidia",

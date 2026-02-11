@@ -25,12 +25,15 @@ export default function getCodexFourObjectives(
       type: "OTHER",
     },
     "Book of Latvinia": {
-      description: intl.formatMessage({
-        id: "Relics.Book of Latvinia.Description",
-        description: "Description for Relic: Book of Latvinia",
-        defaultMessage:
-          "When you gain this card, research up to 2 technologies that have no prerequisites.{br}ACTION: Purge this card; if you control planets that have all 4 types of technology specialties, gain 1 victory point. Otherwise, gain the speaker token.",
-      }),
+      description: intl.formatMessage(
+        {
+          id: "Relics.Book of Latvinia.Description",
+          description: "Description for Relic: Book of Latvinia",
+          defaultMessage:
+            "When you gain this card, research up to 2 technologies that have no prerequisites.{br}ACTION: Purge this card; if you control planets that have all 4 types of technology specialties, gain 1 victory point. Otherwise, gain the speaker token.",
+        },
+        { br: "\n\n" },
+      ),
       expansion: "CODEX FOUR",
       id: "Book of Latvinia",
       name: intl.formatMessage({

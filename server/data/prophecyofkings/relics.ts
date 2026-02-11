@@ -1,7 +1,7 @@
 import { IntlShape } from "react-intl";
 
 export default function getProphecyOfKingsRelics(
-  intl: IntlShape
+  intl: IntlShape,
 ): Record<ProphecyOfKings.RelicId, BaseRelic> {
   return {
     "Dominus Orb": {
@@ -61,7 +61,7 @@ export default function getProphecyOfKingsRelics(
           defaultMessage:
             "When you gain this card, gain 1 victory point. When you lose this card, lose 1 victory point.{br}When a player gains control of a legendary planet you control, or a planet you control in your home system, that player gains this card.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       id: "Shard of the Throne",
@@ -73,12 +73,15 @@ export default function getProphecyOfKingsRelics(
       timing: "PASSIVE",
     },
     "Stellar Converter": {
-      description: intl.formatMessage({
-        id: "Relics.Stellar Converter.Description",
-        description: "Description for Relic: Stellar Converter",
-        defaultMessage:
-          "ACTION: Choose 1 non-home, non-legendary planet other than Mecatol Rex in a system that is adjacent to 1 or more of your units that have BOMBARDMENT; destroy all units on that planet and purge its attachments and its planet card. Then, place the destroyed planet token on that planet and purge this card.",
-      }),
+      description: intl.formatMessage(
+        {
+          id: "Relics.Stellar Converter.Description",
+          description: "Description for Relic: Stellar Converter",
+          defaultMessage:
+            "ACTION: Choose 1 non-home, non-legendary planet other than Mecatol Rex in a system that is adjacent to 1 or more of your units that have BOMBARDMENT; destroy all units on that planet and purge its attachments and its planet card. Then, place the destroyed planet token on that planet and purge this card.",
+        },
+        { br: "\n\n" },
+      ),
       expansion: "POK",
       id: "Stellar Converter",
       name: intl.formatMessage({
@@ -112,7 +115,7 @@ export default function getProphecyOfKingsRelics(
           defaultMessage:
             'After you perform a tactical action, you may exhaust this card to explore 1 planet you control.{br}At the end of the status phase, if you control the "Tomb of Emphidia", you may purge this card to gain 1 Victory Point.',
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       id: "The Crown of Emphidia",
@@ -147,7 +150,7 @@ export default function getProphecyOfKingsRelics(
           defaultMessage:
             "When you gain this card, draw 1 secret objective. You can have 1 additional scored or unscored secret objective.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       id: "The Obsidian",

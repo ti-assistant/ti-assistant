@@ -601,13 +601,16 @@ export default function getBaseFactions(
             description: "Title of Faction Promissory: Fires of the Gashlai",
             defaultMessage: "Fires of the Gashlai",
           }),
-          description: intl.formatMessage({
-            id: "Embers of Muaat.Promissories.Fires of the Gashlai.Description",
-            description:
-              "Description for Faction Promissory: Fires of the Gashlai",
-            defaultMessage:
-              "ACTION: Remove 1 token from the Muaat player's fleet pool and return it to their reinforcements. Then, gain your war sun unit upgrade technology card.{br}Then, return this card to the Muaat player.",
-          }),
+          description: intl.formatMessage(
+            {
+              id: "Embers of Muaat.Promissories.Fires of the Gashlai.Description",
+              description:
+                "Description for Faction Promissory: Fires of the Gashlai",
+              defaultMessage:
+                "ACTION: Remove 1 token from the Muaat player's fleet pool and return it to their reinforcements. Then, gain your war sun unit upgrade technology card.{br}Then, return this card to the Muaat player.",
+            },
+            { br: "\n\n" },
+          ),
         },
       ],
       removedIn: "TWILIGHTS FALL",
