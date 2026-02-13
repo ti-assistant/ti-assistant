@@ -61,6 +61,7 @@ import Toggle from "../Toggle/Toggle";
 import UnitIcon from "../Units/Icons";
 import UnitStats from "../UnitStats/UnitStats";
 import Chip from "../Chip/Chip";
+import GenomeRow from "../Actions/GenomeRow";
 
 function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
   const factions = useFactions();
@@ -791,38 +792,7 @@ function TFTechList({
           <div className={styles.factionTechListWrapper}>
             <div className={styles.factionTechList}>
               {factionGenomes.map((genome) => {
-                return (
-                  <SelectableRow
-                    key={genome.id}
-                    itemId={genome.id}
-                    removeItem={
-                      viewOnly
-                        ? undefined
-                        : () =>
-                            loseTFCardAsync(gameId, factionId, {
-                              genome: genome.id,
-                              type: "GENOME",
-                            })
-                    }
-                    viewOnly={viewOnly}
-                  >
-                    <InfoRow
-                      infoTitle={genome.name}
-                      infoContent={
-                        <>
-                          <FormattedDescription
-                            description={genome.description}
-                          />
-                          {genome.id === "Clever Genome" && !!genome.owner ? (
-                            <AllGenomesList factionId={genome.owner} />
-                          ) : null}
-                        </>
-                      }
-                    >
-                      {genome.name}
-                    </InfoRow>
-                  </SelectableRow>
-                );
+                return <GenomeRow key={genome.id} genome={genome} />;
               })}
             </div>
           </div>
@@ -1068,45 +1038,5 @@ export default function TechPanel({
         </>
       )}
     </div>
-  );
-}
-
-function AllGenomesList({ factionId }: { factionId: FactionId }) {
-  const genomes = useGenomes();
-
-  const genomeList = Object.values(genomes).filter((genome) => {
-    return (
-      genome.id !== "Clever Genome" &&
-      !!genome.owner &&
-      genome.owner !== factionId
-    );
-  });
-  genomeList.sort((a, b) => ((a.owner ?? "") > (b.owner ?? "") ? 1 : -1));
-
-  return (
-    <ul
-      className="flexColumn"
-      style={{
-        gap: rem(4),
-        alignItems: "flex-start",
-        margin: 0,
-        padding: `0 ${rem(40)} 0 ${rem(40)}`,
-        fontSize: rem(12),
-        textAlign: "left",
-      }}
-    >
-      {genomeList.map((genome) => {
-        return (
-          <div key={genome.id}>
-            <div className="flexRow" style={{ justifyContent: "flex-start" }}>
-              <FactionComponents.Icon factionId={genome.owner} size={16} />
-              <div>
-                <FormattedDescription description={genome.description} />
-              </div>
-            </div>
-          </div>
-        );
-      })}
-    </ul>
   );
 }

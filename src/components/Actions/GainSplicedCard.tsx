@@ -31,6 +31,8 @@ import { Selector } from "../Selector/Selector";
 import UnitIcon from "../Units/Icons";
 import UnitStats from "../UnitStats/UnitStats";
 import styles from "./GainSplicedCard.module.scss";
+import FactionComponents from "../FactionComponents/FactionComponents";
+import GenomeRow from "./GenomeRow";
 
 interface NumberToGain {
   abilities?: number;
@@ -222,28 +224,7 @@ function GainedCardsSection({
             if (!genome) {
               return null;
             }
-            return (
-              <SelectableRow
-                key={genomeId}
-                itemId={genomeId}
-                removeItem={() =>
-                  loseTFCardAsync(gameId, factionId, {
-                    genome: genomeId,
-                    type: "GENOME",
-                  })
-                }
-                viewOnly={viewOnly}
-              >
-                <InfoRow
-                  infoTitle={genome.name}
-                  infoContent={
-                    <FormattedDescription description={genome.description} />
-                  }
-                >
-                  {genome.name}
-                </InfoRow>
-              </SelectableRow>
-            );
+            return <GenomeRow key={genome.id} genome={genome} />;
           })}
         </IconDiv>
       ) : null}
