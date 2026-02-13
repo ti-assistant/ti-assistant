@@ -4,6 +4,7 @@ import { ModalContext } from "../context/contexts";
 import {
   useGameId,
   useLeaders,
+  useRelic,
   useTechs,
   useViewOnly,
 } from "../context/dataHooks";
@@ -33,6 +34,7 @@ import TechIcon from "./TechIcon/TechIcon";
 import UnitIcon from "./Units/Icons";
 import UnitStats from "./UnitStats/UnitStats";
 import { useOrderedFactionIds } from "../context/gameDataHooks";
+import RelicPlanetIcon from "./PlanetIcons/RelicPlanetIcon";
 
 export function UnitStat({
   name,
@@ -1065,6 +1067,7 @@ function FactionPanelModal({
 function AllAgentsList() {
   const leaders = useLeaders();
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
+  const jrRelic = useRelic("JR-XS455-O");
 
   const agents = Object.values(leaders).filter((leader) => {
     return (
@@ -1097,6 +1100,14 @@ function AllAgentsList() {
           </div>
         );
       })}
+      {!!jrRelic?.owner ? (
+        <div className="flexRow" style={{ justifyContent: "flex-start" }}>
+          <RelicPlanetIcon />
+          <div>
+            <FormattedDescription description={jrRelic.description} />
+          </div>
+        </div>
+      ) : null}
     </ul>
   );
 }
