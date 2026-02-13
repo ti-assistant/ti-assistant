@@ -1,8 +1,6 @@
 .GamePage {
-  height: calc(100dvh);
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-
+  padding-top: 0.25rem;
+  height: calc(100dvh - 3.5rem);
   display: grid;
   grid-auto-flow: row;
   grid-template-columns: 1.3fr 1.9fr;
@@ -11,7 +9,6 @@
 
 .Filters {
   height: fit-content;
-  margin-top: 1.75rem;
 
   font-family: Source Sans;
 }

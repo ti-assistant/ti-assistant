@@ -61,6 +61,7 @@ import Toggle from "../Toggle/Toggle";
 import UnitIcon from "../Units/Icons";
 import UnitStats from "../UnitStats/UnitStats";
 import Chip from "../Chip/Chip";
+import GenomeRow from "../Actions/GenomeRow";
 
 function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
   const factions = useFactions();
@@ -790,35 +791,8 @@ function TFTechList({
           </div>
           <div className={styles.factionTechListWrapper}>
             <div className={styles.factionTechList}>
-              {" "}
               {factionGenomes.map((genome) => {
-                return (
-                  <SelectableRow
-                    key={genome.id}
-                    itemId={genome.id}
-                    removeItem={
-                      viewOnly
-                        ? undefined
-                        : () =>
-                            loseTFCardAsync(gameId, factionId, {
-                              genome: genome.id,
-                              type: "GENOME",
-                            })
-                    }
-                    viewOnly={viewOnly}
-                  >
-                    <InfoRow
-                      infoTitle={genome.name}
-                      infoContent={
-                        <FormattedDescription
-                          description={genome.description}
-                        />
-                      }
-                    >
-                      {genome.name}
-                    </InfoRow>
-                  </SelectableRow>
-                );
+                return <GenomeRow key={genome.id} genome={genome} />;
               })}
             </div>
           </div>
