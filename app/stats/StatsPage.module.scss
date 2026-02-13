@@ -1,11 +1,10 @@
 .Filters {
-  width: calc(100dvw - 9rem);
+  width: 100%;
 }
 
 .StatsPage {
   width: 100%;
-  height: calc(100dvh - 3.75rem);
-  margin-top: 3.75rem;
+  height: calc(100dvh - 3.5rem);
   padding-top: 0.25rem;
   font-family: Source Sans;
 }
@@ -16,7 +15,8 @@
 }
 
 .DataSection {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   flex-direction: row;
   width: 100%;
   align-items: flex-start;
@@ -35,7 +35,7 @@
   flex-direction: column;
   justify-content: flex-start;
   padding: 0.25rem;
-  height: calc(100dvh - 15rem);
+  height: calc(100dvh - 19.125rem);
   overflow-y: scroll;
 }
 

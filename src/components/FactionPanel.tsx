@@ -32,6 +32,7 @@ import LabeledLine from "./LabeledLine/LabeledLine";
 import TechIcon from "./TechIcon/TechIcon";
 import UnitIcon from "./Units/Icons";
 import UnitStats from "./UnitStats/UnitStats";
+import { useOrderedFactionIds } from "../context/gameDataHooks";
 
 export function UnitStat({
   name,
@@ -585,6 +586,7 @@ function FactionPanelContent({
                         <FormattedDescription
                           description={leader.description}
                         />
+                        {leader.id === "Ssruu" ? <AllAgentsList /> : null}
                       </div>
                     )}
                   </div>
@@ -1057,5 +1059,44 @@ function FactionPanelModal({
     >
       <FactionPanelContent factionId={factionId} options={options} />
     </FullScreenModal>
+  );
+}
+
+function AllAgentsList() {
+  const leaders = useLeaders();
+  const mapOrderedFactionIds = useOrderedFactionIds("MAP");
+
+  const agents = Object.values(leaders).filter((leader) => {
+    return (
+      leader.id !== "Ssruu" &&
+      leader.type === "AGENT" &&
+      mapOrderedFactionIds.includes(leader.faction)
+    );
+  });
+  agents.sort((a, b) => (a.faction > b.faction ? 1 : -1));
+
+  return (
+    <ul
+      className="flexColumn"
+      style={{
+        gap: rem(4),
+        alignItems: "flex-start",
+        margin: 0,
+        padding: `0 0 0 ${rem(8)}`,
+      }}
+    >
+      {agents.map((agent) => {
+        return (
+          <div key={agent.id}>
+            <div className="flexRow" style={{ justifyContent: "flex-start" }}>
+              <FactionComponents.Icon factionId={agent.faction} size={16} />
+              <div>
+                <FormattedDescription description={agent.description} />
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </ul>
   );
 }

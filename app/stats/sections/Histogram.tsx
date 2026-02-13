@@ -9,7 +9,7 @@ export function Histogram({ histogram }: { histogram: HistogramData }) {
     ([maxVal, minVal], curr) => {
       return [Math.max(maxVal, curr), Math.min(minVal, curr)];
     },
-    [Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER]
+    [Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER],
   );
 
   return (
@@ -122,6 +122,10 @@ export function FactionHistogram({
     return 1;
   });
 
+  console.log("Min", minVal);
+  console.log("Max", maxVal);
+  console.log("Total", total);
+
   return (
     <div className={styles.OuterHistogram}>
       <div className={styles.FactionHistogram}>
@@ -130,7 +134,7 @@ export function FactionHistogram({
           if (minVal === 0) {
             height = (value / maxVal) * 100;
           } else {
-            height = 25 + (90 / (maxVal - minVal)) * (value - minVal);
+            height = 25 + (75 / (maxVal - minVal)) * (value - minVal);
           }
           return (
             <div
