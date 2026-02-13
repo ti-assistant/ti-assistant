@@ -27,11 +27,14 @@
   top: 0;
   width: 100vw;
   height: 100dvh;
+  padding: 5%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   color: #eee;
+
+  overflow-y: auto;
 }
 
 .ModalContent .Content {
@@ -39,8 +42,8 @@
   background-color: var(--background-color);
   border: 1px solid var(--neutral-border);
   max-width: 85%;
-  max-height: 90vh;
   border-radius: 0.625rem;
+  margin-block: auto;
 }
 
 .ModalContent .Header {
@@ -71,7 +74,7 @@
 .ModalContent .Body {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
 
   padding: 0 0.25rem 0.25rem 0.25rem;
