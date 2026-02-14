@@ -115,19 +115,15 @@ interface GameFaction {
   availableVotes?: number;
   breakthrough?: Partial<Breakthrough>;
   color: FactionColor;
-  commander: LeaderState;
-  hero: LeaderState;
+  commandCounters: number;
   id: FactionId;
   mapPosition: number;
   order: number;
   secondary?: Secondary;
-  planets: Partial<Record<PlanetId, { state: PlanetState }>>;
   playerName?: string;
   startswith?: StartsWith;
   techs: Partial<Record<TechId, GameTech>>;
-  castVotes?: number;
   passed?: boolean;
-  votes?: number;
   vps?: number;
 }
 

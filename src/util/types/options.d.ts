@@ -14,6 +14,8 @@ type AppSection =
   | "OBJECTIVES"
   | "TECHS"
   | "RELICS"
+  | "COMMAND_COUNTERS"
+  // Not yet implemented
   | "PLANET_STATE"
   | "STRUCTURES";
 

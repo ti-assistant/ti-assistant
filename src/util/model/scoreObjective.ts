@@ -10,7 +10,7 @@ import { UpdateLeaderStateHandler } from "./updateLeaderState";
 export class ScoreObjectiveHandler implements Handler {
   constructor(
     public gameData: StoredGameData,
-    public data: ScoreObjectiveData
+    public data: ScoreObjectiveData,
   ) {}
 
   validate(): boolean {
@@ -30,6 +30,24 @@ export class ScoreObjectiveHandler implements Handler {
       [`state.paused`]: false,
       [`sequenceNum`]: "INCREMENT",
     };
+
+    let tokenCost = 0;
+    switch (this.data.event.objective) {
+      case "Lead from the Front":
+        tokenCost = 3;
+        break;
+      case "Galvanize the People":
+        tokenCost = 6;
+        break;
+    }
+    if (tokenCost > 0) {
+      const tokens =
+        this.gameData.factions[this.data.event.faction]?.commandCounters;
+      if (tokens != undefined) {
+        updates[`factions.${this.data.event.faction}.commandCounters`] =
+          Math.max(0, tokens - tokenCost);
+      }
+    }
 
     if (objective?.repeatable) {
       scorers.push(this.data.event.faction);
@@ -51,7 +69,7 @@ export class ScoreObjectiveHandler implements Handler {
       ] = keyedScorers;
     }
     const numScored = Object.values(
-      buildObjectives(this.gameData, intl)
+      buildObjectives(this.gameData, intl),
     ).filter((objective) => {
       return (
         objective.type !== "OTHER" &&
@@ -63,7 +81,7 @@ export class ScoreObjectiveHandler implements Handler {
       const leaders = buildLeaders(this.gameData, intl);
       const heroes = Object.values(leaders).filter(
         (leader) =>
-          leader.faction === this.data.event.faction && leader.type === "HERO"
+          leader.faction === this.data.event.faction && leader.type === "HERO",
       );
       for (const hero of heroes) {
         if (!hero.state || hero.state === "locked") {
@@ -106,7 +124,7 @@ export class ScoreObjectiveHandler implements Handler {
 export class UnscoreObjectiveHandler implements Handler {
   constructor(
     public gameData: StoredGameData,
-    public data: UnscoreObjectiveData
+    public data: UnscoreObjectiveData,
   ) {}
 
   validate(): boolean {
@@ -126,6 +144,24 @@ export class UnscoreObjectiveHandler implements Handler {
       [`state.paused`]: false,
       [`sequenceNum`]: "INCREMENT",
     };
+
+    let tokenCost = 0;
+    switch (this.data.event.objective) {
+      case "Lead from the Front":
+        tokenCost = 3;
+        break;
+      case "Galvanize the People":
+        tokenCost = 6;
+        break;
+    }
+    if (tokenCost > 0) {
+      const tokens =
+        this.gameData.factions[this.data.event.faction]?.commandCounters;
+      if (tokens != undefined) {
+        updates[`factions.${this.data.event.faction}.commandCounters`] =
+          Math.min(16, tokens + tokenCost);
+      }
+    }
 
     if (objective?.repeatable) {
       const index = scorers.lastIndexOf(this.data.event.faction);
@@ -150,7 +186,7 @@ export class UnscoreObjectiveHandler implements Handler {
     }
 
     const numScored = Object.values(
-      buildObjectives(this.gameData, intl)
+      buildObjectives(this.gameData, intl),
     ).filter((objective) => {
       return (
         objective.type !== "OTHER" &&
@@ -162,7 +198,7 @@ export class UnscoreObjectiveHandler implements Handler {
       const leaders = buildLeaders(this.gameData, intl);
       const heroes = Object.values(leaders).filter(
         (leader) =>
-          leader.faction === this.data.event.faction && leader.type === "HERO"
+          leader.faction === this.data.event.faction && leader.type === "HERO",
       );
       for (const hero of heroes) {
         if (hero.state === "readied") {

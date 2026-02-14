@@ -10,7 +10,6 @@ import {
   setSessionIdCookie,
 } from "../../../src/util/server";
 import { Optional } from "../../../src/util/types/types";
-import { objectEntries } from "../../../src/util/util";
 
 function makeid(length: number) {
   var result = "";
@@ -36,6 +35,8 @@ export async function POST(req: Request) {
   });
   const BASE_FACTIONS = getFactions(intl);
 
+  const gamePlanets: Partial<Record<PlanetId, GamePlanet>> = {};
+
   const gameFactions = factions.map((faction, index) => {
     if (!faction.name || !faction.color || !faction.id) {
       throw new Error("Faction missing name or color.");
@@ -50,11 +51,11 @@ export async function POST(req: Request) {
 
     // Get home planets for each faction.
     const homeBasePlanets = Object.values(getPlanets(intl)).filter(
-      (planet) => planet.faction === faction.id && planet.home
+      (planet) => planet.faction === faction.id && planet.home,
     );
-    const homePlanets: Partial<Record<PlanetId, { state: PlanetState }>> = {};
     homeBasePlanets.forEach((planet) => {
-      homePlanets[planet.id] = {
+      gamePlanets[planet.id] = {
+        owner: faction.id,
         state: "READIED",
       };
     });
@@ -95,13 +96,9 @@ export async function POST(req: Request) {
       order: order,
       mapPosition: index,
       // Faction specific values
-      planets: homePlanets,
       techs: startingTechs,
-      // State values
-      hero: "locked",
-      commander: options["game-variant"].includes("alliance")
-        ? "readied"
-        : "locked",
+      // Generic values
+      commandCounters: 8,
     };
     if (baseFaction.startswith) {
       gameFaction.startswith = baseFaction.startswith;
@@ -134,7 +131,6 @@ export async function POST(req: Request) {
   });
 
   let baseFactions: Partial<Record<FactionId, GameFaction>> = {};
-  let basePlanets: Partial<Record<PlanetId, GamePlanet>> = {};
   let speakerName: Optional<FactionId>;
   gameFactions.forEach((faction, index) => {
     const baseFaction = BASE_FACTIONS[faction.id];
@@ -163,13 +159,6 @@ export async function POST(req: Request) {
       localFaction.startswith = startsWith;
     }
     baseFactions[faction.id] = localFaction;
-    objectEntries(faction.planets).forEach(([name, planet]) => {
-      const basePlanet: GamePlanet = { ...planet, owner: baseFaction.id };
-      if (baseFaction.id === "Last Bastion" && name === "Ordinian") {
-        basePlanet.spaceDock = true;
-      }
-      basePlanets[name] = basePlanet;
-    });
   });
 
   let baseObjectives: Partial<Record<ObjectiveId, GameObjective>> = {
@@ -198,7 +187,7 @@ export async function POST(req: Request) {
       round: 1,
     },
     factions: baseFactions,
-    planets: basePlanets,
+    planets: gamePlanets,
     options: options,
     objectives: baseObjectives,
     deleteAt: Timestamp.fromDate(deleteDate),

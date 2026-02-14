@@ -26,6 +26,7 @@ import {
 import { GainRelicHandler, LoseRelicHandler } from "../model/gainRelic";
 import { GainTFCardHandler, LoseTFCardHandler } from "../model/gainTFCard";
 import { GiftOfPrescienceHandler } from "../model/giftOfPrescience";
+import { ManualCCUpdateHandler } from "../model/manualCCUpdate";
 import { ManualVoteUpdateHandler } from "../model/manualVoteUpdate";
 import { ManualVPUpdateHandler } from "../model/manualVPUpdate";
 import {
@@ -130,6 +131,8 @@ export function getHandler(gameData: StoredGameData, data: GameUpdateData) {
       return new LoseAllianceHandler(gameData, data);
     case "LOSE_RELIC":
       return new LoseRelicHandler(gameData, data);
+    case "MANUAL_CC_UPDATE":
+      return new ManualCCUpdateHandler(gameData, data);
     case "MANUAL_VP_UPDATE":
       return new ManualVPUpdateHandler(gameData, data);
     case "MANUAL_VOTE_UPDATE":

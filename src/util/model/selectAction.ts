@@ -1,9 +1,13 @@
 import { createIntl, createIntlCache } from "react-intl";
 import { buildObjectives, buildPlanets } from "../../data/GameData";
 import { getCurrentTurnLogEntries } from "../api/actionLog";
+import { Optional } from "../types/types";
 
 export class SelectActionHandler implements Handler {
-  constructor(public gameData: StoredGameData, public data: SelectActionData) {}
+  constructor(
+    public gameData: StoredGameData,
+    public data: SelectActionData,
+  ) {}
 
   validate(): boolean {
     return !!this.data.event.action;
@@ -17,6 +21,11 @@ export class SelectActionHandler implements Handler {
     const cache = createIntlCache();
     const intl = createIntl({ locale: "en" }, cache);
 
+    let tokens: Optional<number>;
+    const activePlayer = this.gameData.state.activeplayer;
+    if (activePlayer && activePlayer !== "None") {
+      tokens = this.gameData.factions[activePlayer]?.commandCounters;
+    }
     const currentTurn = getCurrentTurnLogEntries(this.gameData.actionLog ?? []);
     for (const entry of currentTurn) {
       if (
@@ -36,10 +45,30 @@ export class SelectActionHandler implements Handler {
             buildObjectives(this.gameData, intl)["Imperial Point"]?.scorers ??
             [];
           const lastIndex = mecatolScorers.lastIndexOf(
-            this.gameData.state.activeplayer
+            this.gameData.state.activeplayer,
           );
           mecatolScorers.splice(lastIndex, 1);
           updates[`objectives.Imperial Point.scorers`] = mecatolScorers;
+        }
+      }
+      if (
+        entry.data.action === "SELECT_ACTION" &&
+        (entry.data.event.action === "Lux" ||
+          entry.data.event.action === "Leadership") &&
+        this.data.event.action !== "Lux" &&
+        this.data.event.action !== "Leadership"
+      ) {
+        if (tokens != undefined) {
+          tokens -= 3;
+        }
+      }
+      if (
+        entry.data.action === "SELECT_ACTION" &&
+        entry.data.event.action === "Tactical" &&
+        this.data.event.action !== "Tactical"
+      ) {
+        if (tokens != undefined) {
+          tokens += 1;
         }
       }
     }
@@ -59,6 +88,28 @@ export class SelectActionHandler implements Handler {
         mecatolScorers.push(this.gameData.state.activeplayer);
         updates[`objectives.Imperial Point.scorers`] = mecatolScorers;
       }
+    }
+
+    if (
+      this.data.event.action === "Leadership" ||
+      this.data.event.action === "Lux"
+    ) {
+      if (tokens != undefined) {
+        tokens += 3;
+      }
+    }
+
+    if (this.data.event.action === "Tactical") {
+      if (tokens != undefined) {
+        tokens -= 1;
+      }
+    }
+
+    if (tokens != undefined) {
+      updates[`factions.${activePlayer}.commandCounters`] = Math.max(
+        0,
+        Math.min(tokens, 16),
+      );
     }
 
     return updates;
@@ -86,7 +137,7 @@ export class SelectActionHandler implements Handler {
 export class UnselectActionHandler implements Handler {
   constructor(
     public gameData: StoredGameData,
-    public data: UnselectActionData
+    public data: UnselectActionData,
   ) {}
 
   validate(): boolean {
@@ -100,6 +151,12 @@ export class UnselectActionHandler implements Handler {
       [`state.paused`]: false,
       [`sequenceNum`]: "INCREMENT",
     };
+
+    let tokens: Optional<number>;
+    const activePlayer = this.gameData.state.activeplayer;
+    if (activePlayer && activePlayer !== "None") {
+      tokens = this.gameData.factions[activePlayer]?.commandCounters;
+    }
     if (
       this.data.event.action === "Imperial" ||
       this.data.event.action === "Aeterna"
@@ -113,11 +170,33 @@ export class UnselectActionHandler implements Handler {
         const mecatolScorers =
           buildObjectives(this.gameData, intl)["Imperial Point"]?.scorers ?? [];
         const lastIndex = mecatolScorers.lastIndexOf(
-          this.gameData.state.activeplayer
+          this.gameData.state.activeplayer,
         );
         mecatolScorers.splice(lastIndex, 1);
         updates[`objectives.Imperial Point.scorers`] = mecatolScorers;
       }
+    }
+
+    if (
+      this.data.event.action === "Lux" ||
+      this.data.event.action === "Leadership"
+    ) {
+      if (tokens != undefined) {
+        tokens -= 3;
+      }
+    }
+
+    if (this.data.event.action === "Tactical") {
+      if (tokens != undefined) {
+        tokens += 1;
+      }
+    }
+
+    if (tokens != undefined) {
+      updates[`factions.${activePlayer}.commandCounters`] = Math.max(
+        0,
+        Math.min(tokens, 16),
+      );
     }
 
     return updates;

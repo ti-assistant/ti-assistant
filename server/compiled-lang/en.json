@@ -9643,6 +9643,20 @@
       "value": "Attach"
     }
   ],
+  "KuClgv": [
+    {
+      "type": 0,
+      "value": "The goal of TI Assistant is to provide as much information as possible while requiring minimal manual input."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "The following options require significant manual input and are not recommended for most groups."
+    }
+  ],
   "KzTGw5": [
     {
       "type": 0,
@@ -22061,6 +22075,12 @@
       "value": "Imperial Points"
     }
   ],
+  "eGQScU": [
+    {
+      "type": 0,
+      "value": "Advanced Tracking"
+    }
+  ],
   "eO0b2t": [
     {
       "type": 0,
@@ -22954,6 +22974,12 @@
     {
       "type": 0,
       "value": "Homebrew:"
+    }
+  ],
+  "x+prCn": [
+    {
+      "type": 0,
+      "value": "Command Tokens"
     }
   ],
   "x42AMg": [

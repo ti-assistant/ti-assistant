@@ -34,6 +34,7 @@ import { objectEntries, rem } from "../../src/util/util";
 import ColorPicker from "./components/ColorPicker";
 import PlayerNameInput from "./components/PlayerNameInput";
 import styles from "./setup.module.scss";
+import LabeledLine from "../../src/components/LabeledLine/LabeledLine";
 
 const SetupFactionPanel = dynamic(
   () => import("../../src/components/SetupFactionPanel"),
@@ -1299,7 +1300,7 @@ const INITIAL_OPTIONS: SetupOptions = {
   "hide-objectives": false,
   "hide-planets": false,
   "hide-techs": false,
-  hide: new Set<AppSection>(["PLANET_STATE", "STRUCTURES"]),
+  hide: new Set<AppSection>(["COMMAND_COUNTERS", "PLANET_STATE", "STRUCTURES"]),
   "victory-points": 10,
   "secondary-victory-points": 10,
 };
@@ -1319,6 +1320,7 @@ export default function SetupPage({
     ...INITIAL_OPTIONS,
     expansions: new Set(INITIAL_OPTIONS.expansions),
     events: new Set(),
+    hide: new Set(INITIAL_OPTIONS.hide),
   });
   const [numFactions, setNumFactions] = useState(6);
   const [creatingGame, setCreatingGame] = useState(false);
@@ -1334,6 +1336,8 @@ export default function SetupPage({
     setOptions({
       ...INITIAL_OPTIONS,
       expansions: new Set(INITIAL_OPTIONS.expansions),
+      events: new Set(),
+      hide: new Set(INITIAL_OPTIONS.hide),
     });
     setSpeaker(0);
     setNumFactions(6);
@@ -2246,6 +2250,67 @@ export default function SetupPage({
                 />
               </Toggle>
             </div>
+            <LabeledLine
+              leftLabel={
+                <InfoRow
+                  infoTitle={
+                    <FormattedMessage
+                      id="eGQScU"
+                      defaultMessage="Advanced Tracking"
+                      description="Tracking options that are not recommended for most users."
+                    />
+                  }
+                  infoContent={
+                    <FormattedMessage
+                      id="KuClgv"
+                      defaultMessage="The goal of TI Assistant is to provide as much information as possible while requiring minimal manual input.{br}The following options require significant manual input and are not recommended for most groups."
+                      description="Disclaimer about advanced tracking options."
+                      values={{ br: "\n\n" }}
+                    />
+                  }
+                >
+                  <FormattedMessage
+                    id="eGQScU"
+                    defaultMessage="Advanced Tracking"
+                    description="Tracking options that are not recommended for most users."
+                  />
+                </InfoRow>
+              }
+            />
+            <div
+              className="flexRow"
+              style={{
+                flexWrap: "wrap",
+                justifyContent: "flex-start",
+                gap: rem(4),
+              }}
+            >
+              <Toggle
+                selected={!options.hide.has("COMMAND_COUNTERS")}
+                toggleFn={() =>
+                  toggleHide(
+                    !options.hide.has("COMMAND_COUNTERS"),
+                    "COMMAND_COUNTERS",
+                  )
+                }
+                info={{
+                  title: (
+                    <FormattedMessage
+                      id="x+prCn"
+                      description="Tokens used to perform tactical and strategic actions."
+                      defaultMessage="Command Tokens"
+                    />
+                  ),
+                  description: <CommandTokenDisclaimer />,
+                }}
+              >
+                <FormattedMessage
+                  id="x+prCn"
+                  description="Tokens used to perform tactical and strategic actions."
+                  defaultMessage="Command Tokens"
+                />
+              </Toggle>
+            </div>
           </LabeledDiv>
         </div>
         {/* Start Game Section */}
@@ -2475,6 +2540,67 @@ export default function SetupPage({
                 />
               </Toggle>
             </div>
+            <LabeledLine
+              leftLabel={
+                <InfoRow
+                  infoTitle={
+                    <FormattedMessage
+                      id="eGQScU"
+                      defaultMessage="Advanced Tracking"
+                      description="Tracking options that are not recommended for most users."
+                    />
+                  }
+                  infoContent={
+                    <FormattedMessage
+                      id="KuClgv"
+                      defaultMessage="The goal of TI Assistant is to provide as much information as possible while requiring minimal manual input.{br}The following options require significant manual input and are not recommended for most groups."
+                      description="Disclaimer about advanced tracking options."
+                      values={{ br: "\n\n" }}
+                    />
+                  }
+                >
+                  <FormattedMessage
+                    id="eGQScU"
+                    defaultMessage="Advanced Tracking"
+                    description="Tracking options that are not recommended for most users."
+                  />
+                </InfoRow>
+              }
+            />
+            <div
+              className="flexRow"
+              style={{
+                flexWrap: "wrap",
+                justifyContent: "flex-start",
+                gap: rem(4),
+              }}
+            >
+              <Toggle
+                selected={!options.hide.has("COMMAND_COUNTERS")}
+                toggleFn={() =>
+                  toggleHide(
+                    !options.hide.has("COMMAND_COUNTERS"),
+                    "COMMAND_COUNTERS",
+                  )
+                }
+                info={{
+                  title: (
+                    <FormattedMessage
+                      id="x+prCn"
+                      description="Tokens used to perform tactical and strategic actions."
+                      defaultMessage="Command Tokens"
+                    />
+                  ),
+                  description: <CommandTokenDisclaimer />,
+                }}
+              >
+                <FormattedMessage
+                  id="x+prCn"
+                  description="Tokens used to perform tactical and strategic actions."
+                  defaultMessage="Command Tokens"
+                />
+              </Toggle>
+            </div>
           </LabeledDiv>
           <div className="flexColumn" style={{ width: "100%" }}>
             <div className="flexRow">
@@ -2577,5 +2703,27 @@ export default function SetupPage({
         </div>
       </div>
     </React.Fragment>
+  );
+}
+
+function CommandTokenDisclaimer() {
+  return (
+    <>
+      Only the total number of command tokens is tracked.
+      <br />
+      <br />
+      Tokens will be automatically added/removed:
+      <ul style={{ textAlign: "left", margin: 0, fontSize: rem(24) }}>
+        <li>When playing Leadership/Lux (+3).</li>
+        <li>When spending influence on Leadership/Lux (+X).</li>
+        <li>When taking a Tactical Action (-1).</li>
+        <li>When marking a secondary as completed (-1).</li>
+        <li>When advancing to Status Phase (+2/3/4).</li>
+        <li>
+          When scoring Lead from the Front (-3) and Galvanize the People (-6).
+        </li>
+      </ul>
+      All other token changes will need to be manually entered.
+    </>
   );
 }

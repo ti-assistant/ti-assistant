@@ -19,7 +19,6 @@ import { Loader } from "../../../../../../src/Loader";
 import { processMapString } from "../../../../../../src/util/map";
 import { getMapString } from "../../../../../../src/util/options";
 import { ActionLog, Optional } from "../../../../../../src/util/types/types";
-import { rem } from "../../../../../../src/util/util";
 import MapLapse from "./MapLapse";
 import TechGraph from "./TechGraph";
 import Timers from "./Timers";
@@ -226,6 +225,8 @@ function buildInitialGameData(
   },
   intl: IntlShape,
 ) {
+  const gamePlanets: Partial<Record<PlanetId, GamePlanet>> = {};
+
   const gameFactions: GameFaction[] = setupData.factions.map(
     (faction, index) => {
       if (!faction.name || !faction.color || !faction.id) {
@@ -243,9 +244,9 @@ function buildInitialGameData(
       const homeBasePlanets = Object.values(getPlanets(intl)).filter(
         (planet) => planet.faction === faction.name && planet.home,
       );
-      const homePlanets: Partial<Record<PlanetId, { state: PlanetState }>> = {};
       homeBasePlanets.forEach((planet) => {
-        homePlanets[planet.id] = {
+        gamePlanets[planet.id] = {
+          owner: faction.id,
           state: "READIED",
         };
       });
@@ -262,12 +263,10 @@ function buildInitialGameData(
           order: order,
           mapPosition: index,
           // Faction specific values
-          planets: homePlanets,
           techs: {},
           startswith: { units: {} },
-          // State values
-          hero: "locked",
-          commander: "locked",
+          // Other
+          commandCounters: 8,
         };
       }
       const startingTechs: Partial<Record<TechId, { state: TechState }>> = {};
@@ -286,18 +285,15 @@ function buildInitialGameData(
         order: order,
         mapPosition: index,
         // Faction specific values
-        planets: homePlanets,
         techs: startingTechs,
         startswith: baseFaction.startswith,
-        // State values
-        hero: "locked",
-        commander: "locked",
+        // Other
+        commandCounters: 8,
       };
     },
   );
 
   let baseFactions: Partial<Record<FactionId, GameFaction>> = {};
-  let basePlanets: Partial<Record<PlanetId, GamePlanet>> = {};
   let speakerName: Optional<FactionId>;
   gameFactions.forEach((faction, index) => {
     if (index === setupData.speaker) {
@@ -327,12 +323,6 @@ function buildInitialGameData(
       }
     }
     baseFactions[faction.id] = localFaction;
-    Object.entries(faction.planets).forEach(([name, planet]) => {
-      basePlanets[name as PlanetId] = {
-        ...planet,
-        owner: faction.id,
-      };
-    });
   });
 
   let baseObjectives: Partial<Record<ObjectiveId, GameObjective>> = {
@@ -357,7 +347,7 @@ function buildInitialGameData(
       round: 1,
     },
     factions: baseFactions,
-    planets: basePlanets,
+    planets: gamePlanets,
     options: setupData.options,
     objectives: baseObjectives,
     sequenceNum: 1,

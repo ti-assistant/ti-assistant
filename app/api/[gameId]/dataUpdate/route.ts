@@ -130,6 +130,7 @@ import { UpdateBreakthroughStateHandler } from "../../../../src/util/model/updat
 import { UpdateLeaderStateHandler } from "../../../../src/util/model/updateLeaderState";
 import { UpdatePlanetStateHandler } from "../../../../src/util/model/updatePlanetState";
 import { Optional } from "../../../../src/util/types/types";
+import { ManualCCUpdateHandler } from "../../../../src/util/model/manualCCUpdate";
 
 export async function POST(
   req: Request,
@@ -460,6 +461,9 @@ function updateInTransaction(
         handler = new ContinueGameHandler(gameData, data);
         break;
       }
+      case "MANUAL_CC_UPDATE":
+        handler = new ManualCCUpdateHandler(gameData, data);
+        break;
       case "MANUAL_VP_UPDATE": {
         handler = new ManualVPUpdateHandler(gameData, data);
         break;
