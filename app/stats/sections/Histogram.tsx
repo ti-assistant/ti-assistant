@@ -122,10 +122,6 @@ export function FactionHistogram({
     return 1;
   });
 
-  console.log("Min", minVal);
-  console.log("Max", maxVal);
-  console.log("Total", total);
-
   return (
     <div className={styles.OuterHistogram}>
       <div className={styles.FactionHistogram}>

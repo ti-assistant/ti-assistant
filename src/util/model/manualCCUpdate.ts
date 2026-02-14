@@ -12,9 +12,6 @@ export class ManualCCUpdateHandler implements Handler {
     const commandCounters =
       this.gameData.factions[this.data.event.faction]?.commandCounters ?? 8;
 
-    console.log("Command counters", commandCounters);
-    console.log("data", this.data.event);
-
     const updates: Record<string, any> = {
       [`state.paused`]: false,
       [`sequenceNum`]: "INCREMENT",

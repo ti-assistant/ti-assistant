@@ -18,8 +18,6 @@ export default function Timers({
   const timers = useTimers();
   const factions = useFactions();
 
-  console.log("Timers", timers);
-  console.log("Tiemr data", timerData);
   return (
     <div
       className="flexColumn"
