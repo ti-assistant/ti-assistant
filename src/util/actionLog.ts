@@ -2,17 +2,17 @@ import { ActionLog } from "./types/types";
 
 export function logEntryIsType<DataType extends GameUpdateData>(
   logEntry: ActionLogEntry<GameUpdateData>,
-  action: DataType["action"]
+  action: DataType["action"],
 ): logEntry is ActionLogEntry<DataType> {
   return logEntry.data.action === action;
 }
 
 export function getLogEntries<DataType extends GameUpdateData>(
   actionLog: ActionLog,
-  type: DataType["action"]
+  type: DataType["action"],
 ): ActionLogEntry<DataType>[] {
   return actionLog.filter((logEntry) =>
-    logEntryIsType<DataType>(logEntry, type)
+    logEntryIsType<DataType>(logEntry, type),
   );
 }
 
@@ -21,7 +21,7 @@ export function getResearchedTechs(actionLog: ActionLog, factionId: FactionId) {
     .filter(
       (logEntry) =>
         logEntry.data.event.faction === factionId &&
-        !logEntry.data.event.researchAgreement
+        !logEntry.data.event.researchAgreement,
     )
     .map((logEntry) => (logEntry.data as AddTechData).event.tech);
 }
@@ -32,13 +32,13 @@ export function isPrimaryComplete(currentTurn: ActionLog) {
 
 export function getAddTechEvents(actionLog: ActionLog) {
   return getLogEntries<AddTechData>(actionLog, "ADD_TECH").filter(
-    (logEntry) => !logEntry.data.event.researchAgreement
+    (logEntry) => !logEntry.data.event.researchAgreement,
   );
 }
 
 export function getRevealedObjectives(actionLog: ActionLog) {
   return getLogEntries<RevealObjectiveData>(actionLog, "REVEAL_OBJECTIVE").map(
-    (logEntry) => logEntry.data.event.objective
+    (logEntry) => logEntry.data.event.objective,
   );
 }
 
@@ -50,7 +50,7 @@ export function getReplacedTechs(actionLog: ActionLog, factionId: FactionId) {
 
 export function getPurgedTechs(actionLog: ActionLog) {
   return getLogEntries<PurgeTechData>(actionLog, "PURGE_TECH").map(
-    (logEntry) => logEntry.data.event.techId
+    (logEntry) => logEntry.data.event.techId,
   );
 }
 
@@ -68,7 +68,7 @@ export function getNewOwner(actionLog: ActionLog, planetName: string) {
 
 export function getScoredObjectives(
   actionLog: ActionLog,
-  factionId: FactionId
+  factionId: FactionId,
 ) {
   return getLogEntries<ScoreObjectiveData>(actionLog, "SCORE_OBJECTIVE")
     .filter((logEntry) => logEntry.data.event.faction === factionId)
@@ -83,7 +83,7 @@ export function getAttachments(actionLog: ActionLog, planetId: PlanetId) {
 
 export function getObjectiveScorers(
   actionLog: ActionLog,
-  objectiveId: ObjectiveId
+  objectiveId: ObjectiveId,
 ) {
   return getLogEntries<ScoreObjectiveData>(actionLog, "SCORE_OBJECTIVE")
     .filter((logEntry) => logEntry.data.event.objective === objectiveId)
@@ -92,13 +92,13 @@ export function getObjectiveScorers(
 
 export function getActiveAgenda(actionLog: ActionLog) {
   return getLogEntries<RevealAgendaData>(actionLog, "REVEAL_AGENDA").map(
-    (logEntry) => logEntry.data.event.agenda
+    (logEntry) => logEntry.data.event.agenda,
   )[0];
 }
 
 export function getAllVotes(actionLog: ActionLog) {
   return getLogEntries<CastVotesData>(actionLog, "CAST_VOTES").map(
-    (logEntry) => logEntry.data.event
+    (logEntry) => logEntry.data.event,
   );
 }
 
@@ -117,7 +117,7 @@ export function getActionCardTargets(actionLog: ActionLog, card: string) {
 export function getPromissoryTargets(actionLog: ActionLog, card: string) {
   return getLogEntries<PlayPromissoryNoteData>(
     actionLog,
-    "PLAY_PROMISSORY_NOTE"
+    "PLAY_PROMISSORY_NOTE",
   )
     .filter((logEntry) => logEntry.data.event.card === card)
     .map((logEntry) => logEntry.data.event.target);
@@ -131,12 +131,22 @@ export function getGainedRelic(actionLog: ActionLog, planet?: PlanetId) {
     .map((logEntry) => logEntry.data.event.relic)[0];
 }
 
+export function getGainedCCs(actionLog: ActionLog, factionId: FactionId) {
+  return getLogEntries<ManualCCUpdateData>(actionLog, "MANUAL_CC_UPDATE")
+    .filter((logEntry) => {
+      return logEntry.data.event.faction === factionId;
+    })
+    .reduce((total, logEntry) => {
+      return logEntry.data.event.commandCounters + total;
+    }, 0);
+}
+
 export function getGainedTFCardLogEntries(
   actionLog: ActionLog,
-  factionId: FactionId
+  factionId: FactionId,
 ) {
   return getLogEntries<GainTFCardData>(actionLog, "GAIN_TF_CARD").filter(
-    (logEntry) => logEntry.data.event.faction === factionId
+    (logEntry) => logEntry.data.event.faction === factionId,
   );
 }
 
@@ -149,7 +159,7 @@ interface GainedCardsByType {
 
 export function getGainedTFCardsByType(
   actionLog: ActionLog,
-  factionId: FactionId
+  factionId: FactionId,
 ) {
   const events = getLogEntries<GainTFCardData>(actionLog, "GAIN_TF_CARD")
     .filter((logEntry) => logEntry.data.event.faction === factionId)
@@ -198,21 +208,21 @@ export function getPurgedPlanet(actionLog: ActionLog) {
 
 export function getSelectedFaction(actionLog: ActionLog) {
   return getLogEntries<SelectFactionData>(actionLog, "SELECT_FACTION").map(
-    (logEntry) => logEntry.data.event.faction
+    (logEntry) => logEntry.data.event.faction,
   )[0];
 }
 
 export function getSelectedSubComponent(actionLog: ActionLog) {
   return getLogEntries<SelectSubComponentData>(
     actionLog,
-    "SELECT_SUB_COMPONENT"
+    "SELECT_SUB_COMPONENT",
   ).map((logEntry) => logEntry.data.event.subComponent)[0];
 }
 
 export function getSelectedEligibleOutcomes(actionLog: ActionLog) {
   return getLogEntries<SelectEligibleOutcomesData>(
     actionLog,
-    "SELECT_ELIGIBLE_OUTCOMES"
+    "SELECT_ELIGIBLE_OUTCOMES",
   ).map((logEntry) => logEntry.data.event.outcomes)[0];
 }
 
@@ -224,19 +234,19 @@ export function getSelectedSubAgenda(actionLog: ActionLog) {
         return undefined;
       }
       return subAgenda;
-    }
+    },
   )[0];
 }
 
 export function getPlayedRiders(actionLog: ActionLog) {
   return getLogEntries<PlayRiderData>(actionLog, "PLAY_RIDER").map(
-    (logEntry) => logEntry.data.event
+    (logEntry) => logEntry.data.event,
   );
 }
 
 export function getSpeakerTieBreak(actionLog: ActionLog) {
   return getLogEntries<SpeakerTieBreakData>(actionLog, "SPEAKER_TIE_BREAK").map(
-    (logEntry) => logEntry.data.event.tieBreak
+    (logEntry) => logEntry.data.event.tieBreak,
   )[0];
 }
 
@@ -249,7 +259,7 @@ export function getPlayedRelic(actionLog: ActionLog, relic: RelicId) {
 export function getAdjudicatorBaalSystem(actionLog: ActionLog) {
   return getLogEntries<PlayAdjudicatorBaalData>(
     actionLog,
-    "PLAY_ADJUDICATOR_BAAL"
+    "PLAY_ADJUDICATOR_BAAL",
   ).map((logEntry) => logEntry.data.event.systemId)[0];
 }
 
@@ -261,24 +271,24 @@ export function wereTilesSwapped(actionLog: ActionLog) {
 
 export function getResearchAgreementFaction(
   actionLog: ActionLog,
-  techId: TechId
+  techId: TechId,
 ) {
   return getLogEntries<AddTechData>(actionLog, "ADD_TECH")
     .filter(
       (logEntry) =>
         logEntry.data.event.tech === techId &&
-        logEntry.data.event.researchAgreement
+        logEntry.data.event.researchAgreement,
     )
     .map((logEntry) => logEntry.data.event.faction)[0];
 }
 
 export function getLatestExpedition(
   actionLog: ActionLog,
-  factionId: FactionId
+  factionId: FactionId,
 ) {
   return getLogEntries<CommitToExpeditionData>(
     actionLog,
-    "COMMIT_TO_EXPEDITION"
+    "COMMIT_TO_EXPEDITION",
   )
     .filter((logEntry) => logEntry.data.event.factionId === factionId)
     .map((logEntry) => logEntry.data.event)[0];

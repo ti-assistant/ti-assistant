@@ -913,9 +913,70 @@ export function AdditionalActions({
       );
     }
     case "Leadership":
+    case "Lux": {
+      const strategyCard = strategyCards[selectedAction];
+      return (
+        <div className="flexColumn largeFont" style={{ ...style }}>
+          <LabeledLine
+            leftLabel={
+              <InfoRow
+                infoTitle={`${strategyCard?.name} Primary`}
+                infoContent={
+                  <FormattedDescription description={strategyCard?.primary} />
+                }
+              >
+                <FormattedMessage
+                  id="mhqGMn"
+                  description="The main ability for a strategy card."
+                  defaultMessage="Primary"
+                />
+              </InfoRow>
+            }
+            rightLabel={
+              <Toggle
+                selected={primaryCompleted}
+                toggleFn={() => {
+                  markPrimaryAsync(gameId, !primaryCompleted);
+                }}
+              >
+                <FormattedMessage
+                  id="9F+GVy"
+                  description="Text on a button for marking something completed."
+                  defaultMessage="Done"
+                />
+              </Toggle>
+            }
+          />
+          <StrategicActions.Leadership.Primary factionId={factionId} />
+          <LabeledLine
+            leftLabel={
+              <InfoRow
+                infoTitle={`${strategyCard?.name} Secondary`}
+                infoContent={
+                  <FormattedDescription description={strategyCard?.secondary} />
+                }
+              >
+                <FormattedMessage
+                  id="PBW6vs"
+                  description="The alternate ability for a strategy card."
+                  defaultMessage="Secondary"
+                />
+              </InfoRow>
+            }
+          />
+          <StrategicActions.Leadership.AllSecondaries
+            activeFactionId={factionId}
+          />
+          <SecondaryCheck
+            activeFactionId={factionId}
+            primaryCompleted={primaryCompleted}
+            orderedFactionIds={orderedFactionIds}
+          />
+        </div>
+      );
+    }
     case "Construction":
     case "Trade":
-    case "Lux":
     case "Civitas":
     case "Amicus": {
       const strategyCard = strategyCards[selectedAction];

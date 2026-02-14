@@ -39,6 +39,8 @@ import {
 } from "./util/planets";
 import { SummarySection } from "./util/settings";
 import { objectEntries, rem } from "./util/util";
+import CommandTokensSVG from "./icons/ui/CommandTokens";
+import Conditional from "./components/Conditional/Conditional";
 
 interface FactionSummaryProps {
   factionId: FactionId;
@@ -64,7 +66,9 @@ export function FactionSummary({ factionId }: FactionSummaryProps) {
         factionId={factionId}
         section={settings["fs-right"]}
       />
-      <FactionCCSummary factionId={factionId} />
+      <Conditional appSection="COMMAND_COUNTERS">
+        <FactionCCSummary factionId={factionId} />
+      </Conditional>
     </div>
   );
 }
@@ -471,14 +475,14 @@ function FactionCCSummary({ factionId }: { factionId: FactionId }) {
   const gameId = useGameId();
   const phase = usePhase();
   const viewOnly = useViewOnly();
-  if (!faction) {
+  if (!faction || faction.commandCounters == undefined) {
     return null;
   }
 
   const editable = phase !== "END" && !viewOnly;
 
   return (
-    <div className="flexColumn" style={{ width: "1.25rem" }}>
+    <div className="flexColumn" style={{ width: "1.5rem" }}>
       {faction.commandCounters < 16 && editable ? (
         <div
           className="arrowUp"
@@ -487,9 +491,11 @@ function FactionCCSummary({ factionId }: { factionId: FactionId }) {
           }}
         ></div>
       ) : (
-        <div style={{ width: rem(12) }}></div>
+        <div style={{ width: rem(12), height: rem(8), flexShrink: 0 }}></div>
       )}
-      {faction.commandCounters}
+      <div className="flexRow" style={{ width: "100%", height: "fit-content" }}>
+        <CommandTokensSVG tokens={faction.commandCounters} />
+      </div>
       {faction.commandCounters > 0 && editable ? (
         <div
           className="arrowDown"
@@ -498,7 +504,7 @@ function FactionCCSummary({ factionId }: { factionId: FactionId }) {
           }}
         ></div>
       ) : (
-        <div style={{ width: rem(12) }}></div>
+        <div style={{ width: rem(12), height: rem(8), flexShrink: 0 }}></div>
       )}
     </div>
   );

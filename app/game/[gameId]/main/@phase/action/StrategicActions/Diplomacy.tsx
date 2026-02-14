@@ -2,10 +2,7 @@ import { FormattedMessage } from "react-intl";
 import ClaimPlanetsSection from "../../../../../../../src/components/ClaimPlanetsSection/ClaimPlanetsSection";
 import FactionComponents from "../../../../../../../src/components/FactionComponents/FactionComponents";
 import LabeledDiv from "../../../../../../../src/components/LabeledDiv/LabeledDiv";
-import {
-  useOptions,
-  usePlanets,
-} from "../../../../../../../src/context/dataHooks";
+import { usePlanets } from "../../../../../../../src/context/dataHooks";
 import { useOrderedFactionIds } from "../../../../../../../src/context/gameDataHooks";
 import { getColorForFaction } from "../../../../../../../src/util/factions";
 import Conditional from "../../../../../../../src/components/Conditional/Conditional";

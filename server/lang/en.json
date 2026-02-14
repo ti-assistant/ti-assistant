@@ -4519,6 +4519,10 @@
     "defaultMessage": "Attach",
     "description": "Text on a button that displays the attachment menu for a planet."
   },
+  "KuClgv": {
+    "defaultMessage": "The goal of TI Assistant is to provide as much information as possible while requiring minimal manual input.{br}The following options require significant manual input and are not recommended for most groups.",
+    "description": "Disclaimer about advanced tracking options."
+  },
   "KzTGw5": {
     "defaultMessage": "Veto or Quash or Political Favor",
     "description": "Text on a button for replacing the current agenda."
@@ -10915,6 +10919,10 @@
     "defaultMessage": "Imperial Points",
     "description": "The title of points granted from using Imperial."
   },
+  "eGQScU": {
+    "defaultMessage": "Advanced Tracking",
+    "description": "Tracking options that are not recommended for most users."
+  },
   "eO0b2t": {
     "defaultMessage": "Agent",
     "description": "The title of an agent: a leader that can get used once per round."
@@ -11210,6 +11218,10 @@
   "weIxIg": {
     "defaultMessage": "Homebrew:",
     "description": "A label for a selector specifying expansions that are homemade."
+  },
+  "x+prCn": {
+    "defaultMessage": "Command Tokens",
+    "description": "Tokens used to perform tactical and strategic actions."
   },
   "x42AMg": {
     "defaultMessage": "Randomize",

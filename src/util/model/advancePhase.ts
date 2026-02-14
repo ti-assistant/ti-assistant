@@ -2,13 +2,17 @@ import { createIntl, createIntlCache } from "react-intl";
 import { buildFactions, buildStrategyCards } from "../../data/GameData";
 import { Optional } from "../types/types";
 import { objectEntries } from "../util";
+import { hasTech } from "../api/techs";
 
 export class AdvancePhaseHandler implements Handler {
-  constructor(public gameData: StoredGameData, public data: AdvancePhaseData) {
+  constructor(
+    public gameData: StoredGameData,
+    public data: AdvancePhaseData,
+  ) {
     this.data.event.factions = structuredClone(gameData.factions);
     this.data.event.state = structuredClone(gameData.state);
     this.data.event.strategycards = structuredClone(
-      gameData.strategycards ?? {}
+      gameData.strategycards ?? {},
     );
   }
 
@@ -27,7 +31,7 @@ export class AdvancePhaseHandler implements Handler {
             }
             return numCards;
           },
-          0
+          0,
         );
         if (numFactions < 5) {
           return numFactions * 2 === numPickedCards;
@@ -90,6 +94,28 @@ export class AdvancePhaseHandler implements Handler {
         } else {
           updates[`state.activeplayer`] = this.gameData.state.speaker;
         }
+
+        Object.values(this.gameData.factions).forEach((faction) => {
+          let baseTokens = faction.commandCounters;
+          if (baseTokens == undefined) {
+            return;
+          }
+          baseTokens += 2;
+          const hasHyper =
+            faction.techs["Hyper Metabolism"]?.state === "ready" &&
+            (this.gameData.techs ?? {})["Hyper Metabolism"]?.state !== "purged";
+          if (hasHyper) {
+            baseTokens += 1;
+          }
+          if (faction.id === "Federation of Sol") {
+            baseTokens += 1;
+          }
+          updates[`factions.${faction.id}.commandCounters`] = Math.min(
+            baseTokens,
+            16,
+          );
+        });
+
         break;
       }
       case "STATUS": {
@@ -102,7 +128,7 @@ export class AdvancePhaseHandler implements Handler {
           updates[`strategycards.${strategyCard.id}.used`] = "DELETE";
         }
         for (const [componentId, component] of Object.entries(
-          this.gameData.components ?? {}
+          this.gameData.components ?? {},
         )) {
           if (component.state === "exhausted") {
             updates[`components.${componentId}.state`] = "DELETE";
@@ -123,7 +149,7 @@ export class AdvancePhaseHandler implements Handler {
           }
         }
         for (const [leaderId, leader] of Object.entries(
-          this.gameData.leaders ?? {}
+          this.gameData.leaders ?? {},
         )) {
           if (leader.state === "exhausted") {
             updates[`leaders.${leaderId}.state`] = "DELETE";
@@ -134,7 +160,7 @@ export class AdvancePhaseHandler implements Handler {
           updates[`state.round`] = this.gameData.state.round + 1;
         } else {
           const nextPhase = this.gameData.options.expansions.includes(
-            "TWILIGHTS FALL"
+            "TWILIGHTS FALL",
           )
             ? "EDICT"
             : "AGENDA";
@@ -178,7 +204,10 @@ export class AdvancePhaseHandler implements Handler {
 }
 
 export class RewindPhaseHandler implements Handler {
-  constructor(public gameData: StoredGameData, public data: RewindPhaseData) {}
+  constructor(
+    public gameData: StoredGameData,
+    public data: RewindPhaseData,
+  ) {}
 
   validate(): boolean {
     // TODO: Pass lock value so that this can be validated.

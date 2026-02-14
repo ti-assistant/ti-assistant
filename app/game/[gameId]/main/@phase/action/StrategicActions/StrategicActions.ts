@@ -2,6 +2,7 @@ import Aeterna from "./Aeterna";
 import Calamitas from "./Calamitas";
 import Diplomacy from "./Diplomacy";
 import Imperial from "./Imperial";
+import Leadership from "./Leadership";
 import Magus from "./Magus";
 import Noctis from "./Noctis";
 import Politics from "./Politics";
@@ -10,6 +11,7 @@ import Tyrannus from "./Tyrannus";
 import Warfare from "./Warfare";
 
 const StrategicActions = {
+  Leadership,
   Diplomacy,
   Imperial,
   Politics,

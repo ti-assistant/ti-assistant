@@ -225,6 +225,8 @@ function buildInitialGameData(
   },
   intl: IntlShape,
 ) {
+  const gamePlanets: Partial<Record<PlanetId, GamePlanet>> = {};
+
   const gameFactions: GameFaction[] = setupData.factions.map(
     (faction, index) => {
       if (!faction.name || !faction.color || !faction.id) {
@@ -242,9 +244,9 @@ function buildInitialGameData(
       const homeBasePlanets = Object.values(getPlanets(intl)).filter(
         (planet) => planet.faction === faction.name && planet.home,
       );
-      const homePlanets: Partial<Record<PlanetId, { state: PlanetState }>> = {};
       homeBasePlanets.forEach((planet) => {
-        homePlanets[planet.id] = {
+        gamePlanets[planet.id] = {
+          owner: faction.id,
           state: "READIED",
         };
       });
@@ -292,7 +294,6 @@ function buildInitialGameData(
   );
 
   let baseFactions: Partial<Record<FactionId, GameFaction>> = {};
-  let basePlanets: Partial<Record<PlanetId, GamePlanet>> = {};
   let speakerName: Optional<FactionId>;
   gameFactions.forEach((faction, index) => {
     if (index === setupData.speaker) {
@@ -346,7 +347,7 @@ function buildInitialGameData(
       round: 1,
     },
     factions: baseFactions,
-    planets: basePlanets,
+    planets: gamePlanets,
     options: setupData.options,
     objectives: baseObjectives,
     sequenceNum: 1,

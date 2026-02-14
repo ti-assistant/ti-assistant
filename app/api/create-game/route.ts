@@ -10,7 +10,6 @@ import {
   setSessionIdCookie,
 } from "../../../src/util/server";
 import { Optional } from "../../../src/util/types/types";
-import { objectEntries } from "../../../src/util/util";
 
 function makeid(length: number) {
   var result = "";
@@ -36,6 +35,8 @@ export async function POST(req: Request) {
   });
   const BASE_FACTIONS = getFactions(intl);
 
+  const gamePlanets: Partial<Record<PlanetId, GamePlanet>> = {};
+
   const gameFactions = factions.map((faction, index) => {
     if (!faction.name || !faction.color || !faction.id) {
       throw new Error("Faction missing name or color.");
@@ -52,9 +53,9 @@ export async function POST(req: Request) {
     const homeBasePlanets = Object.values(getPlanets(intl)).filter(
       (planet) => planet.faction === faction.id && planet.home,
     );
-    const homePlanets: Partial<Record<PlanetId, { state: PlanetState }>> = {};
     homeBasePlanets.forEach((planet) => {
-      homePlanets[planet.id] = {
+      gamePlanets[planet.id] = {
+        owner: faction.id,
         state: "READIED",
       };
     });
@@ -130,7 +131,6 @@ export async function POST(req: Request) {
   });
 
   let baseFactions: Partial<Record<FactionId, GameFaction>> = {};
-  let basePlanets: Partial<Record<PlanetId, GamePlanet>> = {};
   let speakerName: Optional<FactionId>;
   gameFactions.forEach((faction, index) => {
     const baseFaction = BASE_FACTIONS[faction.id];
@@ -187,7 +187,7 @@ export async function POST(req: Request) {
       round: 1,
     },
     factions: baseFactions,
-    planets: basePlanets,
+    planets: gamePlanets,
     options: options,
     objectives: baseObjectives,
     deleteAt: Timestamp.fromDate(deleteDate),
