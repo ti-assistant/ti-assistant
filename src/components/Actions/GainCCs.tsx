@@ -51,16 +51,6 @@ export default function GainCommandTokens({
           ),
         }}
       />
-      {/* <NumberInput
-        value={gainedCCs}
-        onChange={(value) => {
-          manualCCUpdateAsync(gameId, factionId, value - gainedCCs);
-        }}
-        maxValue={16 - faction.commandCounters + gainedCCs}
-        minValue={0}
-        viewOnly={viewOnly}
-      />
-      Command Tokens */}
     </div>
   );
 }

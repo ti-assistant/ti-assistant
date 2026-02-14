@@ -5,7 +5,7 @@ type CardEvent = AbilityEvent | GenomeEvent | ParadigmEvent | UpgradeEvent;
 
 function equals(
   a: TFCardEvent & CardEvent,
-  b: TFCardEvent & CardEvent
+  b: TFCardEvent & CardEvent,
 ): boolean {
   if (a.faction !== b.faction) {
     return false;
@@ -23,7 +23,10 @@ function equals(
 }
 
 export class GainTFCardHandler implements Handler {
-  constructor(public gameData: StoredGameData, public data: GainTFCardData) {
+  constructor(
+    public gameData: StoredGameData,
+    public data: GainTFCardData,
+  ) {
     let prevOwner: Optional<FactionId>;
     switch (this.data.event.type) {
       case "ABILITY":
@@ -43,7 +46,6 @@ export class GainTFCardHandler implements Handler {
         prevOwner = upgrades[this.data.event.upgrade]?.owner;
         break;
     }
-    console.log("Prev owner", prevOwner);
     if (prevOwner) {
       this.data.event.prevFaction = prevOwner;
     }
@@ -101,7 +103,10 @@ export class GainTFCardHandler implements Handler {
 }
 
 export class LoseTFCardHandler implements Handler {
-  constructor(public gameData: StoredGameData, public data: LoseTFCardData) {}
+  constructor(
+    public gameData: StoredGameData,
+    public data: LoseTFCardData,
+  ) {}
 
   validate(): boolean {
     return true;
