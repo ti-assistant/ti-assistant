@@ -8,6 +8,7 @@
     "firebase-admin": "^13.5.0",
     "js-cookie": "^3.0.5",
     "jssha": "^3.3.1",
+    "negotiator": "^1.0.0",
     "next": "^15.5.7",
     "qrcode": "^1.5.4",
     "react": "^19.2.0",
@@ -39,11 +40,12 @@
     "@formatjs/cli": "^6.7.4",
     "@next/bundle-analyzer": "^15.5.4",
     "@types/js-cookie": "^3.0.6",
+    "@types/negotiator": "^0.6.4",
     "@types/qrcode": "^1.5.5",
     "@types/react": "^19.2.2",
     "@types/react-transition-group": "^4.4.12",
-    "eslint-config-next": "^15.5.4",
-    "eslint-config-prettier": "^10.1.8",
+    "eslint-config-next": "^0.2.4",
+    "eslint-config-prettier": "^6.15.0",
     "sass": "^1.93.2"
   },
   "overrides": {

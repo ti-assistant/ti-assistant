@@ -1,9 +1,10 @@
 import { cookies } from "next/headers";
 import { DEFAULT_SETTINGS, Settings } from "./settings";
 import jsSHA from "jssha";
+import { IntlShape } from "react-intl";
 
 export async function getMessages(
-  locale: string
+  locale: string,
 ): Promise<Record<string, string>> {
   const messages = await import(`../../server/compiled-lang/${locale}.json`);
 

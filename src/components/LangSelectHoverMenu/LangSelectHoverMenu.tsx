@@ -1,12 +1,14 @@
 "use client";
 
-import Cookies from "js-cookie";
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { CSSProperties, PropsWithChildren, useRef, useState } from "react";
 import { SymbolX } from "../../icons/svgs";
 import { rem } from "../../util/util";
 import Circle from "../Circle/Circle";
 import styles from "./LangSelectHoverMenu.module.scss";
+import Cookies from "js-cookie";
 
 interface FactionSelectProps {
   selectedLocale?: string;
@@ -39,6 +41,7 @@ export default function LangSelectHoverMenu({
   invalidLocales = [],
   size = 44,
 }: PropsWithChildren<FactionSelectProps>) {
+  const pathName = usePathname();
   const menu = useRef<HTMLDivElement>(null);
   const innerMenu = useRef<HTMLDivElement>(null);
   const [closing, setClosing] = useState(false);
@@ -123,18 +126,17 @@ export default function LangSelectHoverMenu({
           if (locale === selectedLocale) {
             return null;
           }
+          const updated = pathName.split("/");
+          updated[1] = locale;
+          const newPathName = updated.join("/");
           return (
-            <div
+            <Link
               key={locale}
+              href={newPathName}
               className={`flexRow ${styles.oldFactionSelect}`}
               style={languageSelectStyle}
-              onClick={() => {
-                closeFn();
-                if (locale === selectedLocale) {
-                  return;
-                }
+              onNavigate={() => {
                 Cookies.set("TI_LOCALE", locale);
-                window.location.reload();
               }}
             >
               <div
@@ -150,7 +152,7 @@ export default function LangSelectHoverMenu({
                   <LanguageIcon locale={locale} />
                 )}
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>

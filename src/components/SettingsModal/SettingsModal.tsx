@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { FormattedMessage } from "react-intl";
-import ColorPicker from "../../../app/setup/components/ColorPicker";
-import PlayerNameInput from "../../../app/setup/components/PlayerNameInput";
+import ColorPicker from "../../../app/[locale]/setup/components/ColorPicker";
+import PlayerNameInput from "../../../app/[locale]/setup/components/PlayerNameInput";
 import { SettingsContext } from "../../context/contexts";
 import { useGameId, useOptions, useViewOnly } from "../../context/dataHooks";
 import { useFactions } from "../../context/factionDataHooks";
@@ -19,7 +19,6 @@ import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import NumberInput from "../NumberInput/NumberInput";
 import TechIcon from "../TechIcon/TechIcon";
 import { DummyTechTree } from "../TechTree/TechTree";
-import Toggle from "../Toggle/Toggle";
 
 export default function SettingsModal() {
   return (

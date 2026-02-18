@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
-import { rewriteProcessedGames } from "../../stats/processor";
 import { headers } from "next/headers";
+import { NextResponse } from "next/server";
+import { rewriteProcessedGames } from "../../[locale]/stats/processor";
 
 export async function GET() {
   const headerList = await headers();
