@@ -11,7 +11,7 @@ import { getOppositeHandler } from "../../../src/util/api/opposite";
 import { updateActionLog } from "../../../src/util/api/update";
 import { computeVPs } from "../../../src/util/factions";
 import { EndGameHandler } from "../../../src/util/model/endGame";
-import { getLocale, getMessages } from "../../../src/util/server";
+import { getMessages } from "../../../src/util/server";
 import { ActionLog, Optional } from "../../../src/util/types/types";
 import { objectEntries, objectKeys } from "../../../src/util/util";
 
@@ -146,7 +146,7 @@ async function getJSONFileFromStorage(
 }
 
 export async function rewriteProcessedGames() {
-  const locale = await getLocale();
+  const locale = "en";
   const messages = await getMessages(locale);
   const cache = createIntlCache();
   const intl = createIntl({ locale, messages }, cache);
@@ -238,7 +238,7 @@ export async function maybeUpdateProcessedGames(
 }
 
 export async function reprocessGames() {
-  const locale = await getLocale();
+  const locale = "en";
   const messages = await getMessages(locale);
   const cache = createIntlCache();
   const intl = createIntl({ locale, messages }, cache);

@@ -1,5 +1,5 @@
 import QRCode from "qrcode";
-import { PropsWithChildren, Suspense } from "react";
+import { Suspense } from "react";
 import { createIntl, createIntlCache, IntlShape } from "react-intl";
 import "server-only";
 import { getGameData, getTimers } from "../../../../server/util/fetch";
@@ -7,7 +7,6 @@ import QRCodeButton from "../../../../src/components/QRCode/QRCodeButton";
 import DataWrapper from "../../../../src/context/DataWrapper";
 import { buildBaseData, buildGameData } from "../../../../src/data/GameData";
 import {
-  getLocale,
   getMessages,
   getSessionIdFromCookie,
 } from "../../../../src/util/server";
@@ -38,8 +37,7 @@ async function fetchGameData(gameId: string, intlPromise: Promise<IntlShape>) {
   return { data: gameData, baseData: baseData, storedData: data };
 }
 
-async function getIntl() {
-  const locale = await getLocale();
+async function getIntl(locale: string) {
   const messages = await getMessages(locale);
   const cache = createIntlCache();
   return createIntl({ locale, messages, onError: intlErrorFn as any }, cache);
@@ -72,13 +70,9 @@ export default async function Layout({
   phase,
   summary,
   params,
-}: PropsWithChildren<{
-  params: Promise<{ gameId: string }>;
-  phase: React.ReactNode;
-  summary: React.ReactNode;
-}>) {
-  const { gameId } = await params;
-  const intlPromise = getIntl();
+}: LayoutProps<"/[locale]/archive/[gameId]">) {
+  const { gameId, locale } = await params;
+  const intlPromise = getIntl(locale);
 
   const qrCodePromise = getQRCode(gameId, 280);
 

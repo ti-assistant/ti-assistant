@@ -2,7 +2,7 @@ import { Storage } from "@google-cloud/storage";
 import { createIntl, createIntlCache } from "react-intl";
 import "server-only";
 import { getEvents } from "../../../server/data/events";
-import { getLocale, getMessages } from "../../../src/util/server";
+import { getMessages } from "../../../src/util/server";
 import { intlErrorFn } from "../../../src/util/util";
 import { ProcessedGame } from "../stats/processor";
 import ArchivePage from "./archive-page";
@@ -18,8 +18,8 @@ async function getJSONFileFromStorage(
   return JSON.parse(file.toString("utf8"));
 }
 
-export default async function Page() {
-  const locale = await getLocale();
+export default async function Page({ params }: PageProps<"/[locale]/archive">) {
+  const locale = (await params).locale;
   const messages = await getMessages(locale);
   const cache = createIntlCache();
   const intl = createIntl(

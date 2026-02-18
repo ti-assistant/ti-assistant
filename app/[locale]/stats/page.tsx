@@ -1,10 +1,10 @@
 import { Storage } from "@google-cloud/storage";
 import { createIntl, createIntlCache } from "react-intl";
+import { getBaseData } from "../../../src/data/baseData";
+import { getMessages } from "../../../src/util/server";
+import { intlErrorFn } from "../../../src/util/util";
 import { ProcessedGame } from "./processor";
 import StatsPage from "./stats-page";
-import { getBaseData } from "../../../src/data/baseData";
-import { getLocale, getMessages } from "../../../src/util/server";
-import { intlErrorFn } from "../../../src/util/util";
 
 async function getJSONFileFromStorage(
   storage: Storage,
@@ -17,8 +17,8 @@ async function getJSONFileFromStorage(
   return JSON.parse(file.toString("utf8"));
 }
 
-export default async function Page({}) {
-  const locale = await getLocale();
+export default async function Page({ params }: PageProps<"/[locale]/stats">) {
+  const locale = (await params).locale;
   const messages = await getMessages(locale);
   const cache = createIntlCache();
   const intl = createIntl(
