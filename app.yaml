@@ -1,4 +1,4 @@
-runtime: nodejs20
+runtime: nodejs24
 env: standard
 service: default
 instance_class: F2

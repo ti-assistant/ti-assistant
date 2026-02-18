@@ -16,7 +16,7 @@ function getLocale(request: NextRequest) {
   return languages[0] ?? "en";
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   console.log("I'm getting redirected", request.nextUrl.pathname);
   // Check if there is any supported locale in the pathname
   const { pathname } = request.nextUrl;
