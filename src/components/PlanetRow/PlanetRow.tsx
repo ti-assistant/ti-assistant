@@ -407,6 +407,14 @@ export function AttachMenu({ planetId }: AttachMenuProps) {
         if (planetAttachments.includes(attachment.id)) {
           return true;
         }
+        // Cannot attach to space stations, oceans, or synthetic planets (i.e. The Triad)
+        if (
+          updatedPlanet.attributes.includes("space-station") ||
+          updatedPlanet.attributes.includes("ocean") ||
+          updatedPlanet.attributes.includes("synthetic")
+        ) {
+          return false;
+        }
         if (
           updatedPlanet.id === "Mecatol Rex" &&
           attachment.id !== "Nano-Forge"

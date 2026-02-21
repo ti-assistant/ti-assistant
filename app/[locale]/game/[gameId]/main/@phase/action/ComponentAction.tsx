@@ -651,6 +651,9 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
           planetFilter={(planet) =>
             planet.owner === factionId &&
             !planet.home &&
+            !planet.attributes.includes("space-station") &&
+            !planet.attributes.includes("ocean") &&
+            !planet.attributes.includes("synthetic") &&
             !planet.attributes.includes("legendary")
           }
         />
@@ -664,11 +667,14 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       );
       innerContent = (
         <ComponentActions.AttachToPlanet.Content
-          attachmentId="Nano-Forge"
+          attachmentId="Terraform"
           factionId={factionId}
           planetFilter={(planet) =>
             planet.owner === factionId &&
             !planet.home &&
+            !planet.attributes.includes("space-station") &&
+            !planet.attributes.includes("ocean") &&
+            !planet.attributes.includes("synthetic") &&
             planet.id !== "Mecatol Rex"
           }
         />

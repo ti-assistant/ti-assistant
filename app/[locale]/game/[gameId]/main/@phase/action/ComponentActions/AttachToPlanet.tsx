@@ -45,7 +45,6 @@ function Content({
 }) {
   const attachments = useAttachments();
   const dataUpdate = useDataUpdate();
-  const gameId = useGameId();
   const planets = usePlanets();
   const viewOnly = useViewOnly();
 
