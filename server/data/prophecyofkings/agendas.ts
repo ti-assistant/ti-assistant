@@ -1,17 +1,20 @@
 import { IntlShape } from "react-intl";
 
 export default function getProphecyOfKingsAgendas(
-  intl: IntlShape
+  intl: IntlShape,
 ): Record<ProphecyOfKings.AgendaId, BaseAgenda> {
   return {
     "Armed Forces Standardization": {
-      description: intl.formatMessage({
-        id: "Agendas.Armed Forces Standardization.Description",
-        description:
-          "Description for Agenda Card: Armed Forces Standardization",
-        defaultMessage:
-          "The elected player places command tokens from their reinforcements so that they have 3 tokens in their tactic pool, 3 tokens in their fleet pool and 2 tokens in their strategy pool. They return any excess tokens to their reinforcements.",
-      }),
+      description: intl.formatMessage(
+        {
+          id: "Agendas.Armed Forces Standardization.Description",
+          description:
+            "Description for Agenda Card: Armed Forces Standardization",
+          defaultMessage:
+            "The elected player places command tokens from their reinforcements so that they have 3 tokens in their tactic pool, 3 tokens in their fleet pool and 2 tokens in their strategy pool. They return any excess tokens to their reinforcements.",
+        },
+        { br: "\n\n" },
+      ),
       elect: "Player",
       expansion: "POK",
       id: "Armed Forces Standardization",
@@ -30,7 +33,7 @@ export default function getProphecyOfKingsAgendas(
           defaultMessage:
             'FOR : All mechs lose their printed abilities except for SUSTAIN DAMAGE.{br}AGAINST : Each player that voted "For" gains 3 trade goods.',
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       elect: "For/Against",
       expansion: "POK",
@@ -50,7 +53,7 @@ export default function getProphecyOfKingsAgendas(
           defaultMessage:
             "FOR : When a player chooses a strategy card during the strategy phase, they give that strategy card to another player that does not have 1 (or a player that does not have 2 in a three- or four-player game), if able.{br}AGAINST : Each player readies only 3 of their planets at the end of this agenda phase.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       elect: "For/Against",
       expansion: "POK",
@@ -70,7 +73,7 @@ export default function getProphecyOfKingsAgendas(
           defaultMessage:
             "When this agenda is revealed, the speaker draws the next card in the agenda deck but does not reveal it to the other players.{br}Instead, the speaker reads the eligible outcomes aloud (For, Against, Elect Player, etc.); the other players vote for these outcomes as if they were outcomes of this agenda, without knowing their effects.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       elect: "???",
       expansion: "POK",
@@ -83,12 +86,15 @@ export default function getProphecyOfKingsAgendas(
       type: "DIRECTIVE",
     },
     "Galactic Crisis Pact": {
-      description: intl.formatMessage({
-        id: "Agendas.Galactic Crisis Pact.Description",
-        description: "Description for Agenda Card: Galactic Crisis Pact",
-        defaultMessage:
-          "Each player may perform the secondary ability of the elected strategy card without spending a command token; command tokens placed by the ability are placed from a player's reinforcements instead.",
-      }),
+      description: intl.formatMessage(
+        {
+          id: "Agendas.Galactic Crisis Pact.Description",
+          description: "Description for Agenda Card: Galactic Crisis Pact",
+          defaultMessage:
+            "Each player may perform the secondary ability of the elected strategy card without spending a command token; command tokens placed by the ability are placed from a player's reinforcements instead.",
+        },
+        { br: "\n\n" },
+      ),
       elect: "Strategy Card",
       expansion: "POK",
       id: "Galactic Crisis Pact",
@@ -100,11 +106,14 @@ export default function getProphecyOfKingsAgendas(
       type: "DIRECTIVE",
     },
     "Minister of Antiques": {
-      description: intl.formatMessage({
-        id: "Agendas.Minister of Antiques.Description",
-        description: "Description for Agenda Card: Minister of Antiques",
-        defaultMessage: "The elected player gains 1 relic.",
-      }),
+      description: intl.formatMessage(
+        {
+          id: "Agendas.Minister of Antiques.Description",
+          description: "Description for Agenda Card: Minister of Antiques",
+          defaultMessage: "The elected player gains 1 relic.",
+        },
+        { br: "\n\n" },
+      ),
       elect: "Player",
       expansion: "POK",
       id: "Minister of Antiques",
@@ -123,7 +132,7 @@ export default function getProphecyOfKingsAgendas(
           defaultMessage:
             "FOR : Alpha and beta wormholes in the wormhole nexus have no effect during movement.{br}AGAINST : Place a gamma wormhole token in the Mecatol Rex system.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       elect: "For/Against",
       expansion: "POK",
@@ -143,7 +152,7 @@ export default function getProphecyOfKingsAgendas(
           defaultMessage:
             "The elected player gains this card and 1 victory point.{br}The elected player cannot play action cards.{br}If the owner of this card loses this card, they lose 1 victory point.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       elect: "Player",
       expansion: "POK",
@@ -163,7 +172,7 @@ export default function getProphecyOfKingsAgendas(
           defaultMessage:
             "FOR : Each player places 1 mech from their reinforcements on a planet they control in their home system.{br}AGAINST : Each player replaces each of their mechs with 1 infantry from their reinforcements.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       elect: "For/Against",
       expansion: "POK",
@@ -176,12 +185,16 @@ export default function getProphecyOfKingsAgendas(
       type: "DIRECTIVE",
     },
     "Research Grant Reallocation": {
-      description: intl.formatMessage({
-        id: "Agendas.Research Grant Reallocation.Description",
-        description: "Description for Agenda Card: Research Grant Reallocation",
-        defaultMessage:
-          "The elected player gains any 1 technology of their choice. Then, for each prerequisite on that technology, they remove 1 token from their fleet pool and return it to their reinforcements.",
-      }),
+      description: intl.formatMessage(
+        {
+          id: "Agendas.Research Grant Reallocation.Description",
+          description:
+            "Description for Agenda Card: Research Grant Reallocation",
+          defaultMessage:
+            "The elected player gains any 1 technology of their choice. Then, for each prerequisite on that technology, they remove 1 token from their fleet pool and return it to their reinforcements.",
+        },
+        { br: "\n\n" },
+      ),
       elect: "Player",
       expansion: "POK",
       id: "Research Grant Reallocation",
@@ -200,7 +213,7 @@ export default function getProphecyOfKingsAgendas(
           defaultMessage:
             "The elected player gains this card and draws 2 secret objectives.{br}The owner of this card plays with their secret objectives revealed.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       elect: "Player",
       expansion: "POK",

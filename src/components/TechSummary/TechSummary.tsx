@@ -13,6 +13,7 @@ import OptionalElement from "../OptionalElement/OptionalElement";
 import TechIcon from "../TechIcon/TechIcon";
 import TechTree from "../TechTree/TechTree";
 import styles from "./TechSummary.module.scss";
+import { Settings } from "../../util/settings";
 
 interface TechCounts {
   red: number;
@@ -191,25 +192,30 @@ export default function TechSummary({
   factionId,
   techs,
   ownedTechs,
+  settingOverride,
 }: {
   factionId: FactionId;
   techs: Techs;
   ownedTechs: Set<TechId>;
+  settingOverride?: Settings;
 }) {
   const options = useOptions();
   const { settings } = useContext(SettingsContext);
   const viewOnly = useViewOnly();
 
-  if (settings["fs-tech-summary-display"] === "NONE") {
+  const localSettings = settingOverride ?? settings;
+
+  if (localSettings["fs-tech-summary-display"] === "NONE") {
     return null;
   }
 
   const techCounts = getTechCounts(techs, Array.from(ownedTechs));
 
-  const showNumbers = settings["fs-tech-summary-display"].includes("NUMBER");
-  const showIcons = settings["fs-tech-summary-display"].includes("ICON");
+  const showNumbers =
+    localSettings["fs-tech-summary-display"].includes("NUMBER");
+  const showIcons = localSettings["fs-tech-summary-display"].includes("ICON");
   const showTrees =
-    settings["fs-tech-summary-display"].includes("TREE") &&
+    localSettings["fs-tech-summary-display"].includes("TREE") &&
     !options.expansions.includes("TWILIGHTS FALL");
 
   return (

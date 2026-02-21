@@ -12,6 +12,13 @@
   z-index: 1;
 }
 
+.Settings {
+  position: fixed;
+  inset-block-start: 0.5rem;
+  inset-inline-end: 3.4rem;
+  z-index: 8;
+}
+
 @media only screen and (min-width: 68.75rem) {
   .QRCode {
     display: block;
@@ -22,5 +29,10 @@
   .MobileQRCode {
     inset-block-start: 0.5rem;
     inset-inline-end: 6rem;
+  }
+
+  .Settings {
+    inset-block-start: 0.5rem;
+    inset-inline-end: 3.4rem;
   }
 }

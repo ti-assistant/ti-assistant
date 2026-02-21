@@ -64,6 +64,21 @@ function buildDatabaseFns(database: Database): DatabaseFns {
     database.hashes = updatedHashes;
   }
 
+  function getBaseDataValueAtPath<Type>(path: string, data: BaseData) {
+    const pathSections = path.split(".");
+    if (path === "") {
+      return data as Type;
+    }
+    let dataRef: any = data;
+    for (const section of pathSections) {
+      if (!dataRef[section]) {
+        return undefined;
+      }
+      dataRef = dataRef[section];
+    }
+    return dataRef as Type;
+  }
+
   function getValueAtPath<Type>(path: string, data: Optional<GameData>) {
     if (!data) {
       return;
@@ -148,6 +163,9 @@ function buildDatabaseFns(database: Database): DatabaseFns {
     getValue: (path: string) => {
       return getValueAtPath(path, database.data);
     },
+    getBaseValue: (path: string) => {
+      return getBaseDataValueAtPath(path, database.baseData);
+    },
     update: (updateFn: UpdateFn<StoredGameData>, source: UpdateSource) => {
       if (!isInitialized(database)) {
         return;
@@ -211,11 +229,6 @@ function buildDatabaseFns(database: Database): DatabaseFns {
   };
 
   return fns;
-}
-
-function addTimers(storedData: StoredGameData, data: GameData) {
-  storedData.timers = data.timers;
-  return storedData;
 }
 
 // TODO: Move to shared location.

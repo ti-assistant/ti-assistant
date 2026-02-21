@@ -13,12 +13,14 @@ import FormattedDescription from "../../../src/components/FormattedDescription/F
 import LabeledDiv from "../../../src/components/LabeledDiv/LabeledDiv";
 import LabeledLine from "../../../src/components/LabeledLine/LabeledLine";
 import GameMap from "../../../src/components/Map/GameMap";
-import NonGameHeader from "../../../src/components/NonGameHeader/NonGameHeader";
 import NumberInput from "../../../src/components/NumberInput/NumberInput";
 import SiteLogo from "../../../src/components/SiteLogo/SiteLogo";
 import { Strings } from "../../../src/components/strings";
 import Toggle from "../../../src/components/Toggle/Toggle";
-import { ModalContext } from "../../../src/context/contexts";
+import {
+  DatabaseFnsContext,
+  ModalContext,
+} from "../../../src/context/contexts";
 import { ClientOnlyHoverMenu } from "../../../src/HoverMenu";
 import CodexSVG from "../../../src/icons/ui/Codex";
 import ProphecyofKingsSVG from "../../../src/icons/ui/ProphecyOfKings";
@@ -65,7 +67,7 @@ interface OptionsProps {
   options: SetupOptions;
   numFactions: number;
   maxFactions: number;
-  events: Record<EventId, TIEvent>;
+  events: Optional<Record<EventId, TIEvent>>;
 }
 
 function createOptions(setupOptions: SetupOptions) {
@@ -153,7 +155,7 @@ function MobileOptions({
       break;
   }
 
-  const filteredEvents = objectEntries(events)
+  const filteredEvents = objectEntries(events ?? {})
     .filter(([_, event]) => {
       if (options.expansions.has("TWILIGHTS FALL")) {
         return false;
@@ -555,7 +557,7 @@ function Options({
       break;
   }
 
-  const filteredEvents = objectEntries(events)
+  const filteredEvents = objectEntries(events ?? {})
     .filter(([_, event]) => {
       if (options.expansions.has("TWILIGHTS FALL")) {
         return false;
@@ -964,7 +966,6 @@ function getFactionIndex(
 }
 
 interface FactionSelectProps {
-  colors: string[];
   factions: SetupFaction[];
   position: number;
   mobile?: boolean;
@@ -982,7 +983,6 @@ interface FactionSelectProps {
 }
 
 function FactionSelect({
-  colors,
   factions,
   position,
   mobile = false,
@@ -1305,15 +1305,7 @@ const INITIAL_OPTIONS: SetupOptions = {
   "secondary-victory-points": 10,
 };
 
-export default function SetupPage({
-  factions,
-  colors,
-  events,
-}: {
-  factions: Record<FactionId, BaseFaction>;
-  colors: string[];
-  events: Record<EventId, TIEvent>;
-}) {
+export default function SetupPage() {
   const [speaker, setSpeaker] = useState(0);
   const [setupFactions, setFactions] = useState([...INITIAL_FACTIONS]);
   const [options, setOptions] = useState<SetupOptions>({
@@ -1329,7 +1321,12 @@ export default function SetupPage({
   const router = useRouter();
 
   const intl = useIntl();
-  const availableFactions = factions;
+  const databaseFns = use(DatabaseFnsContext);
+
+  const baseFactions: Optional<Record<FactionId, BaseFaction>> =
+    databaseFns.getBaseValue("factions");
+  const baseEvents: Optional<Record<EventId, TIEvent>> =
+    databaseFns.getBaseValue("events");
 
   function reset() {
     setFactions([...INITIAL_FACTIONS]);
@@ -1372,13 +1369,13 @@ export default function SetupPage({
     factionId: FactionId,
     usedColors: Set<string>,
   ) {
-    const color = factions[factionId].color;
+    const color = (baseFactions ?? {})[factionId]?.color;
     if (color) {
       if (!usedColors.has(color)) {
         return color;
       }
     }
-    const colorList = factions[factionId].colorList;
+    const colorList = (baseFactions ?? {})[factionId]?.colorList;
     if (!colorList) {
       return;
     }
@@ -1529,7 +1526,7 @@ export default function SetupPage({
         selectedColors[index] = color;
       }
     }
-    const filteredFactions = Object.values(availableFactions ?? {}).filter(
+    const filteredFactions = Object.values(baseFactions ?? {}).filter(
       (faction) => {
         if (faction.locked) {
           return false;
@@ -1626,10 +1623,7 @@ export default function SetupPage({
   }
 
   function disableRandomizeFactionButton() {
-    if (
-      !availableFactions ||
-      Object.keys(availableFactions).length < numFactions
-    ) {
+    if (!baseFactions || Object.keys(baseFactions).length < numFactions) {
       return true;
     }
     for (let i = 0; i < numFactions; i++) {
@@ -1712,7 +1706,7 @@ export default function SetupPage({
         setupFactions.map((faction, _) => {
           const tempFaction: SetupFaction = { ...faction };
           const currFaction = tempFaction.id
-            ? availableFactions[tempFaction.id]
+            ? (baseFactions ?? {})[tempFaction.id]
             : undefined;
           if (!currFaction) {
             return tempFaction;
@@ -1749,7 +1743,7 @@ export default function SetupPage({
             delete tempFaction.color;
           }
           const currFaction = tempFaction.id
-            ? (availableFactions ?? {})[tempFaction.id]
+            ? (baseFactions ?? {})[tempFaction.id]
             : undefined;
           if (!currFaction) {
             return tempFaction;
@@ -1802,7 +1796,7 @@ export default function SetupPage({
             options={options}
             numFactions={numFactions}
             maxFactions={maxFactions}
-            events={events}
+            events={baseEvents}
           />
         </div>
         <div
@@ -1817,7 +1811,6 @@ export default function SetupPage({
         >
           <div style={{ gridArea: "left-top" }}>
             <FactionSelect
-              colors={colors}
               factions={setupFactions}
               position={7}
               numFactions={numFactions}
@@ -1834,7 +1827,6 @@ export default function SetupPage({
           !(numFactions === 4 && options["map-style"] === "standard") ? (
             <div style={{ gridArea: "left-mid" }}>
               <FactionSelect
-                colors={colors}
                 factions={setupFactions}
                 position={6}
                 numFactions={numFactions}
@@ -1851,7 +1843,6 @@ export default function SetupPage({
           {numFactions > 6 ? (
             <div style={{ gridArea: "left-bot" }}>
               <FactionSelect
-                colors={colors}
                 factions={setupFactions}
                 position={5}
                 numFactions={numFactions}
@@ -1879,7 +1870,6 @@ export default function SetupPage({
             }}
           >
             <FactionSelect
-              colors={colors}
               factions={setupFactions}
               position={0}
               numFactions={numFactions}
@@ -2035,7 +2025,6 @@ export default function SetupPage({
             }}
           >
             <FactionSelect
-              colors={colors}
               factions={setupFactions}
               position={4}
               numFactions={numFactions}
@@ -2109,7 +2098,6 @@ export default function SetupPage({
         >
           <div style={{ gridArea: "right-top" }}>
             <FactionSelect
-              colors={colors}
               factions={setupFactions}
               position={1}
               numFactions={numFactions}
@@ -2126,7 +2114,6 @@ export default function SetupPage({
           !(numFactions === 4 && options["map-style"] === "standard") ? (
             <div style={{ gridArea: "right-mid" }}>
               <FactionSelect
-                colors={colors}
                 factions={setupFactions}
                 position={2}
                 numFactions={numFactions}
@@ -2144,7 +2131,6 @@ export default function SetupPage({
           numFactions > 7 ? (
             <div style={{ gridArea: "right-bot" }}>
               <FactionSelect
-                colors={colors}
                 factions={setupFactions}
                 position={3}
                 numFactions={numFactions}
@@ -2432,7 +2418,7 @@ export default function SetupPage({
             numFactions={numFactions}
             maxFactions={maxFactions}
             reset={reset}
-            events={events}
+            events={baseEvents}
           />
           {setupFactions.map((_, index) => {
             if (index >= numFactions) {
@@ -2441,7 +2427,6 @@ export default function SetupPage({
             return (
               <FactionSelect
                 key={index}
-                colors={colors}
                 factions={setupFactions}
                 position={index}
                 numFactions={numFactions}

@@ -1,11 +1,9 @@
 import QRCode from "qrcode";
 import { Suspense } from "react";
-import { IntlShape } from "react-intl";
 import "server-only";
 import { getGameData, getTimers } from "../../../../server/util/fetch";
 import QRCodeButton from "../../../../src/components/QRCode/QRCodeButton";
 import DataInitializer from "../../../../src/context/DataWrapper";
-import { buildBaseData, buildGameData } from "../../../../src/data/GameData";
 import { getIntl } from "../../../../src/util/server";
 import DynamicSidebars from "../../game/[gameId]/dynamic-sidebars";
 import GameCode from "../../game/[gameId]/game-code";

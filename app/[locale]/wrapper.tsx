@@ -1,10 +1,10 @@
 "use client";
 
-import { IntlProvider } from "react-intl";
+import Cookies from "js-cookie";
 import { PropsWithChildren, useState } from "react";
+import { IntlProvider } from "react-intl";
 import { SettingsContext } from "../../src/context/contexts";
 import { Settings } from "../../src/util/settings";
-import Cookies from "js-cookie";
 
 export default function Wrapper({
   messages,
@@ -49,11 +49,16 @@ export function SettingsProvider({
     });
   }
 
+  function overwriteSettings(settings: Settings) {
+    setSettings(settings);
+  }
+
   return (
     <SettingsContext.Provider
       value={{
         settings,
         updateSetting,
+        overwriteSettings,
       }}
     >
       {children}

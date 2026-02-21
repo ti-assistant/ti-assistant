@@ -1,21 +1,23 @@
-import { use, useState } from "react";
+import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { getTechs } from "../server/data/techs";
 import PlanetSummary from "./components/PlanetSummary/PlanetSummary";
 import SiteLogo from "./components/SiteLogo/SiteLogo";
 import TechSummary from "./components/TechSummary/TechSummary";
 import TimerDisplay from "./components/TimerDisplay/TimerDisplay";
-import { SettingsContext } from "./context/contexts";
 import styles from "./FactionSummary.module.scss";
-import { SummaryLabel, SummarySection } from "./util/settings";
+import { Settings, SummaryLabel, SummarySection } from "./util/settings";
 import { rem } from "./util/util";
 
 const TOP_RIGHT = { x: 22, y: -38 };
 
-export default function DummyFactionSummary() {
+export default function DummyFactionSummary({
+  settings,
+}: {
+  settings: Settings;
+}) {
   const intl = useIntl();
   const techs = getTechs(intl);
-  const { settings } = use(SettingsContext);
 
   const ownedTechs: Set<TechId> = new Set(["Sarween Tools"]);
 
@@ -78,18 +80,21 @@ export default function DummyFactionSummary() {
         ownedTechs={ownedTechs}
         planets={planets}
         section={settings["fs-left"]}
+        settingOverride={settings}
       />
       <SummaryPart
         techs={techs}
         ownedTechs={ownedTechs}
         planets={planets}
         section={settings["fs-center"]}
+        settingOverride={settings}
       />
       <SummaryPart
         techs={techs}
         ownedTechs={ownedTechs}
         planets={planets}
         section={settings["fs-right"]}
+        settingOverride={settings}
       />
     </div>
   );
@@ -100,11 +105,13 @@ function SummaryPart({
   ownedTechs,
   planets,
   section,
+  settingOverride,
 }: {
   techs: Record<TechId, Tech>;
   ownedTechs: Set<TechId>;
   planets: Planet[];
   section: SummarySection;
+  settingOverride?: Settings;
 }) {
   const [VPs, setVPs] = useState(0);
   switch (section) {
@@ -116,6 +123,7 @@ function SummaryPart({
           factionId="Vuil'raith Cabal"
           techs={techs}
           ownedTechs={ownedTechs}
+          settingOverride={settingOverride}
         />
       );
     case "OBJECTIVES":

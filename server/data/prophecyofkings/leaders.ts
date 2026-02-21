@@ -1,7 +1,7 @@
 import { IntlShape } from "react-intl";
 
 export default function getProphecyOfKingsLeaders(
-  intl: IntlShape
+  intl: IntlShape,
 ): Record<ProphecyOfKings.LeaderId, BaseLeader> {
   return {
     "2RAM": {
@@ -35,7 +35,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "After a player moves ships into a system that does not contain any planets:{br}You may exhaust this card; that player gains 1 command token.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Empyrean",
@@ -61,7 +61,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "After you move a war sun into a non-home system other than Mecatol Rex:{br}You may destroy all other players' units in that system and replace that system tile with the Muaat supernova tile. If you do, purge this card and each planet card that corresponds to the replaced system tile.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Embers of Muaat",
@@ -87,7 +87,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "ACTION: Move all units in the space area of any system to an adjacent system that contains a different player's ships. Space Combat is resolved in that system; neither player can retreat or resolve abilities that would move their ships{br}Then, purge this card",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Mahact Gene-Sorcerers",
@@ -113,7 +113,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "ACTION: Place this card near the game board; your flagship and units it transports can move out of systems that contain your command tokens during this game round{br}At the end of that game round, purge this card",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Nomad",
@@ -134,7 +134,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "When you gain trade goods from the supply:{br}You may exhaust this card to place an equal number of trade goods on this card. When this card readies, gain the trade goods on this card.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Nomad",
@@ -155,7 +155,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "When 1 or more of a player's units use PRODUCTION:{br}You may exhaust this card to reduce the combined cost of the produced units by 2.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Winnu",
@@ -176,7 +176,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "After a player's destroyer or cruiser is destroyed:{br}You may exhaust this card; if you do, that player may place up to 2 fighters from their reinforcements in that unit's system.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Yin Brotherhood",
@@ -195,7 +195,7 @@ export default function getProphecyOfKingsLeaders(
               defaultMessage:
                 "After a player's unit is destroyed:{br}You may exhaust this card to allow that player to place 2 fighters in the destroyed unit's system if it was a ship, or 2 infantry on its planet if it was a ground force.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
           expansion: "CODEX THREE",
           name: intl.formatMessage({
@@ -212,7 +212,7 @@ export default function getProphecyOfKingsLeaders(
               defaultMessage:
                 "After a player's unit is destroyed during combat:{br}You may exhaust this card to allow that player to place 2 fighters in the destroyed unit's system if it was a ship, or 2 infantry on its planet if it was a ground force.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
           name: intl.formatMessage({
             id: "Yin Brotherhood.Leaders.Brother Milor.Name",
@@ -233,7 +233,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "This card satisfies a green technology prerequisite.{br}You may produce 1 additional infantry for their cost. These infantry do not count against your production limit.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Yin Brotherhood",
@@ -252,7 +252,7 @@ export default function getProphecyOfKingsLeaders(
               defaultMessage:
                 "This card satisfies a green technology prerequisite.{br}When you research technology owned by another player, you may return 1 of your infantry to reinforcements to ignore all prerequisites.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
           expansion: "CODEX THREE",
           name: intl.formatMessage({
@@ -291,7 +291,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "After a player activates a system:{br}You may exhaust this card to increase the move value of 1 of that player's ships to match the move value of the ship on the game board that has the highest move value.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Clan of Saar",
@@ -312,7 +312,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "During the action phase:{br}You may exhaust this card to gain 2 commodities or replenish another player's commodities.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Emirates of Hacan",
@@ -333,7 +333,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "At the start of a ground combat on a planet you control:{br}You may place 1 infantry from your reinforcements on that planet.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Federation of Sol",
@@ -365,7 +365,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "ACTION: Place 1 frontier token in each system that does not contain any planets and does not already have a frontier token. Then, explore each frontier token that is in a system that contains 1 or more of your ships.{br}Then, purge this card.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Empyrean",
@@ -391,7 +391,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "ACTION: For each planet that contains any number of your infantry, either ready that planet or place an equal number of infantry from your reinforcements on that planet.{br}Then, purge this card.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Yin Brotherhood",
@@ -415,7 +415,7 @@ export default function getProphecyOfKingsLeaders(
               defaultMessage:
                 "ACTION: Commit up to 3 infantry from your reinforcements to any non-home planets and resolve ground combats on those planets; players cannot use SPACE CANNON against these units.{br}Then, purge this card.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
           expansion: "CODEX THREE",
           name: intl.formatMessage({
@@ -454,7 +454,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "ACTION: Place this card near the game board; the number of non-fighter ships you can have in systems is not limited by laws or by the number of command tokens in your fleet pool during this game round.{br}At the end of that game round, purge this card.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Barony of Letnev",
@@ -475,7 +475,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "After you gain control of a planet that was controlled by another player:{br}You may explore that planet.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Naaz-Rokha Alliance",
@@ -501,7 +501,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "After another player activates a system that contains 1 or more of your units that have PRODUCTION:{br}You may produce 1 unit in that system.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Arborec",
@@ -527,7 +527,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "When a player spends resources to research:{br}You may exhaust this card to allow that player to remove any number of their infantry from the game board. For each unit removed, reduce the resources spent by 1.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Universities of Jol-Nar",
@@ -541,12 +541,15 @@ export default function getProphecyOfKingsLeaders(
       type: "AGENT",
     },
     "Elder Qanoj": {
-      description: intl.formatMessage({
-        id: "Xxcha Kingdom.Leaders.Elder Qanoj.Description",
-        description: "Description for Xxcha Commander: Elder Qanoj",
-        defaultMessage:
-          "Each planet you exhaust to cast votes provides 1 additional vote. Game effects cannot prevent you from voting on an agenda.",
-      }),
+      description: intl.formatMessage(
+        {
+          id: "Xxcha Kingdom.Leaders.Elder Qanoj.Description",
+          description: "Description for Xxcha Commander: Elder Qanoj",
+          defaultMessage:
+            "Each planet you exhaust to cast votes provides 1 additional vote. Game effects cannot prevent you from voting on an agenda.",
+        },
+        { br: "\n\n" },
+      ),
       expansion: "POK",
       faction: "Xxcha Kingdom",
       id: "Elder Qanoj",
@@ -572,7 +575,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "After a player activates a system that contains a non-delta wormhole:{br}You may exhaust this card; if you do, that system is adjacent to all other systems that contain a wormhole during this tactical action.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Ghosts of Creuss",
@@ -593,7 +596,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "At the start of a ground combat round:{br}You may exhaust this card to choose 1 ground force in the active system; that ground force rolls 1 additional die during that combat round.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Federation of Sol",
@@ -614,7 +617,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "At the end of a player's turn:{br}You may exhaust this card to allow that player to remove up to 2 of their ground forces from the game board and place them on planets they control in the active system.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Nomad",
@@ -635,7 +638,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "At the end of a player's turn:{br}You may exhaust this card to allow that player to explore 1 of their planets.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Naaz-Rokha Alliance",
@@ -656,7 +659,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             'During the "Commit Ground Forces" step:{br}You can commit up to 1 ground force from each planet in the active system and each planet in adjacent systems that do not contain 1 of your command tokens.',
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Sardakk N'orr",
@@ -700,7 +703,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "When you cast votes:{br}You may spend any number of trade goods; cast 2 additional votes for each trade good spent.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Emirates of Hacan",
@@ -732,7 +735,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "ACTION: Choose 1 system that is adjacent to 1 of your space docks. Destroy all other player's infantry and fighters in that system{br}Then, purge this card",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Clan of Saar",
@@ -758,7 +761,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "When 1 or more of your units use PRODUCTION:{br}You may reduce the cost of each of your units to 0 during this use of PRODUCTION. If you do, purge this card.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Emirates of Hacan",
@@ -784,7 +787,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "ACTION: Gain 1 relic and perform the secondary ability of up to 2 readied or unchosen strategy cards; during this action, spend command tokens from your reinforcements instead of your strategy pool.{br}Then, purge this card.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Naaz-Rokha Alliance",
@@ -805,7 +808,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "After a player activates a system:{br}You may exhaust this card to allow that player to replace 1 of their infantry in the active system with 1 mech from their reinforcements.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "L1Z1X Mindnet",
@@ -855,7 +858,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "At the start of space combat that you are participating in:{br}You may purge this card; if you do, for each other player's ship that is destroyed during this combat, place 1 ship of that type from your reinforcements in the active system.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Mentak Coalition",
@@ -881,7 +884,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "ACTION: Each other player rolls a die for each of their non-fighter ships that are in or adjacent to a system that contains a dimensional tear; on a 1-3, capture that unit. If this causes a player's ground forces or fighters to be removed, also capture those units{br}Then, purge this card",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Vuil'raith Cabal",
@@ -907,7 +910,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "ACTION: Remove each of your command tokens from the game board and return them to your reinforcements.{br}Then, purge this card.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Federation of Sol",
@@ -928,7 +931,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "When you would spend a command token during the secondary ability of a strategic action:{br}You may exhaust this card to remove 1 of the active player's command tokens from the board and use it instead.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Mahact Gene-Sorcerers",
@@ -954,7 +957,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "ACTION: Each other player shows you 1 action card from their hand. For each player, you may either take that card or force that player to discard 3 random action cards from their hand.{br}Then, purge this card.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Yssaril Tribes",
@@ -980,7 +983,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "ACTION: Produce any number of units in any number of systems that contain 1 or more of your ground forces.{br}Then, purge this card.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Arborec",
@@ -1035,7 +1038,7 @@ export default function getProphecyOfKingsLeaders(
               defaultMessage:
                 "At any time:{br}You may look at your neighbors' hand of promissory notes and the top and bottom cards of the agenda deck.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
           expansion: "CODEX THREE",
           name: intl.formatMessage({
@@ -1075,7 +1078,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "After you spend a token from your strategy pool:{br}You may gain 1 trade good.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Embers of Muaat",
@@ -1106,7 +1109,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "ACTION: Perform the primary ability of any strategy card. Then, choose any number of other players. Those players may perform the secondary ability of that strategy card.{br}Then, purge this card.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Winnu",
@@ -1132,7 +1135,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "ACTION: Move any number of your ships from any systems to any number of other systems that contain 1 of your command tokens and no other players' ships.{br}Then, purge this card.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Argent Flight",
@@ -1176,7 +1179,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "After you gain a technology:{br}You may draw 1 action card.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Nekro Virus",
@@ -1203,7 +1206,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "During the action phase:{br}You may exhaust this card to choose a player; that player may discard 1 action card or spend 1 command token from their command sheet to gain 2 trade goods.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Nekro Virus",
@@ -1217,12 +1220,15 @@ export default function getProphecyOfKingsLeaders(
       type: "AGENT",
     },
     "Rickar Rickani": {
-      description: intl.formatMessage({
-        id: "Winnu.Leaders.Rickar Rickani.Description",
-        description: "Description for Winnu Commander: Rickar Rickani",
-        defaultMessage:
-          "During combat: Apply +2 to the result of each of your unit's combat rolls in the Mecatol Rex system, your home system, and each system that contains a legendary planet.",
-      }),
+      description: intl.formatMessage(
+        {
+          id: "Winnu.Leaders.Rickar Rickani.Description",
+          description: "Description for Winnu Commander: Rickar Rickani",
+          defaultMessage:
+            "During combat: Apply +2 to the result of each of your unit's combat rolls in the Mecatol Rex system, your home system, and each system that contains a legendary planet.",
+        },
+        { br: "\n\n" },
+      ),
       expansion: "POK",
       faction: "Winnu",
       id: "Rickar Rickani",
@@ -1248,7 +1254,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "After 1 of your units uses SUSTAIN DAMAGE:{br}You may gain 1 trade good.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Barony of Letnev",
@@ -1280,7 +1286,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "ACTION: For each non-unit upgrade technology you own, you may replace that technology with any technology of the same color from the deck.{br}Then, purge this card.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Universities of Jol-Nar",
@@ -1306,7 +1312,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "ACTION: Swap the positions of any 2 systems that contain wormholes or your units, other than the Creuss system and the Wormhole Nexus.{br}Then, purge this card",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Ghosts of Creuss",
@@ -1327,7 +1333,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "When you produce fighters or infantry:{br}You may place each of those units at any of your space docks that are not blockaded.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Clan of Saar",
@@ -1353,7 +1359,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "After your ships move:{br}For each ship that has a capacity value and moved through 1 or more wormholes, you may place 1 fighter from your reinforcements with that ship if you have unused capacity in the active system.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Ghosts of Creuss",
@@ -1385,7 +1391,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             'After you move ships into the active system:{br}You may skip directly to the "Commit Ground Forces" step. If you do, after you commit ground forces to land on planets, purge this card and return each of your ships in the active system to your reinforcements.',
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Sardakk N'orr",
@@ -1406,7 +1412,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "After another player activates a system that contains your units:{br}You may look at that player's action cards, promissory notes, or secret objectives.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Yssaril Tribes",
@@ -1432,7 +1438,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "After you win a space combat:{br}You may force your opponent to give you 1 promissory note from their hand.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Mentak Coalition",
@@ -1458,7 +1464,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "After the PILLAGE faction ability is used against another player:{br}You may exhaust this card; if you do, you and that player each draw 1 action card.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Mentak Coalition",
@@ -1497,7 +1503,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "After you roll dice for a unit ability:{br}You may reroll any of those dice.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Universities of Jol-Nar",
@@ -1533,7 +1539,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "When a hit is produced against a unit:{br}You may exhaust this card to cancel that hit.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Titans of Ul",
@@ -1555,7 +1561,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "When you produce fighter or infantry units:{br}Up to 2 of those units do not count against your PRODUCTION limit.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Vuil'raith Cabal",
@@ -1587,7 +1593,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "ACTION: Choose 1 system that does not contain other players' ships; you may move your flagship and any number of your dreadnoughts from other systems into the chosen system.{br}Then, purge this card.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "L1Z1X Mindnet",
@@ -1613,7 +1619,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "At the end of the status phase:{br}You may force each other player to give you 1 promissory note from their hand. If you do, purge this card.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Naalu Collective",
@@ -1635,7 +1641,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "After another player replenishes commodities:{br}You may exhaust this card to convert their commodities to trade goods and capture 1 unit from their reinforcements that has a cost equal to or lower than their commodity value.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Vuil'raith Cabal",
@@ -1656,7 +1662,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             'After the "Roll Dice" step of combat:{br}You may exhaust this card. If you do, hits are not assigned to either players\' units. Return to the start of this combat round\'s "Roll Dice" step',
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Nomad",
@@ -1677,7 +1683,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "At the end of a player's tactical action:{br}You may exhaust this card; if you do, that player may place 2 infantry from their reinforcements on a planet they control in the active system.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Sardakk N'orr",
@@ -1698,7 +1704,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "When 1 or more of your units make a roll for a unit ability:{br}You may choose 1 of those units to roll 1 additional die.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Argent Flight",
@@ -1725,7 +1731,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "When a player produces ground forces in a system:{br}You may exhaust this card; that player may place those units on any planets they control in that system and any adjacent systems.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Argent Flight",
@@ -1746,7 +1752,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "When 1 or more of your units use PRODUCTION:{br}You may gain 1 trade good.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Titans of Ul",
@@ -1818,7 +1824,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "ACTION: Choose a planet that has a technology specialty in a system that contains your units. Destroy any other player's units on that planet. Gain trade goods equal to that planet's combined resource and influence values and gain 1 technology that matches the specialty of that planet.{br}Then, purge this card.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Nekro Virus",
@@ -1839,7 +1845,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "At the start of a Space Combat round:{br}You may exhaust this card to choose 1 ship in the active system. That ship rolls 1 additional die during this combat round.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Barony of Letnev",
@@ -1860,7 +1866,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "After another player moves ships into a system that contains 1 of your command tokens:{br}You may return that token to your reinforcements.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Empyrean",
@@ -1891,7 +1897,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "ACTION: You may discard 1 law from play. Look at the top 5 cards of the agenda deck. Choose 2 to reveal, and resolve each as if you had cast 1 vote for an outcome of your choice; discard the rest. Other players cannot resolve abilities during this action.{br}Then, purge this card.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Xxcha Kingdom",
@@ -1935,7 +1941,7 @@ export default function getProphecyOfKingsLeaders(
               defaultMessage:
                 "ACTION: Place any combination of up to 4 PDS or mechs onto planets that you control; ready each planet that you place a unit on.{br}Then, purge this card.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
           expansion: "THUNDERS EDGE",
           name: intl.formatMessage({
@@ -1957,7 +1963,7 @@ export default function getProphecyOfKingsLeaders(
           defaultMessage:
             "After an agenda is revealed:{br}You may exhaust this card to look at the top card of the agenda deck. Then, you may show that card to 1 other player",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       faction: "Naalu Collective",
@@ -1991,7 +1997,7 @@ export default function getProphecyOfKingsLeaders(
               defaultMessage:
                 "After any player's command token is placed in a system:{br}You may exhaust this card to return that token to that player's reinforcements.",
             },
-            { br: "\n\n" }
+            { br: "\n\n" },
           ),
           name: intl.formatMessage({
             id: "Naalu Collective.Leaders.Z'eu.Name",

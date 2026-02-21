@@ -82,6 +82,7 @@ interface BaseData {
   actionCards: Record<ActionCardId, BaseActionCard>;
   agendas: Record<AgendaId, BaseAgenda>;
   attachments: Record<AttachmentId, BaseAttachment>;
+  colors: FactionColor[];
   components: Record<ComponentId, BaseComponent | BaseTechComponent>;
   events: Record<EventId, TIEvent>;
   factions: Record<FactionId, BaseFaction>;

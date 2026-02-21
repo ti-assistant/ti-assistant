@@ -141,28 +141,31 @@ function InnerContent({ viewing }: { viewing: View }) {
     return getBaseData(intl);
   }, [intl]);
 
-  useEffect(() => {
-    worker.current = new Worker(
-      new URL("./game-log.worker.tsx", import.meta.url),
-      {
-        name: "game-log",
-        type: "module",
-      },
-    );
+  // useEffect(() => {
+  //   worker.current = new Worker(
+  //     new URL(
+  //       "../../../../../../../public/game-log.worker.tsx",
+  //       import.meta.url,
+  //     ),
+  //     {
+  //       name: "game-log",
+  //       type: "module",
+  //     },
+  //   );
 
-    worker.current.postMessage({
-      reversedActionLog,
-      initialGameData,
-      baseData,
-    });
+  //   worker.current.postMessage({
+  //     reversedActionLog,
+  //     initialGameData,
+  //     baseData,
+  //   });
 
-    worker.current.onmessage = (event) => {
-      setCondensedData(event.data);
-    };
-    return () => {
-      worker.current?.terminate();
-    };
-  }, [initialGameData, reversedActionLog, baseData]);
+  //   worker.current.onmessage = (event) => {
+  //     setCondensedData(event.data);
+  //   };
+  //   return () => {
+  //     worker.current?.terminate();
+  //   };
+  // }, [initialGameData, reversedActionLog, baseData]);
 
   if (reversedActionLog.length === 0 || !condensedData) {
     return (

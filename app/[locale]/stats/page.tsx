@@ -16,7 +16,7 @@ async function getJSONFileFromStorage(
 }
 
 export default async function Page({ params }: PageProps<"/[locale]/stats">) {
-  const locale = (await params).locale;
+  const { locale } = await params;
 
   const intlPromise = getIntl(locale);
 

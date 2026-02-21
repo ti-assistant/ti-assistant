@@ -2,10 +2,8 @@ import { getBaseData } from "../../../src/data/baseData";
 import { getIntl } from "../../../src/util/server";
 import StatsPage from "./stats-page";
 
-export default async function Loading({
-  params,
-}: PageProps<"/[locale]/stats">) {
-  const locale = (await params).locale;
+export default async function Loading() {
+  const locale = "en";
 
   const intl = await getIntl(locale);
 

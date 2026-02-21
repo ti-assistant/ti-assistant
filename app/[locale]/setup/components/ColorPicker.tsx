@@ -1,5 +1,6 @@
+import { use } from "react";
 import { FormattedMessage } from "react-intl";
-import { BASE_COLORS } from "../../../../server/data/colors";
+import { DatabaseFnsContext } from "../../../../src/context/contexts";
 import { ClientOnlyHoverMenu } from "../../../../src/HoverMenu";
 import { convertToFactionColor } from "../../../../src/util/factions";
 import styles from "./ColorPicker.module.scss";
@@ -15,6 +16,9 @@ export default function ColorPicker({
   selectedColors,
   updateColor,
 }: ColorPickerParams) {
+  const databaseFns = use(DatabaseFnsContext);
+  const colors: FactionColor[] = databaseFns.getBaseValue("colors") ?? [];
+
   return (
     <ClientOnlyHoverMenu
       label={
@@ -27,7 +31,7 @@ export default function ColorPicker({
       renderProps={(closeFn) => {
         return (
           <div className={styles.ColorPicker}>
-            {BASE_COLORS.map((color) => {
+            {colors.map((color) => {
               const factionColor = convertToFactionColor(color);
               const alreadySelected = selectedColors.includes(color);
               return (

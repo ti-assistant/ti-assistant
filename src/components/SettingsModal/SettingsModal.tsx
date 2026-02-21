@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import { useContext, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import ColorPicker from "../../../app/[locale]/setup/components/ColorPicker";
@@ -12,7 +13,9 @@ import DummyFactionSummary, {
 import { useChangeOption } from "../../util/api/changeOption";
 import { useUpdateFaction } from "../../util/api/updateFaction";
 import { BLACK_BORDER_GLOW } from "../../util/borderGlow";
+import { getSettings } from "../../util/client";
 import { convertToFactionColor } from "../../util/factions";
+import { Settings } from "../../util/settings";
 import { rem } from "../../util/util";
 import Chip from "../Chip/Chip";
 import FactionIcon from "../FactionIcon/FactionIcon";
@@ -66,9 +69,23 @@ type SettingsTab = "DISPLAY SETTINGS" | "GAME SETTINGS";
 function SettingsModalContent() {
   const gameId = useGameId();
   const viewOnly = useViewOnly();
-  const { settings, updateSetting } = useContext(SettingsContext);
+  let { settings, updateSetting } = useContext(SettingsContext);
+  const [localSettings, updateLocalSettings] = useState(getSettings());
 
-  const techSummarySetting = settings["fs-tech-summary-display"];
+  const updateLocalSetting = <T extends keyof Settings>(
+    setting: T,
+    value: Settings[T],
+  ) => {
+    updateSetting(setting, value);
+    const newSettings: Settings = {
+      ...settings,
+      [setting]: value,
+    };
+    Cookies.set("settings", JSON.stringify(newSettings));
+    updateLocalSettings(newSettings);
+  };
+
+  const techSummarySetting = localSettings["fs-tech-summary-display"];
 
   const [selectedTab, setSelectedTab] =
     useState<SettingsTab>("DISPLAY SETTINGS");
@@ -116,18 +133,18 @@ function SettingsModalContent() {
                 label={
                   <DummySummaryLabel
                     factionId="Vuil'raith Cabal"
-                    label={settings["fs-left-label"]}
+                    label={localSettings["fs-left-label"]}
                   />
                 }
                 rightLabel={
                   <DummySummaryLabel
                     factionId="Vuil'raith Cabal"
-                    label={settings["fs-right-label"]}
+                    label={localSettings["fs-right-label"]}
                   />
                 }
                 color="var(--neutral-border)"
               >
-                <DummyFactionSummary />
+                <DummyFactionSummary settings={localSettings} />
               </LabeledDiv>
             </div>
             <div style={{ width: "fit-content" }}>
@@ -142,7 +159,10 @@ function SettingsModalContent() {
               >
                 <Chip
                   toggleFn={() =>
-                    updateSetting("fs-tech-summary-display", "NUMBER+ICON+TREE")
+                    updateLocalSetting(
+                      "fs-tech-summary-display",
+                      "NUMBER+ICON+TREE",
+                    )
                   }
                   selected={techSummarySetting === "NUMBER+ICON+TREE"}
                   style={{ height: rem(32) }}
@@ -157,7 +177,7 @@ function SettingsModalContent() {
                 </Chip>
                 <Chip
                   toggleFn={() =>
-                    updateSetting("fs-tech-summary-display", "NUMBER+ICON")
+                    updateLocalSetting("fs-tech-summary-display", "NUMBER+ICON")
                   }
                   selected={techSummarySetting === "NUMBER+ICON"}
                   style={{ height: rem(32) }}
@@ -171,7 +191,7 @@ function SettingsModalContent() {
                 </Chip>
                 <Chip
                   toggleFn={() =>
-                    updateSetting("fs-tech-summary-display", "ICON+TREE")
+                    updateLocalSetting("fs-tech-summary-display", "ICON+TREE")
                   }
                   selected={techSummarySetting === "ICON+TREE"}
                   style={{ height: rem(32) }}
@@ -186,7 +206,7 @@ function SettingsModalContent() {
                 </Chip>
                 <Chip
                   toggleFn={() =>
-                    updateSetting("fs-tech-summary-display", "NUMBER+TREE")
+                    updateLocalSetting("fs-tech-summary-display", "NUMBER+TREE")
                   }
                   selected={techSummarySetting === "NUMBER+TREE"}
                   style={{ height: rem(32) }}
@@ -201,7 +221,7 @@ function SettingsModalContent() {
                 </Chip>
                 <Chip
                   toggleFn={() =>
-                    updateSetting("fs-tech-summary-display", "TREE")
+                    updateLocalSetting("fs-tech-summary-display", "TREE")
                   }
                   selected={techSummarySetting === "TREE"}
                   style={{ height: rem(32) }}
@@ -219,32 +239,32 @@ function SettingsModalContent() {
               <div>
                 Left:
                 <Chip
-                  selected={settings["fs-left"] === "NONE"}
-                  toggleFn={() => updateSetting("fs-left", "NONE")}
+                  selected={localSettings["fs-left"] === "NONE"}
+                  toggleFn={() => updateLocalSetting("fs-left", "NONE")}
                 >
                   None
                 </Chip>
                 <Chip
-                  selected={settings["fs-left"] === "TECHS"}
-                  toggleFn={() => updateSetting("fs-left", "TECHS")}
+                  selected={localSettings["fs-left"] === "TECHS"}
+                  toggleFn={() => updateLocalSetting("fs-left", "TECHS")}
                 >
                   Techs
                 </Chip>
                 <Chip
-                  selected={settings["fs-left"] === "OBJECTIVES"}
-                  toggleFn={() => updateSetting("fs-left", "OBJECTIVES")}
+                  selected={localSettings["fs-left"] === "OBJECTIVES"}
+                  toggleFn={() => updateLocalSetting("fs-left", "OBJECTIVES")}
                 >
                   Objectives
                 </Chip>
                 <Chip
-                  selected={settings["fs-left"] === "PLANETS"}
-                  toggleFn={() => updateSetting("fs-left", "PLANETS")}
+                  selected={localSettings["fs-left"] === "PLANETS"}
+                  toggleFn={() => updateLocalSetting("fs-left", "PLANETS")}
                 >
                   Planets
                 </Chip>
                 <Chip
-                  selected={settings["fs-left"] === "TIMER"}
-                  toggleFn={() => updateSetting("fs-left", "TIMER")}
+                  selected={localSettings["fs-left"] === "TIMER"}
+                  toggleFn={() => updateLocalSetting("fs-left", "TIMER")}
                 >
                   Timer
                 </Chip>
@@ -252,32 +272,32 @@ function SettingsModalContent() {
               <div>
                 Center:
                 <Chip
-                  selected={settings["fs-center"] === "NONE"}
-                  toggleFn={() => updateSetting("fs-center", "NONE")}
+                  selected={localSettings["fs-center"] === "NONE"}
+                  toggleFn={() => updateLocalSetting("fs-center", "NONE")}
                 >
                   None
                 </Chip>
                 <Chip
-                  selected={settings["fs-center"] === "TECHS"}
-                  toggleFn={() => updateSetting("fs-center", "TECHS")}
+                  selected={localSettings["fs-center"] === "TECHS"}
+                  toggleFn={() => updateLocalSetting("fs-center", "TECHS")}
                 >
                   Techs
                 </Chip>
                 <Chip
-                  selected={settings["fs-center"] === "OBJECTIVES"}
-                  toggleFn={() => updateSetting("fs-center", "OBJECTIVES")}
+                  selected={localSettings["fs-center"] === "OBJECTIVES"}
+                  toggleFn={() => updateLocalSetting("fs-center", "OBJECTIVES")}
                 >
                   Objectives
                 </Chip>
                 <Chip
-                  selected={settings["fs-center"] === "PLANETS"}
-                  toggleFn={() => updateSetting("fs-center", "PLANETS")}
+                  selected={localSettings["fs-center"] === "PLANETS"}
+                  toggleFn={() => updateLocalSetting("fs-center", "PLANETS")}
                 >
                   Planets
                 </Chip>
                 <Chip
-                  selected={settings["fs-center"] === "TIMER"}
-                  toggleFn={() => updateSetting("fs-center", "TIMER")}
+                  selected={localSettings["fs-center"] === "TIMER"}
+                  toggleFn={() => updateLocalSetting("fs-center", "TIMER")}
                 >
                   Timer
                 </Chip>
@@ -285,32 +305,32 @@ function SettingsModalContent() {
               <div>
                 Right:
                 <Chip
-                  selected={settings["fs-right"] === "NONE"}
-                  toggleFn={() => updateSetting("fs-right", "NONE")}
+                  selected={localSettings["fs-right"] === "NONE"}
+                  toggleFn={() => updateLocalSetting("fs-right", "NONE")}
                 >
                   None
                 </Chip>
                 <Chip
-                  selected={settings["fs-right"] === "TECHS"}
-                  toggleFn={() => updateSetting("fs-right", "TECHS")}
+                  selected={localSettings["fs-right"] === "TECHS"}
+                  toggleFn={() => updateLocalSetting("fs-right", "TECHS")}
                 >
                   Techs
                 </Chip>
                 <Chip
-                  selected={settings["fs-right"] === "OBJECTIVES"}
-                  toggleFn={() => updateSetting("fs-right", "OBJECTIVES")}
+                  selected={localSettings["fs-right"] === "OBJECTIVES"}
+                  toggleFn={() => updateLocalSetting("fs-right", "OBJECTIVES")}
                 >
                   Objectives
                 </Chip>
                 <Chip
-                  selected={settings["fs-right"] === "PLANETS"}
-                  toggleFn={() => updateSetting("fs-right", "PLANETS")}
+                  selected={localSettings["fs-right"] === "PLANETS"}
+                  toggleFn={() => updateLocalSetting("fs-right", "PLANETS")}
                 >
                   Planets
                 </Chip>
                 <Chip
-                  selected={settings["fs-right"] === "TIMER"}
-                  toggleFn={() => updateSetting("fs-right", "TIMER")}
+                  selected={localSettings["fs-right"] === "TIMER"}
+                  toggleFn={() => updateLocalSetting("fs-right", "TIMER")}
                 >
                   Timer
                 </Chip>
@@ -318,26 +338,26 @@ function SettingsModalContent() {
               <div>
                 Left Label:
                 <Chip
-                  selected={settings["fs-left-label"] === "NONE"}
-                  toggleFn={() => updateSetting("fs-left-label", "NONE")}
+                  selected={localSettings["fs-left-label"] === "NONE"}
+                  toggleFn={() => updateLocalSetting("fs-left-label", "NONE")}
                 >
                   None
                 </Chip>
                 <Chip
-                  selected={settings["fs-left-label"] === "NAME"}
-                  toggleFn={() => updateSetting("fs-left-label", "NAME")}
+                  selected={localSettings["fs-left-label"] === "NAME"}
+                  toggleFn={() => updateLocalSetting("fs-left-label", "NAME")}
                 >
                   Name
                 </Chip>
                 <Chip
-                  selected={settings["fs-left-label"] === "TIMER"}
-                  toggleFn={() => updateSetting("fs-left-label", "TIMER")}
+                  selected={localSettings["fs-left-label"] === "TIMER"}
+                  toggleFn={() => updateLocalSetting("fs-left-label", "TIMER")}
                 >
                   Timer
                 </Chip>
                 <Chip
-                  selected={settings["fs-left-label"] === "VPS"}
-                  toggleFn={() => updateSetting("fs-left-label", "VPS")}
+                  selected={localSettings["fs-left-label"] === "VPS"}
+                  toggleFn={() => updateLocalSetting("fs-left-label", "VPS")}
                 >
                   VPs
                 </Chip>
@@ -345,26 +365,26 @@ function SettingsModalContent() {
               <div>
                 Right Label:
                 <Chip
-                  selected={settings["fs-right-label"] === "NONE"}
-                  toggleFn={() => updateSetting("fs-right-label", "NONE")}
+                  selected={localSettings["fs-right-label"] === "NONE"}
+                  toggleFn={() => updateLocalSetting("fs-right-label", "NONE")}
                 >
                   None
                 </Chip>
                 <Chip
-                  selected={settings["fs-right-label"] === "NAME"}
-                  toggleFn={() => updateSetting("fs-right-label", "NAME")}
+                  selected={localSettings["fs-right-label"] === "NAME"}
+                  toggleFn={() => updateLocalSetting("fs-right-label", "NAME")}
                 >
                   Name
                 </Chip>
                 <Chip
-                  selected={settings["fs-right-label"] === "TIMER"}
-                  toggleFn={() => updateSetting("fs-right-label", "TIMER")}
+                  selected={localSettings["fs-right-label"] === "TIMER"}
+                  toggleFn={() => updateLocalSetting("fs-right-label", "TIMER")}
                 >
                   Timer
                 </Chip>
                 <Chip
-                  selected={settings["fs-right-label"] === "VPS"}
-                  toggleFn={() => updateSetting("fs-right-label", "VPS")}
+                  selected={localSettings["fs-right-label"] === "VPS"}
+                  toggleFn={() => updateLocalSetting("fs-right-label", "VPS")}
                 >
                   VPs
                 </Chip>

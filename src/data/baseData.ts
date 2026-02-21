@@ -16,12 +16,14 @@ import { getAbilities } from "../../server/data/abilities";
 import { getGenomes } from "../../server/data/genomes";
 import { getParadigms } from "../../server/data/paradigms";
 import { getUnitUpgrades } from "../../server/data/upgrades";
+import { BASE_COLORS } from "../../server/data/colors";
 
 export function getBaseData(intl: IntlShape): BaseData {
   return {
     actionCards: getActionCards(intl),
     agendas: getAgendas(intl),
     attachments: getAttachments(intl),
+    colors: BASE_COLORS,
     components: getComponents(intl),
     events: getEvents(intl),
     factions: getFactions(intl),
