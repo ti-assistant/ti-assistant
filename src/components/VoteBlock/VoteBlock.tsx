@@ -433,10 +433,6 @@ export function computeRemainingVotes(
   } else {
     const hasXxchaHero = leaders["Xxekir Grom"]?.state === "readied";
     for (const planet of orderedPlanets) {
-      // Space Stations do not count for voting.
-      if (planet.attributes.includes("space-station")) {
-        continue;
-      }
       let planetInfluence = planet.influence;
       if (factionId === "Xxcha Kingdom") {
         if (options.expansions.includes("CODEX THREE") && hasXxchaHero) {
