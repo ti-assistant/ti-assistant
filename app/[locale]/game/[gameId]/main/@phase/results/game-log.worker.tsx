@@ -1,22 +1,22 @@
-import { LogEntryElementProps } from "../src/components/LogEntry";
+import { LogEntryElementProps } from "../../../../../../../src/components/LogEntry";
 import {
   buildCompleteObjectives,
   buildCompletePlanets,
   buildCompleteSystems,
   buildCompleteTechs,
-} from "../src/data/gameDataBuilder";
+} from "../../../../../../../src/data/gameDataBuilder";
 import {
   PHASE_BOUNDARIES,
   TURN_BOUNDARIES,
-} from "../src/util/api/actionLog";
-import { getHandler } from "../src/util/api/gameLog";
-import { updateGameData } from "../src/util/api/handler";
-import { updateActionLog } from "../src/util/api/update";
-import { computeVPsByCategory } from "../src/util/factions";
-import { getMapString } from "../src/util/options";
-import { ActionLog } from "../src/util/types/types";
-import { objectEntries, objectKeys } from "../src/util/util";
-import { getTechCountsByType } from "../app/[locale]/game/[gameId]/main/@phase/results/TechGraph";
+} from "../../../../../../../src/util/api/actionLog";
+import { getHandler } from "../../../../../../../src/util/api/gameLog";
+import { updateGameData } from "../../../../../../../src/util/api/handler";
+import { updateActionLog } from "../../../../../../../src/util/api/update";
+import { computeVPsByCategory } from "../../../../../../../src/util/factions";
+import { getMapString } from "../../../../../../../src/util/options";
+import { ActionLog } from "../../../../../../../src/util/types/types";
+import { objectEntries, objectKeys } from "../../../../../../../src/util/util";
+import { getTechCountsByType } from "./TechGraph";
 
 type WithKey<T> = T & { key: number };
 
