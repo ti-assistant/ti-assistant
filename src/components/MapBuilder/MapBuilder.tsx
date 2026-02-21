@@ -7,8 +7,12 @@ import {
   validSystemNumber,
 } from "../../util/map";
 import { Optional } from "../../util/types/types";
+import { objectEntries, rem } from "../../util/util";
 import styles from "./MapBuilder.module.scss";
-import { rem } from "../../util/util";
+import { getPlanets } from "../../../server/data/planets";
+import { useIntl } from "react-intl";
+import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
+import { PlanetAttributes } from "../PlanetRow/PlanetRow";
 
 interface Cube {
   q: number;
@@ -19,6 +23,17 @@ interface Cube {
 interface Point {
   x: number;
   y: number;
+}
+
+interface PlanetValues {
+  resources: number;
+  influence: number;
+}
+
+interface NearbyValues {
+  optimal: PlanetValues;
+  total: PlanetValues;
+  attributes: PlanetAttribute[];
 }
 
 function Cube(q: number, r: number, s: number): Cube {
@@ -120,18 +135,77 @@ function getRotationClassFromNumber(key: number) {
   return "";
 }
 
+const IMPORTANT_ATTRIBUTES: Set<PlanetAttribute> = new Set([
+  "blue-skip",
+  "red-skip",
+  "green-skip",
+  "yellow-skip",
+  "legendary",
+]);
+
+const EMPTY_NEARBY_VALUES: NearbyValues = {
+  optimal: { resources: 0, influence: 0 },
+  total: { resources: 0, influence: 0 },
+  attributes: [],
+} as const;
+
+function computeNearbyValues(
+  systems: string[],
+  planets: Partial<Record<PlanetId, BasePlanet>>,
+) {
+  const nearbyValues: NearbyValues = structuredClone(EMPTY_NEARBY_VALUES);
+  for (const system of systems) {
+    let systemPlanets = Object.values(planets).filter((planet) => {
+      if (!system) {
+        return false;
+      }
+      if (system === "18" || system === "112") {
+        return planet.system === 18 || planet.system === 112;
+      }
+      if (system === "82A" || system === "82B") {
+        return planet.system === "82B" || planet.system === "82A";
+      }
+      if (typeof planet.system === "number") {
+        return planet.system === parseInt(system);
+      }
+      return planet.system === system;
+    });
+    for (const planet of systemPlanets) {
+      for (const attribute of planet.attributes) {
+        if (IMPORTANT_ATTRIBUTES.has(attribute)) {
+          nearbyValues.attributes.push(attribute);
+        }
+      }
+      nearbyValues.total.resources += planet.resources;
+      nearbyValues.total.influence += planet.influence;
+      if (planet.resources > planet.influence) {
+        nearbyValues.optimal.resources += planet.resources;
+      } else if (planet.resources < planet.influence) {
+        nearbyValues.optimal.influence += planet.influence;
+      } else {
+        nearbyValues.optimal.resources += planet.resources / 2;
+        nearbyValues.optimal.influence += planet.influence / 2;
+      }
+    }
+  }
+
+  return nearbyValues;
+}
+
 export function SystemImage({
   index,
   systemNumber,
   onDrop,
   blockDrag,
   hideSystemNumbers = false,
+  values,
 }: {
   index: number;
   systemNumber: Optional<string>;
   onDrop?: (dragItem: any, dropItem: any) => void;
   blockDrag?: boolean;
   hideSystemNumbers?: boolean;
+  values?: Record<number, NearbyValues>;
 }) {
   const [{ isDragging }, drag] = useDrag(() => {
     return {
@@ -269,6 +343,9 @@ export function SystemImage({
   }
 
   if (isHomeSystem(systemNumber)) {
+    const playerNum = parseInt(systemNumber.substring(1, 2));
+    const playerValues: NearbyValues =
+      (values ?? {})[playerNum] ?? structuredClone(EMPTY_NEARBY_VALUES);
     return (
       <div
         ref={attachRef}
@@ -289,16 +366,45 @@ export function SystemImage({
         />
         {hideSystemNumbers ? null : (
           <div
-            className="flexRow"
+            className="flexColumn"
             style={{
+              position: "absolute",
               width: "100%",
               height: "100%",
-              position: "absolute",
               fontSize: rem(28),
               textShadow: "0 0 4px black, 0 0 4px black",
+              gap: 0,
             }}
           >
-            {systemNumber}
+            <div
+              className="flexRow"
+              style={{
+                fontSize: rem(20),
+                textShadow: "0 0 4px black, 0 0 4px black",
+              }}
+            >
+              {systemNumber}
+            </div>
+            <div
+              className="flexRow"
+              style={{
+                backgroundColor: "var(--background-color)",
+                height: rem(32),
+                borderRadius: rem(8),
+                gap: 0,
+              }}
+            >
+              <ResourcesIcon
+                resources={playerValues.optimal.resources}
+                influence={playerValues.optimal.influence}
+                height={32}
+              />
+              <ResourcesIcon
+                resources={playerValues.total.resources}
+                influence={playerValues.total.influence}
+                height={32}
+              />
+            </div>
           </div>
         )}
         {isOver ? (
@@ -320,13 +426,13 @@ export function SystemImage({
   let classNames: Optional<string> = "";
   if (systemNumber.includes("A") && systemNumber.split("A").length > 1) {
     classNames = getRotationClassFromNumber(
-      parseInt(systemNumber.split("A")[1] ?? "0")
+      parseInt(systemNumber.split("A")[1] ?? "0"),
     );
     systemNumber = `${systemNumber.split("A")[0] ?? ""}A`;
   }
   if (systemNumber.includes("B") && systemNumber.split("B").length > 1) {
     classNames = getRotationClassFromNumber(
-      parseInt(systemNumber.split("B")[1] ?? "0")
+      parseInt(systemNumber.split("B")[1] ?? "0"),
     );
     systemNumber = `${systemNumber.split("B")[0] ?? ""}B`;
   }
@@ -394,6 +500,122 @@ interface MapProps {
   nonHomeNeighbors?: boolean;
 }
 
+function cube_to_system(cube: Cube, spiral: Cube[], systems: string[]) {
+  const index = spiral.findIndex((value) => cube_equals(value, cube));
+  if (index === -1) {
+    return;
+  }
+  return systems[index];
+}
+
+function system_to_cube(system: string, spiral: Cube[], systems: string[]) {
+  const index = systems.findIndex((value) => value === system);
+  if (index === -1) {
+    return;
+  }
+  return spiral[index];
+}
+
+function hex_reachable(
+  start: Cube,
+  movement: number,
+  spiral: Cube[],
+  systems: string[],
+) {
+  const visited = new Set<string>();
+  visited.add(JSON.stringify(start));
+  const results: string[][] = [];
+  const fringes: Cube[][] = [];
+  fringes.push([start]);
+
+  for (let i = 1; i < movement; i++) {
+    const fringe = fringes[i - 1];
+    // If we have nothing to explore, stop.
+    if (!fringe || fringe.length === 0) {
+      break;
+    }
+    for (const cube of fringe) {
+      // TODO: If cube contains a wormhole, need to check other wormhole systems.
+      for (const dir of CUBE_DIRECTIONS) {
+        const neighbor = cube_neighbor(cube, dir);
+        const system = cube_to_system(neighbor, spiral, systems);
+
+        // TODO: If system is hyperspace (and the direction is correct), need to check systems that are adjacent.
+        const isBlocked = !system || system === "0" || system === "-1";
+        if (!visited.has(JSON.stringify(neighbor)) && !isBlocked) {
+          visited.add(JSON.stringify(neighbor));
+          const newResult = results[i] ?? [];
+          newResult.push(system);
+          results[i] = newResult;
+          const newFringe = fringes[i] ?? [];
+          newFringe.push(neighbor);
+          fringes[i] = newFringe;
+        }
+      }
+    }
+    console.log("Visited", visited);
+  }
+  return results;
+}
+
+interface LocalValues {
+  influence: number;
+  resources: number;
+}
+
+function buildFactionValues(
+  spiral: Cube[],
+  systems: string[],
+  planets: Partial<Record<PlanetId, BasePlanet>>,
+) {
+  const ownedSystems: Record<number, string[]> = {};
+  spiral.forEach((cube, index) => {
+    const currentSystem = systems[index];
+    if (
+      !currentSystem ||
+      currentSystem === "-1" ||
+      currentSystem === "0" ||
+      isHomeSystem(currentSystem)
+    ) {
+      return;
+    }
+    console.log("Current", currentSystem);
+    const nearbySystems = hex_reachable(cube, 7, spiral, systems);
+    for (let i = 1; i < 7; i++) {
+      const ring = nearbySystems[i];
+      if (!ring) {
+        break;
+      }
+      console.log("Ring", ring);
+      const homeSystems = [];
+      for (const system of ring) {
+        if (isHomeSystem(system)) {
+          homeSystems.push(system);
+        }
+      }
+      if (homeSystems.length > 1) {
+        break;
+      }
+      if (homeSystems.length === 1) {
+        const homeSystem = homeSystems[0]?.substring(1, 2);
+        if (homeSystem) {
+          const playerNum = parseInt(homeSystem);
+          const owned = ownedSystems[playerNum] ?? [];
+          owned.push(currentSystem);
+          ownedSystems[playerNum] = owned;
+          break;
+        }
+      }
+    }
+  });
+
+  const values: Record<number, NearbyValues> = {};
+  for (const [playerNum, systems] of objectEntries(ownedSystems)) {
+    values[playerNum] = computeNearbyValues(systems, planets);
+  }
+  return values;
+}
+
 export default function MapBuilder({
   mapString,
   updateMapString,
@@ -424,6 +646,11 @@ export default function MapBuilder({
   }
 
   const spiral = cubeSpiral(Cube(0, 0, 0), numRings);
+
+  const intl = useIntl();
+  const basePlanets = getPlanets(intl);
+
+  const values = buildFactionValues(spiral, updatedSystemTiles, basePlanets);
 
   return (
     <div className={styles.Map}>
@@ -501,6 +728,7 @@ export default function MapBuilder({
                 }
                 blockDrag={!canDrag}
                 hideSystemNumbers={exploration}
+                values={values}
               />
             </div>
           );
@@ -528,6 +756,7 @@ export default function MapBuilder({
                       updateMapString(dragItem, dropItem);
                     }
               }
+              values={values}
             />
           </div>
         ) : null}

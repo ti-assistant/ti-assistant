@@ -821,6 +821,15 @@ export default function getThundersEdgePlanets(
       types: [],
     },
     "The Triad": {
+      ability: intl.formatMessage(
+        {
+          id: "Relics.The Triad.Description",
+          description: "Description for Relic: The Triad",
+          defaultMessage:
+            "This card can be readied and spent as if it were a planet card. Its resource and influence values are equal to 3 plus the number of different types of relic fragments you own.",
+        },
+        { br: "\n\n" },
+      ),
       attributes: ["synthetic"],
       expansion: "THUNDERS EDGE",
       influence: 3,

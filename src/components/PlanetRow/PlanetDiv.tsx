@@ -273,6 +273,14 @@ function AttachButton({ planet }: { planet: Planet }) {
         if (planetAttachments.includes(attachment.id)) {
           return true;
         }
+        // Cannot attach to space stations, oceans, or synthetic planets (i.e. The Triad)
+        if (
+          planet.attributes.includes("space-station") ||
+          planet.attributes.includes("ocean") ||
+          planet.attributes.includes("synthetic")
+        ) {
+          return false;
+        }
         if (planet.locked) {
           return false;
         }
