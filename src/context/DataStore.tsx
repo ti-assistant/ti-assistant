@@ -131,7 +131,6 @@ function buildDatabaseFns(database: Database): DatabaseFns {
       if (!isInitialized(database)) {
         return;
       }
-      console.log("Are we restting");
       const viewOnly = database.data.viewOnly;
       database.storedData = structuredClone(database.latestServerData);
       database.data = buildCompleteGameData(
@@ -153,20 +152,14 @@ function buildDatabaseFns(database: Database): DatabaseFns {
       if (!isInitialized(database)) {
         return;
       }
-      console.log("Timers - top", database.data.timers);
-      console.log("Source", source);
       if (source === "SERVER") {
         database.latestServerData = structuredClone(
           updateFn(database.latestServerData),
         );
 
-        console.log("Local", database.lastLocalSequenceNum);
-        console.log("Server", database.latestServerData.sequenceNum);
-
         if (
           database.lastLocalSequenceNum > database.latestServerData.sequenceNum
         ) {
-          console.log("Early return");
           return;
         }
 
@@ -191,7 +184,6 @@ function buildDatabaseFns(database: Database): DatabaseFns {
 
         database.lastLocalSequenceNum = database.storedData.sequenceNum;
       }
-      console.log("Timers - bottom", database.data.timers);
 
       publish();
     },

@@ -43,7 +43,6 @@ export default function DBListener({
           actionLog.push(doc.data() as ActionLogEntry<GameUpdateData>);
         });
 
-        console.log("Log update");
         databaseFns.update((storedData) => {
           storedData.actionLog = actionLog;
           return storedData;
@@ -55,7 +54,6 @@ export default function DBListener({
       onSnapshot(doc(db, timerCollection, gameId), (doc) => {
         const storedTimers = doc.data() as Timers;
 
-        console.log("Timer update");
         databaseFns.update((storedData) => {
           if ((storedData.timers?.game ?? 0) > (storedTimers.game ?? 0)) {
             return storedData;
@@ -70,7 +68,6 @@ export default function DBListener({
       onSnapshot(doc(db, gameCollection, gameId), (doc) => {
         const storedData = doc.data() as StoredGameData;
 
-        console.log("Normal update");
         databaseFns.update((oldData) => {
           const actionLog = oldData.actionLog ?? [];
           const timers = oldData.timers ?? {};
