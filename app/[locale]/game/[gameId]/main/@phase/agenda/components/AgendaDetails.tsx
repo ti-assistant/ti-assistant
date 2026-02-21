@@ -16,16 +16,6 @@ import {
 } from "../../../../../../../../src/context/dataHooks";
 import { useFactions } from "../../../../../../../../src/context/factionDataHooks";
 import { useObjectives } from "../../../../../../../../src/context/objectiveDataHooks";
-import {
-  claimPlanetAsync,
-  gainRelicAsync,
-  hideObjectiveAsync,
-  loseRelicAsync,
-  revealObjectiveAsync,
-  scoreObjectiveAsync,
-  unclaimPlanetAsync,
-  unscoreObjectiveAsync,
-} from "../../../../../../../../src/dynamic/api";
 import { SymbolX } from "../../../../../../../../src/icons/svgs";
 import { InfoRow } from "../../../../../../../../src/InfoRow";
 import { SelectableRow } from "../../../../../../../../src/SelectableRow";
@@ -39,6 +29,8 @@ import {
   getSpeakerTieBreak,
 } from "../../../../../../../../src/util/actionLog";
 import { getCurrentTurnLogEntries } from "../../../../../../../../src/util/api/actionLog";
+import { useDataUpdate } from "../../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../../src/util/api/events";
 import {
   computeVPs,
   getFactionColor,
@@ -88,6 +80,7 @@ export default function AgendaDetails({
 }) {
   const actionLog = useActionLog();
   const agendas = useAgendas();
+  const dataUpdate = useDataUpdate();
   const factions = useFactions();
   const gameId = useGameId();
   const objectives = useObjectives();
@@ -98,19 +91,6 @@ export default function AgendaDetails({
   const viewOnly = useViewOnly();
 
   const intl = useIntl();
-
-  function addRelic(relicId: RelicId, factionId: FactionId) {
-    if (!gameId) {
-      return;
-    }
-    gainRelicAsync(gameId, factionId, relicId);
-  }
-  function removeRelic(relicId: RelicId, factionId: FactionId) {
-    if (!gameId) {
-      return;
-    }
-    loseRelicAsync(gameId, factionId, relicId);
-  }
 
   let agendaId = getActiveAgenda(currentTurn);
   if (agendaId === "Covert Legislation") {
@@ -166,20 +146,6 @@ export default function AgendaDetails({
     }
   }
 
-  function addObjective(factionId: FactionId, toScore: ObjectiveId) {
-    if (!gameId) {
-      return;
-    }
-    scoreObjectiveAsync(gameId, factionId, toScore);
-  }
-
-  function undoObjective(factionId: FactionId, toRemove: ObjectiveId) {
-    if (!gameId) {
-      return;
-    }
-    unscoreObjectiveAsync(gameId, factionId, toRemove);
-  }
-
   const driveObj = (objectives ?? {})["Drive the Debate"];
   if (driveTheDebate && driveObj && !options.hide?.includes("OBJECTIVES")) {
     let canScoreDrive = canScoreObjective(
@@ -211,13 +177,20 @@ export default function AgendaDetails({
             borderColor={getFactionColor((factions ?? {})[driveTheDebate])}
             factionId={driveTheDebate}
             onClick={() => {
-              if (!gameId || !driveTheDebate) {
-                return;
-              }
               if (hasScoredDrive) {
-                undoObjective(driveTheDebate, "Drive the Debate");
+                dataUpdate(
+                  Events.UnscoreObjectiveEvent(
+                    driveTheDebate,
+                    "Drive the Debate",
+                  ),
+                );
               } else {
-                addObjective(driveTheDebate, "Drive the Debate");
+                dataUpdate(
+                  Events.ScoreObjectiveEvent(
+                    driveTheDebate,
+                    "Drive the Debate",
+                  ),
+                );
               }
             }}
             size={44}
@@ -295,14 +268,16 @@ export default function AgendaDetails({
             <ObjectiveRow
               objective={revealedObjectiveObj}
               removeObjective={() =>
-                hideObjectiveAsync(gameId, revealedObjective)
+                dataUpdate(Events.HideObjectiveEvent(revealedObjective))
               }
               hideScorers={true}
             />
           </LabeledDiv>
         ) : (
           <ObjectiveSelectHoverMenu
-            action={revealObjectiveAsync}
+            action={(objectiveId) =>
+              dataUpdate(Events.RevealObjectiveEvent(objectiveId))
+            }
             label={
               <FormattedMessage
                 id="lDBTCO"
@@ -360,12 +335,15 @@ export default function AgendaDetails({
               return;
             }
             if (add) {
-              claimPlanetAsync(gameId, factionId, selectedOutcome as PlanetId);
+              dataUpdate(
+                Events.ClaimPlanetEvent(factionId, selectedOutcome as PlanetId),
+              );
             } else {
-              unclaimPlanetAsync(
-                gameId,
-                factionId,
-                selectedOutcome as PlanetId,
+              dataUpdate(
+                Events.UnclaimPlanetEvent(
+                  factionId,
+                  selectedOutcome as PlanetId,
+                ),
               );
             }
           }}
@@ -411,7 +389,12 @@ export default function AgendaDetails({
                   <SelectableRow
                     itemId={relic.id}
                     removeItem={() => {
-                      removeRelic(relic.id, selectedOutcome as FactionId);
+                      dataUpdate(
+                        Events.LoseRelicEvent(
+                          selectedOutcome as FactionId,
+                          relic.id,
+                        ),
+                      );
                     }}
                     viewOnly={viewOnly}
                   >
@@ -432,9 +415,13 @@ export default function AgendaDetails({
           selectedItem={gainedRelic}
           toggleItem={(relicId, add) => {
             if (add) {
-              addRelic(relicId, selectedOutcome as FactionId);
+              dataUpdate(
+                Events.GainRelicEvent(selectedOutcome as FactionId, relicId),
+              );
             } else {
-              removeRelic(relicId, selectedOutcome as FactionId);
+              dataUpdate(
+                Events.LoseRelicEvent(selectedOutcome as FactionId, relicId),
+              );
             }
           }}
           viewOnly={viewOnly}

@@ -2,14 +2,14 @@ import { FormattedMessage } from "react-intl";
 import FactionSelectRadialMenu from "../../../../../../../../src/components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import {
   useCurrentTurn,
-  useGameId,
   useViewOnly,
 } from "../../../../../../../../src/context/dataHooks";
+import { useFactionColors } from "../../../../../../../../src/context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../../../../../../src/context/gameDataHooks";
 import { useSpeaker } from "../../../../../../../../src/context/stateDataHooks";
-import { setSpeakerAsync } from "../../../../../../../../src/dynamic/api";
 import { getNewSpeakerEventFromLog } from "../../../../../../../../src/util/api/data";
-import { getColorForFaction } from "../../../../../../../../src/util/factions";
+import { useDataUpdate } from "../../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../../src/util/api/events";
 import { rem } from "../../../../../../../../src/util/util";
 
 const Politics = {
@@ -20,11 +20,12 @@ export default Politics;
 
 function Primary() {
   const currentTurn = useCurrentTurn();
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
   const newSpeakerEvent = getNewSpeakerEventFromLog(currentTurn);
   const speaker = useSpeaker();
   const viewOnly = useViewOnly();
+  const factionColors = useFactionColors();
 
   return (
     <div
@@ -44,17 +45,17 @@ function Primary() {
       <FactionSelectRadialMenu
         borderColor={
           newSpeakerEvent?.newSpeaker
-            ? getColorForFaction(newSpeakerEvent.newSpeaker)
+            ? factionColors[newSpeakerEvent.newSpeaker]
             : undefined
         }
         onSelect={(factionId, _) => {
           if (factionId) {
-            setSpeakerAsync(gameId, factionId);
+            dataUpdate(Events.SetSpeakerEvent(factionId));
           } else {
             if (!newSpeakerEvent?.prevSpeaker) {
               return;
             }
-            setSpeakerAsync(gameId, newSpeakerEvent.prevSpeaker);
+            dataUpdate(Events.SetSpeakerEvent(newSpeakerEvent.prevSpeaker));
           }
         }}
         factions={mapOrderedFactionIds}

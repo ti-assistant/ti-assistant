@@ -1,16 +1,12 @@
 import QRCode from "qrcode";
 import { Suspense } from "react";
-import { createIntl, createIntlCache, IntlShape } from "react-intl";
+import { IntlShape } from "react-intl";
 import "server-only";
 import { getGameData, getTimers } from "../../../../server/util/fetch";
 import QRCodeButton from "../../../../src/components/QRCode/QRCodeButton";
-import DataWrapper from "../../../../src/context/DataWrapper";
+import DataInitializer from "../../../../src/context/DataWrapper";
 import { buildBaseData, buildGameData } from "../../../../src/data/GameData";
-import {
-  getMessages,
-  getSessionIdFromCookie,
-} from "../../../../src/util/server";
-import { intlErrorFn } from "../../../../src/util/util";
+import { getIntl } from "../../../../src/util/server";
 import DynamicSidebars from "../../game/[gameId]/dynamic-sidebars";
 import GameCode from "../../game/[gameId]/game-code";
 import GameLoader from "../../game/[gameId]/game-loader";
@@ -21,26 +17,17 @@ const BASE_URL =
     ? "https://dev-dot-twilight-imperium-360307.wm.r.appspot.com"
     : "https://ti-assistant.com";
 
-async function fetchGameData(gameId: string, intlPromise: Promise<IntlShape>) {
-  const intl = await intlPromise;
+async function fetchGameData(gameId: string) {
   const dataPromise = getGameData(gameId, "archive");
   const timerPromise = getTimers(gameId, "archiveTimers");
 
-  const [data, timers] = await Promise.all([dataPromise, timerPromise]);
+  const [storedData, timers] = await Promise.all([dataPromise, timerPromise]);
 
-  const baseData = buildBaseData(intl);
-  const gameData = buildGameData(data, intl);
-  gameData.timers = timers;
-  gameData.gameId = gameId;
-  gameData.viewOnly = true;
+  storedData.timers = timers;
+  storedData.gameId = gameId;
+  storedData.viewOnly = true;
 
-  return { data: gameData, baseData: baseData, storedData: data };
-}
-
-async function getIntl(locale: string) {
-  const messages = await getMessages(locale);
-  const cache = createIntlCache();
-  return createIntl({ locale, messages, onError: intlErrorFn as any }, cache);
+  return storedData;
 }
 
 function getQRCode(gameId: string, size: number): Promise<string> {
@@ -78,8 +65,6 @@ export default async function Layout({
 
   const qrCode = await qrCodePromise;
 
-  const sessionId = await getSessionIdFromCookie();
-
   return (
     <>
       <div className={styles.QRCode}>
@@ -89,19 +74,14 @@ export default async function Layout({
         <QRCodeButton gameId={gameId} qrCode={qrCode} />
       </div>
       <Suspense fallback={<GameLoader />}>
-        <DataWrapper
-          archive
-          gameId={gameId}
-          sessionId={sessionId}
-          data={fetchGameData(gameId, intlPromise)}
-        >
+        <DataInitializer archive gameId={gameId} data={fetchGameData(gameId)}>
           <DynamicSidebars />
           <div className={styles.Main}>
             {phase}
             {summary}
           </div>
           {children}
-        </DataWrapper>
+        </DataInitializer>
       </Suspense>
     </>
   );

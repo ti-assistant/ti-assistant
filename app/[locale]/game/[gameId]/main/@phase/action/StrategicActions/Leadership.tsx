@@ -3,8 +3,8 @@ import GainCommandTokens from "../../../../../../../../src/components/Actions/Ga
 import Conditional from "../../../../../../../../src/components/Conditional/Conditional";
 import FactionComponents from "../../../../../../../../src/components/FactionComponents/FactionComponents";
 import LabeledDiv from "../../../../../../../../src/components/LabeledDiv/LabeledDiv";
+import { useFactionColor } from "../../../../../../../../src/context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../../../../../../src/context/gameDataHooks";
-import { getColorForFaction } from "../../../../../../../../src/util/factions";
 import { rem } from "../../../../../../../../src/util/util";
 
 const Leadership = {
@@ -32,11 +32,12 @@ function Primary({ factionId }: { factionId: FactionId }) {
 }
 
 function Secondary({ factionId }: { factionId: FactionId }) {
+  const factionColor = useFactionColor(factionId);
   return (
     <Conditional appSection="COMMAND_COUNTERS">
       <LabeledDiv
         label={<FactionComponents.Name factionId={factionId} />}
-        color={getColorForFaction(factionId)}
+        color={factionColor}
         blur
       >
         <GainCommandTokens factionId={factionId} />

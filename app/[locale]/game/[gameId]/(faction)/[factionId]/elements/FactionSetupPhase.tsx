@@ -8,12 +8,10 @@ import {
   useViewOnly,
 } from "../../../../../../../src/context/dataHooks";
 import { useObjectives } from "../../../../../../../src/context/objectiveDataHooks";
-import {
-  hideObjectiveAsync,
-  revealObjectiveAsync,
-} from "../../../../../../../src/dynamic/api";
 import { ClientOnlyHoverMenu } from "../../../../../../../src/HoverMenu";
 import { getLogEntries } from "../../../../../../../src/util/actionLog";
+import { useDataUpdate } from "../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../src/util/api/events";
 import { rem } from "../../../../../../../src/util/util";
 
 export default function FactionSetupPhase({
@@ -22,6 +20,7 @@ export default function FactionSetupPhase({
   factionId: FactionId;
 }) {
   const currentTurn = useCurrentTurn();
+  const dataUpdate = useDataUpdate();
   const gameId = useGameId();
   const objectives = useObjectives();
   const viewOnly = useViewOnly();
@@ -82,7 +81,7 @@ export default function FactionSetupPhase({
                   key={objectiveId}
                   objective={objectiveObj}
                   removeObjective={() =>
-                    hideObjectiveAsync(gameId, objectiveId)
+                    dataUpdate(Events.HideObjectiveEvent(objectiveId))
                   }
                   viewing={true}
                 />
@@ -124,7 +123,9 @@ export default function FactionSetupPhase({
                     <button
                       key={objective.id}
                       style={{ writingMode: "horizontal-tb" }}
-                      onClick={() => revealObjectiveAsync(gameId, objective.id)}
+                      onClick={() =>
+                        dataUpdate(Events.RevealObjectiveEvent(objective.id))
+                      }
                       disabled={viewOnly}
                     >
                       {objective.name}

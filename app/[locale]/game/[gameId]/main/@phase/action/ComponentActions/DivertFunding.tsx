@@ -4,27 +4,24 @@ import TechResearchSection from "../../../../../../../../src/components/TechRese
 import TechSelectHoverMenu from "../../../../../../../../src/components/TechSelectHoverMenu/TechSelectHoverMenu";
 import {
   useCurrentTurn,
-  useGameId,
   useOptions,
   useTechs,
 } from "../../../../../../../../src/context/dataHooks";
 import { useFaction } from "../../../../../../../../src/context/factionDataHooks";
-import {
-  addTechAsync,
-  removeTechAsync,
-} from "../../../../../../../../src/dynamic/api";
 import { TechRow } from "../../../../../../../../src/TechRow";
 import {
   getReplacedTechs,
   getResearchedTechs,
 } from "../../../../../../../../src/util/actionLog";
+import { useDataUpdate } from "../../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../../src/util/api/events";
 import { hasTech } from "../../../../../../../../src/util/api/techs";
 import { objectKeys } from "../../../../../../../../src/util/util";
 
 export default function DivertFunding({ factionId }: { factionId: FactionId }) {
   const currentTurn = useCurrentTurn();
+  const dataUpdate = useDataUpdate();
   const faction = useFaction(factionId);
-  const gameId = useGameId();
   const intl = useIntl();
   const options = useOptions();
   const techs = useTechs();
@@ -74,9 +71,9 @@ export default function DivertFunding({ factionId }: { factionId: FactionId }) {
                   techId={tech}
                   removeTech={() => {
                     researchedTech.forEach((techId) => {
-                      removeTechAsync(gameId, factionId, techId);
+                      dataUpdate(Events.RemoveTechEvent(factionId, techId));
                     });
-                    addTechAsync(gameId, factionId, tech);
+                    dataUpdate(Events.AddTechEvent(factionId, tech));
                   }}
                 />
               );
@@ -93,7 +90,9 @@ export default function DivertFunding({ factionId }: { factionId: FactionId }) {
             description: "Label on a hover menu used to return a tech.",
             defaultMessage: "Return Tech",
           })}
-          selectTech={(tech) => removeTechAsync(gameId, factionId, tech.id)}
+          selectTech={(tech) =>
+            dataUpdate(Events.RemoveTechEvent(factionId, tech.id))
+          }
         />
       )}
     </div>

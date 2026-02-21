@@ -18,17 +18,14 @@ import {
   useOrderedTechIds,
   useTechState,
 } from "../../context/techDataHooks";
-import {
-  addTechAsync,
-  loseTFCardAsync,
-  removeTechAsync,
-} from "../../dynamic/api";
 import { InfoRow } from "../../InfoRow";
 import { SelectableRow } from "../../SelectableRow";
 import { TechRow } from "../../TechRow";
+import { useDataUpdate } from "../../util/api/dataUpdate";
+import { Events } from "../../util/api/events";
 import { hasTech, isTechPurged } from "../../util/api/techs";
 import {
-  getColorForFaction,
+  convertToFactionColor,
   getFactionColor,
   getFactionName,
 } from "../../util/factions";
@@ -47,6 +44,7 @@ import {
   GainParadigmSection,
   GainUpgradeSection,
 } from "../Actions/GainSplicedCard";
+import GenomeRow from "../Actions/GenomeRow";
 import { CollapsibleSection } from "../CollapsibleSection";
 import FactionComponents from "../FactionComponents/FactionComponents";
 import FactionIcon from "../FactionIcon/FactionIcon";
@@ -54,18 +52,16 @@ import FormattedDescription from "../FormattedDescription/FormattedDescription";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import { Selector } from "../Selector/Selector";
 import TechIcon from "../TechIcon/TechIcon";
-import styles from "./TechPanel.module.scss";
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
 import { FullTechSummary, FullTFTechSummary } from "../TechSummary/TechSummary";
 import Toggle from "../Toggle/Toggle";
 import UnitIcon from "../Units/Icons";
 import UnitStats from "../UnitStats/UnitStats";
-import Chip from "../Chip/Chip";
-import GenomeRow from "../Actions/GenomeRow";
+import styles from "./TechPanel.module.scss";
 
 function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
+  const dataUpdate = useDataUpdate();
   const factions = useFactions();
-  const gameId = useGameId();
   const techs = useTechs();
   const viewOnly = useViewOnly();
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
@@ -128,7 +124,7 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
               <LabeledDiv
                 key={factionId}
                 label={<FactionComponents.Name factionId={factionId} />}
-                color={getColorForFaction(factionId)}
+                color={convertToFactionColor(factions[factionId]?.color)}
                 opts={{ fixedWidth: true }}
               >
                 <div
@@ -173,9 +169,11 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                             return;
                           }
                           if (add) {
-                            addTechAsync(gameId, factionId, techId);
+                            dataUpdate(Events.AddTechEvent(factionId, techId));
                           } else {
-                            removeTechAsync(gameId, factionId, techId);
+                            dataUpdate(
+                              Events.RemoveTechEvent(factionId, techId),
+                            );
                           }
                         }}
                         renderItem={(techId) => {
@@ -185,7 +183,12 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                                 viewOnly
                                   ? undefined
                                   : () =>
-                                      removeTechAsync(gameId, factionId, techId)
+                                      dataUpdate(
+                                        Events.RemoveTechEvent(
+                                          factionId,
+                                          techId,
+                                        ),
+                                      )
                               }
                             >
                               <TechRow
@@ -210,9 +213,11 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                             return;
                           }
                           if (add) {
-                            addTechAsync(gameId, factionId, techId);
+                            dataUpdate(Events.AddTechEvent(factionId, techId));
                           } else {
-                            removeTechAsync(gameId, factionId, techId);
+                            dataUpdate(
+                              Events.RemoveTechEvent(factionId, techId),
+                            );
                           }
                         }}
                         renderItem={(techId) => {
@@ -222,7 +227,12 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                                 viewOnly
                                   ? undefined
                                   : () =>
-                                      removeTechAsync(gameId, factionId, techId)
+                                      dataUpdate(
+                                        Events.RemoveTechEvent(
+                                          factionId,
+                                          techId,
+                                        ),
+                                      )
                               }
                             >
                               <TechRow
@@ -253,9 +263,13 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                               return;
                             }
                             if (factionHasTech) {
-                              removeTechAsync(gameId, factionId, tech.id);
+                              dataUpdate(
+                                Events.RemoveTechEvent(factionId, tech.id),
+                              );
                             } else {
-                              addTechAsync(gameId, factionId, tech.id);
+                              dataUpdate(
+                                Events.AddTechEvent(factionId, tech.id),
+                              );
                             }
                           }}
                           style={{ maxWidth: "100%" }}
@@ -339,13 +353,13 @@ function TechUpdateIcon({
   factionId: FactionId;
   techId: TechId;
 }) {
+  const dataUpdate = useDataUpdate();
   // const factionTechs = useFactionTechs(factionId);
   const faction = useFaction(factionId);
   const factionIds = useOrderedFactionIds("MAP");
   const tech = useTech(techId);
   // const canResearch = useCanResearch(factionId, techId);
   // const factionHasTech = useFactionHasTech(factionId, techId);
-  const gameId = useGameId();
   const viewOnly = useViewOnly();
 
   const factionHasTech = hasTech(faction, tech);
@@ -366,9 +380,9 @@ function TechUpdateIcon({
           ? undefined
           : () => {
               if (factionHasTech) {
-                removeTechAsync(gameId, factionId, techId);
+                dataUpdate(Events.RemoveTechEvent(factionId, techId));
               } else {
-                addTechAsync(gameId, factionId, techId);
+                dataUpdate(Events.AddTechEvent(factionId, techId));
               }
             }
       }
@@ -380,7 +394,7 @@ function TechUpdateIcon({
                   } ${viewOnly ? styles.viewOnly : ""}`}
         style={
           {
-            "--color": getColorForFaction(factionId),
+            "--color": convertToFactionColor(faction?.color),
           } as ExtendedCSS
         }
       >
@@ -575,8 +589,8 @@ function TechsByFaction({
 }
 
 function TechList({ factionId }: { factionId: FactionId }) {
+  const dataUpdate = useDataUpdate();
   const factions = useFactions();
-  const gameId = useGameId();
   const intl = useIntl();
   const techs = useTechs();
   const viewOnly = useViewOnly();
@@ -652,7 +666,7 @@ function TechList({ factionId }: { factionId: FactionId }) {
             })}
             techs={getResearchableTechs(faction)}
             selectTech={(tech) => {
-              addTechAsync(gameId, factionId, tech.id);
+              dataUpdate(Events.AddTechEvent(factionId, tech.id));
             }}
           />
         </div>
@@ -668,7 +682,7 @@ function TechList({ factionId }: { factionId: FactionId }) {
                   viewOnly
                     ? undefined
                     : (techId) => {
-                        removeTechAsync(gameId, factionId, techId);
+                        dataUpdate(Events.RemoveTechEvent(factionId, techId));
                       }
                 }
                 opts={{ hideSymbols: true }}
@@ -689,6 +703,7 @@ function TFTechList({
   tfCardType: TFCardType;
 }) {
   const abilities = useAbilities();
+  const dataUpdate = useDataUpdate();
   const factions = useFactions();
   const gameId = useGameId();
   const genomes = useGenomes();
@@ -752,10 +767,12 @@ function TFTechList({
                       viewOnly
                         ? undefined
                         : () =>
-                            loseTFCardAsync(gameId, factionId, {
-                              ability: ability.id,
-                              type: "ABILITY",
-                            })
+                            dataUpdate(
+                              Events.LoseTFCardEvent(factionId, {
+                                ability: ability.id,
+                                type: "ABILITY",
+                              }),
+                            )
                     }
                     viewOnly={viewOnly}
                   >
@@ -820,10 +837,12 @@ function TFTechList({
                       viewOnly
                         ? undefined
                         : () =>
-                            loseTFCardAsync(gameId, factionId, {
-                              paradigm: paradigm.id,
-                              type: "PARADIGM",
-                            })
+                            dataUpdate(
+                              Events.LoseTFCardEvent(factionId, {
+                                paradigm: paradigm.id,
+                                type: "PARADIGM",
+                              }),
+                            )
                     }
                     viewOnly={viewOnly}
                   >
@@ -866,10 +885,12 @@ function TFTechList({
                       viewOnly
                         ? undefined
                         : () =>
-                            loseTFCardAsync(gameId, factionId, {
-                              upgrade: upgrade.id,
-                              type: "UNIT_UPGRADE",
-                            })
+                            dataUpdate(
+                              Events.LoseTFCardEvent(factionId, {
+                                upgrade: upgrade.id,
+                                type: "UNIT_UPGRADE",
+                              }),
+                            )
                     }
                     viewOnly={viewOnly}
                   >
@@ -955,9 +976,9 @@ function TFTechList({
             selected={hasTech(faction, antimatter)}
             toggleFn={(prevValue) => {
               if (prevValue) {
-                removeTechAsync(gameId, factionId, antimatter.id);
+                dataUpdate(Events.RemoveTechEvent(factionId, antimatter.id));
               } else {
-                addTechAsync(gameId, factionId, antimatter.id);
+                dataUpdate(Events.AddTechEvent(factionId, antimatter.id));
               }
             }}
             info={{
@@ -976,9 +997,9 @@ function TFTechList({
             selected={hasTech(faction, wavelength)}
             toggleFn={(prevValue) => {
               if (prevValue) {
-                removeTechAsync(gameId, factionId, wavelength.id);
+                dataUpdate(Events.RemoveTechEvent(factionId, wavelength.id));
               } else {
-                addTechAsync(gameId, factionId, wavelength.id);
+                dataUpdate(Events.AddTechEvent(factionId, wavelength.id));
               }
             }}
             info={{

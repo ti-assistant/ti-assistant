@@ -6,10 +6,11 @@ import { SettingsContext } from "../../context/contexts";
 import { useGameId, useOptions, useViewOnly } from "../../context/dataHooks";
 import { useFactions } from "../../context/factionDataHooks";
 import { useOrderedFactionIds } from "../../context/gameDataHooks";
-import { changeOptionAsync, updateFactionAsync } from "../../dynamic/api";
 import DummyFactionSummary, {
   DummySummaryLabel,
 } from "../../InnerFactionSummary";
+import { useChangeOption } from "../../util/api/changeOption";
+import { useUpdateFaction } from "../../util/api/updateFaction";
 import { BLACK_BORDER_GLOW } from "../../util/borderGlow";
 import { convertToFactionColor } from "../../util/factions";
 import { rem } from "../../util/util";
@@ -382,9 +383,11 @@ function SettingsModalContent() {
 }
 
 function GameSettings({ gameId }: { gameId: string }) {
+  const changeOption = useChangeOption();
   const orderedFactionIds = useOrderedFactionIds("MAP");
   const factions = useFactions();
   const options = useOptions();
+  const updateFaction = useUpdateFaction();
 
   const selectedColors = Object.values(factions).map(
     (faction) => faction.color,
@@ -401,9 +404,7 @@ function GameSettings({ gameId }: { gameId: string }) {
         :
         <NumberInput
           value={options["victory-points"]}
-          onChange={(newVal) =>
-            changeOptionAsync(gameId, "victory-points", newVal)
-          }
+          onChange={(newVal) => changeOption(gameId, "victory-points", newVal)}
           minValue={0}
         />
       </div>
@@ -435,7 +436,7 @@ function GameSettings({ gameId }: { gameId: string }) {
                 color={convertToFactionColor(faction.color)}
                 playerName={faction.playerName}
                 updatePlayerName={(name) =>
-                  updateFactionAsync(gameId, factionId, { playerName: name })
+                  updateFaction(gameId, factionId, { playerName: name })
                 }
                 tabIndex={index + 1}
               />
@@ -443,7 +444,7 @@ function GameSettings({ gameId }: { gameId: string }) {
                 pickedColor={faction.color}
                 selectedColors={selectedColors}
                 updateColor={(color) => {
-                  updateFactionAsync(gameId, factionId, { color });
+                  updateFaction(gameId, factionId, { color });
                 }}
               />
             </div>

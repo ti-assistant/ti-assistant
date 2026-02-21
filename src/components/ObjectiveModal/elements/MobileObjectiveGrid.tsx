@@ -1,7 +1,11 @@
 import React, { CSSProperties, use } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ModalContext } from "../../../context/contexts";
-import { useGameId, useOptions, useViewOnly } from "../../../context/dataHooks";
+import { useOptions, useViewOnly } from "../../../context/dataHooks";
+import {
+  useFactionColor,
+  useFactionColors,
+} from "../../../context/factionDataHooks";
 import {
   useManualFactionVPs,
   useOrderedFactionIds,
@@ -11,15 +15,8 @@ import {
   useObjectiveRevealOrder,
   useObjectives,
 } from "../../../context/objectiveDataHooks";
-import {
-  hideObjectiveAsync,
-  manualVPUpdateAsync,
-  revealObjectiveAsync,
-  scoreObjectiveAsync,
-  setObjectivePointsAsync,
-  unscoreObjectiveAsync,
-} from "../../../dynamic/api";
-import { getColorForFaction } from "../../../util/factions";
+import { useDataUpdate } from "../../../util/api/dataUpdate";
+import { Events } from "../../../util/api/events";
 import { objectiveTypeString } from "../../../util/strings";
 import { rem } from "../../../util/util";
 import { CollapsibleSection } from "../../CollapsibleSection";
@@ -44,11 +41,12 @@ interface NumFactionsCSS extends CSSProperties {
 }
 
 export default function MobileObjectiveGrid() {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const intl = useIntl();
   const objectives = useObjectives();
   const options = useOptions();
   const orderedFactionIds = useOrderedFactionIds("MAP");
+  const factionColors = useFactionColors();
   const revealOrder = useObjectiveRevealOrder();
   const viewOnly = useViewOnly();
 
@@ -209,13 +207,10 @@ export default function MobileObjectiveGrid() {
                 options={remainingStageOneObjectives}
                 hoverMenuLabel={objectiveTypeString("STAGE ONE", intl)}
                 toggleItem={(objectiveId, add) => {
-                  if (!gameId) {
-                    return;
-                  }
                   if (add) {
-                    revealObjectiveAsync(gameId, objectiveId);
+                    dataUpdate(Events.RevealObjectiveEvent(objectiveId));
                   } else {
-                    hideObjectiveAsync(gameId, objectiveId);
+                    dataUpdate(Events.HideObjectiveEvent(objectiveId));
                   }
                 }}
               />
@@ -223,13 +218,10 @@ export default function MobileObjectiveGrid() {
                 options={remainingStageTwoObjectives}
                 hoverMenuLabel={objectiveTypeString("STAGE TWO", intl)}
                 toggleItem={(objectiveId, add) => {
-                  if (!gameId) {
-                    return;
-                  }
                   if (add) {
-                    revealObjectiveAsync(gameId, objectiveId);
+                    dataUpdate(Events.RevealObjectiveEvent(objectiveId));
                   } else {
-                    hideObjectiveAsync(gameId, objectiveId);
+                    dataUpdate(Events.HideObjectiveEvent(objectiveId));
                   }
                 }}
               />
@@ -238,13 +230,10 @@ export default function MobileObjectiveGrid() {
                 hoverMenuLabel={"Secret (as Public)"}
                 itemsPerColumn={10}
                 toggleItem={(objectiveId, add) => {
-                  if (!gameId) {
-                    return;
-                  }
                   if (add) {
-                    revealObjectiveAsync(gameId, objectiveId);
+                    dataUpdate(Events.RevealObjectiveEvent(objectiveId));
                   } else {
-                    hideObjectiveAsync(gameId, objectiveId);
+                    dataUpdate(Events.HideObjectiveEvent(objectiveId));
                   }
                 }}
               />
@@ -290,10 +279,9 @@ export default function MobileObjectiveGrid() {
                       removeObjective={
                         (objective.scorers ?? []).length === 0 && !viewOnly
                           ? () => {
-                              if (!gameId) {
-                                return;
-                              }
-                              hideObjectiveAsync(gameId, objective.id);
+                              dataUpdate(
+                                Events.HideObjectiveEvent(objective.id),
+                              );
                             }
                           : undefined
                       }
@@ -348,10 +336,9 @@ export default function MobileObjectiveGrid() {
                       removeObjective={
                         (objective.scorers ?? []).length === 0 && !viewOnly
                           ? () => {
-                              if (!gameId) {
-                                return;
-                              }
-                              hideObjectiveAsync(gameId, objective.id);
+                              dataUpdate(
+                                Events.HideObjectiveEvent(objective.id),
+                              );
                             }
                           : undefined
                       }
@@ -430,10 +417,7 @@ export default function MobileObjectiveGrid() {
                                   </>
                                 }
                               >
-                                <SecretModalContent
-                                  factionId={name}
-                                  gameId={gameId}
-                                />
+                                <SecretModalContent factionId={name} />
                               </ModalContent>,
                             );
                           }
@@ -528,10 +512,11 @@ export default function MobileObjectiveGrid() {
                           viewOnly
                             ? undefined
                             : () => {
-                                unscoreObjectiveAsync(
-                                  gameId,
-                                  faction,
-                                  "Imperial Point",
+                                dataUpdate(
+                                  Events.UnscoreObjectiveEvent(
+                                    faction,
+                                    "Imperial Point",
+                                  ),
                                 );
                               }
                         }
@@ -562,10 +547,11 @@ export default function MobileObjectiveGrid() {
                           viewOnly
                             ? undefined
                             : () => {
-                                scoreObjectiveAsync(
-                                  gameId,
-                                  faction,
-                                  "Imperial Point",
+                                dataUpdate(
+                                  Events.ScoreObjectiveEvent(
+                                    faction,
+                                    "Imperial Point",
+                                  ),
                                 );
                               }
                         }
@@ -657,10 +643,11 @@ export default function MobileObjectiveGrid() {
                             viewOnly
                               ? undefined
                               : () => {
-                                  unscoreObjectiveAsync(
-                                    gameId,
-                                    faction,
-                                    "Total War",
+                                  dataUpdate(
+                                    Events.UnscoreObjectiveEvent(
+                                      faction,
+                                      "Total War",
+                                    ),
                                   );
                                 }
                           }
@@ -691,10 +678,11 @@ export default function MobileObjectiveGrid() {
                             viewOnly
                               ? undefined
                               : () => {
-                                  scoreObjectiveAsync(
-                                    gameId,
-                                    faction,
-                                    "Total War",
+                                  dataUpdate(
+                                    Events.ScoreObjectiveEvent(
+                                      faction,
+                                      "Total War",
+                                    ),
                                   );
                                 }
                           }
@@ -757,27 +745,27 @@ export default function MobileObjectiveGrid() {
                     selectedFaction={scorer}
                     onSelect={(factionId) => {
                       if (scorer) {
-                        unscoreObjectiveAsync(
-                          gameId,
-                          scorer,
-                          "Support for the Throne",
-                          id,
+                        dataUpdate(
+                          Events.UnscoreObjectiveEvent(
+                            scorer,
+                            "Support for the Throne",
+                            id,
+                          ),
                         );
                       }
                       if (factionId) {
-                        scoreObjectiveAsync(
-                          gameId,
-                          factionId,
-                          "Support for the Throne",
-                          id,
+                        dataUpdate(
+                          Events.ScoreObjectiveEvent(
+                            factionId,
+                            "Support for the Throne",
+                            id,
+                          ),
                         );
                       }
                     }}
                     tag={<FactionIcon factionId={id} size="100%" />}
-                    tagBorderColor={getColorForFaction(id)}
-                    borderColor={
-                      scorer ? getColorForFaction(scorer) : undefined
-                    }
+                    tagBorderColor={factionColors[id]}
+                    borderColor={scorer ? factionColors[scorer] : undefined}
                     viewOnly={viewOnly}
                   />
                 </div>
@@ -920,13 +908,12 @@ export default function MobileObjectiveGrid() {
                   <button
                     style={{ fontSize: rem(14) }}
                     onClick={() => {
-                      if (!gameId) {
-                        return;
-                      }
                       if (mutinyDirection === "[For]") {
-                        setObjectivePointsAsync(gameId, "Mutiny", -1);
+                        dataUpdate(
+                          Events.SetObjectivePointsEvent("Mutiny", -1),
+                        );
                       } else {
-                        setObjectivePointsAsync(gameId, "Mutiny", 1);
+                        dataUpdate(Events.SetObjectivePointsEvent("Mutiny", 1));
                       }
                     }}
                   >
@@ -999,17 +986,18 @@ export default function MobileObjectiveGrid() {
 }
 
 function FactionNameAndVPs({ factionId }: { factionId: FactionId }) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const manualVPs = useManualFactionVPs(factionId);
   const scoredVPs = useScoredFactionVPs(factionId);
   const viewOnly = useViewOnly();
+  const factionColor = useFactionColor(factionId);
 
   const VPs = manualVPs + scoredVPs;
 
   return (
     <LabeledDiv
       label={<FactionName factionId={factionId} />}
-      color={getColorForFaction(factionId)}
+      color={factionColor}
       opts={{ fixedWidth: true }}
     >
       <div
@@ -1037,7 +1025,9 @@ function FactionNameAndVPs({ factionId }: { factionId: FactionId }) {
         {!viewOnly && VPs > 0 ? (
           <div
             className="arrowDown"
-            onClick={() => manualVPUpdateAsync(gameId, factionId, -1)}
+            onClick={() =>
+              dataUpdate(Events.ManualVPUpdateEvent(factionId, -1))
+            }
           ></div>
         ) : (
           <div style={{ width: rem(12) }}></div>
@@ -1048,7 +1038,7 @@ function FactionNameAndVPs({ factionId }: { factionId: FactionId }) {
         {!viewOnly ? (
           <div
             className="arrowUp"
-            onClick={() => manualVPUpdateAsync(gameId, factionId, 1)}
+            onClick={() => dataUpdate(Events.ManualVPUpdateEvent(factionId, 1))}
           ></div>
         ) : (
           <div style={{ width: rem(12) }}></div>
@@ -1058,13 +1048,8 @@ function FactionNameAndVPs({ factionId }: { factionId: FactionId }) {
   );
 }
 
-function SecretModalContent({
-  factionId,
-  gameId,
-}: {
-  factionId: FactionId;
-  gameId: string;
-}) {
+function SecretModalContent({ factionId }: { factionId: FactionId }) {
+  const dataUpdate = useDataUpdate();
   const objectives = useObjectives();
   const viewOnly = useViewOnly();
 
@@ -1103,10 +1088,9 @@ function SecretModalContent({
               viewOnly
                 ? undefined
                 : () => {
-                    if (!gameId) {
-                      return;
-                    }
-                    unscoreObjectiveAsync(gameId, factionId, secret.id);
+                    dataUpdate(
+                      Events.UnscoreObjectiveEvent(factionId, secret.id),
+                    );
                   }
             }
           />
@@ -1118,8 +1102,8 @@ function SecretModalContent({
       >
         {scoredSecrets.length < 6 && !viewOnly ? (
           <ObjectiveSelectHoverMenu
-            action={(gameId, objectiveId) =>
-              scoreObjectiveAsync(gameId, factionId, objectiveId)
+            action={(objectiveId) =>
+              dataUpdate(Events.ScoreObjectiveEvent(factionId, objectiveId))
             }
             fontSize={rem(14)}
             label={

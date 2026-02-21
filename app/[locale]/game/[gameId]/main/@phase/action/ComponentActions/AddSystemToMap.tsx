@@ -7,14 +7,14 @@ import MapBuilder, {
 } from "../../../../../../../../src/components/MapBuilder/MapBuilder";
 import {
   useCurrentTurn,
-  useGameId,
   useOptions,
   usePlanets,
 } from "../../../../../../../../src/context/dataHooks";
 import { useFactions } from "../../../../../../../../src/context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../../../../../../src/context/gameDataHooks";
-import { swapMapTilesAsync } from "../../../../../../../../src/dynamic/api";
 import { wereTilesSwapped } from "../../../../../../../../src/util/actionLog";
+import { useDataUpdate } from "../../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../../src/util/api/events";
 import {
   getFactionSystemNumber,
   getWormholeNexusSystemNumber,
@@ -45,8 +45,8 @@ function Content({
   nonHomeNeighbors: boolean;
 }) {
   const currentTurn = useCurrentTurn();
+  const dataUpdate = useDataUpdate();
   const factions = useFactions();
-  const gameId = useGameId();
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
   const options = useOptions();
   const planets = usePlanets();
@@ -135,7 +135,7 @@ function Content({
           <MapBuilder
             mapString={updatedMapString}
             updateMapString={(dragItem, dropItem) => {
-              swapMapTilesAsync(gameId, dropItem, dragItem);
+              dataUpdate(Events.SwapMapTilesEvent(dropItem, dragItem));
             }}
             dropOnly
             exploration

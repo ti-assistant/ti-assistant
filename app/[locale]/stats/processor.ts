@@ -1,6 +1,5 @@
 import { Storage } from "@google-cloud/storage";
 import { getFirestore, Timestamp } from "firebase-admin/firestore";
-import { createIntl, createIntlCache } from "react-intl";
 import { Readable } from "stream";
 import { getFullActionLog, getTimers } from "../../../server/util/fetch";
 import { getBaseData } from "../../../src/data/baseData";
@@ -11,7 +10,7 @@ import { getOppositeHandler } from "../../../src/util/api/opposite";
 import { updateActionLog } from "../../../src/util/api/update";
 import { computeVPs } from "../../../src/util/factions";
 import { EndGameHandler } from "../../../src/util/model/endGame";
-import { getMessages } from "../../../src/util/server";
+import { getIntl } from "../../../src/util/server";
 import { ActionLog, Optional } from "../../../src/util/types/types";
 import { objectEntries, objectKeys } from "../../../src/util/util";
 
@@ -147,16 +146,20 @@ async function getJSONFileFromStorage(
 
 export async function rewriteProcessedGames() {
   const locale = "en";
-  const messages = await getMessages(locale);
-  const cache = createIntlCache();
-  const intl = createIntl({ locale, messages }, cache);
+
+  const intlPromise = getIntl(locale);
   const storage = new Storage({
     keyFilename: "./server/twilight-imperium-360307-ea7cce25efeb.json",
   });
 
-  const baseData = getBaseData(intl);
-  const processedGames = await getJSONFileFromStorage(storage);
+  const processedGamesPromise = getJSONFileFromStorage(storage);
 
+  const [intl, processedGames] = await Promise.all([
+    intlPromise,
+    processedGamesPromise,
+  ]);
+
+  const baseData = getBaseData(intl);
   return maybeUpdateProcessedGames(storage, processedGames, baseData);
 }
 
@@ -239,21 +242,27 @@ export async function maybeUpdateProcessedGames(
 
 export async function reprocessGames() {
   const locale = "en";
-  const messages = await getMessages(locale);
-  const cache = createIntlCache();
-  const intl = createIntl({ locale, messages }, cache);
+  const intlPromise = getIntl(locale);
+
   const storage = new Storage({
     keyFilename: "./server/twilight-imperium-360307-ea7cce25efeb.json",
   });
 
-  const baseData = getBaseData(intl);
-  const processedGames = await getJSONFileFromStorage(storage);
+  const processedGamesPromise = getJSONFileFromStorage(storage);
 
   const db = getFirestore();
 
   const gamesRef = db.collection("archive");
 
-  const gameData = await gamesRef.get();
+  const gameDataPromise = gamesRef.get();
+
+  const [intl, processedGames, gameData] = await Promise.all([
+    intlPromise,
+    processedGamesPromise,
+    gameDataPromise,
+  ]);
+
+  const baseData = getBaseData(intl);
 
   let allGames: Record<string, StoredGameData> = {};
   gameData.forEach((val) => {

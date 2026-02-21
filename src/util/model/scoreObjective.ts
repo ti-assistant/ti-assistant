@@ -1,9 +1,5 @@
 import { createIntl, createIntlCache } from "react-intl";
-import {
-  buildFactions,
-  buildLeaders,
-  buildObjectives,
-} from "../../data/GameData";
+import { buildLeaders, buildObjectives } from "../../data/GameData";
 import { arrayRemove, arrayUnion } from "../api/util";
 import { UpdateLeaderStateHandler } from "./updateLeaderState";
 

@@ -10,7 +10,6 @@ import {
   useAgendas,
   useAttachments,
   useCurrentTurn,
-  useGameId,
   useLeaders,
   useOptions,
   usePlanets,
@@ -21,7 +20,6 @@ import {
 import { useFactions } from "../../../../../../../../src/context/factionDataHooks";
 import { useObjectives } from "../../../../../../../../src/context/objectiveDataHooks";
 import { useGameState } from "../../../../../../../../src/context/stateDataHooks";
-import { resolveAgendaAsync } from "../../../../../../../../src/dynamic/api";
 import {
   getActiveAgenda,
   getSelectedEligibleOutcomes,
@@ -32,6 +30,8 @@ import {
   getCurrentPhasePreviousLogEntries,
   getCurrentTurnLogEntries,
 } from "../../../../../../../../src/util/api/actionLog";
+import { useDataUpdate } from "../../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../../src/util/api/events";
 import { ActionLog } from "../../../../../../../../src/util/types/types";
 import { objectKeys, rem } from "../../../../../../../../src/util/util";
 import { computeVotes } from "../AgendaPhase";
@@ -49,8 +49,8 @@ export function CastVotesSection({
   const agendas = useAgendas();
   const attachments = useAttachments();
   const currentTurn = useCurrentTurn();
+  const dataUpdate = useDataUpdate();
   const factions = useFactions();
-  const gameId = useGameId();
   const intl = useIntl();
   const leaders = useLeaders();
   const objectives = useObjectives();
@@ -169,7 +169,7 @@ export function CastVotesSection({
       return;
     }
 
-    resolveAgendaAsync(gameId, currentAgenda.id, target);
+    dataUpdate(Events.ResolveAgendaEvent(currentAgenda.id, target));
   }
 
   return (

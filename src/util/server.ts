@@ -1,6 +1,8 @@
 import jsSHA from "jssha";
 import { cookies } from "next/headers";
 import { DEFAULT_SETTINGS, Settings } from "./settings";
+import { createIntl, createIntlCache, IntlShape } from "react-intl";
+import { intlErrorFn } from "./util";
 
 export async function getMessages(
   locale: string,
@@ -8,6 +10,13 @@ export async function getMessages(
   const messages = await import(`../../server/compiled-lang/${locale}.json`);
 
   return JSON.parse(JSON.stringify(messages));
+}
+
+export async function getIntl(locale: string): Promise<IntlShape> {
+  const intlCache = createIntlCache();
+  const messages = await getMessages(locale);
+
+  return createIntl({ locale, messages, onError: intlErrorFn }, intlCache);
 }
 
 export async function getSettings() {

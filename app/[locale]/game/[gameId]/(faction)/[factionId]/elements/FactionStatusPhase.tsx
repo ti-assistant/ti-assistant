@@ -3,25 +3,20 @@ import LabeledDiv from "../../../../../../../src/components/LabeledDiv/LabeledDi
 import ObjectiveRow from "../../../../../../../src/components/ObjectiveRow/ObjectiveRow";
 import {
   useCurrentTurn,
-  useGameId,
   usePlanets,
   useViewOnly,
 } from "../../../../../../../src/context/dataHooks";
 import { useFaction } from "../../../../../../../src/context/factionDataHooks";
 import { useObjectives } from "../../../../../../../src/context/objectiveDataHooks";
 import { useRound } from "../../../../../../../src/context/stateDataHooks";
-import {
-  hideObjectiveAsync,
-  revealObjectiveAsync,
-  scoreObjectiveAsync,
-  unscoreObjectiveAsync,
-} from "../../../../../../../src/dynamic/api";
 import { ClientOnlyHoverMenu } from "../../../../../../../src/HoverMenu";
 import { SelectableRow } from "../../../../../../../src/SelectableRow";
 import {
   getLogEntries,
   getScoredObjectives,
 } from "../../../../../../../src/util/actionLog";
+import { useDataUpdate } from "../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../src/util/api/events";
 import { objectiveTypeString } from "../../../../../../../src/util/strings";
 import { rem } from "../../../../../../../src/util/util";
 
@@ -31,8 +26,8 @@ export default function FactionStatusPhase({
   factionId: FactionId;
 }) {
   const currentTurn = useCurrentTurn();
+  const dataUpdate = useDataUpdate();
   const faction = useFaction(factionId);
-  const gameId = useGameId();
   const intl = useIntl();
   const objectives = useObjectives();
   const planets = usePlanets();
@@ -116,7 +111,7 @@ export default function FactionStatusPhase({
             <SelectableRow
               itemId={scoredPublics[0]}
               removeItem={(objectiveId) =>
-                unscoreObjectiveAsync(gameId, factionId, objectiveId)
+                dataUpdate(Events.UnscoreObjectiveEvent(factionId, objectiveId))
               }
               viewOnly={viewOnly}
             >
@@ -160,7 +155,9 @@ export default function FactionStatusPhase({
                   <button
                     key={objective.id}
                     onClick={() =>
-                      scoreObjectiveAsync(gameId, factionId, objective.id)
+                      dataUpdate(
+                        Events.ScoreObjectiveEvent(factionId, objective.id),
+                      )
                     }
                     disabled={viewOnly}
                   >
@@ -180,7 +177,7 @@ export default function FactionStatusPhase({
             <SelectableRow
               itemId={scoredSecrets[0]}
               removeItem={(objectiveId) =>
-                unscoreObjectiveAsync(gameId, factionId, objectiveId)
+                dataUpdate(Events.UnscoreObjectiveEvent(factionId, objectiveId))
               }
               viewOnly={viewOnly}
             >
@@ -218,7 +215,9 @@ export default function FactionStatusPhase({
                     key={objective.id}
                     style={{ writingMode: "horizontal-tb" }}
                     onClick={() =>
-                      scoreObjectiveAsync(gameId, factionId, objective.id)
+                      dataUpdate(
+                        Events.ScoreObjectiveEvent(factionId, objective.id),
+                      )
                     }
                     disabled={viewOnly}
                   >
@@ -260,7 +259,7 @@ export default function FactionStatusPhase({
             <ObjectiveRow
               objective={revealedObjectiveObj}
               removeObjective={() =>
-                hideObjectiveAsync(gameId, revealedObjectiveObj.id)
+                dataUpdate(Events.HideObjectiveEvent(revealedObjectiveObj.id))
               }
               viewing={true}
             />
@@ -311,7 +310,7 @@ export default function FactionStatusPhase({
                         key={objective.id}
                         style={{ writingMode: "horizontal-tb" }}
                         onClick={() =>
-                          revealObjectiveAsync(gameId, objective.id)
+                          dataUpdate(Events.RevealObjectiveEvent(objective.id))
                         }
                         disabled={viewOnly}
                       >

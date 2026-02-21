@@ -4,7 +4,7 @@ import {
   useViewOnly,
 } from "../../../../../../../src/context/dataHooks";
 import { useActiveFactionId } from "../../../../../../../src/context/gameDataHooks";
-import { undoAsync } from "../../../../../../../src/dynamic/api";
+import { useUndo } from "../../../../../../../src/util/api/undo";
 import { rem } from "../../../../../../../src/util/util";
 import { StrategyCardSelectList } from "../../../main/@phase/strategy/StrategyPhase";
 
@@ -16,6 +16,7 @@ export default function FactionStrategyPhase({
   const activeFactionId = useActiveFactionId();
   const currentTurn = useCurrentTurn();
   const gameId = useGameId();
+  const undo = useUndo();
   const viewOnly = useViewOnly();
 
   function canUndo() {
@@ -44,7 +45,7 @@ export default function FactionStrategyPhase({
     return (
       <button
         onClick={() => {
-          undoAsync(gameId);
+          undo(gameId);
         }}
         disabled={viewOnly}
       >

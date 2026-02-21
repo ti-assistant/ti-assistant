@@ -7,19 +7,18 @@ import {
 } from "../../../../../../../../src/context/dataHooks";
 import { useOrderedFactionIds } from "../../../../../../../../src/context/gameDataHooks";
 import { useGameState } from "../../../../../../../../src/context/stateDataHooks";
-import {
-  playActionCardAsync,
-  unplayActionCardAsync,
-} from "../../../../../../../../src/dynamic/api";
 import { ClientOnlyHoverMenu } from "../../../../../../../../src/HoverMenu";
 import {
   getActionCardTargets,
   getActiveAgenda,
 } from "../../../../../../../../src/util/actionLog";
+import { useDataUpdate } from "../../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../../src/util/api/events";
 import { rem } from "../../../../../../../../src/util/util";
 
 export default function AfterAnAgendaIsRevealed() {
   const currentTurn = useCurrentTurn();
+  const dataUpdate = useDataUpdate();
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
   const gameId = useGameId();
   const state = useGameState();
@@ -62,9 +61,9 @@ export default function AfterAnAgendaIsRevealed() {
           className={electionHacked ? "selected" : ""}
           onClick={() => {
             if (electionHacked) {
-              unplayActionCardAsync(gameId, "Hack Election", "None");
+              dataUpdate(Events.UnplayActionCardEvent("Hack Election", "None"));
             } else {
-              playActionCardAsync(gameId, "Hack Election", "None");
+              dataUpdate(Events.PlayActionCardEvent("Hack Election", "None"));
             }
           }}
           disabled={viewOnly}
@@ -87,17 +86,19 @@ export default function AfterAnAgendaIsRevealed() {
             selectedFaction={assassinatedRep}
             onSelect={(factionId, prevFaction) => {
               if (prevFaction) {
-                unplayActionCardAsync(
-                  gameId,
-                  "Assassinate Representative",
-                  prevFaction,
+                dataUpdate(
+                  Events.UnplayActionCardEvent(
+                    "Assassinate Representative",
+                    prevFaction,
+                  ),
                 );
               }
               if (factionId) {
-                playActionCardAsync(
-                  gameId,
-                  "Assassinate Representative",
-                  factionId,
+                dataUpdate(
+                  Events.PlayActionCardEvent(
+                    "Assassinate Representative",
+                    factionId,
+                  ),
                 );
               }
             }}

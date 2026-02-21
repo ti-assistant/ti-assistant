@@ -1,9 +1,10 @@
-import { createIntl, createIntlCache } from "react-intl";
-import { buildPlanets } from "../../data/GameData";
 import { arrayRemove, arrayUnion } from "../api/util";
 
 export class AddAttachmentHandler implements Handler {
-  constructor(public gameData: StoredGameData, public data: AddAttachmentData) {
+  constructor(
+    public gameData: StoredGameData,
+    public data: AddAttachmentData,
+  ) {
     for (const [planetId, planet] of Object.entries(gameData.planets ?? {})) {
       if ((planet.attachments ?? []).includes(data.event.attachment)) {
         this.data.event.prevPlanet = planetId as PlanetId;
@@ -24,7 +25,7 @@ export class AddAttachmentHandler implements Handler {
       [`sequenceNum`]: "INCREMENT",
       [`planets.${this.data.event.planet}.attachments`]: arrayUnion(
         planetAttachments,
-        this.data.event.attachment
+        this.data.event.attachment,
       ),
     };
 
@@ -63,7 +64,7 @@ export class AddAttachmentHandler implements Handler {
 export class RemoveAttachmentHandler implements Handler {
   constructor(
     public gameData: StoredGameData,
-    public data: RemoveAttachmentData
+    public data: RemoveAttachmentData,
   ) {}
 
   validate(): boolean {
@@ -71,26 +72,23 @@ export class RemoveAttachmentHandler implements Handler {
   }
 
   getUpdates(): Record<string, any> {
-    const cache = createIntlCache();
-    const intl = createIntl({ locale: "en" }, cache);
-    const planets = buildPlanets(this.gameData, intl);
     const planetAttachments =
-      planets[this.data.event.planet]?.attachments ?? [];
+      this.gameData.planets[this.data.event.planet]?.attachments ?? [];
     const updates: Record<string, any> = {
       [`state.paused`]: false,
       [`sequenceNum`]: "INCREMENT",
       [`planets.${this.data.event.planet}.attachments`]: arrayRemove(
         planetAttachments,
-        this.data.event.attachment
+        this.data.event.attachment,
       ),
     };
 
     if (this.data.event.prevPlanet) {
       const prevPlanetAttachments =
-        planets[this.data.event.prevPlanet]?.attachments ?? [];
+        this.gameData.planets[this.data.event.prevPlanet]?.attachments ?? [];
       updates[`planets.${this.data.event.prevPlanet}.attachments`] = arrayUnion(
         prevPlanetAttachments,
-        this.data.event.attachment
+        this.data.event.attachment,
       );
     }
 

@@ -1,14 +1,11 @@
 import { CSSProperties } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { useGameId, useOptions, useViewOnly } from "../../../context/dataHooks";
+import { useOptions, useViewOnly } from "../../../context/dataHooks";
+import { useFactionColors } from "../../../context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../context/gameDataHooks";
 import { useObjective } from "../../../context/objectiveDataHooks";
-import {
-  scoreObjectiveAsync,
-  setObjectivePointsAsync,
-  unscoreObjectiveAsync,
-} from "../../../dynamic/api";
-import { getColorForFaction } from "../../../util/factions";
+import { useDataUpdate } from "../../../util/api/dataUpdate";
+import { Events } from "../../../util/api/events";
 import { Optional } from "../../../util/types/types";
 import { rem } from "../../../util/util";
 import Chip from "../../Chip/Chip";
@@ -68,8 +65,9 @@ function SupportForTheThrone({
 }: {
   orderedFactionIds: FactionId[];
 }) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const supportForTheThrone = useObjective("Support for the Throne");
+  const factionColors = useFactionColors();
   const viewOnly = useViewOnly();
 
   if (!supportForTheThrone) {
@@ -119,25 +117,27 @@ function SupportForTheThrone({
                 selectedFaction={scorer}
                 onSelect={(selectedFactionId) => {
                   if (scorer) {
-                    unscoreObjectiveAsync(
-                      gameId,
-                      scorer,
-                      "Support for the Throne",
-                      factionId,
+                    dataUpdate(
+                      Events.UnscoreObjectiveEvent(
+                        scorer,
+                        "Support for the Throne",
+                        factionId,
+                      ),
                     );
                   }
                   if (selectedFactionId) {
-                    scoreObjectiveAsync(
-                      gameId,
-                      selectedFactionId,
-                      "Support for the Throne",
-                      factionId,
+                    dataUpdate(
+                      Events.ScoreObjectiveEvent(
+                        selectedFactionId,
+                        "Support for the Throne",
+                        factionId,
+                      ),
                     );
                   }
                 }}
                 tag={<FactionIcon factionId={factionId} size="100%" />}
-                tagBorderColor={getColorForFaction(factionId)}
-                borderColor={scorer ? getColorForFaction(scorer) : undefined}
+                tagBorderColor={factionColors[factionId]}
+                borderColor={scorer ? factionColors[scorer] : undefined}
                 viewOnly={viewOnly}
               />
             </div>
@@ -153,7 +153,7 @@ function ImperialPoints({
 }: {
   orderedFactionIds: FactionId[];
 }) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const imperialPoint = useObjective("Imperial Point");
   const viewOnly = useViewOnly();
 
@@ -205,7 +205,9 @@ function ImperialPoints({
                     if (viewOnly) {
                       return;
                     }
-                    unscoreObjectiveAsync(gameId, faction, "Imperial Point");
+                    dataUpdate(
+                      Events.UnscoreObjectiveEvent(faction, "Imperial Point"),
+                    );
                   }}
                 >
                   -
@@ -234,7 +236,9 @@ function ImperialPoints({
                     if (viewOnly) {
                       return;
                     }
-                    scoreObjectiveAsync(gameId, faction, "Imperial Point");
+                    dataUpdate(
+                      Events.ScoreObjectiveEvent(faction, "Imperial Point"),
+                    );
                   }}
                 >
                   +
@@ -479,7 +483,7 @@ interface NumFactionsCSS extends CSSProperties {
 }
 
 function Mutiny({ orderedFactionIds }: { orderedFactionIds: FactionId[] }) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const intl = useIntl();
   const mutiny = useObjective("Mutiny");
   const viewOnly = useViewOnly();
@@ -525,7 +529,9 @@ function Mutiny({ orderedFactionIds }: { orderedFactionIds: FactionId[] }) {
           <div className="flexRow" style={{ gap: rem(4) }}>
             <Chip
               selected={mutinyDirection === "[For]"}
-              toggleFn={() => setObjectivePointsAsync(gameId, "Mutiny", 1)}
+              toggleFn={() =>
+                dataUpdate(Events.SetObjectivePointsEvent("Mutiny", 1))
+              }
             >
               [
               {intl.formatMessage({
@@ -537,7 +543,9 @@ function Mutiny({ orderedFactionIds }: { orderedFactionIds: FactionId[] }) {
             </Chip>
             <Chip
               selected={mutinyDirection !== "[For]"}
-              toggleFn={() => setObjectivePointsAsync(gameId, "Mutiny", -1)}
+              toggleFn={() =>
+                dataUpdate(Events.SetObjectivePointsEvent("Mutiny", -1))
+              }
             >
               [
               {intl.formatMessage({
@@ -621,7 +629,7 @@ function SeedOfAnEmpire({
 }
 
 function TotalWar({ orderedFactionIds }: { orderedFactionIds: FactionId[] }) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const options = useOptions();
   const totalWarObjective = useObjective("Total War");
   const viewOnly = useViewOnly();
@@ -699,7 +707,9 @@ function TotalWar({ orderedFactionIds }: { orderedFactionIds: FactionId[] }) {
                     if (viewOnly) {
                       return;
                     }
-                    unscoreObjectiveAsync(gameId, faction, "Total War");
+                    dataUpdate(
+                      Events.UnscoreObjectiveEvent(faction, "Total War"),
+                    );
                   }}
                 >
                   -
@@ -728,7 +738,9 @@ function TotalWar({ orderedFactionIds }: { orderedFactionIds: FactionId[] }) {
                     if (viewOnly) {
                       return;
                     }
-                    scoreObjectiveAsync(gameId, faction, "Total War");
+                    dataUpdate(
+                      Events.ScoreObjectiveEvent(faction, "Total War"),
+                    );
                   }}
                 >
                   +

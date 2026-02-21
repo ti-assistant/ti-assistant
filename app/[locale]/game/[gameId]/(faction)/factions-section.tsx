@@ -24,7 +24,6 @@ import {
   useGameState,
   usePhase,
 } from "../../../../../src/context/stateDataHooks";
-import { advancePhaseAsync } from "../../../../../src/dynamic/api";
 import { LockedButtons } from "../../../../../src/LockedButton";
 import { getLogEntries } from "../../../../../src/util/actionLog";
 import { getFactionColor } from "../../../../../src/util/factions";
@@ -34,9 +33,12 @@ import { Optional } from "../../../../../src/util/types/types";
 import { rem } from "../../../../../src/util/util";
 import { setupPhaseComplete } from "../main/@phase/setup/SetupPhase";
 import { statusPhaseComplete } from "../main/@phase/status/StatusPhase";
+import { useDataUpdate } from "../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../src/util/api/events";
 
 function NextPhaseButtons({}) {
   const currentTurn = useCurrentTurn();
+  const dataUpdate = useDataUpdate();
   const factions = useFactions();
   const gameId = useGameId();
   const options = useOptions();
@@ -64,10 +66,7 @@ function NextPhaseButtons({}) {
                   defaultMessage: "Start Game",
                 }),
                 onClick: () => {
-                  if (!gameId) {
-                    return;
-                  }
-                  advancePhaseAsync(gameId);
+                  dataUpdate(Events.AdvancePhaseEvent());
                 },
               },
             ]}
@@ -81,7 +80,7 @@ function NextPhaseButtons({}) {
           <div className="flexColumn" style={{ marginTop: rem(8) }}>
             <button
               onClick={() => {
-                advancePhaseAsync(gameId);
+                dataUpdate(Events.AdvancePhaseEvent());
               }}
               disabled={viewOnly}
             >
@@ -115,7 +114,7 @@ function NextPhaseButtons({}) {
                   { phase: phaseString("STATUS", intl) },
                 ),
                 onClick: () => {
-                  advancePhaseAsync(gameId);
+                  dataUpdate(Events.AdvancePhaseEvent());
                 },
               },
             ]}
@@ -133,10 +132,7 @@ function NextPhaseButtons({}) {
             description: "Text on a button that will start the next round.",
           }),
           onClick: () => {
-            if (!gameId) {
-              return;
-            }
-            advancePhaseAsync(gameId, true);
+            dataUpdate(Events.AdvancePhaseEvent(/* skipAgenda= */ true));
           },
         });
       }
@@ -151,10 +147,7 @@ function NextPhaseButtons({}) {
           { phase: phaseString("AGENDA", intl) },
         ),
         onClick: () => {
-          if (!gameId) {
-            return;
-          }
-          advancePhaseAsync(gameId);
+          dataUpdate(Events.AdvancePhaseEvent());
         },
       });
       return (
@@ -180,10 +173,7 @@ function NextPhaseButtons({}) {
                     "Text on a button that will start the next round.",
                 }),
                 onClick: () => {
-                  if (!gameId) {
-                    return;
-                  }
-                  advancePhaseAsync(gameId, true);
+                  dataUpdate(Events.AdvancePhaseEvent(/* skipAgenda= */ true));
                 },
               },
             ]}

@@ -1781,24 +1781,7 @@ export default function SetupPage({
 
   const maxFactions = options.expansions.has("POK") ? 8 : 6;
   return (
-    <React.Fragment>
-      <NonGameHeader
-        leftSidebar={intl
-          .formatMessage({
-            id: "9DZz2w",
-            description: "Text identifying that this is the setup step.",
-            defaultMessage: "Setup Game",
-          })
-          .toUpperCase()}
-        rightSidebar={intl
-          .formatMessage({
-            id: "9DZz2w",
-            description: "Text identifying that this is the setup step.",
-            defaultMessage: "Setup Game",
-          })
-          .toUpperCase()}
-        mobileSidebars
-      />
+    <>
       {/* Large Screen */}
       <div className={styles.SetupGrid}>
         <div
@@ -2702,7 +2685,7 @@ export default function SetupPage({
           </div>
         </div>
       </div>
-    </React.Fragment>
+    </>
   );
 }
 

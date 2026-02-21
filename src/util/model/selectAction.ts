@@ -1,5 +1,3 @@
-import { createIntl, createIntlCache } from "react-intl";
-import { buildObjectives, buildPlanets } from "../../data/GameData";
 import { getCurrentTurnLogEntries } from "../api/actionLog";
 import { Optional } from "../types/types";
 
@@ -18,9 +16,6 @@ export class SelectActionHandler implements Handler {
       [`state.paused`]: false,
       [`sequenceNum`]: "INCREMENT",
     };
-    const cache = createIntlCache();
-    const intl = createIntl({ locale: "en" }, cache);
-
     let tokens: Optional<number>;
     const activePlayer = this.gameData.state.activeplayer;
     if (activePlayer && activePlayer !== "None") {
@@ -35,15 +30,14 @@ export class SelectActionHandler implements Handler {
         this.data.event.action !== "Imperial" &&
         this.data.event.action !== "Aeterna"
       ) {
-        const mecatol = buildPlanets(this.gameData, intl)["Mecatol Rex"];
+        const mecatol = this.gameData.planets["Mecatol Rex"];
         if (
           mecatol &&
           this.gameData.state.activeplayer &&
           mecatol.owner === this.gameData.state.activeplayer
         ) {
           const mecatolScorers =
-            buildObjectives(this.gameData, intl)["Imperial Point"]?.scorers ??
-            [];
+            (this.gameData.objectives ?? {})["Imperial Point"]?.scorers ?? [];
           const lastIndex = mecatolScorers.lastIndexOf(
             this.gameData.state.activeplayer,
           );
@@ -77,14 +71,14 @@ export class SelectActionHandler implements Handler {
       this.data.event.action === "Imperial" ||
       this.data.event.action === "Aeterna"
     ) {
-      const mecatol = buildPlanets(this.gameData, intl)["Mecatol Rex"];
+      const mecatol = this.gameData.planets["Mecatol Rex"];
       if (
         mecatol &&
         this.gameData.state.activeplayer &&
         mecatol.owner === this.gameData.state.activeplayer
       ) {
         const mecatolScorers =
-          buildObjectives(this.gameData, intl)["Imperial Point"]?.scorers ?? [];
+          (this.gameData.objectives ?? {})["Imperial Point"]?.scorers ?? [];
         mecatolScorers.push(this.gameData.state.activeplayer);
         updates[`objectives.Imperial Point.scorers`] = mecatolScorers;
       }
@@ -145,8 +139,6 @@ export class UnselectActionHandler implements Handler {
   }
 
   getUpdates(): Record<string, any> {
-    const cache = createIntlCache();
-    const intl = createIntl({ locale: "en" }, cache);
     const updates: Record<string, any> = {
       [`state.paused`]: false,
       [`sequenceNum`]: "INCREMENT",
@@ -161,14 +153,14 @@ export class UnselectActionHandler implements Handler {
       this.data.event.action === "Imperial" ||
       this.data.event.action === "Aeterna"
     ) {
-      const mecatol = buildPlanets(this.gameData, intl)["Mecatol Rex"];
+      const mecatol = this.gameData.planets["Mecatol Rex"];
       if (
         mecatol &&
         this.gameData.state.activeplayer &&
         mecatol.owner === this.gameData.state.activeplayer
       ) {
         const mecatolScorers =
-          buildObjectives(this.gameData, intl)["Imperial Point"]?.scorers ?? [];
+          (this.gameData.objectives ?? {})["Imperial Point"]?.scorers ?? [];
         const lastIndex = mecatolScorers.lastIndexOf(
           this.gameData.state.activeplayer,
         );

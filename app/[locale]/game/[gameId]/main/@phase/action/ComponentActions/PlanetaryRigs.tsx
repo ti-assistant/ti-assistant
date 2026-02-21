@@ -10,13 +10,11 @@ import {
   usePlanets,
   useViewOnly,
 } from "../../../../../../../../src/context/dataHooks";
-import {
-  addAttachmentAsync,
-  removeAttachmentAsync,
-} from "../../../../../../../../src/dynamic/api";
 import { ClientOnlyHoverMenu } from "../../../../../../../../src/HoverMenu";
 import { getAttachments } from "../../../../../../../../src/util/actionLog";
 import { getCurrentTurnLogEntries } from "../../../../../../../../src/util/api/actionLog";
+import { useDataUpdate } from "../../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../../src/util/api/events";
 import { applyPlanetAttachments } from "../../../../../../../../src/util/planets";
 import { Optional } from "../../../../../../../../src/util/types/types";
 import { rem } from "../../../../../../../../src/util/util";
@@ -25,6 +23,7 @@ export default function PlanetaryRigs({ factionId }: { factionId: FactionId }) {
   const attachments = useAttachments();
   const actionLog = useActionLog();
   const currentTurn = getCurrentTurnLogEntries(actionLog);
+  const dataUpdate = useDataUpdate();
   const gameId = useGameId();
   const planets = usePlanets();
   const viewOnly = useViewOnly();
@@ -61,7 +60,9 @@ export default function PlanetaryRigs({ factionId }: { factionId: FactionId }) {
           planet={planet}
           removePlanet={(planetId) => {
             if (currentAttachment) {
-              removeAttachmentAsync(gameId, planetId, currentAttachment);
+              dataUpdate(
+                Events.RemoveAttachmentEvent(planetId, currentAttachment),
+              );
             }
             setSelectedPlanet(undefined);
           }}
@@ -88,10 +89,12 @@ export default function PlanetaryRigs({ factionId }: { factionId: FactionId }) {
           }, false)}
           onSelect={(attachmentId, prevAttachment) => {
             if (prevAttachment) {
-              removeAttachmentAsync(gameId, planet.id, prevAttachment);
+              dataUpdate(
+                Events.RemoveAttachmentEvent(planet.id, prevAttachment),
+              );
             }
             if (attachmentId) {
-              addAttachmentAsync(gameId, planet.id, attachmentId);
+              dataUpdate(Events.AddAttachmentEvent(planet.id, attachmentId));
             }
           }}
           selectedAttachment={currentAttachment}

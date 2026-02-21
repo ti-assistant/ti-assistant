@@ -1,4 +1,5 @@
-import { DataStore } from "../../context/dataStore";
+import { use } from "react";
+import { DatabaseFnsContext } from "../../context/contexts";
 import { poster } from "./util";
 
 interface ChangeOptionData {
@@ -6,26 +7,37 @@ interface ChangeOptionData {
   value: any;
 }
 
-export function changeOption(gameId: string, option: string, value: any) {
-  const data: ChangeOptionData = {
-    option,
-    value,
-  };
+export function useChangeOption() {
+  const databaseFns = use(DatabaseFnsContext);
+  return async (gameId: string, option: string, value: any) => {
+    const data: ChangeOptionData = {
+      option,
+      value,
+    };
 
-  const now = Date.now();
+    const now = Date.now();
+    const gameTime: number = databaseFns.getValue("timers.game") ?? 0;
 
-  const updatePromise = poster(`/api/${gameId}/changeOption`, data, now);
+    const updatePromise = poster(
+      `/api/${gameId}/changeOption`,
+      data,
+      now,
+      gameTime,
+    );
 
-  DataStore.update((storedGameData) => {
-    storedGameData.options[option] = value;
-    if (storedGameData.timers) {
-      storedGameData.timers.paused = false;
+    databaseFns.update((storedGameData) => {
+      storedGameData.options[option] = value;
+      if (storedGameData.timers) {
+        storedGameData.timers.paused = false;
+      }
+
+      return storedGameData;
+    }, "CLIENT");
+
+    try {
+      return await updatePromise;
+    } catch (_) {
+      databaseFns.reset();
     }
-
-    return storedGameData;
-  }, "CLIENT");
-
-  return updatePromise.catch((_) => {
-    DataStore.reset();
-  });
+  };
 }

@@ -22,7 +22,7 @@ function cleanLogData(data: GameUpdateData) {
 
 function buildGameLog(
   initialGameData: StoredGameData,
-  reversedActionLog: ActionLog
+  reversedActionLog: ActionLog,
 ) {
   const dynamicGameData = structuredClone(initialGameData);
 

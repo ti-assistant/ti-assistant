@@ -14,7 +14,6 @@ import {
   useAgendas,
   useAttachments,
   useCurrentTurn,
-  useGameId,
   useLeaders,
   useOptions,
   usePlanets,
@@ -25,14 +24,6 @@ import {
 import { useFactions } from "../../../../../../../src/context/factionDataHooks";
 import { useObjectives } from "../../../../../../../src/context/objectiveDataHooks";
 import { useGameState } from "../../../../../../../src/context/stateDataHooks";
-import {
-  castVotesAsync,
-  hideAgendaAsync,
-  resolveAgendaAsync,
-  revealAgendaAsync,
-  selectEligibleOutcomesAsync,
-  speakerTieBreakAsync,
-} from "../../../../../../../src/dynamic/api";
 import { ClientOnlyHoverMenu } from "../../../../../../../src/HoverMenu";
 import InfluenceSVG from "../../../../../../../src/icons/planets/Influence";
 import { SelectableRow } from "../../../../../../../src/SelectableRow";
@@ -43,6 +34,8 @@ import {
   getSpeakerTieBreak,
 } from "../../../../../../../src/util/actionLog";
 import { getCurrentPhasePreviousLogEntries } from "../../../../../../../src/util/api/actionLog";
+import { useDataUpdate } from "../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../src/util/api/events";
 import { Optional } from "../../../../../../../src/util/types/types";
 import { rem } from "../../../../../../../src/util/util";
 import { computeVotes } from "../../../main/@phase/agenda/AgendaPhase";
@@ -57,8 +50,8 @@ export default function FactionAgendaPhase({
   const agendas = useAgendas();
   const attachments = useAttachments();
   const currentTurn = useCurrentTurn();
+  const dataUpdate = useDataUpdate();
   const factions = useFactions();
-  const gameId = useGameId();
   const intl = useIntl();
   const leaders = useLeaders();
   const objectives = useObjectives();
@@ -74,12 +67,13 @@ export default function FactionAgendaPhase({
     if (element.innerText !== "") {
       const numerical = parseInt(element.innerText);
       if (!isNaN(numerical)) {
-        castVotesAsync(
-          gameId,
-          factionId,
-          numerical,
-          factionVotes?.extraVotes ?? 0,
-          factionVotes?.target,
+        dataUpdate(
+          Events.CastVotesEvent(
+            factionId,
+            numerical,
+            factionVotes?.extraVotes ?? 0,
+            factionVotes?.target,
+          ),
         );
         element.innerText = numerical.toString();
       }
@@ -93,7 +87,7 @@ export default function FactionAgendaPhase({
     if (!target || !currentAgenda) {
       return;
     }
-    resolveAgendaAsync(gameId, currentAgenda?.id, target);
+    dataUpdate(Events.ResolveAgendaEvent(currentAgenda.id, target));
   }
 
   let currentAgenda: Optional<Agenda>;
@@ -149,7 +143,9 @@ export default function FactionAgendaPhase({
                 <button
                   key={agenda.id}
                   style={{ writingMode: "horizontal-tb" }}
-                  onClick={() => revealAgendaAsync(gameId, agenda.id)}
+                  onClick={() =>
+                    dataUpdate(Events.RevealAgendaEvent(agenda.id))
+                  }
                   disabled={viewOnly}
                 >
                   {agenda.name}
@@ -240,7 +236,7 @@ export default function FactionAgendaPhase({
               if (!currentAgenda) {
                 return;
               }
-              hideAgendaAsync(gameId, currentAgenda.id);
+              dataUpdate(Events.HideAgendaEvent(currentAgenda.id));
             }}
           />
         </LabeledDiv>
@@ -259,7 +255,9 @@ export default function FactionAgendaPhase({
           >
             <SelectableRow
               itemId={eligibleOutcomes}
-              removeItem={() => selectEligibleOutcomesAsync(gameId, "None")}
+              removeItem={() =>
+                dataUpdate(Events.SelectEligibleOutcomesEvent("None"))
+              }
               viewOnly={viewOnly}
             >
               <div style={{ display: "flex", fontSize: rem(18) }}>
@@ -302,7 +300,7 @@ export default function FactionAgendaPhase({
                     <button
                       key={outcome}
                       onClick={() =>
-                        selectEligibleOutcomesAsync(gameId, outcome)
+                        dataUpdate(Events.SelectEligibleOutcomesEvent(outcome))
                       }
                       disabled={viewOnly}
                     >
@@ -351,9 +349,23 @@ export default function FactionAgendaPhase({
                 selectedItem={factionVotes?.target}
                 toggleItem={(itemId, add) => {
                   if (add) {
-                    castVotesAsync(gameId, factionId, 0, 0, itemId);
+                    dataUpdate(
+                      Events.CastVotesEvent(
+                        factionId,
+                        /* votes= */ 0,
+                        /* extraVotes= */ 0,
+                        itemId,
+                      ),
+                    );
                   } else {
-                    castVotesAsync(gameId, factionId, 0, 0, undefined);
+                    dataUpdate(
+                      Events.CastVotesEvent(
+                        factionId,
+                        /* votes= */ 0,
+                        /* extraVotes= */ 0,
+                        undefined,
+                      ),
+                    );
                   }
                 }}
               />
@@ -397,12 +409,13 @@ export default function FactionAgendaPhase({
                     <div
                       className="arrowDown"
                       onClick={() =>
-                        castVotesAsync(
-                          gameId,
-                          factionId,
-                          (factionVotes?.votes ?? 0) - 1,
-                          factionVotes?.extraVotes ?? 0,
-                          factionVotes?.target,
+                        dataUpdate(
+                          Events.CastVotesEvent(
+                            factionId,
+                            (factionVotes?.votes ?? 0) - 1,
+                            factionVotes?.extraVotes ?? 0,
+                            factionVotes?.target,
+                          ),
                         )
                       }
                     ></div>
@@ -430,12 +443,13 @@ export default function FactionAgendaPhase({
                     <div
                       className="arrowUp"
                       onClick={() =>
-                        castVotesAsync(
-                          gameId,
-                          factionId,
-                          (factionVotes?.votes ?? 0) + 1,
-                          factionVotes?.extraVotes ?? 0,
-                          factionVotes?.target,
+                        dataUpdate(
+                          Events.CastVotesEvent(
+                            factionId,
+                            (factionVotes?.votes ?? 0) + 1,
+                            factionVotes?.extraVotes ?? 0,
+                            factionVotes?.target,
+                          ),
                         )
                       }
                     ></div>
@@ -488,7 +502,9 @@ export default function FactionAgendaPhase({
                           <button
                             key={target}
                             style={{ writingMode: "horizontal-tb" }}
-                            onClick={() => speakerTieBreakAsync(gameId, target)}
+                            onClick={() =>
+                              dataUpdate(Events.SpeakerTieBreakEvent(target))
+                            }
                             disabled={viewOnly}
                           >
                             {target}
@@ -504,7 +520,7 @@ export default function FactionAgendaPhase({
                             key={target.id}
                             style={{ writingMode: "horizontal-tb" }}
                             onClick={() =>
-                              speakerTieBreakAsync(gameId, target.id)
+                              dataUpdate(Events.SpeakerTieBreakEvent(target.id))
                             }
                             disabled={viewOnly}
                           >
@@ -522,7 +538,9 @@ export default function FactionAgendaPhase({
             >
               <SelectableRow
                 itemId={tieBreak}
-                removeItem={() => speakerTieBreakAsync(gameId, "None")}
+                removeItem={() =>
+                  dataUpdate(Events.SpeakerTieBreakEvent("None"))
+                }
                 viewOnly={viewOnly}
               >
                 {tieBreak}

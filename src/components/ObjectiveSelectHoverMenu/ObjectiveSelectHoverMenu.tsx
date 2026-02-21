@@ -12,7 +12,7 @@ interface ObjectiveGridCSSProperties extends CSSProperties {
 }
 
 interface ObjectiveSelectHoverMenuProps {
-  action: (gameId: string, objectiveId: ObjectiveId) => void;
+  action: (objectiveId: ObjectiveId) => void;
   fontSize?: string;
   label: ReactNode;
   objectives: Objective[];
@@ -62,7 +62,7 @@ export default function ObjectiveSelectHoverMenu({
                   description:
                     "Text telling the user that they can hover over objectives to see the full text.",
                   defaultMessage: "Hover to see full text.",
-                })
+                }),
               )
             }
           >
@@ -73,7 +73,7 @@ export default function ObjectiveSelectHoverMenu({
                   className={styles.ObjectiveButton}
                   onClick={() => {
                     closeFn();
-                    action(gameId, objective.id);
+                    action(objective.id);
                   }}
                   onMouseEnter={() => setDescription(objective.description)}
                   disabled={viewOnly}

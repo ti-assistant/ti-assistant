@@ -3,19 +3,19 @@ import FactionSelectRadialMenu from "../../../../../../../../src/components/Fact
 import { TacticalAction } from "../../../../../../../../src/components/TacticalAction";
 import {
   useCurrentTurn,
-  useGameId,
   usePlanets,
   useViewOnly,
 } from "../../../../../../../../src/context/dataHooks";
+import { useFactionColors } from "../../../../../../../../src/context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../../../../../../src/context/gameDataHooks";
 import { useObjectives } from "../../../../../../../../src/context/objectiveDataHooks";
-import { selectFactionAsync } from "../../../../../../../../src/dynamic/api";
 import {
   getClaimedPlanets,
   getScoredObjectives,
   getSelectedFaction,
 } from "../../../../../../../../src/util/actionLog";
-import { getColorForFaction } from "../../../../../../../../src/util/factions";
+import { useDataUpdate } from "../../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../../src/util/api/events";
 import { rem } from "../../../../../../../../src/util/util";
 
 const Zeu = {
@@ -51,9 +51,10 @@ function Label() {
 
 function RightLabel() {
   const currentTurn = useCurrentTurn();
+  const dataUpdate = useDataUpdate();
   const factionPicked = getSelectedFaction(currentTurn);
-  const gameId = useGameId();
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
+  const factionColors = useFactionColors();
   const viewOnly = useViewOnly();
 
   const selectedFaction = factionPicked === "None" ? undefined : factionPicked;
@@ -63,12 +64,10 @@ function RightLabel() {
       selectedFaction={selectedFaction}
       factions={mapOrderedFactionIds}
       onSelect={(factionId, _) => {
-        selectFactionAsync(gameId, factionId ?? "None");
+        dataUpdate(Events.SelectFactionEvent(factionId ?? "None"));
       }}
       size={44}
-      borderColor={
-        selectedFaction ? getColorForFaction(selectedFaction) : undefined
-      }
+      borderColor={selectedFaction ? factionColors[selectedFaction] : undefined}
       viewOnly={viewOnly}
     />
   );

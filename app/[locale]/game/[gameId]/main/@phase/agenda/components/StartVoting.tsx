@@ -1,12 +1,13 @@
 import { FormattedMessage } from "react-intl";
 import { useCurrentAgenda } from "../../../../../../../../src/context/actionLogDataHooks";
-import { useGameId, useViewOnly } from "../../../../../../../../src/context/dataHooks";
+import { useViewOnly } from "../../../../../../../../src/context/dataHooks";
 import { useGameState } from "../../../../../../../../src/context/stateDataHooks";
-import { startVotingAsync } from "../../../../../../../../src/dynamic/api";
+import { useDataUpdate } from "../../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../../src/util/api/events";
 
 export default function StartVoting() {
   const currentAgenda = useCurrentAgenda();
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const state = useGameState();
   const viewOnly = useViewOnly();
 
@@ -21,7 +22,7 @@ export default function StartVoting() {
     <button
       style={{ width: "fit-content" }}
       onClick={() => {
-        startVotingAsync(gameId);
+        dataUpdate(Events.StartVotingEvent());
       }}
       disabled={viewOnly}
     >

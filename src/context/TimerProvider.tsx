@@ -1,10 +1,11 @@
 "use client";
 
-import { PropsWithChildren, useEffect } from "react";
-import { TimerContext } from "./contexts";
-import { DataStore } from "./dataStore";
+import { PropsWithChildren, use, useEffect } from "react";
+import { DatabaseFnsContext, TimerContext } from "./contexts";
 
 export default function TimerProvider({ children }: PropsWithChildren) {
+  const databaseFns = use(DatabaseFnsContext);
+
   const activeTimers: Set<string> = new Set();
   let lastIncrease: number = Date.now();
 
@@ -20,7 +21,7 @@ export default function TimerProvider({ children }: PropsWithChildren) {
   }
 
   function tick() {
-    const timers = DataStore.getValue<Timers>("timers");
+    const timers = databaseFns.getValue<Timers>("timers");
     if (!timers || timers.paused) {
       return;
     }
@@ -28,7 +29,7 @@ export default function TimerProvider({ children }: PropsWithChildren) {
     const timeDiffMillis = Date.now() - lastIncrease;
     if (timeDiffMillis / 1000 > 1 && activeTimers.size > 0) {
       lastIncrease = Date.now();
-      DataStore.update(updateTimers, "CLIENT");
+      databaseFns.update(updateTimers, "CLIENT");
     }
   }
 
@@ -45,7 +46,7 @@ export default function TimerProvider({ children }: PropsWithChildren) {
     if (timeDiffMillis / 1000 > 20) {
       return;
     }
-    DataStore.saveTimers();
+    databaseFns.saveTimers();
   }
 
   useEffect(() => {

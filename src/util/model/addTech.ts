@@ -3,7 +3,10 @@ import { buildFactions, buildTechs } from "../../data/GameData";
 import { hasTech } from "../api/techs";
 
 export class AddTechHandler implements Handler {
-  constructor(public gameData: StoredGameData, public data: AddTechData) {}
+  constructor(
+    public gameData: StoredGameData,
+    public data: AddTechData,
+  ) {}
 
   validate(): boolean {
     // Translations not needed, so just create an english one.
@@ -78,7 +81,10 @@ export class AddTechHandler implements Handler {
 }
 
 export class RemoveTechHandler implements Handler {
-  constructor(public gameData: StoredGameData, public data: RemoveTechData) {}
+  constructor(
+    public gameData: StoredGameData,
+    public data: RemoveTechData,
+  ) {}
 
   validate(): boolean {
     const cache = createIntlCache();

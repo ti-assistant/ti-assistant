@@ -4,8 +4,8 @@ import Conditional from "../../../../../../../../src/components/Conditional/Cond
 import FactionComponents from "../../../../../../../../src/components/FactionComponents/FactionComponents";
 import LabeledDiv from "../../../../../../../../src/components/LabeledDiv/LabeledDiv";
 import { usePlanets } from "../../../../../../../../src/context/dataHooks";
+import { useFactionColor } from "../../../../../../../../src/context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../../../../../../src/context/gameDataHooks";
-import { getColorForFaction } from "../../../../../../../../src/util/factions";
 
 const Diplomacy = {
   Primary,
@@ -62,6 +62,7 @@ function Primary({ factionId }: { factionId: FactionId }) {
 
 function Secondary({ factionId }: { factionId: FactionId }) {
   const planets = usePlanets();
+  const factionColor = useFactionColor(factionId);
 
   if (factionId !== "Xxcha Kingdom") {
     return null;
@@ -93,7 +94,7 @@ function Secondary({ factionId }: { factionId: FactionId }) {
           />
         )}
       )}`}
-        color={getColorForFaction(factionId)}
+        color={factionColor}
         blur
       >
         <ClaimPlanetsSection

@@ -10,7 +10,8 @@ import {
 } from "../../context/dataHooks";
 import { useFactionColor } from "../../context/factionDataHooks";
 import { useOrderedFactionIds } from "../../context/gameDataHooks";
-import { claimPlanetAsync, unclaimPlanetAsync } from "../../dynamic/api";
+import { useDataUpdate } from "../../util/api/dataUpdate";
+import { Events } from "../../util/api/events";
 import {
   applyAllPlanetAttachments,
   filterToClaimedPlanets,
@@ -34,6 +35,7 @@ function PlanetSection({
   openedByDefault: boolean;
 }) {
   const attachments = useAttachments();
+  const dataUpdate = useDataUpdate();
   const factionColor = useFactionColor(factionId);
   const gameId = useGameId();
   const planets = usePlanets();
@@ -100,10 +102,9 @@ function PlanetSection({
                   viewOnly
                     ? undefined
                     : (planetId) => {
-                        if (!gameId) {
-                          return;
-                        }
-                        unclaimPlanetAsync(gameId, factionId, planetId);
+                        dataUpdate(
+                          Events.UnclaimPlanetEvent(factionId, planetId),
+                        );
                       }
                 }
                 opts={{
@@ -119,7 +120,7 @@ function PlanetSection({
 }
 
 function UnclaimedPlanetSection() {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
   const planets = usePlanets();
   const viewOnly = useViewOnly();
@@ -174,7 +175,7 @@ function UnclaimedPlanetSection() {
                       if (!factionId) {
                         return;
                       }
-                      claimPlanetAsync(gameId, factionId, planet.id);
+                      dataUpdate(Events.ClaimPlanetEvent(factionId, planet.id));
                     }}
                     size={24}
                     forceDirection="row"

@@ -1,13 +1,14 @@
-import { useGameId, useGenomes, useViewOnly } from "../../context/dataHooks";
-import { loseTFCardAsync } from "../../dynamic/api";
+import { useGenomes, useViewOnly } from "../../context/dataHooks";
 import { InfoRow } from "../../InfoRow";
 import { SelectableRow } from "../../SelectableRow";
+import { useDataUpdate } from "../../util/api/dataUpdate";
+import { Events } from "../../util/api/events";
 import FactionComponents from "../FactionComponents/FactionComponents";
 import FormattedDescription from "../FormattedDescription/FormattedDescription";
 import styles from "./GenomeRow.module.scss";
 
 export default function GenomeRow({ genome }: { genome: TFGenome }) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const viewOnly = useViewOnly();
 
   return (
@@ -17,10 +18,12 @@ export default function GenomeRow({ genome }: { genome: TFGenome }) {
         if (!genome.owner) {
           return;
         }
-        loseTFCardAsync(gameId, genome.owner, {
-          genome: genome.id,
-          type: "GENOME",
-        });
+        dataUpdate(
+          Events.LoseTFCardEvent(genome.owner, {
+            genome: genome.id,
+            type: "GENOME",
+          }),
+        );
       }}
       viewOnly={viewOnly}
     >

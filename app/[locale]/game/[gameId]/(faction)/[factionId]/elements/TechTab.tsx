@@ -12,11 +12,9 @@ import {
   useFactions,
   useFactionTechs,
 } from "../../../../../../../src/context/factionDataHooks";
-import {
-  addTechAsync,
-  removeTechAsync,
-} from "../../../../../../../src/dynamic/api";
 import { TechRow } from "../../../../../../../src/TechRow";
+import { useDataUpdate } from "../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../src/util/api/events";
 import { filterToUnownedTechs } from "../../../../../../../src/util/techs";
 import { rem } from "../../../../../../../src/util/util";
 
@@ -26,6 +24,7 @@ export default function TechTab({ factionId }: { factionId: FactionId }) {
   const gameId = useGameId();
   const techs = useTechs();
   const viewOnly = useViewOnly();
+  const dataUpdate = useDataUpdate();
   const { openModal } = use(ModalContext);
 
   const techsObj: Partial<Record<TechId, Tech>> = {};
@@ -70,7 +69,9 @@ export default function TechTab({ factionId }: { factionId: FactionId }) {
               >
                 <AddTechList
                   techs={remainingTechs}
-                  addTech={(techId) => addTechAsync(gameId, factionId, techId)}
+                  addTech={(techId) =>
+                    dataUpdate(Events.AddTechEvent(factionId, techId))
+                  }
                 />
               </ModalContent>,
             )
@@ -100,7 +101,7 @@ export default function TechTab({ factionId }: { factionId: FactionId }) {
               key={techId}
               techId={techId}
               removeTech={(techId) =>
-                removeTechAsync(gameId, factionId, techId)
+                dataUpdate(Events.RemoveTechEvent(factionId, techId))
               }
             />
           );

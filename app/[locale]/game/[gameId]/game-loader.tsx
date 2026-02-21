@@ -1,11 +1,17 @@
 import Sidebars from "../../../../src/components/Sidebars/Sidebars";
-import { Loader } from "../../../../src/Loader";
+import SiteLogo from "../../../../src/components/SiteLogo/SiteLogo";
+import styles from "../../root.module.scss";
 
 export default function GameLoader({}) {
   return (
     <>
       <Sidebars left="TI ASSISTANT" right="TI ASSISTANT" />
-      <Loader />
+      <div className={styles.Loader}>
+        <div className={styles.LoadingLogo}>
+          <SiteLogo />
+        </div>
+        Twilight Imperium Assistant
+      </div>
     </>
   );
 }

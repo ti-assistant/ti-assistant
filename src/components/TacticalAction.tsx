@@ -13,12 +13,6 @@ import {
 } from "../context/dataHooks";
 import { useFactions } from "../context/factionDataHooks";
 import { useObjectives } from "../context/objectiveDataHooks";
-import {
-  playAdjudicatorBaalAsync,
-  scoreObjectiveAsync,
-  undoAdjudicatorBaalAsync,
-  unscoreObjectiveAsync,
-} from "../dynamic/api";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
 import { SelectableRow } from "../SelectableRow";
 import {
@@ -27,12 +21,15 @@ import {
   getLogEntries,
   getResearchedTechs,
 } from "../util/actionLog";
+import { useDataUpdate } from "../util/api/dataUpdate";
+import { Events } from "../util/api/events";
 import { canExploreFrontierTokens, hasTech } from "../util/api/techs";
 import { getWormholeNexusSystemNumber } from "../util/map";
 import { getMapString } from "../util/options";
 import { objectKeys, rem } from "../util/util";
 import GainRelic from "./Actions/GainRelic";
 import ClaimPlanetsSection from "./ClaimPlanetsSection/ClaimPlanetsSection";
+import Conditional from "./Conditional/Conditional";
 import FrontierExploration from "./FrontierExploration/FrontierExploration";
 import LabeledDiv from "./LabeledDiv/LabeledDiv";
 import LabeledLine from "./LabeledLine/LabeledLine";
@@ -42,7 +39,6 @@ import ScoreObjectiveRow from "./ObjectiveRow/ScoreObjectiveRow";
 import ObjectiveSelectHoverMenu from "./ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import styles from "./TacticalAction.module.scss";
 import TechResearchSection from "./TechResearchSection/TechResearchSection";
-import Conditional from "./Conditional/Conditional";
 
 export function TacticalAction({
   activeFactionId,
@@ -62,8 +58,8 @@ export function TacticalAction({
   style?: CSSProperties;
 }) {
   const currentTurn = useCurrentTurn();
+  const dataUpdate = useDataUpdate();
   const factions = useFactions();
-  const gameId = useGameId();
   const objectives = useObjectives();
   const relics = useRelics();
   const techs = useTechs();
@@ -164,7 +160,12 @@ export function TacticalAction({
                     hideScorers={true}
                     objective={objectiveObj}
                     removeObjective={() =>
-                      unscoreObjectiveAsync(gameId, activeFactionId, objective)
+                      dataUpdate(
+                        Events.UnscoreObjectiveEvent(
+                          activeFactionId,
+                          objective,
+                        ),
+                      )
                     }
                   />
                 );
@@ -174,8 +175,10 @@ export function TacticalAction({
         ) : null}
         {scorableObjectives.length > 0 && scoredObjectives.length < 4 ? (
           <ObjectiveSelectHoverMenu
-            action={(_, objectiveId) => {
-              scoreObjectiveAsync(gameId, activeFactionId, objectiveId);
+            action={(objectiveId) => {
+              dataUpdate(
+                Events.ScoreObjectiveEvent(activeFactionId, objectiveId),
+              );
             }}
             label={
               <FormattedMessage
@@ -263,6 +266,7 @@ function OtherFactionsSection({ children }: PropsWithChildren) {
 
 function AdjudicatorBaal() {
   const currentTurn = useCurrentTurn();
+  const dataUpdate = useDataUpdate();
   const factions = useFactions();
   const gameId = useGameId();
   const leaders = useLeaders();
@@ -298,7 +302,7 @@ function AdjudicatorBaal() {
         <SelectableRow
           itemId={`${adjudicatorBaalSystem}`}
           removeItem={() => {
-            undoAdjudicatorBaalAsync(gameId, adjudicatorBaalSystem);
+            dataUpdate(Events.UndoAdjudicatorBaalEvent(adjudicatorBaalSystem));
           }}
           style={{ fontSize: rem(14) }}
           viewOnly={viewOnly}
@@ -362,7 +366,7 @@ function AdjudicatorBaal() {
               return;
             }
 
-            playAdjudicatorBaalAsync(gameId, systemId as SystemId);
+            dataUpdate(Events.PlayAdjudicatorBaalEvent(systemId as SystemId));
           }}
           wormholeNexus={getWormholeNexusSystemNumber(
             options,

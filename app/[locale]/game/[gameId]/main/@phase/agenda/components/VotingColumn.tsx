@@ -7,7 +7,6 @@ import VoteBlock, {
 import {
   useAgendas,
   useCurrentTurn,
-  useGameId,
   useOptions,
   usePlanets,
   useStrategyCards,
@@ -15,7 +14,6 @@ import {
 } from "../../../../../../../../src/context/dataHooks";
 import { useFactions } from "../../../../../../../../src/context/factionDataHooks";
 import { useObjectives } from "../../../../../../../../src/context/objectiveDataHooks";
-import { speakerTieBreakAsync } from "../../../../../../../../src/dynamic/api";
 import { ClientOnlyHoverMenu } from "../../../../../../../../src/HoverMenu";
 import { SelectableRow } from "../../../../../../../../src/SelectableRow";
 import {
@@ -23,7 +21,9 @@ import {
   getSelectedEligibleOutcomes,
   getSpeakerTieBreak,
 } from "../../../../../../../../src/util/actionLog";
-import { getColorForFaction } from "../../../../../../../../src/util/factions";
+import { useDataUpdate } from "../../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../../src/util/api/events";
+import { convertToFactionColor } from "../../../../../../../../src/util/factions";
 import { objectKeys, rem } from "../../../../../../../../src/util/util";
 import { computeVotes } from "../AgendaPhase";
 
@@ -148,8 +148,8 @@ export default function VotingColumn({
 function SpeakerTieBreak({ speaker }: { speaker: FactionId }) {
   const agendas = useAgendas();
   const currentTurn = useCurrentTurn();
+  const dataUpdate = useDataUpdate();
   const factions = useFactions();
-  const gameId = useGameId();
   const intl = useIntl();
   const objectives = useObjectives();
   const options = useOptions();
@@ -221,7 +221,7 @@ function SpeakerTieBreak({ speaker }: { speaker: FactionId }) {
       <LabeledDiv label="Speaker Tie Break" style={{ gridColumn: "span 4" }}>
         <SelectableRow
           itemId={tieBreak}
-          removeItem={() => speakerTieBreakAsync(gameId, "None")}
+          removeItem={() => dataUpdate(Events.SpeakerTieBreakEvent("None"))}
           viewOnly={viewOnly}
         >
           {tieBreak}
@@ -233,7 +233,7 @@ function SpeakerTieBreak({ speaker }: { speaker: FactionId }) {
   return (
     <LabeledDiv
       label={<FactionComponents.Name factionId={speaker} />}
-      color={getColorForFaction(speaker)}
+      color={convertToFactionColor(factions[speaker]?.color)}
       style={{ width: "auto", gridColumn: "span 4" }}
     >
       <ClientOnlyHoverMenu
@@ -268,7 +268,9 @@ function SpeakerTieBreak({ speaker }: { speaker: FactionId }) {
                       fontSize: rem(14),
                       writingMode: "horizontal-tb",
                     }}
-                    onClick={() => speakerTieBreakAsync(gameId, target)}
+                    onClick={() =>
+                      dataUpdate(Events.SpeakerTieBreakEvent(target))
+                    }
                     disabled={viewOnly}
                   >
                     {target}
@@ -286,7 +288,9 @@ function SpeakerTieBreak({ speaker }: { speaker: FactionId }) {
                       fontSize: rem(14),
                       writingMode: "horizontal-tb",
                     }}
-                    onClick={() => speakerTieBreakAsync(gameId, target.id)}
+                    onClick={() =>
+                      dataUpdate(Events.SpeakerTieBreakEvent(target.id))
+                    }
                     disabled={viewOnly}
                   >
                     {target.name}

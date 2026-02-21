@@ -1,9 +1,10 @@
 import { CSSProperties, use } from "react";
 import { ModalContext } from "../../context/contexts";
-import { useAttachments, useGameId, useOptions } from "../../context/dataHooks";
-import { toggleStructureAsync, unclaimPlanetAsync } from "../../dynamic/api";
+import { useAttachments, useOptions } from "../../context/dataHooks";
 import { SymbolX } from "../../icons/svgs";
 import FlipSVG from "../../icons/ui/Flip";
+import { useDataUpdate } from "../../util/api/dataUpdate";
+import { Events } from "../../util/api/events";
 import { getPlanetTypeColor } from "../../util/planets";
 import { Optional } from "../../util/types/types";
 import { getRadialPosition, rem } from "../../util/util";
@@ -157,7 +158,7 @@ export default function PlanetDiv({ planet }: { planet: Planet }) {
 }
 
 function StructureSection({ planet }: { planet: Planet }) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const options = useOptions();
 
   if (!planet.owner) {
@@ -184,11 +185,12 @@ function StructureSection({ planet }: { planet: Planet }) {
     <div className={`${styles.StructureDiv} ${styles.BottomSection}`}>
       <span
         onClick={() =>
-          toggleStructureAsync(
-            gameId,
-            planet.id,
-            "Space Dock",
-            planet.spaceDock ? "Remove" : "Add",
+          dataUpdate(
+            Events.ToggleStructureEvent(
+              planet.id,
+              "Space Dock",
+              planet.spaceDock ? "Remove" : "Add",
+            ),
           )
         }
         style={{ opacity: planet.spaceDock ? 1 : 0.25, cursor: "pointer" }}
@@ -197,11 +199,12 @@ function StructureSection({ planet }: { planet: Planet }) {
       </span>
       <span
         onClick={() =>
-          toggleStructureAsync(
-            gameId,
-            planet.id,
-            "PDS",
-            numPds >= 1 ? "Remove" : "Add",
+          dataUpdate(
+            Events.ToggleStructureEvent(
+              planet.id,
+              "PDS",
+              numPds >= 1 ? "Remove" : "Add",
+            ),
           )
         }
         style={{ opacity: numPds >= 1 ? 1 : 0.25, cursor: "pointer" }}
@@ -210,11 +213,12 @@ function StructureSection({ planet }: { planet: Planet }) {
       </span>
       <span
         onClick={() =>
-          toggleStructureAsync(
-            gameId,
-            planet.id,
-            "PDS",
-            numPds === 2 ? "Remove" : "Add",
+          dataUpdate(
+            Events.ToggleStructureEvent(
+              planet.id,
+              "PDS",
+              numPds === 2 ? "Remove" : "Add",
+            ),
           )
         }
         style={{ opacity: numPds === 2 ? 1 : 0.25, cursor: "pointer" }}
@@ -328,7 +332,7 @@ function AttachButton({ planet }: { planet: Planet }) {
 }
 
 function ChangeOwnerButton({ planet }: { planet: Planet }) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
 
   // TODO: Use this for unclaimed planets.
   if (!planet.owner) {
@@ -348,7 +352,9 @@ function ChangeOwnerButton({ planet }: { planet: Planet }) {
       className={`${styles.FloatingButton} hiddenButton`}
       style={position}
       onClick={() =>
-        unclaimPlanetAsync(gameId, planet.owner as FactionId, planet.id)
+        dataUpdate(
+          Events.ClaimPlanetEvent(planet.owner as FactionId, planet.id),
+        )
       }
     >
       <SymbolX color="firebrick" />

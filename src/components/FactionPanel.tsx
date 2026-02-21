@@ -2,23 +2,19 @@ import { PropsWithChildren, ReactNode, use, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ModalContext } from "../context/contexts";
 import {
-  useGameId,
   useLeaders,
   useRelic,
   useTechs,
   useViewOnly,
 } from "../context/dataHooks";
 import { useFaction } from "../context/factionDataHooks";
-import {
-  addTechAsync,
-  removeTechAsync,
-  updateBreakthroughStateAsync,
-  updateLeaderStateAsync,
-} from "../dynamic/api";
+import { useOrderedFactionIds } from "../context/gameDataHooks";
 import FlipSVG from "../icons/ui/Flip";
 import HitSVG from "../icons/ui/Hit";
 import SynergySVG from "../icons/ui/Synergy";
 import FullScreenModal from "../modals/FullScreenModal";
+import { useDataUpdate } from "../util/api/dataUpdate";
+import { Events } from "../util/api/events";
 import { hasTech } from "../util/api/techs";
 import { leaderTypeString } from "../util/strings";
 import { sortTechs } from "../util/techs";
@@ -30,11 +26,10 @@ import FactionIcon from "./FactionIcon/FactionIcon";
 import styles from "./FactionPanel.module.scss";
 import FormattedDescription from "./FormattedDescription/FormattedDescription";
 import LabeledLine from "./LabeledLine/LabeledLine";
+import RelicPlanetIcon from "./PlanetIcons/RelicPlanetIcon";
 import TechIcon from "./TechIcon/TechIcon";
 import UnitIcon from "./Units/Icons";
 import UnitStats from "./UnitStats/UnitStats";
-import { useOrderedFactionIds } from "../context/gameDataHooks";
-import RelicPlanetIcon from "./PlanetIcons/RelicPlanetIcon";
 
 export function UnitStat({
   name,
@@ -196,7 +191,8 @@ function FactionTech({
   faction: Faction;
   viewOnly?: boolean;
 }) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
+
   return (
     <AbilitySection
       key={tech.id}
@@ -255,7 +251,9 @@ function FactionTech({
                   flexDirection: "row",
                   gap: rem(8),
                 }}
-                onClick={() => removeTechAsync(gameId, faction.id, tech.id)}
+                onClick={() =>
+                  dataUpdate(Events.RemoveTechEvent(faction.id, tech.id))
+                }
                 disabled={viewOnly}
               >
                 Downgrade
@@ -281,7 +279,7 @@ function FactionUnit({
 }) {
   const [reverse, setReverse] = useState(false);
 
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const techs = useTechs();
   const abilities = unit.abilities ?? [];
   const upgradeTech = unit.upgrade ? techs[unit.upgrade] : undefined;
@@ -351,7 +349,9 @@ function FactionUnit({
               flexDirection: "row",
               gap: rem(8),
             }}
-            onClick={() => addTechAsync(gameId, faction.id, upgradeTech.id)}
+            onClick={() =>
+              dataUpdate(Events.AddTechEvent(faction.id, upgradeTech.id))
+            }
             disabled={viewOnly}
           >
             Upgrade
@@ -464,9 +464,9 @@ function FactionPanelContent({
   options: Options;
 }) {
   const intl = useIntl();
+  const dataUpdate = useDataUpdate();
   const faction = useFaction(factionId);
   // let faction: BaseFaction | Faction = buildFaction(factionId, options, intl);
-  const gameId = useGameId();
   const leaders = useLeaders();
   const techs = useTechs();
   const viewOnly = useViewOnly();
@@ -607,7 +607,7 @@ function FactionPanelContent({
                             size={16}
                           />
                         ) : null}
-                        {gameId && state === "exhausted" ? (
+                        {state === "exhausted" ? (
                           <span
                             style={{
                               fontSize: rem(12),
@@ -616,28 +616,10 @@ function FactionPanelContent({
                             [Exhausted]
                           </span>
                         ) : null}
-                        {/* {gameId && !viewOnly && leader.type !== "AGENT" ? (
-                          <div
-                            className="flexRow"
-                            style={{
-                              gap: rem(4),
-                              cursor: "pointer",
-                            }}
-                            onClick={() => {
-                              updateLeaderStateAsync(
-                                gameId,
-                                leader.id,
-                                "locked"
-                              );
-                            }}
-                          >
-                            &#128275;
-                          </div>
-                        ) : null} */}
                       </div>
                     );
                     label =
-                      gameId && !viewOnly && leader.type !== "AGENT" ? (
+                      !viewOnly && leader.type !== "AGENT" ? (
                         <div
                           className="flexRow"
                           style={{
@@ -645,7 +627,12 @@ function FactionPanelContent({
                             cursor: "pointer",
                           }}
                           onClick={() => {
-                            updateLeaderStateAsync(gameId, leader.id, "locked");
+                            dataUpdate(
+                              Events.UpdateLeaderStateEvent(
+                                leader.id,
+                                "locked",
+                              ),
+                            );
                           }}
                         >
                           &#128275;
@@ -653,29 +640,7 @@ function FactionPanelContent({
                       ) : undefined;
                     break;
                   case "locked":
-                    leftLabel = (
-                      <div className="flexRow">
-                        {leader.name}
-                        {/* {viewOnly ? null : (
-                          <div
-                            className="flexRow"
-                            style={{
-                              gap: "4px",
-                              cursor: "pointer",
-                            }}
-                            onClick={() => {
-                              updateLeaderStateAsync(
-                                gameId,
-                                leader.id,
-                                "readied"
-                              );
-                            }}
-                          >
-                            &#128274;
-                          </div>
-                        )} */}
-                      </div>
-                    );
+                    leftLabel = <div className="flexRow">{leader.name}</div>;
                     label = viewOnly ? undefined : (
                       <div
                         className="flexRow"
@@ -684,7 +649,9 @@ function FactionPanelContent({
                           cursor: "pointer",
                         }}
                         onClick={() => {
-                          updateLeaderStateAsync(gameId, leader.id, "readied");
+                          dataUpdate(
+                            Events.UpdateLeaderStateEvent(leader.id, "readied"),
+                          );
                         }}
                       >
                         &#128274;
@@ -708,10 +675,11 @@ function FactionPanelContent({
                             viewOnly
                               ? undefined
                               : () => {
-                                  updateLeaderStateAsync(
-                                    gameId,
-                                    leader.id,
-                                    "readied",
+                                  dataUpdate(
+                                    Events.UpdateLeaderStateEvent(
+                                      leader.id,
+                                      "readied",
+                                    ),
                                   );
                                 }
                           }
@@ -900,7 +868,7 @@ function FactionPanelContent({
 
 function FactionBreakthrough({ faction }: { faction: Faction }) {
   const [reverse, setReverse] = useState(false);
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const viewOnly = useViewOnly();
 
   if (!faction.breakthrough?.name) {
@@ -930,7 +898,9 @@ function FactionBreakthrough({ faction }: { faction: Faction }) {
                   faction.breakthrough.state === "locked"
                     ? "readied"
                     : "locked";
-                updateBreakthroughStateAsync(gameId, faction.id, state);
+                dataUpdate(
+                  Events.UpdateBreakthroughStateEvent(faction.id, state),
+                );
               }}
               style={{
                 gap: rem(4),

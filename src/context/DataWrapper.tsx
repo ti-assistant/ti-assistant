@@ -1,36 +1,25 @@
 import { PropsWithChildren } from "react";
-import { Optional } from "../util/types/types";
-import DataProvider from "./DataProvider";
 import DBListener from "./DBListener";
+import GameDataInitializer from "./GameData";
 
-export default async function DataWrapper({
+export default async function DataInitializer({
   archive = false,
   children,
   data,
   gameId,
-  sessionId,
 }: PropsWithChildren<{
   archive?: boolean;
   gameId: string;
-  sessionId: Optional<string>;
-  data: Promise<{
-    data: GameData;
-    baseData: BaseData;
-    storedData: StoredGameData;
-  }>;
+  data: Promise<StoredGameData>;
 }>) {
-  const seedData = await data;
+  const gameData = await data;
 
   return (
     <>
       <DBListener gameId={gameId} archive={archive} />
-      <DataProvider
-        gameId={gameId}
-        sessionId={sessionId}
-        seedData={structuredClone(seedData)}
-      >
+      <GameDataInitializer gameId={gameId} gameData={structuredClone(gameData)}>
         {children}
-      </DataProvider>
+      </GameDataInitializer>
     </>
   );
 }

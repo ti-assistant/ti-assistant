@@ -60,6 +60,20 @@ export function useFactionColor(factionId: FactionId) {
   );
 }
 
+export function useFactionColors() {
+  return useMemoizedGameDataValue<Factions, Partial<Record<FactionId, string>>>(
+    `factions`,
+    {},
+    (factions) => {
+      const colors: Partial<Record<FactionId, string>> = {};
+      Object.values(factions).forEach((faction) => {
+        colors[faction.id] = convertToFactionColor(faction.color);
+      });
+      return colors;
+    },
+  );
+}
+
 export function useIsFactionPassed(factionId: FactionId) {
   return useGameDataValue<boolean>(`factions.${factionId}.passed`, false);
 }

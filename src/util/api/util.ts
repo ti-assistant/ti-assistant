@@ -1,16 +1,4 @@
 import Cookies from "js-cookie";
-import { DataStore } from "../../context/dataStore";
-
-function genCookie(length: number): string {
-  let result = "";
-  const characters =
-    "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";
-  const charactersLength = characters.length;
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-}
 
 export function setGameId(gameId: string) {
   if (!Cookies.get("gameid") || Cookies.get("gameid") !== gameId) {
@@ -49,8 +37,9 @@ export async function poster(
   url: string,
   data: any,
   timestamp: number,
+  gameTime: number,
 ): Promise<any> {
-  data.gameTime = DataStore.getValue("timers.game") ?? 0;
+  data.gameTime = gameTime;
   data.timestamp = timestamp;
   const res = await fetch(url, {
     method: "POST",

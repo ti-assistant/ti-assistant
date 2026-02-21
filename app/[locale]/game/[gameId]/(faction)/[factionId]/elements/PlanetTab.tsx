@@ -10,10 +10,8 @@ import {
   usePlanets,
   useViewOnly,
 } from "../../../../../../../src/context/dataHooks";
-import {
-  claimPlanetAsync,
-  unclaimPlanetAsync,
-} from "../../../../../../../src/dynamic/api";
+import { useDataUpdate } from "../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../src/util/api/events";
 import {
   applyAllPlanetAttachments,
   filterToClaimedPlanets,
@@ -22,6 +20,7 @@ import { rem } from "../../../../../../../src/util/util";
 
 export default function PlanetTab({ factionId }: { factionId: FactionId }) {
   const attachments = useAttachments();
+  const dataUpdate = useDataUpdate();
   const gameId = useGameId();
   const planets = usePlanets();
   const viewOnly = useViewOnly();
@@ -49,7 +48,7 @@ export default function PlanetTab({ factionId }: { factionId: FactionId }) {
                   factionId={factionId}
                   planets={planets}
                   addPlanet={(planetId) =>
-                    claimPlanetAsync(gameId, factionId, planetId)
+                    dataUpdate(Events.ClaimPlanetEvent(factionId, planetId))
                   }
                 />
               </ModalContent>,
@@ -78,7 +77,7 @@ export default function PlanetTab({ factionId }: { factionId: FactionId }) {
               factionId={factionId}
               planet={planet}
               removePlanet={(planetId) =>
-                unclaimPlanetAsync(gameId, factionId, planetId)
+                dataUpdate(Events.UnclaimPlanetEvent(factionId, planetId))
               }
             />
           );

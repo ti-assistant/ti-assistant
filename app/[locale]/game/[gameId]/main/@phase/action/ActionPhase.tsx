@@ -45,17 +45,6 @@ import {
 } from "../../../../../../../src/context/gameDataHooks";
 import { useObjectives } from "../../../../../../../src/context/objectiveDataHooks";
 import { useGameState } from "../../../../../../../src/context/stateDataHooks";
-import {
-  advancePhaseAsync,
-  endTurnAsync,
-  markPrimaryAsync,
-  markSecondaryAsync,
-  scoreObjectiveAsync,
-  selectActionAsync,
-  unpassAsync,
-  unscoreObjectiveAsync,
-  unselectActionAsync,
-} from "../../../../../../../src/dynamic/api";
 import { SymbolX } from "../../../../../../../src/icons/svgs";
 import { InfoRow } from "../../../../../../../src/InfoRow";
 import { LockedButtons } from "../../../../../../../src/LockedButton";
@@ -70,8 +59,9 @@ import {
   isPrimaryComplete,
 } from "../../../../../../../src/util/actionLog";
 import { getSelectedActionFromLog } from "../../../../../../../src/util/api/data";
+import { useDataUpdate } from "../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../src/util/api/events";
 import {
-  getColorForFaction,
   getFactionColor,
   getFactionName,
 } from "../../../../../../../src/util/factions";
@@ -96,7 +86,7 @@ function SecondaryFactionCheck({
   factionId: FactionId;
   primaryCompleted: boolean;
 }) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const secondaryState = useFactionSecondary(factionId);
   const viewOnly = useViewOnly();
 
@@ -116,14 +106,14 @@ function SecondaryFactionCheck({
             return;
           }
           if (!nextVal) {
-            markSecondaryAsync(gameId, factionId, "PENDING");
+            dataUpdate(Events.MarkSecondaryEvent(factionId, "PENDING"));
           }
           switch (nextVal) {
             case "Positive":
-              markSecondaryAsync(gameId, factionId, "DONE");
+              dataUpdate(Events.MarkSecondaryEvent(factionId, "DONE"));
               break;
             case "Negative":
-              markSecondaryAsync(gameId, factionId, "SKIPPED");
+              dataUpdate(Events.MarkSecondaryEvent(factionId, "SKIPPED"));
               break;
           }
         }}
@@ -185,7 +175,7 @@ function SecondaryCheck({
 export function FactionActionButtons({ factionId }: FactionActionButtonsProps) {
   const currentTurn = useCurrentTurn();
   const isFactionPassed = useIsFactionPassed(factionId);
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const strategyCards = useStrategyCards();
   const viewOnly = useViewOnly();
 
@@ -204,13 +194,10 @@ export function FactionActionButtons({ factionId }: FactionActionButtonsProps) {
   const selectedAction = getSelectedActionFromLog(currentTurn);
 
   function toggleAction(action: Action) {
-    if (!gameId) {
-      return;
-    }
     if (selectedAction === action) {
-      unselectActionAsync(gameId, action);
+      dataUpdate(Events.UnselectActionEvent(action));
     } else {
-      selectActionAsync(gameId, action);
+      dataUpdate(Events.SelectActionEvent(action));
     }
   }
 
@@ -314,12 +301,14 @@ export function AdditionalActions({
   primaryOnly = false,
   secondaryOnly = false,
 }: AdditionalActionsProps) {
+  const dataUpdate = useDataUpdate();
   const gameId = useGameId();
   const objectives = useObjectives();
   const planets = usePlanets();
   const state = useGameState();
   const strategyCards = useStrategyCards();
   const viewOnly = useViewOnly();
+  const factionColor = useFactionColor(factionId);
 
   const currentTurn = useCurrentTurn();
   const orderedFactionIds = useOrderedFactionIds(
@@ -504,7 +493,9 @@ export function AdditionalActions({
                 rightLabel={
                   <Toggle
                     selected={primaryCompleted}
-                    toggleFn={() => markPrimaryAsync(gameId, !primaryCompleted)}
+                    toggleFn={() =>
+                      dataUpdate(Events.MarkPrimaryEvent(!primaryCompleted))
+                    }
                   >
                     <FormattedMessage
                       id="9F+GVy"
@@ -573,7 +564,9 @@ export function AdditionalActions({
               rightLabel={
                 <Toggle
                   selected={primaryCompleted}
-                  toggleFn={() => markPrimaryAsync(gameId, !primaryCompleted)}
+                  toggleFn={() =>
+                    dataUpdate(Events.MarkPrimaryEvent(!primaryCompleted))
+                  }
                 >
                   <FormattedMessage
                     id="9F+GVy"
@@ -632,7 +625,7 @@ export function AdditionalActions({
               <Toggle
                 selected={primaryCompleted}
                 toggleFn={() => {
-                  markPrimaryAsync(gameId, !primaryCompleted);
+                  dataUpdate(Events.MarkPrimaryEvent(!primaryCompleted));
                 }}
               >
                 <FormattedMessage
@@ -694,7 +687,7 @@ export function AdditionalActions({
               <Toggle
                 selected={primaryCompleted}
                 toggleFn={() => {
-                  markPrimaryAsync(gameId, !primaryCompleted);
+                  dataUpdate(Events.MarkPrimaryEvent(!primaryCompleted));
                 }}
               >
                 <FormattedMessage
@@ -754,7 +747,7 @@ export function AdditionalActions({
               <Toggle
                 selected={primaryCompleted}
                 toggleFn={() => {
-                  markPrimaryAsync(gameId, !primaryCompleted);
+                  dataUpdate(Events.MarkPrimaryEvent(!primaryCompleted));
                 }}
               >
                 <FormattedMessage
@@ -813,7 +806,7 @@ export function AdditionalActions({
               <Toggle
                 selected={primaryCompleted}
                 toggleFn={() => {
-                  markPrimaryAsync(gameId, !primaryCompleted);
+                  dataUpdate(Events.MarkPrimaryEvent(!primaryCompleted));
                 }}
               >
                 <FormattedMessage
@@ -873,7 +866,7 @@ export function AdditionalActions({
               <Toggle
                 selected={primaryCompleted}
                 toggleFn={() => {
-                  markPrimaryAsync(gameId, !primaryCompleted);
+                  dataUpdate(Events.MarkPrimaryEvent(!primaryCompleted));
                 }}
               >
                 <FormattedMessage
@@ -936,7 +929,7 @@ export function AdditionalActions({
               <Toggle
                 selected={primaryCompleted}
                 toggleFn={() => {
-                  markPrimaryAsync(gameId, !primaryCompleted);
+                  dataUpdate(Events.MarkPrimaryEvent(!primaryCompleted));
                 }}
               >
                 <FormattedMessage
@@ -1000,7 +993,9 @@ export function AdditionalActions({
             rightLabel={
               <Toggle
                 selected={primaryCompleted}
-                toggleFn={() => markPrimaryAsync(gameId, !primaryCompleted)}
+                toggleFn={() =>
+                  dataUpdate(Events.MarkPrimaryEvent(!primaryCompleted))
+                }
               >
                 <FormattedMessage
                   id="9F+GVy"
@@ -1060,7 +1055,9 @@ export function AdditionalActions({
               rightLabel={
                 <Toggle
                   selected={primaryCompleted}
-                  toggleFn={() => markPrimaryAsync(gameId, !primaryCompleted)}
+                  toggleFn={() =>
+                    dataUpdate(Events.MarkPrimaryEvent(!primaryCompleted))
+                  }
                 >
                   <FormattedMessage
                     id="9F+GVy"
@@ -1122,7 +1119,9 @@ export function AdditionalActions({
             rightLabel={
               <Toggle
                 selected={primaryCompleted}
-                toggleFn={() => markPrimaryAsync(gameId, !primaryCompleted)}
+                toggleFn={() =>
+                  dataUpdate(Events.MarkPrimaryEvent(!primaryCompleted))
+                }
               >
                 <FormattedMessage
                   id="9F+GVy"
@@ -1185,7 +1184,9 @@ export function AdditionalActions({
             rightLabel={
               <Toggle
                 selected={primaryCompleted}
-                toggleFn={() => markPrimaryAsync(gameId, !primaryCompleted)}
+                toggleFn={() =>
+                  dataUpdate(Events.MarkPrimaryEvent(!primaryCompleted))
+                }
               >
                 <FormattedMessage
                   id="9F+GVy"
@@ -1273,7 +1274,7 @@ export function AdditionalActions({
               <FactionCircle
                 key={factionId}
                 blur
-                borderColor={getColorForFaction(factionId)}
+                borderColor={factionColor}
                 factionId={factionId}
                 onClick={
                   viewOnly
@@ -1283,16 +1284,18 @@ export function AdditionalActions({
                           return;
                         }
                         if (hasProveEndurance) {
-                          unscoreObjectiveAsync(
-                            gameId,
-                            factionId,
-                            "Prove Endurance",
+                          dataUpdate(
+                            Events.UnscoreObjectiveEvent(
+                              factionId,
+                              "Prove Endurance",
+                            ),
                           );
                         } else {
-                          scoreObjectiveAsync(
-                            gameId,
-                            factionId,
-                            "Prove Endurance",
+                          dataUpdate(
+                            Events.ScoreObjectiveEvent(
+                              factionId,
+                              "Prove Endurance",
+                            ),
                           );
                         }
                       }
@@ -1380,7 +1383,7 @@ export function NextPlayerButtons({
 }: {
   activeFactionId: FactionId;
 }) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const newSpeaker = useNewSpeaker();
   const selectedAction = useSelectedAction();
   const viewOnly = useViewOnly();
@@ -1397,7 +1400,7 @@ export function NextPlayerButtons({
     <div className="flexColumn">
       <div className="flexRow" style={{ gap: rem(8) }}>
         <button
-          onClick={() => endTurnAsync(gameId)}
+          onClick={() => dataUpdate(Events.EndTurnEvent())}
           className={styles.EndTurnButton}
           disabled={viewOnly}
         >
@@ -1417,7 +1420,9 @@ export function NextPlayerButtons({
               />
             </div>
             <button
-              onClick={() => endTurnAsync(gameId, /* samePlayer= */ true)}
+              onClick={() =>
+                dataUpdate(Events.EndTurnEvent(/* samePlayer= */ true))
+              }
               className={styles.EndTurnButton}
               style={{ fontSize: rem(16) }}
               disabled={viewOnly}
@@ -1437,7 +1442,7 @@ export function NextPlayerButtons({
 }
 
 function PuppetsOnAString({ activeFactionId }: { activeFactionId: FactionId }) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const passedFactions = usePassedFactionIds().filter(
     (factionId) => factionId !== activeFactionId,
   );
@@ -1466,7 +1471,9 @@ function PuppetsOnAString({ activeFactionId }: { activeFactionId: FactionId }) {
             key={factionId}
             style={{ borderRadius: "100%", padding: rem(2) }}
             onClick={() =>
-              endTurnAsync(gameId, /* samePlayer= */ false, factionId)
+              dataUpdate(
+                Events.EndTurnEvent(/* samePlayer= */ false, factionId),
+              )
             }
           >
             <FactionIcon factionId={factionId} size={20} />
@@ -1487,6 +1494,7 @@ function ActivePlayerColumn({
   onDeckFactionId,
 }: ActivePlayerColumnProps) {
   const allSecondariesCompleted = useAllSecondariesCompleted();
+  const dataUpdate = useDataUpdate();
   const gameId = useGameId();
   const intl = useIntl();
   const primaryCompleted = usePrimaryCompleted();
@@ -1624,7 +1632,7 @@ function ActivePlayerColumn({
               { phase: phaseString("STATUS", intl) },
             ),
             onClick: () => {
-              advancePhaseAsync(gameId);
+              dataUpdate(Events.AdvancePhaseEvent());
             },
           },
         ]}
@@ -1683,6 +1691,7 @@ function StrategyCardColumn({
 }
 
 export default function ActionPhase() {
+  const dataUpdate = useDataUpdate();
   const gameId = useGameId();
   const intl = useIntl();
   const viewOnly = useViewOnly();
@@ -1735,7 +1744,7 @@ export default function ActionPhase() {
                       { phase: phaseString("STATUS", intl) },
                     ),
                     onClick: () => {
-                      advancePhaseAsync(gameId);
+                      dataUpdate(Events.AdvancePhaseEvent());
                     },
                   },
                 ]}
@@ -1750,7 +1759,7 @@ export default function ActionPhase() {
 }
 
 function UnpassSection() {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const ralNel = useFaction("Ral Nel Consortium");
   const ralNelLeader = useLeader("Director Nel");
 
@@ -1768,7 +1777,9 @@ function UnpassSection() {
       color={getFactionColor(ralNel)}
       style={{ width: "min-content" }}
     >
-      <button onClick={() => unpassAsync(gameId, "Ral Nel Consortium")}>
+      <button
+        onClick={() => dataUpdate(Events.UnpassEvent("Ral Nel Consortium"))}
+      >
         Use Hero to Unpass
       </button>
     </LabeledDiv>

@@ -17,12 +17,9 @@ import {
 import { useFactions } from "../../context/factionDataHooks";
 import { useObjectives } from "../../context/objectiveDataHooks";
 import { useGameState } from "../../context/stateDataHooks";
-import {
-  continueGameAsync,
-  endGameAsync,
-  repealAgendaAsync,
-} from "../../dynamic/api";
-import { enterPassword } from "../../util/api/enterPassword";
+import { useDataUpdate } from "../../util/api/dataUpdate";
+import { useEnterPassword } from "../../util/api/enterPassword";
+import { Events } from "../../util/api/events";
 import { computeVPs } from "../../util/factions";
 import { getWormholeNexusSystemNumber } from "../../util/map";
 import { getMapString } from "../../util/options";
@@ -39,6 +36,8 @@ const BASE_URL =
     : "https://ti-assistant.com";
 
 export default function Header({ archive }: { archive?: boolean }) {
+  const dataUpdate = useDataUpdate();
+  const enterPassword = useEnterPassword();
   const factions = useFactions();
   const gameId = useGameId();
   const objectives = useObjectives();
@@ -205,10 +204,7 @@ export default function Header({ archive }: { archive?: boolean }) {
               <button
                 style={{ fontSize: rem(24) }}
                 onClick={() => {
-                  if (!gameId) {
-                    return;
-                  }
-                  continueGameAsync(gameId);
+                  dataUpdate(Events.ContinueGameEvent());
                 }}
               >
                 <FormattedMessage
@@ -221,10 +217,7 @@ export default function Header({ archive }: { archive?: boolean }) {
               <button
                 style={{ fontFamily: "var(--main-font)", fontSize: rem(32) }}
                 onClick={() => {
-                  if (!gameId) {
-                    return;
-                  }
-                  endGameAsync(gameId);
+                  dataUpdate(Events.EndGameEvent());
                 }}
               >
                 <FormattedMessage
@@ -244,20 +237,17 @@ export default function Header({ archive }: { archive?: boolean }) {
 
 function PassedLaws({ viewOnly }: { viewOnly?: boolean }) {
   const agendas = useAgendas();
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
 
   const passedLaws = Object.values(agendas).filter((agenda) => {
     return agenda.passed && agenda.type === "LAW";
   });
   async function removeAgenda(agendaId: AgendaId) {
-    if (!gameId) {
-      return;
-    }
     const target = agendas[agendaId]?.target;
     if (!target) {
       return;
     }
-    repealAgendaAsync(gameId, agendaId, target);
+    dataUpdate(Events.RepealAgendaEvent(agendaId, target));
   }
 
   if (passedLaws.length === 0) {
@@ -284,7 +274,7 @@ function PassedLaws({ viewOnly }: { viewOnly?: boolean }) {
             <AgendaRow
               key={agenda.id}
               agenda={agenda}
-              removeAgenda={removeAgenda}
+              removeAgenda={viewOnly ? undefined : removeAgenda}
             />
           ))}
         </div>

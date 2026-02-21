@@ -3,11 +3,12 @@
 import { useCallback, useEffect } from "react";
 import { FormattedMessage } from "react-intl";
 import { useActionLog } from "../../context/dataHooks";
-import { undoAsync } from "../../dynamic/api";
+import { useUndo } from "../../util/api/undo";
 import { rem } from "../../util/util";
 
-export default function UndoButton({ gameId }: { gameId?: string }) {
+export default function UndoButton({ gameId }: { gameId: string }) {
   const actionLog = useActionLog();
+  const undo = useUndo();
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
@@ -15,10 +16,10 @@ export default function UndoButton({ gameId }: { gameId?: string }) {
         return;
       }
       if (event.ctrlKey && event.key === "z") {
-        undoAsync(gameId);
+        undo(gameId);
       }
     },
-    [gameId, actionLog]
+    [gameId, actionLog],
   );
 
   useEffect(() => {
@@ -29,7 +30,7 @@ export default function UndoButton({ gameId }: { gameId?: string }) {
     };
   }, [handleKeyDown]);
 
-  if (!gameId || !actionLog || actionLog.length === 0) {
+  if (!actionLog || actionLog.length === 0) {
     return null;
   }
 
@@ -42,11 +43,11 @@ export default function UndoButton({ gameId }: { gameId?: string }) {
     <button
       onKeyDown={(event) => {
         if (event.ctrlKey && event.key === "z") {
-          undoAsync(gameId);
+          undo(gameId);
         }
       }}
       style={{ fontSize: rem(20) }}
-      onClick={() => undoAsync(gameId)}
+      onClick={() => undo(gameId)}
     >
       <FormattedMessage
         id="49oatW"

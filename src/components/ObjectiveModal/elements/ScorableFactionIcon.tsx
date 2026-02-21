@@ -1,10 +1,8 @@
 import { CSSProperties } from "react";
-import { useGameId, useViewOnly } from "../../../context/dataHooks";
-import {
-  scoreObjectiveAsync,
-  unscoreObjectiveAsync,
-} from "../../../dynamic/api";
-import { getColorForFaction } from "../../../util/factions";
+import { useViewOnly } from "../../../context/dataHooks";
+import { useFactionColor } from "../../../context/factionDataHooks";
+import { useDataUpdate } from "../../../util/api/dataUpdate";
+import { Events } from "../../../util/api/events";
 import FactionIcon from "../../FactionIcon/FactionIcon";
 import styles from "../ObjectivePanel.module.scss";
 
@@ -21,7 +19,8 @@ export default function ScorableFactionIcon({
   inGrid?: boolean;
   objective: Objective;
 }) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
+  const factionColor = useFactionColor(factionId);
   const viewOnly = useViewOnly();
 
   if (!objective) {
@@ -39,9 +38,9 @@ export default function ScorableFactionIcon({
           return;
         }
         if (scoredObjective) {
-          unscoreObjectiveAsync(gameId, factionId, objective.id);
+          dataUpdate(Events.UnscoreObjectiveEvent(factionId, objective.id));
         } else {
-          scoreObjectiveAsync(gameId, factionId, objective.id);
+          dataUpdate(Events.ScoreObjectiveEvent(factionId, objective.id));
         }
       }}
     >
@@ -51,7 +50,7 @@ export default function ScorableFactionIcon({
         } ${viewOnly ? styles.viewOnly : ""}`}
         style={
           {
-            "--color": getColorForFaction(factionId),
+            "--color": factionColor,
           } as ExtendedCSS
         }
       >

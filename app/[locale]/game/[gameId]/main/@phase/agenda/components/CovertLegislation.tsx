@@ -6,20 +6,17 @@ import { useCurrentAgenda } from "../../../../../../../../src/context/actionLogD
 import {
   useAgendas,
   useCurrentTurn,
-  useGameId,
   useViewOnly,
 } from "../../../../../../../../src/context/dataHooks";
 import { useNumFactions } from "../../../../../../../../src/context/factionDataHooks";
-import {
-  selectEligibleOutcomesAsync,
-  selectSubAgendaAsync,
-} from "../../../../../../../../src/dynamic/api";
 import {
   getActiveAgenda,
   getSelectedEligibleOutcomes,
   getSelectedSubAgenda,
   getSpeakerTieBreak,
 } from "../../../../../../../../src/util/actionLog";
+import { useDataUpdate } from "../../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../../src/util/api/events";
 import { outcomeString } from "../../../../../../../../src/util/strings";
 import { computeVotes } from "../AgendaPhase";
 
@@ -34,7 +31,7 @@ function RevealOutcomes() {
   const agendas = useAgendas();
   const currentAgenda = useCurrentAgenda();
   const currentTurn = useCurrentTurn();
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const intl = useIntl();
   const viewOnly = useViewOnly();
 
@@ -72,9 +69,9 @@ function RevealOutcomes() {
       selectedItem={eligibleOutcomes}
       toggleItem={(outcome, add) => {
         if (add) {
-          selectEligibleOutcomesAsync(gameId, outcome as OutcomeType);
+          dataUpdate(Events.SelectEligibleOutcomesEvent(outcome));
         } else {
-          selectEligibleOutcomesAsync(gameId, "None");
+          dataUpdate(Events.SelectEligibleOutcomesEvent("None"));
         }
       }}
       viewOnly={viewOnly}
@@ -85,7 +82,7 @@ function RevealOutcomes() {
 function RevealAgenda() {
   const agendas = useAgendas();
   const currentTurn = useCurrentTurn();
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const numFactions = useNumFactions();
   const viewOnly = useViewOnly();
 
@@ -159,16 +156,18 @@ function RevealAgenda() {
           >
             <AgendaRow
               agenda={agenda}
-              removeAgenda={() => selectSubAgendaAsync(gameId, "None")}
+              removeAgenda={() =>
+                dataUpdate(Events.SelectSubAgendaEvent("None"))
+              }
             />
           </LabeledDiv>
         );
       }}
       toggleItem={(agendaId, add) => {
         if (add) {
-          selectSubAgendaAsync(gameId, agendaId);
+          dataUpdate(Events.SelectSubAgendaEvent(agendaId));
         } else {
-          selectSubAgendaAsync(gameId, "None");
+          dataUpdate(Events.SelectSubAgendaEvent("None"));
         }
       }}
       viewOnly={viewOnly}

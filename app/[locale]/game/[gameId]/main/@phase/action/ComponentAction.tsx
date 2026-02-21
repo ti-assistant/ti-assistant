@@ -17,7 +17,6 @@ import {
   useActionLog,
   useComponents,
   useCurrentTurn,
-  useGameId,
   useLeaders,
   useOptions,
   usePlanets,
@@ -26,11 +25,6 @@ import {
   useViewOnly,
 } from "../../../../../../../src/context/dataHooks";
 import { useFactions } from "../../../../../../../src/context/factionDataHooks";
-import {
-  playComponentAsync,
-  selectSubComponentAsync,
-  unplayComponentAsync,
-} from "../../../../../../../src/dynamic/api";
 import { ClientOnlyHoverMenu } from "../../../../../../../src/HoverMenu";
 import RelicMenuSVG from "../../../../../../../src/icons/ui/RelicMenu";
 import { InfoRow } from "../../../../../../../src/InfoRow";
@@ -40,6 +34,12 @@ import {
   getSelectedSubComponent,
 } from "../../../../../../../src/util/actionLog";
 import { getCurrentTurnLogEntries } from "../../../../../../../src/util/api/actionLog";
+import { useDataUpdate } from "../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../src/util/api/events";
+import {
+  usePlayComponent,
+  useUnplayComponent,
+} from "../../../../../../../src/util/api/playComponent";
 import { hasTech } from "../../../../../../../src/util/api/techs";
 import { Optional } from "../../../../../../../src/util/types/types";
 import { objectEntries, rem } from "../../../../../../../src/util/util";
@@ -935,13 +935,16 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
   const actionCards = useActionCards();
   const actionLog = useActionLog();
   const components = useComponents();
+  const dataUpdate = useDataUpdate();
   const factions = useFactions();
-  const gameId = useGameId();
   const leaders = useLeaders();
   const planets = usePlanets();
   const relics = useRelics();
   const techs = useTechs();
   const viewOnly = useViewOnly();
+
+  const playComponent = usePlayComponent();
+  const unplayComponent = useUnplayComponent();
 
   const currentTurn = getCurrentTurnLogEntries(actionLog);
 
@@ -961,26 +964,19 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
   }
 
   async function selectComponent(componentName: string) {
-    if (!gameId) {
-      return;
-    }
     const updatedName = componentName
       .replace(/\./g, "")
       .replace(/,/g, "")
       .replace(/ Ω/g, "");
-    playComponentAsync(gameId, updatedName, factionId);
+    playComponent(updatedName, factionId);
   }
 
   function unselectComponent(componentName: string) {
-    if (!gameId) {
-      return;
-    }
-
     const updatedName = componentName
       .replace(/\./g, "")
       .replace(/,/g, "")
       .replace(/ Ω/g, "");
-    unplayComponentAsync(gameId, updatedName, factionId);
+    unplayComponent(updatedName, factionId);
   }
 
   if (!factions) {
@@ -1167,7 +1163,9 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
                     .replace(/\./g, "")
                     .replace(/,/g, "")
                     .replace(/ Ω/g, "");
-                  selectSubComponentAsync(gameId, add ? updatedName : "None");
+                  dataUpdate(
+                    Events.SelectSubComponentEvent(add ? updatedName : "None"),
+                  );
                 }}
                 viewOnly={viewOnly}
               />

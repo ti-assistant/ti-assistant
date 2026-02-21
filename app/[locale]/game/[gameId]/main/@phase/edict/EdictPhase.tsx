@@ -1,22 +1,21 @@
 import { FormattedMessage, useIntl } from "react-intl";
 import FactionComponents from "../../../../../../../src/components/FactionComponents/FactionComponents";
 import LabeledDiv from "../../../../../../../src/components/LabeledDiv/LabeledDiv";
-import {
-  useGameId,
-  useViewOnly,
-} from "../../../../../../../src/context/dataHooks";
+import { useViewOnly } from "../../../../../../../src/context/dataHooks";
+import { useFactionColor } from "../../../../../../../src/context/factionDataHooks";
 import { useTyrant } from "../../../../../../../src/context/stateDataHooks";
-import { advancePhaseAsync } from "../../../../../../../src/dynamic/api";
 import { LockedButtons } from "../../../../../../../src/LockedButton";
-import { getColorForFaction } from "../../../../../../../src/util/factions";
+import { useDataUpdate } from "../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../src/util/api/events";
 import { phaseString } from "../../../../../../../src/util/strings";
 import { rem } from "../../../../../../../src/util/util";
 
 export default function EdictPhase() {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const intl = useIntl();
   const tyrant = useTyrant() ?? "A Sickening Lurch";
   const viewOnly = useViewOnly();
+  const factionColor = useFactionColor(tyrant);
 
   return (
     <div
@@ -33,7 +32,7 @@ export default function EdictPhase() {
       </div>
       <LabeledDiv
         label={<FactionComponents.Name factionId={tyrant} />}
-        color={getColorForFaction(tyrant)}
+        color={factionColor}
         style={{ width: "fit-content" }}
       >
         <FormattedMessage
@@ -58,7 +57,7 @@ export default function EdictPhase() {
             style: {
               fontSize: rem(24),
             },
-            onClick: () => advancePhaseAsync(gameId),
+            onClick: () => dataUpdate(Events.AdvancePhaseEvent()),
           },
         ]}
         viewOnly={viewOnly}

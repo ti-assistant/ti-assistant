@@ -1,18 +1,16 @@
 import { CSSProperties } from "react";
 import { FormattedMessage } from "react-intl";
-import { useGameId, useViewOnly } from "../../context/dataHooks";
-import { useAllFactionAlliances } from "../../context/factionDataHooks";
+import { useViewOnly } from "../../context/dataHooks";
+import {
+  useAllFactionAlliances,
+  useFactionColors,
+} from "../../context/factionDataHooks";
 import { useOrderedFactionIds } from "../../context/gameDataHooks";
 import { useObjective } from "../../context/objectiveDataHooks";
-import {
-  gainAllianceAsync,
-  loseAllianceAsync,
-  scoreObjectiveAsync,
-  unscoreObjectiveAsync,
-} from "../../dynamic/api";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import PromissoryMenuSVG from "../../icons/ui/PromissoryMenu";
-import { getColorForFaction } from "../../util/factions";
+import { useDataUpdate } from "../../util/api/dataUpdate";
+import { Events } from "../../util/api/events";
 import { objectEntries, rem } from "../../util/util";
 import FactionIcon from "../FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
@@ -58,9 +56,10 @@ export default function PromissoryMenu({
 }: {
   factionId: FactionId;
 }) {
+  const dataUpdate = useDataUpdate();
   const factionAlliances = useAllFactionAlliances();
-  const gameId = useGameId();
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
+  const factionColors = useFactionColors();
   const supportForTheThrone = useObjective("Support for the Throne");
   const viewOnly = useViewOnly();
 
@@ -107,26 +106,28 @@ export default function PromissoryMenu({
             size={32}
             onSelect={(newSupport) => {
               if (supportGivenTo) {
-                unscoreObjectiveAsync(
-                  gameId,
-                  supportGivenTo,
-                  "Support for the Throne",
-                  factionId,
+                dataUpdate(
+                  Events.UnscoreObjectiveEvent(
+                    supportGivenTo,
+                    "Support for the Throne",
+                    factionId,
+                  ),
                 );
               }
               if (newSupport) {
-                scoreObjectiveAsync(
-                  gameId,
-                  newSupport,
-                  "Support for the Throne",
-                  factionId,
+                dataUpdate(
+                  Events.ScoreObjectiveEvent(
+                    newSupport,
+                    "Support for the Throne",
+                    factionId,
+                  ),
                 );
               }
             }}
             tag={<FactionIcon factionId={factionId} size="100%" />}
-            tagBorderColor={getColorForFaction(factionId)}
+            tagBorderColor={factionColors[factionId]}
             borderColor={
-              supportGivenTo ? getColorForFaction(supportGivenTo) : undefined
+              supportGivenTo ? factionColors[supportGivenTo] : undefined
             }
             viewOnly={viewOnly}
           />
@@ -150,17 +151,15 @@ export default function PromissoryMenu({
               size={32}
               onSelect={(newAlliance, prevAlliance) => {
                 if (newAlliance) {
-                  gainAllianceAsync(gameId, newAlliance, factionId);
+                  dataUpdate(Events.GainAllianceEvent(newAlliance, factionId));
                 } else if (prevAlliance) {
-                  loseAllianceAsync(gameId, prevAlliance, factionId);
+                  dataUpdate(Events.LoseAllianceEvent(prevAlliance, factionId));
                 }
               }}
               tag={<FactionIcon factionId={factionId} size="100%" />}
-              tagBorderColor={getColorForFaction(factionId)}
+              tagBorderColor={factionColors[factionId]}
               borderColor={
-                allianceGivenTo
-                  ? getColorForFaction(allianceGivenTo)
-                  : undefined
+                allianceGivenTo ? factionColors[allianceGivenTo] : undefined
               }
               viewOnly={viewOnly}
             />
@@ -200,18 +199,20 @@ export default function PromissoryMenu({
                       ? undefined
                       : () => {
                           if (scored) {
-                            unscoreObjectiveAsync(
-                              gameId,
-                              factionId,
-                              "Support for the Throne",
-                              id,
+                            dataUpdate(
+                              Events.UnscoreObjectiveEvent(
+                                factionId,
+                                "Support for the Throne",
+                                id,
+                              ),
                             );
                           } else {
-                            scoreObjectiveAsync(
-                              gameId,
-                              factionId,
-                              "Support for the Throne",
-                              id,
+                            dataUpdate(
+                              Events.ScoreObjectiveEvent(
+                                factionId,
+                                "Support for the Throne",
+                                id,
+                              ),
                             );
                           }
                         }
@@ -223,7 +224,7 @@ export default function PromissoryMenu({
                     }  ${viewOnly ? styles.viewOnly : ""}`}
                     style={
                       {
-                        "--color": getColorForFaction(id),
+                        "--color": factionColors[id],
                       } as ExtendedCSS
                     }
                   >
@@ -272,9 +273,9 @@ export default function PromissoryMenu({
                       ? undefined
                       : () => {
                           if (owned) {
-                            loseAllianceAsync(gameId, factionId, id);
+                            dataUpdate(Events.LoseAllianceEvent(factionId, id));
                           } else {
-                            gainAllianceAsync(gameId, factionId, id);
+                            dataUpdate(Events.GainAllianceEvent(factionId, id));
                           }
                         }
                   }
@@ -285,7 +286,7 @@ export default function PromissoryMenu({
                     }  ${viewOnly ? styles.viewOnly : ""}`}
                     style={
                       {
-                        "--color": getColorForFaction(id),
+                        "--color": factionColors[id],
                       } as ExtendedCSS
                     }
                   >

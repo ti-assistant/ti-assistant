@@ -1,11 +1,12 @@
 import FactionIcon from "../../../../../../../../src/components/FactionIcon/FactionIcon";
 import IconDiv from "../../../../../../../../src/components/LabeledDiv/IconDiv";
 import TechResearchSection from "../../../../../../../../src/components/TechResearchSection/TechResearchSection";
+import { useFactionColors } from "../../../../../../../../src/context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../../../../../../src/context/gameDataHooks";
-import { getColorForFaction } from "../../../../../../../../src/util/factions";
 
 export default function VisionariaSelect({}) {
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
+  const factionColors = useFactionColors();
 
   return (
     <div
@@ -21,7 +22,7 @@ export default function VisionariaSelect({}) {
             key={factionId}
             icon={<FactionIcon size={24} factionId={factionId} />}
             iconSize={24}
-            color={getColorForFaction(factionId)}
+            color={factionColors[factionId]}
           >
             <TechResearchSection
               factionId={factionId}

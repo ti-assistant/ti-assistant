@@ -4,17 +4,14 @@ import LabeledDiv from "../../../../../../../../src/components/LabeledDiv/Labele
 import TechSelectHoverMenu from "../../../../../../../../src/components/TechSelectHoverMenu/TechSelectHoverMenu";
 import {
   useCurrentTurn,
-  useGameId,
   useOptions,
   useTechs,
 } from "../../../../../../../../src/context/dataHooks";
 import { useFaction } from "../../../../../../../../src/context/factionDataHooks";
-import {
-  purgeTechAsync,
-  unpurgeTechAsync,
-} from "../../../../../../../../src/dynamic/api";
 import { TechRow } from "../../../../../../../../src/TechRow";
 import { getPurgedTechs } from "../../../../../../../../src/util/actionLog";
+import { useDataUpdate } from "../../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../../src/util/api/events";
 import { hasTech } from "../../../../../../../../src/util/api/techs";
 import { objectKeys } from "../../../../../../../../src/util/util";
 
@@ -24,8 +21,8 @@ export default function VaultsOfTheHeir({
   factionId: FactionId;
 }) {
   const currentTurn = useCurrentTurn();
+  const dataUpdate = useDataUpdate();
   const faction = useFaction(factionId);
-  const gameId = useGameId();
   const options = useOptions();
   const intl = useIntl();
   const techs = useTechs();
@@ -63,7 +60,7 @@ export default function VaultsOfTheHeir({
                   key={techId}
                   techId={techId}
                   removeTech={() => {
-                    unpurgeTechAsync(gameId, techId, factionId);
+                    dataUpdate(Events.UnpurgeTechEvent(techId, factionId));
                   }}
                   opts={{ hideSymbols: true }}
                 />
@@ -81,7 +78,9 @@ export default function VaultsOfTheHeir({
             description: "Label on a hover menu used to purge a tech.",
             defaultMessage: "Purge Tech",
           })}
-          selectTech={(tech) => purgeTechAsync(gameId, tech.id, factionId)}
+          selectTech={(tech) =>
+            dataUpdate(Events.PurgeTechEvent(tech.id, factionId))
+          }
         />
       )}
     </div>

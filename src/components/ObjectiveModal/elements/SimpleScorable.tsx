@@ -1,11 +1,9 @@
-import { useGameId, useOptions, useViewOnly } from "../../../context/dataHooks";
+import { useOptions, useViewOnly } from "../../../context/dataHooks";
+import { useFactionColors } from "../../../context/factionDataHooks";
 import { useObjective } from "../../../context/objectiveDataHooks";
-import {
-  scoreObjectiveAsync,
-  unscoreObjectiveAsync,
-} from "../../../dynamic/api";
 import InfoModal from "../../../InfoModal";
-import { getColorForFaction } from "../../../util/factions";
+import { useDataUpdate } from "../../../util/api/dataUpdate";
+import { Events } from "../../../util/api/events";
 import { rem } from "../../../util/util";
 import FactionSelectRadialMenu from "../../FactionSelectRadialMenu/FactionSelectRadialMenu";
 
@@ -32,7 +30,8 @@ export default function SimpleScorable({
   orderedFactionIds: FactionId[];
   info?: string;
 }) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
+  const factionColors = useFactionColors();
   const objective = useObjective(objectiveId);
   const options = useOptions();
   const viewOnly = useViewOnly();
@@ -85,13 +84,17 @@ export default function SimpleScorable({
                 factions={orderedFactionIds}
                 onSelect={(factionId) => {
                   if (scorer) {
-                    unscoreObjectiveAsync(gameId, scorer, objective.id);
+                    dataUpdate(
+                      Events.UnscoreObjectiveEvent(scorer, objective.id),
+                    );
                   }
                   if (factionId) {
-                    scoreObjectiveAsync(gameId, factionId, objective.id);
+                    dataUpdate(
+                      Events.ScoreObjectiveEvent(factionId, objective.id),
+                    );
                   }
                 }}
-                borderColor={scorer ? getColorForFaction(scorer) : undefined}
+                borderColor={scorer ? factionColors[scorer] : undefined}
                 size={size}
                 tag={
                   showTag ? (

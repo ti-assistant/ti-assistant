@@ -2,23 +2,20 @@ import { FormattedMessage } from "react-intl";
 import FactionSelectRadialMenu from "../../../../../../../../src/components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import {
   useCurrentTurn,
-  useGameId,
   useViewOnly,
 } from "../../../../../../../../src/context/dataHooks";
+import { useFactionColors } from "../../../../../../../../src/context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../../../../../../src/context/gameDataHooks";
 import {
   useSpeaker,
   useTyrant,
 } from "../../../../../../../../src/context/stateDataHooks";
 import {
-  setSpeakerAsync,
-  setTyrantAsync,
-} from "../../../../../../../../src/dynamic/api";
-import {
   getNewSpeakerEventFromLog,
   getNewTyrantEventFromLog,
 } from "../../../../../../../../src/util/api/data";
-import { getColorForFaction } from "../../../../../../../../src/util/factions";
+import { useDataUpdate } from "../../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../../src/util/api/events";
 import { rem } from "../../../../../../../../src/util/util";
 
 const Tyrannus = {
@@ -29,8 +26,9 @@ export default Tyrannus;
 
 function Primary() {
   const currentTurn = useCurrentTurn();
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
+  const factionColors = useFactionColors();
   const newSpeakerEvent = getNewSpeakerEventFromLog(currentTurn);
   const newTyrantEvent = getNewTyrantEventFromLog(currentTurn);
   const speaker = useSpeaker();
@@ -68,17 +66,17 @@ function Primary() {
         <FactionSelectRadialMenu
           borderColor={
             newSpeakerEvent?.newSpeaker
-              ? getColorForFaction(newSpeakerEvent.newSpeaker)
+              ? factionColors[newSpeakerEvent.newSpeaker]
               : undefined
           }
           onSelect={(factionId, _) => {
             if (factionId) {
-              setSpeakerAsync(gameId, factionId);
+              dataUpdate(Events.SetSpeakerEvent(factionId));
             } else {
               if (!newSpeakerEvent?.prevSpeaker) {
                 return;
               }
-              setSpeakerAsync(gameId, newSpeakerEvent.prevSpeaker);
+              dataUpdate(Events.SetSpeakerEvent(newSpeakerEvent.prevSpeaker));
             }
           }}
           factions={mapOrderedFactionIds}
@@ -109,17 +107,17 @@ function Primary() {
         <FactionSelectRadialMenu
           borderColor={
             newTyrantEvent?.newTyrant
-              ? getColorForFaction(newTyrantEvent.newTyrant)
+              ? factionColors[newTyrantEvent.newTyrant]
               : undefined
           }
           onSelect={(factionId, _) => {
             if (factionId) {
-              setTyrantAsync(gameId, factionId);
+              dataUpdate(Events.SetTyrantEvent(factionId));
             } else {
               if (!newTyrantEvent) {
                 return;
               }
-              setTyrantAsync(gameId, newTyrantEvent.prevTyrant);
+              dataUpdate(Events.SetTyrantEvent(newTyrantEvent.prevTyrant));
             }
           }}
           factions={mapOrderedFactionIds}

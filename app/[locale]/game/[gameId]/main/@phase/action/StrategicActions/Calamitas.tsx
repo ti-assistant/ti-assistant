@@ -6,7 +6,7 @@ import {
   useFactionColor,
 } from "../../../../../../../../src/context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../../../../../../src/context/gameDataHooks";
-import { getColorForFaction } from "../../../../../../../../src/util/factions";
+import { convertToFactionColor } from "../../../../../../../../src/util/factions";
 import { rem } from "../../../../../../../../src/util/util";
 
 const Calamitas = {
@@ -44,7 +44,7 @@ function Secondary({ factionId }: { factionId: FactionId }) {
     <LabeledDiv
       key={factionId}
       label={<FactionComponents.Name factionId={factionId} />}
-      color={getColorForFaction(factionId)}
+      color={convertToFactionColor(faction?.color)}
       opts={{ fixedWidth: true }}
       blur
     >

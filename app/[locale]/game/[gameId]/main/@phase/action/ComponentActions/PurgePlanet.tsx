@@ -5,12 +5,12 @@ import {
   useAllPlanets,
   useAttachments,
   useCurrentTurn,
-  useGameId,
   usePlanets,
   useViewOnly,
 } from "../../../../../../../../src/context/dataHooks";
-import { updatePlanetStateAsync } from "../../../../../../../../src/dynamic/api";
 import { getPurgedPlanet } from "../../../../../../../../src/util/actionLog";
+import { useDataUpdate } from "../../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../../src/util/api/events";
 import { applyAllPlanetAttachments } from "../../../../../../../../src/util/planets";
 
 const PurgePlanet = {
@@ -51,7 +51,7 @@ function Content({
   const allPlanets = useAllPlanets();
   const attachments = useAttachments();
   const currentTurn = useCurrentTurn();
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const planets = usePlanets();
   const viewOnly = useViewOnly();
 
@@ -103,9 +103,9 @@ function Content({
         itemsPerColumn={12}
         toggleItem={(planetId, add) => {
           if (add) {
-            updatePlanetStateAsync(gameId, planetId, "PURGED");
+            dataUpdate(Events.UpdatePlanetStateEvent(planetId, "PURGED"));
           } else {
-            updatePlanetStateAsync(gameId, planetId, "READIED");
+            dataUpdate(Events.UpdatePlanetStateEvent(planetId, "READIED"));
           }
         }}
         renderItem={(planetId) => {
@@ -118,7 +118,7 @@ function Content({
               <PlanetRow
                 planet={planet}
                 removePlanet={() =>
-                  updatePlanetStateAsync(gameId, planetId, "READIED")
+                  dataUpdate(Events.UpdatePlanetStateEvent(planetId, "READIED"))
                 }
                 opts={{ hideAttachButton: true }}
                 prevOwner={planet.owner}

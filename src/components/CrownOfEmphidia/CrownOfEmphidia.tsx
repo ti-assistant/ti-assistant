@@ -6,9 +6,9 @@ import {
   useRelic,
 } from "../../context/dataHooks";
 import { useFactions } from "../../context/factionDataHooks";
-import { playRelicAsync, unplayRelicAsync } from "../../dynamic/api";
 import { SymbolX } from "../../icons/svgs";
 import { getPlayedRelic } from "../../util/actionLog";
+import { useDataUpdate } from "../../util/api/dataUpdate";
 import { getFactionColor, getFactionName } from "../../util/factions";
 import { rem } from "../../util/util";
 import FactionIcon from "../FactionIcon/FactionIcon";
@@ -16,6 +16,7 @@ import LabeledDiv from "../LabeledDiv/LabeledDiv";
 
 export default function CrownOfEmphidia({}) {
   const currentTurn = useCurrentTurn();
+  const dataUpdate = useDataUpdate();
   const factions = useFactions();
   const gameId = useGameId();
   const planets = usePlanets();
@@ -43,7 +44,7 @@ export default function CrownOfEmphidia({}) {
 
   const wasPlayedThisTurn = getPlayedRelic(
     currentTurn,
-    "The Crown of Emphidia"
+    "The Crown of Emphidia",
   );
   const isPurged = crownOfEmphidia.state === "purged";
 
@@ -87,16 +88,19 @@ export default function CrownOfEmphidia({}) {
               color: wasPlayedThisTurn ? "green" : "red",
             }}
             onClick={() => {
-              if (!gameId) {
-                return;
-              }
               if (wasPlayedThisTurn) {
-                unplayRelicAsync(gameId, {
-                  relic: "The Crown of Emphidia",
+                dataUpdate({
+                  action: "UNPLAY_RELIC",
+                  event: {
+                    relic: "The Crown of Emphidia",
+                  },
                 });
               } else {
-                playRelicAsync(gameId, {
-                  relic: "The Crown of Emphidia",
+                dataUpdate({
+                  action: "PLAY_RELIC",
+                  event: {
+                    relic: "The Crown of Emphidia",
+                  },
                 });
               }
             }}

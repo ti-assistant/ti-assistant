@@ -18,7 +18,6 @@ import {
   useActionLog,
   useAgenda,
   useCurrentTurn,
-  useGameId,
   useOptions,
   usePlanets,
   useRelics,
@@ -29,6 +28,7 @@ import {
 } from "../../../../../../../src/context/dataHooks";
 import {
   useFactionColor,
+  useFactionColors,
   useFactionTechs,
   useFactions,
 } from "../../../../../../../src/context/factionDataHooks";
@@ -44,15 +44,6 @@ import {
   useFactionsWithTech,
   useTechState,
 } from "../../../../../../../src/context/techDataHooks";
-import {
-  addTechAsync,
-  advancePhaseAsync,
-  hideObjectiveAsync,
-  removeTechAsync,
-  revealObjectiveAsync,
-  scoreObjectiveAsync,
-  unscoreObjectiveAsync,
-} from "../../../../../../../src/dynamic/api";
 import { ClientOnlyHoverMenu } from "../../../../../../../src/HoverMenu";
 import { InfoRow } from "../../../../../../../src/InfoRow";
 import { LockedButtons } from "../../../../../../../src/LockedButton";
@@ -65,8 +56,10 @@ import {
   getResearchedTechs,
 } from "../../../../../../../src/util/actionLog";
 import { getCurrentTurnLogEntries } from "../../../../../../../src/util/api/actionLog";
+import { useDataUpdate } from "../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../src/util/api/events";
 import { hasTech } from "../../../../../../../src/util/api/techs";
-import { getColorForFaction } from "../../../../../../../src/util/factions";
+import { convertToFactionColor } from "../../../../../../../src/util/factions";
 import { getInitiativeForFaction } from "../../../../../../../src/util/helpers";
 import { sortStrategyCards } from "../../../../../../../src/util/strategyCards";
 import {
@@ -294,7 +287,8 @@ function ActionCardDraws() {
 
 function MiddleColumn() {
   const actionLog = useActionLog();
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
+  const factionColors = useFactionColors();
   const objectives = useObjectives();
   const options = useOptions();
   const planets = usePlanets();
@@ -417,7 +411,7 @@ function MiddleColumn() {
                   <div style={{ gridColumn: "1 / 4", width: "100%" }}>
                     <LabeledLine
                       label={<FactionComponents.Name factionId={factionId} />}
-                      color={getColorForFaction(factionId)}
+                      color={factionColors[factionId]}
                     />
                   </div>
                   {!canScoreObjectives ? (
@@ -459,27 +453,30 @@ function MiddleColumn() {
                             }
                             toggleItem={(objectiveId, add) => {
                               if (add) {
-                                scoreObjectiveAsync(
-                                  gameId,
-                                  factionId,
-                                  objectiveId,
+                                dataUpdate(
+                                  Events.ScoreObjectiveEvent(
+                                    factionId,
+                                    objectiveId,
+                                  ),
                                 );
                               } else {
-                                unscoreObjectiveAsync(
-                                  gameId,
-                                  factionId,
-                                  objectiveId,
+                                dataUpdate(
+                                  Events.UnscoreObjectiveEvent(
+                                    factionId,
+                                    objectiveId,
+                                  ),
                                 );
                               }
                             }}
                           />
                         ) : (
                           <ObjectiveSelectHoverMenu
-                            action={(_, objectiveId) => {
-                              scoreObjectiveAsync(
-                                gameId,
-                                factionId,
-                                objectiveId,
+                            action={(objectiveId) => {
+                              dataUpdate(
+                                Events.ScoreObjectiveEvent(
+                                  factionId,
+                                  objectiveId,
+                                ),
                               );
                             }}
                             label={
@@ -543,24 +540,31 @@ function MiddleColumn() {
                           itemsPerColumn={10}
                           toggleItem={(objectiveId, add) => {
                             if (add) {
-                              scoreObjectiveAsync(
-                                gameId,
-                                factionId,
-                                objectiveId,
+                              dataUpdate(
+                                Events.ScoreObjectiveEvent(
+                                  factionId,
+                                  objectiveId,
+                                ),
                               );
                             } else {
-                              unscoreObjectiveAsync(
-                                gameId,
-                                factionId,
-                                objectiveId,
+                              dataUpdate(
+                                Events.UnscoreObjectiveEvent(
+                                  factionId,
+                                  objectiveId,
+                                ),
                               );
                             }
                           }}
                         />
                       ) : (
                         <ObjectiveSelectHoverMenu
-                          action={(_, objectiveId) => {
-                            scoreObjectiveAsync(gameId, factionId, objectiveId);
+                          action={(objectiveId) => {
+                            dataUpdate(
+                              Events.ScoreObjectiveEvent(
+                                factionId,
+                                objectiveId,
+                              ),
+                            );
                           }}
                           label={
                             <FormattedMessage
@@ -608,7 +612,8 @@ export function statusPhaseComplete(currentTurn: ActionLog) {
 
 export default function StatusPhase() {
   const currentTurn = useCurrentTurn();
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
+  const factionColors = useFactionColors();
   const objectives = useObjectives();
   const options = useOptions();
   const planets = usePlanets();
@@ -633,14 +638,6 @@ export default function StatusPhase() {
   const ministerOfPolicy = useAgenda("Minister of Policy");
 
   const intl = useIntl();
-
-  function nextPhase(skipAgenda = false) {
-    if (!skipAgenda) {
-      advancePhaseAsync(gameId);
-      return;
-    }
-    advancePhaseAsync(gameId, true);
-  }
 
   interface Ability {
     name: string;
@@ -832,7 +829,8 @@ export default function StatusPhase() {
           defaultMessage: "Start Next Round",
           description: "Text on a button that will start the next round.",
         }),
-        onClick: () => nextPhase(true),
+        onClick: () =>
+          dataUpdate(Events.AdvancePhaseEvent(/* skipAgenda= */ true)),
       });
     }
     nextPhaseButtons.push({
@@ -845,7 +843,7 @@ export default function StatusPhase() {
         },
         { phase: phaseString("EDICT", intl) },
       ),
-      onClick: () => nextPhase(false),
+      onClick: () => dataUpdate(Events.AdvancePhaseEvent()),
     });
   } else {
     if (!agendaUnlocked) {
@@ -855,7 +853,8 @@ export default function StatusPhase() {
           defaultMessage: "Start Next Round",
           description: "Text on a button that will start the next round.",
         }),
-        onClick: () => nextPhase(true),
+        onClick: () =>
+          dataUpdate(Events.AdvancePhaseEvent(/* skipAgenda= */ true)),
       });
     }
     nextPhaseButtons.push({
@@ -868,7 +867,7 @@ export default function StatusPhase() {
         },
         { phase: phaseString("AGENDA", intl) },
       ),
-      onClick: () => nextPhase(false),
+      onClick: () => dataUpdate(Events.AdvancePhaseEvent()),
     });
   }
 
@@ -914,7 +913,7 @@ export default function StatusPhase() {
                           label={
                             <FactionComponents.Name factionId={factionId} />
                           }
-                          color={getColorForFaction(factionId)}
+                          color={factionColors[factionId]}
                         >
                           <div
                             className="flexColumn"
@@ -1020,7 +1019,9 @@ export default function StatusPhase() {
                   <ObjectiveRow
                     objective={revealedObjectiveObj}
                     removeObjective={() =>
-                      hideObjectiveAsync(gameId, revealedObjectiveObj.id)
+                      dataUpdate(
+                        Events.HideObjectiveEvent(revealedObjectiveObj.id),
+                      )
                     }
                     viewing={true}
                   />
@@ -1028,13 +1029,13 @@ export default function StatusPhase() {
               ) : (
                 <LabeledDiv
                   label={<FactionComponents.Name factionId={speaker} />}
-                  color={getColorForFaction(speaker)}
+                  color={factionColors[speaker]}
                   style={{ width: "100%" }}
                 >
                   <div className="flexRow" style={{ whiteSpace: "nowrap" }}>
                     <ObjectiveSelectHoverMenu
-                      action={(_, objectiveId) =>
-                        revealObjectiveAsync(gameId, objectiveId)
+                      action={(objectiveId) =>
+                        dataUpdate(Events.RevealObjectiveEvent(objectiveId))
                       }
                       label={
                         <FormattedMessage
@@ -1150,7 +1151,7 @@ export default function StatusPhase() {
                       <LabeledDiv
                         key={factionId}
                         label={<FactionComponents.Name factionId={factionId} />}
-                        color={getColorForFaction(factionId)}
+                        color={factionColors[factionId]}
                       >
                         <div
                           className="flexColumn"
@@ -1254,8 +1255,8 @@ function EntropicScarResearch({ factionId }: { factionId: FactionId }) {
 
 function RadicalAdvancement() {
   const currentTurn = useCurrentTurn();
+  const dataUpdate = useDataUpdate();
   const factions = useFactions();
-  const gameId = useGameId();
   const techs = useTechs();
 
   const factionsWithRadicalAdvancement = useFactionsWithTech(
@@ -1312,7 +1313,7 @@ function RadicalAdvancement() {
           <LabeledDiv
             key={factionId}
             label={<FactionName factionId={factionId} />}
-            color={getColorForFaction(factionId)}
+            color={convertToFactionColor(factions[factionId]?.color)}
           >
             <div
               className="flexColumn"
@@ -1334,9 +1335,11 @@ function RadicalAdvancement() {
                       techId={returnedTech}
                       removeTech={() => {
                         researchedTech.forEach((techId) => {
-                          removeTechAsync(gameId, factionId, techId);
+                          dataUpdate(Events.RemoveTechEvent(factionId, techId));
                         });
-                        addTechAsync(gameId, factionId, returnedTech);
+                        dataUpdate(
+                          Events.AddTechEvent(factionId, returnedTech),
+                        );
                       }}
                     />
                   </LabeledDiv>
@@ -1356,7 +1359,7 @@ function RadicalAdvancement() {
                   techs={canReturnTechs}
                   label={radicalAdvancement.name}
                   selectTech={(tech) =>
-                    removeTechAsync(gameId, factionId, tech.id)
+                    dataUpdate(Events.RemoveTechEvent(factionId, tech.id))
                   }
                 />
               )}

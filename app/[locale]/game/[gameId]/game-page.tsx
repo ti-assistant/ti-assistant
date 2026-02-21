@@ -11,13 +11,14 @@ import { useGameId, useViewOnly } from "../../../../src/context/dataHooks";
 import { useFactionColor } from "../../../../src/context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../../src/context/gameDataHooks";
 import { usePhase } from "../../../../src/context/stateDataHooks";
-import { enterPassword } from "../../../../src/util/api/enterPassword";
 import { setGameId } from "../../../../src/util/api/util";
 import { BLACK_BORDER_GLOW } from "../../../../src/util/borderGlow";
 import { rem } from "../../../../src/util/util";
 import styles from "./game-page.module.scss";
+import { useEnterPassword } from "../../../../src/util/api/enterPassword";
 
 export default function SelectFactionPage() {
+  const enterPassword = useEnterPassword();
   const router = useRouter();
   const orderedFactionIds = useOrderedFactionIds("MAP");
   const gameId = useGameId();

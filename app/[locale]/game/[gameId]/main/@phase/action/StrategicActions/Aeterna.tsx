@@ -6,21 +6,18 @@ import ObjectiveRow from "../../../../../../../../src/components/ObjectiveRow/Ob
 import ObjectiveSelectHoverMenu from "../../../../../../../../src/components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import {
   useCurrentTurn,
-  useGameId,
   usePlanet,
 } from "../../../../../../../../src/context/dataHooks";
 import { useFaction } from "../../../../../../../../src/context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../../../../../../src/context/gameDataHooks";
 import { useObjectives } from "../../../../../../../../src/context/objectiveDataHooks";
 import {
-  scoreObjectiveAsync,
-  unscoreObjectiveAsync,
-} from "../../../../../../../../src/dynamic/api";
-import {
   getGainedTFCardsByType,
   getScoredObjectives,
 } from "../../../../../../../../src/util/actionLog";
-import { getColorForFaction } from "../../../../../../../../src/util/factions";
+import { useDataUpdate } from "../../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../../src/util/api/events";
+import { convertToFactionColor } from "../../../../../../../../src/util/factions";
 import { rem } from "../../../../../../../../src/util/util";
 
 const Aeterna = {
@@ -33,7 +30,7 @@ export default Aeterna;
 
 function Primary({ factionId }: { factionId: FactionId }) {
   const currentTurn = useCurrentTurn();
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const objectives = useObjectives();
   const mecatol = usePlanet("Mecatol Rex");
 
@@ -118,7 +115,9 @@ function Primary({ factionId }: { factionId: FactionId }) {
                         key={objective}
                         objective={objectiveObj}
                         removeObjective={() =>
-                          unscoreObjectiveAsync(gameId, factionId, objective)
+                          dataUpdate(
+                            Events.UnscoreObjectiveEvent(factionId, objective),
+                          )
                         }
                         hideScorers={true}
                       />
@@ -129,8 +128,10 @@ function Primary({ factionId }: { factionId: FactionId }) {
               {scoredPublics.length < 1 ? (
                 availablePublicObjectives.length > 0 ? (
                   <ObjectiveSelectHoverMenu
-                    action={(_, objectiveId) =>
-                      scoreObjectiveAsync(gameId, factionId, objectiveId)
+                    action={(objectiveId) =>
+                      dataUpdate(
+                        Events.ScoreObjectiveEvent(factionId, objectiveId),
+                      )
                     }
                     label={
                       <FormattedMessage
@@ -168,7 +169,7 @@ function Secondary({ factionId }: { factionId: FactionId }) {
     <LabeledDiv
       key={factionId}
       label={<FactionComponents.Name factionId={factionId} />}
-      color={getColorForFaction(factionId)}
+      color={convertToFactionColor(faction?.color)}
       opts={{ fixedWidth: true }}
       blur
     >

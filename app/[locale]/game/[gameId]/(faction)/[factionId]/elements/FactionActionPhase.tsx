@@ -1,12 +1,10 @@
 import React from "react";
 import { useSelectedAction } from "../../../../../../../src/context/actionLogDataHooks";
-import {
-  useGameId,
-  useViewOnly,
-} from "../../../../../../../src/context/dataHooks";
+import { useViewOnly } from "../../../../../../../src/context/dataHooks";
 import { useFactionSecondary } from "../../../../../../../src/context/factionDataHooks";
 import { useActiveFactionId } from "../../../../../../../src/context/gameDataHooks";
-import { markSecondaryAsync } from "../../../../../../../src/dynamic/api";
+import { useDataUpdate } from "../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../src/util/api/events";
 import {
   AdditionalActions,
   FactionActionButtons,
@@ -80,7 +78,7 @@ export default function FactionActionPhase({
 }
 
 function SecondaryCheck({ factionId }: { factionId: FactionId }) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const secondaryState = useFactionSecondary(factionId);
   const viewOnly = useViewOnly();
   return (
@@ -89,7 +87,7 @@ function SecondaryCheck({ factionId }: { factionId: FactionId }) {
         <React.Fragment>
           <button
             onClick={() => {
-              markSecondaryAsync(gameId, factionId, "DONE");
+              dataUpdate(Events.MarkSecondaryEvent(factionId, "DONE"));
             }}
             disabled={viewOnly}
           >
@@ -97,7 +95,7 @@ function SecondaryCheck({ factionId }: { factionId: FactionId }) {
           </button>
           <button
             onClick={() => {
-              markSecondaryAsync(gameId, factionId, "SKIPPED");
+              dataUpdate(Events.MarkSecondaryEvent(factionId, "SKIPPED"));
             }}
             disabled={viewOnly}
           >
@@ -107,7 +105,7 @@ function SecondaryCheck({ factionId }: { factionId: FactionId }) {
       ) : (
         <button
           onClick={() => {
-            markSecondaryAsync(gameId, factionId, "PENDING");
+            dataUpdate(Events.MarkSecondaryEvent(factionId, "PENDING"));
           }}
           disabled={viewOnly}
         >

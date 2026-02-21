@@ -6,16 +6,13 @@ import TechResearchSection from "../../../../../../../../src/components/TechRese
 import TechSelectHoverMenu from "../../../../../../../../src/components/TechSelectHoverMenu/TechSelectHoverMenu";
 import {
   useCurrentTurn,
-  useGameId,
   useTechs,
 } from "../../../../../../../../src/context/dataHooks";
 import { useFactions } from "../../../../../../../../src/context/factionDataHooks";
-import {
-  purgeTechAsync,
-  unpurgeTechAsync,
-} from "../../../../../../../../src/dynamic/api";
 import { TechRow } from "../../../../../../../../src/TechRow";
 import { getPurgedTechs } from "../../../../../../../../src/util/actionLog";
+import { useDataUpdate } from "../../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../../src/util/api/events";
 import { getFactionColor } from "../../../../../../../../src/util/factions";
 
 export default function TaZernDeepwrought({
@@ -24,8 +21,8 @@ export default function TaZernDeepwrought({
   factionId: FactionId;
 }) {
   const currentTurn = useCurrentTurn();
+  const dataUpdate = useDataUpdate();
   const factions = useFactions();
-  const gameId = useGameId();
   const intl = useIntl();
   const techs = useTechs();
 
@@ -90,7 +87,7 @@ export default function TaZernDeepwrought({
                   key={techId}
                   techId={techId}
                   removeTech={() => {
-                    unpurgeTechAsync(gameId, techId);
+                    dataUpdate(Events.UnpurgeTechEvent(techId));
                   }}
                   opts={{ hideSymbols: true }}
                 />
@@ -119,7 +116,7 @@ export default function TaZernDeepwrought({
             description: "Label on a hover menu used to purge a tech.",
             defaultMessage: "Purge Tech",
           })}
-          selectTech={(tech) => purgeTechAsync(gameId, tech.id)}
+          selectTech={(tech) => dataUpdate(Events.PurgeTechEvent(tech.id))}
           ignorePrereqs
         />
       )}

@@ -1,8 +1,8 @@
 import { CSSProperties } from "react";
-import { useGameId } from "../../context/dataHooks";
 import { useFaction } from "../../context/factionDataHooks";
 import { Techs } from "../../context/techDataHooks";
-import { addTechAsync, removeTechAsync } from "../../dynamic/api";
+import { useDataUpdate } from "../../util/api/dataUpdate";
+import { Events } from "../../util/api/events";
 import { getReplacementTech, isTechPurged } from "../../util/api/techs";
 import { getTechTypeColor } from "../../util/techs";
 import { objectEntries, rem } from "../../util/util";
@@ -58,7 +58,7 @@ export default function TechTree({
         .filter(
           (tech) =>
             tech.faction &&
-            (tech.faction === factionId || ownedTechs.has(tech.id))
+            (tech.faction === factionId || ownedTechs.has(tech.id)),
         )
         .sort((a, b) => {
           if (a.type === b.type) {
@@ -264,7 +264,7 @@ function TechTreeContent({
   rowStyle?: CSSProperties;
   viewOnly?: boolean;
 }) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
 
   return (
     <div className={styles.TechTree} style={style}>
@@ -305,9 +305,11 @@ function TechTreeContent({
                       ? undefined
                       : () => {
                           if (tech.filled) {
-                            removeTechAsync(gameId, factionId, tech.id);
+                            dataUpdate(
+                              Events.RemoveTechEvent(factionId, tech.id),
+                            );
                           } else {
-                            addTechAsync(gameId, factionId, tech.id);
+                            dataUpdate(Events.AddTechEvent(factionId, tech.id));
                           }
                         }
                   }

@@ -3,13 +3,11 @@ import { FormattedMessage, useIntl } from "react-intl";
 import {
   useAbilities,
   useCurrentTurn,
-  useGameId,
   useGenomes,
   useParadigms,
   useUpgrades,
   useViewOnly,
 } from "../../context/dataHooks";
-import { gainTFCardAsync, loseTFCardAsync } from "../../dynamic/api";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import AbilitySVG from "../../icons/twilightsfall/ability";
 import GenomeSVG from "../../icons/twilightsfall/genome";
@@ -18,6 +16,8 @@ import UpgradeSVG from "../../icons/twilightsfall/upgrade";
 import { InfoRow } from "../../InfoRow";
 import { SelectableRow } from "../../SelectableRow";
 import { getGainedTFCardsByType } from "../../util/actionLog";
+import { useDataUpdate } from "../../util/api/dataUpdate";
+import { Events } from "../../util/api/events";
 import { getTechTypeColor } from "../../util/techs";
 import { rem } from "../../util/util";
 import FormattedDescription from "../FormattedDescription/FormattedDescription";
@@ -31,7 +31,6 @@ import { Selector } from "../Selector/Selector";
 import UnitIcon from "../Units/Icons";
 import UnitStats from "../UnitStats/UnitStats";
 import styles from "./GainSplicedCard.module.scss";
-import FactionComponents from "../FactionComponents/FactionComponents";
 import GenomeRow from "./GenomeRow";
 
 interface NumberToGain {
@@ -156,7 +155,7 @@ function GainedCardsSection({
   gainedCardsByType: GainedCardsByType;
 }) {
   const abilities = useAbilities();
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const genomes = useGenomes();
   const paradigms = useParadigms();
   const upgrades = useUpgrades();
@@ -185,10 +184,12 @@ function GainedCardsSection({
                 key={abilityId}
                 itemId={abilityId}
                 removeItem={() =>
-                  loseTFCardAsync(gameId, factionId, {
-                    ability: abilityId,
-                    type: "ABILITY",
-                  })
+                  dataUpdate(
+                    Events.LoseTFCardEvent(factionId, {
+                      ability: abilityId,
+                      type: "ABILITY",
+                    }),
+                  )
                 }
                 viewOnly={viewOnly}
                 style={{ width: "100%" }}
@@ -240,10 +241,12 @@ function GainedCardsSection({
                 key={upgradeId}
                 itemId={upgradeId}
                 removeItem={() =>
-                  loseTFCardAsync(gameId, factionId, {
-                    upgrade: upgradeId,
-                    type: "UNIT_UPGRADE",
-                  })
+                  dataUpdate(
+                    Events.LoseTFCardEvent(factionId, {
+                      upgrade: upgradeId,
+                      type: "UNIT_UPGRADE",
+                    }),
+                  )
                 }
                 viewOnly={viewOnly}
               >
@@ -323,10 +326,12 @@ function GainedCardsSection({
                 key={paradigmId}
                 itemId={paradigmId}
                 removeItem={() =>
-                  loseTFCardAsync(gameId, factionId, {
-                    paradigm: paradigmId,
-                    type: "PARADIGM",
-                  })
+                  dataUpdate(
+                    Events.LoseTFCardEvent(factionId, {
+                      paradigm: paradigmId,
+                      type: "PARADIGM",
+                    }),
+                  )
                 }
                 viewOnly={viewOnly}
                 style={{ width: "100%" }}
@@ -368,7 +373,7 @@ export function GainAbilitySection({
   style?: CSSProperties;
 }) {
   const abilities = useAbilities();
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const intl = useIntl();
 
   let availableAbilities = Object.values(abilities)
@@ -399,10 +404,12 @@ export function GainAbilitySection({
   );
 
   function selectAbility(ability: TFAbility) {
-    gainTFCardAsync(gameId, factionId, {
-      ability: ability.id,
-      type: "ABILITY",
-    });
+    dataUpdate(
+      Events.GainTFCardEvent(factionId, {
+        ability: ability.id,
+        type: "ABILITY",
+      }),
+    );
   }
 
   return (
@@ -567,7 +574,7 @@ export function GainGenomeSection({
   steal?: boolean;
   style?: CSSProperties;
 }) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const genomes = useGenomes();
   const viewOnly = useViewOnly();
 
@@ -617,10 +624,12 @@ export function GainGenomeSection({
       options={availableGenomes}
       toggleItem={(genomeId, add) => {
         if (add) {
-          gainTFCardAsync(gameId, factionId, {
-            genome: genomeId,
-            type: "GENOME",
-          });
+          dataUpdate(
+            Events.GainTFCardEvent(factionId, {
+              genome: genomeId,
+              type: "GENOME",
+            }),
+          );
         }
       }}
       viewOnly={viewOnly}
@@ -644,7 +653,7 @@ export function GainParadigmSection({
   steal?: boolean;
   style?: CSSProperties;
 }) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const paradigms = useParadigms();
   const viewOnly = useViewOnly();
 
@@ -694,10 +703,12 @@ export function GainParadigmSection({
       options={availableParadigms}
       toggleItem={(paradigmId, add) => {
         if (add) {
-          gainTFCardAsync(gameId, factionId, {
-            paradigm: paradigmId,
-            type: "PARADIGM",
-          });
+          dataUpdate(
+            Events.GainTFCardEvent(factionId, {
+              paradigm: paradigmId,
+              type: "PARADIGM",
+            }),
+          );
         }
       }}
       viewOnly={viewOnly}
@@ -721,7 +732,7 @@ export function GainUpgradeSection({
   steal?: boolean;
   style?: CSSProperties;
 }) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const upgrades = useUpgrades();
   const viewOnly = useViewOnly();
 
@@ -789,10 +800,12 @@ export function GainUpgradeSection({
                 key={upgrade.id}
                 onClick={() => {
                   innerCloseFn();
-                  gainTFCardAsync(gameId, factionId, {
-                    upgrade: upgrade.id,
-                    type: "UNIT_UPGRADE",
-                  });
+                  dataUpdate(
+                    Events.GainTFCardEvent(factionId, {
+                      upgrade: upgrade.id,
+                      type: "UNIT_UPGRADE",
+                    }),
+                  );
                 }}
                 style={{
                   display: "flex",

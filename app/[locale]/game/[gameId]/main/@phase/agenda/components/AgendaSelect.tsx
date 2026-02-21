@@ -3,22 +3,19 @@ import { AgendaRow } from "../../../../../../../../src/AgendaRow";
 import {
   useAgendas,
   useCurrentTurn,
-  useGameId,
   useViewOnly,
 } from "../../../../../../../../src/context/dataHooks";
-import {
-  hideAgendaAsync,
-  revealAgendaAsync,
-} from "../../../../../../../../src/dynamic/api";
 import { ClientOnlyHoverMenu } from "../../../../../../../../src/HoverMenu";
 import { getActiveAgenda } from "../../../../../../../../src/util/actionLog";
+import { useDataUpdate } from "../../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../../src/util/api/events";
 import { Optional } from "../../../../../../../../src/util/types/types";
 import { rem } from "../../../../../../../../src/util/util";
 
 export default function AgendaSelect({ fontSize }: { fontSize?: string }) {
   const agendas = useAgendas();
   const currentTurn = useCurrentTurn();
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const viewOnly = useViewOnly();
 
   let currentAgenda: Optional<Agenda>;
@@ -39,7 +36,9 @@ export default function AgendaSelect({ fontSize }: { fontSize?: string }) {
     return (
       <AgendaRow
         agenda={currentAgenda}
-        removeAgenda={() => hideAgendaAsync(gameId, currentAgenda.id)}
+        removeAgenda={() =>
+          dataUpdate(Events.HideAgendaEvent(currentAgenda.id))
+        }
       />
     );
   }
@@ -78,7 +77,7 @@ export default function AgendaSelect({ fontSize }: { fontSize?: string }) {
                 fontSize: rem(14),
                 writingMode: "horizontal-tb",
               }}
-              onClick={() => revealAgendaAsync(gameId, agenda.id)}
+              onClick={() => dataUpdate(Events.RevealAgendaEvent(agenda.id))}
               disabled={viewOnly}
             >
               {agenda.name}

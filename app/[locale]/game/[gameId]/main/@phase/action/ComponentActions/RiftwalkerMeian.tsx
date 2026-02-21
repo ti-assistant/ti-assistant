@@ -4,16 +4,16 @@ import GameMap from "../../../../../../../../src/components/Map/GameMap";
 import MapBuilder from "../../../../../../../../src/components/MapBuilder/MapBuilder";
 import {
   useActionLog,
-  useGameId,
   useLeader,
   useOptions,
   usePlanets,
   useViewOnly,
 } from "../../../../../../../../src/context/dataHooks";
 import { useFactions } from "../../../../../../../../src/context/factionDataHooks";
-import { swapMapTilesAsync } from "../../../../../../../../src/dynamic/api";
 import { wereTilesSwapped } from "../../../../../../../../src/util/actionLog";
 import { getCurrentTurnLogEntries } from "../../../../../../../../src/util/api/actionLog";
+import { useDataUpdate } from "../../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../../src/util/api/events";
 import {
   getFactionSystemNumber,
   getWormholeNexusSystemNumber,
@@ -23,8 +23,8 @@ import { rem } from "../../../../../../../../src/util/util";
 
 export default function RiftwalkerMeian() {
   const actionLog = useActionLog();
+  const dataUpdate = useDataUpdate();
   const factions = useFactions();
-  const gameId = useGameId();
   const options = useOptions();
   const planets = usePlanets();
   const viewOnly = useViewOnly();
@@ -95,7 +95,7 @@ export default function RiftwalkerMeian() {
                 if (viewOnly || dragItem.index === dropItem.index) {
                   return;
                 }
-                swapMapTilesAsync(gameId, dropItem, dragItem);
+                dataUpdate(Events.SwapMapTilesEvent(dropItem, dragItem));
               }}
               riftWalker
               mallice={

@@ -1,5 +1,6 @@
 import React, { use } from "react";
 import { FormattedMessage } from "react-intl";
+import Conditional from "./components/Conditional/Conditional";
 import FactionIcon from "./components/FactionIcon/FactionIcon";
 import PlanetSummary from "./components/PlanetSummary/PlanetSummary";
 import TechSummary, {
@@ -8,7 +9,6 @@ import TechSummary, {
 import { SettingsContext } from "./context/contexts";
 import {
   useAttachments,
-  useGameId,
   useLeader,
   useOptions,
   usePlanets,
@@ -25,22 +25,17 @@ import {
   useObjectives,
 } from "./context/objectiveDataHooks";
 import { usePhase } from "./context/stateDataHooks";
-import {
-  manualCCUpdateAsync,
-  manualVPUpdateAsync,
-  scoreObjectiveAsync,
-  unscoreObjectiveAsync,
-} from "./dynamic/api";
 import styles from "./FactionSummary.module.scss";
+import CommandTokensSVG from "./icons/ui/CommandTokens";
 import { StaticFactionTimer } from "./Timer";
+import { useDataUpdate } from "./util/api/dataUpdate";
+import { Events } from "./util/api/events";
 import {
   applyAllPlanetAttachments,
   filterToClaimedPlanets,
 } from "./util/planets";
 import { SummarySection } from "./util/settings";
 import { objectEntries, rem } from "./util/util";
-import CommandTokensSVG from "./icons/ui/CommandTokens";
-import Conditional from "./components/Conditional/Conditional";
 
 interface FactionSummaryProps {
   factionId: FactionId;
@@ -97,7 +92,7 @@ function FactionSummarySection({
 }
 
 function ObjectiveDots({ factionId }: { factionId: FactionId }) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const objectives = useObjectives();
   const options = useOptions();
   const revealOrder = useObjectiveRevealOrder();
@@ -193,9 +188,13 @@ function ObjectiveDots({ factionId }: { factionId: FactionId }) {
                     ? undefined
                     : () => {
                         if (scored) {
-                          unscoreObjectiveAsync(gameId, factionId, obj.id);
+                          dataUpdate(
+                            Events.UnscoreObjectiveEvent(factionId, obj.id),
+                          );
                         } else {
-                          scoreObjectiveAsync(gameId, factionId, obj.id);
+                          dataUpdate(
+                            Events.ScoreObjectiveEvent(factionId, obj.id),
+                          );
                         }
                       }
                 }
@@ -223,9 +222,13 @@ function ObjectiveDots({ factionId }: { factionId: FactionId }) {
                     ? undefined
                     : () => {
                         if (scored) {
-                          unscoreObjectiveAsync(gameId, factionId, obj.id);
+                          dataUpdate(
+                            Events.UnscoreObjectiveEvent(factionId, obj.id),
+                          );
                         } else {
-                          scoreObjectiveAsync(gameId, factionId, obj.id);
+                          dataUpdate(
+                            Events.ScoreObjectiveEvent(factionId, obj.id),
+                          );
                         }
                       }
                 }
@@ -355,18 +358,15 @@ function FactionPlanetSummary({ factionId }: { factionId: FactionId }) {
 function FactionObjectiveSummary({ factionId }: { factionId: FactionId }) {
   const manualVPs = useManualFactionVPs(factionId);
   const scoredVPs = useScoredFactionVPs(factionId);
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const phase = usePhase();
   const viewOnly = useViewOnly();
 
   const VPs = manualVPs + scoredVPs;
 
   function manualVpAdjust(increase: boolean) {
-    if (!gameId || !factionId) {
-      return;
-    }
     const value = increase ? 1 : -1;
-    manualVPUpdateAsync(gameId, factionId, value);
+    dataUpdate(Events.ManualVPUpdateEvent(factionId, value));
   }
 
   const editable = phase !== "END" && !viewOnly;
@@ -472,7 +472,7 @@ function FactionTechSummary({ factionId }: { factionId: FactionId }) {
 
 function FactionCCSummary({ factionId }: { factionId: FactionId }) {
   const faction = useFaction(factionId);
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const phase = usePhase();
   const viewOnly = useViewOnly();
   if (!faction || faction.commandCounters == undefined) {
@@ -487,7 +487,7 @@ function FactionCCSummary({ factionId }: { factionId: FactionId }) {
         <div
           className="arrowUp"
           onClick={() => {
-            manualCCUpdateAsync(gameId, factionId, 1);
+            dataUpdate(Events.ManualCCUpdateEvent(factionId, 1));
           }}
         ></div>
       ) : (
@@ -500,7 +500,7 @@ function FactionCCSummary({ factionId }: { factionId: FactionId }) {
         <div
           className="arrowDown"
           onClick={() => {
-            manualCCUpdateAsync(gameId, factionId, -1);
+            dataUpdate(Events.ManualCCUpdateEvent(factionId, -1));
           }}
         ></div>
       ) : (

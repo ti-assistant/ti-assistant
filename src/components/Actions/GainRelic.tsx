@@ -2,15 +2,15 @@ import { CSSProperties } from "react";
 import { FormattedMessage } from "react-intl";
 import {
   useCurrentTurn,
-  useGameId,
   useOptions,
   useRelics,
   useViewOnly,
 } from "../../context/dataHooks";
-import { gainRelicAsync, loseRelicAsync } from "../../dynamic/api";
 import { InfoRow } from "../../InfoRow";
 import { SelectableRow } from "../../SelectableRow";
 import { getGainedRelic } from "../../util/actionLog";
+import { useDataUpdate } from "../../util/api/dataUpdate";
+import { Events } from "../../util/api/events";
 import { rem } from "../../util/util";
 import FormattedDescription from "../FormattedDescription/FormattedDescription";
 import IconDiv from "../LabeledDiv/IconDiv";
@@ -30,7 +30,7 @@ export default function GainRelic({
   blur?: boolean;
 }) {
   const currentTurn = useCurrentTurn();
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const options = useOptions();
   const relics = useRelics();
   const viewOnly = useViewOnly();
@@ -76,7 +76,9 @@ export default function GainRelic({
             >
               <SelectableRow
                 itemId={relic.id}
-                removeItem={() => loseRelicAsync(gameId, factionId, relic.id)}
+                removeItem={() =>
+                  dataUpdate(Events.LoseRelicEvent(factionId, relic.id))
+                }
                 viewOnly={viewOnly}
               >
                 <InfoRow
@@ -95,9 +97,9 @@ export default function GainRelic({
         selectedItem={gainedRelic}
         toggleItem={(relicId, add) => {
           if (add) {
-            gainRelicAsync(gameId, factionId, relicId, planetId);
+            dataUpdate(Events.GainRelicEvent(factionId, relicId, planetId));
           } else {
-            loseRelicAsync(gameId, factionId, relicId);
+            dataUpdate(Events.LoseRelicEvent(factionId, relicId));
           }
         }}
         viewOnly={viewOnly}

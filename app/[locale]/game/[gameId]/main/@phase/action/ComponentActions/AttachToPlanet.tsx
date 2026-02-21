@@ -6,10 +6,8 @@ import {
   usePlanets,
   useViewOnly,
 } from "../../../../../../../../src/context/dataHooks";
-import {
-  addAttachmentAsync,
-  removeAttachmentAsync,
-} from "../../../../../../../../src/dynamic/api";
+import { useDataUpdate } from "../../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../../src/util/api/events";
 import { applyAllPlanetAttachments } from "../../../../../../../../src/util/planets";
 import { Optional } from "../../../../../../../../src/util/types/types";
 
@@ -46,6 +44,7 @@ function Content({
   planetFilter: (planet: Planet) => boolean;
 }) {
   const attachments = useAttachments();
+  const dataUpdate = useDataUpdate();
   const gameId = useGameId();
   const planets = usePlanets();
   const viewOnly = useViewOnly();
@@ -90,7 +89,10 @@ function Content({
               removePlanet={
                 viewOnly
                   ? undefined
-                  : () => removeAttachmentAsync(gameId, planetId, attachmentId)
+                  : () =>
+                      dataUpdate(
+                        Events.RemoveAttachmentEvent(planetId, attachmentId),
+                      )
               }
               opts={{ hideAttachButton: true }}
             />
@@ -99,9 +101,9 @@ function Content({
         selectedItem={attachedPlanet?.id}
         toggleItem={(planetId, add) => {
           if (add) {
-            addAttachmentAsync(gameId, planetId, attachmentId);
+            dataUpdate(Events.AddAttachmentEvent(planetId, attachmentId));
           } else {
-            removeAttachmentAsync(gameId, planetId, attachmentId);
+            dataUpdate(Events.RemoveAttachmentEvent(planetId, attachmentId));
           }
         }}
         viewOnly={viewOnly}

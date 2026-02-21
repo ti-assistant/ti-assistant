@@ -1,17 +1,37 @@
-import { createIntl } from "react-intl";
-import SetupPage from "./setup-page";
 import { BASE_COLORS } from "../../../server/data/colors";
 import { getEvents } from "../../../server/data/events";
 import { getFactions } from "../../../server/data/factions";
-import { intlErrorFn } from "../../../src/util/util";
+import Sidebars from "../../../src/components/Sidebars/Sidebars";
+import { getIntl } from "../../../src/util/server";
+import SetupPage from "./setup-page";
 
-export default function Page({}) {
-  const intl = createIntl({
-    locale: "en",
-    onError: intlErrorFn as any,
-  });
+export default async function Page({ params }: PageProps<"/[locale]/setup">) {
+  const locale = (await params).locale;
+
+  const intl = await getIntl(locale);
+
   const factions = getFactions(intl);
   const colors = BASE_COLORS;
   const events = getEvents(intl);
-  return <SetupPage factions={factions} colors={colors} events={events} />;
+  return (
+    <>
+      <Sidebars
+        left={intl
+          .formatMessage({
+            id: "9DZz2w",
+            description: "Text identifying that this is the setup step.",
+            defaultMessage: "Setup Game",
+          })
+          .toUpperCase()}
+        right={intl
+          .formatMessage({
+            id: "9DZz2w",
+            description: "Text identifying that this is the setup step.",
+            defaultMessage: "Setup Game",
+          })
+          .toUpperCase()}
+      />
+      <SetupPage factions={factions} colors={colors} events={events} />
+    </>
+  );
 }

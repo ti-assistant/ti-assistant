@@ -2,15 +2,10 @@ import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import LabeledLine from "../../../../../../../src/components/LabeledLine/LabeledLine";
 import ObjectiveRow from "../../../../../../../src/components/ObjectiveRow/ObjectiveRow";
-import { useGameId } from "../../../../../../../src/context/dataHooks";
 import { useObjectives } from "../../../../../../../src/context/objectiveDataHooks";
-import {
-  hideObjectiveAsync,
-  revealObjectiveAsync,
-  scoreObjectiveAsync,
-  unscoreObjectiveAsync,
-} from "../../../../../../../src/dynamic/api";
 import { Tab, TabBody } from "../../../../../../../src/Tab";
+import { useDataUpdate } from "../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../src/util/api/events";
 import { objectiveTypeString } from "../../../../../../../src/util/strings";
 import { rem } from "../../../../../../../src/util/util";
 
@@ -24,7 +19,7 @@ function sortObjectivesByName(objectives: Objective[]) {
 }
 
 function SecretTab({ factionId }: { factionId: FactionId }) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const objectives = useObjectives();
 
   const [editMode, setEditMode] = useState(false);
@@ -38,27 +33,11 @@ function SecretTab({ factionId }: { factionId: FactionId }) {
     setEditMode(!editMode);
   }
 
-  function addObj(objectiveId: ObjectiveId) {
-    if (!gameId || !factionId) {
-      return;
-    }
-    revealObjectiveAsync(gameId, objectiveId);
-    setEditMode(false);
-  }
-  function removeObj(objectiveId: ObjectiveId) {
-    if (!gameId || !factionId) {
-      return;
-    }
-    hideObjectiveAsync(gameId, objectiveId);
-  }
   function scoreObj(objectiveId: ObjectiveId, add: boolean) {
-    if (!gameId || !factionId) {
-      return;
-    }
     if (add) {
-      scoreObjectiveAsync(gameId, factionId, objectiveId);
+      dataUpdate(Events.ScoreObjectiveEvent(factionId, objectiveId));
     } else {
-      unscoreObjectiveAsync(gameId, factionId, objectiveId);
+      dataUpdate(Events.UnscoreObjectiveEvent(factionId, objectiveId));
     }
   }
 
@@ -143,7 +122,7 @@ function SecretTab({ factionId }: { factionId: FactionId }) {
 
 // TODO: Rename to Objective Tab
 export default function ObjectiveTab({ factionId }: { factionId: FactionId }) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const objectives = useObjectives();
 
   const intl = useIntl();
@@ -152,26 +131,14 @@ export default function ObjectiveTab({ factionId }: { factionId: FactionId }) {
   const [editMode, setEditMode] = useState(false);
 
   function addObj(objectiveId: ObjectiveId) {
-    if (!gameId || !factionId) {
-      return;
-    }
-    revealObjectiveAsync(gameId, objectiveId);
+    dataUpdate(Events.RevealObjectiveEvent(objectiveId));
     setEditMode(false);
   }
-  function removeObj(objectiveId: ObjectiveId) {
-    if (!gameId || !factionId) {
-      return;
-    }
-    hideObjectiveAsync(gameId, objectiveId);
-  }
   function scoreObj(objectiveId: ObjectiveId, add: boolean) {
-    if (!gameId || !factionId) {
-      return;
-    }
     if (add) {
-      scoreObjectiveAsync(gameId, factionId, objectiveId);
+      dataUpdate(Events.ScoreObjectiveEvent(factionId, objectiveId));
     } else {
-      unscoreObjectiveAsync(gameId, factionId, objectiveId);
+      dataUpdate(Events.UnscoreObjectiveEvent(factionId, objectiveId));
     }
   }
 
@@ -352,7 +319,7 @@ export default function ObjectiveTab({ factionId }: { factionId: FactionId }) {
                     removeObjective={
                       editMode || (obj.scorers ?? []).length > 0
                         ? undefined
-                        : () => removeObj(obj.id)
+                        : () => dataUpdate(Events.HideObjectiveEvent(obj.id))
                     }
                     addObjective={editMode ? () => addObj(obj.id) : undefined}
                   />
@@ -390,7 +357,9 @@ export default function ObjectiveTab({ factionId }: { factionId: FactionId }) {
                     objective={obj}
                     scoreObjective={scoreObj}
                     removeObjective={
-                      editMode ? undefined : () => removeObj(obj.id)
+                      editMode
+                        ? undefined
+                        : () => dataUpdate(Events.HideObjectiveEvent(obj.id))
                     }
                     addObjective={editMode ? () => addObj(obj.id) : undefined}
                   />
@@ -431,7 +400,9 @@ export default function ObjectiveTab({ factionId }: { factionId: FactionId }) {
                     objective={obj}
                     scoreObjective={scoreObj}
                     removeObjective={
-                      editMode ? undefined : () => removeObj(obj.id)
+                      editMode
+                        ? undefined
+                        : () => dataUpdate(Events.HideObjectiveEvent(obj.id))
                     }
                     addObjective={editMode ? () => addObj(obj.id) : undefined}
                   />

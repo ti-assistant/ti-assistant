@@ -4,7 +4,6 @@ import LabeledDiv from "../../../../../../../../src/components/LabeledDiv/Labele
 import { useCurrentAgenda } from "../../../../../../../../src/context/actionLogDataHooks";
 import {
   useCurrentTurn,
-  useGameId,
   useViewOnly,
 } from "../../../../../../../../src/context/dataHooks";
 import {
@@ -12,14 +11,11 @@ import {
   useFactions,
 } from "../../../../../../../../src/context/factionDataHooks";
 import { useGameState } from "../../../../../../../../src/context/stateDataHooks";
-import {
-  hideAgendaAsync,
-  playPromissoryNoteAsync,
-  unplayPromissoryNoteAsync,
-} from "../../../../../../../../src/dynamic/api";
 import { ClientOnlyHoverMenu } from "../../../../../../../../src/HoverMenu";
 import { SymbolX } from "../../../../../../../../src/icons/svgs";
 import { getPromissoryTargets } from "../../../../../../../../src/util/actionLog";
+import { useDataUpdate } from "../../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../../src/util/api/events";
 import { rem } from "../../../../../../../../src/util/util";
 
 export default function WhenAnAgendaIsRevealed({
@@ -65,7 +61,7 @@ export default function WhenAnAgendaIsRevealed({
 
 function VetoButton() {
   const currentAgenda = useCurrentAgenda();
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const viewOnly = useViewOnly();
   const xxcha = useFaction("Xxcha Kingdom");
 
@@ -89,7 +85,9 @@ function VetoButton() {
 
   return (
     <button
-      onClick={() => hideAgendaAsync(gameId, currentAgenda, true)}
+      onClick={() =>
+        dataUpdate(Events.HideAgendaEvent(currentAgenda, /* veto= */ true))
+      }
       disabled={viewOnly}
     >
       {vetoText}
@@ -100,7 +98,7 @@ function VetoButton() {
 function PoliticalSecrets({ speaker }: { speaker: FactionId }) {
   const currentTurn = useCurrentTurn();
   const factions = useFactions();
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const viewOnly = useViewOnly();
 
   const politicalSecrets = getPromissoryTargets(
@@ -173,16 +171,18 @@ function PoliticalSecrets({ speaker }: { speaker: FactionId }) {
                     return;
                   }
                   if (politicalSecret) {
-                    unplayPromissoryNoteAsync(
-                      gameId,
-                      "Political Secret",
-                      faction.id,
+                    dataUpdate(
+                      Events.UnplayPromissoryNoteEvent(
+                        "Political Secret",
+                        faction.id,
+                      ),
                     );
                   } else {
-                    playPromissoryNoteAsync(
-                      gameId,
-                      "Political Secret",
-                      faction.id,
+                    dataUpdate(
+                      Events.PlayPromissoryNoteEvent(
+                        "Political Secret",
+                        faction.id,
+                      ),
                     );
                   }
                 }}

@@ -39,7 +39,7 @@ export function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     // Skip all internal paths (_next)
-    "/((?!\.well-known|images|api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
+    "/((?!service-worker|\.well-known|images|api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
     // Optional: only run on root (/) URL
     // '/'
   ],

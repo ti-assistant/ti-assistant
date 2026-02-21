@@ -1,17 +1,10 @@
-import {
-  useCurrentTurn,
-  useGameId,
-} from "../../../../../../../../src/context/dataHooks";
+import { useCurrentTurn } from "../../../../../../../../src/context/dataHooks";
 import { useFaction } from "../../../../../../../../src/context/factionDataHooks";
 import { useObjective } from "../../../../../../../../src/context/objectiveDataHooks";
-import {
-  purgeSystemAsync,
-  scoreObjectiveAsync,
-  unpurgeSystemAsync,
-  unscoreObjectiveAsync,
-} from "../../../../../../../../src/dynamic/api";
 import { SelectableRow } from "../../../../../../../../src/SelectableRow";
 import { getLogEntries } from "../../../../../../../../src/util/actionLog";
+import { useDataUpdate } from "../../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../../src/util/api/events";
 import { getFactionSystemId } from "../../../../../../../../src/util/map";
 
 const SilverFlame = {
@@ -23,7 +16,7 @@ export default SilverFlame;
 function Content({ factionId }: { factionId: FactionId }) {
   const currentTurn = useCurrentTurn();
   const faction = useFaction(factionId);
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const silverFlame = useObjective("The Silver Flame");
 
   let factionHomeSystem = faction ? getFactionSystemId(faction) : undefined;
@@ -41,7 +34,7 @@ function Content({ factionId }: { factionId: FactionId }) {
     return (
       <SelectableRow
         removeItem={() => {
-          unpurgeSystemAsync(gameId, factionHomeSystem);
+          dataUpdate(Events.UnpurgeSystemEvent(factionHomeSystem));
         }}
         itemId={"The Silver Flame"}
       >
@@ -54,7 +47,9 @@ function Content({ factionId }: { factionId: FactionId }) {
     return (
       <SelectableRow
         removeItem={() =>
-          unscoreObjectiveAsync(gameId, factionId, "The Silver Flame")
+          dataUpdate(
+            Events.UnscoreObjectiveEvent(factionId, "The Silver Flame"),
+          )
         }
         itemId={"The Silver Flame"}
       >
@@ -69,12 +64,14 @@ function Content({ factionId }: { factionId: FactionId }) {
     >
       <button
         onClick={() =>
-          scoreObjectiveAsync(gameId, factionId, "The Silver Flame")
+          dataUpdate(Events.ScoreObjectiveEvent(factionId, "The Silver Flame"))
         }
       >
         Gain 1 VP
       </button>
-      <button onClick={() => purgeSystemAsync(gameId, factionHomeSystem)}>
+      <button
+        onClick={() => dataUpdate(Events.PurgeSystemEvent(factionHomeSystem))}
+      >
         Purge Home System
       </button>
     </div>
