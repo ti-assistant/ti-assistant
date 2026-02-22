@@ -13,6 +13,7 @@ import { getPlanets } from "../../../server/data/planets";
 import { useIntl } from "react-intl";
 import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 import { PlanetAttributes } from "../PlanetRow/PlanetRow";
+import { getSystems } from "../../../server/data/systems";
 
 interface Cube {
   q: number;
@@ -65,6 +66,56 @@ const CUBE_DIRECTIONS = [
   Cube(-1, +1, 0),
   Cube(-1, 0, +1),
 ] as const;
+
+function cube_dir_to_hex_side(dir: Cube): Optional<Direction> {
+  if (cube_equals(dir, CUBE_DIRECTIONS[0])) {
+    return "TOP LEFT";
+  } else if (cube_equals(dir, CUBE_DIRECTIONS[1])) {
+    return "UP";
+  } else if (cube_equals(dir, CUBE_DIRECTIONS[2])) {
+    return "TOP RIGHT";
+  } else if (cube_equals(dir, CUBE_DIRECTIONS[3])) {
+    return "BOTTOM RIGHT";
+  } else if (cube_equals(dir, CUBE_DIRECTIONS[4])) {
+    return "DOWN";
+  } else if (cube_equals(dir, CUBE_DIRECTIONS[5])) {
+    return "BOTTOM LEFT";
+  }
+}
+
+function hex_side_to_cube_dir(dir: Direction): Cube {
+  switch (dir) {
+    case "UP":
+      return CUBE_DIRECTIONS[4];
+    case "DOWN":
+      return CUBE_DIRECTIONS[1];
+    case "TOP LEFT":
+      return CUBE_DIRECTIONS[3];
+    case "BOTTOM LEFT":
+      return CUBE_DIRECTIONS[2];
+    case "TOP RIGHT":
+      return CUBE_DIRECTIONS[5];
+    case "BOTTOM RIGHT":
+      return CUBE_DIRECTIONS[0];
+  }
+}
+
+function direction_from_side(dir: Cube): Optional<Direction> {
+  // TODO: Verify directions.
+  if (cube_equals(dir, CUBE_DIRECTIONS[0])) {
+    return "DOWN";
+  } else if (cube_equals(dir, CUBE_DIRECTIONS[1])) {
+    return "BOTTOM LEFT";
+  } else if (cube_equals(dir, CUBE_DIRECTIONS[2])) {
+    return "TOP LEFT";
+  } else if (cube_equals(dir, CUBE_DIRECTIONS[3])) {
+    return "UP";
+  } else if (cube_equals(dir, CUBE_DIRECTIONS[4])) {
+    return "TOP RIGHT";
+  } else if (cube_equals(dir, CUBE_DIRECTIONS[5])) {
+    return "BOTTOM RIGHT";
+  }
+}
 
 function cube_add(hex: Cube, vec: Cube) {
   return Cube(hex.q + vec.q, hex.r + vec.r, hex.s + vec.s);
@@ -516,11 +567,115 @@ function system_to_cube(system: string, spiral: Cube[], systems: string[]) {
   return spiral[index];
 }
 
+function toSystemId(systemId: Optional<string>): Optional<SystemId> {
+  if (!systemId) {
+    return;
+  }
+  const subString = systemId.split(":")[0];
+  if (!subString) {
+    return;
+  }
+  if (subString.includes("A")) {
+    return `${subString.split("A")[0]}A` as SystemId;
+  }
+  if (subString.includes("B")) {
+    return `${subString.split("B")[0]}B` as SystemId;
+  }
+  return parseInt(subString) as SystemId;
+}
+
+function getSystemRotation(systemId: string): Optional<number> {
+  let subString = systemId.split("A")[1];
+  if (subString) {
+    return parseInt(subString);
+  }
+  subString = systemId.split("B")[1];
+  if (subString) {
+    return parseInt(subString);
+  }
+}
+
+function getNextHyperlane(dir: Direction) {
+  switch (dir) {
+    case "UP":
+      return "TOP RIGHT";
+    case "DOWN":
+      return "BOTTOM LEFT";
+    case "TOP LEFT":
+      return "UP";
+    case "BOTTOM LEFT":
+      return "TOP LEFT";
+    case "TOP RIGHT":
+      return "BOTTOM RIGHT";
+    case "BOTTOM RIGHT":
+      return "DOWN";
+  }
+}
+
+function rotateHyperlane(hyperlane: Hyperlane, rotation: Optional<number>) {
+  if (!rotation) {
+    return hyperlane;
+  }
+  const rotated: Hyperlane = hyperlane;
+  for (let i = 0; i < rotation; i++) {
+    rotated.a = getNextHyperlane(rotated.a);
+    rotated.b = getNextHyperlane(rotated.b);
+  }
+  return rotated;
+}
+
+function getBaseSystem(
+  system: string,
+  baseSystems: Record<SystemId, BaseSystem>,
+): Optional<BaseSystem> {
+  const systemId = toSystemId(system);
+  if (!systemId) {
+    return;
+  }
+  return baseSystems[systemId];
+}
+
+function getMatchingWormholeSystems(
+  cube: Cube,
+  spiral: Cube[],
+  systems: string[],
+  baseSystems: Record<SystemId, BaseSystem>,
+) {
+  const systemString = cube_to_system(cube, spiral, systems);
+  if (!systemString) {
+    return [];
+  }
+  const baseSystem = getBaseSystem(systemString, baseSystems);
+  const wormholes = baseSystem?.wormholes;
+  if (!wormholes || wormholes.length === 0) {
+    return [];
+  }
+  const adjacentSystems: string[] = [];
+  for (const wormhole of wormholes) {
+    for (const system of systems) {
+      const baseSystem = getBaseSystem(system, baseSystems);
+      const wormholes = baseSystem?.wormholes;
+      if (wormholes?.includes(wormhole)) {
+        adjacentSystems.push(system);
+      }
+    }
+  }
+  return adjacentSystems;
+}
+
+interface Neighbor {
+  cube: Cube;
+  // Which direction the neighbor was entered from.
+  direction: Cube;
+}
+
+// TODO: Clean up this file.
 function hex_reachable(
   start: Cube,
   movement: number,
   spiral: Cube[],
   systems: string[],
+  baseSystems: Record<SystemId, BaseSystem>,
 ) {
   const visited = new Set<string>();
   visited.add(JSON.stringify(start));
@@ -535,20 +690,91 @@ function hex_reachable(
       break;
     }
     for (const cube of fringe) {
-      // TODO: If cube contains a wormhole, need to check other wormhole systems.
+      const wormholeSystems = getMatchingWormholeSystems(
+        cube,
+        spiral,
+        systems,
+        baseSystems,
+      );
+      for (const wormholeSystem of wormholeSystems) {
+        const wormholeCube = system_to_cube(wormholeSystem, spiral, systems);
+        if (!wormholeCube) {
+          continue;
+        }
+        if (!visited.has(JSON.stringify(wormholeCube))) {
+          visited.add(JSON.stringify(wormholeCube));
+          const newResult = results[i] ?? [];
+          newResult.push(wormholeSystem);
+          results[i] = newResult;
+          const newFringe = fringes[i] ?? [];
+          newFringe.push(wormholeCube);
+          fringes[i] = newFringe;
+        }
+      }
+
+      const neighbors: Neighbor[] = [];
       for (const dir of CUBE_DIRECTIONS) {
         const neighbor = cube_neighbor(cube, dir);
-        const system = cube_to_system(neighbor, spiral, systems);
+        neighbors.push({
+          cube: neighbor,
+          direction: dir,
+        });
+      }
+      // Mostly just a safeguard in case of weird loops.
+      let maxDepth = 1000;
+      while (neighbors.length > 0 && maxDepth > 0) {
+        const neighbor = neighbors.shift();
+        maxDepth--;
+        if (!neighbor) {
+          break;
+        }
+        const system = cube_to_system(neighbor.cube, spiral, systems);
 
         // TODO: If system is hyperspace (and the direction is correct), need to check systems that are adjacent.
         const isBlocked = !system || system === "0" || system === "-1";
-        if (!visited.has(JSON.stringify(neighbor)) && !isBlocked) {
+        if (isBlocked) {
+          continue;
+        }
+        const systemId = toSystemId(system);
+        if (systemId) {
+          const baseSystem = baseSystems[systemId];
+          if (baseSystem && baseSystem.type === "HYPERLANE") {
+            visited.add(JSON.stringify(neighbor));
+            const hexSide = cube_dir_to_hex_side(neighbor.direction);
+            const rotation = getSystemRotation(system);
+            if (hexSide) {
+              for (const lane of baseSystem.hyperlanes ?? []) {
+                const hyperlane = rotateHyperlane(
+                  structuredClone(lane),
+                  rotation,
+                );
+                if (hyperlane.a === hexSide) {
+                  const direction = hex_side_to_cube_dir(hyperlane.b);
+                  const nextNeighbor = cube_neighbor(neighbor.cube, direction);
+                  neighbors.push({
+                    cube: nextNeighbor,
+                    direction,
+                  });
+                } else if (hyperlane.b === hexSide) {
+                  const direction = hex_side_to_cube_dir(hyperlane.a);
+                  const nextNeighbor = cube_neighbor(neighbor.cube, direction);
+                  neighbors.push({
+                    cube: nextNeighbor,
+                    direction,
+                  });
+                }
+              }
+            }
+            continue;
+          }
+        }
+        if (!visited.has(JSON.stringify(neighbor))) {
           visited.add(JSON.stringify(neighbor));
           const newResult = results[i] ?? [];
           newResult.push(system);
           results[i] = newResult;
           const newFringe = fringes[i] ?? [];
-          newFringe.push(neighbor);
+          newFringe.push(neighbor.cube);
           fringes[i] = newFringe;
         }
       }
@@ -566,6 +792,7 @@ function buildFactionValues(
   spiral: Cube[],
   systems: string[],
   planets: Partial<Record<PlanetId, BasePlanet>>,
+  baseSystems: Record<SystemId, BaseSystem>,
 ) {
   const ownedSystems: Record<number, string[]> = {};
   spiral.forEach((cube, index) => {
@@ -574,11 +801,13 @@ function buildFactionValues(
       !currentSystem ||
       currentSystem === "-1" ||
       currentSystem === "0" ||
-      isHomeSystem(currentSystem)
+      isHomeSystem(currentSystem) ||
+      currentSystem.includes("A") ||
+      currentSystem.includes("B")
     ) {
       return;
     }
-    const nearbySystems = hex_reachable(cube, 7, spiral, systems);
+    const nearbySystems = hex_reachable(cube, 7, spiral, systems, baseSystems);
     for (let i = 1; i < 7; i++) {
       const ring = nearbySystems[i];
       if (!ring) {
@@ -646,8 +875,14 @@ export default function MapBuilder({
 
   const intl = useIntl();
   const basePlanets = getPlanets(intl);
+  const baseSystems = getSystems();
 
-  const values = buildFactionValues(spiral, updatedSystemTiles, basePlanets);
+  const values = buildFactionValues(
+    spiral,
+    updatedSystemTiles,
+    basePlanets,
+    baseSystems,
+  );
 
   return (
     <div className={styles.Map}>

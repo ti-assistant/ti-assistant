@@ -627,7 +627,7 @@ export default function MapBuilderPage() {
         onChange={(element) => setRawMapInput(element.target.value)}
         onBlur={() => {
           setMapString(
-            processMapString(rawMapInput.trim(), mapStyle, numFactions, false),
+            processMapString(rawMapInput.trim(), mapStyle, numFactions, true),
           );
         }}
       ></input>
