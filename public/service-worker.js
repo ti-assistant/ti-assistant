@@ -8,7 +8,6 @@ self.addEventListener("install", async (event) => {
       "/api/base-data",
       "/api/base-data?locale=en",
       "/images/favicon.ico",
-      "/_next/image?url=%2Fimages%2Ffactions%2FYin%20Brotherhood.webp&w=256&q=75",
     ]),
   );
 });

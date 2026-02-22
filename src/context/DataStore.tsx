@@ -181,7 +181,7 @@ function buildDatabaseFns(database: Database): DatabaseFns {
           return;
         }
 
-        database.storedData = structuredClone(database.storedData);
+        database.storedData = structuredClone(updateFn(database.storedData));
         const viewOnly = database.data.viewOnly;
         database.data = buildCompleteGameData(
           database.storedData,
