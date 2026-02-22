@@ -553,7 +553,6 @@ function hex_reachable(
         }
       }
     }
-    console.log("Visited", visited);
   }
   return results;
 }
@@ -579,14 +578,12 @@ function buildFactionValues(
     ) {
       return;
     }
-    console.log("Current", currentSystem);
     const nearbySystems = hex_reachable(cube, 7, spiral, systems);
     for (let i = 1; i < 7; i++) {
       const ring = nearbySystems[i];
       if (!ring) {
         break;
       }
-      console.log("Ring", ring);
       const homeSystems = [];
       for (const system of ring) {
         if (isHomeSystem(system)) {
