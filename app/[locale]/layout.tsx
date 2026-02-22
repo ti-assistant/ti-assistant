@@ -1,10 +1,9 @@
 import { Metadata, Viewport } from "next";
 import { CSSProperties, Suspense } from "react";
 import "../../public/site.css";
-import { getMessages, getSettings } from "../../src/util/server";
+import { getMessages } from "../../src/util/server";
 import { Optional } from "../../src/util/types/types";
 import { InnerLayout, LoadingLayout } from "./inner-layout";
-import ServiceWorkerWrapper from "./ServiceWorkerWrapper";
 
 export const metadata: Metadata = {
   title: "Twilight Imperium Assistant",
@@ -56,7 +55,6 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
-      <ServiceWorkerWrapper />
       <body style={fontSwitchStyle}>
         <Suspense fallback={<LoadingLayout />}>
           <InnerLayout locale={locale} messagePromise={messagePromise}>
