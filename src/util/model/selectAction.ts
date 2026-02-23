@@ -57,6 +57,16 @@ export class SelectActionHandler implements Handler {
         }
       }
       if (
+        !this.gameData.options.expansions.includes("THUNDERS EDGE") &&
+        entry.data.action === "SELECT_ACTION" &&
+        entry.data.event.action === "Warfare" &&
+        this.data.event.action !== "Warfare"
+      ) {
+        if (tokens != undefined) {
+          tokens -= 1;
+        }
+      }
+      if (
         entry.data.action === "SELECT_ACTION" &&
         entry.data.event.action === "Tactical" &&
         this.data.event.action !== "Tactical"
@@ -90,6 +100,14 @@ export class SelectActionHandler implements Handler {
     ) {
       if (tokens != undefined) {
         tokens += 3;
+      }
+    }
+    if (
+      !this.gameData.options.expansions.includes("THUNDERS EDGE") &&
+      this.data.event.action === "Warfare"
+    ) {
+      if (tokens != undefined) {
+        tokens += 1;
       }
     }
 
@@ -175,6 +193,15 @@ export class UnselectActionHandler implements Handler {
     ) {
       if (tokens != undefined) {
         tokens -= 3;
+      }
+    }
+
+    if (
+      !this.gameData.options.expansions.includes("THUNDERS EDGE") &&
+      this.data.event.action === "Warfare"
+    ) {
+      if (tokens != undefined) {
+        tokens -= 1;
       }
     }
 
