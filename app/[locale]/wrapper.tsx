@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 import { PropsWithChildren, useState } from "react";
 import { IntlProvider } from "react-intl";
 import { SettingsContext } from "../../src/context/contexts";
+import { getSettings } from "../../src/util/client";
 import { Settings } from "../../src/util/settings";
 
 export default function Wrapper({
@@ -27,13 +28,8 @@ export default function Wrapper({
   );
 }
 
-export function SettingsProvider({
-  children,
-  initialSettings,
-}: PropsWithChildren<{
-  initialSettings: Settings;
-}>) {
-  const [settings, setSettings] = useState(initialSettings);
+export function SettingsProvider({ children }: PropsWithChildren) {
+  const [settings, setSettings] = useState(getSettings());
 
   function updateSetting<T extends keyof Settings>(
     setting: T,
@@ -49,16 +45,11 @@ export function SettingsProvider({
     });
   }
 
-  function overwriteSettings(settings: Settings) {
-    setSettings(settings);
-  }
-
   return (
     <SettingsContext.Provider
       value={{
         settings,
         updateSetting,
-        overwriteSettings,
       }}
     >
       {children}

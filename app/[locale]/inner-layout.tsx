@@ -9,7 +9,6 @@ import ModalProvider from "../../src/context/ModalProvider";
 import TimerProvider from "../../src/context/TimerProvider";
 import styles from "./root.module.scss";
 import Wrapper, { SettingsProvider } from "./wrapper";
-import { DEFAULT_SETTINGS } from "../../src/util/settings";
 
 const SUPPORTED_LOCALES = ["en", "de", "fr", "ru", "pl"];
 
@@ -26,7 +25,7 @@ export async function InnerLayout({
   return (
     <Wrapper locale={locale} messages={messages}>
       <DataStoreWrapper locale={locale}>
-        <SettingsProvider initialSettings={DEFAULT_SETTINGS}>
+        <SettingsProvider>
           <TimerProvider>
             <ModalProvider>
               <div className={styles.NavBar}>

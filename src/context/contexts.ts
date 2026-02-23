@@ -5,7 +5,6 @@ import { Optional } from "../util/types/types";
 interface SettingsContextObj {
   settings: Settings;
   updateSetting<T extends keyof Settings>(setting: T, value: Settings[T]): void;
-  overwriteSettings: (settings: Settings) => void;
 }
 
 type CallbackFn<DataType> = (data: DataType) => void;
@@ -22,7 +21,6 @@ interface ModalFns {
 export const SettingsContext = createContext<SettingsContextObj>({
   settings: DEFAULT_SETTINGS,
   updateSetting: () => {},
-  overwriteSettings: () => {},
 });
 
 const DummyTimerFns = {
