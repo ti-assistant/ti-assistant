@@ -451,6 +451,10 @@
     "description": "Text on a button that displays the attachment menu for a planet.",
     "defaultMessage": "Dołącz"
   },
+  "KuClgv": {
+    "description": "Disclaimer about advanced tracking options.",
+    "defaultMessage": "Celem TI Assistant jest dostarczenie jak największej ilości informacji przy minimalnym wymaganym ręcznym wprowadzaniu danych.{br}Poniższe opcje wymagają znacznego ręcznego wprowadzania danych i nie są zalecane dla większości grup."
+  },
   "KzTGw5": {
     "description": "Text on a button for replacing the current agenda.",
     "defaultMessage": "Weto Lub Unieważnienie Lub Przysługa Polityczna"
@@ -823,6 +827,10 @@
     "description": "The title of points granted from using Imperial.",
     "defaultMessage": "Punkty Imperialne"
   },
+  "eGQScU": {
+    "description": "Tracking options that are not recommended for most users.",
+    "defaultMessage": "Zaawansowane Monitorowanie"
+  },
   "eO0b2t": {
     "description": "The title of an agent: a leader that can get used once per round.",
     "defaultMessage": "Agent"
@@ -1118,6 +1126,10 @@
   "weIxIg": {
     "description": "A label for a selector specifying expansions that are homemade.",
     "defaultMessage": "Homebrew:"
+  },
+  "x+prCn": {
+    "description": "Tokens used to perform tactical and strategic actions.",
+    "defaultMessage": "Żetony Dowodzenia"
   },
   "x42AMg": {
     "description": "Label for a section that involves randomly selecting things.",
@@ -3463,6 +3475,14 @@
     "description": "Title of Faction Unit: Son of Ragh",
     "defaultMessage": "Syn Ragha"
   },
+  "Components.Age of Exploration.Description": {
+    "description": "Description for Component: Age of Exploration",
+    "defaultMessage": "AKCJA: Wyczerp KONWERTER CIEMNEJ ENERGII i wybierz niebędący układem macierzystym krawędziowy układ, w którym znajdują się twoje statki, aby rzucić 1 kością. Przy wyniku 1-4 dobierz losowy nieużywany czerwony kafel; przy wyniku 5-10 dobierz losowy nieużywany niebieski kafel. Umieść ten kafel sąsiadująco z wybranym układem tak, aby stykał się z co najmniej 2 układami niebędącymi układami macierzystymi. Umieść żeton pogranicza w układzie, jeśli nie zawiera on żadnych planet."
+  },
+  "Components.Conventions of War Abandoned.Description": {
+    "description": "Description for Component: Conventions of War Abandoned",
+    "defaultMessage": "AKCJA: Wyczerp BROŃ BAKTERIOLOGICZNĄ X-89, aby wybrać 1 planetę w układzie, w którym znajduje się 1 z twoich jednostek posiadających BOMBARDOWANIE; usuń z gry kartę tej planety oraz wszystkie dołączone do niej karty lub karty zdolności legendarnych planet z nią związane."
+  },
   "Components.Enigmatic Device.Description": {
     "description": "Description for Component: Enigmatic Device",
     "defaultMessage": "AKCJA: Możesz wydać 6 zasobów i unicestwić tę kartę aby zbadać 1 technologię"
@@ -3494,6 +3514,34 @@
   "Components.Gain Unit Upgrade.Title": {
     "description": "Title of Component: Gain Unit Upgrade",
     "defaultMessage": "Otrzymaj Ulepszenie Jednostki"
+  },
+  "Components.Mercenaries for Hire.Description": {
+    "description": "Description for Component: Mercenaries for Hire",
+    "defaultMessage": "AKCJA: Wydaj 3 żetony dóbr, aby dobrać wierzchnią kartę z talii najemników i umieścić ją w swoim obszarze gry."
+  },
+  "Components.Steal Ability.Title": {
+    "description": "Title of Component: Steal Ability",
+    "defaultMessage": "Ukradnij kartę zdolności"
+  },
+  "Components.Steal Genome.Title": {
+    "description": "Title of Component: Steal Genome",
+    "defaultMessage": "Ukradnij Genom"
+  },
+  "Components.Steal Paradigm.Title": {
+    "description": "Title of Component: Steal Paradigm",
+    "defaultMessage": "Ukradnij Wzorzec"
+  },
+  "Components.Steal Unit Upgrade.Title": {
+    "description": "Title of Component: Steal Unit Upgrade",
+    "defaultMessage": "Ukradnij Ulepszenie Jednostki"
+  },
+  "Components.Stellar Atomics.Description": {
+    "description": "Description for Component: Stellar Atomics",
+    "defaultMessage": "AKCJA: Odrzuć swój żeton strategii z karty Gwiezdny Arsenał Jądrowy aby zniszczyć wszystkie wojska naziemne i budynki na dowolnej nie-macierzystej planecie"
+  },
+  "Components.Total War.Description": {
+    "description": "Description for Component: Total War",
+    "defaultMessage": "AKCJA: Odrzuć 10 towarów z planet w twoim układzie macierzystym, aby zdobyć 1 punkt zwycięstwa."
   },
   "Council Keleres.Abilities.Council Patronage.Description": {
     "description": "Description for Faction Ability: Council Patronage",
