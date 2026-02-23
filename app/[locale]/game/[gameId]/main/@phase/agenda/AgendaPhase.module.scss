@@ -1,0 +1,21 @@
+.LeftColumn {
+  padding-top: 5.25rem;
+  width: 20.75rem;
+}
+
+.MiddleColumn {
+  padding-top: 2.5rem;
+  align-items: stretch;
+  min-height: calc(100dvh - 6.5rem);
+}
+
+@media only screen and (max-width: 37.5rem) {
+  .LeftColumn {
+    padding-top: 3.5rem;
+  }
+
+  .MiddleColumn {
+    padding-top: 0;
+    min-height: fit-content;
+  }
+}

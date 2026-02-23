@@ -4,21 +4,21 @@ import { BASE_OPTIONS } from "../../server/data/options";
 import { getLogEntries, isPrimaryComplete } from "../util/actionLog";
 import { getCurrentTurnLogEntries } from "../util/api/actionLog";
 import { ActionLog, Optional } from "../util/types/types";
-import { DataContext } from "./contexts";
-import { DataStore } from "./dataStore";
+import { DatabaseFnsContext } from "./contexts";
 
 export function useGameDataValue<Type>(path: string, defaultValue: Type): Type {
+  const databaseFns = use(DatabaseFnsContext);
+
   const [value, setValue] = useState<Type>(
-    DataStore.getValue(path) ?? defaultValue
+    databaseFns.getValue(path) ?? defaultValue,
   );
-  const subscribe = use(DataContext);
 
   useEffect(() => {
-    setValue(DataStore.getValue(path) ?? defaultValue);
-    return subscribe((data) => {
+    setValue(databaseFns.getValue(path) ?? defaultValue);
+    return databaseFns.subscribe((data) => {
       setValue(data ?? defaultValue);
     }, path);
-  }, [path, subscribe]);
+  }, [path, databaseFns]);
 
   return value;
 }
@@ -26,12 +26,12 @@ export function useGameDataValue<Type>(path: string, defaultValue: Type): Type {
 export function useMemoizedGameDataValue<BaseType, Type>(
   path: string,
   defaultValue: Type,
-  fn: (value: BaseType) => Type
+  fn: (value: BaseType) => Type,
 ) {
-  const initialValue = DataStore.getValue<BaseType>(path);
+  const databaseFns = use(DatabaseFnsContext);
+  const initialValue = databaseFns.getValue<BaseType>(path);
   const baseVal = initialValue ? fn(initialValue) : defaultValue;
   const [value, setValue] = useState<Type>(baseVal);
-  const subscribe = use(DataContext);
 
   let valueHash = stableHash(value);
   if (value instanceof Set) {
@@ -39,7 +39,7 @@ export function useMemoizedGameDataValue<BaseType, Type>(
   }
 
   useEffect(() => {
-    const newVal = DataStore.getValue<BaseType>(path);
+    const newVal = databaseFns.getValue<BaseType>(path);
     if (newVal) {
       const newValue = fn(newVal);
       let newHash = stableHash(newValue);
@@ -50,7 +50,7 @@ export function useMemoizedGameDataValue<BaseType, Type>(
         setValue(newValue);
       }
     }
-    return subscribe((newVal) => {
+    return databaseFns.subscribe((newVal) => {
       if (!newVal) {
         return;
       }
@@ -64,7 +64,7 @@ export function useMemoizedGameDataValue<BaseType, Type>(
       }
       setValue(newValue);
     }, path);
-  }, [path, fn, valueHash, subscribe]);
+  }, [path, fn, valueHash, databaseFns]);
 
   return value;
 }
@@ -84,19 +84,19 @@ export function useCurrentTurn() {
   return useMemoizedGameDataValue<ActionLog, ActionLog>(
     "actionLog",
     [],
-    (log) => getCurrentTurnLogEntries(log)
+    (log) => getCurrentTurnLogEntries(log),
   );
 }
 export function usePrimaryCompleted() {
   return useMemoizedGameDataValue<ActionLog, boolean>(
     "actionLog",
     false,
-    (log) => isPrimaryComplete(getCurrentTurnLogEntries(log))
+    (log) => isPrimaryComplete(getCurrentTurnLogEntries(log)),
   );
 }
 export function useLogEntries<DataType extends GameUpdateData>(
   type: DataType["action"],
-  filters?: (type: ActionLogEntry<DataType>) => boolean
+  filters?: (type: ActionLogEntry<DataType>) => boolean,
 ) {
   return useMemoizedGameDataValue<ActionLog, ActionLogEntry<DataType>[]>(
     "actionLog",
@@ -108,7 +108,7 @@ export function useLogEntries<DataType extends GameUpdateData>(
         return entries.filter(filters);
       }
       return entries;
-    }
+    },
   );
 }
 
@@ -138,7 +138,7 @@ export function useActionCards() {
 export function useActionCard(actionCardId: ActionCardId) {
   return useGameDataValue<Optional<ActionCard>>(
     `actionCards.${actionCardId}`,
-    undefined
+    undefined,
   );
 }
 

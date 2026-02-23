@@ -1,11 +1,7 @@
-import { createIntl, createIntlCache } from "react-intl";
-import { buildStrategyCards } from "../../data/GameData";
-import { Optional } from "../types/types";
-
 export class SwapStrategyCardsHandler implements Handler {
   constructor(
     public gameData: StoredGameData,
-    public data: SwapStrategyCardsData
+    public data: SwapStrategyCardsData,
   ) {}
 
   validate(): boolean {
@@ -13,9 +9,7 @@ export class SwapStrategyCardsHandler implements Handler {
   }
 
   getUpdates(): Record<string, any> {
-    const cache = createIntlCache();
-    const intl = createIntl({ locale: "en" }, cache);
-    const strategyCards = buildStrategyCards(this.gameData, intl);
+    const strategyCards = this.gameData.strategycards ?? {};
     const cardOne = strategyCards[this.data.event.cardOne];
     const cardTwo = strategyCards[this.data.event.cardTwo];
 
@@ -39,18 +33,6 @@ export class SwapStrategyCardsHandler implements Handler {
       [`strategycards.${this.data.event.cardTwo}.order`]: "DELETE",
     };
 
-    // If faction was going first, find first card and update order.
-    // May not work for 3-4 player games.
-    let zeroFaction: Optional<string>;
-    if (cardOne.order === 0) {
-      updates[`strategycards.${cardTwo.id}.order`] = 0;
-      zeroFaction = factionOne;
-    }
-    if (cardTwo.order === 0) {
-      updates[`strategycards.${cardOne.id}.order`] = 0;
-      zeroFaction = factionTwo;
-    }
-
     if (this.data.event.imperialArbiter) {
       updates[`agendas.Imperial Arbiter.passed`] = false;
     }
@@ -73,7 +55,7 @@ export class SwapStrategyCardsHandler implements Handler {
 export class UnswapStrategyCardsHandler implements Handler {
   constructor(
     public gameData: StoredGameData,
-    public data: UnswapStrategyCardsData
+    public data: UnswapStrategyCardsData,
   ) {}
 
   validate(): boolean {
@@ -81,9 +63,7 @@ export class UnswapStrategyCardsHandler implements Handler {
   }
 
   getUpdates(): Record<string, any> {
-    const cache = createIntlCache();
-    const intl = createIntl({ locale: "en" }, cache);
-    const strategyCards = buildStrategyCards(this.gameData, intl);
+    const strategyCards = this.gameData.strategycards ?? {};
     const cardOne = strategyCards[this.data.event.cardOne];
     const cardTwo = strategyCards[this.data.event.cardTwo];
 
@@ -104,17 +84,6 @@ export class UnswapStrategyCardsHandler implements Handler {
       [`strategycards.${this.data.event.cardTwo}.faction`]: factionOne,
       [`strategycards.${this.data.event.cardTwo}.order`]: "DELETE",
     };
-
-    // If faction was going first, find first card and update order.
-    let zeroFaction: Optional<string>;
-    if (cardOne.order === 0) {
-      updates[`strategycards.${cardTwo.id}.order`] = 0;
-      zeroFaction = factionOne;
-    }
-    if (cardTwo.order === 0) {
-      updates[`strategycards.${cardOne.id}.order`] = 0;
-      zeroFaction = factionTwo;
-    }
 
     if (this.data.event.imperialArbiter) {
       updates[`agendas.Imperial Arbiter.passed`] = true;

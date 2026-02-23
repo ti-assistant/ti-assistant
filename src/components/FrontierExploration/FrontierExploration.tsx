@@ -1,12 +1,12 @@
 import { FormattedMessage } from "react-intl";
 import {
   useCurrentTurn,
-  useGameId,
   usePlanets,
   useViewOnly,
 } from "../../context/dataHooks";
-import { claimPlanetAsync } from "../../dynamic/api";
 import { getClaimedPlanets, getGainedRelic } from "../../util/actionLog";
+import { useDataUpdate } from "../../util/api/dataUpdate";
+import { Events } from "../../util/api/events";
 import { Optional } from "../../util/types/types";
 import GainRelic from "../Actions/GainRelic";
 import { ClaimedPlanetRow } from "../ClaimPlanetsSection/ClaimPlanetsSection";
@@ -17,9 +17,9 @@ export default function FrontierExploration({
 }: {
   factionId: FactionId;
 }) {
-  const gameId = useGameId();
-  const planets = usePlanets();
   const currentTurn = useCurrentTurn();
+  const dataUpdate = useDataUpdate();
+  const planets = usePlanets();
   const viewOnly = useViewOnly();
 
   const gainedRelic = getGainedRelic(currentTurn);
@@ -31,7 +31,7 @@ export default function FrontierExploration({
       }
       return event;
     },
-    undefined as Optional<ClaimPlanetEvent>
+    undefined as Optional<ClaimPlanetEvent>,
   );
   const mirage = planets["Mirage"];
 
@@ -47,7 +47,7 @@ export default function FrontierExploration({
         {!mirageFound && !gainedRelic ? (
           <button
             onClick={() => {
-              claimPlanetAsync(gameId, factionId, "Mirage");
+              dataUpdate(Events.ClaimPlanetEvent(factionId, "Mirage"));
             }}
             disabled={viewOnly}
           >

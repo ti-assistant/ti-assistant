@@ -3,6 +3,7 @@ import { getAbilities } from "../../server/data/abilities";
 import { getActionCards } from "../../server/data/actionCards";
 import { getAgendas } from "../../server/data/agendas";
 import { getAttachments } from "../../server/data/attachments";
+import { BASE_COLORS } from "../../server/data/colors";
 import { getComponents } from "../../server/data/components";
 import { getEvents } from "../../server/data/events";
 import { getFactions } from "../../server/data/factions";
@@ -40,6 +41,7 @@ export function buildBaseData(intl: IntlShape): BaseData {
     actionCards: getActionCards(intl),
     agendas: getAgendas(intl),
     attachments: getAttachments(intl),
+    colors: BASE_COLORS,
     components: getComponents(intl),
     events: getEvents(intl),
     factions: getFactions(intl),
@@ -66,7 +68,7 @@ export function buildGameData(storedGameData: StoredGameData, intl: IntlShape) {
 
 export function buildActionCards(
   storedGameData: StoredGameData,
-  intl: IntlShape
+  intl: IntlShape,
 ) {
   const baseData = buildBaseData(intl);
 
@@ -81,7 +83,7 @@ export function buildAgendas(storedGameData: StoredGameData, intl: IntlShape) {
 
 export function buildAttachments(
   storedGameData: StoredGameData,
-  intl: IntlShape
+  intl: IntlShape,
 ) {
   const baseData = buildBaseData(intl);
 
@@ -90,7 +92,7 @@ export function buildAttachments(
 
 export function buildComponents(
   storedGameData: StoredGameData,
-  intl: IntlShape
+  intl: IntlShape,
 ) {
   const baseData = buildBaseData(intl);
 
@@ -106,7 +108,7 @@ export function buildFactions(storedGameData: StoredGameData, intl: IntlShape) {
 // TODO: Fix secrets (or remove ability to reveal them)
 export function buildObjectives(
   storedGameData: StoredGameData,
-  intl: IntlShape
+  intl: IntlShape,
 ) {
   const baseData = buildBaseData(intl);
 
@@ -116,7 +118,7 @@ export function buildObjectives(
 export function buildPlanets(
   storedGameData: StoredGameData,
   intl: IntlShape,
-  includePurged?: boolean
+  includePurged?: boolean,
 ) {
   const baseData = buildBaseData(intl);
 
@@ -134,7 +136,7 @@ export function buildState(storedGameData: StoredGameData) {
 
 export function buildStrategyCards(
   storedGameData: StoredGameData,
-  intl: IntlShape
+  intl: IntlShape,
 ) {
   const baseData = buildBaseData(intl);
 

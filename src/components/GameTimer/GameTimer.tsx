@@ -3,7 +3,7 @@ import { FormattedMessage } from "react-intl";
 import { TimerContext } from "../../context/contexts";
 import { useGameId, useTimers, useViewOnly } from "../../context/dataHooks";
 import { usePhase } from "../../context/stateDataHooks";
-import { setGlobalPauseAsync } from "../../dynamic/api";
+import { useSetGlobalPause } from "../../util/api/setPause";
 import { rem } from "../../util/util";
 import TimerDisplay from "../TimerDisplay/TimerDisplay";
 import TurnTimer from "../TurnTimer/TurnTimer";
@@ -11,6 +11,7 @@ import styles from "./GameTimer.module.scss";
 
 export default function GameTimer({ frozen = false }) {
   const gameId = useGameId();
+  const setGlobalPause = useSetGlobalPause();
   const phase = usePhase();
   const timers = useTimers();
   const timerFns = use(TimerContext);
@@ -30,9 +31,9 @@ export default function GameTimer({ frozen = false }) {
 
   function togglePause() {
     if (paused) {
-      setGlobalPauseAsync(gameId, false);
+      setGlobalPause(gameId, false);
     } else {
-      setGlobalPauseAsync(gameId, true);
+      setGlobalPause(gameId, true);
     }
   }
 

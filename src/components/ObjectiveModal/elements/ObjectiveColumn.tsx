@@ -1,8 +1,9 @@
 import { use } from "react";
 import { SettingsContext } from "../../../context/contexts";
-import { useGameId, useViewOnly } from "../../../context/dataHooks";
-import { hideObjectiveAsync } from "../../../dynamic/api";
+import { useViewOnly } from "../../../context/dataHooks";
 import InfoModal from "../../../InfoModal";
+import { useDataUpdate } from "../../../util/api/dataUpdate";
+import { Events } from "../../../util/api/events";
 import { Optional } from "../../../util/types/types";
 import { rem } from "../../../util/util";
 import FormattedDescription from "../../FormattedDescription/FormattedDescription";
@@ -36,7 +37,7 @@ export default function ObjectiveColumn({
   objective: Optional<Objective>;
   orderedFactionIds: FactionId[];
 }) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const viewOnly = useViewOnly();
 
   const { settings } = use(SettingsContext);
@@ -74,7 +75,7 @@ export default function ObjectiveColumn({
             <div
               className="icon clickable negative"
               onClick={() => {
-                hideObjectiveAsync(gameId, objective.id);
+                dataUpdate(Events.HideObjectiveEvent(objective.id));
               }}
             >
               &#x2715;

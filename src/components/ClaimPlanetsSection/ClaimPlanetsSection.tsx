@@ -10,14 +10,10 @@ import {
   useViewOnly,
 } from "../../context/dataHooks";
 import { useClaimedPlanetEvents } from "../../context/planetDataHooks";
-import {
-  addAttachmentAsync,
-  claimPlanetAsync,
-  removeAttachmentAsync,
-  unclaimPlanetAsync,
-} from "../../dynamic/api";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import { getAttachments } from "../../util/actionLog";
+import { useDataUpdate } from "../../util/api/dataUpdate";
+import { Events } from "../../util/api/events";
 import { applyPlanetAttachments } from "../../util/planets";
 import { rem } from "../../util/util";
 import GainRelic from "../Actions/GainRelic";
@@ -39,6 +35,7 @@ export default function ClaimPlanetsSection({
   hideWrapper?: boolean;
 }) {
   const claimedPlanetEvents = useClaimedPlanetEvents(factionId);
+  const dataUpdate = useDataUpdate();
   const gameId = useGameId();
   const options = useOptions();
   const planets = usePlanets();
@@ -107,7 +104,7 @@ export default function ClaimPlanetsSection({
                     }}
                     onClick={() => {
                       closeFn();
-                      claimPlanetAsync(gameId, factionId, planet.id);
+                      dataUpdate(Events.ClaimPlanetEvent(factionId, planet.id));
                     }}
                     disabled={viewOnly}
                   >
@@ -168,6 +165,7 @@ function ClaimedPlanetsSection({
 
 export function ClaimedPlanetRow({ event }: { event: ClaimPlanetEvent }) {
   const attachments = useAttachments();
+  const dataUpdate = useDataUpdate();
   const gameId = useGameId();
   const planets = usePlanets();
   const planet = planets[event.planet];
@@ -196,7 +194,7 @@ export function ClaimedPlanetRow({ event }: { event: ClaimPlanetEvent }) {
             factionId={event.faction}
             planet={adjustedPlanet}
             removePlanet={() =>
-              unclaimPlanetAsync(gameId, event.faction, event.planet)
+              dataUpdate(Events.UnclaimPlanetEvent(event.faction, event.planet))
             }
             prevOwner={event.prevOwner}
             opts={{
@@ -223,6 +221,7 @@ function AddAttachment({ event }: { event: ClaimPlanetEvent }) {
   const attachments = useAttachments();
   const currentTurn = useCurrentTurn();
   const dartAndTai = useLeader("Dart and Tai");
+  const dataUpdate = useDataUpdate();
   const gameId = useGameId();
   const planets = usePlanets();
 
@@ -291,10 +290,12 @@ function AddAttachment({ event }: { event: ClaimPlanetEvent }) {
         hasSkip={planetHasSkip}
         onSelect={(attachmentId, prevAttachment) => {
           if (prevAttachment) {
-            removeAttachmentAsync(gameId, event.planet, prevAttachment);
+            dataUpdate(
+              Events.RemoveAttachmentEvent(event.planet, prevAttachment),
+            );
           }
           if (attachmentId) {
-            addAttachmentAsync(gameId, event.planet, attachmentId);
+            dataUpdate(Events.AddAttachmentEvent(event.planet, attachmentId));
           }
         }}
         selectedAttachment={currentAttachment}

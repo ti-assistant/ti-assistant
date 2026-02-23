@@ -1,87 +1,15 @@
 import { useState } from "react";
 import { getFactionSystemNumber, updateMapString } from "../../util/map";
+import { Optional } from "../../util/types/types";
+import { Hex } from "../MapBuilder/hexGrid";
 import styles from "./GameMap.module.scss";
+import Nexus, { NexusPosition } from "./Nexus";
 import OverlayLegend from "./OverlayLegend";
 import { OverlayDetails } from "./PlanetOverlay";
 import SystemImage from "./SystemImage";
-import { Optional } from "../../util/types/types";
-import Nexus, { NexusPosition } from "./Nexus";
-
-interface Cube {
-  q: number;
-  r: number;
-  s: number;
-}
-
-interface Point {
-  x: number;
-  y: number;
-}
-
-function Cube(q: number, r: number, s: number): Cube {
-  return {
-    q,
-    r,
-    s,
-  };
-}
-
-function Point(x: number, y: number): Point {
-  return {
-    x,
-    y,
-  };
-}
 
 const HEX_RATIO = 2 / Math.sqrt(3);
 const HEX_OVERLAP = 0.2888;
-
-const CUBE_DIRECTIONS = [
-  Cube(0, -1, +1),
-  Cube(+1, -1, 0),
-  Cube(+1, 0, -1),
-  Cube(0, +1, -1),
-  Cube(-1, +1, 0),
-  Cube(-1, 0, +1),
-] as const;
-
-function cube_add(hex: Cube, vec: Cube) {
-  return Cube(hex.q + vec.q, hex.r + vec.r, hex.s + vec.s);
-}
-
-function cube_neighbor(cube: Cube, direction: Cube) {
-  return cube_add(cube, direction);
-}
-
-function cube_scale(hex: Cube, factor: number) {
-  return Cube(hex.q * factor, hex.r * factor, hex.s * factor);
-}
-
-function cubeRing(center: Cube, radius: number) {
-  const results: Cube[] = [];
-  let hex = cube_add(center, cube_scale(CUBE_DIRECTIONS[4], radius));
-  for (const direction of CUBE_DIRECTIONS) {
-    for (let j = 0; j < radius; j++) {
-      results.push(hex);
-      hex = cube_neighbor(hex, direction);
-    }
-  }
-  return results;
-}
-
-function cubeSpiral(center: Cube, radius: number) {
-  let results: Cube[] = [center];
-  for (let i = 1; i < radius; i++) {
-    results = results.concat(cubeRing(center, i));
-  }
-  return results;
-}
-
-function CubeToPixel(hex: Cube, size: number) {
-  const x = size * ((3 / 2) * hex.s);
-  const y = size * ((Math.sqrt(3) / 2) * hex.s + Math.sqrt(3) * hex.q);
-  return Point(x, y);
-}
 
 interface MapProps {
   defaultOverlay?: OverlayDetails;
@@ -130,7 +58,7 @@ export default function GameMap({
           mapString,
           mapStyle,
           factions.length,
-          expansions.includes("THUNDERS EDGE")
+          expansions.includes("THUNDERS EDGE"),
         )
       : mapString;
   let updatedSystemTiles = updatedMapString.split(" ");
@@ -155,7 +83,8 @@ export default function GameMap({
   const largestDimension = numRings * 2 - 1;
   const tilePercentage = 98 / largestDimension;
 
-  const spiral = cubeSpiral(Cube(0, 0, 0), numRings);
+  const center = new Hex(0, 0, 0);
+  const spiral = center.spiral(numRings);
 
   let ghosts = false;
   let rebellion = false;
@@ -363,8 +292,8 @@ export default function GameMap({
         />
       )}
       <div className={styles.MapBody}>
-        {spiral.map((cube, index) => {
-          const point = CubeToPixel(cube, tilePercentage * HEX_RATIO);
+        {spiral.map((hex, index) => {
+          const point = hex.toPixel(tilePercentage * HEX_RATIO);
           let tile = updatedSystemTiles[index];
           if (!tile || tile === "-1") {
             return null;
@@ -429,7 +358,7 @@ export default function GameMap({
             selectable={
               canSelectSystem
                 ? canSelectSystem(
-                    wormholeNexus === "PURGED" ? "81" : `82${wormholeNexus}`
+                    wormholeNexus === "PURGED" ? "81" : `82${wormholeNexus}`,
                   )
                 : false
             }
@@ -458,7 +387,7 @@ export default function GameMap({
 function getWormholeNexusHeight(
   mallice: string | SystemId,
   tilePercentage: number,
-  hexRatio: number
+  hexRatio: number,
 ) {
   if (mallice === "A" || mallice === "B") {
     return tilePercentage * hexRatio;
@@ -481,47 +410,47 @@ function getWormholeNexusSystemNum(mallice: string | SystemId) {
 
 function getFracturePosition(
   numFactions: number,
-  mapStyle: MapStyle
-): { left: Cube; center: Cube; right: Cube } {
+  mapStyle: MapStyle,
+): { left: Hex; center: Hex; right: Hex } {
   switch (numFactions) {
     case 3:
       return {
-        left: Cube(-1, 0, -3),
-        center: Cube(-2, 0, -1),
-        right: Cube(-4, 0, 3),
+        left: new Hex(-1, 0, -3),
+        center: new Hex(-2, 0, -1),
+        right: new Hex(-4, 0, 3),
       };
     case 4:
     case 5:
       return {
-        left: Cube(-1, 0, -3),
-        center: Cube(-3, 0, -1),
-        right: Cube(-4, 0, 3),
+        left: new Hex(-1, 0, -3),
+        center: new Hex(-3, 0, -1),
+        right: new Hex(-4, 0, 3),
       };
     case 6:
       if (mapStyle === "large") {
         return {
-          left: Cube(-2, 0, -3),
-          center: Cube(-4, 0, -1),
-          right: Cube(-5, 0, 3),
+          left: new Hex(-2, 0, -3),
+          center: new Hex(-4, 0, -1),
+          right: new Hex(-5, 0, 3),
         };
       }
       return {
-        left: Cube(-1, 0, -3),
-        center: Cube(-3, 0, -1),
-        right: Cube(-4, 0, 3),
+        left: new Hex(-1, 0, -3),
+        center: new Hex(-3, 0, -1),
+        right: new Hex(-4, 0, 3),
       };
     case 7:
     case 8:
       return {
-        left: Cube(-2, 0, -3),
-        center: Cube(-4, 0, -1),
-        right: Cube(-5, 0, 3),
+        left: new Hex(-2, 0, -3),
+        center: new Hex(-4, 0, -1),
+        right: new Hex(-5, 0, 3),
       };
   }
   return {
-    left: Cube(-1, 0, -3),
-    center: Cube(-3, 0, -1),
-    right: Cube(-4, 0, 3),
+    left: new Hex(-1, 0, -3),
+    center: new Hex(-3, 0, -1),
+    right: new Hex(-4, 0, 3),
   };
 }
 
@@ -550,9 +479,9 @@ function Fracture({
   const threeTileWidth = tilePercentage * (HEX_RATIO * 3 - HEX_OVERLAP * 2);
   const tileHeight = tilePercentage * 1.5;
 
-  const fracture = CubeToPixel(position.left, tilePercentage * HEX_RATIO);
-  const fractureMid = CubeToPixel(position.center, tilePercentage * HEX_RATIO);
-  const fractureBot = CubeToPixel(position.right, tilePercentage * HEX_RATIO);
+  const fracture = position.left.toPixel(tilePercentage * HEX_RATIO);
+  const fractureMid = position.center.toPixel(tilePercentage * HEX_RATIO);
+  const fractureBot = position.right.toPixel(tilePercentage * HEX_RATIO);
 
   const leftShift = (tileHeight * HEX_RATIO) / 2;
   const threeTileLeftShift = tileHeight * HEX_RATIO;

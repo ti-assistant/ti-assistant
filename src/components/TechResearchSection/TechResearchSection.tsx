@@ -1,15 +1,11 @@
 import { CSSProperties } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import {
-  useCurrentTurn,
-  useGameId,
-  useTechs,
-  useViewOnly,
-} from "../../context/dataHooks";
+import { useCurrentTurn, useTechs, useViewOnly } from "../../context/dataHooks";
 import { useFactions } from "../../context/factionDataHooks";
-import { addTechAsync, removeTechAsync } from "../../dynamic/api";
 import { TechRow } from "../../TechRow";
 import { getAddTechEvents, getResearchedTechs } from "../../util/actionLog";
+import { useDataUpdate } from "../../util/api/dataUpdate";
+import { Events } from "../../util/api/events";
 import { hasTech } from "../../util/api/techs";
 import { ActionLog, Optional } from "../../util/types/types";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
@@ -21,7 +17,7 @@ function getResearchableTechs(
   techs: Partial<Record<TechId, Tech>>,
   faction: Optional<Faction>,
   factions: Partial<Record<FactionId, Faction>>,
-  filter: Optional<(tech: Tech) => boolean>
+  filter: Optional<(tech: Tech) => boolean>,
 ) {
   if (!faction) {
     return [];
@@ -89,9 +85,9 @@ export default function TechResearchSection({
   style?: CSSProperties;
 }) {
   const currentTurn = useCurrentTurn();
+  const dataUpdate = useDataUpdate();
   const factions = useFactions();
   const faction = factions[factionId];
-  const gameId = useGameId();
   const intl = useIntl();
   const techs = useTechs();
   const viewOnly = useViewOnly();
@@ -101,7 +97,7 @@ export default function TechResearchSection({
     techs,
     faction,
     factions,
-    filter
+    filter,
   );
   const researchedTechs = getResearchedTechs(currentTurn, factionId).filter(
     (techId) => {
@@ -113,7 +109,7 @@ export default function TechResearchSection({
         return false;
       }
       return filter(tech);
-    }
+    },
   );
   const addTechEvents = getAddTechEvents(currentTurn);
 
@@ -154,13 +150,14 @@ export default function TechResearchSection({
                   additionalFactions = [extraFaction.id];
                 }
               }
-              addTechAsync(
-                gameId,
-                factionId,
-                tech.id,
-                additionalFactions,
-                false,
-                shareKnowledge
+              dataUpdate(
+                Events.AddTechEvent(
+                  factionId,
+                  tech.id,
+                  additionalFactions,
+                  false,
+                  shareKnowledge,
+                ),
               );
             }}
           />
@@ -190,7 +187,7 @@ function ResearchedTechsSection({
   hideWrapper?: boolean;
   addTechEvents?: ActionLogEntry<AddTechData>[];
 }) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
 
   if (researchedTechs.length === 0) {
     return null;
@@ -214,13 +211,15 @@ function ResearchedTechsSection({
                   }
                   return result;
                 },
-                { techCount: 0, hadTech: true }
+                { techCount: 0, hadTech: true },
               );
               let additionalFactions: Optional<FactionId[]>;
               if (techCount === 1 && !hadTech) {
                 additionalFactions = ["Deepwrought Scholarate"];
               }
-              removeTechAsync(gameId, factionId, techId, additionalFactions);
+              dataUpdate(
+                Events.RemoveTechEvent(factionId, techId, additionalFactions),
+              );
             }}
             researchAgreement={factionId === "Universities of Jol-Nar"}
             opts={{

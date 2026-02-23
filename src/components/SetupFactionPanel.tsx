@@ -5,6 +5,7 @@ import { ModalContext } from "../context/contexts";
 import { buildBaseLeaders, buildBaseTechs } from "../data/GameData";
 import FlipSVG from "../icons/ui/Flip";
 import SynergySVG from "../icons/ui/Synergy";
+import FullScreenModal from "../modals/FullScreenModal";
 import { leaderTypeString } from "../util/strings";
 import { sortTechsByPreReqAndExpansion } from "../util/techs";
 import { Optional } from "../util/types/types";
@@ -19,7 +20,6 @@ import TechIcon from "./TechIcon/TechIcon";
 import UnitIcon from "./Units/Icons";
 import UnitType from "./Units/Types";
 import UnitStats from "./UnitStats/UnitStats";
-import FullScreenModal from "../modals/FullScreenModal";
 
 function AbilitySection({
   leftLabel,
@@ -190,28 +190,6 @@ function FactionPanelContent({
                             factionId={leader.subFaction}
                             size={16}
                           />
-                        ) : null}
-                        {gameId && leader.type !== "AGENT" ? (
-                          <div
-                            className="flexRow"
-                            style={{
-                              gap: rem(4),
-                              cursor: "pointer",
-                            }}
-                            onClick={() => {
-                              if (!gameId) {
-                                return;
-                              }
-                              // updateLeaderStateAsync(
-                              //   gameId,
-                              //   factionId,
-                              //   leader.type,
-                              //   "locked"
-                              // );
-                            }}
-                          >
-                            &#128275;
-                          </div>
                         ) : null}
                       </div>
                     );

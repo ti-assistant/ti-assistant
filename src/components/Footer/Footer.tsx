@@ -7,23 +7,22 @@ import { FactionSummary } from "../../FactionSummary";
 import { ModalContext } from "../../context/contexts";
 import {
   useAllPlanets,
-  useGameId,
   useOptions,
   usePlanets,
   useStrategyCards,
   useViewOnly,
 } from "../../context/dataHooks";
-import { useFactions } from "../../context/factionDataHooks";
+import { useFactionColors, useFactions } from "../../context/factionDataHooks";
 import { useOrderedFactionIds } from "../../context/gameDataHooks";
 import { usePhase, useSpeaker, useTyrant } from "../../context/stateDataHooks";
-import { setSpeakerAsync, setTyrantAsync } from "../../dynamic/api";
 import MapMenuSVG from "../../icons/ui/MapMenu";
 import ObjectivesMenuSVG from "../../icons/ui/ObjectivesMenu";
 import PlanetMenuSVG from "../../icons/ui/PlanetMenu";
 import PromissoryMenuSVG from "../../icons/ui/PromissoryMenu";
 import RelicMenuSVG from "../../icons/ui/RelicMenu";
 import ThundersEdgeMenuSVG from "../../icons/ui/ThundersEdgeMenu";
-import { getColorForFaction } from "../../util/factions";
+import { useDataUpdate } from "../../util/api/dataUpdate";
+import { Events } from "../../util/api/events";
 import { getWormholeNexusSystemNumber } from "../../util/map";
 import { getMapString } from "../../util/options";
 import { fracturePlanetsOwned } from "../../util/planets";
@@ -112,9 +111,10 @@ function getNumButtons(
 }
 
 export default function Footer() {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const options = useOptions();
   const orderedFactionIds = useOrderedFactionIds("MAP");
+  const factionColors = useFactionColors();
   const phase = usePhase();
   const speaker = useSpeaker();
   const tyrant = useTyrant();
@@ -213,7 +213,7 @@ export default function Footer() {
           <div className="flexRow">
             <Strings.Speaker />:
             <FactionSelectRadialMenu
-              borderColor={getColorForFaction(speaker)}
+              borderColor={factionColors[speaker]}
               selectedFaction={speaker}
               factions={orderedFactionIds}
               invalidFactions={[speaker]}
@@ -222,7 +222,7 @@ export default function Footer() {
                 if (!factionId) {
                   return;
                 }
-                setSpeakerAsync(gameId, factionId);
+                dataUpdate(Events.SetSpeakerEvent(factionId));
               }}
               viewOnly={viewOnly}
             />
@@ -232,7 +232,7 @@ export default function Footer() {
           <div className="flexRow">
             <Strings.Tyrant />
             <FactionSelectRadialMenu
-              borderColor={getColorForFaction(tyrant)}
+              borderColor={factionColors[tyrant]}
               selectedFaction={tyrant}
               factions={orderedFactionIds}
               invalidFactions={[speaker, tyrant]}
@@ -241,7 +241,7 @@ export default function Footer() {
                 if (!factionId) {
                   return;
                 }
-                setTyrantAsync(gameId, factionId);
+                dataUpdate(Events.SetTyrantEvent(factionId));
               }}
               viewOnly={viewOnly}
             />
@@ -369,7 +369,7 @@ export default function Footer() {
         {!shouldBlockSpeakerUpdates() ? (
           <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
             <FactionSelectRadialMenu
-              borderColor={getColorForFaction(speaker)}
+              borderColor={factionColors[speaker]}
               selectedFaction={speaker}
               factions={orderedFactionIds}
               invalidFactions={[speaker]}
@@ -378,7 +378,7 @@ export default function Footer() {
                 if (!factionId) {
                   return;
                 }
-                setSpeakerAsync(gameId, factionId);
+                dataUpdate(Events.SetSpeakerEvent(factionId));
               }}
               viewOnly={viewOnly}
             />
@@ -560,7 +560,7 @@ export default function Footer() {
         {tyrant ? (
           <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
             <FactionSelectRadialMenu
-              borderColor={getColorForFaction(tyrant)}
+              borderColor={factionColors[tyrant]}
               selectedFaction={tyrant}
               factions={orderedFactionIds}
               invalidFactions={[speaker, tyrant]}
@@ -569,7 +569,7 @@ export default function Footer() {
                 if (!factionId) {
                   return;
                 }
-                setTyrantAsync(gameId, factionId);
+                dataUpdate(Events.SetTyrantEvent(factionId));
               }}
               viewOnly={viewOnly}
             />
@@ -596,9 +596,7 @@ export default function Footer() {
                 "Loading..."
               )
             }
-            color={
-              selectedFaction ? getColorForFaction(selectedFaction) : undefined
-            }
+            color={selectedFaction ? factionColors[selectedFaction] : undefined}
             style={{ width: "fit-content" }}
           >
             {selectedFaction ? (

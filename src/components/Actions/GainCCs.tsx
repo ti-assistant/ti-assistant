@@ -1,13 +1,13 @@
 import { FormattedMessage } from "react-intl";
 import {
   useCurrentTurn,
-  useGameId,
   useOptions,
   useViewOnly,
 } from "../../context/dataHooks";
 import { useFaction } from "../../context/factionDataHooks";
-import { manualCCUpdateAsync } from "../../dynamic/api";
 import { getGainedCCs } from "../../util/actionLog";
+import { useDataUpdate } from "../../util/api/dataUpdate";
+import { Events } from "../../util/api/events";
 import NumberInput from "../NumberInput/NumberInput";
 
 export default function GainCommandTokens({
@@ -17,7 +17,7 @@ export default function GainCommandTokens({
 }) {
   const currentTurn = useCurrentTurn();
   const faction = useFaction(factionId);
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const options = useOptions();
   const viewOnly = useViewOnly();
 
@@ -42,7 +42,9 @@ export default function GainCommandTokens({
               key={factionId}
               value={gainedCCs}
               onChange={(value) => {
-                manualCCUpdateAsync(gameId, factionId, value - gainedCCs);
+                dataUpdate(
+                  Events.ManualCCUpdateEvent(factionId, value - gainedCCs),
+                );
               }}
               maxValue={16 - faction.commandCounters + gainedCCs}
               minValue={0}

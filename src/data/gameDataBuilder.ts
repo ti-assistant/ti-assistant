@@ -33,6 +33,9 @@ export function buildCompleteGameData(
     upgrades: buildCompleteUpgrades(baseData, storedGameData),
 
     allPlanets: buildCompletePlanets(baseData, storedGameData, true),
+
+    gameId: storedGameData.gameId,
+    viewOnly: storedGameData.viewOnly,
   };
 
   return completeGameData;

@@ -262,6 +262,7 @@ export const DISCORDANT_STARS_SYSTEMS: Record<
     id: 4260,
     planets: ["Fakrenn"],
     type: "BLUE",
+    wormholes: ["ALPHA"],
   },
   4261: {
     expansion: "DISCORDANT STARS",
@@ -319,9 +320,27 @@ export const DISCORDANT_STARS_SYSTEMS: Record<
   },
   4270: EMPTY_RED_SYSTEM(4270, "DISCORDANT STARS"),
   4271: EMPTY_RED_SYSTEM(4271, "DISCORDANT STARS"),
-  4272: EMPTY_RED_SYSTEM(4272, "DISCORDANT STARS"),
+  4272: {
+    expansion: "DISCORDANT STARS",
+    id: 4272,
+    planets: [],
+    type: "RED",
+    wormholes: ["BETA"],
+  },
   4273: EMPTY_RED_SYSTEM(4273, "DISCORDANT STARS"),
   4274: EMPTY_RED_SYSTEM(4274, "DISCORDANT STARS"),
-  4275: EMPTY_RED_SYSTEM(4275, "DISCORDANT STARS"),
-  4276: EMPTY_RED_SYSTEM(4276, "DISCORDANT STARS"),
+  4275: {
+    expansion: "DISCORDANT STARS",
+    id: 4275,
+    planets: [],
+    type: "RED",
+    wormholes: ["GAMMA"],
+  },
+  4276: {
+    expansion: "DISCORDANT STARS",
+    id: 4275,
+    planets: [],
+    type: "RED",
+    wormholes: ["ALPHA", "BETA"],
+  },
 };

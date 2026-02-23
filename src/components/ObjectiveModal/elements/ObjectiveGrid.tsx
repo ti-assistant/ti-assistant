@@ -1,44 +1,33 @@
 import { use } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import objectives from "../../../../server/data/base/objectives";
 import { SettingsContext } from "../../../context/contexts";
+import { useOptions, useViewOnly } from "../../../context/dataHooks";
+import { useFactionColors } from "../../../context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../context/gameDataHooks";
-import {
-  revealObjectiveAsync,
-  scoreObjectiveAsync,
-  setObjectivePointsAsync,
-  unscoreObjectiveAsync,
-} from "../../../dynamic/api";
-import { BLACK_BORDER_GLOW } from "../../../util/borderGlow";
-import { getColorForFaction } from "../../../util/factions";
-import { objectiveTypeString } from "../../../util/strings";
-import { Optional } from "../../../util/types/types";
-import { rem } from "../../../util/util";
-import Chip from "../../Chip/Chip";
-import FactionComponents from "../../FactionComponents/FactionComponents";
-import FactionIcon from "../../FactionIcon/FactionIcon";
-import FactionSelectRadialMenu from "../../FactionSelectRadialMenu/FactionSelectRadialMenu";
-import LabeledDiv from "../../LabeledDiv/LabeledDiv";
-import ObjectiveRow from "../../ObjectiveRow/ObjectiveRow";
-import ObjectiveSelectHoverMenu from "../../ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
-import CustodiansToken from "./CustodiansToken";
-import ObjectiveGridSection from "./ObjectiveGridSection";
-import ScorableFactionIcon from "./ScorableFactionIcon";
-import SecretSection from "./SecretsSection";
-import Styx from "./Styx";
-import { useGameId, useOptions, useViewOnly } from "../../../context/dataHooks";
 import {
   useObjectiveRevealOrder,
   useObjectives,
 } from "../../../context/objectiveDataHooks";
-import styles from "../ObjectivePanel.module.scss";
+import { useDataUpdate } from "../../../util/api/dataUpdate";
+import { Events } from "../../../util/api/events";
+import { BLACK_BORDER_GLOW } from "../../../util/borderGlow";
+import { objectiveTypeString } from "../../../util/strings";
+import { rem } from "../../../util/util";
+import Chip from "../../Chip/Chip";
+import FactionComponents from "../../FactionComponents/FactionComponents";
+import FactionIcon from "../../FactionIcon/FactionIcon";
+import LabeledDiv from "../../LabeledDiv/LabeledDiv";
+import ObjectiveSelectHoverMenu from "../../ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
+import ObjectiveGridSection from "./ObjectiveGridSection";
+import SecretSection from "./SecretsSection";
 
 export default function ObjectiveGrid({ asModal }: { asModal?: boolean }) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const intl = useIntl();
   const objectives = useObjectives();
   const options = useOptions();
   const orderedFactionIds = useOrderedFactionIds("ALLIANCE");
+  const factionColors = useFactionColors();
   const revealOrder = useObjectiveRevealOrder();
   const viewOnly = useViewOnly();
 
@@ -122,8 +111,6 @@ export default function ObjectiveGrid({ asModal }: { asModal?: boolean }) {
     (obj) => !obj.selected,
   );
 
-  const supportForTheThrone = objectives["Support for the Throne"];
-
   return (
     <div
       style={{
@@ -177,7 +164,7 @@ export default function ObjectiveGrid({ asModal }: { asModal?: boolean }) {
         </Chip>
       </div>
       {orderedFactionIds.map((name, index) => {
-        const factionColor = getColorForFaction(name);
+        const factionColor = factionColors[name];
         return (
           <div
             key={name}
@@ -294,14 +281,18 @@ export default function ObjectiveGrid({ asModal }: { asModal?: boolean }) {
           >
             <div className="flexRow">
               <ObjectiveSelectHoverMenu
-                action={revealObjectiveAsync}
+                action={(objectiveId) =>
+                  dataUpdate(Events.RevealObjectiveEvent(objectiveId))
+                }
                 label={objectiveTypeString("STAGE ONE", intl)}
                 objectives={remainingStageOneObjectives}
                 fontSize={rem(14)}
                 buttonStyle={{ fontSize: rem(14) }}
               />
               <ObjectiveSelectHoverMenu
-                action={revealObjectiveAsync}
+                action={(objectiveId) =>
+                  dataUpdate(Events.RevealObjectiveEvent(objectiveId))
+                }
                 label={objectiveTypeString("STAGE TWO", intl)}
                 objectives={remainingStageTwoObjectives}
                 fontSize={rem(14)}
@@ -309,7 +300,9 @@ export default function ObjectiveGrid({ asModal }: { asModal?: boolean }) {
               />
             </div>
             <ObjectiveSelectHoverMenu
-              action={revealObjectiveAsync}
+              action={(objectiveId) =>
+                dataUpdate(Events.RevealObjectiveEvent(objectiveId))
+              }
               label={"Secret (as Public)"}
               objectives={remainingSecretObjectives}
               fontSize={rem(14)}

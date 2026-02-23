@@ -98,6 +98,7 @@ export default function getProphecyOfKingsSystems(): Record<
       id: 64,
       planets: ["Atlas"],
       type: "BLUE",
+      wormholes: ["BETA"],
     },
     65: {
       expansion: "POK",
@@ -173,7 +174,13 @@ export default function getProphecyOfKingsSystems(): Record<
     },
     77: EMPTY_RED_SYSTEM(77, "POK"),
     78: EMPTY_RED_SYSTEM(78, "POK"),
-    79: EMPTY_RED_SYSTEM(79, "POK"),
+    79: {
+      expansion: "POK",
+      id: 79,
+      planets: [],
+      type: "RED",
+      wormholes: ["ALPHA"],
+    },
     80: EMPTY_RED_SYSTEM(80, "POK"),
     81: EMPTY_RED_SYSTEM(81, "POK"),
     "82A": {
@@ -181,30 +188,322 @@ export default function getProphecyOfKingsSystems(): Record<
       id: "82A",
       planets: ["Mallice"],
       type: "NEXUS",
+      wormholes: ["GAMMA"],
     },
     "82B": {
       expansion: "POK",
       id: "82B",
       planets: ["Mallice"],
       type: "NEXUS",
+      wormholes: ["ALPHA", "BETA", "GAMMA"],
     },
-    "83A": HYPERLANE_SYSTEM("83A"),
-    "83B": HYPERLANE_SYSTEM("83B"),
-    "84A": HYPERLANE_SYSTEM("84A"),
-    "84B": HYPERLANE_SYSTEM("84B"),
-    "85A": HYPERLANE_SYSTEM("85A"),
-    "85B": HYPERLANE_SYSTEM("85B"),
-    "86A": HYPERLANE_SYSTEM("86A"),
-    "86B": HYPERLANE_SYSTEM("86B"),
-    "87A": HYPERLANE_SYSTEM("87A"),
-    "87B": HYPERLANE_SYSTEM("87B"),
-    "88A": HYPERLANE_SYSTEM("88A"),
-    "88B": HYPERLANE_SYSTEM("88B"),
-    "89A": HYPERLANE_SYSTEM("89A"),
-    "89B": HYPERLANE_SYSTEM("89B"),
-    "90A": HYPERLANE_SYSTEM("90A"),
-    "90B": HYPERLANE_SYSTEM("90B"),
-    "91A": HYPERLANE_SYSTEM("91A"),
-    "91B": HYPERLANE_SYSTEM("91B"),
+    "83A": {
+      expansion: "POK",
+      id: "83A",
+      planets: [],
+      type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "BOTTOM LEFT",
+          b: "TOP RIGHT",
+        },
+      ],
+    },
+    "83B": {
+      expansion: "POK",
+      id: "83B",
+      planets: [],
+      type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "TOP LEFT",
+          b: "DOWN",
+        },
+        {
+          a: "UP",
+          b: "DOWN",
+        },
+        {
+          a: "UP",
+          b: "BOTTOM RIGHT",
+        },
+      ],
+    },
+    "84A": {
+      expansion: "POK",
+      id: "84A",
+      planets: [],
+      type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "TOP LEFT",
+          b: "BOTTOM RIGHT",
+        },
+      ],
+    },
+    "84B": {
+      expansion: "POK",
+      id: "84B",
+      planets: [],
+      type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "BOTTOM LEFT",
+          b: "UP",
+        },
+        {
+          a: "UP",
+          b: "DOWN",
+        },
+        {
+          a: "DOWN",
+          b: "TOP RIGHT",
+        },
+      ],
+    },
+    "85A": {
+      expansion: "POK",
+      id: "85A",
+      planets: [],
+      type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "TOP LEFT",
+          b: "TOP RIGHT",
+        },
+      ],
+    },
+    "85B": {
+      expansion: "POK",
+      id: "85B",
+      planets: [],
+      type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "TOP LEFT",
+          b: "DOWN",
+        },
+        {
+          a: "UP",
+          b: "DOWN",
+        },
+        {
+          a: "UP",
+          b: "BOTTOM RIGHT",
+        },
+      ],
+    },
+    "86A": {
+      expansion: "POK",
+      id: "86A",
+      planets: [],
+      type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "TOP LEFT",
+          b: "TOP RIGHT",
+        },
+      ],
+    },
+    "86B": {
+      expansion: "POK",
+      id: "86B",
+      planets: [],
+      type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "BOTTOM LEFT",
+          b: "UP",
+        },
+        {
+          a: "UP",
+          b: "DOWN",
+        },
+        {
+          a: "DOWN",
+          b: "TOP RIGHT",
+        },
+      ],
+    },
+    "87A": {
+      expansion: "POK",
+      id: "87A",
+      planets: [],
+      type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "BOTTOM LEFT",
+          b: "BOTTOM RIGHT",
+        },
+        {
+          a: "TOP LEFT",
+          b: "BOTTOM RIGHT",
+        },
+        {
+          a: "UP",
+          b: "BOTTOM RIGHT",
+        },
+      ],
+    },
+    "87B": {
+      expansion: "POK",
+      id: "87B",
+      planets: [],
+      type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "UP",
+          b: "DOWN",
+        },
+        {
+          a: "UP",
+          b: "BOTTOM RIGHT",
+        },
+      ],
+    },
+    "88A": {
+      expansion: "POK",
+      id: "88A",
+      planets: [],
+      type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "BOTTOM LEFT",
+          b: "UP",
+        },
+        {
+          a: "BOTTOM LEFT",
+          b: "TOP RIGHT",
+        },
+        {
+          a: "BOTTOM LEFT",
+          b: "BOTTOM RIGHT",
+        },
+      ],
+    },
+    "88B": {
+      expansion: "POK",
+      id: "88B",
+      planets: [],
+      type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "TOP LEFT",
+          b: "DOWN",
+        },
+        {
+          a: "UP",
+          b: "DOWN",
+        },
+        {
+          a: "UP",
+          b: "BOTTOM RIGHT",
+        },
+      ],
+    },
+    "89A": {
+      expansion: "POK",
+      id: "89A",
+      planets: [],
+      type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "BOTTOM LEFT",
+          b: "UP",
+        },
+        {
+          a: "UP",
+          b: "BOTTOM RIGHT",
+        },
+        {
+          a: "BOTTOM LEFT",
+          b: "BOTTOM RIGHT",
+        },
+      ],
+    },
+    "89B": {
+      expansion: "POK",
+      id: "89B",
+      planets: [],
+      type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "BOTTOM LEFT",
+          b: "UP",
+        },
+        {
+          a: "UP",
+          b: "DOWN",
+        },
+      ],
+    },
+    "90A": {
+      expansion: "POK",
+      id: "90A",
+      planets: [],
+      type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "BOTTOM LEFT",
+          b: "BOTTOM RIGHT",
+        },
+        {
+          a: "TOP LEFT",
+          b: "TOP RIGHT",
+        },
+      ],
+    },
+    "90B": {
+      expansion: "POK",
+      id: "90B",
+      planets: [],
+      type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "BOTTOM LEFT",
+          b: "UP",
+        },
+        {
+          a: "UP",
+          b: "DOWN",
+        },
+      ],
+    },
+    "91A": {
+      expansion: "POK",
+      id: "91A",
+      planets: [],
+      type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "BOTTOM LEFT",
+          b: "UP",
+        },
+        {
+          a: "UP",
+          b: "DOWN",
+        },
+        {
+          a: "DOWN",
+          b: "TOP RIGHT",
+        },
+      ],
+    },
+    "91B": {
+      expansion: "POK",
+      id: "91B",
+      planets: [],
+      type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "UP",
+          b: "DOWN",
+        },
+        {
+          a: "UP",
+          b: "BOTTOM RIGHT",
+        },
+      ],
+    },
   };
 }

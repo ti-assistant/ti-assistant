@@ -7,17 +7,10 @@ import {
   usePlanet,
   useViewOnly,
 } from "../../context/dataHooks";
-import {
-  claimPlanetAsync,
-  commitToExpeditionAsync,
-  unclaimPlanetAsync,
-} from "../../dynamic/api";
-import {
-  getClaimedPlanets,
-  getLatestExpedition,
-  getNewOwner,
-} from "../../util/actionLog";
+import { getLatestExpedition, getNewOwner } from "../../util/actionLog";
 import { getSelectedActionFromLog } from "../../util/api/data";
+import { useDataUpdate } from "../../util/api/dataUpdate";
+import { Events } from "../../util/api/events";
 import { objectEntries, objectKeys, rem } from "../../util/util";
 import ExpeditionSelectRadialMenu from "../ExpeditionSelectRadialMenu/ExpeditionSelectRadialMenu";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
@@ -48,6 +41,7 @@ export default function ExpeditionSelector({
   factionId: FactionId;
 }) {
   const currentTurn = useCurrentTurn();
+  const dataUpdate = useDataUpdate();
   const expedition = useExpedition();
   const gameId = useGameId();
   const latestExpedition = getLatestExpedition(currentTurn, factionId);
@@ -95,10 +89,14 @@ export default function ExpeditionSelector({
           ]}
           onSelect={(expeditionId, prevExpedition) => {
             if (prevExpedition) {
-              commitToExpeditionAsync(gameId, prevExpedition, undefined);
+              dataUpdate(
+                Events.CommitToExpeditionEvent(prevExpedition, undefined),
+              );
             }
             if (expeditionId)
-              commitToExpeditionAsync(gameId, expeditionId, factionId);
+              dataUpdate(
+                Events.CommitToExpeditionEvent(expeditionId, factionId),
+              );
           }}
           size={40}
         />
@@ -114,9 +112,11 @@ export default function ExpeditionSelector({
             factions={getPotentialOwners(expedition)}
             onSelect={(faction, prevFaction) => {
               if (faction) {
-                claimPlanetAsync(gameId, faction, "Thunder's Edge");
+                dataUpdate(Events.ClaimPlanetEvent(faction, "Thunder's Edge"));
               } else if (prevFaction) {
-                unclaimPlanetAsync(gameId, prevFaction, "Thunder's Edge");
+                dataUpdate(
+                  Events.UnclaimPlanetEvent(prevFaction, "Thunder's Edge"),
+                );
               }
             }}
             selectedFaction={newOwner}

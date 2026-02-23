@@ -17,22 +17,17 @@ export class AdvancePhaseHandler implements Handler {
   }
 
   validate(): boolean {
-    const cache = createIntlCache();
-    const intl = createIntl({ locale: "en" }, cache);
     switch (this.gameData.state.phase) {
       case "STRATEGY": {
-        const strategyCards = buildStrategyCards(this.gameData, intl);
-        const factions = buildFactions(this.gameData, intl);
-        const numFactions = Object.keys(factions).length;
-        const numPickedCards = Object.values(strategyCards).reduce(
-          (numCards, card) => {
-            if (card.faction) {
-              return numCards + 1;
-            }
-            return numCards;
-          },
-          0,
-        );
+        const numFactions = Object.keys(this.gameData.factions).length;
+        const numPickedCards = Object.values(
+          this.gameData.strategycards ?? {},
+        ).reduce((numCards, card) => {
+          if (card.faction) {
+            return numCards + 1;
+          }
+          return numCards;
+        }, 0);
         if (numFactions < 5) {
           return numFactions * 2 === numPickedCards;
         }

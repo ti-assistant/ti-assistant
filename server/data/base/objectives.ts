@@ -915,12 +915,15 @@ export default function getBaseObjectives(
       type: "STAGE TWO",
     },
     "Unveil Flagship": {
-      description: intl.formatMessage({
-        id: "Objectives.Unveil Flagship.Description",
-        description: "Description for Objective: Unveil Flagship",
-        defaultMessage:
-          "Win a space combat in a system that contains your flagship. You cannot score this objective if your flagship is destroyed in the combat.",
-      }),
+      description: intl.formatMessage(
+        {
+          id: "Objectives.Unveil Flagship.Description",
+          description: "Description for Objective: Unveil Flagship",
+          defaultMessage:
+            "Win a space combat in a system that contains your flagship. You cannot score this objective if your flagship is destroyed in the combat.",
+        },
+        { br: "\n\n" },
+      ),
       expansion: "BASE",
       id: "Unveil Flagship",
       name: intl.formatMessage({

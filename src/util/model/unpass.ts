@@ -1,10 +1,8 @@
-import { createIntl, createIntlCache } from "react-intl";
-import { buildFactions, buildStrategyCards } from "../../data/GameData";
-import { getSelectedAction } from "../api/data";
-import { getOnDeckFaction } from "../helpers";
-
 export class UnpassHandler implements Handler {
-  constructor(public gameData: StoredGameData, public data: UnpassData) {}
+  constructor(
+    public gameData: StoredGameData,
+    public data: UnpassData,
+  ) {}
 
   validate(): boolean {
     return true;
@@ -38,7 +36,10 @@ export class UnpassHandler implements Handler {
 }
 
 export class PassHandler implements Handler {
-  constructor(public gameData: StoredGameData, public data: PassData) {}
+  constructor(
+    public gameData: StoredGameData,
+    public data: PassData,
+  ) {}
 
   validate(): boolean {
     return true;

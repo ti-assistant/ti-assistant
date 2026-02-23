@@ -1,15 +1,14 @@
 import { use } from "react";
 import { FormattedMessage } from "react-intl";
 import { ModalContext } from "../../../context/contexts";
-import { useGameId, useViewOnly } from "../../../context/dataHooks";
+import { useViewOnly } from "../../../context/dataHooks";
 import {
   useObjectives,
   useObjectivesOfType,
 } from "../../../context/objectiveDataHooks";
-import {
-  scoreObjectiveAsync,
-  unscoreObjectiveAsync,
-} from "../../../dynamic/api";
+import ObjectivesMenuSVG from "../../../icons/ui/ObjectivesMenu";
+import { useDataUpdate } from "../../../util/api/dataUpdate";
+import { Events } from "../../../util/api/events";
 import { rem } from "../../../util/util";
 import FactionComponents from "../../FactionComponents/FactionComponents";
 import FactionIcon from "../../FactionIcon/FactionIcon";
@@ -17,7 +16,6 @@ import { ModalContent } from "../../Modal/Modal";
 import ObjectiveRow from "../../ObjectiveRow/ObjectiveRow";
 import ObjectiveSelectHoverMenu from "../../ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import GridHeader from "./GridHeader";
-import ObjectivesMenuSVG from "../../../icons/ui/ObjectivesMenu";
 
 export default function SecretSection({
   numRows,
@@ -134,7 +132,7 @@ export default function SecretSection({
                   }
                 >
                   <SecretModalContent factionId={factionId} />
-                </ModalContent>
+                </ModalContent>,
               );
             }}
           >
@@ -172,16 +170,16 @@ export default function SecretSection({
 }
 
 function SecretModalContent({ factionId }: { factionId: FactionId }) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const objectives = useObjectives();
   const viewOnly = useViewOnly();
 
   const secrets = Object.values(objectives ?? {}).filter(
-    (objective) => objective.type === "SECRET"
+    (objective) => objective.type === "SECRET",
   );
 
   const scoredSecrets = secrets.filter((secret) =>
-    (secret.scorers ?? []).includes(factionId)
+    (secret.scorers ?? []).includes(factionId),
   );
   const availableSecrets = secrets
     .filter((secret) => (secret.scorers ?? []).length === 0)
@@ -211,7 +209,9 @@ function SecretModalContent({ factionId }: { factionId: FactionId }) {
               viewOnly
                 ? undefined
                 : () => {
-                    unscoreObjectiveAsync(gameId, factionId, secret.id);
+                    dataUpdate(
+                      Events.UnscoreObjectiveEvent(factionId, secret.id),
+                    );
                   }
             }
           />
@@ -223,8 +223,8 @@ function SecretModalContent({ factionId }: { factionId: FactionId }) {
       >
         {scoredSecrets.length < 6 && !viewOnly ? (
           <ObjectiveSelectHoverMenu
-            action={(gameId, objectiveId) =>
-              scoreObjectiveAsync(gameId, factionId, objectiveId)
+            action={(objectiveId) =>
+              dataUpdate(Events.ScoreObjectiveEvent(factionId, objectiveId))
             }
             fontSize={rem(14)}
             label={

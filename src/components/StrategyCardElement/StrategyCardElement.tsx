@@ -1,6 +1,6 @@
 import React, { CSSProperties, PropsWithChildren } from "react";
+import { useFactionColor } from "../../context/factionDataHooks";
 import TradeGoodSVG from "../../icons/ui/TradeGood";
-import { getColorForFaction } from "../../util/factions";
 import { rem } from "../../util/util";
 import FactionCircle from "../FactionCircle/FactionCircle";
 import FactionTile from "../FactionTile/FactionTile";
@@ -27,6 +27,7 @@ export function StrategyCardElement({
 }: PropsWithChildren<StrategyCardProps>) {
   const color = active ? card.color : "#555";
   const textColor = active ? "#eee" : "#555";
+  const factionColor = useFactionColor(card.faction ?? "Vuil'raith Cabal");
 
   const strategyCardElementCSS: StrategyCardElementCSS = {
     "--color": color,
@@ -66,7 +67,7 @@ export function StrategyCardElement({
           <div className={styles.FactionCircle}>
             <FactionCircle
               factionId={card.faction}
-              borderColor={getColorForFaction(card.faction)}
+              borderColor={factionColor}
               size={36}
             />
           </div>

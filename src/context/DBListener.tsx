@@ -9,10 +9,10 @@ import {
   query,
   Unsubscribe,
 } from "firebase/firestore";
-import { useEffect } from "react";
-import { DataStore } from "../../src/context/dataStore";
+import { use, useEffect } from "react";
 import DBConnection from "../../src/data/DBConnection";
 import { ActionLog } from "../../src/util/types/types";
+import { DatabaseFnsContext } from "./contexts";
 
 export default function DBListener({
   gameId,
@@ -21,6 +21,8 @@ export default function DBListener({
   gameId: string;
   archive: boolean;
 }) {
+  const databaseFns = use(DatabaseFnsContext);
+
   useEffect(() => {
     const db = DBConnection.get();
 
@@ -41,7 +43,7 @@ export default function DBListener({
           actionLog.push(doc.data() as ActionLogEntry<GameUpdateData>);
         });
 
-        DataStore.update((storedData) => {
+        databaseFns.update((storedData) => {
           storedData.actionLog = actionLog;
           return storedData;
         }, "SERVER");
@@ -52,7 +54,7 @@ export default function DBListener({
       onSnapshot(doc(db, timerCollection, gameId), (doc) => {
         const storedTimers = doc.data() as Timers;
 
-        DataStore.update((storedData) => {
+        databaseFns.update((storedData) => {
           if ((storedData.timers?.game ?? 0) > (storedTimers.game ?? 0)) {
             return storedData;
           }
@@ -66,7 +68,7 @@ export default function DBListener({
       onSnapshot(doc(db, gameCollection, gameId), (doc) => {
         const storedData = doc.data() as StoredGameData;
 
-        DataStore.update((oldData) => {
+        databaseFns.update((oldData) => {
           const actionLog = oldData.actionLog ?? [];
           const timers = oldData.timers ?? {};
           const newData = structuredClone(storedData);

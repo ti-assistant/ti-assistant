@@ -13,13 +13,6 @@ import {
   useFactions,
   useNumFactions,
 } from "../../context/factionDataHooks";
-import {
-  chooseStartingTechAsync,
-  chooseSubFactionAsync,
-  chooseTFFactionAsync,
-  removeStartingTechAsync,
-  removeTechAsync,
-} from "../../dynamic/api";
 import SynergySVG from "../../icons/ui/Synergy";
 import CarrierSVG from "../../icons/units/Carrier";
 import CruiserSVG from "../../icons/units/Cruiser";
@@ -32,7 +25,10 @@ import MechSVG from "../../icons/units/Mech";
 import PDSSVG from "../../icons/units/PDS";
 import SpaceDockSVG from "../../icons/units/SpaceDock";
 import WarSunSVG from "../../icons/units/WarSun";
+import { useDataUpdate } from "../../util/api/dataUpdate";
+import { Events } from "../../util/api/events";
 import { getFactionColor } from "../../util/factions";
+import { getMapString } from "../../util/options";
 import {
   canResearchTech,
   getFactionPreReqs,
@@ -49,7 +45,6 @@ import TechIcon from "../TechIcon/TechIcon";
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
 import { Strings } from "../strings";
 import styles from "./StartingComponents.module.scss";
-import { getMapString } from "../../util/options";
 
 interface StartingComponentsProps {
   factionId: FactionId;
@@ -75,6 +70,7 @@ export default function StartingComponents({
   factionId,
   showFactionIcon = false,
 }: StartingComponentsProps) {
+  const dataUpdate = useDataUpdate();
   const faction = useFaction(factionId);
   const gameId = useGameId();
   const options = useOptions();
@@ -184,7 +180,7 @@ export default function StartingComponents({
     if (factionId !== "Council Keleres") {
       return;
     }
-    chooseSubFactionAsync(gameId, "Council Keleres", subFaction);
+    dataUpdate(Events.ChooseSubFactionEvent("Council Keleres", subFaction));
   }
 
   let numToChoose = !startswith.choice
@@ -270,7 +266,7 @@ export default function StartingComponents({
                 key={tech.id}
                 itemId={tech.id}
                 removeItem={() =>
-                  removeStartingTechAsync(gameId, factionId, tech.id)
+                  dataUpdate(Events.RemoveStartingTechEvent(factionId, tech.id))
                 }
                 style={{
                   color: getTechColor(tech),
@@ -328,7 +324,7 @@ export default function StartingComponents({
                 defaultMessage: "Choose Starting Tech",
               })}
               selectTech={(tech) =>
-                chooseStartingTechAsync(gameId, factionId, tech.id)
+                dataUpdate(Events.ChooseStartingTechEvent(factionId, tech.id))
               }
             />
           </Conditional>
@@ -427,6 +423,7 @@ function TFFactionSelect({
 }) {
   const intl = useIntl();
   const allFactions = getFactions(intl);
+  const dataUpdate = useDataUpdate();
   const factions = useFactions();
   const gameId = useGameId();
   const options = useOptions();
@@ -487,7 +484,10 @@ function TFFactionSelect({
         removeItem={
           viewOnly
             ? undefined
-            : () => chooseTFFactionAsync(gameId, factionId, undefined, type)
+            : () =>
+                dataUpdate(
+                  Events.ChooseTFFactionEvent(factionId, undefined, type),
+                )
         }
       >
         <FactionComponents.Icon size={24} factionId={selectedFaction} />
@@ -537,7 +537,9 @@ function TFFactionSelect({
                 fontSize: rem(16),
               }}
               onClick={() =>
-                chooseTFFactionAsync(gameId, factionId, faction.id, type)
+                dataUpdate(
+                  Events.ChooseTFFactionEvent(factionId, faction.id, type),
+                )
               }
             >
               <FactionIcon factionId={faction.id} size={20} />

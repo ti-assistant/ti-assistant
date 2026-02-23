@@ -1,0 +1,12 @@
+dispatch:
+  # Send dev URLs to the dev service.
+  - url: "dev.ti-assistant.com/*"
+    service: dev
+
+  # Send everything else to the live service.
+  - url: "ti-assistant.com/*"
+    service: default
+
+  # Send everything else to the live service.
+  - url: "www.ti-assistant.com/*"
+    service: default

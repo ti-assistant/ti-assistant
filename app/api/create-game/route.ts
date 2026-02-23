@@ -1,10 +1,10 @@
 import { FieldValue, getFirestore, Timestamp } from "firebase-admin/firestore";
 import { NextResponse } from "next/server";
-import { createIntl } from "react-intl";
 import { getFactions } from "../../../server/data/factions";
 import { getPlanets } from "../../../server/data/planets";
 import { getSession, TIASession } from "../../../server/util/fetch";
 import {
+  getIntl,
   getSessionIdFromCookie,
   hashPassword,
   setSessionIdCookie,
@@ -30,9 +30,9 @@ export async function POST(req: Request) {
 
   const db = getFirestore();
 
-  const intl = createIntl({
-    locale: "en",
-  });
+  const locale = "en";
+  const intl = await getIntl(locale);
+
   const BASE_FACTIONS = getFactions(intl);
 
   const gamePlanets: Partial<Record<PlanetId, GamePlanet>> = {};

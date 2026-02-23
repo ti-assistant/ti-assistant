@@ -1,7 +1,8 @@
 import { CSSProperties } from "react";
-import { useGameId, useOptions, useViewOnly } from "../../context/dataHooks";
+import { useOptions, useViewOnly } from "../../context/dataHooks";
 import { useOceans } from "../../context/planetDataHooks";
-import { claimPlanetAsync, unclaimPlanetAsync } from "../../dynamic/api";
+import { useDataUpdate } from "../../util/api/dataUpdate";
+import { Events } from "../../util/api/events";
 import { getRadialPosition } from "../../util/util";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import LegendaryPlanetIcon from "../PlanetIcons/LegendaryPlanetIcon";
@@ -21,7 +22,7 @@ export default function PlanetSummary({
   planets,
   hasXxchaHero,
 }: PlanetSummaryProps) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const oceans = useOceans();
   const options = useOptions();
   const viewOnly = useViewOnly();
@@ -121,9 +122,13 @@ export default function PlanetSummary({
                         ? undefined
                         : () => {
                             if (ocean.owner) {
-                              unclaimPlanetAsync(gameId, factionId, ocean.id);
+                              dataUpdate(
+                                Events.UnclaimPlanetEvent(factionId, ocean.id),
+                              );
                             } else {
-                              claimPlanetAsync(gameId, factionId, ocean.id);
+                              dataUpdate(
+                                Events.ClaimPlanetEvent(factionId, ocean.id),
+                              );
                             }
                           }
                     }

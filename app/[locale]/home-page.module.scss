@@ -1,0 +1,38 @@
+.CenterColumn {
+  min-height: calc(100dvh - 6.5rem);
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 1rem;
+
+  text-align: center;
+}
+
+.OtherLinks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  margin-inline: 5%;
+  gap: 0.5rem;
+}
+
+div.SupportSection {
+  display: grid;
+  grid-template-columns: 2.5rem auto;
+  grid-column: span 2;
+}
+
+.SupportSection > a {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: span 2;
+}
+
+.SupportSection > a > div {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: span 2;
+  white-space: nowrap;
+}

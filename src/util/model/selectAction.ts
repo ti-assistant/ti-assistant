@@ -1,5 +1,3 @@
-import { createIntl, createIntlCache } from "react-intl";
-import { buildObjectives, buildPlanets } from "../../data/GameData";
 import { getCurrentTurnLogEntries } from "../api/actionLog";
 import { Optional } from "../types/types";
 
@@ -18,9 +16,6 @@ export class SelectActionHandler implements Handler {
       [`state.paused`]: false,
       [`sequenceNum`]: "INCREMENT",
     };
-    const cache = createIntlCache();
-    const intl = createIntl({ locale: "en" }, cache);
-
     let tokens: Optional<number>;
     const activePlayer = this.gameData.state.activeplayer;
     if (activePlayer && activePlayer !== "None") {
@@ -35,15 +30,14 @@ export class SelectActionHandler implements Handler {
         this.data.event.action !== "Imperial" &&
         this.data.event.action !== "Aeterna"
       ) {
-        const mecatol = buildPlanets(this.gameData, intl)["Mecatol Rex"];
+        const mecatol = this.gameData.planets["Mecatol Rex"];
         if (
           mecatol &&
           this.gameData.state.activeplayer &&
           mecatol.owner === this.gameData.state.activeplayer
         ) {
           const mecatolScorers =
-            buildObjectives(this.gameData, intl)["Imperial Point"]?.scorers ??
-            [];
+            (this.gameData.objectives ?? {})["Imperial Point"]?.scorers ?? [];
           const lastIndex = mecatolScorers.lastIndexOf(
             this.gameData.state.activeplayer,
           );
@@ -63,6 +57,16 @@ export class SelectActionHandler implements Handler {
         }
       }
       if (
+        !this.gameData.options.expansions.includes("THUNDERS EDGE") &&
+        entry.data.action === "SELECT_ACTION" &&
+        entry.data.event.action === "Warfare" &&
+        this.data.event.action !== "Warfare"
+      ) {
+        if (tokens != undefined) {
+          tokens -= 1;
+        }
+      }
+      if (
         entry.data.action === "SELECT_ACTION" &&
         entry.data.event.action === "Tactical" &&
         this.data.event.action !== "Tactical"
@@ -77,14 +81,14 @@ export class SelectActionHandler implements Handler {
       this.data.event.action === "Imperial" ||
       this.data.event.action === "Aeterna"
     ) {
-      const mecatol = buildPlanets(this.gameData, intl)["Mecatol Rex"];
+      const mecatol = this.gameData.planets["Mecatol Rex"];
       if (
         mecatol &&
         this.gameData.state.activeplayer &&
         mecatol.owner === this.gameData.state.activeplayer
       ) {
         const mecatolScorers =
-          buildObjectives(this.gameData, intl)["Imperial Point"]?.scorers ?? [];
+          (this.gameData.objectives ?? {})["Imperial Point"]?.scorers ?? [];
         mecatolScorers.push(this.gameData.state.activeplayer);
         updates[`objectives.Imperial Point.scorers`] = mecatolScorers;
       }
@@ -96,6 +100,14 @@ export class SelectActionHandler implements Handler {
     ) {
       if (tokens != undefined) {
         tokens += 3;
+      }
+    }
+    if (
+      !this.gameData.options.expansions.includes("THUNDERS EDGE") &&
+      this.data.event.action === "Warfare"
+    ) {
+      if (tokens != undefined) {
+        tokens += 1;
       }
     }
 
@@ -145,8 +157,6 @@ export class UnselectActionHandler implements Handler {
   }
 
   getUpdates(): Record<string, any> {
-    const cache = createIntlCache();
-    const intl = createIntl({ locale: "en" }, cache);
     const updates: Record<string, any> = {
       [`state.paused`]: false,
       [`sequenceNum`]: "INCREMENT",
@@ -161,14 +171,14 @@ export class UnselectActionHandler implements Handler {
       this.data.event.action === "Imperial" ||
       this.data.event.action === "Aeterna"
     ) {
-      const mecatol = buildPlanets(this.gameData, intl)["Mecatol Rex"];
+      const mecatol = this.gameData.planets["Mecatol Rex"];
       if (
         mecatol &&
         this.gameData.state.activeplayer &&
         mecatol.owner === this.gameData.state.activeplayer
       ) {
         const mecatolScorers =
-          buildObjectives(this.gameData, intl)["Imperial Point"]?.scorers ?? [];
+          (this.gameData.objectives ?? {})["Imperial Point"]?.scorers ?? [];
         const lastIndex = mecatolScorers.lastIndexOf(
           this.gameData.state.activeplayer,
         );
@@ -183,6 +193,15 @@ export class UnselectActionHandler implements Handler {
     ) {
       if (tokens != undefined) {
         tokens -= 3;
+      }
+    }
+
+    if (
+      !this.gameData.options.expansions.includes("THUNDERS EDGE") &&
+      this.data.event.action === "Warfare"
+    ) {
+      if (tokens != undefined) {
+        tokens -= 1;
       }
     }
 

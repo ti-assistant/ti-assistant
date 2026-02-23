@@ -3,16 +3,11 @@ import { FormattedMessage } from "react-intl";
 import { ModalContext } from "../../context/contexts";
 import {
   useAttachments,
-  useGameId,
   usePlanet,
   useViewOnly,
 } from "../../context/dataHooks";
+import { useFactionColors } from "../../context/factionDataHooks";
 import { useFactionsWithTech } from "../../context/techDataHooks";
-import {
-  addAttachmentAsync,
-  removeAttachmentAsync,
-  toggleStructureAsync,
-} from "../../dynamic/api";
 import ArcaneCitadelSVG from "../../icons/attachments/ArcaneCitadel";
 import CouncilPreserveSVG from "../../icons/attachments/CouncilPreserve";
 import DemilitarizedZoneSVG from "../../icons/attachments/DemilitarizedZone";
@@ -20,7 +15,8 @@ import OrbitalFoundriesSVG from "../../icons/attachments/OrbitalFoundries";
 import TombOfEmphidiaSVG from "../../icons/attachments/TombOfEmphidia";
 import HitSVG from "../../icons/ui/Hit";
 import { SelectableRow } from "../../SelectableRow";
-import { getColorForFaction } from "../../util/factions";
+import { useDataUpdate } from "../../util/api/dataUpdate";
+import { Events } from "../../util/api/events";
 import { applyPlanetAttachments } from "../../util/planets";
 import { Optional } from "../../util/types/types";
 import { rem } from "../../util/util";
@@ -58,7 +54,8 @@ export default function PlanetRow({
 }: PlanetRowProps) {
   const attachments = useAttachments();
   const factionsWithBastionSpaceDock = useFactionsWithTech("4X4IC Helios V2");
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
+  const factionColors = useFactionColors();
   const viewOnly = useViewOnly();
 
   const { openModal } = use(ModalContext);
@@ -76,6 +73,14 @@ export default function PlanetRow({
         // If attached to this planet, always show.
         if (planetAttachments.includes(attachment.id)) {
           return true;
+        }
+        // Cannot attach to space stations, oceans, or synthetic planets (i.e. The Triad)
+        if (
+          planet.attributes.includes("space-station") ||
+          planet.attributes.includes("ocean") ||
+          planet.attributes.includes("synthetic")
+        ) {
+          return false;
         }
         if (planet.locked) {
           return false;
@@ -125,7 +130,7 @@ export default function PlanetRow({
     previousOwner !== factionId || opts.showSelfOwned
       ? previousOwner
       : undefined;
-  let claimedColor = previousOwner ? getColorForFaction(previousOwner) : "#999";
+  let claimedColor = previousOwner ? factionColors[previousOwner] : "#999";
   if (claimedColor === "Black") {
     claimedColor = "#999";
   }
@@ -214,11 +219,12 @@ export default function PlanetRow({
           <Toggle
             selected={!!planet.spaceDock}
             toggleFn={(prevValue) =>
-              toggleStructureAsync(
-                gameId,
-                planet.id,
-                "Space Dock",
-                prevValue ? "Remove" : "Add",
+              dataUpdate(
+                Events.ToggleStructureEvent(
+                  planet.id,
+                  "Space Dock",
+                  prevValue ? "Remove" : "Add",
+                ),
               )
             }
             disabled={viewOnly}
@@ -409,6 +415,14 @@ export function AttachMenu({ planetId }: AttachMenuProps) {
         if (planetAttachments.includes(attachment.id)) {
           return true;
         }
+        // Cannot attach to space stations, oceans, or synthetic planets (i.e. The Triad)
+        if (
+          updatedPlanet.attributes.includes("space-station") ||
+          updatedPlanet.attributes.includes("ocean") ||
+          updatedPlanet.attributes.includes("synthetic")
+        ) {
+          return false;
+        }
         if (
           updatedPlanet.id === "Mecatol Rex" &&
           attachment.id !== "Nano-Forge"
@@ -483,7 +497,7 @@ interface AttachRowProps {
 }
 
 function AttachRow({ attachment, planet }: AttachRowProps) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const viewOnly = useViewOnly();
 
   function isSkip() {
@@ -491,13 +505,10 @@ function AttachRow({ attachment, planet }: AttachRowProps) {
   }
 
   function toggleAttachment() {
-    if (!gameId) {
-      return;
-    }
     if ((planet.attachments ?? []).includes(attachment.id)) {
-      removeAttachmentAsync(gameId, planet.id, attachment.id);
+      dataUpdate(Events.RemoveAttachmentEvent(planet.id, attachment.id));
     } else {
-      addAttachmentAsync(gameId, planet.id, attachment.id);
+      dataUpdate(Events.AddAttachmentEvent(planet.id, attachment.id));
     }
   }
 

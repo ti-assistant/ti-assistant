@@ -3,31 +3,23 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { getFactions } from "../../../server/data/factions";
 import {
   useExpedition,
-  useGameId,
   useOptions,
   useRelics,
   useViewOnly,
 } from "../../context/dataHooks";
-import { useFactions } from "../../context/factionDataHooks";
+import { useFactionColors, useFactions } from "../../context/factionDataHooks";
 import { useOrderedFactionIds } from "../../context/gameDataHooks";
 import { useObjective } from "../../context/objectiveDataHooks";
-import {
-  commitToExpeditionAsync,
-  gainAllianceAsync,
-  gainRelicAsync,
-  loseAllianceAsync,
-  loseRelicAsync,
-  scoreObjectiveAsync,
-  unplayComponentAsync,
-  unscoreObjectiveAsync,
-} from "../../dynamic/api";
 import PromissoryMenuSVG from "../../icons/ui/PromissoryMenu";
 import RelicMenuSVG from "../../icons/ui/RelicMenu";
 import ThundersEdgeMenuSVG from "../../icons/ui/ThundersEdgeMenu";
 import { InfoRow } from "../../InfoRow";
 import { SelectableRow } from "../../SelectableRow";
+import { useDataUpdate } from "../../util/api/dataUpdate";
+import { Events } from "../../util/api/events";
+import { useUnplayComponent } from "../../util/api/playComponent";
 import { buildMergeFunction } from "../../util/expansions";
-import { getColorForFaction, getFactionColor } from "../../util/factions";
+import { getFactionColor } from "../../util/factions";
 import { Optional } from "../../util/types/types";
 import { rem } from "../../util/util";
 import { CollapsibleSection } from "../CollapsibleSection";
@@ -115,9 +107,10 @@ function ExpeditionRadialSelector({
 }: {
   expeditionId: ExpeditionId;
 }) {
+  const dataUpdate = useDataUpdate();
   const expedition = useExpedition();
-  const gameId = useGameId();
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
+  const factionColors = useFactionColors();
   const viewOnly = useViewOnly();
 
   const selectedFactionId = expedition[expeditionId];
@@ -138,10 +131,12 @@ function ExpeditionRadialSelector({
         <ExpeditionIcon expedition={expeditionId} />
       </div>
       <FactionSelectRadialMenu
-        borderColor={getColorForFaction(selectedFactionId)}
+        borderColor={
+          selectedFactionId ? factionColors[selectedFactionId] : undefined
+        }
         factions={mapOrderedFactionIds}
         onSelect={(factionId) => {
-          commitToExpeditionAsync(gameId, expeditionId, factionId);
+          dataUpdate(Events.CommitToExpeditionEvent(expeditionId, factionId));
         }}
         selectedFaction={selectedFactionId}
         viewOnly={viewOnly}
@@ -151,11 +146,13 @@ function ExpeditionRadialSelector({
 }
 
 function RelicsSection() {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
+  const factionColors = useFactionColors();
   const options = useOptions();
   const relics = useRelics();
   const viewOnly = useViewOnly();
+  const unplayComponent = useUnplayComponent();
 
   if (options.hide?.includes("RELICS")) {
     return null;
@@ -218,7 +215,9 @@ function RelicsSection() {
               >
                 <SelectableRow
                   itemId={relic.id}
-                  removeItem={() => loseRelicAsync(gameId, owner, relic.id)}
+                  removeItem={() =>
+                    dataUpdate(Events.LoseRelicEvent(owner, relic.id))
+                  }
                   style={{ width: "100%" }}
                   viewOnly={viewOnly}
                 >
@@ -232,7 +231,7 @@ function RelicsSection() {
                   </InfoRow>
                 </SelectableRow>
                 <FactionCircle
-                  borderColor={getColorForFaction(owner)}
+                  borderColor={factionColors[owner]}
                   factionId={owner}
                   size={24}
                 />
@@ -273,10 +272,10 @@ function RelicsSection() {
                   factions={mapOrderedFactionIds}
                   onSelect={(factionId, prevFaction) => {
                     if (factionId) {
-                      gainRelicAsync(gameId, factionId, relic.id);
+                      dataUpdate(Events.GainRelicEvent(factionId, relic.id));
                     }
                     if (prevFaction) {
-                      loseRelicAsync(gameId, prevFaction, relic.id);
+                      dataUpdate(Events.LoseRelicEvent(prevFaction, relic.id));
                     }
                   }}
                   selectedFaction={relic.owner}
@@ -305,7 +304,7 @@ function RelicsSection() {
                       itemId={relic.id}
                       removeItem={() =>
                         // TODO: Replace with just updating the state.
-                        unplayComponentAsync(gameId, relic.id, owner)
+                        unplayComponent(relic.id, owner)
                       }
                       style={{ width: "100%" }}
                       viewOnly={viewOnly}
@@ -340,8 +339,8 @@ interface ExtendedCSS extends CSSProperties {
 }
 
 function PromissoriesSection() {
+  const dataUpdate = useDataUpdate();
   const factions = useFactions();
-  const gameId = useGameId();
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
   const options = useOptions();
   const viewOnly = useViewOnly();
@@ -457,19 +456,21 @@ function PromissoriesSection() {
                   invalidFactions={[factionId]}
                   onSelect={(newFaction, prevFaction) => {
                     if (newFaction) {
-                      scoreObjectiveAsync(
-                        gameId,
-                        newFaction,
-                        "Support for the Throne",
-                        factionId,
+                      dataUpdate(
+                        Events.ScoreObjectiveEvent(
+                          newFaction,
+                          "Support for the Throne",
+                          factionId,
+                        ),
                       );
                     }
                     if (prevFaction) {
-                      unscoreObjectiveAsync(
-                        gameId,
-                        prevFaction,
-                        "Support for the Throne",
-                        factionId,
+                      dataUpdate(
+                        Events.UnscoreObjectiveEvent(
+                          prevFaction,
+                          "Support for the Throne",
+                          factionId,
+                        ),
                       );
                     }
                   }}
@@ -537,9 +538,13 @@ function PromissoriesSection() {
                     disabled={disabled}
                     onSelect={(newFaction, prevFaction) => {
                       if (newFaction) {
-                        gainAllianceAsync(gameId, newFaction, factionId);
+                        dataUpdate(
+                          Events.GainAllianceEvent(newFaction, factionId),
+                        );
                       } else if (prevFaction) {
-                        loseAllianceAsync(gameId, prevFaction, factionId);
+                        dataUpdate(
+                          Events.LoseAllianceEvent(prevFaction, factionId),
+                        );
                       }
                     }}
                     selectedFaction={owner}
@@ -599,16 +604,18 @@ function PromissoriesSection() {
                           ? undefined
                           : () => {
                               if (selected) {
-                                loseAllianceAsync(
-                                  gameId,
-                                  "Mahact Gene-Sorcerers",
-                                  factionId,
+                                dataUpdate(
+                                  Events.LoseAllianceEvent(
+                                    "Mahact Gene-Sorcerers",
+                                    factionId,
+                                  ),
                                 );
                               } else {
-                                gainAllianceAsync(
-                                  gameId,
-                                  "Mahact Gene-Sorcerers",
-                                  factionId,
+                                dataUpdate(
+                                  Events.GainAllianceEvent(
+                                    "Mahact Gene-Sorcerers",
+                                    factionId,
+                                  ),
                                 );
                               }
                             }
@@ -673,16 +680,18 @@ function PromissoriesSection() {
                           ? undefined
                           : () => {
                               if (selected) {
-                                loseAllianceAsync(
-                                  gameId,
-                                  "Yin Brotherhood",
-                                  faction.id,
+                                dataUpdate(
+                                  Events.LoseAllianceEvent(
+                                    "Yin Brotherhood",
+                                    faction.id,
+                                  ),
                                 );
                               } else {
-                                gainAllianceAsync(
-                                  gameId,
-                                  "Yin Brotherhood",
-                                  faction.id,
+                                dataUpdate(
+                                  Events.GainAllianceEvent(
+                                    "Yin Brotherhood",
+                                    faction.id,
+                                  ),
                                 );
                               }
                             }

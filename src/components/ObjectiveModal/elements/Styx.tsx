@@ -1,17 +1,16 @@
 import Image from "next/image";
-import { useGameId, useOptions, useViewOnly } from "../../../context/dataHooks";
+import { useOptions, useViewOnly } from "../../../context/dataHooks";
+import { useFactionColors } from "../../../context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../context/gameDataHooks";
 import { useObjective } from "../../../context/objectiveDataHooks";
-import {
-  scoreObjectiveAsync,
-  unscoreObjectiveAsync,
-} from "../../../dynamic/api";
-import { getColorForFaction } from "../../../util/factions";
+import { useDataUpdate } from "../../../util/api/dataUpdate";
+import { Events } from "../../../util/api/events";
 import { rem } from "../../../util/util";
 import FactionSelectRadialMenu from "../../FactionSelectRadialMenu/FactionSelectRadialMenu";
 
 export default function Styx() {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
+  const factionColors = useFactionColors();
   const options = useOptions();
   const orderedFactionIds = useOrderedFactionIds("MAP");
   const styx = useObjective("Styx");
@@ -54,15 +53,13 @@ export default function Styx() {
           selectedFaction={styxScorerId}
           onSelect={(factionId) => {
             if (styxScorerId) {
-              unscoreObjectiveAsync(gameId, styxScorerId, "Styx");
+              dataUpdate(Events.UnscoreObjectiveEvent(styxScorerId, "Styx"));
             }
             if (factionId) {
-              scoreObjectiveAsync(gameId, factionId, "Styx");
+              dataUpdate(Events.ScoreObjectiveEvent(factionId, "Styx"));
             }
           }}
-          borderColor={
-            styxScorerId ? getColorForFaction(styxScorerId) : undefined
-          }
+          borderColor={styxScorerId ? factionColors[styxScorerId] : undefined}
           viewOnly={viewOnly}
         />
       </div>

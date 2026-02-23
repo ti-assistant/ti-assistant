@@ -20,6 +20,7 @@ export default function getThundersEdgeSystems(): Record<
       id: 94,
       planets: [],
       type: "RED",
+      wormholes: ["EPSILON"],
     },
     95: {
       expansion: "THUNDERS EDGE",
@@ -74,6 +75,7 @@ export default function getThundersEdgeSystems(): Record<
       id: 102,
       planets: ["Andeara"],
       type: "BLUE",
+      wormholes: ["ALPHA"],
     },
     103: {
       expansion: "THUNDERS EDGE",
@@ -135,6 +137,19 @@ export default function getThundersEdgeSystems(): Record<
       planets: [],
       type: "RED",
     },
+    113: {
+      expansion: "THUNDERS EDGE",
+      id: 113,
+      planets: [],
+      type: "RED",
+      wormholes: ["BETA"],
+    },
+    114: {
+      expansion: "THUNDERS EDGE",
+      id: 114,
+      planets: [],
+      type: "RED",
+    },
     115: {
       expansion: "THUNDERS EDGE",
       id: 115,
@@ -158,78 +173,207 @@ export default function getThundersEdgeSystems(): Record<
       id: 118,
       planets: ["Ahk Creuxx"],
       type: "HOME",
+      wormholes: ["EPSILON"],
     },
     "119A": {
       expansion: "THUNDERS EDGE",
       id: "119A",
       planets: [],
       type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "BOTTOM LEFT",
+          b: "TOP RIGHT",
+        },
+      ],
     },
     "119B": {
       expansion: "THUNDERS EDGE",
       id: "119B",
       planets: [],
       type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "BOTTOM LEFT",
+          b: "TOP RIGHT",
+        },
+        {
+          a: "UP",
+          b: "DOWN",
+        },
+      ],
     },
     "120A": {
       expansion: "THUNDERS EDGE",
       id: "120A",
       planets: [],
       type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "TOP LEFT",
+          b: "BOTTOM RIGHT",
+        },
+      ],
     },
     "120B": {
       expansion: "THUNDERS EDGE",
       id: "120B",
       planets: [],
       type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "BOTTOM LEFT",
+          b: "UP",
+        },
+        {
+          a: "TOP LEFT",
+          b: "DOWN",
+        },
+        {
+          a: "UP",
+          b: "DOWN",
+        },
+      ],
     },
     "121A": {
       expansion: "THUNDERS EDGE",
       id: "121A",
       planets: [],
       type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "TOP LEFT",
+          b: "TOP RIGHT",
+        },
+      ],
     },
     "121B": {
       expansion: "THUNDERS EDGE",
       id: "121B",
       planets: [],
       type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "BOTTOM LEFT",
+          b: "UP",
+        },
+        {
+          a: "TOP LEFT",
+          b: "DOWN",
+        },
+        {
+          a: "UP",
+          b: "DOWN",
+        },
+      ],
     },
     "122A": {
       expansion: "THUNDERS EDGE",
       id: "122A",
       planets: [],
       type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "TOP LEFT",
+          b: "TOP RIGHT",
+        },
+      ],
     },
     "122B": {
       expansion: "THUNDERS EDGE",
       id: "122B",
       planets: [],
       type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "BOTTOM LEFT",
+          b: "UP",
+        },
+        {
+          a: "BOTTOM RIGHT",
+          b: "UP",
+        },
+      ],
     },
     "123A": {
       expansion: "THUNDERS EDGE",
       id: "123A",
       planets: [],
       type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "BOTTOM LEFT",
+          b: "BOTTOM RIGHT",
+        },
+        {
+          a: "TOP LEFT",
+          b: "BOTTOM RIGHT",
+        },
+        {
+          a: "UP",
+          b: "BOTTOM RIGHT",
+        },
+      ],
     },
     "123B": {
       expansion: "THUNDERS EDGE",
       id: "123B",
       planets: [],
       type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "BOTTOM LEFT",
+          b: "UP",
+        },
+        {
+          a: "UP",
+          b: "BOTTOM RIGHT",
+        },
+      ],
     },
     "124A": {
       expansion: "THUNDERS EDGE",
       id: "124A",
       planets: [],
       type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "BOTTOM LEFT",
+          b: "UP",
+        },
+        {
+          a: "BOTTOM LEFT",
+          b: "TOP RIGHT",
+        },
+        {
+          a: "BOTTOM LEFT",
+          b: "BOTTOM RIGHT",
+        },
+      ],
     },
     "124B": {
       expansion: "THUNDERS EDGE",
       id: "124B",
       planets: [],
       type: "HYPERLANE",
+      hyperlanes: [
+        {
+          a: "BOTTOM LEFT",
+          b: "UP",
+        },
+        {
+          a: "BOTTOM LEFT",
+          b: "TOP RIGHT",
+        },
+        {
+          a: "UP",
+          b: "DOWN",
+        },
+        {
+          a: "TOP RIGHT",
+          b: "DOWN",
+        },
+      ],
     },
     666: {
       expansion: "THUNDERS EDGE",

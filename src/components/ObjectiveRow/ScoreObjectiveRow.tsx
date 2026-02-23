@@ -1,12 +1,13 @@
-import { useActionLog, useGameId, useViewOnly } from "../../context/dataHooks";
+import { useActionLog, useViewOnly } from "../../context/dataHooks";
+import { useFactionColors } from "../../context/factionDataHooks";
 import { useOrderedFactionIds } from "../../context/gameDataHooks";
 import { useObjective } from "../../context/objectiveDataHooks";
-import { scoreObjectiveAsync, unscoreObjectiveAsync } from "../../dynamic/api";
 import { SymbolX } from "../../icons/svgs";
 import { getObjectiveScorers } from "../../util/actionLog";
 import { getCurrentTurnLogEntries } from "../../util/api/actionLog";
+import { useDataUpdate } from "../../util/api/dataUpdate";
+import { Events } from "../../util/api/events";
 import { hasScoredObjective } from "../../util/api/util";
-import { getColorForFaction } from "../../util/factions";
 import { rem } from "../../util/util";
 import FactionCircle from "../FactionCircle/FactionCircle";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
@@ -21,8 +22,9 @@ export default function ScoreObjectiveRow({
 }) {
   const actionLog = useActionLog();
   const currentTurn = getCurrentTurnLogEntries(actionLog);
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
+  const factionColors = useFactionColors();
   const objective = useObjective(objectiveId);
   const viewOnly = useViewOnly();
 
@@ -57,18 +59,20 @@ export default function ScoreObjectiveRow({
         <FactionSelectRadialMenu
           onSelect={(factionId, prevFaction) => {
             if (factionId && prevFaction) {
-              unscoreObjectiveAsync(gameId, prevFaction, objectiveId);
-              scoreObjectiveAsync(gameId, factionId, objectiveId);
+              dataUpdate(
+                Events.UnscoreObjectiveEvent(prevFaction, objectiveId),
+              );
+              dataUpdate(Events.ScoreObjectiveEvent(factionId, objectiveId));
             } else if (prevFaction) {
-              unscoreObjectiveAsync(gameId, prevFaction, objectiveId);
+              dataUpdate(
+                Events.UnscoreObjectiveEvent(prevFaction, objectiveId),
+              );
             } else if (factionId) {
-              scoreObjectiveAsync(gameId, factionId, objectiveId);
+              dataUpdate(Events.ScoreObjectiveEvent(factionId, objectiveId));
             }
           }}
           borderColor={
-            currentScorers[0]
-              ? getColorForFaction(currentScorers[0])
-              : undefined
+            currentScorers[0] ? factionColors[currentScorers[0]] : undefined
           }
           selectedFaction={currentScorers[0]}
           factions={orderedScorers}
@@ -81,16 +85,20 @@ export default function ScoreObjectiveRow({
             <FactionCircle
               key={factionId}
               blur
-              borderColor={getColorForFaction(factionId)}
+              borderColor={factionColors[factionId]}
               factionId={factionId}
               onClick={
                 viewOnly
                   ? undefined
                   : () => {
                       if (current) {
-                        unscoreObjectiveAsync(gameId, factionId, objectiveId);
+                        dataUpdate(
+                          Events.UnscoreObjectiveEvent(factionId, objectiveId),
+                        );
                       } else {
-                        scoreObjectiveAsync(gameId, factionId, objectiveId);
+                        dataUpdate(
+                          Events.ScoreObjectiveEvent(factionId, objectiveId),
+                        );
                       }
                     }
               }

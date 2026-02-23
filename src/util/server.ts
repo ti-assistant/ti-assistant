@@ -1,18 +1,22 @@
+import jsSHA from "jssha";
 import { cookies } from "next/headers";
 import { DEFAULT_SETTINGS, Settings } from "./settings";
-import jsSHA from "jssha";
+import { createIntl, createIntlCache, IntlShape } from "react-intl";
+import { intlErrorFn } from "./util";
 
 export async function getMessages(
-  locale: string
+  locale: string,
 ): Promise<Record<string, string>> {
   const messages = await import(`../../server/compiled-lang/${locale}.json`);
 
   return JSON.parse(JSON.stringify(messages));
 }
 
-export async function getLocale(): Promise<string> {
-  const cookieValues = await cookies();
-  return cookieValues.get("TI_LOCALE")?.value ?? "en";
+export async function getIntl(locale: string): Promise<IntlShape> {
+  const intlCache = createIntlCache();
+  const messages = await getMessages(locale);
+
+  return createIntl({ locale, messages, onError: intlErrorFn }, intlCache);
 }
 
 export async function getSettings() {

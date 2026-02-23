@@ -17,16 +17,6 @@ import { useFactions } from "../../context/factionDataHooks";
 import { useObjectives } from "../../context/objectiveDataHooks";
 import { useGameState, usePhase } from "../../context/stateDataHooks";
 import { Techs } from "../../context/techDataHooks";
-import {
-  castVotesAsync,
-  manualVoteUpdateAsync,
-  playActionCardAsync,
-  playPromissoryNoteAsync,
-  playRiderAsync,
-  unplayActionCardAsync,
-  unplayPromissoryNoteAsync,
-  unplayRiderAsync,
-} from "../../dynamic/api";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import InfluenceSVG from "../../icons/planets/Influence";
 import TradeGoodSVG from "../../icons/ui/TradeGood";
@@ -43,6 +33,8 @@ import {
   getCurrentPhasePreviousLogEntries,
   getCurrentTurnLogEntries,
 } from "../../util/api/actionLog";
+import { useDataUpdate } from "../../util/api/dataUpdate";
+import { Events } from "../../util/api/events";
 import { hasTech } from "../../util/api/techs";
 import {
   getFactionColor,
@@ -441,10 +433,6 @@ export function computeRemainingVotes(
   } else {
     const hasXxchaHero = leaders["Xxekir Grom"]?.state === "readied";
     for (const planet of orderedPlanets) {
-      // Space Stations do not count for voting.
-      if (planet.attributes.includes("space-station")) {
-        continue;
-      }
       let planetInfluence = planet.influence;
       if (factionId === "Xxcha Kingdom") {
         if (options.expansions.includes("CODEX THREE") && hasXxchaHero) {
@@ -520,7 +508,7 @@ export default function VoteBlock({
   const actionLog = useActionLog();
   const agendas = useAgendas();
   const factions = useFactions();
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const leaders = useLeaders();
   const objectives = useObjectives();
   const planets = usePlanets();
@@ -579,7 +567,7 @@ export default function VoteBlock({
                   className="icon clickable negative"
                   style={{ marginRight: 0 }}
                   onClick={() => {
-                    unplayRiderAsync(gameId, rider.rider);
+                    dataUpdate(Events.UnplayRiderEvent(rider.rider));
                   }}
                 >
                   &#x2715;
@@ -674,8 +662,8 @@ function PredictionSection({
 }) {
   const actionLog = useActionLog();
   const agendas = useAgendas();
+  const dataUpdate = useDataUpdate();
   const factions = useFactions();
-  const gameId = useGameId();
   const objectives = useObjectives();
   const options = useOptions();
   const phase = usePhase();
@@ -773,13 +761,10 @@ function PredictionSection({
         })}
         selectedItem={pendingRider?.rider}
         toggleItem={(itemId, add) => {
-          if (!gameId) {
-            return;
-          }
           if (add) {
-            playRiderAsync(gameId, itemId, factionId, undefined);
+            dataUpdate(Events.PlayRiderEvent(itemId, factionId, undefined));
           } else {
-            unplayRiderAsync(gameId, itemId);
+            dataUpdate(Events.UnplayRiderEvent(itemId));
           }
         }}
         viewOnly={viewOnly}
@@ -798,7 +783,9 @@ function PredictionSection({
             options={targets}
             selectedItem={undefined}
             toggleItem={(itemId, _) => {
-              playRiderAsync(gameId, pendingRider.rider, factionId, itemId);
+              dataUpdate(
+                Events.PlayRiderEvent(pendingRider.rider, factionId, itemId),
+              );
             }}
             style={{ minWidth: rem(154) }}
             viewOnly={viewOnly}
@@ -821,6 +808,7 @@ function VotingSection({
   const actionLog = useActionLog();
   const agendas = useAgendas();
   const attachments = useAttachments();
+  const dataUpdate = useDataUpdate();
   const factions = useFactions();
   const gameId = useGameId();
   const leaders = useLeaders();
@@ -852,14 +840,17 @@ function VotingSection({
     votes: number,
     extraVotes: number,
   ) {
-    if (!gameId) {
-      return;
-    }
-
     if (target === "Abstain") {
-      castVotesAsync(gameId, factionId, 0, 0, "Abstain");
+      dataUpdate(
+        Events.CastVotesEvent(
+          factionId,
+          /* votes= */ 0,
+          /* extraVotes= */ 0,
+          "Abstain",
+        ),
+      );
     } else {
-      castVotesAsync(gameId, factionId, votes, extraVotes, target);
+      dataUpdate(Events.CastVotesEvent(factionId, votes, extraVotes, target));
     }
   }
 
@@ -1005,9 +996,13 @@ function VotingSection({
                 selected={bloodPactUser === factionId}
                 toggleFn={() => {
                   if (bloodPactUser === factionId) {
-                    unplayPromissoryNoteAsync(gameId, "Blood Pact", factionId);
+                    dataUpdate(
+                      Events.UnplayPromissoryNoteEvent("Blood Pact", factionId),
+                    );
                   } else {
-                    playPromissoryNoteAsync(gameId, "Blood Pact", factionId);
+                    dataUpdate(
+                      Events.PlayPromissoryNoteEvent("Blood Pact", factionId),
+                    );
                   }
                 }}
                 disabled={viewOnly}
@@ -1027,16 +1022,18 @@ function VotingSection({
                 style={{ fontSize: rem(14) }}
                 onClick={() => {
                   if (usingPredictive.includes(factionId)) {
-                    unplayActionCardAsync(
-                      gameId,
-                      "Predictive Intelligence",
-                      factionId,
+                    dataUpdate(
+                      Events.UnplayActionCardEvent(
+                        "Predictive Intelligence",
+                        factionId,
+                      ),
                     );
                   } else {
-                    playActionCardAsync(
-                      gameId,
-                      "Predictive Intelligence",
-                      factionId,
+                    dataUpdate(
+                      Events.PlayActionCardEvent(
+                        "Predictive Intelligence",
+                        factionId,
+                      ),
                     );
                   }
                 }}
@@ -1055,16 +1052,18 @@ function VotingSection({
                   selected={councilPreservePlayer === factionId}
                   toggleFn={() => {
                     if (councilPreservePlayer === factionId) {
-                      unplayActionCardAsync(
-                        gameId,
-                        "Council Preserve",
-                        factionId,
+                      dataUpdate(
+                        Events.UnplayActionCardEvent(
+                          "Council Preserve",
+                          factionId,
+                        ),
                       );
                     } else {
-                      playActionCardAsync(
-                        gameId,
-                        "Council Preserve",
-                        factionId,
+                      dataUpdate(
+                        Events.PlayActionCardEvent(
+                          "Council Preserve",
+                          factionId,
+                        ),
                       );
                     }
                   }}
@@ -1087,16 +1086,18 @@ function VotingSection({
                 selected={currentCouncilor === factionId}
                 toggleFn={(_) => {
                   if (currentCouncilor === factionId) {
-                    unplayActionCardAsync(
-                      gameId,
-                      "Distinguished Councilor",
-                      factionId,
+                    dataUpdate(
+                      Events.UnplayActionCardEvent(
+                        "Distinguished Councilor",
+                        factionId,
+                      ),
                     );
                   } else {
-                    playActionCardAsync(
-                      gameId,
-                      "Distinguished Councilor",
-                      factionId,
+                    dataUpdate(
+                      Events.PlayActionCardEvent(
+                        "Distinguished Councilor",
+                        factionId,
+                      ),
                     );
                   }
                 }}
@@ -1270,7 +1271,7 @@ function ManualVoteCount({
   factionId: FactionId;
   influence: number;
 }) {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const viewOnly = useViewOnly();
 
   return (
@@ -1280,7 +1281,7 @@ function ManualVoteCount({
       softMax={99}
       minValue={0}
       onChange={(votes) => {
-        manualVoteUpdateAsync(gameId, factionId, votes - influence);
+        dataUpdate(Events.ManualVoteUpdateEvent(factionId, votes - influence));
       }}
       inputStyle={{ borderColor: "#72d4f7" }}
       viewOnly={viewOnly}

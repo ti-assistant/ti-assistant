@@ -113,6 +113,7 @@ export default function getBaseSystems(): Record<
       id: 17,
       planets: [],
       type: "HOME",
+      wormholes: ["DELTA"],
     },
     18: {
       expansion: "BASE",
@@ -161,12 +162,14 @@ export default function getBaseSystems(): Record<
       id: 25,
       planets: ["Quann"],
       type: "BLUE",
+      wormholes: ["BETA"],
     },
     26: {
       expansion: "BASE",
       id: 26,
       planets: ["Lodor"],
       type: "BLUE",
+      wormholes: ["ALPHA"],
     },
     27: {
       expansion: "BASE",
@@ -240,8 +243,20 @@ export default function getBaseSystems(): Record<
       planets: ["Abyz", "Fria"],
       type: "BLUE",
     },
-    39: EMPTY_RED_SYSTEM(39, "BASE"),
-    40: EMPTY_RED_SYSTEM(40, "BASE"),
+    39: {
+      expansion: "BASE",
+      id: 39,
+      planets: [],
+      type: "RED",
+      wormholes: ["ALPHA"],
+    },
+    40: {
+      expansion: "BASE",
+      id: 40,
+      planets: [],
+      type: "RED",
+      wormholes: ["BETA"],
+    },
     41: EMPTY_RED_SYSTEM(41, "BASE"),
     42: EMPTY_RED_SYSTEM(42, "BASE"),
     43: EMPTY_RED_SYSTEM(43, "BASE"),
@@ -257,6 +272,7 @@ export default function getBaseSystems(): Record<
       id: 51,
       planets: ["Creuss"],
       type: "HOME",
+      wormholes: ["DELTA"],
     },
   };
 }

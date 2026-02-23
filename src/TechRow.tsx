@@ -16,7 +16,8 @@ import {
   useViewOnly,
 } from "./context/dataHooks";
 import { useFactions } from "./context/factionDataHooks";
-import { addTechAsync, removeTechAsync } from "./dynamic/api";
+import { useDataUpdate } from "./util/api/dataUpdate";
+import { Events } from "./util/api/events";
 import { hasTech } from "./util/api/techs";
 import { getFactionColor, getMapOrderedFactionIds } from "./util/factions";
 import { getTechColor } from "./util/techs";
@@ -212,6 +213,7 @@ function ResearchAgreement({ tech }: { tech: Tech }) {
     (entry) =>
       !!entry.data.event.researchAgreement && entry.data.event.tech === tech.id,
   )[0];
+  const dataUpdate = useDataUpdate();
   const factions = useFactions();
   const gameId = useGameId();
   const viewOnly = useViewOnly();
@@ -243,10 +245,10 @@ function ResearchAgreement({ tech }: { tech: Tech }) {
       selectedFaction={selectedFaction}
       onSelect={(factionId, prevFaction) => {
         if (factionId) {
-          addTechAsync(gameId, factionId, tech.id, undefined, true);
+          dataUpdate(Events.AddTechEvent(factionId, tech.id, undefined, true));
         }
         if (prevFaction) {
-          removeTechAsync(gameId, prevFaction, tech.id);
+          dataUpdate(Events.RemoveTechEvent(prevFaction, tech.id));
         }
       }}
       tag={

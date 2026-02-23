@@ -1,21 +1,22 @@
 import Image from "next/image";
-import { useGameId, useViewOnly } from "../../../context/dataHooks";
+import { useViewOnly } from "../../../context/dataHooks";
+import { useFactionColor } from "../../../context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../context/gameDataHooks";
 import { useObjective } from "../../../context/objectiveDataHooks";
-import {
-  scoreObjectiveAsync,
-  unscoreObjectiveAsync,
-} from "../../../dynamic/api";
-import { getColorForFaction } from "../../../util/factions";
+import { useDataUpdate } from "../../../util/api/dataUpdate";
+import { Events } from "../../../util/api/events";
 import { rem } from "../../../util/util";
 import FactionSelectRadialMenu from "../../FactionSelectRadialMenu/FactionSelectRadialMenu";
 
 export default function CustodiansToken() {
-  const gameId = useGameId();
+  const dataUpdate = useDataUpdate();
   const viewOnly = useViewOnly();
   const orderedFactionIds = useOrderedFactionIds("MAP");
   const custodiansToken = useObjective("Custodians Token");
   const custodiansScorerId = (custodiansToken?.scorers ?? [])[0];
+  const factionColor = useFactionColor(
+    custodiansScorerId ?? "Vuil'raith Cabal",
+  );
 
   return (
     <div
@@ -47,21 +48,20 @@ export default function CustodiansToken() {
           selectedFaction={custodiansScorerId}
           onSelect={(factionId) => {
             if (custodiansScorerId) {
-              unscoreObjectiveAsync(
-                gameId,
-                custodiansScorerId,
-                "Custodians Token"
+              dataUpdate(
+                Events.UnscoreObjectiveEvent(
+                  custodiansScorerId,
+                  "Custodians Token",
+                ),
               );
             }
             if (factionId) {
-              scoreObjectiveAsync(gameId, factionId, "Custodians Token");
+              dataUpdate(
+                Events.ScoreObjectiveEvent(factionId, "Custodians Token"),
+              );
             }
           }}
-          borderColor={
-            custodiansScorerId
-              ? getColorForFaction(custodiansScorerId)
-              : undefined
-          }
+          borderColor={custodiansScorerId ? factionColor : undefined}
           viewOnly={viewOnly}
         />
       </div>
