@@ -1,6 +1,8 @@
 import NextImage from "next/image";
+import { use } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import Hexagon from "../../../public/images/systems/Hexagon.png";
+import { DatabaseFnsContext } from "../../context/contexts";
 import {
   isFactionHomeSystem,
   isHomeSystem,
@@ -8,23 +10,9 @@ import {
 } from "../../util/map";
 import { Optional } from "../../util/types/types";
 import { objectEntries, rem } from "../../util/util";
-import styles from "./MapBuilder.module.scss";
-import { getPlanets } from "../../../server/data/planets";
-import { useIntl } from "react-intl";
 import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
-import { PlanetAttributes } from "../PlanetRow/PlanetRow";
-import { getSystems } from "../../../server/data/systems";
-
-interface Cube {
-  q: number;
-  r: number;
-  s: number;
-}
-
-interface Point {
-  x: number;
-  y: number;
-}
+import styles from "./MapBuilder.module.scss";
+import { Hex } from "./hexGrid";
 
 interface PlanetValues {
   resources: number;
@@ -37,123 +25,7 @@ interface NearbyValues {
   attributes: PlanetAttribute[];
 }
 
-function Cube(q: number, r: number, s: number): Cube {
-  return {
-    q,
-    r,
-    s,
-  };
-}
-
-function Point(x: number, y: number): Point {
-  return {
-    x,
-    y,
-  };
-}
-
-function cube_equals(a: Cube, b: Cube) {
-  return a.q === b.q && a.r === b.r && a.s === b.s;
-}
-
 const HEX_RATIO = 2 / Math.sqrt(3);
-
-const CUBE_DIRECTIONS = [
-  Cube(0, -1, +1),
-  Cube(+1, -1, 0),
-  Cube(+1, 0, -1),
-  Cube(0, +1, -1),
-  Cube(-1, +1, 0),
-  Cube(-1, 0, +1),
-] as const;
-
-function cube_dir_to_hex_side(dir: Cube): Optional<Direction> {
-  if (cube_equals(dir, CUBE_DIRECTIONS[0])) {
-    return "TOP LEFT";
-  } else if (cube_equals(dir, CUBE_DIRECTIONS[1])) {
-    return "UP";
-  } else if (cube_equals(dir, CUBE_DIRECTIONS[2])) {
-    return "TOP RIGHT";
-  } else if (cube_equals(dir, CUBE_DIRECTIONS[3])) {
-    return "BOTTOM RIGHT";
-  } else if (cube_equals(dir, CUBE_DIRECTIONS[4])) {
-    return "DOWN";
-  } else if (cube_equals(dir, CUBE_DIRECTIONS[5])) {
-    return "BOTTOM LEFT";
-  }
-}
-
-function hex_side_to_cube_dir(dir: Direction): Cube {
-  switch (dir) {
-    case "UP":
-      return CUBE_DIRECTIONS[4];
-    case "DOWN":
-      return CUBE_DIRECTIONS[1];
-    case "TOP LEFT":
-      return CUBE_DIRECTIONS[3];
-    case "BOTTOM LEFT":
-      return CUBE_DIRECTIONS[2];
-    case "TOP RIGHT":
-      return CUBE_DIRECTIONS[5];
-    case "BOTTOM RIGHT":
-      return CUBE_DIRECTIONS[0];
-  }
-}
-
-function direction_from_side(dir: Cube): Optional<Direction> {
-  // TODO: Verify directions.
-  if (cube_equals(dir, CUBE_DIRECTIONS[0])) {
-    return "DOWN";
-  } else if (cube_equals(dir, CUBE_DIRECTIONS[1])) {
-    return "BOTTOM LEFT";
-  } else if (cube_equals(dir, CUBE_DIRECTIONS[2])) {
-    return "TOP LEFT";
-  } else if (cube_equals(dir, CUBE_DIRECTIONS[3])) {
-    return "UP";
-  } else if (cube_equals(dir, CUBE_DIRECTIONS[4])) {
-    return "TOP RIGHT";
-  } else if (cube_equals(dir, CUBE_DIRECTIONS[5])) {
-    return "BOTTOM RIGHT";
-  }
-}
-
-function cube_add(hex: Cube, vec: Cube) {
-  return Cube(hex.q + vec.q, hex.r + vec.r, hex.s + vec.s);
-}
-
-function cube_neighbor(cube: Cube, direction: Cube) {
-  return cube_add(cube, direction);
-}
-
-function cube_scale(hex: Cube, factor: number) {
-  return Cube(hex.q * factor, hex.r * factor, hex.s * factor);
-}
-
-function cubeRing(center: Cube, radius: number) {
-  const results: Cube[] = [];
-  let hex = cube_add(center, cube_scale(CUBE_DIRECTIONS[4], radius));
-  for (const direction of CUBE_DIRECTIONS) {
-    for (let j = 0; j < radius; j++) {
-      results.push(hex);
-      hex = cube_neighbor(hex, direction);
-    }
-  }
-  return results;
-}
-
-function cubeSpiral(center: Cube, radius: number) {
-  let results: Cube[] = [center];
-  for (let i = 1; i < radius; i++) {
-    results = results.concat(cubeRing(center, i));
-  }
-  return results;
-}
-
-function CubeToPixel(hex: Cube, size: number) {
-  const x = size * ((3 / 2) * hex.s);
-  const y = size * ((Math.sqrt(3) / 2) * hex.s + Math.sqrt(3) * hex.q);
-  return Point(x, y);
-}
 
 function getRotationClass(key: string) {
   switch (key) {
@@ -551,15 +423,15 @@ interface MapProps {
   nonHomeNeighbors?: boolean;
 }
 
-function cube_to_system(cube: Cube, spiral: Cube[], systems: string[]) {
-  const index = spiral.findIndex((value) => cube_equals(value, cube));
+function hex_to_system(hex: Hex, spiral: Hex[], systems: string[]) {
+  const index = spiral.findIndex((value) => value.equals(hex));
   if (index === -1) {
     return;
   }
   return systems[index];
 }
 
-function system_to_cube(system: string, spiral: Cube[], systems: string[]) {
+function system_to_hex(system: string, spiral: Hex[], systems: string[]) {
   const index = systems.findIndex((value) => value === system);
   if (index === -1) {
     return;
@@ -626,7 +498,7 @@ function rotateHyperlane(hyperlane: Hyperlane, rotation: Optional<number>) {
 
 function getBaseSystem(
   system: string,
-  baseSystems: Record<SystemId, BaseSystem>,
+  baseSystems: Partial<Record<SystemId, BaseSystem>>,
 ): Optional<BaseSystem> {
   const systemId = toSystemId(system);
   if (!systemId) {
@@ -636,12 +508,12 @@ function getBaseSystem(
 }
 
 function getMatchingWormholeSystems(
-  cube: Cube,
-  spiral: Cube[],
+  hex: Hex,
+  spiral: Hex[],
   systems: string[],
-  baseSystems: Record<SystemId, BaseSystem>,
+  baseSystems: Partial<Record<SystemId, BaseSystem>>,
 ) {
-  const systemString = cube_to_system(cube, spiral, systems);
+  const systemString = hex.toSystem(spiral, systems);
   if (!systemString) {
     return [];
   }
@@ -664,23 +536,23 @@ function getMatchingWormholeSystems(
 }
 
 interface Neighbor {
-  cube: Cube;
+  hex: Hex;
   // Which direction the neighbor was entered from.
-  direction: Cube;
+  direction: Hex;
 }
 
 // TODO: Clean up this file.
 function hex_reachable(
-  start: Cube,
+  start: Hex,
   movement: number,
-  spiral: Cube[],
+  spiral: Hex[],
   systems: string[],
-  baseSystems: Record<SystemId, BaseSystem>,
+  baseSystems: Partial<Record<SystemId, BaseSystem>>,
 ) {
   const visited = new Set<string>();
   visited.add(JSON.stringify(start));
   const results: string[][] = [];
-  const fringes: Cube[][] = [];
+  const fringes: Hex[][] = [];
   fringes.push([start]);
 
   for (let i = 1; i < movement; i++) {
@@ -689,15 +561,15 @@ function hex_reachable(
     if (!fringe || fringe.length === 0) {
       break;
     }
-    for (const cube of fringe) {
+    for (const hex of fringe) {
       const wormholeSystems = getMatchingWormholeSystems(
-        cube,
+        hex,
         spiral,
         systems,
         baseSystems,
       );
       for (const wormholeSystem of wormholeSystems) {
-        const wormholeCube = system_to_cube(wormholeSystem, spiral, systems);
+        const wormholeCube = system_to_hex(wormholeSystem, spiral, systems);
         if (!wormholeCube) {
           continue;
         }
@@ -713,10 +585,10 @@ function hex_reachable(
       }
 
       const neighbors: Neighbor[] = [];
-      for (const dir of CUBE_DIRECTIONS) {
-        const neighbor = cube_neighbor(cube, dir);
+      for (const dir of Hex.directions()) {
+        const neighbor = hex.neighbor(dir);
         neighbors.push({
-          cube: neighbor,
+          hex: neighbor,
           direction: dir,
         });
       }
@@ -728,7 +600,7 @@ function hex_reachable(
         if (!neighbor) {
           break;
         }
-        const system = cube_to_system(neighbor.cube, spiral, systems);
+        const system = neighbor.hex.toSystem(spiral, systems);
 
         // TODO: If system is hyperspace (and the direction is correct), need to check systems that are adjacent.
         const isBlocked = !system || system === "0" || system === "-1";
@@ -740,7 +612,10 @@ function hex_reachable(
           const baseSystem = baseSystems[systemId];
           if (baseSystem && baseSystem.type === "HYPERLANE") {
             visited.add(JSON.stringify(neighbor));
-            const hexSide = cube_dir_to_hex_side(neighbor.direction);
+            const hexSide = Hex.hexToDirection(
+              neighbor.direction,
+              /* opposite= */ true,
+            );
             const rotation = getSystemRotation(system);
             if (hexSide) {
               for (const lane of baseSystem.hyperlanes ?? []) {
@@ -749,17 +624,17 @@ function hex_reachable(
                   rotation,
                 );
                 if (hyperlane.a === hexSide) {
-                  const direction = hex_side_to_cube_dir(hyperlane.b);
-                  const nextNeighbor = cube_neighbor(neighbor.cube, direction);
+                  const direction = Hex.directionToHex(hyperlane.b);
+                  const nextNeighbor = neighbor.hex.neighbor(direction);
                   neighbors.push({
-                    cube: nextNeighbor,
+                    hex: nextNeighbor,
                     direction,
                   });
                 } else if (hyperlane.b === hexSide) {
-                  const direction = hex_side_to_cube_dir(hyperlane.a);
-                  const nextNeighbor = cube_neighbor(neighbor.cube, direction);
+                  const direction = Hex.directionToHex(hyperlane.a);
+                  const nextNeighbor = neighbor.hex.neighbor(direction);
                   neighbors.push({
-                    cube: nextNeighbor,
+                    hex: nextNeighbor,
                     direction,
                   });
                 }
@@ -774,7 +649,7 @@ function hex_reachable(
           newResult.push(system);
           results[i] = newResult;
           const newFringe = fringes[i] ?? [];
-          newFringe.push(neighbor.cube);
+          newFringe.push(neighbor.hex);
           fringes[i] = newFringe;
         }
       }
@@ -783,19 +658,14 @@ function hex_reachable(
   return results;
 }
 
-interface LocalValues {
-  influence: number;
-  resources: number;
-}
-
 function buildFactionValues(
-  spiral: Cube[],
+  spiral: Hex[],
   systems: string[],
   planets: Partial<Record<PlanetId, BasePlanet>>,
-  baseSystems: Record<SystemId, BaseSystem>,
+  baseSystems: Partial<Record<SystemId, BaseSystem>>,
 ) {
   const ownedSystems: Record<number, string[]> = {};
-  spiral.forEach((cube, index) => {
+  spiral.forEach((hex, index) => {
     const currentSystem = systems[index];
     if (
       !currentSystem ||
@@ -807,7 +677,7 @@ function buildFactionValues(
     ) {
       return;
     }
-    const nearbySystems = hex_reachable(cube, 7, spiral, systems, baseSystems);
+    const nearbySystems = hex_reachable(hex, 7, spiral, systems, baseSystems);
     for (let i = 1; i < 7; i++) {
       const ring = nearbySystems[i];
       if (!ring) {
@@ -852,6 +722,7 @@ export default function MapBuilder({
   requiredNeighbors = 0,
   nonHomeNeighbors = false,
 }: MapProps) {
+  const databaseFns = use(DatabaseFnsContext);
   let updatedSystemTiles = mapString.split(" ");
   updatedSystemTiles = updatedSystemTiles.map((tile, index) => {
     const updatedTile = updatedSystemTiles[index];
@@ -871,11 +742,13 @@ export default function MapBuilder({
     numRings += 1;
   }
 
-  const spiral = cubeSpiral(Cube(0, 0, 0), numRings);
+  const center = new Hex(0, 0, 0);
+  const spiral = center.spiral(numRings);
 
-  const intl = useIntl();
-  const basePlanets = getPlanets(intl);
-  const baseSystems = getSystems();
+  const basePlanets: Partial<Record<PlanetId, BasePlanet>> =
+    databaseFns.getBaseValue("planets") ?? {};
+  const baseSystems: Partial<Record<SystemId, BaseSystem>> =
+    databaseFns.getBaseValue("systems") ?? {};
 
   const values = buildFactionValues(
     spiral,
@@ -887,8 +760,8 @@ export default function MapBuilder({
   return (
     <div className={styles.Map}>
       <div className={styles.MapBody}>
-        {spiral.map((cube, index) => {
-          const point = CubeToPixel(cube, tilePercentage * HEX_RATIO);
+        {spiral.map((hex, index) => {
+          const point = hex.toPixel(tilePercentage * HEX_RATIO);
           let tile = updatedSystemTiles[index];
           if (!tile) {
             tile = "-1";
@@ -896,10 +769,11 @@ export default function MapBuilder({
           if (riftWalker && tile === "-1") {
             return null;
           }
+          const baseSystem = getBaseSystem(tile, baseSystems);
           let canDrop = true;
           let canDrag = !dropOnly;
           if (riftWalker) {
-            if (tile.includes("A") || tile.includes("B")) {
+            if (baseSystem && baseSystem.type === "HYPERLANE") {
               canDrop = false;
               canDrag = false;
             }
@@ -909,28 +783,21 @@ export default function MapBuilder({
               canDrop = false;
             }
             let neighborSystems = 0;
-            for (const direction of CUBE_DIRECTIONS) {
-              const neighbor = cube_neighbor(cube, direction);
-              spiral.forEach((cube, index) => {
-                if (cube_equals(cube, neighbor)) {
-                  const neighborTile = updatedSystemTiles[index];
-                  if (
-                    neighborTile &&
-                    nonHomeNeighbors &&
-                    isFactionHomeSystem(neighborTile)
-                  ) {
-                    return;
-                  }
-                  if (
-                    neighborTile &&
-                    neighborTile !== "-1" &&
-                    !neighborTile.includes("A") &&
-                    !neighborTile.includes("B")
-                  ) {
-                    neighborSystems++;
-                  }
+            for (const direction of Hex.directions()) {
+              const neighbor = hex.neighbor(direction);
+              const neighborSystem = neighbor.toSystem(
+                spiral,
+                updatedSystemTiles,
+              );
+              if (neighborSystem) {
+                if (nonHomeNeighbors && isFactionHomeSystem(neighborSystem)) {
+                  continue;
                 }
-              });
+                const baseSystem = getBaseSystem(neighborSystem, baseSystems);
+                if (baseSystem && baseSystem.type !== "HYPERLANE") {
+                  neighborSystems++;
+                }
+              }
             }
             if (neighborSystems < requiredNeighbors) {
               canDrop = false;
