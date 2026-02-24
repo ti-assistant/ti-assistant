@@ -15061,6 +15061,16 @@
       "value": "Sub-Faction"
     }
   ],
+  "RnB2IL": [
+    {
+      "type": 1,
+      "value": "cardName"
+    },
+    {
+      "type": 0,
+      "value": " Secondary"
+    }
+  ],
   "S0vXJt": [
     {
       "type": 0,
@@ -22087,6 +22097,12 @@
       "value": "Agent"
     }
   ],
+  "eQmF5i": [
+    {
+      "type": 0,
+      "value": "Breakthrough"
+    }
+  ],
   "entq4x": [
     {
       "type": 0,
@@ -22161,6 +22177,16 @@
     {
       "type": 0,
       "value": "UNLOCK:"
+    }
+  ],
+  "fwxVVe": [
+    {
+      "type": 1,
+      "value": "cardName"
+    },
+    {
+      "type": 0,
+      "value": " Primary"
     }
   ],
   "fxKsk7": [

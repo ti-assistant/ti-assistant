@@ -10931,6 +10931,10 @@
     "defaultMessage": "Agent",
     "description": "The title of an agent: a leader that can get used once per round."
   },
+  "eQmF5i": {
+    "defaultMessage": "Breakthrough",
+    "description": "Faction ability introduced in Thunder's Edge that usually includes a tech synergy."
+  },
   "entq4x": {
     "defaultMessage": "Titles",
     "description": "Text on a button that will display titles."
