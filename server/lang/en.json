@@ -7587,6 +7587,10 @@
     "defaultMessage": "Sub-Faction",
     "description": "The faction that Council Keleres chooses."
   },
+  "RnB2IL": {
+    "defaultMessage": "{cardName} Secondary",
+    "description": "The secondary ability for a strategy card, including the card name."
+  },
   "S0vXJt": {
     "defaultMessage": "On Deck",
     "description": "Label showing that the specific player is up next."
@@ -10958,6 +10962,10 @@
   "frzrrT": {
     "defaultMessage": "UNLOCK:",
     "description": "Text that gets pre-fixed to a leader unlock condition."
+  },
+  "fwxVVe": {
+    "defaultMessage": "{cardName} Primary",
+    "description": "The main ability for a strategy card, including the card name."
   },
   "fxKsk7": {
     "defaultMessage": "Commander",

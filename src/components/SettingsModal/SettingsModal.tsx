@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 import { useContext, useState } from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import ColorPicker from "../../../app/[locale]/setup/components/ColorPicker";
 import PlayerNameInput from "../../../app/[locale]/setup/components/PlayerNameInput";
 import { SettingsContext } from "../../context/contexts";
@@ -109,7 +109,12 @@ function SettingsModalContent() {
             selected={selectedTab === "GAME SETTINGS"}
             style={{ fontFamily: "Myriad Pro", fontSize: rem(16) }}
           >
-            Game: {gameId}
+            <FormattedMessage
+              id="+XKsgE"
+              description="Text used to identify the current game."
+              defaultMessage="Game"
+            />
+            : {gameId}
           </Chip>
         ) : null}
       </div>
@@ -429,7 +434,13 @@ function GameSettings({ gameId }: { gameId: string }) {
         />
       </div>
       <LabeledDiv
-        label="Factions"
+        label={
+          <FormattedMessage
+            id="r2htpd"
+            description="Text on a button that will randomize factions."
+            defaultMessage="Factions"
+          />
+        }
         style={{
           width: "fit-content",
         }}

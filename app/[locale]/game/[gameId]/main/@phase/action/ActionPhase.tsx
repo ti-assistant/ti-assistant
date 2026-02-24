@@ -399,7 +399,14 @@ export function AdditionalActions({
               leftLabel={
                 isActive ? (
                   <InfoRow
-                    infoTitle={`${strategyCard?.name} Primary`}
+                    infoTitle={
+                      <FormattedMessage
+                        id="fwxVVe"
+                        description="The main ability for a strategy card, including the card name."
+                        defaultMessage="{cardName} Primary"
+                        values={{ cardName: strategyCard?.name }}
+                      />
+                    }
                     infoContent={
                       <FormattedDescription
                         description={strategyCard?.primary}
@@ -414,7 +421,14 @@ export function AdditionalActions({
                   </InfoRow>
                 ) : (
                   <InfoRow
-                    infoTitle={`${strategyCard?.name} Secondary`}
+                    infoTitle={
+                      <FormattedMessage
+                        id="RnB2IL"
+                        description="The secondary ability for a strategy card, including the card name."
+                        defaultMessage="{cardName} Secondary"
+                        values={{ cardName: strategyCard?.name }}
+                      />
+                    }
                     infoContent={
                       <FormattedDescription
                         description={strategyCard?.secondary}
@@ -443,7 +457,14 @@ export function AdditionalActions({
                   <LabeledLine
                     leftLabel={
                       <InfoRow
-                        infoTitle={`${strategyCard?.name} Secondary`}
+                        infoTitle={
+                          <FormattedMessage
+                            id="RnB2IL"
+                            description="The secondary ability for a strategy card, including the card name."
+                            defaultMessage="{cardName} Secondary"
+                            values={{ cardName: strategyCard?.name }}
+                          />
+                        }
                         infoContent={
                           <FormattedDescription
                             description={strategyCard?.secondary}
@@ -476,7 +497,14 @@ export function AdditionalActions({
               <LabeledLine
                 leftLabel={
                   <InfoRow
-                    infoTitle={`${strategyCard?.name} Primary`}
+                    infoTitle={
+                      <FormattedMessage
+                        id="fwxVVe"
+                        description="The main ability for a strategy card, including the card name."
+                        defaultMessage="{cardName} Primary"
+                        values={{ cardName: strategyCard?.name }}
+                      />
+                    }
                     infoContent={
                       <FormattedDescription
                         description={strategyCard?.primary}
@@ -512,7 +540,14 @@ export function AdditionalActions({
             <LabeledLine
               leftLabel={
                 <InfoRow
-                  infoTitle={`${strategyCard?.name} Secondary`}
+                  infoTitle={
+                    <FormattedMessage
+                      id="RnB2IL"
+                      description="The secondary ability for a strategy card, including the card name."
+                      defaultMessage="{cardName} Secondary"
+                      values={{ cardName: strategyCard?.name }}
+                    />
+                  }
                   infoContent={
                     <FormattedDescription
                       description={strategyCard?.secondary}
@@ -549,7 +584,14 @@ export function AdditionalActions({
             <LabeledLine
               leftLabel={
                 <InfoRow
-                  infoTitle={`${strategyCard?.name} Primary`}
+                  infoTitle={
+                    <FormattedMessage
+                      id="fwxVVe"
+                      description="The main ability for a strategy card, including the card name."
+                      defaultMessage="{cardName} Primary"
+                      values={{ cardName: strategyCard?.name }}
+                    />
+                  }
                   infoContent={
                     <FormattedDescription description={strategyCard?.primary} />
                   }
@@ -581,7 +623,14 @@ export function AdditionalActions({
           <LabeledLine
             leftLabel={
               <InfoRow
-                infoTitle={`${strategyCard?.name} Secondary`}
+                infoTitle={
+                  <FormattedMessage
+                    id="RnB2IL"
+                    description="The secondary ability for a strategy card, including the card name."
+                    defaultMessage="{cardName} Secondary"
+                    values={{ cardName: strategyCard?.name }}
+                  />
+                }
                 infoContent={
                   <FormattedDescription description={strategyCard?.secondary} />
                 }
@@ -609,7 +658,14 @@ export function AdditionalActions({
           <LabeledLine
             leftLabel={
               <InfoRow
-                infoTitle={`${strategyCard?.name} Primary`}
+                infoTitle={
+                  <FormattedMessage
+                    id="fwxVVe"
+                    description="The main ability for a strategy card, including the card name."
+                    defaultMessage="{cardName} Primary"
+                    values={{ cardName: strategyCard?.name }}
+                  />
+                }
                 infoContent={
                   <FormattedDescription description={strategyCard?.primary} />
                 }
@@ -640,7 +696,14 @@ export function AdditionalActions({
           <LabeledLine
             leftLabel={
               <InfoRow
-                infoTitle={`${strategyCard?.name} Secondary`}
+                infoTitle={
+                  <FormattedMessage
+                    id="RnB2IL"
+                    description="The secondary ability for a strategy card, including the card name."
+                    defaultMessage="{cardName} Secondary"
+                    values={{ cardName: strategyCard?.name }}
+                  />
+                }
                 infoContent={
                   <FormattedDescription description={strategyCard?.secondary} />
                 }
@@ -671,7 +734,14 @@ export function AdditionalActions({
           <LabeledLine
             leftLabel={
               <InfoRow
-                infoTitle={`${strategyCard?.name} Primary`}
+                infoTitle={
+                  <FormattedMessage
+                    id="fwxVVe"
+                    description="The main ability for a strategy card, including the card name."
+                    defaultMessage="{cardName} Primary"
+                    values={{ cardName: strategyCard?.name }}
+                  />
+                }
                 infoContent={
                   <FormattedDescription description={strategyCard?.primary} />
                 }
@@ -702,7 +772,14 @@ export function AdditionalActions({
           <LabeledLine
             leftLabel={
               <InfoRow
-                infoTitle={`${strategyCard?.name} Secondary`}
+                infoTitle={
+                  <FormattedMessage
+                    id="RnB2IL"
+                    description="The secondary ability for a strategy card, including the card name."
+                    defaultMessage="{cardName} Secondary"
+                    values={{ cardName: strategyCard?.name }}
+                  />
+                }
                 infoContent={
                   <FormattedDescription description={strategyCard?.secondary} />
                 }
@@ -731,7 +808,14 @@ export function AdditionalActions({
           <LabeledLine
             leftLabel={
               <InfoRow
-                infoTitle={`${strategyCard?.name} Primary`}
+                infoTitle={
+                  <FormattedMessage
+                    id="fwxVVe"
+                    description="The main ability for a strategy card, including the card name."
+                    defaultMessage="{cardName} Primary"
+                    values={{ cardName: strategyCard?.name }}
+                  />
+                }
                 infoContent={
                   <FormattedDescription description={strategyCard?.primary} />
                 }
@@ -762,7 +846,14 @@ export function AdditionalActions({
           <LabeledLine
             leftLabel={
               <InfoRow
-                infoTitle={`${strategyCard?.name} Secondary`}
+                infoTitle={
+                  <FormattedMessage
+                    id="RnB2IL"
+                    description="The secondary ability for a strategy card, including the card name."
+                    defaultMessage="{cardName} Secondary"
+                    values={{ cardName: strategyCard?.name }}
+                  />
+                }
                 infoContent={
                   <FormattedDescription description={strategyCard?.secondary} />
                 }
@@ -790,7 +881,14 @@ export function AdditionalActions({
           <LabeledLine
             leftLabel={
               <InfoRow
-                infoTitle={`${strategyCard?.name} Primary`}
+                infoTitle={
+                  <FormattedMessage
+                    id="fwxVVe"
+                    description="The main ability for a strategy card, including the card name."
+                    defaultMessage="{cardName} Primary"
+                    values={{ cardName: strategyCard?.name }}
+                  />
+                }
                 infoContent={
                   <FormattedDescription description={strategyCard?.primary} />
                 }
@@ -821,7 +919,14 @@ export function AdditionalActions({
           <LabeledLine
             leftLabel={
               <InfoRow
-                infoTitle={`${strategyCard?.name} Secondary`}
+                infoTitle={
+                  <FormattedMessage
+                    id="RnB2IL"
+                    description="The secondary ability for a strategy card, including the card name."
+                    defaultMessage="{cardName} Secondary"
+                    values={{ cardName: strategyCard?.name }}
+                  />
+                }
                 infoContent={
                   <FormattedDescription description={strategyCard?.secondary} />
                 }
@@ -850,7 +955,14 @@ export function AdditionalActions({
           <LabeledLine
             leftLabel={
               <InfoRow
-                infoTitle={`${strategyCard?.name} Primary`}
+                infoTitle={
+                  <FormattedMessage
+                    id="fwxVVe"
+                    description="The main ability for a strategy card, including the card name."
+                    defaultMessage="{cardName} Primary"
+                    values={{ cardName: strategyCard?.name }}
+                  />
+                }
                 infoContent={
                   <FormattedDescription description={strategyCard?.primary} />
                 }
@@ -881,7 +993,14 @@ export function AdditionalActions({
           <LabeledLine
             leftLabel={
               <InfoRow
-                infoTitle={`${strategyCard?.name} Secondary`}
+                infoTitle={
+                  <FormattedMessage
+                    id="RnB2IL"
+                    description="The secondary ability for a strategy card, including the card name."
+                    defaultMessage="{cardName} Secondary"
+                    values={{ cardName: strategyCard?.name }}
+                  />
+                }
                 infoContent={
                   <FormattedDescription description={strategyCard?.secondary} />
                 }
@@ -913,7 +1032,14 @@ export function AdditionalActions({
           <LabeledLine
             leftLabel={
               <InfoRow
-                infoTitle={`${strategyCard?.name} Primary`}
+                infoTitle={
+                  <FormattedMessage
+                    id="fwxVVe"
+                    description="The main ability for a strategy card, including the card name."
+                    defaultMessage="{cardName} Primary"
+                    values={{ cardName: strategyCard?.name }}
+                  />
+                }
                 infoContent={
                   <FormattedDescription description={strategyCard?.primary} />
                 }
@@ -944,7 +1070,14 @@ export function AdditionalActions({
           <LabeledLine
             leftLabel={
               <InfoRow
-                infoTitle={`${strategyCard?.name} Secondary`}
+                infoTitle={
+                  <FormattedMessage
+                    id="RnB2IL"
+                    description="The secondary ability for a strategy card, including the card name."
+                    defaultMessage="{cardName} Secondary"
+                    values={{ cardName: strategyCard?.name }}
+                  />
+                }
                 infoContent={
                   <FormattedDescription description={strategyCard?.secondary} />
                 }
@@ -978,7 +1111,14 @@ export function AdditionalActions({
           <LabeledLine
             leftLabel={
               <InfoRow
-                infoTitle={`${strategyCard?.name} Primary`}
+                infoTitle={
+                  <FormattedMessage
+                    id="fwxVVe"
+                    description="The main ability for a strategy card, including the card name."
+                    defaultMessage="{cardName} Primary"
+                    values={{ cardName: strategyCard?.name }}
+                  />
+                }
                 infoContent={
                   <FormattedDescription description={strategyCard?.primary} />
                 }
@@ -1008,7 +1148,14 @@ export function AdditionalActions({
           <LabeledLine
             leftLabel={
               <InfoRow
-                infoTitle={`${strategyCard?.name} Secondary`}
+                infoTitle={
+                  <FormattedMessage
+                    id="RnB2IL"
+                    description="The secondary ability for a strategy card, including the card name."
+                    defaultMessage="{cardName} Secondary"
+                    values={{ cardName: strategyCard?.name }}
+                  />
+                }
                 infoContent={
                   <FormattedDescription description={strategyCard?.secondary} />
                 }
@@ -1040,7 +1187,14 @@ export function AdditionalActions({
             <LabeledLine
               leftLabel={
                 <InfoRow
-                  infoTitle={`${strategyCard?.name} Primary`}
+                  infoTitle={
+                    <FormattedMessage
+                      id="fwxVVe"
+                      description="The main ability for a strategy card, including the card name."
+                      defaultMessage="{cardName} Primary"
+                      values={{ cardName: strategyCard?.name }}
+                    />
+                  }
                   infoContent={
                     <FormattedDescription description={strategyCard?.primary} />
                   }
@@ -1073,7 +1227,14 @@ export function AdditionalActions({
           <LabeledLine
             leftLabel={
               <InfoRow
-                infoTitle={`${strategyCard?.name} Secondary`}
+                infoTitle={
+                  <FormattedMessage
+                    id="RnB2IL"
+                    description="The secondary ability for a strategy card, including the card name."
+                    defaultMessage="{cardName} Secondary"
+                    values={{ cardName: strategyCard?.name }}
+                  />
+                }
                 infoContent={
                   <FormattedDescription description={strategyCard?.secondary} />
                 }
@@ -1104,7 +1265,14 @@ export function AdditionalActions({
           <LabeledLine
             leftLabel={
               <InfoRow
-                infoTitle={`${strategyCard?.name} Primary`}
+                infoTitle={
+                  <FormattedMessage
+                    id="fwxVVe"
+                    description="The main ability for a strategy card, including the card name."
+                    defaultMessage="{cardName} Primary"
+                    values={{ cardName: strategyCard?.name }}
+                  />
+                }
                 infoContent={
                   <FormattedDescription description={strategyCard?.primary} />
                 }
@@ -1135,7 +1303,14 @@ export function AdditionalActions({
           <LabeledLine
             leftLabel={
               <InfoRow
-                infoTitle={`${strategyCard?.name} Secondary`}
+                infoTitle={
+                  <FormattedMessage
+                    id="RnB2IL"
+                    description="The secondary ability for a strategy card, including the card name."
+                    defaultMessage="{cardName} Secondary"
+                    values={{ cardName: strategyCard?.name }}
+                  />
+                }
                 infoContent={
                   <FormattedDescription description={strategyCard?.secondary} />
                 }
@@ -1169,7 +1344,14 @@ export function AdditionalActions({
           <LabeledLine
             leftLabel={
               <InfoRow
-                infoTitle={`${strategyCard?.name} Primary`}
+                infoTitle={
+                  <FormattedMessage
+                    id="fwxVVe"
+                    description="The main ability for a strategy card, including the card name."
+                    defaultMessage="{cardName} Primary"
+                    values={{ cardName: strategyCard?.name }}
+                  />
+                }
                 infoContent={
                   <FormattedDescription description={strategyCard?.primary} />
                 }
@@ -1200,7 +1382,14 @@ export function AdditionalActions({
           <LabeledLine
             leftLabel={
               <InfoRow
-                infoTitle={`${strategyCard?.name} Secondary`}
+                infoTitle={
+                  <FormattedMessage
+                    id="RnB2IL"
+                    description="The secondary ability for a strategy card, including the card name."
+                    defaultMessage="{cardName} Secondary"
+                    values={{ cardName: strategyCard?.name }}
+                  />
+                }
                 infoContent={
                   <FormattedDescription description={strategyCard?.secondary} />
                 }

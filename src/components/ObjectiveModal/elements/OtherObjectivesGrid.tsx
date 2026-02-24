@@ -304,7 +304,6 @@ function OtherObjectives({
         <SimpleScorable
           objectiveId="Imperial Rider"
           orderedFactionIds={orderedFactionIds}
-          info="Can be scored multiple times via The Codex, Ral Nel's Breakthrough, and Garbozia's ability."
         />
       )}
       {zealousOrthodoxy ? (
@@ -417,19 +416,16 @@ function LawObjectives({
       <SimpleScorable
         objectiveId="Holy Planet of Ixth"
         orderedFactionIds={orderedFactionIds}
-        info="Can be scored 2x due to Miscount Disclosed."
       />
       {!includesPoK ? (
         <SimpleScorable
           objectiveId="Shard of the Throne"
           orderedFactionIds={orderedFactionIds}
-          info="Can be scored 2x due to Miscount Disclosed"
         />
       ) : null}
       <SimpleScorable
         objectiveId="The Crown of Emphidia"
         orderedFactionIds={orderedFactionIds}
-        info="Can be scored 2x due to Miscount Disclosed."
       />
       <SimpleScorable
         objectiveId="Political Censure"

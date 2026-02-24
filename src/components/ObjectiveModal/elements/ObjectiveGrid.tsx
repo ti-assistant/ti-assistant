@@ -137,7 +137,12 @@ export default function ObjectiveGrid({ asModal }: { asModal?: boolean }) {
           fontFamily: "Myriad Pro",
         }}
       >
-        Display:
+        <FormattedMessage
+          id="Z66nNr"
+          description="Label for group of things you can view."
+          defaultMessage="View"
+        />
+        :
         <Chip
           toggleFn={() => {
             updateSetting("display-objective-description", false);
