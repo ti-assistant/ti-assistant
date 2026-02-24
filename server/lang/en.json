@@ -127,6 +127,10 @@
     "defaultMessage": "Expansions:",
     "description": "A label for a selector specifying which expansions should be enabled."
   },
+  "33YjUQ": {
+    "defaultMessage": "Allow Voting",
+    "description": "Text on a button that will allow a faction to vote."
+  },
   "355TBA": {
     "defaultMessage": "Contributors",
     "description": "Label for section listing out people that worked on TI Assistant."
