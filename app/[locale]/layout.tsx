@@ -48,7 +48,7 @@ export default async function RootLayout({
       break;
     case "pl":
       fontSwitchStyle = {
-        "--main-font": "Myriad Pro",
+        "--main-font": "Russo One",
       };
       break;
   }
