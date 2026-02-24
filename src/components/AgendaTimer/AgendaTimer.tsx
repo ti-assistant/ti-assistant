@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useActionLog, useTimers } from "../../context/dataHooks";
-import { useGameState } from "../../context/stateDataHooks";
 import { getNthMostRecentAction } from "../../util/api/actionLog";
 import { rem } from "../../util/util";
 import TimerDisplay from "../TimerDisplay/TimerDisplay";
@@ -13,12 +12,12 @@ export default function AgendaTimer({ agendaNum }: { agendaNum: number }) {
   const firstResolution = getNthMostRecentAction(
     actionLog,
     "RESOLVE_AGENDA",
-    2
+    2,
   );
   const secondResolution = getNthMostRecentAction(
     actionLog,
     "RESOLVE_AGENDA",
-    1
+    1,
   );
 
   const [localTime, setLocalTime] = useState(timers.game ?? 0);
@@ -36,7 +35,9 @@ export default function AgendaTimer({ agendaNum }: { agendaNum: number }) {
       firstResolution?.gameSeconds ??
       secondResolution?.gameSeconds ??
       localTime;
-    timerEnd = firstResolution ? secondResolution?.gameSeconds ?? 0 : localTime;
+    timerEnd = firstResolution
+      ? (secondResolution?.gameSeconds ?? 0)
+      : localTime;
   }
 
   useEffect(() => {

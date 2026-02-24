@@ -5661,6 +5661,18 @@
       "value": "Nie można punktować celów publicznych"
     }
   ],
+  "Components.Age of Exploration.Description": [
+    {
+      "type": 0,
+      "value": "AKCJA: Wyczerp KONWERTER CIEMNEJ ENERGII i wybierz niebędący układem macierzystym krawędziowy układ, w którym znajdują się twoje statki, aby rzucić 1 kością. Przy wyniku 1-4 dobierz losowy nieużywany czerwony kafel; przy wyniku 5-10 dobierz losowy nieużywany niebieski kafel. Umieść ten kafel sąsiadująco z wybranym układem tak, aby stykał się z co najmniej 2 układami niebędącymi układami macierzystymi. Umieść żeton pogranicza w układzie, jeśli nie zawiera on żadnych planet."
+    }
+  ],
+  "Components.Conventions of War Abandoned.Description": [
+    {
+      "type": 0,
+      "value": "AKCJA: Wyczerp BROŃ BAKTERIOLOGICZNĄ X-89, aby wybrać 1 planetę w układzie, w którym znajduje się 1 z twoich jednostek posiadających BOMBARDOWANIE; usuń z gry kartę tej planety oraz wszystkie dołączone do niej karty lub karty zdolności legendarnych planet z nią związane."
+    }
+  ],
   "Components.Enigmatic Device.Description": [
     {
       "type": 0,
@@ -5707,6 +5719,48 @@
     {
       "type": 0,
       "value": "Otrzymaj Ulepszenie Jednostki"
+    }
+  ],
+  "Components.Mercenaries for Hire.Description": [
+    {
+      "type": 0,
+      "value": "AKCJA: Wydaj 3 żetony dóbr, aby dobrać wierzchnią kartę z talii najemników i umieścić ją w swoim obszarze gry."
+    }
+  ],
+  "Components.Steal Ability.Title": [
+    {
+      "type": 0,
+      "value": "Ukradnij kartę zdolności"
+    }
+  ],
+  "Components.Steal Genome.Title": [
+    {
+      "type": 0,
+      "value": "Ukradnij Genom"
+    }
+  ],
+  "Components.Steal Paradigm.Title": [
+    {
+      "type": 0,
+      "value": "Ukradnij Wzorzec"
+    }
+  ],
+  "Components.Steal Unit Upgrade.Title": [
+    {
+      "type": 0,
+      "value": "Ukradnij Ulepszenie Jednostki"
+    }
+  ],
+  "Components.Stellar Atomics.Description": [
+    {
+      "type": 0,
+      "value": "AKCJA: Odrzuć swój żeton strategii z karty Gwiezdny Arsenał Jądrowy aby zniszczyć wszystkie wojska naziemne i budynki na dowolnej nie-macierzystej planecie"
+    }
+  ],
+  "Components.Total War.Description": [
+    {
+      "type": 0,
+      "value": "AKCJA: Odrzuć 10 towarów z planet w twoim układzie macierzystym, aby zdobyć 1 punkt zwycięstwa."
     }
   ],
   "Council Keleres.Abilities.Council Patronage.Description": [
@@ -8967,6 +9021,20 @@
     {
       "type": 0,
       "value": "Dołącz"
+    }
+  ],
+  "KuClgv": [
+    {
+      "type": 0,
+      "value": "Celem TI Assistant jest dostarczenie jak największej ilości informacji przy minimalnym wymaganym ręcznym wprowadzaniu danych."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Poniższe opcje wymagają znacznego ręcznego wprowadzania danych i nie są zalecane dla większości grup."
     }
   ],
   "KzTGw5": [
@@ -21299,6 +21367,12 @@
       "value": "Punkty Imperialne"
     }
   ],
+  "eGQScU": [
+    {
+      "type": 0,
+      "value": "Zaawansowane Monitorowanie"
+    }
+  ],
   "eO0b2t": [
     {
       "type": 0,
@@ -22196,6 +22270,12 @@
     {
       "type": 0,
       "value": "Homebrew:"
+    }
+  ],
+  "x+prCn": [
+    {
+      "type": 0,
+      "value": "Żetony Dowodzenia"
     }
   ],
   "x42AMg": [

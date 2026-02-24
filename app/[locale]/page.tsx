@@ -90,6 +90,37 @@ export default async function Page({ params }: PageProps<"/[locale]">) {
           <SupportSection intl={intl} />
         </div>
       </div>
+      <div
+        className="flexColumn"
+        style={{
+          position: "absolute",
+          bottom: rem(8),
+          fontSize: rem(10),
+          textAlign: "center",
+          gap: rem(4),
+        }}
+      >
+        <div>
+          Twilight Imperium Assistant is not affiliated with{" "}
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href="https://www.fantasyflightgames.com/en/index/"
+          >
+            Fantasy&nbsp;Flight&nbsp;Games®
+          </a>
+        </div>
+        <div>
+          Twilight Imperium™ and all associated images are the property of{" "}
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href="https://www.fantasyflightgames.com/en/index/"
+          >
+            Fantasy&nbsp;Flight&nbsp;Games®
+          </a>
+        </div>
+      </div>
     </div>
   );
 }

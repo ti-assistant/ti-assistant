@@ -198,7 +198,16 @@ function RelicsSection() {
       }}
     >
       <div className="flexColumn" style={{ paddingBlockEnd: "0.5rem" }}>
-        <OptionalLine label="Owned Relics">
+        <OptionalLine
+          label={
+            <FormattedMessage
+              id="TFQQ7E"
+              defaultMessage="Owned {count, plural, one {Relic} other {Relics}}"
+              description="Relics which are owned by a player."
+              values={{ count: ownedRelics.length }}
+            />
+          }
+        >
           {ownedRelics.map((relic) => {
             const owner = relic.owner;
             if (!owner) {
@@ -245,7 +254,7 @@ function RelicsSection() {
               id="WkNCwM"
               defaultMessage="Unowned {count, plural, one {Relic} other {Relics}}"
               description="Relics which are not owned by anyone."
-              values={{ count: 2 }}
+              values={{ count: unownedRelics.length }}
             />
           }
         >
@@ -286,7 +295,16 @@ function RelicsSection() {
             );
           })}
         </OptionalLine>
-        <OptionalLine label="Purged Relics">
+        <OptionalLine
+          label={
+            <FormattedMessage
+              id="ljd6rP"
+              defaultMessage="Purged {count, plural, one {Relic} other {Relics}}"
+              description="Relics which have been purged."
+              values={{ count: purgedRelics.length }}
+            />
+          }
+        >
           {purgedRelics.length > 0 ? (
             <>
               {purgedRelics.map((relic) => {

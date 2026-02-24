@@ -635,7 +635,11 @@ export default function VoteBlock({
                 onClick={() => setOverrideVotingBlock(true)}
                 disabled={viewOnly}
               >
-                Allow Voting
+                <FormattedMessage
+                  id="33YjUQ"
+                  description="Text on a button that will allow a faction to vote."
+                  defaultMessage="Allow Voting"
+                />
               </button>
             </div>
           ) : (

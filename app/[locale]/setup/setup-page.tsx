@@ -2288,7 +2288,7 @@ export default function SetupPage() {
           style={{ width: "100%", gridArea: "start", minHeight: rem(114) }}
         >
           <div className="flexRow">
-            Speaker:
+            <Strings.Speaker />:
             <FactionSelectRadialMenu
               selectedFaction={setupFactions[speaker]?.id}
               borderColor={convertToFactionColor(setupFactions[speaker]?.color)}
@@ -2572,7 +2572,7 @@ export default function SetupPage() {
           </LabeledDiv>
           <div className="flexColumn" style={{ width: "100%" }}>
             <div className="flexRow">
-              Speaker:
+              <Strings.Speaker />:
               <FactionSelectRadialMenu
                 selectedFaction={setupFactions[speaker]?.id}
                 borderColor={convertToFactionColor(

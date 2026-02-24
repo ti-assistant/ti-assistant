@@ -1,7 +1,7 @@
 "use client";
 
 import React, { CSSProperties, ReactNode } from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import GainRelic from "../../../../../../../src/components/Actions/GainRelic";
 import GainTFCard from "../../../../../../../src/components/Actions/GainSplicedCard";
 import Conditional from "../../../../../../../src/components/Conditional/Conditional";
@@ -45,6 +45,11 @@ import { Optional } from "../../../../../../../src/util/types/types";
 import { objectEntries, rem } from "../../../../../../../src/util/util";
 import ComponentActions from "./ComponentActions/ComponentActions";
 import StrategicActions from "./StrategicActions/StrategicActions";
+import { Strings } from "../../../../../../../src/components/strings";
+import {
+  leaderTypeString,
+  unitTypeString,
+} from "../../../../../../../src/util/strings";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -86,6 +91,7 @@ function ComponentSelect({
 }) {
   const allActionCards = useActionCards();
   const factions = useFactions();
+  const intl = useIntl();
   const options = useOptions();
   const leaders = useLeaders();
   const relics = useRelics();
@@ -302,13 +308,13 @@ function ComponentSelect({
           >
             {leaderComponents.map((component) => {
               const leader = leaders[component.id as LeaderId];
-              if (!leader || leader.state === "purged") {
+              if (!leader || leader.state === "purged" || !component.leader) {
                 return null;
               }
               return (
                 <div className="flexColumn" key={component.id}>
                   <LabeledLine
-                    leftLabel={capitalizeFirstLetter(component.leader ?? "")}
+                    leftLabel={leaderTypeString(component.leader, intl)}
                   />
                   <button
                     className={leader.state === "exhausted" ? "faded" : ""}
@@ -469,9 +475,7 @@ function ComponentSelect({
               if (component.type === "FLAGSHIP") {
                 return (
                   <div className="flexColumn" key={component.id}>
-                    <LabeledLine
-                      leftLabel={capitalizeFirstLetter(component.type)}
-                    />
+                    <LabeledLine leftLabel={unitTypeString("Flagship", intl)} />
                     <button
                       className={
                         component.state === "exhausted" ||
@@ -496,7 +500,13 @@ function ComponentSelect({
                     style={{ minWidth: rem(150), alignItems: "flex-start" }}
                   >
                     <LabeledLine
-                      leftLabel={capitalizeFirstLetter(component.type)}
+                      leftLabel={
+                        <FormattedMessage
+                          id="eQmF5i"
+                          defaultMessage="Breakthrough"
+                          description="Faction ability introduced in Thunder's Edge that usually includes a tech synergy."
+                        />
+                      }
                     />
                     <button
                       className={
