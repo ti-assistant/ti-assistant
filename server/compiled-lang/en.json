@@ -19229,6 +19229,36 @@
       "value": "After this unit is destroyed or removed, place the unit on this card. At the start of the status phase, place each unit that is on this card on a planet you control."
     }
   ],
+  "TFQQ7E": [
+    {
+      "type": 0,
+      "value": "Owned "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Relic"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Relics"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
   "Techs.4X4IC Helios V2.Description": [
     {
       "type": 0,
@@ -22508,6 +22538,36 @@
     {
       "type": 0,
       "value": "Start Game"
+    }
+  ],
+  "ljd6rP": [
+    {
+      "type": 0,
+      "value": "Purged "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Relic"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Relics"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
   "mYdPrP": [

@@ -9443,6 +9443,10 @@
     "defaultMessage": "After this unit is destroyed or removed, place the unit on this card. At the start of the status phase, place each unit that is on this card on a planet you control.",
     "description": "Text of Twilight's Fall Unit Upgrade: Yin Clone"
   },
+  "TFQQ7E": {
+    "defaultMessage": "Owned {count, plural, one {Relic} other {Relics}}",
+    "description": "Relics which are owned by a player."
+  },
   "Techs.4X4IC Helios V2.Description": {
     "defaultMessage": "This unit's PRODUCTION value is equal to 4 more than the resource value of this planet.{br}The resource value of this planet is increased by 2.{br}Up to 3 fighters in this system do not count against your ships' capacity.",
     "description": "Description for Tech: 4X4IC Helios V2"
@@ -11074,6 +11078,10 @@
   "lYD2yu": {
     "defaultMessage": "Start Game",
     "description": "Text on a button that will start a game."
+  },
+  "ljd6rP": {
+    "defaultMessage": "Purged {count, plural, one {Relic} other {Relics}}",
+    "description": "Relics which have been purged."
   },
   "mYdPrP": {
     "defaultMessage": "Researched in {perc}% of games ({count} of {games})",
