@@ -4,6 +4,8 @@ import { DEFAULT_SETTINGS, Settings } from "./settings";
 import { createIntl, createIntlCache, IntlShape } from "react-intl";
 import { intlErrorFn } from "./util";
 
+export const SCHEMA_VERSION = "1.0.0" as const;
+
 export async function getMessages(
   locale: string,
 ): Promise<Record<string, string>> {

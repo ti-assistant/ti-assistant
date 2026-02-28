@@ -1,5 +1,5 @@
 import { Storage } from "@google-cloud/storage";
-import { getFirestore, Timestamp } from "firebase-admin/firestore";
+import { getFirestore, Timestamp, WriteResult } from "firebase-admin/firestore";
 import { Readable } from "stream";
 import { getFullActionLog, getTimers } from "../../../server/util/fetch";
 import { getBaseData } from "../../../src/data/baseData";
@@ -299,6 +299,38 @@ export async function reprocessGames() {
 
   stream.push(JSON.stringify(processedGames));
   stream.push(null);
+}
+
+export async function processOneGame(gameId: string) {
+  const db = getFirestore();
+
+  const gamesRef = db.collection("games").doc(gameId);
+
+  const gameData = await gamesRef.get();
+  const actionLog = await getFullActionLog(gameId, "games");
+  const locale = "en";
+
+  const intl = await getIntl(locale);
+  const baseData = getBaseData(intl);
+  const game = gameData.data() as StoredGameData;
+  if (!isCompletedGame(game, baseData, actionLog)) {
+    console.log("Not completed");
+    return;
+  }
+  const fixedGame = fixGame(game, baseData, actionLog);
+  if (!fixedGame) {
+    console.log("Couldn't fix game");
+    return;
+  }
+  console.log("Fixed log", fixedGame.actionLog[fixedGame.actionLog.length - 1]);
+  const timers = await getTimers(gameId, "timers");
+  const processedGame = processGame(
+    structuredClone(fixedGame),
+    baseData,
+    timers,
+  );
+  console.log("Processed", processedGame);
+  return;
 }
 
 function processGame(
@@ -645,7 +677,10 @@ function fixGame(game: StoredGameData, baseData: BaseData, log: ActionLog) {
     (fixedGame.actionLog ?? [])[1];
   switch (lastAction?.data.action) {
     case "SELECT_ACTION":
-      if (lastAction.data.event.action === "Imperial") {
+      if (
+        lastAction.data.event.action === "Imperial" ||
+        lastAction.data.event.action === "Aeterna"
+      ) {
         fixedGame.options["victory-points"] = maxPoints;
         break;
       }
@@ -720,6 +755,7 @@ async function archiveGame(
       .get();
     if (count.data().count === 0) {
       for (const logEntry of actionLog) {
+        delete logEntry.deleteAt;
         db.collection("archive")
           .doc(gameId)
           .collection("actionLog")

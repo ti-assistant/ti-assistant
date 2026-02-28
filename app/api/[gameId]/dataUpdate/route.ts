@@ -3,6 +3,7 @@ import {
   DocumentReference,
   FieldValue,
   Firestore,
+  Timestamp,
   Transaction,
   getFirestore,
 } from "firebase-admin/firestore";
@@ -55,6 +56,7 @@ import {
   LoseTFCardHandler,
 } from "../../../../src/util/model/gainTFCard";
 import { GiftOfPrescienceHandler } from "../../../../src/util/model/giftOfPrescience";
+import { ManualCCUpdateHandler } from "../../../../src/util/model/manualCCUpdate";
 import { ManualVoteUpdateHandler } from "../../../../src/util/model/manualVoteUpdate";
 import { ManualVPUpdateHandler } from "../../../../src/util/model/manualVPUpdate";
 import {
@@ -129,8 +131,8 @@ import { PassHandler, UnpassHandler } from "../../../../src/util/model/unpass";
 import { UpdateBreakthroughStateHandler } from "../../../../src/util/model/updateBreakthroughState";
 import { UpdateLeaderStateHandler } from "../../../../src/util/model/updateLeaderState";
 import { UpdatePlanetStateHandler } from "../../../../src/util/model/updatePlanetState";
+import { SCHEMA_VERSION } from "../../../../src/util/server";
 import { Optional } from "../../../../src/util/types/types";
-import { ManualCCUpdateHandler } from "../../../../src/util/model/manualCCUpdate";
 
 export async function POST(
   req: Request,
@@ -226,6 +228,7 @@ async function updateActionLog(
   t: Transaction,
   handler: Handler,
   gameTime: number,
+  deleteAt: Timestamp,
 ) {
   const currentTimestampMillis = Date.now();
   const turnBoundary = await t.get(
@@ -273,12 +276,14 @@ async function updateActionLog(
         return;
       }
       case "REPLACE": {
-        const logEntry = handler.getLogEntry();
+        const logEntry: Record<string, any> = handler.getLogEntry();
         logEntry.gameSeconds = gameTime;
         logEntry.timestampMillis = currentTimestampMillis;
+        logEntry.deleteAt = deleteAt;
+        logEntry.schema = SCHEMA_VERSION;
         t.update(
           gameRef.collection("actionLog").doc(storedLogEntry.id),
-          logEntry as Record<string, any>,
+          logEntry,
         );
         foundLogEntry = true;
         return;
@@ -305,12 +310,14 @@ async function updateActionLog(
           }
           t.update(gameRef, convertToServerUpdates(undoHandler.getUpdates()));
         }
-        const logEntry = handler.getLogEntry();
+        const logEntry: Record<string, any> = handler.getLogEntry();
         logEntry.gameSeconds = gameTime;
         logEntry.timestampMillis = currentTimestampMillis;
+        logEntry.deleteAt = deleteAt;
+        logEntry.schema = SCHEMA_VERSION;
         t.update(
           gameRef.collection("actionLog").doc(storedLogEntry.id),
-          logEntry as Record<string, any>,
+          logEntry,
         );
         foundLogEntry = true;
         return;
@@ -324,7 +331,14 @@ async function updateActionLog(
     return;
   }
 
-  insertLogEntry(gameRef, t, handler, gameTime, currentTimestampMillis);
+  insertLogEntry(
+    gameRef,
+    t,
+    handler,
+    gameTime,
+    currentTimestampMillis,
+    deleteAt,
+  );
 }
 
 function insertLogEntry(
@@ -333,10 +347,13 @@ function insertLogEntry(
   handler: Handler,
   gameTime: number,
   timestampMillis: number,
+  deleteAt: Timestamp,
 ) {
-  const logEntry = handler.getLogEntry();
+  const logEntry: Record<string, any> = handler.getLogEntry();
   logEntry.gameSeconds = gameTime;
   logEntry.timestampMillis = timestampMillis;
+  logEntry.deleteAt = deleteAt;
+  logEntry.schema = SCHEMA_VERSION;
 
   t.create(gameRef.collection("actionLog").doc(), logEntry);
 }
@@ -668,7 +685,7 @@ function updateInTransaction(
 
     updates[`lastUpdate`] = data.timestamp;
     // Needs to happen after handler.getUpdates();
-    await updateActionLog(gameRef, t, handler, gameTime);
+    await updateActionLog(gameRef, t, handler, gameTime, gameData.deleteAt);
 
     if (Object.keys(updates).length > 0) {
       t.update(gameRef, updates);

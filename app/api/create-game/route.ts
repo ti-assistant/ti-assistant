@@ -7,6 +7,7 @@ import {
   getIntl,
   getSessionIdFromCookie,
   hashPassword,
+  SCHEMA_VERSION,
   setSessionIdCookie,
 } from "../../../src/util/server";
 import { Optional } from "../../../src/util/types/types";
@@ -192,6 +193,7 @@ export async function POST(req: Request) {
     objectives: baseObjectives,
     deleteAt: Timestamp.fromDate(deleteDate),
     sequenceNum: 1,
+    schema: SCHEMA_VERSION,
   };
 
   let gameid = makeid(6);
