@@ -1,7 +1,7 @@
 import Negotiator from "negotiator";
 import { NextRequest, NextResponse } from "next/server";
 
-const locales = ["en", "de", "fr", "ru", "pl"];
+const locales = ["en", "de", "fr", "ru", "pl", "pt-BR"];
 
 function getLocale(request: NextRequest) {
   const lang_cookie = request.cookies.get("TI_LOCALE");

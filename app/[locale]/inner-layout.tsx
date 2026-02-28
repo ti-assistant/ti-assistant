@@ -10,7 +10,7 @@ import TimerProvider from "../../src/context/TimerProvider";
 import styles from "./root.module.scss";
 import Wrapper, { SettingsProvider } from "./wrapper";
 
-const SUPPORTED_LOCALES = ["en", "de", "fr", "ru", "pl"];
+const SUPPORTED_LOCALES = ["en", "de", "fr", "ru", "pl", "pt-BR"];
 
 export async function InnerLayout({
   children,
