@@ -1,6 +1,6 @@
 import { FormattedMessage } from "react-intl";
 import styles from "./FactionSummary.module.scss";
-import FactionIcon from "./components/FactionIcon/FactionIcon";
+import FactionComponents from "./components/FactionComponents/FactionComponents";
 import PlanetSummary from "./components/PlanetSummary/PlanetSummary";
 import TechSummary from "./components/TechSummary/TechSummary";
 import { Techs } from "./context/techDataHooks";
@@ -42,7 +42,7 @@ export default function LoadingFactionSummary() {
               userSelect: "none",
             }}
           >
-            <FactionIcon factionId={undefined} size="100%" />
+            <FactionComponents.Icon factionId={undefined} size="100%" />
           </div>
         </div>
         <div

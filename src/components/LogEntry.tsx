@@ -13,7 +13,7 @@ import { getFactionColor, getFactionName } from "../util/factions";
 import { getTechColor } from "../util/techs";
 import { rem } from "../util/util";
 import ExpeditionIcon from "./Expedition/ExpeditionIcon";
-import FactionIcon from "./FactionIcon/FactionIcon";
+import FactionComponents from "./FactionComponents/FactionComponents";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 import TimerDisplay from "./TimerDisplay/TimerDisplay";
@@ -467,7 +467,10 @@ export function LogEntryElement({
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} />
           selected {logEntry.data.event.subFaction}
-          <FactionIcon factionId={logEntry.data.event.subFaction} size={20} />
+          <FactionComponents.Icon
+            factionId={logEntry.data.event.subFaction}
+            size={20}
+          />
           as their sub-faction
         </div>
       );

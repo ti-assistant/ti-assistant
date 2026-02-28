@@ -10,7 +10,7 @@ import {
 import { getTechTypeColor } from "../../util/techs";
 import { Optional } from "../../util/types/types";
 import { rem } from "../../util/util";
-import FactionIcon from "../FactionIcon/FactionIcon";
+import FactionComponents from "../FactionComponents/FactionComponents";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import TechIcon from "../TechIcon/TechIcon";
 
@@ -127,7 +127,7 @@ export default function PlanetOverlay({
                   position: "absolute",
                   backgroundColor: "var(--background-color)",
                   border: `var(--border-size) solid ${getFactionColor(
-                    factions[planet.owner]
+                    factions[planet.owner],
                   )}`,
                   borderRadius: "100%",
                   width: width,
@@ -136,7 +136,7 @@ export default function PlanetOverlay({
                   marginTop: `${planet.position?.y}%`,
                 }}
               >
-                <FactionIcon factionId={planet.owner} size="75%" />
+                <FactionComponents.Icon factionId={planet.owner} size="75%" />
               </div>
             );
             break;
@@ -158,7 +158,7 @@ export default function PlanetOverlay({
                   position: "absolute",
                   backgroundColor: "var(--background-color)",
                   border: `var(--border-size) solid ${getPlanetTypeColor(
-                    planet.types[0]
+                    planet.types[0],
                   )}`,
                   borderColor: `${leftColor} ${rightColor} ${rightColor} ${leftColor}`,
                   borderRadius: "100%",
@@ -233,7 +233,7 @@ export default function PlanetOverlay({
                     position: "absolute",
                     backgroundColor: "var(--background-color)",
                     border: `var(--border-size) solid ${getTechTypeColor(
-                      color
+                      color,
                     )}`,
                     borderRadius: "100%",
                     width: width,

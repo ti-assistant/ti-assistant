@@ -2,7 +2,7 @@ import { Fragment, use, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import Chip from "../../../../src/components/Chip/Chip";
 import { CollapsibleSection } from "../../../../src/components/CollapsibleSection";
-import FactionIcon from "../../../../src/components/FactionIcon/FactionIcon";
+import FactionComponents from "../../../../src/components/FactionComponents/FactionComponents";
 import { DatabaseFnsContext } from "../../../../src/context/contexts";
 import { objectiveTypeString } from "../../../../src/util/strings";
 import { Optional } from "../../../../src/util/types/types";
@@ -42,9 +42,9 @@ export default function FactionModal({
           border: "1px solid var(--neutral-border)",
         }}
       >
-        <FactionIcon factionId={id} size={36} />
+        <FactionComponents.Icon factionId={id} size={36} />
         {name}
-        <FactionIcon factionId={id} size={36} />
+        <FactionComponents.Icon factionId={id} size={36} />
       </div>
       <div
         className="flexColumn largeFont"

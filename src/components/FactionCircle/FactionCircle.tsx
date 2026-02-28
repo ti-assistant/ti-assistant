@@ -1,7 +1,7 @@
 import { CSSProperties, ReactNode } from "react";
 import { SymbolX } from "../../icons/svgs";
 import Circle from "../Circle/Circle";
-import FactionIcon from "../FactionIcon/FactionIcon";
+import FactionComponents from "../FactionComponents/FactionComponents";
 
 interface FactionCircleProps {
   blur?: boolean;
@@ -38,7 +38,7 @@ export default function FactionCircle({
       tagBorderColor={tagBorderColor}
     >
       {factionId ? (
-        <FactionIcon factionId={factionId} size="100%" />
+        <FactionComponents.Icon factionId={factionId} size="100%" />
       ) : (
         <SymbolX color={style.color} />
       )}

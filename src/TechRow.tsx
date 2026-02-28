@@ -2,7 +2,7 @@ import { FormattedMessage } from "react-intl";
 import InfoModal from "./InfoModal";
 import { SelectableRow } from "./SelectableRow";
 import styles from "./TechRow.module.scss";
-import FactionIcon from "./components/FactionIcon/FactionIcon";
+import FactionComponents from "./components/FactionComponents/FactionComponents";
 import FactionSelectRadialMenu from "./components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import FormattedDescription from "./components/FormattedDescription/FormattedDescription";
 import TechIcon from "./components/TechIcon/TechIcon";
@@ -158,7 +158,7 @@ export function TechRow({
                     position: "relative",
                   }}
                 >
-                  <FactionIcon factionId={tech.faction} size={24} />
+                  <FactionComponents.Icon factionId={tech.faction} size={24} />
                 </div>
               </div>
             ) : null}

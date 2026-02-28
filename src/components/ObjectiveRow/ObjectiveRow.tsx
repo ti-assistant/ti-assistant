@@ -2,7 +2,7 @@ import { useViewOnly } from "../../context/dataHooks";
 import InfoModal from "../../InfoModal";
 import { SelectableRow } from "../../SelectableRow";
 import { rem } from "../../util/util";
-import FactionIcon from "../FactionIcon/FactionIcon";
+import FactionComponents from "../FactionComponents/FactionComponents";
 import FormattedDescription from "../FormattedDescription/FormattedDescription";
 
 interface InfoContentProps {
@@ -154,7 +154,7 @@ export default function ObjectiveRow({
                     >
                       &#x2715;
                     </div>
-                    <FactionIcon factionId={scorer} size="100%" />
+                    <FactionComponents.Icon factionId={scorer} size="100%" />
                   </div>
                 );
               }
@@ -168,7 +168,7 @@ export default function ObjectiveRow({
                     height: rem(32),
                   }}
                 >
-                  <FactionIcon factionId={scorer} size="100%" />
+                  <FactionComponents.Icon factionId={scorer} size="100%" />
                 </div>
               );
             })}

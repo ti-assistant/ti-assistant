@@ -9,7 +9,7 @@ import { Events } from "../../../util/api/events";
 import { Optional } from "../../../util/types/types";
 import { rem } from "../../../util/util";
 import Chip from "../../Chip/Chip";
-import FactionIcon from "../../FactionIcon/FactionIcon";
+import FactionComponents from "../../FactionComponents/FactionComponents";
 import FactionSelectRadialMenu from "../../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledDiv from "../../LabeledDiv/LabeledDiv";
 import ObjectiveRow from "../../ObjectiveRow/ObjectiveRow";
@@ -135,7 +135,9 @@ function SupportForTheThrone({
                     );
                   }
                 }}
-                tag={<FactionIcon factionId={factionId} size="100%" />}
+                tag={
+                  <FactionComponents.Icon factionId={factionId} size="100%" />
+                }
                 tagBorderColor={factionColors[factionId]}
                 borderColor={scorer ? factionColors[scorer] : undefined}
                 viewOnly={viewOnly}
@@ -252,7 +254,7 @@ function ImperialPoints({
                   opacity: imperialPoints === 0 ? 0.2 : undefined,
                 }}
               >
-                <FactionIcon factionId={faction} size="100%" />
+                <FactionComponents.Icon factionId={faction} size="100%" />
                 <div
                   className="flexRow"
                   style={{
@@ -742,7 +744,7 @@ function TotalWar({ orderedFactionIds }: { orderedFactionIds: FactionId[] }) {
                   +
                 </div>
               )}
-              <FactionIcon factionId={faction} size="100%" />
+              <FactionComponents.Icon factionId={faction} size="100%" />
               <div
                 className="flexRow"
                 style={{

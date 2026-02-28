@@ -38,7 +38,6 @@ import { objectEntries, rem } from "../../util/util";
 import Conditional from "../Conditional/Conditional";
 import ExpansionIcon from "../ExpansionIcon/ExpansionIcon";
 import FactionComponents from "../FactionComponents/FactionComponents";
-import FactionIcon from "../FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import FormattedDescription from "../FormattedDescription/FormattedDescription";
 import TechIcon from "../TechIcon/TechIcon";
@@ -194,7 +193,7 @@ export default function StartingComponents({
     <div className={styles.StartingComponents}>
       {showFactionIcon ? (
         <div className={styles.FactionIcon}>
-          <FactionIcon factionId={factionId} size={60} />
+          <FactionComponents.Icon factionId={factionId} size={60} />
         </div>
       ) : null}
       {options.expansions.includes("TWILIGHTS FALL") ? (
@@ -542,7 +541,7 @@ function TFFactionSelect({
                 )
               }
             >
-              <FactionIcon factionId={faction.id} size={20} />
+              <FactionComponents.Icon factionId={faction.id} size={20} />
               {faction.name}
               {faction.expansion !== "BASE" ? (
                 <>

@@ -25,7 +25,7 @@ import { rem } from "../../util/util";
 import { CollapsibleSection } from "../CollapsibleSection";
 import ExpeditionIcon from "../Expedition/ExpeditionIcon";
 import FactionCircle from "../FactionCircle/FactionCircle";
-import FactionIcon from "../FactionIcon/FactionIcon";
+import FactionComponents from "../FactionComponents/FactionComponents";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import FormattedDescription from "../FormattedDescription/FormattedDescription";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
@@ -496,7 +496,9 @@ function PromissoriesSection() {
                   borderColor={getFactionColor(
                     supportHolder ? factions[supportHolder] : undefined,
                   )}
-                  tag={<FactionIcon factionId={factionId} size="100%" />}
+                  tag={
+                    <FactionComponents.Icon factionId={factionId} size="100%" />
+                  }
                   tagBorderColor={getFactionColor(factions[factionId])}
                   // size={24}
                   viewOnly={viewOnly}
@@ -571,7 +573,12 @@ function PromissoriesSection() {
                         ? "#555"
                         : getFactionColor(owner ? factions[owner] : undefined)
                     }
-                    tag={<FactionIcon factionId={factionId} size="100%" />}
+                    tag={
+                      <FactionComponents.Icon
+                        factionId={factionId}
+                        size="100%"
+                      />
+                    }
                     tagBorderColor={getFactionColor(factions[factionId])}
                     // size={24}
                     viewOnly={viewOnly}
@@ -587,7 +594,10 @@ function PromissoriesSection() {
                   className="flexRow"
                   style={{ fontSize: rem(16), gap: rem(4) }}
                 >
-                  <FactionIcon factionId="Mahact Gene-Sorcerers" size={16} />
+                  <FactionComponents.Icon
+                    factionId="Mahact Gene-Sorcerers"
+                    size={16}
+                  />
                   <FormattedMessage
                     id="LkSYQA"
                     defaultMessage="Fleet Pool Tokens"
@@ -650,7 +660,10 @@ function PromissoriesSection() {
                           } as ExtendedCSS
                         }
                       >
-                        <FactionIcon factionId={factionId} size="100%" />
+                        <FactionComponents.Icon
+                          factionId={factionId}
+                          size="100%"
+                        />
                       </div>
                     </div>
                   );
@@ -665,7 +678,10 @@ function PromissoriesSection() {
                   className="flexRow"
                   style={{ fontSize: rem(16), gap: rem(4) }}
                 >
-                  <FactionIcon factionId="Yin Brotherhood" size={16} />
+                  <FactionComponents.Icon
+                    factionId="Yin Brotherhood"
+                    size={16}
+                  />
                   <FormattedMessage
                     id="Promissories.Alliance.Title"
                     defaultMessage="{count, plural, one {Alliance} other {Alliances}}"
@@ -721,7 +737,10 @@ function PromissoriesSection() {
                     viewOnly ? styles.viewOnly : ""
                   }`}
                       >
-                        <FactionIcon factionId={faction.id} size="100%" />
+                        <FactionComponents.Icon
+                          factionId={faction.id}
+                          size="100%"
+                        />
                       </div>
                     </div>
                   );

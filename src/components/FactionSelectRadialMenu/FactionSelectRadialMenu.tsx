@@ -1,10 +1,10 @@
 import React, { CSSProperties, ReactNode, useRef, useState } from "react";
 import { SymbolX } from "../../icons/svgs";
-import FactionCircle from "../FactionCircle/FactionCircle";
-import FactionIcon from "../FactionIcon/FactionIcon";
-import styles from "./FactionSelectRadialMenu.module.scss";
 import { Optional } from "../../util/types/types";
 import { rem } from "../../util/util";
+import FactionCircle from "../FactionCircle/FactionCircle";
+import FactionComponents from "../FactionComponents/FactionComponents";
+import styles from "./FactionSelectRadialMenu.module.scss";
 
 interface FactionSelectRadialMenuProps {
   selectedFaction?: FactionId;
@@ -14,7 +14,7 @@ interface FactionSelectRadialMenuProps {
   invalidFactions?: FactionId[];
   onSelect: (
     factionId: Optional<FactionId>,
-    prevFaction: Optional<FactionId>
+    prevFaction: Optional<FactionId>,
   ) => void;
   size?: number;
   tag?: ReactNode;
@@ -29,11 +29,12 @@ function getRadialPosition(index: number, numOptions: number, size: number) {
   const center = (size * 3) / 2;
   const pos = {
     "--y-pos": rem(
-      Math.round(100 * (center - size * Math.cos(radians) - size / 2 + 2)) / 100
+      Math.round(100 * (center - size * Math.cos(radians) - size / 2 + 2)) /
+        100,
     ),
     "--x-pos": rem(
       Math.round(100 * (center - size * -Math.sin(radians) - size / 2 + 2)) /
-        100
+        100,
     ),
     "--initial-y": rem(size + 2),
     "--initial-x": rem(size + 2),
@@ -147,7 +148,10 @@ export default function FactionSelectRadialMenu({
                     {factionId === selectedFaction && !isInvalid ? (
                       <SymbolX />
                     ) : (
-                      <FactionIcon factionId={factionId} size="100%" />
+                      <FactionComponents.Icon
+                        factionId={factionId}
+                        size="100%"
+                      />
                     )}
                   </div>
                 </div>
@@ -177,7 +181,10 @@ export default function FactionSelectRadialMenu({
                   }}
                 >
                   {selectedFaction ? (
-                    <FactionIcon factionId={selectedFaction} size="100%" />
+                    <FactionComponents.Icon
+                      factionId={selectedFaction}
+                      size="100%"
+                    />
                   ) : (
                     <SymbolX />
                   )}

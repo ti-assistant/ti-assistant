@@ -10,7 +10,6 @@ import { useDataUpdate } from "../../util/api/dataUpdate";
 import { Optional } from "../../util/types/types";
 import { rem } from "../../util/util";
 import FactionComponents from "../FactionComponents/FactionComponents";
-import FactionIcon from "../FactionIcon/FactionIcon";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
 
@@ -48,7 +47,7 @@ export default function MawOfWorlds({}) {
               description="Title of Relic: Maw of Worlds"
             />
 
-            <FactionIcon factionId={mawOfWorlds.owner} size={16} />
+            <FactionComponents.Icon factionId={mawOfWorlds.owner} size={16} />
           </div>
         }
         color={factionColor}

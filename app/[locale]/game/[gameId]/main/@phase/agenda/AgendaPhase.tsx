@@ -3,7 +3,6 @@ import { FormattedMessage, useIntl } from "react-intl";
 import AgendaTimer from "../../../../../../../src/components/AgendaTimer/AgendaTimer";
 import Conditional from "../../../../../../../src/components/Conditional/Conditional";
 import FactionComponents from "../../../../../../../src/components/FactionComponents/FactionComponents";
-import FactionIcon from "../../../../../../../src/components/FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../../../../../../../src/components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledDiv from "../../../../../../../src/components/LabeledDiv/LabeledDiv";
 import MawOfWorlds from "../../../../../../../src/components/MawOfWorlds/MawOfWorlds";
@@ -371,7 +370,7 @@ function DictatePolicy({}) {
                 height: rem(32),
               }}
             >
-              <FactionIcon factionId={factionId} size="100%" />
+              <FactionComponents.Icon factionId={factionId} size="100%" />
               <div
                 className="flexRow"
                 style={{

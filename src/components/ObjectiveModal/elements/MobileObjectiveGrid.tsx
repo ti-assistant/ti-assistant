@@ -21,8 +21,6 @@ import { objectiveTypeString } from "../../../util/strings";
 import { rem } from "../../../util/util";
 import { CollapsibleSection } from "../../CollapsibleSection";
 import FactionComponents from "../../FactionComponents/FactionComponents";
-import FactionName from "../../FactionComponents/FactionName";
-import FactionIcon from "../../FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledDiv from "../../LabeledDiv/LabeledDiv";
 import { ModalContent } from "../../Modal/Modal";
@@ -423,7 +421,7 @@ export default function MobileObjectiveGrid() {
                           }
                     }
                   >
-                    <FactionIcon factionId={name} size="100%" />
+                    <FactionComponents.Icon factionId={name} size="100%" />
                     <div
                       className="flexRow"
                       style={{
@@ -559,7 +557,7 @@ export default function MobileObjectiveGrid() {
                         +
                       </div>
                     )}
-                    <FactionIcon factionId={faction} size="100%" />
+                    <FactionComponents.Icon factionId={faction} size="100%" />
                     <div
                       className="flexRow"
                       style={{
@@ -690,7 +688,7 @@ export default function MobileObjectiveGrid() {
                           +
                         </div>
                       )}
-                      <FactionIcon factionId={faction} size="100%" />
+                      <FactionComponents.Icon factionId={faction} size="100%" />
                       <div
                         className="flexRow"
                         style={{
@@ -763,7 +761,7 @@ export default function MobileObjectiveGrid() {
                         );
                       }
                     }}
-                    tag={<FactionIcon factionId={id} size="100%" />}
+                    tag={<FactionComponents.Icon factionId={id} size="100%" />}
                     tagBorderColor={factionColors[id]}
                     borderColor={scorer ? factionColors[scorer] : undefined}
                     viewOnly={viewOnly}
@@ -992,7 +990,7 @@ function FactionNameAndVPs({ factionId }: { factionId: FactionId }) {
 
   return (
     <LabeledDiv
-      label={<FactionName factionId={factionId} />}
+      label={<FactionComponents.Name factionId={factionId} />}
       color={factionColor}
       opts={{ fixedWidth: true }}
     >
@@ -1008,7 +1006,7 @@ function FactionNameAndVPs({ factionId }: { factionId: FactionId }) {
           top: 0,
         }}
       >
-        <FactionIcon factionId={factionId} size="90%" />
+        <FactionComponents.Icon factionId={factionId} size="90%" />
       </div>
       <div
         className="flexRow"

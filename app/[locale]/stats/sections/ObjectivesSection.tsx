@@ -2,7 +2,7 @@ import { Fragment, use, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import Chip from "../../../../src/components/Chip/Chip";
 import { CollapsibleSection } from "../../../../src/components/CollapsibleSection";
-import FactionIcon from "../../../../src/components/FactionIcon/FactionIcon";
+import FactionComponents from "../../../../src/components/FactionComponents/FactionComponents";
 import LabeledDiv from "../../../../src/components/LabeledDiv/LabeledDiv";
 import {
   DatabaseFnsContext,
@@ -270,7 +270,7 @@ function FactionsTable({
                   alignItems: "flex-start",
                 }}
               >
-                <FactionIcon factionId={factionId} size={18} />
+                <FactionComponents.Icon factionId={factionId} size={18} />
                 <div>{factionId}</div>
               </td>
               <td>

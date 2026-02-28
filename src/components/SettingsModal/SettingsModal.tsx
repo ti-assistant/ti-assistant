@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 import { useContext, useState } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import ColorPicker from "../../../app/[locale]/setup/components/ColorPicker";
 import PlayerNameInput from "../../../app/[locale]/setup/components/PlayerNameInput";
 import { SettingsContext } from "../../context/contexts";
@@ -18,7 +18,7 @@ import { convertToFactionColor } from "../../util/factions";
 import { Settings } from "../../util/settings";
 import { rem } from "../../util/util";
 import Chip from "../Chip/Chip";
-import FactionIcon from "../FactionIcon/FactionIcon";
+import FactionComponents from "../FactionComponents/FactionComponents";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import NumberInput from "../NumberInput/NumberInput";
 import TechIcon from "../TechIcon/TechIcon";
@@ -461,7 +461,7 @@ function GameSettings({ gameId }: { gameId: string }) {
                     faction.color === "Black" ? BLACK_BORDER_GLOW : undefined,
                 }}
               >
-                <FactionIcon factionId={faction.id} size={36} />
+                <FactionComponents.Icon factionId={faction.id} size={36} />
               </div>
               <PlayerNameInput
                 color={convertToFactionColor(faction.color)}

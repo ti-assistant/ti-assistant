@@ -15,7 +15,6 @@ import { objectiveTypeString } from "../../../util/strings";
 import { rem } from "../../../util/util";
 import Chip from "../../Chip/Chip";
 import FactionComponents from "../../FactionComponents/FactionComponents";
-import FactionIcon from "../../FactionIcon/FactionIcon";
 import LabeledDiv from "../../LabeledDiv/LabeledDiv";
 import ObjectiveSelectHoverMenu from "../../ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import ObjectiveGridSection from "./ObjectiveGridSection";
@@ -216,7 +215,7 @@ export default function ObjectiveGrid({ asModal }: { asModal?: boolean }) {
                 zIndex: -1,
               }}
             >
-              <FactionIcon factionId={name} size="100%" />
+              <FactionComponents.Icon factionId={name} size="100%" />
             </div>
             {<FactionComponents.Name factionId={name} />}
           </div>

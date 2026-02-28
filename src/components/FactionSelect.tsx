@@ -3,7 +3,7 @@ import { SymbolX } from "../icons/svgs";
 import { Optional } from "../util/types/types";
 import { rem } from "../util/util";
 import FactionCircle from "./FactionCircle/FactionCircle";
-import FactionIcon from "./FactionIcon/FactionIcon";
+import FactionComponents from "./FactionComponents/FactionComponents";
 import styles from "./FactionSelect.module.scss";
 
 interface FactionSelectProps {
@@ -104,7 +104,7 @@ export function FactionSelectHoverMenu({
                 onSelect(factionId, undefined);
               }}
             >
-              <FactionIcon factionId={factionId} size={size - 10} />
+              <FactionComponents.Icon factionId={factionId} size={size - 10} />
             </div>
           );
         })}

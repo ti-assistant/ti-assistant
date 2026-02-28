@@ -7,7 +7,6 @@ import ExpeditionSelector from "../../../../../../../src/components/Expedition/E
 import FactionCard from "../../../../../../../src/components/FactionCard/FactionCard";
 import FactionCircle from "../../../../../../../src/components/FactionCircle/FactionCircle";
 import FactionComponents from "../../../../../../../src/components/FactionComponents/FactionComponents";
-import FactionIcon from "../../../../../../../src/components/FactionIcon/FactionIcon";
 import FormattedDescription from "../../../../../../../src/components/FormattedDescription/FormattedDescription";
 import LabeledDiv from "../../../../../../../src/components/LabeledDiv/LabeledDiv";
 import LabeledLine from "../../../../../../../src/components/LabeledLine/LabeledLine";
@@ -61,10 +60,7 @@ import {
 import { getSelectedActionFromLog } from "../../../../../../../src/util/api/data";
 import { useDataUpdate } from "../../../../../../../src/util/api/dataUpdate";
 import { Events } from "../../../../../../../src/util/api/events";
-import {
-  getFactionColor,
-  getFactionName,
-} from "../../../../../../../src/util/factions";
+import { getFactionColor } from "../../../../../../../src/util/factions";
 import { getStrategyCardsForFaction } from "../../../../../../../src/util/helpers";
 import { sortStrategyCards } from "../../../../../../../src/util/strategyCards";
 import { phaseString } from "../../../../../../../src/util/strings";
@@ -118,7 +114,7 @@ function SecondaryFactionCheck({
           }
         }}
       >
-        <FactionIcon factionId={factionId} size={24} />
+        <FactionComponents.Icon factionId={factionId} size={24} />
       </MultiStateToggle>
       <FactionSecondaryTimer
         factionId={factionId}
@@ -1665,7 +1661,7 @@ function PuppetsOnAString({ activeFactionId }: { activeFactionId: FactionId }) {
               )
             }
           >
-            <FactionIcon factionId={factionId} size={20} />
+            <FactionComponents.Icon factionId={factionId} size={20} />
           </button>
         );
       })}
@@ -1798,7 +1794,10 @@ function ActivePlayerColumn({
                       userSelect: "none",
                     }}
                   >
-                    <FactionIcon factionId={onDeckFactionId} size="100%" />
+                    <FactionComponents.Icon
+                      factionId={onDeckFactionId}
+                      size="100%"
+                    />
                   </div>
                 </div>
               </LabeledDiv>

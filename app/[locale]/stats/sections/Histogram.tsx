@@ -1,5 +1,5 @@
 import { FormattedMessage } from "react-intl";
-import FactionIcon from "../../../../src/components/FactionIcon/FactionIcon";
+import FactionComponents from "../../../../src/components/FactionComponents/FactionComponents";
 import { objectEntries, rem } from "../../../../src/util/util";
 import styles from "./Histogram.module.scss";
 import { HistogramData } from "./types";
@@ -165,7 +165,7 @@ export function FactionHistogram({
                   width: rem(16),
                 }}
               >
-                <FactionIcon factionId={key} size={16} />
+                <FactionComponents.Icon factionId={key} size={16} />
               </div>
             </div>
           );

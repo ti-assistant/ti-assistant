@@ -1,6 +1,6 @@
 import { Fragment, use } from "react";
 import { FormattedMessage } from "react-intl";
-import FactionIcon from "../../../../src/components/FactionIcon/FactionIcon";
+import FactionComponents from "../../../../src/components/FactionComponents/FactionComponents";
 import LabeledDiv from "../../../../src/components/LabeledDiv/LabeledDiv";
 import {
   DatabaseFnsContext,
@@ -275,9 +275,9 @@ export default function FactionsSection({
                 key={id}
                 label={
                   <div className="flexRow" style={{ gap: rem(4) }}>
-                    <FactionIcon factionId={id} size={20} />
+                    <FactionComponents.Icon factionId={id} size={20} />
                     {id}
-                    <FactionIcon factionId={id} size={20} />
+                    <FactionComponents.Icon factionId={id} size={20} />
                   </div>
                 }
                 innerStyle={{ gap: rem(2) }}
@@ -294,7 +294,7 @@ export default function FactionsSection({
                       zIndex: -1,
                     }}
                   >
-                    <FactionIcon factionId={id} size={80} />
+                    <FactionComponents.Icon factionId={id} size={80} />
                   </div>
                   <div
                     className="flexColumn"

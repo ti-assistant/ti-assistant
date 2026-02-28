@@ -47,7 +47,6 @@ import {
 import GenomeRow from "../Actions/GenomeRow";
 import { CollapsibleSection } from "../CollapsibleSection";
 import FactionComponents from "../FactionComponents/FactionComponents";
-import FactionIcon from "../FactionIcon/FactionIcon";
 import FormattedDescription from "../FormattedDescription/FormattedDescription";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import { Selector } from "../Selector/Selector";
@@ -146,7 +145,7 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                       opacity: 0.3,
                     }}
                   >
-                    <FactionIcon factionId={factionId} size="100%" />
+                    <FactionComponents.Icon factionId={factionId} size="100%" />
                   </div>
                 </div>
                 <div
@@ -398,7 +397,7 @@ function TechUpdateIcon({
           } as ExtendedCSS
         }
       >
-        <FactionIcon factionId={factionId} size="100%" />
+        <FactionComponents.Icon factionId={factionId} size="100%" />
       </div>
     </div>
   );
@@ -524,9 +523,9 @@ function TechsByFaction({
             whiteSpace: "nowrap",
           }}
         >
-          <FactionIcon factionId={factionId} size={20} />
+          <FactionComponents.Icon factionId={factionId} size={20} />
           {getFactionName(faction)}
-          <FactionIcon factionId={factionId} size={20} />
+          <FactionComponents.Icon factionId={factionId} size={20} />
         </div>
       }
       openedByDefault={openedByDefault}
@@ -554,7 +553,7 @@ function TechsByFaction({
             zIndex: 0,
           }}
         >
-          <FactionIcon factionId={factionId} size={120} />
+          <FactionComponents.Icon factionId={factionId} size={120} />
         </div>
         <div
           className="flexRow"

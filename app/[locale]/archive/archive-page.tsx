@@ -9,7 +9,7 @@ import {
   useState,
 } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
+import FactionComponents from "../../../src/components/FactionComponents/FactionComponents";
 import LabeledDiv from "../../../src/components/LabeledDiv/LabeledDiv";
 import MultiStateToggle from "../../../src/components/MultiStateToggle/MultiStateToggle";
 import Sidebars from "../../../src/components/Sidebars/Sidebars";
@@ -527,7 +527,10 @@ export default function ArchivePage({
                               height: rem(24),
                             }}
                           >
-                            <FactionIcon factionId={factionId} size="100%" />
+                            <FactionComponents.Icon
+                              factionId={factionId}
+                              size="100%"
+                            />
                             <div
                               className="flexRow"
                               style={{
