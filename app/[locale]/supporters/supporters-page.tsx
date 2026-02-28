@@ -42,17 +42,6 @@ export default function Supporters({ intl }: { intl: IntlShape }) {
             <div>
               {intl.formatMessage(
                 {
-                  id: "kq4/fY",
-                  defaultMessage: "German Translation: {name}",
-                  description:
-                    "Credit for the german translation of TI Assistant.",
-                },
-                { name: "BuzZoiDk24" },
-              )}
-            </div>
-            <div>
-              {intl.formatMessage(
-                {
                   id: "VZ+RJH",
                   defaultMessage: "Programming: {name}",
                   description: "Credit for helping to program TI Assistant.",
@@ -63,12 +52,45 @@ export default function Supporters({ intl }: { intl: IntlShape }) {
             <div>
               {intl.formatMessage(
                 {
+                  id: "kq4/fY",
+                  defaultMessage: "German (de) Translation: {name}",
+                  description:
+                    "Credit for the german translation of TI Assistant.",
+                },
+                { name: "BuzZoiDk24" },
+              )}
+            </div>
+            <div>
+              {intl.formatMessage(
+                {
                   id: "LCVmZp",
-                  defaultMessage: "French Translation: {name}",
+                  defaultMessage: "French (fr) Translation: {name}",
                   description:
                     "Credit for the french translation of TI Assistant.",
                 },
                 { name: "Bibox" },
+              )}
+            </div>
+            <div>
+              {intl.formatMessage(
+                {
+                  id: "0pQtUL",
+                  defaultMessage: "Polish (pl) Translation: {name}",
+                  description:
+                    "Credit for the polish translation of TI Assistant.",
+                },
+                { name: "Battis" },
+              )}
+            </div>
+            <div>
+              {intl.formatMessage(
+                {
+                  id: "KeMh1j",
+                  defaultMessage: "Portuguese (pt-BR) Translation: {name}",
+                  description:
+                    "Credit for the portuguese (pt-BR) translation of TI Assistant.",
+                },
+                { name: "Luis Redigolo" },
               )}
             </div>
           </div>

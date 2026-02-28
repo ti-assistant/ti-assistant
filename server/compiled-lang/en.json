@@ -221,6 +221,16 @@
       "value": "Return Strategy Cards"
     }
   ],
+  "0pQtUL": [
+    {
+      "type": 0,
+      "value": "Polish (pl) Translation: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
   "0rSMZW": [
     {
       "type": 0,
@@ -9637,6 +9647,16 @@
       "value": "value"
     }
   ],
+  "KeMh1j": [
+    {
+      "type": 0,
+      "value": "Portuguese (pt-BR) Translation: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
   "KiioBO": [
     {
       "type": 0,
@@ -9906,7 +9926,7 @@
   "LCVmZp": [
     {
       "type": 0,
-      "value": "French Translation: "
+      "value": "French (fr) Translation: "
     },
     {
       "type": 1,
@@ -22434,7 +22454,7 @@
   "kq4/fY": [
     {
       "type": 0,
-      "value": "German Translation: "
+      "value": "German (de) Translation: "
     },
     {
       "type": 1,
