@@ -21,7 +21,7 @@ interface FactionSelectProps {
 function LanguageIcon({ locale }: { locale: string }) {
   return (
     <Image
-      src={`/images/${locale}-flag.png`}
+      src={`/images/flags/${locale}.png`}
       alt={`${locale} language select`}
       fill
       sizes={rem(128)}
@@ -48,15 +48,6 @@ export default function LangSelectHoverMenu({
 
   if (locales.length === 1) {
     return null;
-  }
-
-  function closeFn() {
-    if (!menu.current) {
-      return;
-    }
-    menu.current.classList.remove("hover");
-    setClosing(true);
-    setTimeout(() => setClosing(false), 200);
   }
 
   const hoverMenuStyle: CSSProperties = {
