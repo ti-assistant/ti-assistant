@@ -91,6 +91,10 @@
     "defaultMessage": "Return Strategy Cards",
     "description": "Instruction telling players to return strategy cards."
   },
+  "0pQtUL": {
+    "defaultMessage": "Polish (pl) Translation: {name}",
+    "description": "Credit for the polish translation of TI Assistant."
+  },
   "0rSMZW": {
     "defaultMessage": "Large",
     "description": "Text on a button specifying that the map style should be large."
@@ -4515,6 +4519,10 @@
     "defaultMessage": "SPACE CANNON {value}",
     "description": "A unit ability that allows a unit to use SPACE CANNON."
   },
+  "KeMh1j": {
+    "defaultMessage": "Portuguese (pt-BR) Translation: {name}",
+    "description": "Credit for the portuguese (pt-BR) translation of TI Assistant."
+  },
   "KiioBO": {
     "defaultMessage": "Final Score",
     "description": "An ordering of factions based on end game scoring."
@@ -4656,7 +4664,7 @@
     "description": "An ordering of factions based on the speaker."
   },
   "LCVmZp": {
-    "defaultMessage": "French Translation: {name}",
+    "defaultMessage": "French (fr) Translation: {name}",
     "description": "Credit for the french translation of TI Assistant."
   },
   "LD7frS": {
@@ -11064,7 +11072,7 @@
     "description": "The title of the player that has the Speaker token."
   },
   "kq4/fY": {
-    "defaultMessage": "German Translation: {name}",
+    "defaultMessage": "German (de) Translation: {name}",
     "description": "Credit for the german translation of TI Assistant."
   },
   "l6pQCt": {
