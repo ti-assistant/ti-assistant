@@ -9,17 +9,13 @@ import TechIcon from "./components/TechIcon/TechIcon";
 import TechPrereqDots from "./components/TechSelectHoverMenu/TechPrereqDots";
 import UnitStats from "./components/UnitStats/UnitStats";
 import UnitIcon from "./components/Units/Icons";
-import {
-  useGameId,
-  useLogEntries,
-  useTech,
-  useViewOnly,
-} from "./context/dataHooks";
+import { useLogEntries, useTech, useViewOnly } from "./context/dataHooks";
 import { useFactions } from "./context/factionDataHooks";
+import { useOrderedFactionIds } from "./context/gameDataHooks";
 import { useDataUpdate } from "./util/api/dataUpdate";
 import { Events } from "./util/api/events";
 import { hasTech } from "./util/api/techs";
-import { getFactionColor, getMapOrderedFactionIds } from "./util/factions";
+import { getFactionColor } from "./util/factions";
 import { getTechColor } from "./util/techs";
 import { objectEntries, rem } from "./util/util";
 
@@ -215,12 +211,11 @@ function ResearchAgreement({ tech }: { tech: Tech }) {
   )[0];
   const dataUpdate = useDataUpdate();
   const factions = useFactions();
-  const gameId = useGameId();
+  const orderedFactionIds = useOrderedFactionIds("MAP");
   const viewOnly = useViewOnly();
 
   const selectedFaction = researchAgreement?.data.event.faction;
 
-  const orderedFactionIds = getMapOrderedFactionIds(factions);
   const fadedFactions = objectEntries(factions)
     .filter(([factionId, faction]) => {
       if (tech.faction && factionId !== tech.faction) {

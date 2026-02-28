@@ -4,7 +4,10 @@ import Chip from "../../../../src/components/Chip/Chip";
 import { CollapsibleSection } from "../../../../src/components/CollapsibleSection";
 import FactionIcon from "../../../../src/components/FactionIcon/FactionIcon";
 import LabeledDiv from "../../../../src/components/LabeledDiv/LabeledDiv";
-import { ModalContext } from "../../../../src/context/contexts";
+import {
+  DatabaseFnsContext,
+  ModalContext,
+} from "../../../../src/context/contexts";
 import { objectEntries, objectKeys, rem } from "../../../../src/util/util";
 import { ProcessedGame } from "../processor";
 import styles from "./ObjectivesSection.module.scss";
@@ -20,16 +23,18 @@ interface ObjectiveInfo {
 
 export default function ObjectivesSection({
   games,
-  baseData,
 }: {
   games: Record<string, ProcessedGame>;
-  baseData: BaseData;
 }) {
   const { openModal } = use(ModalContext);
   const [tab, setTab] = useState<ObjectiveType>("STAGE ONE");
+  const { getBaseValue } = use(DatabaseFnsContext);
 
   let objectivesByScore: Partial<Record<ObjectiveId, ObjectiveInfo>> = {};
-  const baseObjectives = baseData.objectives;
+  const baseObjectives = getBaseValue("objectives");
+  if (!baseObjectives) {
+    return null;
+  }
   const factionGames: Partial<Record<FactionId, number>> = {};
   let objectiveGames = 0;
   Object.values(games).forEach((game) => {

@@ -1,6 +1,4 @@
 import { Storage } from "@google-cloud/storage";
-import { getBaseData } from "../../../src/data/baseData";
-import { getIntl } from "../../../src/util/server";
 import { ProcessedGame } from "./processor";
 import StatsPage from "./stats-page";
 
@@ -15,22 +13,14 @@ async function getJSONFileFromStorage(
   return JSON.parse(file.toString("utf8"));
 }
 
-export default async function Page({ params }: PageProps<"/[locale]/stats">) {
-  const { locale } = await params;
-
-  const intlPromise = getIntl(locale);
-
+export default async function Page() {
   const storage = new Storage({
     keyFilename: "./server/twilight-imperium-360307-ea7cce25efeb.json",
   });
 
   const processedGamesPromise = getJSONFileFromStorage(storage);
 
-  const [intl, processedGames] = await Promise.all([
-    intlPromise,
-    processedGamesPromise,
-  ]);
-  const baseData = getBaseData(intl);
+  const [processedGames] = await Promise.all([processedGamesPromise]);
 
-  return <StatsPage processedGames={processedGames} baseData={baseData} />;
+  return <StatsPage processedGames={processedGames} />;
 }

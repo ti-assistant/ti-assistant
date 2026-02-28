@@ -5,7 +5,10 @@ import { CollapsibleSection } from "../../../../src/components/CollapsibleSectio
 import FactionIcon from "../../../../src/components/FactionIcon/FactionIcon";
 import LabeledDiv from "../../../../src/components/LabeledDiv/LabeledDiv";
 import TechIcon from "../../../../src/components/TechIcon/TechIcon";
-import { ModalContext } from "../../../../src/context/contexts";
+import {
+  DatabaseFnsContext,
+  ModalContext,
+} from "../../../../src/context/contexts";
 import { Optional } from "../../../../src/util/types/types";
 import { objectEntries, rem } from "../../../../src/util/util";
 import { ProcessedGame } from "../processor";
@@ -32,17 +35,18 @@ interface TechInfo {
 
 export default function TechsSection({
   games,
-  baseData,
   points,
 }: {
   games: Record<string, ProcessedGame>;
-  baseData: BaseData;
   points: number;
 }) {
   const [tab, setTab] = useState("Non-Faction");
   const { openModal } = use(ModalContext);
+
+  const databaseFns = use(DatabaseFnsContext);
+
   const techInfo: Partial<Record<TechId, TechInfo>> = {};
-  const baseTechs = baseData.techs;
+  const baseTechs = databaseFns.getBaseValue("techs");
   let techGames = 0;
   let factionGames: Partial<Record<FactionId, number>> = {};
   Object.values(games).forEach((game) => {
@@ -59,6 +63,9 @@ export default function TechsSection({
       factionGames[factionId] = factionGame;
 
       for (const techId of faction.endingTechs) {
+        if (!baseTechs) {
+          continue;
+        }
         const baseTech = baseTechs[techId];
 
         if (!baseTech) {
@@ -169,6 +176,9 @@ export default function TechsSection({
       </div>
 
       {orderedInfo.map(([id, info]) => {
+        if (!baseTechs) {
+          return null;
+        }
         const tech = baseTechs[id];
         if (!tech) {
           return null;

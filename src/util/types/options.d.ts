@@ -19,15 +19,6 @@ type AppSection =
   | "PLANET_STATE"
   | "STRUCTURES";
 
-type OptionUpdateAction = "SET_OPTION";
-
-interface OptionUpdateData {
-  action?: OptionUpdateAction;
-  option?: string;
-  timestamp?: number;
-  value?: any;
-}
-
 interface Options {
   expansions: Expansion[];
   "game-variant": GameVariant;
@@ -41,5 +32,4 @@ interface Options {
   events?: EventId[];
   // Optional tracking
   hide?: AppSection[];
-  [key: string]: any;
 }

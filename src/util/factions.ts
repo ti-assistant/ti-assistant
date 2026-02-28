@@ -41,16 +41,6 @@ export function getFactionName(faction: Optional<Faction>) {
   return faction.name;
 }
 
-export function getFactionShortName(faction: Optional<Faction>) {
-  if (!faction) {
-    return null;
-  }
-  if (faction.playerName) {
-    return faction.playerName;
-  }
-  return faction.shortname;
-}
-
 export function computeVPs(
   factions: Partial<Record<FactionId, GameFaction>>,
   factionId: FactionId,
@@ -115,16 +105,6 @@ export function computeVPsByCategory(
   const factionVPs = faction.vps ?? 0;
   group.OTHER += factionVPs;
   return group;
-}
-
-export function getMapOrderedFactionIds(
-  factions: Partial<Record<FactionId, Faction>>,
-) {
-  return objectEntries(factions)
-    .sort(([_, a], [__, b]) => {
-      return a.mapPosition - b.mapPosition;
-    })
-    .map(([id, _]) => id);
 }
 
 export function hasLeader(

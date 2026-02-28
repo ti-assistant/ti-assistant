@@ -1,8 +1,9 @@
-import { Fragment, useState } from "react";
+import { Fragment, use, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import Chip from "../../../../src/components/Chip/Chip";
 import { CollapsibleSection } from "../../../../src/components/CollapsibleSection";
 import FactionIcon from "../../../../src/components/FactionIcon/FactionIcon";
+import { DatabaseFnsContext } from "../../../../src/context/contexts";
 import { objectiveTypeString } from "../../../../src/util/strings";
 import { Optional } from "../../../../src/util/types/types";
 import { objectEntries, rem } from "../../../../src/util/util";
@@ -10,10 +11,8 @@ import styles from "./FactionModal.module.scss";
 import { FactionSummary, GameCounts, ObjectiveGameCounts } from "./types";
 
 export default function FactionModal({
-  baseData,
   info,
 }: {
-  baseData: BaseData;
   info: Optional<FactionSummary>;
 }) {
   const intl = useIntl();
@@ -118,7 +117,6 @@ export default function FactionModal({
                   objectives={info.objectives}
                   objectiveGames={info.objectiveGames.games}
                   objectiveType={objectiveType}
-                  baseData={baseData}
                 />
               ) : null}
             </div>
@@ -155,7 +153,6 @@ export default function FactionModal({
                   techGames={info.techGames.games}
                   techWins={info.techGames.wins}
                   techPoints={info.techGames.points}
-                  baseData={baseData}
                 />
               ) : null}
             </div>
@@ -170,14 +167,16 @@ function ObjectiveTable({
   objectives,
   objectiveGames,
   objectiveType,
-  baseData,
 }: {
   objectives: Partial<Record<ObjectiveId, ObjectiveGameCounts>>;
   objectiveGames: number;
   objectiveType: ObjectiveType;
-  baseData: BaseData;
 }) {
-  const baseObjectives = baseData.objectives;
+  const { getBaseValue } = use(DatabaseFnsContext);
+  const baseObjectives = getBaseValue("objectives");
+  if (!baseObjectives) {
+    return null;
+  }
   const orderedObjectives = objectEntries(objectives).sort((a, b) => {
     const aType = baseObjectives[a[0]].type;
     const bType = baseObjectives[b[0]].type;
@@ -316,14 +315,17 @@ function TechTable({
   techGames,
   techWins,
   techPoints,
-  baseData,
 }: {
   techs: Partial<Record<TechId, GameCounts>>;
   techGames: number;
   techWins: number;
   techPoints: number;
-  baseData: BaseData;
 }) {
+  const { getBaseValue } = use(DatabaseFnsContext);
+  const baseTechs = getBaseValue("techs");
+  if (!baseTechs) {
+    return null;
+  }
   const orderedTechs = objectEntries(techs).sort((a, b) => {
     return b[1].games - a[1].games;
   });
@@ -388,10 +390,7 @@ function TechTable({
       </thead>
       <tbody>
         {orderedTechs.map(([tech, info]) => {
-          const baseTech = baseData.techs[tech];
-          if (!baseTech) {
-            return null;
-          }
+          const baseTech = baseTechs[tech];
           return (
             <Fragment key={tech}>
               <tr key={tech} style={{ fontFamily: "Source Sans" }}>

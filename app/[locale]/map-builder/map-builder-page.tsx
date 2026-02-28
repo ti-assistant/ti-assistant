@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, use, useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
@@ -12,6 +12,7 @@ import MapBuilder, {
 } from "../../../src/components/MapBuilder/MapBuilder";
 import NonGameHeader from "../../../src/components/NonGameHeader/NonGameHeader";
 import Toggle from "../../../src/components/Toggle/Toggle";
+import { DatabaseFnsContext } from "../../../src/context/contexts";
 import { buildBaseSystems } from "../../../src/data/GameData";
 import ProphecyofKingsSVG from "../../../src/icons/ui/ProphecyOfKings";
 import ThundersEdgeMenuSVG from "../../../src/icons/ui/ThundersEdgeMenu";
@@ -129,6 +130,7 @@ function FilterButton({
 }
 
 export default function MapBuilderPage() {
+  const databaseFns = use(DatabaseFnsContext);
   const intl = useIntl();
   const [mapString, setMapString] = useState(
     getDefaultMapString(6, "standard", true),
@@ -142,6 +144,7 @@ export default function MapBuilderPage() {
     new Set([
       "BASE_GAME",
       "PROPHECY_OF_KINGS",
+      "THUNDERS_EDGE",
       "HYPERSPACE_TILES",
       "NO_PLANETS",
       "ONE_PLANET",
@@ -151,7 +154,7 @@ export default function MapBuilderPage() {
   );
   const [rotation, setRotation] = useState(0);
 
-  const systems = buildBaseSystems();
+  const systems = databaseFns.getBaseValue("systems");
 
   let tileNumbers: string[] = [];
   const factions = [];
@@ -227,6 +230,9 @@ export default function MapBuilderPage() {
   }
 
   tileNumbers = tileNumbers.filter((number) => {
+    if (!systems) {
+      return true;
+    }
     const system = systems[number as SystemId];
     if (!system) {
       return true;

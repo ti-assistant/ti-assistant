@@ -2,7 +2,10 @@ import { Fragment, use } from "react";
 import { FormattedMessage } from "react-intl";
 import FactionIcon from "../../../../src/components/FactionIcon/FactionIcon";
 import LabeledDiv from "../../../../src/components/LabeledDiv/LabeledDiv";
-import { ModalContext } from "../../../../src/context/contexts";
+import {
+  DatabaseFnsContext,
+  ModalContext,
+} from "../../../../src/context/contexts";
 import { objectEntries, rem } from "../../../../src/util/util";
 import { ProcessedGame } from "../processor";
 import FactionModal from "./FactionModal";
@@ -12,26 +15,29 @@ import { FactionSummary } from "./types";
 
 export default function FactionsSection({
   games,
-  baseData,
   points,
 }: {
   games: Record<string, ProcessedGame>;
-  baseData: BaseData;
   points: number;
 }) {
   const { openModal } = use(ModalContext);
+  const { getBaseValue } = use(DatabaseFnsContext);
 
-  const baseObjectives = baseData.objectives;
+  const baseFactions = getBaseValue("factions");
+  const baseObjectives = getBaseValue("objectives");
   const factionInfo: Partial<Record<FactionId, FactionSummary>> = {};
   Object.values(games).forEach((game) => {
     const factions = game.factions;
 
     objectEntries(factions).forEach(([factionId, faction]) => {
+      if (!baseFactions) {
+        return;
+      }
       let info = factionInfo[factionId];
       if (!info) {
         info = {
           id: factionId,
-          name: baseData.factions[factionId].name,
+          name: baseFactions[factionId].name,
           games: { games: 0, wins: 0, points: 0, histogram: {} },
           techGames: { games: 0, wins: 0, points: 0 },
           objectiveGames: { games: 0, wins: 0, points: 0 },
@@ -114,6 +120,9 @@ export default function FactionsSection({
       if (game.isObjectiveGame) {
         info.objectiveGames.games++;
         for (const [objectiveId, objective] of objectEntries(game.objectives)) {
+          if (!baseObjectives) {
+            continue;
+          }
           const baseObjective = baseObjectives[objectiveId];
 
           const objInfo = info.objectives[objectiveId] ?? {
@@ -366,7 +375,7 @@ export default function FactionsSection({
                 <button
                   style={{ fontSize: rem(10), marginTop: rem(2) }}
                   onClick={() => {
-                    openModal(<FactionModal baseData={baseData} info={info} />);
+                    openModal(<FactionModal info={info} />);
                   }}
                 >
                   <FormattedMessage

@@ -21,19 +21,6 @@ export async function getIntl(locale: string): Promise<IntlShape> {
   return createIntl({ locale, messages, onError: intlErrorFn }, intlCache);
 }
 
-export async function getSettings() {
-  const cookieValues = await cookies();
-  let settings = cookieValues.get("settings");
-
-  if (!settings) {
-    return DEFAULT_SETTINGS;
-  }
-  return {
-    ...DEFAULT_SETTINGS,
-    ...(JSON.parse(settings.value) as Settings),
-  };
-}
-
 export async function getSessionIdFromCookie() {
   const cookieValues = await cookies();
   const sessionIdCookie = cookieValues.get("session");

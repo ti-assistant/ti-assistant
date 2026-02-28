@@ -1962,7 +1962,7 @@ function UnpassSection() {
 
   return (
     <LabeledDiv
-      label={getFactionName(ralNel)}
+      label={<FactionComponents.Name factionId={ralNel.id} />}
       color={getFactionColor(ralNel)}
       style={{ width: "min-content" }}
     >

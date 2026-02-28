@@ -1,24 +1,22 @@
+import { FormattedMessage } from "react-intl";
 import { AgendaRow } from "../AgendaRow";
 import {
   useAgendas,
   useAllPlanets,
-  usePlanet,
-  usePlanets,
   useRelics,
   useTechs,
 } from "../context/dataHooks";
+import { useFaction, useFactions } from "../context/factionDataHooks";
 import { useObjectives } from "../context/objectiveDataHooks";
-import { useFaction } from "../context/factionDataHooks";
-import { useFactions } from "../context/factionDataHooks";
 import { BLACK_TEXT_GLOW } from "../util/borderGlow";
 import { getFactionColor, getFactionName } from "../util/factions";
 import { getTechColor } from "../util/techs";
-import { pluralize, rem } from "../util/util";
+import { rem } from "../util/util";
+import ExpeditionIcon from "./Expedition/ExpeditionIcon";
 import FactionIcon from "./FactionIcon/FactionIcon";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 import TimerDisplay from "./TimerDisplay/TimerDisplay";
-import ExpeditionIcon from "./Expedition/ExpeditionIcon";
 
 function ColoredFactionName({ factionId }: { factionId: FactionId }) {
   let faction = useFaction(factionId);
@@ -425,7 +423,12 @@ export function LogEntryElement({
           <ColoredFactionName factionId={logEntry.data.event.faction} />
           {logEntry.data.event.vps > 0 ? "gained" : "lost"}{" "}
           {Math.abs(logEntry.data.event.vps)}{" "}
-          {pluralize("VP", Math.abs(logEntry.data.event.vps))}
+          <FormattedMessage
+            id="PzyYtG"
+            description="Shortened version of Victory Points."
+            defaultMessage="{count, plural, =0 {VPs} one {VP} other {VPs}}"
+            values={{ count: logEntry.data.event.vps }}
+          />
         </div>
       );
     }

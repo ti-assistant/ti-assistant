@@ -74,11 +74,11 @@ const EMPTY_NEARBY_VALUES: NearbyValues = {
 
 function computeNearbyValues(
   systems: string[],
-  planets: Partial<Record<PlanetId, BasePlanet>>,
+  planets: Optional<Record<PlanetId, BasePlanet>>,
 ) {
   const nearbyValues: NearbyValues = structuredClone(EMPTY_NEARBY_VALUES);
   for (const system of systems) {
-    let systemPlanets = Object.values(planets).filter((planet) => {
+    let systemPlanets = Object.values(planets ?? {}).filter((planet) => {
       if (!system) {
         return false;
       }
@@ -498,8 +498,11 @@ function rotateHyperlane(hyperlane: Hyperlane, rotation: Optional<number>) {
 
 function getBaseSystem(
   system: string,
-  baseSystems: Partial<Record<SystemId, BaseSystem>>,
+  baseSystems: Optional<Record<SystemId, BaseSystem>>,
 ): Optional<BaseSystem> {
+  if (!baseSystems) {
+    return;
+  }
   const systemId = toSystemId(system);
   if (!systemId) {
     return;
@@ -511,7 +514,7 @@ function getMatchingWormholeSystems(
   hex: Hex,
   spiral: Hex[],
   systems: string[],
-  baseSystems: Partial<Record<SystemId, BaseSystem>>,
+  baseSystems: Optional<Record<SystemId, BaseSystem>>,
 ) {
   const systemString = hex.toSystem(spiral, systems);
   if (!systemString) {
@@ -547,7 +550,7 @@ function hex_reachable(
   movement: number,
   spiral: Hex[],
   systems: string[],
-  baseSystems: Partial<Record<SystemId, BaseSystem>>,
+  baseSystems: Optional<Record<SystemId, BaseSystem>>,
 ) {
   const visited = new Set<string>();
   visited.add(JSON.stringify(start));
@@ -608,7 +611,7 @@ function hex_reachable(
           continue;
         }
         const systemId = toSystemId(system);
-        if (systemId) {
+        if (systemId && baseSystems) {
           const baseSystem = baseSystems[systemId];
           if (baseSystem && baseSystem.type === "HYPERLANE") {
             visited.add(JSON.stringify(neighbor));
@@ -661,8 +664,8 @@ function hex_reachable(
 function buildFactionValues(
   spiral: Hex[],
   systems: string[],
-  planets: Partial<Record<PlanetId, BasePlanet>>,
-  baseSystems: Partial<Record<SystemId, BaseSystem>>,
+  planets: Optional<Record<PlanetId, BasePlanet>>,
+  baseSystems: Optional<Record<SystemId, BaseSystem>>,
 ) {
   const ownedSystems: Record<number, string[]> = {};
   spiral.forEach((hex, index) => {
@@ -745,10 +748,8 @@ export default function MapBuilder({
   const center = new Hex(0, 0, 0);
   const spiral = center.spiral(numRings);
 
-  const basePlanets: Partial<Record<PlanetId, BasePlanet>> =
-    databaseFns.getBaseValue("planets") ?? {};
-  const baseSystems: Partial<Record<SystemId, BaseSystem>> =
-    databaseFns.getBaseValue("systems") ?? {};
+  const basePlanets = databaseFns.getBaseValue("planets");
+  const baseSystems = databaseFns.getBaseValue("systems");
 
   const values = buildFactionValues(
     spiral,

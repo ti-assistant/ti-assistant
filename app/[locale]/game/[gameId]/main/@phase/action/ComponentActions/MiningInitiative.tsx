@@ -4,7 +4,6 @@ import {
 } from "../../../../../../../../src/context/dataHooks";
 import { applyAllPlanetAttachments } from "../../../../../../../../src/util/planets";
 import { Optional } from "../../../../../../../../src/util/types/types";
-import { pluralize } from "../../../../../../../../src/util/util";
 
 export default function MiningInitiative({
   factionId,
@@ -30,10 +29,5 @@ export default function MiningInitiative({
       }
     });
 
-  return (
-    <>{`Best option: ${bestPlanet} to gain ${maxValue} ${pluralize(
-      "trade good",
-      maxValue,
-    )}`}</>
-  );
+  return <>{`Best option: ${bestPlanet} to gain ${maxValue} trade goods`}</>;
 }
