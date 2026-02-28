@@ -263,6 +263,12 @@
       "value": "Rozszerzenia:"
     }
   ],
+  "33YjUQ": [
+    {
+      "type": 0,
+      "value": "Zezwól na głosowanie"
+    }
+  ],
   "355TBA": [
     {
       "type": 0,
@@ -484,7 +490,7 @@
   "8OswCT": [
     {
       "type": 0,
-      "value": "Zdobądź Żetony Dowodzenia I Ponownie Przydziel"
+      "value": "Otrzymaj Żetony Dowodzenia i Ponownie Rozdziel"
     }
   ],
   "8j6M9c": [
@@ -8809,14 +8815,6 @@
       "value": "Odkryte "
     },
     {
-      "type": 1,
-      "value": "type"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
       "offset": 0,
       "options": {
         "one": {
@@ -8839,6 +8837,18 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " \""
+    },
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": "\""
     }
   ],
   "Il Na Viroset.Name": [
@@ -14369,6 +14379,16 @@
       "value": "Podfrakcja"
     }
   ],
+  "RnB2IL": [
+    {
+      "type": 1,
+      "value": "cardName"
+    },
+    {
+      "type": 0,
+      "value": " Akcja Drugorzędna"
+    }
+  ],
   "S0vXJt": [
     {
       "type": 0,
@@ -18519,6 +18539,32 @@
       "value": "Po tym, jak ta jednostka zostanie zniszczona lub usunięta, umieść ją na tej karcie. Na początku fazy statusu umieść wszystkie znajdujące się na tej karcie jednostki na kontrolowanej przez ciebie planecie."
     }
   ],
+  "TFQQ7E": [
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Posiadany Relikt"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Posiadane Relikty"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
   "Techs.4X4IC Helios V2.Description": [
     {
       "type": 0,
@@ -21379,6 +21425,12 @@
       "value": "Agent"
     }
   ],
+  "eQmF5i": [
+    {
+      "type": 0,
+      "value": "Przełom"
+    }
+  ],
   "entq4x": [
     {
       "type": 0,
@@ -21453,6 +21505,16 @@
     {
       "type": 0,
       "value": "ODBLOKUJ:"
+    }
+  ],
+  "fwxVVe": [
+    {
+      "type": 1,
+      "value": "cardName"
+    },
+    {
+      "type": 0,
+      "value": " Akcja Podstawowa"
     }
   ],
   "fxKsk7": [
@@ -21704,14 +21766,6 @@
       "value": " "
     },
     {
-      "type": 1,
-      "value": "type"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
       "offset": 0,
       "options": {
         "one": {
@@ -21734,6 +21788,18 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " \""
+    },
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": "\" "
     }
   ],
   "lGDH2d": [
@@ -21774,6 +21840,32 @@
     {
       "type": 0,
       "value": "Rozpocznij Grę"
+    }
+  ],
+  "ljd6rP": [
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Unicestwiony Relikt"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Unicestwione Relikty"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
   "mYdPrP": [

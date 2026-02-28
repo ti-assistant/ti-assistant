@@ -53,6 +53,7 @@ export async function getGameData(
   const actionLogEntries: ActionLog = [];
   actionLog.forEach((logEntry) => {
     const storedLogEntry = logEntry.data() as ActionLogEntry<GameUpdateData>;
+    delete storedLogEntry.deleteAt;
     actionLogEntries.push(storedLogEntry);
   });
 
@@ -116,29 +117,11 @@ export async function getCurrentTurnLogEntriesInTransaction(
   const currentTurnEntries: ActionLog = [];
   currentTurn.forEach((logEntry) => {
     const storedLogEntry = logEntry.data() as ActionLogEntry<GameUpdateData>;
+    delete storedLogEntry.deleteAt;
     currentTurnEntries.push(storedLogEntry);
   });
 
   return currentTurnEntries;
-}
-
-export async function getLatestActionLogEntryInTransaction(
-  gameRef: DocumentReference<DocumentData>,
-  t: Transaction,
-) {
-  const logEntry = await t.get(
-    gameRef.collection("actionLog").orderBy("timestampMillis", "desc").limit(1),
-  );
-  if (logEntry.empty) {
-    return undefined;
-  }
-
-  let latestEntry: Optional<ActionLogEntry<GameUpdateData>>;
-  logEntry.forEach((entry) => {
-    latestEntry = entry.data() as ActionLogEntry<GameUpdateData>;
-  });
-
-  return latestEntry;
 }
 
 export async function getFullActionLog(gameId: string, path: GamePath) {
@@ -156,7 +139,9 @@ export async function getFullActionLog(gameId: string, path: GamePath) {
 
   let actionLog: ActionLog = [];
   logEntry.forEach((entry) => {
-    actionLog.push(entry.data() as ActionLogEntry<GameUpdateData>);
+    const logEntry = entry.data() as ActionLogEntry<GameUpdateData>;
+    delete logEntry.deleteAt;
+    actionLog.push(logEntry);
   });
 
   return actionLog;

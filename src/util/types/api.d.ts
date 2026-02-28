@@ -76,6 +76,8 @@ interface ActionLogEntry<DataType extends GameUpdateData> {
   timestampMillis: number;
   gameSeconds?: number;
   data: DataType;
+  schema: string;
+  deleteAt?: any;
 }
 
 interface BaseData {

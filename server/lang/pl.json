@@ -127,6 +127,10 @@
     "description": "A label for a selector specifying which expansions should be enabled.",
     "defaultMessage": "Rozszerzenia:"
   },
+  "33YjUQ": {
+    "description": "Text on a button that will allow a faction to vote.",
+    "defaultMessage": "Zezwól na głosowanie"
+  },
   "355TBA": {
     "description": "Label for section listing out people that worked on TI Assistant.",
     "defaultMessage": "Współtwórcy"
@@ -253,7 +257,7 @@
   },
   "8OswCT": {
     "description": "Text telling the players to gain command tokens and redistribute.",
-    "defaultMessage": "Zdobądź Żetony Dowodzenia I Ponownie Przydziel"
+    "defaultMessage": "Otrzymaj Żetony Dowodzenia i Ponownie Rozdziel"
   },
   "8j6M9c": {
     "description": "Label for a section listing out the remaining votes.",
@@ -413,7 +417,7 @@
   },
   "IfyaDZ": {
     "description": "A label for revealed objectives.",
-    "defaultMessage": "Odkryte {type} {count, plural, one {Cel} other {Cele}}"
+    "defaultMessage": "Odkryte {count, plural, one {Cel} other {Cele}} \"{type}\""
   },
   "Irm2+w": {
     "description": "Text shown on side of screen during a specific phase",
@@ -615,6 +619,10 @@
     "description": "The faction that Council Keleres chooses.",
     "defaultMessage": "Podfrakcja"
   },
+  "RnB2IL": {
+    "description": "The secondary ability for a strategy card, including the card name.",
+    "defaultMessage": "{cardName} Akcja Drugorzędna"
+  },
   "S0vXJt": {
     "description": "Label showing that the specific player is up next.",
     "defaultMessage": "W Kolejce"
@@ -634,6 +642,10 @@
   "SyY9is": {
     "description": "A number of Dreadnought units.",
     "defaultMessage": "{count} {count, plural, one {Pancernik} other {Pancernikii}}"
+  },
+  "TFQQ7E": {
+    "description": "Relics which are owned by a player.",
+    "defaultMessage": "{count, plural, one {Posiadany Relikt} other {Posiadane Relikty}}"
   },
   "UJSVtn": {
     "description": "Label for a textbox used to specify the map string.",
@@ -835,6 +847,10 @@
     "description": "The title of an agent: a leader that can get used once per round.",
     "defaultMessage": "Agent"
   },
+  "eQmF5i": {
+    "description": "Faction breakthrough ability introduced in Thunder's Edge that usually includes a tech synergy.",
+    "defaultMessage": "Przełom"
+  },
   "entq4x": {
     "description": "Text on a button that will display titles.",
     "defaultMessage": "Tytuły"
@@ -866,6 +882,10 @@
   "frzrrT": {
     "description": "Text that gets pre-fixed to a leader unlock condition.",
     "defaultMessage": "ODBLOKUJ:"
+  },
+  "fwxVVe": {
+    "description": "The main ability for a strategy card, including the card name.",
+    "defaultMessage": "{cardName} Akcja Podstawowa"
   },
   "fxKsk7": {
     "description": "The title of a commander: a leader that provides a passive ability.",
@@ -961,7 +981,7 @@
   },
   "lDBTCO": {
     "description": "Instruction telling the speaker to reveal objectives.",
-    "defaultMessage": "Odkryj {count, number} {type} {count, plural, one {Cel} other {Cele}}"
+    "defaultMessage": "Odkryj {count, number} {count, plural, one {Cel} other {Cele}} \"{type}\" "
   },
   "lGDH2d": {
     "description": "Unit upgrade techs.",
@@ -970,6 +990,10 @@
   "lYD2yu": {
     "description": "Text on a button that will start a game.",
     "defaultMessage": "Rozpocznij Grę"
+  },
+  "ljd6rP": {
+    "description": "Relics which have been purged.",
+    "defaultMessage": "{count, plural, one {Unicestwiony Relikt} other {Unicestwione Relikty}}"
   },
   "mYdPrP": {
     "description": "Statistic about how frequently a faction tech was researched.",

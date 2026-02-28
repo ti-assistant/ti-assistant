@@ -40,7 +40,9 @@ export default function DBListener({
       onSnapshot(actionLogQuery, (querySnapshot) => {
         const actionLog: ActionLog = [];
         querySnapshot.forEach((doc) => {
-          actionLog.push(doc.data() as ActionLogEntry<GameUpdateData>);
+          const logEntry = doc.data() as ActionLogEntry<GameUpdateData>;
+          delete logEntry.deleteAt;
+          actionLog.push(logEntry);
         });
 
         databaseFns.update((storedData) => {

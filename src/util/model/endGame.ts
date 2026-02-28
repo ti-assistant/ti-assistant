@@ -1,5 +1,8 @@
 export class EndGameHandler implements Handler {
-  constructor(public gameData: StoredGameData, public data: EndGameData) {}
+  constructor(
+    public gameData: StoredGameData,
+    public data: EndGameData,
+  ) {}
 
   validate(): boolean {
     return true;
@@ -10,7 +13,6 @@ export class EndGameHandler implements Handler {
       [`state.finalPhase`]: this.gameData.state.phase,
       [`sequenceNum`]: "INCREMENT",
       [`state.phase`]: "END",
-      [`deleteAt`]: "DELETE",
     };
   }
 
@@ -18,6 +20,7 @@ export class EndGameHandler implements Handler {
     return {
       timestampMillis: Date.now(),
       data: this.data,
+      schema: "1.0.0",
     };
   }
 
@@ -27,7 +30,10 @@ export class EndGameHandler implements Handler {
 }
 
 export class ContinueGameHandler implements Handler {
-  constructor(public gameData: StoredGameData, public data: ContinueGameData) {}
+  constructor(
+    public gameData: StoredGameData,
+    public data: ContinueGameData,
+  ) {}
 
   validate(): boolean {
     return true;
@@ -46,6 +52,7 @@ export class ContinueGameHandler implements Handler {
     return {
       timestampMillis: Date.now(),
       data: this.data,
+      schema: "1.0.0",
     };
   }
 
