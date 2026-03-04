@@ -29,7 +29,7 @@ import { fracturePlanetsOwned } from "../../util/planets";
 import { Optional } from "../../util/types/types";
 import { rem } from "../../util/util";
 import Conditional from "../Conditional/Conditional";
-import FactionName from "../FactionComponents/FactionName";
+import FactionComponents from "../FactionComponents/FactionComponents";
 import FactionRow from "../FactionRow/FactionRow";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
@@ -257,6 +257,7 @@ export default function Footer() {
               className="flexRow"
               style={{
                 position: "relative",
+                fontSize: "1rem",
               }}
             >
               {twilightsFallGame ? (
@@ -405,6 +406,7 @@ export default function Footer() {
                   position: "relative",
                   width: "100%",
                   height: "100%",
+                  fontSize: "1rem",
                 }}
               >
                 {twilightsFallGame ? (
@@ -589,7 +591,7 @@ export default function Footer() {
             label={
               selectedFaction ? (
                 <div className="flexRow" style={{ gap: 0 }}>
-                  <FactionName factionId={selectedFaction} />
+                  <FactionComponents.Name factionId={selectedFaction} />
                   <FactionPanel factionId={selectedFaction} options={options} />
                 </div>
               ) : (

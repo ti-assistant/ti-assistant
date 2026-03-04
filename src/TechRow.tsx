@@ -2,26 +2,22 @@ import { FormattedMessage } from "react-intl";
 import InfoModal from "./InfoModal";
 import { SelectableRow } from "./SelectableRow";
 import styles from "./TechRow.module.scss";
-import FactionIcon from "./components/FactionIcon/FactionIcon";
+import FactionComponents from "./components/FactionComponents/FactionComponents";
 import FactionSelectRadialMenu from "./components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import FormattedDescription from "./components/FormattedDescription/FormattedDescription";
 import TechIcon from "./components/TechIcon/TechIcon";
 import TechPrereqDots from "./components/TechSelectHoverMenu/TechPrereqDots";
 import UnitStats from "./components/UnitStats/UnitStats";
 import UnitIcon from "./components/Units/Icons";
-import {
-  useGameId,
-  useLogEntries,
-  useTech,
-  useViewOnly,
-} from "./context/dataHooks";
+import { useLogEntries, useTech, useViewOnly } from "./context/dataHooks";
 import { useFactions } from "./context/factionDataHooks";
+import { useOrderedFactionIds } from "./context/gameDataHooks";
 import { useDataUpdate } from "./util/api/dataUpdate";
 import { Events } from "./util/api/events";
 import { hasTech } from "./util/api/techs";
-import { getFactionColor, getMapOrderedFactionIds } from "./util/factions";
+import { getFactionColor } from "./util/factions";
 import { getTechColor } from "./util/techs";
-import { objectEntries, rem } from "./util/util";
+import { em, objectEntries, rem } from "./util/util";
 
 function InfoContent({ tech }: { tech: Tech }) {
   if (tech.type === "UPGRADE") {
@@ -120,7 +116,7 @@ export function TechRow({
     >
       <div
         className="flexRow"
-        style={{ width: "100%", justifyContent: "stretch" }}
+        style={{ width: "100%", gap: "0.5em", justifyContent: "stretch" }}
       >
         <div
           className={className}
@@ -139,6 +135,7 @@ export function TechRow({
               // display: "flex",
               color: getTechColor(tech),
               zIndex: 0,
+              gap: "0.5em",
             }}
           >
             {tech.name}
@@ -153,8 +150,8 @@ export function TechRow({
                   opacity: "70%",
                   height: "100%",
                   zIndex: -2,
-                  top: rem(-4),
-                  right: rem(-16),
+                  top: em(-4),
+                  right: em(-16),
                 }}
               >
                 <div
@@ -162,7 +159,7 @@ export function TechRow({
                     position: "relative",
                   }}
                 >
-                  <FactionIcon factionId={tech.faction} size={24} />
+                  <FactionComponents.Icon factionId={tech.faction} size={24} />
                 </div>
               </div>
             ) : null}
@@ -176,12 +173,12 @@ export function TechRow({
               >
                 {tech.name}
                 {tech.type === "UPGRADE" ? (
-                  <UnitIcon type={tech.unitType} size={40} />
+                  <UnitIcon type={tech.unitType} size={20} />
                 ) : null}
-                <TechPrereqDots prereqs={tech.prereqs} width={8} />
+                <TechPrereqDots prereqs={tech.prereqs} width={4} />
               </div>
             }
-            style={{ marginLeft: rem(8) }}
+            style={{ marginLeft: em(8) }}
           >
             <InfoContent tech={tech} />
           </InfoModal>
@@ -215,12 +212,11 @@ function ResearchAgreement({ tech }: { tech: Tech }) {
   )[0];
   const dataUpdate = useDataUpdate();
   const factions = useFactions();
-  const gameId = useGameId();
+  const orderedFactionIds = useOrderedFactionIds("MAP");
   const viewOnly = useViewOnly();
 
   const selectedFaction = researchAgreement?.data.event.faction;
 
-  const orderedFactionIds = getMapOrderedFactionIds(factions);
   const fadedFactions = objectEntries(factions)
     .filter(([factionId, faction]) => {
       if (tech.faction && factionId !== tech.faction) {

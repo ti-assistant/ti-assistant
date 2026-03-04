@@ -1,17 +1,11 @@
-import Image from "next/image";
 import { CSSProperties, useMemo } from "react";
-import styles from "./TechIcon.module.scss";
-import { rem } from "../../util/util";
-import RedTechSVG from "../../icons/techs/RedTech";
-import YellowTechSVG from "../../icons/techs/YellowTech";
 import BlueTechSVG from "../../icons/techs/BlueTech";
 import GreenTechSVG from "../../icons/techs/GreenTech";
+import RedTechSVG from "../../icons/techs/RedTech";
+import YellowTechSVG from "../../icons/techs/YellowTech";
 import UpgradeSVG from "../../icons/twilightsfall/upgrade";
-
-const RED_RATIO = 61 / 61;
-const GREEN_RATIO = 58 / 58;
-const BLUE_RATIO = 58 / 58;
-const YELLOW_RATIO = 50 / 50;
+import { em } from "../../util/util";
+import styles from "./TechIcon.module.scss";
 
 interface TechIconProps {
   color?: string;
@@ -47,8 +41,8 @@ export default function TechIcon({
   }, [type, outline, color]);
 
   const outerIconStyle: TechIconCSS = {
-    "--width": typeof size === "string" ? size : rem(size),
-    "--height": typeof size === "string" ? size : rem(size),
+    "--width": typeof size === "string" ? size : em(size),
+    "--height": typeof size === "string" ? size : em(size),
   };
   return (
     <div className={styles.OuterIcon} style={outerIconStyle}>

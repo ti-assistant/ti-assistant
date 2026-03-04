@@ -1,4 +1,4 @@
-import { rem } from "../../util/util";
+import { em } from "../../util/util";
 
 export default function InfantrySVG({
   size,
@@ -9,7 +9,7 @@ export default function InfantrySVG({
 }) {
   return (
     <svg
-      height={typeof size === "number" ? rem(size) : size}
+      height={typeof size === "number" ? em(size) : size}
       viewBox="0 0 17 17"
       xmlns="http://www.w3.org/2000/svg"
       fill={color}

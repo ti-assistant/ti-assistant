@@ -2,9 +2,12 @@ import { Fragment, use, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import Chip from "../../../../src/components/Chip/Chip";
 import { CollapsibleSection } from "../../../../src/components/CollapsibleSection";
-import FactionIcon from "../../../../src/components/FactionIcon/FactionIcon";
+import FactionComponents from "../../../../src/components/FactionComponents/FactionComponents";
 import LabeledDiv from "../../../../src/components/LabeledDiv/LabeledDiv";
-import { ModalContext } from "../../../../src/context/contexts";
+import {
+  DatabaseFnsContext,
+  ModalContext,
+} from "../../../../src/context/contexts";
 import { objectEntries, objectKeys, rem } from "../../../../src/util/util";
 import { ProcessedGame } from "../processor";
 import styles from "./ObjectivesSection.module.scss";
@@ -20,16 +23,18 @@ interface ObjectiveInfo {
 
 export default function ObjectivesSection({
   games,
-  baseData,
 }: {
   games: Record<string, ProcessedGame>;
-  baseData: BaseData;
 }) {
   const { openModal } = use(ModalContext);
   const [tab, setTab] = useState<ObjectiveType>("STAGE ONE");
+  const databaseFns = use(DatabaseFnsContext);
 
   let objectivesByScore: Partial<Record<ObjectiveId, ObjectiveInfo>> = {};
-  const baseObjectives = baseData.objectives;
+  const baseObjectives = databaseFns.getBaseValue("objectives");
+  if (!baseObjectives) {
+    return null;
+  }
   const factionGames: Partial<Record<FactionId, number>> = {};
   let objectiveGames = 0;
   Object.values(games).forEach((game) => {
@@ -265,7 +270,7 @@ function FactionsTable({
                   alignItems: "flex-start",
                 }}
               >
-                <FactionIcon factionId={factionId} size={18} />
+                <FactionComponents.Icon factionId={factionId} size={18} />
                 <div>{factionId}</div>
               </td>
               <td>

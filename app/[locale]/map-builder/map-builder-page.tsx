@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, use, useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
@@ -12,12 +12,18 @@ import MapBuilder, {
 } from "../../../src/components/MapBuilder/MapBuilder";
 import NonGameHeader from "../../../src/components/NonGameHeader/NonGameHeader";
 import Toggle from "../../../src/components/Toggle/Toggle";
-import { buildBaseSystems } from "../../../src/data/GameData";
+import { DatabaseFnsContext } from "../../../src/context/contexts";
 import ProphecyofKingsSVG from "../../../src/icons/ui/ProphecyOfKings";
 import ThundersEdgeMenuSVG from "../../../src/icons/ui/ThundersEdgeMenu";
-import { getDefaultMapString, processMapString } from "../../../src/util/map";
+import {
+  getDefaultMapString,
+  getMapError,
+  isValidMapString,
+  processMapStringForBuilder,
+} from "../../../src/util/map";
 import { mapStyleString } from "../../../src/util/strings";
 import { rem } from "../../../src/util/util";
+import styles from "./page.module.scss";
 
 type Filter =
   | "BASE_GAME"
@@ -129,6 +135,7 @@ function FilterButton({
 }
 
 export default function MapBuilderPage() {
+  const databaseFns = use(DatabaseFnsContext);
   const intl = useIntl();
   const [mapString, setMapString] = useState(
     getDefaultMapString(6, "standard", true),
@@ -142,6 +149,7 @@ export default function MapBuilderPage() {
     new Set([
       "BASE_GAME",
       "PROPHECY_OF_KINGS",
+      "THUNDERS_EDGE",
       "HYPERSPACE_TILES",
       "NO_PLANETS",
       "ONE_PLANET",
@@ -151,7 +159,9 @@ export default function MapBuilderPage() {
   );
   const [rotation, setRotation] = useState(0);
 
-  const systems = buildBaseSystems();
+  const systems = databaseFns.getBaseValue("systems");
+
+  const mapError = getMapError(mapString, numFactions);
 
   let tileNumbers: string[] = [];
   const factions = [];
@@ -227,6 +237,9 @@ export default function MapBuilderPage() {
   }
 
   tileNumbers = tileNumbers.filter((number) => {
+    if (!systems) {
+      return true;
+    }
     const system = systems[number as SystemId];
     if (!system) {
       return true;
@@ -616,9 +629,11 @@ export default function MapBuilderPage() {
           </div>
         </DndProvider>
       </div>
-      <label>Map String</label>
+      <label className={!!mapError ? styles.Invalid : ""}>
+        Map String{mapError ? ` - ${mapError}` : ""}
+      </label>
       <input
-        className="flexColumn"
+        className={`flexColumn ${!!mapError ? styles.Invalid : ""}`}
         type="textbox"
         style={{
           width: "100%",
@@ -627,7 +642,12 @@ export default function MapBuilderPage() {
         onChange={(element) => setRawMapInput(element.target.value)}
         onBlur={() => {
           setMapString(
-            processMapString(rawMapInput.trim(), mapStyle, numFactions, true),
+            processMapStringForBuilder(
+              rawMapInput.trim(),
+              mapStyle,
+              numFactions,
+              true,
+            ),
           );
         }}
       ></input>

@@ -4,7 +4,6 @@ import { useOptions } from "../../context/dataHooks";
 import { useFactionColor } from "../../context/factionDataHooks";
 import { rem } from "../../util/util";
 import FactionComponents from "../FactionComponents/FactionComponents";
-import FactionIcon from "../FactionIcon/FactionIcon";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import styles from "./FactionCard.module.scss";
 
@@ -88,7 +87,7 @@ export default function FactionCard({
                 userSelect: "none",
               }}
             >
-              <FactionIcon factionId={factionId} size="100%" />
+              <FactionComponents.Icon factionId={factionId} size="100%" />
             </div>
           </div>
         )}

@@ -7,20 +7,6 @@ export function getTechColor(tech: Tech) {
   return getTechTypeColor(tech.type);
 }
 
-export function colorForTech(color: string) {
-  switch (color) {
-    case "red":
-      return "indianred";
-    case "yellow":
-      return "gold";
-    case "blue":
-      return "cornflowerblue";
-    case "green":
-      return "seagreen";
-  }
-  return "#eee";
-}
-
 export function getTechTypeColor(type: TechType) {
   switch (type) {
     case "RED":
@@ -36,23 +22,11 @@ export function getTechTypeColor(type: TechType) {
 }
 
 /**
- * Gets all the techs owned by a specific faction.
- */
-export function filterToOwnedTechs(
-  techs: Partial<Record<TechId, Tech>>,
-  faction: Faction
-) {
-  return Object.values(techs).filter((tech) => {
-    return !!hasTech(faction, tech);
-  });
-}
-
-/**
  * Gets all the techs not owned by a specific faction.
  */
 export function filterToUnownedTechs(
   techs: Partial<Record<TechId, Tech>>,
-  faction: Faction
+  faction: Faction,
 ) {
   return Object.values(techs).filter((tech) => {
     return !hasTech(faction, tech);
@@ -133,7 +107,7 @@ export function getFactionPreReqs(
   techs: Partial<Record<TechId, Tech>>,
   options: Options,
   planets: Planet[],
-  relics: Partial<Record<RelicId, Relic>>
+  relics: Partial<Record<RelicId, Relic>>,
 ) {
   const prereqs: Record<TechType, number> = {
     RED: 0,
@@ -201,7 +175,7 @@ export function getFactionPreReqs(
 export function ableToResearchTech(
   tech: Optional<Tech>,
   faction: Optional<Faction>,
-  factionIds: FactionId[]
+  factionIds: FactionId[],
 ) {
   if (!tech || !faction) {
     return false;
@@ -234,7 +208,7 @@ export function canResearchTech(
   prereqs: Record<TechType, number>,
   faction: Optional<Faction>,
   isTechOwned: boolean,
-  techs: Techs
+  techs: Techs,
 ) {
   const localPrereqs = structuredClone(prereqs);
 

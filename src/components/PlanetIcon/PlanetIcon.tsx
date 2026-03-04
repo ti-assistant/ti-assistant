@@ -1,12 +1,11 @@
-import Image from "next/image";
 import { CSSProperties } from "react";
-import FactionIcon from "../FactionIcon/FactionIcon";
-import styles from "./PlanetIcon.module.scss";
-import { rem } from "../../util/util";
 import CulturalPlanetSVG from "../../icons/planets/CulturalPlanet";
 import HazardousPlanetSVG from "../../icons/planets/HazardousPlanet";
 import IndustrialPlanetSVG from "../../icons/planets/IndustrialPlanet";
 import RelicMenuSVG from "../../icons/ui/RelicMenu";
+import { rem } from "../../util/util";
+import FactionComponents from "../FactionComponents/FactionComponents";
+import styles from "./PlanetIcon.module.scss";
 
 type Size = `${number}%` | number;
 
@@ -47,7 +46,9 @@ export default function PlanetIcon({
     );
   }
   if (types.length === 0) {
-    return factionId ? <FactionIcon factionId={factionId} size={size} /> : null;
+    return factionId ? (
+      <FactionComponents.Icon factionId={factionId} size={size} />
+    ) : null;
   }
 
   const planetIconStyle: PlanetIconCSS = {
@@ -57,7 +58,7 @@ export default function PlanetIcon({
   switch (types.length) {
     case 0:
       return factionId ? (
-        <FactionIcon factionId={factionId} size={size} />
+        <FactionComponents.Icon factionId={factionId} size={size} />
       ) : null;
     case 1:
       const type = types[0];

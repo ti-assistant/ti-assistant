@@ -57,6 +57,7 @@ export default function LoadingFooter() {
                 position: "relative",
                 width: "100%",
                 height: "100%",
+                fontSize: "1rem",
               }}
             >
               <TechSkipIcon size={28} outline />

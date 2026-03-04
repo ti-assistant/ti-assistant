@@ -1,7 +1,7 @@
 import { CSSProperties, PropsWithChildren, ReactNode } from "react";
 import { BLACK_BORDER_GLOW } from "../../util/borderGlow";
+import { em, rem } from "../../util/util";
 import styles from "./Circle.module.scss";
-import { rem } from "../../util/util";
 
 interface CircleProps {
   blur?: boolean;
@@ -32,12 +32,11 @@ export default function Circle({
 }: PropsWithChildren<CircleProps>) {
   const factionCircleStyle: CircleCSS = {
     "--border-color": borderColor,
-    "--size": rem(size),
+    "--size": em(size),
     backgroundColor: blur ? undefined : "var(--light-bg)",
     backdropFilter: blur ? `blur(${rem(4)})` : undefined,
     boxShadow: borderColor === "Black" ? BLACK_BORDER_GLOW : undefined,
     cursor: onClick ? "pointer" : undefined,
-    fontSize: rem(size - 8),
     ...style,
   };
 
@@ -51,16 +50,16 @@ export default function Circle({
         className="flexRow"
         style={{
           position: "relative",
-          width: rem(size - 4),
-          height: rem(size - 4),
+          width: em(size - 4),
+          height: em(size - 4),
         }}
       >
         <div
           className="flexRow"
           style={{
             position: "relative",
-            width: rem(size - 10),
-            height: rem(size - 10),
+            width: em(size - 10),
+            height: em(size - 10),
             opacity: fade ? 0.5 : undefined,
           }}
         >
@@ -72,8 +71,9 @@ export default function Circle({
             style={{
               border: `1px solid ${tagBorderColor}`,
               boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
-              width: rem(size / 2),
-              height: rem(size / 2),
+              fontSize: em(size / 2),
+              width: "1em",
+              height: "1em",
             }}
           >
             {tag}

@@ -257,11 +257,10 @@ export default function FactionStatusPhase({
             blur
           >
             <ObjectiveRow
-              objective={revealedObjectiveObj}
+              objectiveId={revealedObjectiveObj.id}
               removeObjective={() =>
                 dataUpdate(Events.HideObjectiveEvent(revealedObjectiveObj.id))
               }
-              viewing={true}
             />
           </LabeledDiv>
         ) : (

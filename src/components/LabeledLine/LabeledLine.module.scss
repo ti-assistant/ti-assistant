@@ -33,3 +33,19 @@
 .label.right {
   right: var(--side-spacing);
 }
+
+.hiddenLabel {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+
+  padding: 0 0.5rem;
+  font-size: 1rem;
+
+  height: 0;
+  visibility: hidden;
+  z-index: -1;
+  gap: 0.5rem;
+  white-space: nowrap;
+}

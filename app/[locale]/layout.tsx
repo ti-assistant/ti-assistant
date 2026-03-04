@@ -29,6 +29,7 @@ export async function generateStaticParams() {
     { locale: "fr" },
     { locale: "ru" },
     { locale: "pl" },
+    { locale: "pt-BR"},
   ];
 }
 

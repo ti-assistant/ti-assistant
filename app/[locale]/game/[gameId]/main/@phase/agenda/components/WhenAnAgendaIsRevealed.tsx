@@ -1,5 +1,5 @@
 import { FormattedMessage } from "react-intl";
-import FactionIcon from "../../../../../../../../src/components/FactionIcon/FactionIcon";
+import FactionComponents from "../../../../../../../../src/components/FactionComponents/FactionComponents";
 import LabeledDiv from "../../../../../../../../src/components/LabeledDiv/LabeledDiv";
 import { useCurrentAgenda } from "../../../../../../../../src/context/actionLogDataHooks";
 import {
@@ -151,7 +151,7 @@ function PoliticalSecrets({ speaker }: { speaker: FactionId }) {
                 height: rem(32),
               }}
             >
-              <FactionIcon factionId={faction.id} size="100%" />
+              <FactionComponents.Icon factionId={faction.id} size="100%" />
               <div
                 className="flexRow"
                 style={{

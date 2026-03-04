@@ -3,8 +3,6 @@ import { FormattedMessage, useIntl } from "react-intl";
 import Conditional from "../../../../../../../src/components/Conditional/Conditional";
 import CrownOfEmphidia from "../../../../../../../src/components/CrownOfEmphidia/CrownOfEmphidia";
 import FactionComponents from "../../../../../../../src/components/FactionComponents/FactionComponents";
-import FactionName from "../../../../../../../src/components/FactionComponents/FactionName";
-import FactionIcon from "../../../../../../../src/components/FactionIcon/FactionIcon";
 import FormattedDescription from "../../../../../../../src/components/FormattedDescription/FormattedDescription";
 import IconDiv from "../../../../../../../src/components/LabeledDiv/IconDiv";
 import LabeledDiv from "../../../../../../../src/components/LabeledDiv/LabeledDiv";
@@ -162,7 +160,10 @@ function CommandTokenGains() {
                           userSelect: "none",
                         }}
                       >
-                        <FactionIcon factionId={factionId} size="100%" />
+                        <FactionComponents.Icon
+                          factionId={factionId}
+                          size="100%"
+                        />
                       </div>
                     );
                   })}
@@ -271,7 +272,10 @@ function ActionCardDraws() {
                           userSelect: "none",
                         }}
                       >
-                        <FactionIcon factionId={factionId} size="100%" />
+                        <FactionComponents.Icon
+                          factionId={factionId}
+                          size="100%"
+                        />
                       </div>
                     );
                   })}
@@ -514,7 +518,10 @@ function MiddleColumn() {
                         userSelect: "none",
                       }}
                     >
-                      <FactionIcon factionId={factionId} size="100%" />
+                      <FactionComponents.Icon
+                        factionId={factionId}
+                        size="100%"
+                      />
                     </div>
                   </div>
                   <div
@@ -812,9 +819,6 @@ export default function StatusPhase() {
     .filter((logEntry) => logEntry.data.action === "REVEAL_OBJECTIVE")
     .map((logEntry) => (logEntry.data as RevealObjectiveData).event.objective);
   const revealedObjective = revealedObjectives[0];
-  const revealedObjectiveObj = revealedObjective
-    ? objectives[revealedObjective]
-    : undefined;
   const type = round < 4 ? "STAGE ONE" : "STAGE TWO";
   const availableObjectives = Object.values(objectives).filter((objective) => {
     return objective.type === type && !objective.selected;
@@ -999,7 +1003,7 @@ export default function StatusPhase() {
                 />
               }
             >
-              {revealedObjectiveObj ? (
+              {revealedObjective ? (
                 <LabeledDiv
                   label={
                     <FormattedMessage
@@ -1017,13 +1021,10 @@ export default function StatusPhase() {
                   }
                 >
                   <ObjectiveRow
-                    objective={revealedObjectiveObj}
+                    objectiveId={revealedObjective}
                     removeObjective={() =>
-                      dataUpdate(
-                        Events.HideObjectiveEvent(revealedObjectiveObj.id),
-                      )
+                      dataUpdate(Events.HideObjectiveEvent(revealedObjective))
                     }
-                    viewing={true}
                   />
                 </LabeledDiv>
               ) : (
@@ -1236,7 +1237,7 @@ function EntropicScarResearch({ factionId }: { factionId: FactionId }) {
     <IconDiv
       key={factionId}
       color={factionColor}
-      icon={<FactionIcon factionId={factionId} size={24} />}
+      icon={<FactionComponents.Icon factionId={factionId} size={24} />}
       iconSize={24}
     >
       <TechResearchSection
@@ -1312,7 +1313,7 @@ function RadicalAdvancement() {
         return (
           <LabeledDiv
             key={factionId}
-            label={<FactionName factionId={factionId} />}
+            label={<FactionComponents.Name factionId={factionId} />}
             color={convertToFactionColor(factions[factionId]?.color)}
           >
             <div

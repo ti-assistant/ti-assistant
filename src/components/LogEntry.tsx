@@ -1,24 +1,22 @@
+import { FormattedMessage } from "react-intl";
 import { AgendaRow } from "../AgendaRow";
 import {
   useAgendas,
   useAllPlanets,
-  usePlanet,
-  usePlanets,
   useRelics,
   useTechs,
 } from "../context/dataHooks";
+import { useFaction, useFactions } from "../context/factionDataHooks";
 import { useObjectives } from "../context/objectiveDataHooks";
-import { useFaction } from "../context/factionDataHooks";
-import { useFactions } from "../context/factionDataHooks";
 import { BLACK_TEXT_GLOW } from "../util/borderGlow";
 import { getFactionColor, getFactionName } from "../util/factions";
 import { getTechColor } from "../util/techs";
-import { pluralize, rem } from "../util/util";
-import FactionIcon from "./FactionIcon/FactionIcon";
+import { rem } from "../util/util";
+import ExpeditionIcon from "./Expedition/ExpeditionIcon";
+import FactionComponents from "./FactionComponents/FactionComponents";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 import TimerDisplay from "./TimerDisplay/TimerDisplay";
-import ExpeditionIcon from "./Expedition/ExpeditionIcon";
 
 function ColoredFactionName({ factionId }: { factionId: FactionId }) {
   let faction = useFaction(factionId);
@@ -311,10 +309,6 @@ export function LogEntryElement({
       );
     }
     case "SCORE_OBJECTIVE": {
-      const objective = objectives[logEntry.data.event.objective];
-      if (!objective) {
-        return null;
-      }
       return (
         <div
           className="flexRow"
@@ -325,7 +319,7 @@ export function LogEntryElement({
           }}
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} />
-          scored <ObjectiveRow objective={objective} hideScorers />
+          scored <ObjectiveRow objectiveId={logEntry.data.event.objective} />
           {logEntry.data.event.key ? ` (${logEntry.data.event.key})` : null}
         </div>
       );
@@ -393,10 +387,6 @@ export function LogEntryElement({
       );
     }
     case "UNSCORE_OBJECTIVE": {
-      const objective = objectives[logEntry.data.event.objective];
-      if (!objective) {
-        return null;
-      }
       return (
         <div
           className="flexRow"
@@ -407,7 +397,7 @@ export function LogEntryElement({
           }}
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} />
-          lost <ObjectiveRow objective={objective} hideScorers />
+          lost <ObjectiveRow objectiveId={logEntry.data.event.objective} />
           {logEntry.data.event.key ? ` (${logEntry.data.event.key})` : null}
         </div>
       );
@@ -425,7 +415,12 @@ export function LogEntryElement({
           <ColoredFactionName factionId={logEntry.data.event.faction} />
           {logEntry.data.event.vps > 0 ? "gained" : "lost"}{" "}
           {Math.abs(logEntry.data.event.vps)}{" "}
-          {pluralize("VP", Math.abs(logEntry.data.event.vps))}
+          <FormattedMessage
+            id="PzyYtG"
+            description="Shortened version of Victory Points."
+            defaultMessage="{count, plural, =0 {VPs} one {VP} other {VPs}}"
+            values={{ count: logEntry.data.event.vps }}
+          />
         </div>
       );
     }
@@ -464,7 +459,10 @@ export function LogEntryElement({
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} />
           selected {logEntry.data.event.subFaction}
-          <FactionIcon factionId={logEntry.data.event.subFaction} size={20} />
+          <FactionComponents.Icon
+            factionId={logEntry.data.event.subFaction}
+            size={20}
+          />
           as their sub-faction
         </div>
       );
@@ -641,10 +639,6 @@ export function LogEntryElement({
           );
         }
         case "The Crown of Emphidia": {
-          const objective = objectives["Tomb + Crown of Emphidia"];
-          if (!objective) {
-            return null;
-          }
           return (
             <div
               className="flexRow"
@@ -655,7 +649,7 @@ export function LogEntryElement({
               }}
             >
               <ColoredFactionName factionId={relicOwner} />
-              scored <ObjectiveRow objective={objective} hideScorers />
+              scored <ObjectiveRow objectiveId="Tomb + Crown of Emphidia" />
             </div>
           );
         }
@@ -692,10 +686,6 @@ export function LogEntryElement({
       );
     }
     case "REVEAL_OBJECTIVE": {
-      const objective = objectives[logEntry.data.event.objective];
-      if (!objective) {
-        return null;
-      }
       return (
         <div
           className="flexRow"
@@ -704,7 +694,8 @@ export function LogEntryElement({
             gap: rem(4),
           }}
         >
-          Revealed Objective: <ObjectiveRow objective={objective} hideScorers />
+          Revealed Objective:{" "}
+          <ObjectiveRow objectiveId={logEntry.data.event.objective} />
         </div>
       );
     }

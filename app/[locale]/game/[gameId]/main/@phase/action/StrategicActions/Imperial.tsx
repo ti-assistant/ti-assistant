@@ -92,24 +92,16 @@ function Primary({ factionId }: { factionId: FactionId }) {
           <>
             {scoredPublics.length > 0 ? (
               <div className="flexColumn" style={{ alignItems: "stretch" }}>
-                {scoredPublics.map((objective) => {
-                  if (!objectives) {
-                    return null;
-                  }
-                  const objectiveObj = objectives[objective];
-                  if (!objectiveObj) {
-                    return null;
-                  }
+                {scoredPublics.map((objectiveId) => {
                   return (
                     <ObjectiveRow
-                      key={objective}
-                      objective={objectiveObj}
+                      key={objectiveId}
+                      objectiveId={objectiveId}
                       removeObjective={() =>
                         dataUpdate(
-                          Events.UnscoreObjectiveEvent(factionId, objective),
+                          Events.UnscoreObjectiveEvent(factionId, objectiveId),
                         )
                       }
-                      hideScorers={true}
                     />
                   );
                 })}

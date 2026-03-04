@@ -70,6 +70,11 @@ export default function LabeledLine({
           {rightLabel}
         </div>
       ) : null}
+      <div className={styles.hiddenLabel}>
+        {leftLabel ? <div>{leftLabel}</div> : null}
+        {label ? <div>{label}</div> : null}
+        {rightLabel ? <div>{rightLabel}</div> : null}
+      </div>
     </div>
   );
 }

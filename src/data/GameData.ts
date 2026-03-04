@@ -17,15 +17,12 @@ import { getStrategyCards } from "../../server/data/strategyCards";
 import { getSystems } from "../../server/data/systems";
 import { getTechs } from "../../server/data/techs";
 import { getUnitUpgrades } from "../../server/data/upgrades";
-import { buildMergeFunction } from "../util/expansions";
-import { objectEntries } from "../util/util";
 import {
   buildCompleteActionCards,
   buildCompleteAgendas,
   buildCompleteAttachments,
   buildCompleteComponents,
   buildCompleteFactions,
-  buildCompleteGameData,
   buildCompleteLeaders,
   buildCompleteObjectives,
   buildCompletePlanets,
@@ -58,12 +55,6 @@ export function buildBaseData(intl: IntlShape): BaseData {
     paradigms: getParadigms(intl),
     upgrades: getUnitUpgrades(intl),
   };
-}
-
-export function buildGameData(storedGameData: StoredGameData, intl: IntlShape) {
-  const baseData = buildBaseData(intl);
-
-  return buildCompleteGameData(storedGameData, baseData);
 }
 
 export function buildActionCards(
@@ -157,54 +148,4 @@ export function buildLeaders(storedGameData: StoredGameData, intl: IntlShape) {
   const baseData = buildBaseData(intl);
 
   return buildCompleteLeaders(baseData, storedGameData);
-}
-
-export function buildBaseTechs(options: Options, intl: IntlShape) {
-  const techs: Partial<Record<TechId, Tech>> = {};
-
-  const omegaMergeFn = buildMergeFunction(options.expansions);
-
-  Object.values(getTechs(intl)).forEach((tech) => {
-    // Filter out expansion technologies.
-    if (
-      tech.expansion !== "BASE" &&
-      !options.expansions.includes(tech.expansion)
-    ) {
-      return;
-    }
-
-    if (tech.removedIn && options.expansions.includes(tech.removedIn)) {
-      return;
-    }
-
-    techs[tech.id] = omegaMergeFn(tech);
-  });
-
-  return techs;
-}
-
-export function buildBaseLeaders(options: Options, intl: IntlShape) {
-  const leaders: Record<string, BaseLeader> = {};
-  const omegaMergeFn = buildMergeFunction(options.expansions);
-  objectEntries(getLeaders(intl)).forEach(([leaderId, leader]) => {
-    // Filter out leaders if not using PoK.
-    if (!options.expansions.includes("POK")) {
-      return;
-    }
-
-    leaders[leaderId] = omegaMergeFn(leader);
-  });
-
-  return leaders;
-}
-
-export function buildBaseSystems() {
-  const systems: Partial<Record<SystemId, BaseSystem>> = {};
-  objectEntries(getSystems()).forEach(([systemId, system]) => {
-    systems[systemId] = {
-      ...system,
-    };
-  });
-
-  return systems;
 }

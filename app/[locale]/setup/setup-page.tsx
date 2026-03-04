@@ -7,7 +7,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { getFactions } from "../../../server/data/factions";
 import Chip from "../../../src/components/Chip/Chip";
 import ExpansionIcon from "../../../src/components/ExpansionIcon/ExpansionIcon";
-import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
+import FactionComponents from "../../../src/components/FactionComponents/FactionComponents";
 import FactionSelectRadialMenu from "../../../src/components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import FormattedDescription from "../../../src/components/FormattedDescription/FormattedDescription";
 import LabeledDiv from "../../../src/components/LabeledDiv/LabeledDiv";
@@ -1121,7 +1121,10 @@ function FactionSelect({
             zIndex: -1,
           }}
         >
-          <FactionIcon factionId={faction.id} size={mobile ? 52 : 48} />
+          <FactionComponents.Icon
+            factionId={faction.id}
+            size={mobile ? 52 : 48}
+          />
         </div>
       ) : null}
       <div
@@ -1217,7 +1220,10 @@ function FactionSelect({
                         }}
                         onClick={() => selectFaction(faction.id)}
                       >
-                        <FactionIcon factionId={faction.id} size={20} />
+                        <FactionComponents.Icon
+                          factionId={faction.id}
+                          size={20}
+                        />
                         {faction.name}
                         {faction.expansion !== "BASE" ? (
                           <>

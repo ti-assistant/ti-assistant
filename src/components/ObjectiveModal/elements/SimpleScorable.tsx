@@ -6,6 +6,7 @@ import { useDataUpdate } from "../../../util/api/dataUpdate";
 import { Events } from "../../../util/api/events";
 import { rem } from "../../../util/util";
 import FactionSelectRadialMenu from "../../FactionSelectRadialMenu/FactionSelectRadialMenu";
+import FormattedDescription from "../../FormattedDescription/FormattedDescription";
 
 function getNumPotentialScorers(objective: Objective, options: Options) {
   const includesPoK = options.expansions.includes("POK");
@@ -99,7 +100,11 @@ export default function SimpleScorable({
                 tag={
                   showTag ? (
                     <InfoModal title={objective.name}>
-                      {info ?? objective.description}
+                      {info ?? (
+                        <FormattedDescription
+                          description={objective.description}
+                        />
+                      )}
                     </InfoModal>
                   ) : undefined
                 }

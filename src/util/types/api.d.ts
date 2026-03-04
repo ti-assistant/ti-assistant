@@ -92,7 +92,7 @@ interface BaseData {
   objectives: Record<ObjectiveId, BaseObjective>;
   planets: Record<PlanetId, BasePlanet>;
   relics: Record<RelicId, BaseRelic>;
-  strategycards: Record<StrategyCardId, StrategyCard>;
+  strategycards: Record<StrategyCardId, BaseStrategyCard>;
   systems: Record<SystemId, BaseSystem>;
   techs: Record<TechId, BaseTech>;
 
@@ -164,18 +164,20 @@ interface StoredGameData {
   strategycards?: Partial<Record<StrategyCardId, GameStrategyCard>>;
   systems?: Partial<Record<SystemId, GameSystem>>;
   techs?: Partial<Record<TechId, GameTech>>;
-  timers?: Timers;
-  updates?: Record<string, { timestamp: Timestamp }>;
   // Twilight's Fall Specific
   abilities?: Partial<Record<TFAbilityId, TFGameAbility>>;
   genomes?: Partial<Record<TFGenomeId, TFGameGenome>>;
   paradigms?: Partial<Record<TFParadigmId, TFGameParadigm>>;
   upgrades?: Partial<Record<TFUnitUpgradeId, TFGameUnitUpgrade>>;
-  // Secrets
-  [key: string]: any;
   // Metadata
   lastUpdate?: number;
   sequenceNum: number;
+  deleteAt?: any; // Timestamp
+  schema?: string;
+  // Not stored in the games table.
+  gameId?: string;
+  viewOnly?: boolean;
+  timers?: Timers;
 }
 
 interface AddAttachmentEvent {

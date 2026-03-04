@@ -12,7 +12,7 @@ import PromissoryMenuSVG from "../../icons/ui/PromissoryMenu";
 import { useDataUpdate } from "../../util/api/dataUpdate";
 import { Events } from "../../util/api/events";
 import { objectEntries, rem } from "../../util/util";
-import FactionIcon from "../FactionIcon/FactionIcon";
+import FactionComponents from "../FactionComponents/FactionComponents";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledLine from "../LabeledLine/LabeledLine";
 import styles from "./PromissoryMenu.module.scss";
@@ -124,7 +124,7 @@ export default function PromissoryMenu({
                 );
               }
             }}
-            tag={<FactionIcon factionId={factionId} size="100%" />}
+            tag={<FactionComponents.Icon factionId={factionId} size="100%" />}
             tagBorderColor={factionColors[factionId]}
             borderColor={
               supportGivenTo ? factionColors[supportGivenTo] : undefined
@@ -156,7 +156,7 @@ export default function PromissoryMenu({
                   dataUpdate(Events.LoseAllianceEvent(prevAlliance, factionId));
                 }
               }}
-              tag={<FactionIcon factionId={factionId} size="100%" />}
+              tag={<FactionComponents.Icon factionId={factionId} size="100%" />}
               tagBorderColor={factionColors[factionId]}
               borderColor={
                 allianceGivenTo ? factionColors[allianceGivenTo] : undefined
@@ -228,7 +228,7 @@ export default function PromissoryMenu({
                       } as ExtendedCSS
                     }
                   >
-                    <FactionIcon factionId={id} size="100%" />
+                    <FactionComponents.Icon factionId={id} size="100%" />
                   </div>
                 </div>
               );
@@ -290,7 +290,7 @@ export default function PromissoryMenu({
                       } as ExtendedCSS
                     }
                   >
-                    <FactionIcon factionId={id} size="100%" />
+                    <FactionComponents.Icon factionId={id} size="100%" />
                   </div>
                 </div>
               );

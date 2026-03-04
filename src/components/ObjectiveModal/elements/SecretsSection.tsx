@@ -11,7 +11,6 @@ import { useDataUpdate } from "../../../util/api/dataUpdate";
 import { Events } from "../../../util/api/events";
 import { rem } from "../../../util/util";
 import FactionComponents from "../../FactionComponents/FactionComponents";
-import FactionIcon from "../../FactionIcon/FactionIcon";
 import { ModalContent } from "../../Modal/Modal";
 import ObjectiveRow from "../../ObjectiveRow/ObjectiveRow";
 import ObjectiveSelectHoverMenu from "../../ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
@@ -136,7 +135,7 @@ export default function SecretSection({
               );
             }}
           >
-            <FactionIcon factionId={factionId} size="80%" />
+            <FactionComponents.Icon factionId={factionId} size="80%" />
             <div
               className="flexRow"
               style={{
@@ -203,8 +202,7 @@ function SecretModalContent({ factionId }: { factionId: FactionId }) {
         return (
           <ObjectiveRow
             key={secret.name}
-            objective={secret}
-            hideScorers={true}
+            objectiveId={secret.id}
             removeObjective={
               viewOnly
                 ? undefined

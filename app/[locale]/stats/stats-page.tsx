@@ -4,6 +4,7 @@ import {
   Dispatch,
   ReactNode,
   SetStateAction,
+  use,
   useEffect,
   useState,
 } from "react";
@@ -26,6 +27,7 @@ import StrategyCardSection from "./sections/StrategyCardSection";
 import TechsSection from "./sections/TechsSection";
 import { HistogramData } from "./sections/types";
 import styles from "./StatsPage.module.scss";
+import { DatabaseFnsContext } from "../../../src/context/contexts";
 
 function FilterButton<T extends string | number>({
   filter,
@@ -199,13 +201,13 @@ interface IncludeExclude<T> {
 
 export default function StatsPage({
   processedGames,
-  baseData,
   loading,
 }: {
   processedGames: Record<string, ProcessedGame>;
-  baseData: BaseData;
   loading?: boolean;
 }) {
+  const databaseFns = use(DatabaseFnsContext);
+  const baseEvents = databaseFns.getBaseValue("events");
   const intl = useIntl();
   const [expansions, setExpansions] = useState<IncludeExclude<Expansion>>({
     include: new Set(["BASE", "POK", "CODEX ONE", "CODEX TWO", "CODEX THREE"]),
@@ -213,7 +215,7 @@ export default function StatsPage({
   });
   const [events, setEvents] = useState<IncludeExclude<EventId>>({
     include: new Set(),
-    exclude: new Set(objectKeys(baseData.events)),
+    exclude: new Set(objectKeys(baseEvents ?? {})),
   });
 
   const [victoryPoints, setVictoryPoints] = useState<Set<number>>(
@@ -249,7 +251,7 @@ export default function StatsPage({
     points = 14;
   }
 
-  const baseEvents = objectEntries(baseData.events).sort(([_, a], [__, b]) => {
+  const eventArray = objectEntries(baseEvents ?? {}).sort(([_, a], [__, b]) => {
     if (a.name > b.name) {
       return 1;
     }
@@ -414,7 +416,7 @@ export default function StatsPage({
                   description="Event actions."
                 />
                 :
-                {baseEvents.map(([eventId, event]) => {
+                {eventArray.map(([eventId, event]) => {
                   return (
                     <ThreeWayFilterButton
                       key={eventId}
@@ -436,7 +438,6 @@ export default function StatsPage({
                 <GameDataSection games={localGames} points={points} />
                 <DetailsSection
                   games={localGames}
-                  baseData={baseData}
                   playerCounts={playerCounts}
                   points={points}
                 />
@@ -451,12 +452,10 @@ export default function StatsPage({
 
 function DetailsSection({
   games,
-  baseData,
   playerCounts,
   points,
 }: {
   games: Record<string, ProcessedGame>;
-  baseData: BaseData;
   playerCounts: Set<number>;
   points: number;
 }) {
@@ -471,17 +470,13 @@ function DetailsSection({
       );
       break;
     case "Techs":
-      tabContent = (
-        <TechsSection games={games} baseData={baseData} points={points} />
-      );
+      tabContent = <TechsSection games={games} points={points} />;
       break;
     case "Factions":
-      tabContent = (
-        <FactionsSection games={games} baseData={baseData} points={points} />
-      );
+      tabContent = <FactionsSection games={games} points={points} />;
       break;
     case "Objectives":
-      tabContent = <ObjectivesSection games={games} baseData={baseData} />;
+      tabContent = <ObjectivesSection games={games} />;
       break;
   }
 

@@ -22,7 +22,6 @@ import { Optional } from "../util/types/types";
 import { rem } from "../util/util";
 import { CollapsibleSection } from "./CollapsibleSection";
 import FactionComponents from "./FactionComponents/FactionComponents";
-import FactionIcon from "./FactionIcon/FactionIcon";
 import styles from "./FactionPanel.module.scss";
 import FormattedDescription from "./FormattedDescription/FormattedDescription";
 import LabeledLine from "./LabeledLine/LabeledLine";
@@ -602,7 +601,7 @@ function FactionPanelContent({
                       <div className="flexRow" style={{ gap: rem(6) }}>
                         {leader.name}
                         {leader.subFaction ? (
-                          <FactionIcon
+                          <FactionComponents.Icon
                             factionId={leader.subFaction}
                             size={16}
                           />

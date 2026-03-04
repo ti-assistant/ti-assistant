@@ -1,18 +1,12 @@
+import { Techs } from "../context/techDataHooks";
+import { buildMergeFunction } from "./expansions";
+import { Optional } from "./types/types";
+
 /**
  * Returns the next index in order between [min, max)
  */
 export function getNextIndex(curr: number, max: number, min: number = 0) {
   return Math.max((curr + 1) % max, min);
-}
-
-const shouldNotPluralize = ["Infantry"];
-
-export function pluralize(text: string, number: number) {
-  if (number === 1 || shouldNotPluralize.includes(text)) {
-    return `${text}`;
-  } else {
-    return `${text}s`;
-  }
 }
 
 /**
@@ -31,25 +25,6 @@ export function em(pixels: number): `${number}em` {
 
 export function lerp(min: number, max: number, value: number) {
   return (value - min) / (max - min);
-}
-
-export function validateMapString(mapString: string) {
-  const systemArray = mapString.split(" ");
-  switch (systemArray.length) {
-    // 3 rings or less
-    case 36:
-      break;
-    // 4 rings
-    case 60:
-      break;
-  }
-  for (const system of systemArray) {
-    if (isNaN(parseInt(system))) {
-      return false;
-    }
-  }
-  // TODO: Load systems and ensure that they are all found.
-  return true;
 }
 
 export function objectKeys<T extends string | number>(
@@ -90,4 +65,45 @@ export function intlErrorFn(err: any) {
     return;
   }
   console.error(err);
+}
+
+interface ExpansionType {
+  expansion?: Expansion;
+  omegas?: Omega<this>[];
+  removedIn?: Expansion;
+}
+
+export function adjustForExpansions<
+  KeyType extends string,
+  ValueType extends ExpansionType,
+>(
+  baseData: Optional<Record<KeyType, ValueType>>,
+  expansions: Expansion[],
+): Partial<Record<KeyType, ValueType>> {
+  const returnType: Partial<Record<KeyType, ValueType>> = {};
+
+  if (!baseData) {
+    return {};
+  }
+
+  const omegaMergeFn = buildMergeFunction(expansions);
+
+  objectEntries(baseData).forEach(([key, value]: [KeyType, ValueType]) => {
+    // Filter out expansion technologies.
+    if (
+      value.expansion &&
+      value.expansion !== "BASE" &&
+      !expansions.includes(value.expansion)
+    ) {
+      return;
+    }
+
+    if (value.removedIn && expansions.includes(value.removedIn)) {
+      return;
+    }
+
+    returnType[key] = omegaMergeFn(value);
+  });
+
+  return returnType;
 }

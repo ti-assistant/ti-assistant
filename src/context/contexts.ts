@@ -47,7 +47,10 @@ export interface DatabaseFns {
   listen: (callback: EmptyFn) => EmptyFn;
   reset: EmptyFn;
   getValue: <Type>(path: string) => Optional<Type>;
-  getBaseValue: <Type>(path: string) => Optional<Type>;
+  getBaseValue: <T extends keyof BaseData>(
+    path: T,
+    expansions?: Expansion[],
+  ) => Optional<BaseData[T]>;
   setViewOnly: (value: boolean) => void;
   update: (updateFn: UpdateFn<StoredGameData>, source: UpdateSource) => void;
   subscribe: (callbackFn: CallbackFn<any>, path: string) => EmptyFn;
@@ -63,11 +66,11 @@ const DummyDatabaseFns: DatabaseFns = {
   },
   reset: () => {},
   getValue: (_: string) => undefined,
-  getBaseValue: (_: string) => undefined,
+  getBaseValue: () => undefined,
   setViewOnly: (_: boolean) => {},
-  update: (_: (data: StoredGameData) => StoredGameData, __: UpdateSource) => {},
+  update: () => {},
   saveTimers: () => {},
-  subscribe: (callbackFn: CallbackFn<any>, path: string) => {
+  subscribe: () => {
     return () => {};
   },
 };

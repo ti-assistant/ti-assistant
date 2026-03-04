@@ -40,8 +40,12 @@
   left: 0;
   width: calc(var(--size) * 1);
   height: calc(var(--size) * 1);
-  transition: top 100ms linear, left 100ms linear, width 100ms linear,
-    height 100ms linear, opacity 0ms linear 100ms;
+  transition:
+    top 100ms linear,
+    left 100ms linear,
+    width 100ms linear,
+    height 100ms linear,
+    opacity 0ms linear 100ms;
   opacity: 0;
 }
 
@@ -60,7 +64,11 @@
   width: calc(var(--size) * 3);
   height: calc(var(--size) * 3);
   opacity: 1;
-  transition: top 250ms, left 250ms, width 250ms, height 250ms;
+  transition:
+    top 250ms,
+    left 250ms,
+    width 250ms,
+    height 250ms;
 }
 
 @media only screen and (max-width: 37.5rem) {
@@ -89,7 +97,10 @@
   position: relative;
   cursor: pointer;
   border-radius: 100%;
-  transition: top 250ms, left 250ms, opacity 150ms;
+  transition:
+    top 250ms,
+    left 250ms,
+    opacity 150ms;
   top: calc(var(--initial-y) * 1);
   left: calc(var(--initial-x) * 1);
   opacity: 0;
@@ -105,7 +116,9 @@
   top: calc(var(--y-pos) * 1);
   left: calc(var(--x-pos) * 1);
   opacity: var(--opacity);
-  transition: top 300ms, left 300ms;
+  transition:
+    top 300ms,
+    left 300ms;
 }
 
 .factionSelect:hover {

@@ -3,7 +3,7 @@ import { useViewOnly } from "../../../context/dataHooks";
 import { useFactionColor } from "../../../context/factionDataHooks";
 import { useDataUpdate } from "../../../util/api/dataUpdate";
 import { Events } from "../../../util/api/events";
-import FactionIcon from "../../FactionIcon/FactionIcon";
+import FactionComponents from "../../FactionComponents/FactionComponents";
 import styles from "../ObjectivePanel.module.scss";
 
 interface ExtendedCSS extends CSSProperties {
@@ -54,7 +54,7 @@ export default function ScorableFactionIcon({
           } as ExtendedCSS
         }
       >
-        <FactionIcon factionId={factionId} size="100%" />
+        <FactionComponents.Icon factionId={factionId} size="100%" />
       </div>
     </div>
   );

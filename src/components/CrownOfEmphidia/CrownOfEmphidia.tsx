@@ -1,24 +1,18 @@
 import { FormattedMessage } from "react-intl";
-import {
-  useCurrentTurn,
-  useGameId,
-  usePlanets,
-  useRelic,
-} from "../../context/dataHooks";
+import { useCurrentTurn, usePlanets, useRelic } from "../../context/dataHooks";
 import { useFactions } from "../../context/factionDataHooks";
 import { SymbolX } from "../../icons/svgs";
 import { getPlayedRelic } from "../../util/actionLog";
 import { useDataUpdate } from "../../util/api/dataUpdate";
 import { getFactionColor, getFactionName } from "../../util/factions";
 import { rem } from "../../util/util";
-import FactionIcon from "../FactionIcon/FactionIcon";
+import FactionComponents from "../FactionComponents/FactionComponents";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 
 export default function CrownOfEmphidia({}) {
   const currentTurn = useCurrentTurn();
   const dataUpdate = useDataUpdate();
   const factions = useFactions();
-  const gameId = useGameId();
   const planets = usePlanets();
 
   const crownOfEmphidia = useRelic("The Crown of Emphidia");
@@ -71,7 +65,10 @@ export default function CrownOfEmphidia({}) {
             height: rem(32),
           }}
         >
-          <FactionIcon factionId={crownOfEmphidia.owner} size="100%" />
+          <FactionComponents.Icon
+            factionId={crownOfEmphidia.owner}
+            size="100%"
+          />
           <div
             className="flexRow"
             style={{

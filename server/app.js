@@ -6,7 +6,7 @@ const { initializeApp, cert } = require("firebase-admin/app");
 const HTTP_PORT = 8080;
 
 const dev = process.env.NODE_ENV !== "production";
-const app = next({ dev, port: HTTP_PORT });
+const app = next({ dev, port: HTTP_PORT, webpack: true, turbopack: false });
 const handle = app.getRequestHandler();
 
 app.prepare().then(async () => {
@@ -31,7 +31,7 @@ app.prepare().then(async () => {
     });
   } else {
     console.log(
-      `Using Firestore Emulator on ${emulator} w/ project ${projectId}`
+      `Using Firestore Emulator on ${emulator} w/ project ${projectId}`,
     );
     initializeApp({ projectId });
   }

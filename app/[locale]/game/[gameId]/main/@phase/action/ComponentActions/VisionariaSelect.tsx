@@ -1,4 +1,4 @@
-import FactionIcon from "../../../../../../../../src/components/FactionIcon/FactionIcon";
+import FactionComponents from "../../../../../../../../src/components/FactionComponents/FactionComponents";
 import IconDiv from "../../../../../../../../src/components/LabeledDiv/IconDiv";
 import TechResearchSection from "../../../../../../../../src/components/TechResearchSection/TechResearchSection";
 import { useFactionColors } from "../../../../../../../../src/context/factionDataHooks";
@@ -20,7 +20,7 @@ export default function VisionariaSelect({}) {
         return (
           <IconDiv
             key={factionId}
-            icon={<FactionIcon size={24} factionId={factionId} />}
+            icon={<FactionComponents.Icon size={24} factionId={factionId} />}
             iconSize={24}
             color={factionColors[factionId]}
           >

@@ -38,13 +38,13 @@ import { objectEntries, rem } from "../../util/util";
 import Conditional from "../Conditional/Conditional";
 import ExpansionIcon from "../ExpansionIcon/ExpansionIcon";
 import FactionComponents from "../FactionComponents/FactionComponents";
-import FactionIcon from "../FactionIcon/FactionIcon";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import FormattedDescription from "../FormattedDescription/FormattedDescription";
 import TechIcon from "../TechIcon/TechIcon";
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
 import { Strings } from "../strings";
 import styles from "./StartingComponents.module.scss";
+import { TechRow } from "../../TechRow";
 
 interface StartingComponentsProps {
   factionId: FactionId;
@@ -194,7 +194,7 @@ export default function StartingComponents({
     <div className={styles.StartingComponents}>
       {showFactionIcon ? (
         <div className={styles.FactionIcon}>
-          <FactionIcon factionId={factionId} size={60} />
+          <FactionComponents.Icon factionId={factionId} size={60} />
         </div>
       ) : null}
       {options.expansions.includes("TWILIGHTS FALL") ? (
@@ -242,13 +242,16 @@ export default function StartingComponents({
           />
         </div>
       ) : null}
-      <div>
+      <div
+        style={{
+          fontFamily: "Myriad Pro",
+        }}
+      >
         {orderedTechs.length === 0 &&
         !startswith.choice &&
         !options.expansions.includes("TWILIGHTS FALL") ? (
           <div
             style={{
-              fontFamily: "Myriad Pro",
               fontSize: rem(14),
             }}
           >
@@ -262,35 +265,22 @@ export default function StartingComponents({
         {orderedTechs.map((tech) => {
           if (startswith.choice) {
             return (
-              <SelectableRow
+              <TechRow
                 key={tech.id}
-                itemId={tech.id}
-                removeItem={() =>
+                techId={tech.id}
+                removeTech={() =>
                   dataUpdate(Events.RemoveStartingTechEvent(factionId, tech.id))
                 }
-                style={{
-                  color: getTechColor(tech),
-                  fontSize: "14px",
-                  whiteSpace: "nowrap",
-                  fontFamily: "Myriad Pro",
-                }}
-              >
-                {tech.name}
-              </SelectableRow>
+                opts={{ hideSymbols: true }}
+              />
             );
           }
           return (
-            <div
+            <TechRow
               key={tech.id}
-              style={{
-                whiteSpace: "nowrap",
-                fontFamily: "Myriad Pro",
-                color: getTechColor(tech),
-                fontSize: rem(14),
-              }}
-            >
-              {tech.name}
-            </div>
+              techId={tech.id}
+              opts={{ hideSymbols: true }}
+            />
           );
         })}
       </div>
@@ -337,7 +327,7 @@ export default function StartingComponents({
               type={faction.breakthrough?.synergy?.left ?? "RED"}
               size={16}
             />
-            <div className="flexRow" style={{ width: rem(24) }}>
+            <div className="flexRow" style={{ width: rem(20) }}>
               <SynergySVG />
             </div>
             <TechIcon
@@ -453,6 +443,7 @@ function TFFactionSelect({
       return false;
     }
     if (
+      faction.expansion &&
       faction.expansion !== "BASE" &&
       !options.expansions.includes(faction.expansion)
     ) {
@@ -542,9 +533,9 @@ function TFFactionSelect({
                 )
               }
             >
-              <FactionIcon factionId={faction.id} size={20} />
+              <FactionComponents.Icon factionId={faction.id} size={20} />
               {faction.name}
-              {faction.expansion !== "BASE" ? (
+              {faction.expansion && faction.expansion !== "BASE" ? (
                 <>
                   <div style={{ width: rem(4) }}></div>
                   <div

@@ -163,8 +163,8 @@ function buildDatabaseFns(database: Database): DatabaseFns {
     getValue: (path: string) => {
       return getValueAtPath(path, database.data);
     },
-    getBaseValue: (path: string) => {
-      return getBaseDataValueAtPath(path, database.baseData);
+    getBaseValue: <T extends keyof BaseData>(path: T) => {
+      return database.baseData[path];
     },
     update: (updateFn: UpdateFn<StoredGameData>, source: UpdateSource) => {
       if (!isInitialized(database)) {

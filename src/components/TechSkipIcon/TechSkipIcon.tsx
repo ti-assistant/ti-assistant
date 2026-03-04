@@ -1,7 +1,7 @@
 import { CSSProperties } from "react";
 import TechIcon from "../TechIcon/TechIcon";
 import styles from "./TechSkipIcon.module.scss";
-import { rem } from "../../util/util";
+import { em, rem } from "../../util/util";
 
 interface TechSkipIconCSS extends CSSProperties {
   "--size": string;
@@ -17,7 +17,7 @@ export default function TechSkipIcon({
   outline?: boolean;
 }) {
   const techSkipIconCSS: TechSkipIconCSS = {
-    "--size": rem(size),
+    "--size": em(size),
   };
 
   return (

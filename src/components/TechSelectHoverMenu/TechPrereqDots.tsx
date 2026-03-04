@@ -1,6 +1,6 @@
 import { CSSProperties } from "react";
 import { getTechTypeColor } from "../../util/techs";
-import { rem } from "../../util/util";
+import { em } from "../../util/util";
 import styles from "./TechPrereqDots.module.scss";
 
 interface TechPrereqProperties extends CSSProperties {
@@ -23,8 +23,8 @@ export default function TechPrereqDots({
   }
 
   const style: TechPrereqProperties = {
-    "--width": rem(width),
-    gap: rem(width / 2),
+    "--width": em(width),
+    gap: em(width / 2),
   };
 
   if (prereqs.length > 3) {

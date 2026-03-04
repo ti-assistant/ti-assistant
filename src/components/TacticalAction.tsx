@@ -140,30 +140,22 @@ export function TacticalAction({
               className="flexColumn"
               style={{ alignItems: "stretch", paddingLeft: rem(4) }}
             >
-              {scoredObjectives.map((objective) => {
-                if (!objectives) {
-                  return null;
-                }
+              {scoredObjectives.map((objectiveId) => {
                 if (
-                  objective === "Custodians Token" ||
-                  objective === "Support for the Throne"
+                  objectiveId === "Custodians Token" ||
+                  objectiveId === "Support for the Throne"
                 ) {
-                  return null;
-                }
-                const objectiveObj = objectives[objective];
-                if (!objectiveObj) {
                   return null;
                 }
                 return (
                   <ObjectiveRow
-                    key={objective}
-                    hideScorers={true}
-                    objective={objectiveObj}
+                    key={objectiveId}
+                    objectiveId={objectiveId}
                     removeObjective={() =>
                       dataUpdate(
                         Events.UnscoreObjectiveEvent(
                           activeFactionId,
-                          objective,
+                          objectiveId,
                         ),
                       )
                     }

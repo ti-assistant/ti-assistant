@@ -247,51 +247,46 @@ export default function AgendaDetails({
         },
       );
       const revealedObjective = getRevealedObjectives(currentTurn)[0];
-      const revealedObjectiveObj = revealedObjective
-        ? objectives[revealedObjective]
-        : null;
-      agendaSelection =
-        revealedObjective && revealedObjectiveObj ? (
-          <LabeledDiv
-            label={
-              <FormattedMessage
-                id="IfyaDZ"
-                description="A label for revealed objectives."
-                defaultMessage="Revealed {type} {count, plural, one {Objective} other {Objectives}}"
-                values={{
-                  count: 1,
-                  type: type,
-                }}
-              />
-            }
-          >
-            <ObjectiveRow
-              objective={revealedObjectiveObj}
-              removeObjective={() =>
-                dataUpdate(Events.HideObjectiveEvent(revealedObjective))
-              }
-              hideScorers={true}
+      agendaSelection = revealedObjective ? (
+        <LabeledDiv
+          label={
+            <FormattedMessage
+              id="IfyaDZ"
+              description="A label for revealed objectives."
+              defaultMessage="Revealed {type} {count, plural, one {Objective} other {Objectives}}"
+              values={{
+                count: 1,
+                type: type,
+              }}
             />
-          </LabeledDiv>
-        ) : (
-          <ObjectiveSelectHoverMenu
-            action={(objectiveId) =>
-              dataUpdate(Events.RevealObjectiveEvent(objectiveId))
+          }
+        >
+          <ObjectiveRow
+            objectiveId={revealedObjective}
+            removeObjective={() =>
+              dataUpdate(Events.HideObjectiveEvent(revealedObjective))
             }
-            label={
-              <FormattedMessage
-                id="lDBTCO"
-                description="Instruction telling the speaker to reveal objectives."
-                defaultMessage="Reveal {count, number} {type} {count, plural, one {objective} other {objectives}}"
-                values={{
-                  count: 1,
-                  type: objectiveTypeString(type, intl),
-                }}
-              />
-            }
-            objectives={availableObjectives}
           />
-        );
+        </LabeledDiv>
+      ) : (
+        <ObjectiveSelectHoverMenu
+          action={(objectiveId) =>
+            dataUpdate(Events.RevealObjectiveEvent(objectiveId))
+          }
+          label={
+            <FormattedMessage
+              id="lDBTCO"
+              description="Instruction telling the speaker to reveal objectives."
+              defaultMessage="Reveal {count, number} {type} {count, plural, one {objective} other {objectives}}"
+              values={{
+                count: 1,
+                type: objectiveTypeString(type, intl),
+              }}
+            />
+          }
+          objectives={availableObjectives}
+        />
+      );
       break;
     }
     case "Colonial Redistribution": {

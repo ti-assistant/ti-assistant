@@ -1,5 +1,5 @@
 import { FormattedMessage, useIntl } from "react-intl";
-import FactionIcon from "../../../../../../../../src/components/FactionIcon/FactionIcon";
+import FactionComponents from "../../../../../../../../src/components/FactionComponents/FactionComponents";
 import IconDiv from "../../../../../../../../src/components/LabeledDiv/IconDiv";
 import LabeledDiv from "../../../../../../../../src/components/LabeledDiv/LabeledDiv";
 import TechResearchSection from "../../../../../../../../src/components/TechResearchSection/TechResearchSection";
@@ -99,7 +99,9 @@ export default function TaZernDeepwrought({
               <IconDiv
                 key={faction.id}
                 iconSize={24}
-                icon={<FactionIcon factionId={faction.id} size={24} />}
+                icon={
+                  <FactionComponents.Icon factionId={faction.id} size={24} />
+                }
                 color={getFactionColor(faction)}
               >
                 <TechResearchSection factionId={faction.id} numTechs={1} />

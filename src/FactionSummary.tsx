@@ -1,7 +1,7 @@
 import React, { use } from "react";
 import { FormattedMessage } from "react-intl";
 import Conditional from "./components/Conditional/Conditional";
-import FactionIcon from "./components/FactionIcon/FactionIcon";
+import FactionComponents from "./components/FactionComponents/FactionComponents";
 import PlanetSummary from "./components/PlanetSummary/PlanetSummary";
 import TechSummary, {
   TFTechSummary,
@@ -395,7 +395,7 @@ function FactionObjectiveSummary({ factionId }: { factionId: FactionId }) {
             userSelect: "none",
           }}
         >
-          <FactionIcon factionId={factionId} size="100%" />
+          <FactionComponents.Icon factionId={factionId} size="100%" />
         </div>
       </div>
       <div
