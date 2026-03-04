@@ -28,10 +28,10 @@ export default function ObjectivesSection({
 }) {
   const { openModal } = use(ModalContext);
   const [tab, setTab] = useState<ObjectiveType>("STAGE ONE");
-  const { getBaseValue } = use(DatabaseFnsContext);
+  const databaseFns = use(DatabaseFnsContext);
 
   let objectivesByScore: Partial<Record<ObjectiveId, ObjectiveInfo>> = {};
-  const baseObjectives = getBaseValue("objectives");
+  const baseObjectives = databaseFns.getBaseValue("objectives");
   if (!baseObjectives) {
     return null;
   }

@@ -68,9 +68,9 @@ const DummyDatabaseFns: DatabaseFns = {
   getValue: (_: string) => undefined,
   getBaseValue: () => undefined,
   setViewOnly: (_: boolean) => {},
-  update: (_: (data: StoredGameData) => StoredGameData, __: UpdateSource) => {},
+  update: () => {},
   saveTimers: () => {},
-  subscribe: (callbackFn: CallbackFn<any>, path: string) => {
+  subscribe: () => {
     return () => {};
   },
 };

@@ -160,7 +160,7 @@ function MobileOptions({
       if (options.expansions.has("TWILIGHTS FALL")) {
         return false;
       }
-      return !event.expansion || options.expansions.has(event.expansion);
+      return options.expansions.has(event.expansion);
     })
     .sort(([_, a], [__, b]) => {
       if (a.name > b.name) {

@@ -172,8 +172,8 @@ function ObjectiveTable({
   objectiveGames: number;
   objectiveType: ObjectiveType;
 }) {
-  const { getBaseValue } = use(DatabaseFnsContext);
-  const baseObjectives = getBaseValue("objectives");
+  const databaseFns = use(DatabaseFnsContext);
+  const baseObjectives = databaseFns.getBaseValue("objectives");
   if (!baseObjectives) {
     return null;
   }
@@ -321,8 +321,8 @@ function TechTable({
   techWins: number;
   techPoints: number;
 }) {
-  const { getBaseValue } = use(DatabaseFnsContext);
-  const baseTechs = getBaseValue("techs");
+  const databaseFns = use(DatabaseFnsContext);
+  const baseTechs = databaseFns.getBaseValue("techs");
   if (!baseTechs) {
     return null;
   }

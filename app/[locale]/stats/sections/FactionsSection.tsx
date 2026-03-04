@@ -21,10 +21,10 @@ export default function FactionsSection({
   points: number;
 }) {
   const { openModal } = use(ModalContext);
-  const { getBaseValue } = use(DatabaseFnsContext);
+  const databaseFns = use(DatabaseFnsContext);
 
-  const baseFactions = getBaseValue("factions");
-  const baseObjectives = getBaseValue("objectives");
+  const baseFactions = databaseFns.getBaseValue("factions");
+  const baseObjectives = databaseFns.getBaseValue("objectives");
   const factionInfo: Partial<Record<FactionId, FactionSummary>> = {};
   Object.values(games).forEach((game) => {
     const factions = game.factions;

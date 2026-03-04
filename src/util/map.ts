@@ -339,17 +339,14 @@ export function processMapString(
   thundersEdge: boolean,
 ) {
   if (!allSystemsValid(mapString)) {
-    console.log("Invalid");
     return getDefaultMapString(numFactions, mapStyle, thundersEdge);
   }
   if (allSystemsValid(mapString) && hasHomeSystems(mapString, numFactions)) {
-    console.log("Explicit");
     return makeHomeSystemsExplicit(
       maybeAddMecatol(mapString, thundersEdge),
       numFactions,
     );
   }
-  console.log("Updating");
   const updated = updateMapString(
     maybeAddMecatol(mapString, thundersEdge),
     mapStyle,

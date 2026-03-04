@@ -1,7 +1,7 @@
 import { CSSProperties, PropsWithChildren, ReactNode } from "react";
 import { BLACK_BORDER_GLOW } from "../../util/borderGlow";
+import { em, rem } from "../../util/util";
 import styles from "./Circle.module.scss";
-import { rem, em } from "../../util/util";
 
 interface CircleProps {
   blur?: boolean;
@@ -37,7 +37,6 @@ export default function Circle({
     backdropFilter: blur ? `blur(${rem(4)})` : undefined,
     boxShadow: borderColor === "Black" ? BLACK_BORDER_GLOW : undefined,
     cursor: onClick ? "pointer" : undefined,
-    // fontSize: rem(size - 8),
     ...style,
   };
 
