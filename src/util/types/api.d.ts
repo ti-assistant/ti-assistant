@@ -173,6 +173,7 @@ interface StoredGameData {
   lastUpdate?: number;
   sequenceNum: number;
   deleteAt?: any; // Timestamp
+  schema?: string;
   // Not stored in the games table.
   gameId?: string;
   viewOnly?: boolean;

@@ -29,7 +29,10 @@ interface Options {
   "map-string"?: string;
   "map-style": MapStyle;
   "victory-points": number;
+  "secondary-victory-points"?: number;
   events?: EventId[];
   // Optional tracking
   hide?: AppSection[];
+  // Other - used to make changeOption work with any type.
+  [key: string]: any;
 }

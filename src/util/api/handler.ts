@@ -1,6 +1,6 @@
 export function updateGameData(
   currentData: StoredGameData,
-  updates: Record<string, any>
+  updates: Record<string, any>,
 ) {
   for (const [path, value] of Object.entries(updates)) {
     const pathSections = path.split(".");
@@ -8,7 +8,7 @@ export function updateGameData(
     if (!key) {
       return;
     }
-    let dataRef = currentData;
+    let dataRef: any = currentData;
     for (const section of pathSections) {
       if (!dataRef[section]) {
         dataRef[section] = {};
@@ -28,7 +28,7 @@ export function updateGameData(
 
 export function updateTimers(
   currentData: Timers,
-  updates: Record<string, any>
+  updates: Record<string, any>,
 ) {
   for (const [path, value] of Object.entries(updates)) {
     const pathSections = path.split(".");

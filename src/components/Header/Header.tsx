@@ -102,7 +102,7 @@ export default function Header({ archive }: { archive?: boolean }) {
         Object.values(factions).forEach((faction) => {
           if (
             computeVPs(factions, faction.id, objectives ?? {}) >=
-              options["secondary-victory-points"] &&
+              (options["secondary-victory-points"] ?? 0) &&
             faction.alliancePartner
           ) {
             if (
