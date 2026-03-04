@@ -202,8 +202,7 @@ function SecretModalContent({ factionId }: { factionId: FactionId }) {
         return (
           <ObjectiveRow
             key={secret.name}
-            objective={secret}
-            hideScorers={true}
+            objectiveId={secret.id}
             removeObjective={
               viewOnly
                 ? undefined

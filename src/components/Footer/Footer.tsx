@@ -257,6 +257,7 @@ export default function Footer() {
               className="flexRow"
               style={{
                 position: "relative",
+                fontSize: "1rem",
               }}
             >
               {twilightsFallGame ? (
@@ -405,6 +406,7 @@ export default function Footer() {
                   position: "relative",
                   width: "100%",
                   height: "100%",
+                  fontSize: "1rem",
                 }}
               >
                 {twilightsFallGame ? (

@@ -686,8 +686,9 @@ function buildFactionValues(
       if (!ring) {
         break;
       }
+      const noDuplicates = Array.from(new Set(ring));
       const homeSystems = [];
-      for (const system of ring) {
+      for (const system of noDuplicates) {
         if (isHomeSystem(system)) {
           homeSystems.push(system);
         }

@@ -1,4 +1,4 @@
-import { rem } from "../../util/util";
+import { em } from "../../util/util";
 
 export default function CarrierSVG({
   color = "#eee",
@@ -9,7 +9,7 @@ export default function CarrierSVG({
 }) {
   return (
     <svg
-      height={typeof size === "number" ? rem(size) : size}
+      height={typeof size === "number" ? em(size) : size}
       version="1.1"
       viewBox="0 0 33 17"
       xmlns="http://www.w3.org/2000/svg"

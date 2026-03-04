@@ -1,14 +1,14 @@
 "use client";
 
+import Cookies from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CSSProperties, PropsWithChildren, useRef, useState } from "react";
 import { SymbolX } from "../../icons/svgs";
-import { rem } from "../../util/util";
+import { em, rem } from "../../util/util";
 import Circle from "../Circle/Circle";
 import styles from "./LangSelectHoverMenu.module.scss";
-import Cookies from "js-cookie";
 
 interface FactionSelectProps {
   selectedLocale?: string;
@@ -52,7 +52,7 @@ export default function LangSelectHoverMenu({
 
   const hoverMenuStyle: CSSProperties = {
     left: 0,
-    borderRadius: rem(size / 2),
+    borderRadius: em(size / 2),
     border: `var(--border-size) solid var(--neutral-border)`,
   };
 
@@ -85,17 +85,16 @@ export default function LangSelectHoverMenu({
           className="flexRow"
           style={{
             position: "relative",
-            width: `calc(${rem(size)} - 4px)`,
-            height: `calc(${rem(size)} - 4px)`,
-            fontSize: rem(size - 8),
+            width: `calc(${em(size)} - 4px)`,
+            height: `calc(${em(size)} - 4px)`,
           }}
         >
           <div
             className="flexRow"
             style={{
               position: "relative",
-              width: rem(size - 10),
-              height: rem(size - 10),
+              width: em(size - 10),
+              height: em(size - 10),
             }}
           >
             <LanguageIcon locale={selectedLocale} />
@@ -110,8 +109,8 @@ export default function LangSelectHoverMenu({
               : 1;
           const languageSelectStyle: LanguageSelectCSS = {
             "--opacity": opacity,
-            width: `calc(${rem(size)} - 4px)`,
-            height: `calc(${rem(size)} - 4px)`,
+            width: `calc(${em(size)} - 4px)`,
+            height: `calc(${em(size)} - 4px)`,
             pointerEvents: isInvalid ? "none" : undefined,
           };
           if (locale === selectedLocale) {
@@ -130,11 +129,11 @@ export default function LangSelectHoverMenu({
                 Cookies.set("TI_LOCALE", locale);
               }}
             >
-              <div
+              <div  
                 style={{
                   position: "relative",
-                  width: rem(size - 10),
-                  height: rem(size - 10),
+                  width: em(size - 10),
+                  height: em(size - 10),
                 }}
               >
                 {locale === selectedLocale && !isInvalid ? (

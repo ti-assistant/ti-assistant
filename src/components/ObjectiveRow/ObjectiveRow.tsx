@@ -1,7 +1,8 @@
 import { useViewOnly } from "../../context/dataHooks";
+import { useObjective } from "../../context/objectiveDataHooks";
 import InfoModal from "../../InfoModal";
 import { SelectableRow } from "../../SelectableRow";
-import { rem } from "../../util/util";
+import { em, rem } from "../../util/util";
 import FactionComponents from "../FactionComponents/FactionComponents";
 import FormattedDescription from "../FormattedDescription/FormattedDescription";
 
@@ -30,28 +31,29 @@ function InfoContent({ objective }: InfoContentProps) {
 }
 
 interface ObjectiveRowProps {
-  objective: Objective;
+  objectiveId: ObjectiveId;
   factionId?: FactionId;
   addObjective?: (objectiveId: ObjectiveId) => void;
   removeObjective?: (objectiveId: ObjectiveId) => void;
   scoreObjective?: (objectiveId: ObjectiveId, score: boolean) => void;
-  viewing?: boolean;
-  hideScorers?: boolean;
 }
 
 export default function ObjectiveRow({
-  objective,
+  objectiveId,
   factionId,
   addObjective,
   removeObjective,
   scoreObjective,
-  viewing,
-  hideScorers,
 }: ObjectiveRowProps) {
+  const objective = useObjective(objectiveId);
   const viewOnly = useViewOnly();
 
-  function canScore() {
-    if (!scoreObjective || viewing || !factionId) {
+  if (!objective) {
+    return null;
+  }
+
+  function canScore(objective: Objective) {
+    if (!scoreObjective || !factionId) {
       return false;
     }
     if (objective.max && (objective.scorers ?? []).length >= objective.max) {
@@ -89,23 +91,21 @@ export default function ObjectiveRow({
             <div style={{ display: "flex", flex: "2 0 50%" }}>
               {objective.name}
             </div>
-            <InfoModal title={objective.name} style={{ marginLeft: rem(8) }}>
+            <InfoModal title={objective.name} style={{ marginLeft: em(8) }}>
               <InfoContent objective={objective} />
             </InfoModal>
           </div>
-          <div className="flexColumn">
-            {canScore() && scoreObjective ? (
-              <button
-                style={{ fontSize: rem(12) }}
-                onClick={() => scoreObjective(objective.id, true)}
-                disabled={viewOnly}
-              >
-                Score
-              </button>
-            ) : null}
-          </div>
+          {canScore(objective) && scoreObjective ? (
+            <button
+              style={{ fontSize: em(12) }}
+              onClick={() => scoreObjective(objective.id, true)}
+              disabled={viewOnly}
+            >
+              Score
+            </button>
+          ) : null}
         </div>
-        {hideScorers ? null : (
+        {!scoreObjective ? null : (
           <div
             className="flexRow"
             style={{
@@ -122,19 +122,19 @@ export default function ObjectiveRow({
                     className="flexRow"
                     style={{
                       position: "relative",
-                      width: rem(32),
-                      height: rem(32),
+                      width: em(32),
+                      height: em(32),
                     }}
                   >
                     <div
                       style={{
                         cursor: "pointer",
-                        width: rem(12),
-                        fontSize: rem(8),
-                        lineHeight: rem(8),
-                        height: rem(12),
+                        width: em(12),
+                        fontSize: em(8),
+                        lineHeight: em(8),
+                        height: em(12),
                         top: 0,
-                        left: rem(20),
+                        left: em(20),
                         position: "absolute",
                         zIndex: 1,
                         backgroundColor: "var(--light-bg)",
@@ -143,7 +143,7 @@ export default function ObjectiveRow({
                         alignItems: "center",
                         fontWeight: "bold",
                         justifyContent: "center",
-                        borderRadius: rem(12),
+                        borderRadius: em(12),
                         boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
                       }}
                       onClick={
@@ -164,8 +164,8 @@ export default function ObjectiveRow({
                   className="flexRow"
                   style={{
                     position: "relative",
-                    width: rem(32),
-                    height: rem(32),
+                    width: em(32),
+                    height: em(32),
                   }}
                 >
                   <FactionComponents.Icon factionId={scorer} size="100%" />

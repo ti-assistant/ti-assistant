@@ -92,7 +92,7 @@ interface BaseData {
   objectives: Record<ObjectiveId, BaseObjective>;
   planets: Record<PlanetId, BasePlanet>;
   relics: Record<RelicId, BaseRelic>;
-  strategycards: Record<StrategyCardId, StrategyCard>;
+  strategycards: Record<StrategyCardId, BaseStrategyCard>;
   systems: Record<SystemId, BaseSystem>;
   techs: Record<TechId, BaseTech>;
 

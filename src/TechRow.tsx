@@ -17,7 +17,7 @@ import { Events } from "./util/api/events";
 import { hasTech } from "./util/api/techs";
 import { getFactionColor } from "./util/factions";
 import { getTechColor } from "./util/techs";
-import { objectEntries, rem } from "./util/util";
+import { em, objectEntries, rem } from "./util/util";
 
 function InfoContent({ tech }: { tech: Tech }) {
   if (tech.type === "UPGRADE") {
@@ -116,7 +116,7 @@ export function TechRow({
     >
       <div
         className="flexRow"
-        style={{ width: "100%", justifyContent: "stretch" }}
+        style={{ width: "100%", gap: "0.5em", justifyContent: "stretch" }}
       >
         <div
           className={className}
@@ -135,6 +135,7 @@ export function TechRow({
               // display: "flex",
               color: getTechColor(tech),
               zIndex: 0,
+              gap: "0.5em",
             }}
           >
             {tech.name}
@@ -149,8 +150,8 @@ export function TechRow({
                   opacity: "70%",
                   height: "100%",
                   zIndex: -2,
-                  top: rem(-4),
-                  right: rem(-16),
+                  top: em(-4),
+                  right: em(-16),
                 }}
               >
                 <div
@@ -172,12 +173,12 @@ export function TechRow({
               >
                 {tech.name}
                 {tech.type === "UPGRADE" ? (
-                  <UnitIcon type={tech.unitType} size={40} />
+                  <UnitIcon type={tech.unitType} size={20} />
                 ) : null}
-                <TechPrereqDots prereqs={tech.prereqs} width={8} />
+                <TechPrereqDots prereqs={tech.prereqs} width={4} />
               </div>
             }
-            style={{ marginLeft: rem(8) }}
+            style={{ marginLeft: em(8) }}
           >
             <InfoContent tech={tech} />
           </InfoModal>

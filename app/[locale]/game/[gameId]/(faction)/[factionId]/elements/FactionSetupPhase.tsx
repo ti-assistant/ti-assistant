@@ -72,18 +72,13 @@ export default function FactionSetupPhase({
             }
           >
             {revealedObjectiveIds.map((objectiveId) => {
-              const objectiveObj = objectives[objectiveId];
-              if (!objectiveObj) {
-                return null;
-              }
               return (
                 <ObjectiveRow
                   key={objectiveId}
-                  objective={objectiveObj}
+                  objectiveId={objectiveId}
                   removeObjective={() =>
                     dataUpdate(Events.HideObjectiveEvent(objectiveId))
                   }
-                  viewing={true}
                 />
               );
             })}

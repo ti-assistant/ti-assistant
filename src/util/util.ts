@@ -1,3 +1,7 @@
+import { Techs } from "../context/techDataHooks";
+import { buildMergeFunction } from "./expansions";
+import { Optional } from "./types/types";
+
 /**
  * Returns the next index in order between [min, max)
  */
@@ -61,4 +65,45 @@ export function intlErrorFn(err: any) {
     return;
   }
   console.error(err);
+}
+
+interface ExpansionType {
+  expansion?: Expansion;
+  omegas?: Omega<this>[];
+  removedIn?: Expansion;
+}
+
+export function adjustForExpansions<
+  KeyType extends string,
+  ValueType extends ExpansionType,
+>(
+  baseData: Optional<Record<KeyType, ValueType>>,
+  expansions: Expansion[],
+): Partial<Record<KeyType, ValueType>> {
+  const returnType: Partial<Record<KeyType, ValueType>> = {};
+
+  if (!baseData) {
+    return {};
+  }
+
+  const omegaMergeFn = buildMergeFunction(expansions);
+
+  objectEntries(baseData).forEach(([key, value]: [KeyType, ValueType]) => {
+    // Filter out expansion technologies.
+    if (
+      value.expansion &&
+      value.expansion !== "BASE" &&
+      !expansions.includes(value.expansion)
+    ) {
+      return;
+    }
+
+    if (value.removedIn && expansions.includes(value.removedIn)) {
+      return;
+    }
+
+    returnType[key] = omegaMergeFn(value);
+  });
+
+  return returnType;
 }

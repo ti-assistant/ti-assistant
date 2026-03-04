@@ -819,9 +819,6 @@ export default function StatusPhase() {
     .filter((logEntry) => logEntry.data.action === "REVEAL_OBJECTIVE")
     .map((logEntry) => (logEntry.data as RevealObjectiveData).event.objective);
   const revealedObjective = revealedObjectives[0];
-  const revealedObjectiveObj = revealedObjective
-    ? objectives[revealedObjective]
-    : undefined;
   const type = round < 4 ? "STAGE ONE" : "STAGE TWO";
   const availableObjectives = Object.values(objectives).filter((objective) => {
     return objective.type === type && !objective.selected;
@@ -1006,7 +1003,7 @@ export default function StatusPhase() {
                 />
               }
             >
-              {revealedObjectiveObj ? (
+              {revealedObjective ? (
                 <LabeledDiv
                   label={
                     <FormattedMessage
@@ -1024,13 +1021,10 @@ export default function StatusPhase() {
                   }
                 >
                   <ObjectiveRow
-                    objective={revealedObjectiveObj}
+                    objectiveId={revealedObjective}
                     removeObjective={() =>
-                      dataUpdate(
-                        Events.HideObjectiveEvent(revealedObjectiveObj.id),
-                      )
+                      dataUpdate(Events.HideObjectiveEvent(revealedObjective))
                     }
-                    viewing={true}
                   />
                 </LabeledDiv>
               ) : (

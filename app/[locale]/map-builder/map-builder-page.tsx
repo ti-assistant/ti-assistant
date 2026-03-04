@@ -13,7 +13,6 @@ import MapBuilder, {
 import NonGameHeader from "../../../src/components/NonGameHeader/NonGameHeader";
 import Toggle from "../../../src/components/Toggle/Toggle";
 import { DatabaseFnsContext } from "../../../src/context/contexts";
-import { buildBaseSystems } from "../../../src/data/GameData";
 import ProphecyofKingsSVG from "../../../src/icons/ui/ProphecyOfKings";
 import ThundersEdgeMenuSVG from "../../../src/icons/ui/ThundersEdgeMenu";
 import { getDefaultMapString, processMapString } from "../../../src/util/map";

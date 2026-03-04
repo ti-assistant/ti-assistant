@@ -272,8 +272,7 @@ export default function MobileObjectiveGrid() {
                 return (
                   <React.Fragment key={objective.id}>
                     <ObjectiveRow
-                      objective={objective}
-                      hideScorers
+                      objectiveId={objective.id}
                       removeObjective={
                         (objective.scorers ?? []).length === 0 && !viewOnly
                           ? () => {
@@ -329,8 +328,7 @@ export default function MobileObjectiveGrid() {
                 return (
                   <React.Fragment key={objective.id}>
                     <ObjectiveRow
-                      objective={objective}
-                      hideScorers
+                      objectiveId={objective.id}
                       removeObjective={
                         (objective.scorers ?? []).length === 0 && !viewOnly
                           ? () => {
@@ -883,7 +881,7 @@ export default function MobileObjectiveGrid() {
                 className="flexRow"
                 style={{ alignItems: "center", justifyContent: "center" }}
               >
-                <ObjectiveRow objective={mutiny} hideScorers />
+                <ObjectiveRow objectiveId="Mutiny" />
                 {viewOnly ? (
                   mutinyDirection === "[For]" ? (
                     `[${intl.formatMessage({
@@ -952,7 +950,7 @@ export default function MobileObjectiveGrid() {
                 width: "100%",
               }}
             >
-              <ObjectiveRow objective={seed} hideScorers />
+              <ObjectiveRow objectiveId="Seed of an Empire" />
               <div
                 className={styles.factionIconRow}
                 style={
@@ -1076,8 +1074,7 @@ function SecretModalContent({ factionId }: { factionId: FactionId }) {
         return (
           <ObjectiveRow
             key={secret.name}
-            objective={secret}
-            hideScorers={true}
+            objectiveId={secret.id}
             removeObjective={
               viewOnly
                 ? undefined

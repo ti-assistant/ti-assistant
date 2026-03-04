@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { CSSProperties, useMemo } from "react";
 import { SymbolX } from "../../icons/svgs";
-import { rem } from "../../util/util";
+import { em, rem } from "../../util/util";
 import SiteLogo from "../SiteLogo/SiteLogo";
 import styles from "./FactionIcon.module.scss";
 
@@ -57,7 +57,7 @@ export default function FactionIcon({ factionId, size }: FactionIconProps) {
   }, [factionId]);
 
   const factionIconStyle: FactionIconCSS = {
-    "--size": typeof size === "string" ? size : rem(size),
+    "--size": typeof size === "string" ? size : em(size),
   };
   return (
     <div className={styles.FactionIcon} style={factionIconStyle}>

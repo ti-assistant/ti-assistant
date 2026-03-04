@@ -309,10 +309,6 @@ export function LogEntryElement({
       );
     }
     case "SCORE_OBJECTIVE": {
-      const objective = objectives[logEntry.data.event.objective];
-      if (!objective) {
-        return null;
-      }
       return (
         <div
           className="flexRow"
@@ -323,7 +319,7 @@ export function LogEntryElement({
           }}
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} />
-          scored <ObjectiveRow objective={objective} hideScorers />
+          scored <ObjectiveRow objectiveId={logEntry.data.event.objective} />
           {logEntry.data.event.key ? ` (${logEntry.data.event.key})` : null}
         </div>
       );
@@ -391,10 +387,6 @@ export function LogEntryElement({
       );
     }
     case "UNSCORE_OBJECTIVE": {
-      const objective = objectives[logEntry.data.event.objective];
-      if (!objective) {
-        return null;
-      }
       return (
         <div
           className="flexRow"
@@ -405,7 +397,7 @@ export function LogEntryElement({
           }}
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} />
-          lost <ObjectiveRow objective={objective} hideScorers />
+          lost <ObjectiveRow objectiveId={logEntry.data.event.objective} />
           {logEntry.data.event.key ? ` (${logEntry.data.event.key})` : null}
         </div>
       );
@@ -647,10 +639,6 @@ export function LogEntryElement({
           );
         }
         case "The Crown of Emphidia": {
-          const objective = objectives["Tomb + Crown of Emphidia"];
-          if (!objective) {
-            return null;
-          }
           return (
             <div
               className="flexRow"
@@ -661,7 +649,7 @@ export function LogEntryElement({
               }}
             >
               <ColoredFactionName factionId={relicOwner} />
-              scored <ObjectiveRow objective={objective} hideScorers />
+              scored <ObjectiveRow objectiveId="Tomb + Crown of Emphidia" />
             </div>
           );
         }
@@ -698,10 +686,6 @@ export function LogEntryElement({
       );
     }
     case "REVEAL_OBJECTIVE": {
-      const objective = objectives[logEntry.data.event.objective];
-      if (!objective) {
-        return null;
-      }
       return (
         <div
           className="flexRow"
@@ -710,7 +694,8 @@ export function LogEntryElement({
             gap: rem(4),
           }}
         >
-          Revealed Objective: <ObjectiveRow objective={objective} hideScorers />
+          Revealed Objective:{" "}
+          <ObjectiveRow objectiveId={logEntry.data.event.objective} />
         </div>
       );
     }

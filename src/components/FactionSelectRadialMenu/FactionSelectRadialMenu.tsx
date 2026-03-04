@@ -1,7 +1,7 @@
 import React, { CSSProperties, ReactNode, useRef, useState } from "react";
 import { SymbolX } from "../../icons/svgs";
 import { Optional } from "../../util/types/types";
-import { rem } from "../../util/util";
+import { em, rem } from "../../util/util";
 import FactionCircle from "../FactionCircle/FactionCircle";
 import FactionComponents from "../FactionComponents/FactionComponents";
 import styles from "./FactionSelectRadialMenu.module.scss";
@@ -28,16 +28,16 @@ function getRadialPosition(index: number, numOptions: number, size: number) {
 
   const center = (size * 3) / 2;
   const pos = {
-    "--y-pos": rem(
+    "--y-pos": em(
       Math.round(100 * (center - size * Math.cos(radians) - size / 2 + 2)) /
         100,
     ),
-    "--x-pos": rem(
+    "--x-pos": em(
       Math.round(100 * (center - size * -Math.sin(radians) - size / 2 + 2)) /
         100,
     ),
-    "--initial-y": rem(size + 2),
-    "--initial-x": rem(size + 2),
+    "--initial-y": em(size + 2),
+    "--initial-x": em(size + 2),
   };
   return pos;
 }
@@ -83,7 +83,7 @@ export default function FactionSelectRadialMenu({
 
   const hoverParentStyle: FactionSelectRadialMenuCSS = {
     "--border-color": borderColor,
-    "--size": rem(size),
+    "--size": em(size),
   };
 
   return (
@@ -120,8 +120,8 @@ export default function FactionSelectRadialMenu({
                   : 1;
               const factionSelectStyle: FactionSelectCSS = {
                 "--opacity": opacity,
-                width: rem(size - 4),
-                height: rem(size - 4),
+                width: em(size - 4),
+                height: em(size - 4),
                 pointerEvents: isInvalid ? "none" : undefined,
                 ...getRadialPosition(index, factions.length, size),
               };
@@ -141,8 +141,8 @@ export default function FactionSelectRadialMenu({
                 >
                   <div
                     style={{
-                      width: rem(size - 10),
-                      height: rem(size - 10),
+                      width: em(size - 10),
+                      height: em(size - 10),
                     }}
                   >
                     {factionId === selectedFaction && !isInvalid ? (
@@ -160,24 +160,23 @@ export default function FactionSelectRadialMenu({
             <div
               className={`flexRow ${styles.centerCircle}`}
               style={{
-                width: rem(size - 2),
-                height: rem(size - 2),
+                width: em(size - 2),
+                height: em(size - 2),
               }}
             >
               <div
                 className="flexRow"
                 style={{
-                  width: rem(size - 4),
-                  height: rem(size - 4),
-                  fontSize: rem(size - 8),
+                  width: em(size - 4),
+                  height: em(size - 4),
                 }}
               >
                 <div
                   className="flexRow"
                   style={{
                     position: "relative",
-                    width: rem(size - 10),
-                    height: rem(size - 10),
+                    width: em(size - 10),
+                    height: em(size - 10),
                   }}
                 >
                   {selectedFaction ? (

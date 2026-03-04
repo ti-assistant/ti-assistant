@@ -508,7 +508,7 @@ function Mutiny({ orderedFactionIds }: { orderedFactionIds: FactionId[] }) {
           opacity: (mutiny.scorers ?? []).length === 0 ? 0.25 : undefined,
         }}
       >
-        <ObjectiveRow objective={mutiny} hideScorers />
+        <ObjectiveRow objectiveId="Mutiny" />
         {viewOnly ? (
           mutinyDirection === "[For]" ? (
             `[${intl.formatMessage({
@@ -602,7 +602,7 @@ function SeedOfAnEmpire({
           opacity: (seed.scorers ?? []).length === 0 ? 0.25 : undefined,
         }}
       >
-        <ObjectiveRow objective={seed} hideScorers />
+        <ObjectiveRow objectiveId="Seed of an Empire" />
       </span>
       <div
         className={styles.factionIconRow}

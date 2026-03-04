@@ -1,15 +1,13 @@
-import { useSearchParams } from "next/navigation";
 import { PropsWithChildren, ReactNode, use, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { ModalContext } from "../context/contexts";
-import { buildBaseLeaders, buildBaseTechs } from "../data/GameData";
+import { DatabaseFnsContext, ModalContext } from "../context/contexts";
 import FlipSVG from "../icons/ui/Flip";
 import SynergySVG from "../icons/ui/Synergy";
 import FullScreenModal from "../modals/FullScreenModal";
 import { leaderTypeString } from "../util/strings";
 import { sortTechsByPreReqAndExpansion } from "../util/techs";
 import { Optional } from "../util/types/types";
-import { rem } from "../util/util";
+import { adjustForExpansions, rem } from "../util/util";
 import Chip from "./Chip/Chip";
 import { CollapsibleSection } from "./CollapsibleSection";
 import FactionComponents from "./FactionComponents/FactionComponents";
@@ -69,11 +67,20 @@ function FactionPanelContent({
 }) {
   const [reverse, setReverse] = useState(false);
 
-  const searchParams = useSearchParams();
-  const gameId = searchParams?.get("gameid");
+  const databaseFns = use(DatabaseFnsContext);
+  const leaders = adjustForExpansions(
+    databaseFns.getBaseValue("leaders"),
+    options.expansions,
+  );
+  const techs = adjustForExpansions(
+    databaseFns.getBaseValue("techs"),
+    options.expansions,
+  );
   const intl = useIntl();
-  const techs = buildBaseTechs(options, intl);
-  const leaders = buildBaseLeaders(options, intl);
+
+  if (!leaders || !techs) {
+    return null;
+  }
 
   const factionTechs = Object.values(techs).filter(
     (tech) => tech.faction === faction.id,
@@ -110,7 +117,7 @@ function FactionPanelContent({
         className="flexColumn"
         style={{ width: "100%", justifyContent: "flex-start" }}
       >
-        {factionLeaders.length > 0 ? (
+        {factionLeaders.length > 0 && options.expansions.includes("POK") ? (
           <CollapsibleSection
             title={
               <FormattedMessage
@@ -319,9 +326,6 @@ function FactionPanelContent({
               className="flexColumn"
               style={{
                 width: "100%",
-                // display: "grid",
-                // gridAutoFlow: "row",
-                // gridTemplateRows: `repeat(${faction.abilities.length}, 1fr)`,
                 gap: rem(4),
                 padding: `0 ${rem(4)} ${rem(4)}`,
                 fontSize: rem(14),
@@ -635,52 +639,4 @@ function SetupFactionPanelModal({
       <FactionPanelContent faction={selectedFaction} options={options} />
     </FullScreenModal>
   );
-
-  // return (
-  //   <div
-  //     className="flexColumn"
-  //     style={{
-  //       whiteSpace: "normal",
-  //       textShadow: "none",
-  //       width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}}))`,
-  //       justifyContent: "flex-start",
-  //       height: `calc(100dvh - ${rem(24)})`,
-  //     }}
-  //   >
-  //     <div
-  //       className="flexRow centered extraLargeFont"
-  //       style={{
-  //         backgroundColor: "var(--background-color)",
-  //         padding: `${rem(4)} ${rem(8)}`,
-  //         borderRadius: rem(4),
-  //       }}
-  //     >
-  //       <FactionIcon factionId={selectedFaction.id} size={36} />
-  //       {selectedFaction.name}
-  //       <FactionIcon factionId={selectedFaction.id} size={36} />
-  //     </div>
-  //     {altFaction ? (
-  //       <div className="flexRow" onClick={(e) => e.stopPropagation()}>
-  //         <Chip selected={!viewAlt} toggleFn={() => setViewAlt(false)}>
-  //           {faction.name}
-  //         </Chip>
-  //         <Chip selected={viewAlt} toggleFn={() => setViewAlt(true)}>
-  //           {altFaction.name}
-  //         </Chip>
-  //       </div>
-  //     ) : null}
-  //     <div
-  //       className="flexColumn largeFont"
-  //       onClick={(e) => e.stopPropagation()}
-  //       style={{
-  //         width: `clamp(80vw, ${rem(1200)}, calc(100vw - ${rem(24)}))`,
-  //         justifyContent: "flex-start",
-  //         overflow: "auto",
-  //         height: "fit-content",
-  //       }}
-  //     >
-  //       <FactionPanelContent faction={selectedFaction} options={options} />
-  //     </div>
-  //   </div>
-  // );
 }

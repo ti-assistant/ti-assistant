@@ -16,7 +16,6 @@ import { useOrderedFactionIds } from "../../../../../../../src/context/gameDataH
 import { useObjectives } from "../../../../../../../src/context/objectiveDataHooks";
 import { useSpeaker } from "../../../../../../../src/context/stateDataHooks";
 import { NumberedItem } from "../../../../../../../src/NumberedItem";
-import { SelectableRow } from "../../../../../../../src/SelectableRow";
 import { useDataUpdate } from "../../../../../../../src/util/api/dataUpdate";
 import { Events } from "../../../../../../../src/util/api/events";
 import { objectiveTypeString } from "../../../../../../../src/util/strings";
@@ -163,31 +162,13 @@ export default function SetupSteps({ intl }: { intl: IntlShape }) {
                 >
                   <div className="flexColumn" style={{ alignItems: "stretch" }}>
                     {revealedObjectives.map((objectiveId) => {
-                      const objective = objectives[objectiveId];
-                      if (!objective) {
-                        return (
-                          <SelectableRow
-                            key={objectiveId}
-                            itemId={objectiveId}
-                            removeItem={() => {
-                              dataUpdate(
-                                Events.HideObjectiveEvent(objectiveId),
-                              );
-                            }}
-                            viewOnly={viewOnly}
-                          >
-                            {objectiveId}
-                          </SelectableRow>
-                        );
-                      }
                       return (
                         <ObjectiveRow
                           key={objectiveId}
-                          objective={objective}
+                          objectiveId={objectiveId}
                           removeObjective={() => {
                             dataUpdate(Events.HideObjectiveEvent(objectiveId));
                           }}
-                          viewing={true}
                         />
                       );
                     })}

@@ -105,7 +105,7 @@ function SecretTab({ factionId }: { factionId: FactionId }) {
                 <ObjectiveRow
                   key={obj.id}
                   factionId={factionId}
-                  objective={obj}
+                  objectiveId={obj.id}
                   scoreObjective={scoreObj}
                 />
               );
@@ -314,7 +314,7 @@ export default function ObjectiveTab({ factionId }: { factionId: FactionId }) {
                   <ObjectiveRow
                     key={obj.id}
                     factionId={factionId}
-                    objective={obj}
+                    objectiveId={obj.id}
                     scoreObjective={scoreObj}
                     removeObjective={
                       editMode || (obj.scorers ?? []).length > 0
@@ -354,7 +354,7 @@ export default function ObjectiveTab({ factionId }: { factionId: FactionId }) {
                   <ObjectiveRow
                     key={obj.id}
                     factionId={factionId}
-                    objective={obj}
+                    objectiveId={obj.id}
                     scoreObjective={scoreObj}
                     removeObjective={
                       editMode
@@ -397,7 +397,7 @@ export default function ObjectiveTab({ factionId }: { factionId: FactionId }) {
                   <ObjectiveRow
                     key={obj.id}
                     factionId={factionId}
-                    objective={obj}
+                    objectiveId={obj.id}
                     scoreObjective={scoreObj}
                     removeObjective={
                       editMode

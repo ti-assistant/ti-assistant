@@ -54,7 +54,7 @@ export default function ScoreObjectiveRow({
 
   return (
     <div className="flexRow">
-      <ObjectiveRow objective={objective} hideScorers />
+      <ObjectiveRow objectiveId={objective.id} />
       {useRadialMenu ? (
         <FactionSelectRadialMenu
           onSelect={(factionId, prevFaction) => {

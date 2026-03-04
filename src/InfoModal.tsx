@@ -16,10 +16,11 @@ export default function InfoModal({
       style={style}
       onClick={(e) => {
         e.preventDefault();
+        e.stopPropagation();
         openModal(
           <ModalContent title={title}>
             <div className={styles.infoContent}>{children}</div>
-          </ModalContent>
+          </ModalContent>,
         );
       }}
     >

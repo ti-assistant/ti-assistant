@@ -138,7 +138,6 @@ svg {
 
 button {
   all: unset;
-  font-size: 1.125rem;
   font-family: "Myriad Pro";
   background-color: var(--interactive-bg);
   color: #eee;

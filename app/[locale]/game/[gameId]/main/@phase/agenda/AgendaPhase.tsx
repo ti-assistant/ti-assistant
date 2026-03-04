@@ -13,7 +13,6 @@ import {
   useActionLog,
   useAgendas,
   useCurrentTurn,
-  useGameId,
   useOptions,
   usePlanets,
   useStrategyCards,
@@ -288,7 +287,6 @@ function DictatePolicy({}) {
   const agendas = useAgendas();
   const dataUpdate = useDataUpdate();
   const factions = useFactions();
-  const gameId = useGameId();
   const objectives = useObjectives();
   const viewOnly = useViewOnly();
   const currentTurn = getCurrentTurnLogEntries(actionLog);
@@ -333,7 +331,7 @@ function DictatePolicy({}) {
         marginTop: rem(12),
       }}
     >
-      <ObjectiveRow objective={dictatePolicy} hideScorers />
+      <ObjectiveRow objectiveId="Dictate Policy" />
       {dictatePolicy.type === "SECRET" ? (
         <FactionSelectRadialMenu
           onSelect={(factionId, prevFaction) => {
