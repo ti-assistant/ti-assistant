@@ -8,7 +8,7 @@ export function isHomeSystem(systemNumber?: string): boolean {
 
   // Normalize rotation-prefixed tokens like "rotate:17" to the final token.
   const token = systemNumber.includes(":")
-    ? systemNumber.split(":").pop() ?? systemNumber
+    ? (systemNumber.split(":").pop() ?? systemNumber)
     : systemNumber;
 
   return /^P[1-8]$/.test(token);
@@ -37,7 +37,7 @@ export function isFactionHomeSystem(systemNumber: string) {
 export function getDefaultMapString(
   numFactions: number,
   mapStyle: MapStyle,
-  thundersEdge: boolean
+  thundersEdge: boolean,
 ) {
   const mecatolSystem = thundersEdge ? "112 " : "18 ";
   switch (numFactions) {
@@ -183,6 +183,28 @@ export function isValidMapString(mapString: string, numFactions: number) {
   return true;
 }
 
+export function getMapError(
+  mapString: string,
+  numFactions: number,
+): Optional<string> {
+  let numFactionSystems = 0;
+  const systems = mapString.split(" ");
+  for (const system of systems) {
+    if (!validSystemNumber(system)) {
+      return "Invalid System";
+    }
+    if (isHomeSystem(system)) {
+      numFactionSystems++;
+    }
+  }
+  if (numFactionSystems < numFactions) {
+    return `Missing ${numFactions - numFactionSystems} home systems`;
+  } else if (numFactionSystems > numFactions) {
+    return `${numFactions - numFactionSystems} extra home systems`;
+  }
+  return;
+}
+
 export function validSystemNumber(number: string) {
   if (number === "") {
     return true;
@@ -234,12 +256,12 @@ export function updateMapString(
   mapString: string,
   mapStyle: MapStyle,
   numFactions: number,
-  thundersEdge: boolean
+  thundersEdge: boolean,
 ) {
   const defaultMapString = getDefaultMapString(
     numFactions,
     mapStyle,
-    thundersEdge
+    thundersEdge,
   );
   let updatedMapString =
     mapString !== ""
@@ -314,7 +336,36 @@ export function processMapString(
   mapString: string,
   mapStyle: MapStyle,
   numFactions: number,
-  thundersEdge: boolean
+  thundersEdge: boolean,
+) {
+  if (!allSystemsValid(mapString)) {
+    console.log("Invalid");
+    return getDefaultMapString(numFactions, mapStyle, thundersEdge);
+  }
+  if (allSystemsValid(mapString) && hasHomeSystems(mapString, numFactions)) {
+    console.log("Explicit");
+    return makeHomeSystemsExplicit(
+      maybeAddMecatol(mapString, thundersEdge),
+      numFactions,
+    );
+  }
+  console.log("Updating");
+  const updated = updateMapString(
+    maybeAddMecatol(mapString, thundersEdge),
+    mapStyle,
+    numFactions,
+    thundersEdge,
+  );
+  return updated;
+}
+
+// This function doesn't merge the map with the default map.
+// As a result, maps won't get "filled in".
+export function processMapStringForBuilder(
+  mapString: string,
+  mapStyle: MapStyle,
+  numFactions: number,
+  thundersEdge: boolean,
 ) {
   if (!allSystemsValid(mapString)) {
     return getDefaultMapString(numFactions, mapStyle, thundersEdge);
@@ -322,16 +373,10 @@ export function processMapString(
   if (allSystemsValid(mapString) && hasHomeSystems(mapString, numFactions)) {
     return makeHomeSystemsExplicit(
       maybeAddMecatol(mapString, thundersEdge),
-      numFactions
+      numFactions,
     );
   }
-  const updated = updateMapString(
-    maybeAddMecatol(mapString, thundersEdge),
-    mapStyle,
-    numFactions,
-    thundersEdge
-  );
-  return updated;
+  return maybeAddMecatol(mapString, thundersEdge);
 }
 
 function maybeAddMecatol(mapString: string, thundersEdge: boolean) {
@@ -407,7 +452,7 @@ function hasHomeSystems(mapString: string, numFactions: number) {
 export function getWormholeNexusSystemNumber(
   options: Options,
   planets: Partial<Record<PlanetId, Planet>>,
-  factions: Partial<Record<FactionId, Faction>>
+  factions: Partial<Record<FactionId, Faction>>,
 ) {
   if (!options.expansions.includes("POK")) {
     return undefined;
@@ -423,7 +468,7 @@ export function getWormholeNexusSystemNumber(
     }
     const factionIndex = parseInt(number);
     const mapOrderedFactions = Object.values(factions).sort(
-      (a, b) => a.mapPosition - b.mapPosition
+      (a, b) => a.mapPosition - b.mapPosition,
     );
     return getFactionSystemNumber(mapOrderedFactions[factionIndex - 1]);
   }
@@ -518,7 +563,7 @@ export function getFactionSystemNumber(
       faction?: FactionId;
       planetFaction?: FactionId;
     };
-  }>
+  }>,
 ) {
   if (!faction?.id) {
     return "299";
@@ -630,7 +675,7 @@ export function extractFactionIds(
   mapString: string,
   mapStyle: MapStyle,
   numFactions: number,
-  thundersEdge: boolean
+  thundersEdge: boolean,
 ) {
   const newSystems = mapString.split(" ");
   newSystems.unshift("18");

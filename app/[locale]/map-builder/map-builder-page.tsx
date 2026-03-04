@@ -15,9 +15,15 @@ import Toggle from "../../../src/components/Toggle/Toggle";
 import { DatabaseFnsContext } from "../../../src/context/contexts";
 import ProphecyofKingsSVG from "../../../src/icons/ui/ProphecyOfKings";
 import ThundersEdgeMenuSVG from "../../../src/icons/ui/ThundersEdgeMenu";
-import { getDefaultMapString, processMapString } from "../../../src/util/map";
+import {
+  getDefaultMapString,
+  getMapError,
+  isValidMapString,
+  processMapStringForBuilder,
+} from "../../../src/util/map";
 import { mapStyleString } from "../../../src/util/strings";
 import { rem } from "../../../src/util/util";
+import styles from "./page.module.scss";
 
 type Filter =
   | "BASE_GAME"
@@ -154,6 +160,8 @@ export default function MapBuilderPage() {
   const [rotation, setRotation] = useState(0);
 
   const systems = databaseFns.getBaseValue("systems");
+
+  const mapError = getMapError(mapString, numFactions);
 
   let tileNumbers: string[] = [];
   const factions = [];
@@ -621,9 +629,11 @@ export default function MapBuilderPage() {
           </div>
         </DndProvider>
       </div>
-      <label>Map String</label>
+      <label className={!!mapError ? styles.Invalid : ""}>
+        Map String{mapError ? ` - ${mapError}` : ""}
+      </label>
       <input
-        className="flexColumn"
+        className={`flexColumn ${!!mapError ? styles.Invalid : ""}`}
         type="textbox"
         style={{
           width: "100%",
@@ -632,7 +642,12 @@ export default function MapBuilderPage() {
         onChange={(element) => setRawMapInput(element.target.value)}
         onBlur={() => {
           setMapString(
-            processMapString(rawMapInput.trim(), mapStyle, numFactions, true),
+            processMapStringForBuilder(
+              rawMapInput.trim(),
+              mapStyle,
+              numFactions,
+              true,
+            ),
           );
         }}
       ></input>
