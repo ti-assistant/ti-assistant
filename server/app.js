@@ -6,7 +6,13 @@ const { initializeApp, cert } = require("firebase-admin/app");
 const HTTP_PORT = 8080;
 
 const dev = process.env.NODE_ENV !== "production";
-const app = next({ dev, port: HTTP_PORT, webpack: true, turbopack: false });
+const app = next({
+  dev,
+  port: HTTP_PORT,
+  // Uncomment when doing dev work on results page.
+  webpack: true,
+  turbopack: false,
+});
 const handle = app.getRequestHandler();
 
 app.prepare().then(async () => {

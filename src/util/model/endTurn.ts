@@ -4,14 +4,19 @@ import { getSelectedAction } from "../api/data";
 import { getOnDeckFaction } from "../helpers";
 
 export class EndTurnHandler implements Handler {
-  constructor(public gameData: StoredGameData, public data: EndTurnData) {
+  constructor(
+    public gameData: StoredGameData,
+    public data: EndTurnData,
+  ) {
     this.data.event.prevFaction = gameData.state.activeplayer;
-    this.data.event.selectedAction = getSelectedAction(gameData);
-    const secondaries: Record<string, Secondary> = {};
-    for (const faction of Object.values(gameData.factions)) {
-      secondaries[faction.id] = faction.secondary ?? "PENDING";
+    if (!this.data.event.skipTurn) {
+      this.data.event.selectedAction = getSelectedAction(gameData);
+      const secondaries: Record<string, Secondary> = {};
+      for (const faction of Object.values(gameData.factions)) {
+        secondaries[faction.id] = faction.secondary ?? "PENDING";
+      }
+      this.data.event.secondaries = secondaries;
     }
-    this.data.event.secondaries = secondaries;
   }
 
   validate(): boolean {
@@ -30,7 +35,7 @@ export class EndTurnHandler implements Handler {
     const onDeckFaction = getOnDeckFaction(
       this.gameData.state,
       buildFactions(this.gameData, intl),
-      buildStrategyCards(this.gameData, intl)
+      buildStrategyCards(this.gameData, intl),
     );
 
     const updates: Record<string, any> = {
@@ -105,7 +110,10 @@ export class EndTurnHandler implements Handler {
 }
 
 export class UnendTurnHandler implements Handler {
-  constructor(public gameData: StoredGameData, public data: UnendTurnData) {}
+  constructor(
+    public gameData: StoredGameData,
+    public data: UnendTurnData,
+  ) {}
 
   validate(): boolean {
     return true;

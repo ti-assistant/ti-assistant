@@ -618,9 +618,9 @@ function SetupFactionPanelModal({
             borderRadius: rem(4),
           }}
         >
-          <FactionComponents.Icon factionId={selectedFaction.id} size={30} />
+          <FactionComponents.Icon factionId={selectedFaction.id} size={24} />
           {selectedFaction.name}
-          <FactionComponents.Icon factionId={selectedFaction.id} size={30} />
+          <FactionComponents.Icon factionId={selectedFaction.id} size={24} />
         </div>
       }
       settings={

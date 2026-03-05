@@ -224,15 +224,21 @@ function EndGameEvent(): EndGameData {
   };
 }
 
-function EndTurnEvent(
-  samePlayer?: boolean,
-  jumpToPlayer?: FactionId,
-): EndTurnData {
+function EndTurnEvent({
+  samePlayer,
+  jumpToPlayer,
+  skipTurn,
+}: {
+  samePlayer?: boolean;
+  jumpToPlayer?: FactionId;
+  skipTurn?: boolean;
+}): EndTurnData {
   return {
     action: "END_TURN",
     event: {
       samePlayer,
       jumpToPlayer,
+      skipTurn,
     },
   };
 }
