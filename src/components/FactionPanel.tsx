@@ -1022,9 +1022,9 @@ function FactionPanelModal({
     <FullScreenModal
       title={
         <div className="flexRow">
-          <FactionComponents.Icon factionId={factionId} size={36} />
+          <FactionComponents.Icon factionId={factionId} size={24} />
           <FactionComponents.Name factionId={factionId} />
-          <FactionComponents.Icon factionId={factionId} size={36} />
+          <FactionComponents.Icon factionId={factionId} size={24} />
         </div>
       }
     >

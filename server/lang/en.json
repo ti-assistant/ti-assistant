@@ -3491,6 +3491,10 @@
     "defaultMessage": "Skinny",
     "description": "Text on a button specifying that the map style should be skinny."
   },
+  "EfG8OO": {
+    "defaultMessage": "Skip Turn",
+    "description": "Text on a button that will skip a player's turn."
+  },
   "El Nen Janovet.Name": {
     "defaultMessage": "El Nen Janovet",
     "description": "Name of Faction: El Nen Janovet"

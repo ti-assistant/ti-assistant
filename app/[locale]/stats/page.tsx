@@ -1,26 +1,16 @@
-import { Storage } from "@google-cloud/storage";
+import { getFirestore } from "firebase-admin/firestore";
 import { ProcessedGame } from "./processor";
 import StatsPage from "./stats-page";
 
-async function getJSONFileFromStorage(
-  storage: Storage,
-): Promise<Record<string, ProcessedGame>> {
-  const [file] = await storage
-    .bucket("ti-assistant-datastore")
-    .file("processed-games.json")
-    .download();
-
-  return JSON.parse(file.toString("utf8"));
-}
-
 export default async function Page() {
-  const storage = new Storage({
-    keyFilename: "./server/twilight-imperium-360307-ea7cce25efeb.json",
+  const db = getFirestore();
+
+  const processedGames: Record<string, ProcessedGame> = {};
+
+  const processedRef = await db.collection("processed").get();
+  processedRef.forEach((game) => {
+    processedGames[game.id] = game.data() as ProcessedGame;
   });
-
-  const processedGamesPromise = getJSONFileFromStorage(storage);
-
-  const [processedGames] = await Promise.all([processedGamesPromise]);
 
   return <StatsPage processedGames={processedGames} />;
 }

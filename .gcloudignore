@@ -23,3 +23,5 @@ firestore-debug.log
 
 # Node.js dependencies:
 node_modules/
+# Built files
+build/

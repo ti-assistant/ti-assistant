@@ -1574,7 +1574,23 @@ export function NextPlayerButtons({
   const viewOnly = useViewOnly();
 
   if (!selectedAction) {
-    return null;
+    return (
+      <div className="flexColumn">
+        <div className="flexRow" style={{ gap: rem(8) }}>
+          <button
+            onClick={() => dataUpdate(Events.EndTurnEvent({ skipTurn: true }))}
+            className={styles.EndTurnButton}
+            disabled={viewOnly}
+          >
+            <FormattedMessage
+              id="EfG8OO"
+              description="Text on a button that will skip a player's turn."
+              defaultMessage="Skip Turn"
+            />
+          </button>
+        </div>
+      </div>
+    );
   }
 
   if (selectedAction === "Politics" && !newSpeaker) {
@@ -1585,7 +1601,7 @@ export function NextPlayerButtons({
     <div className="flexColumn">
       <div className="flexRow" style={{ gap: rem(8) }}>
         <button
-          onClick={() => dataUpdate(Events.EndTurnEvent())}
+          onClick={() => dataUpdate(Events.EndTurnEvent({}))}
           className={styles.EndTurnButton}
           disabled={viewOnly}
         >
@@ -1606,7 +1622,7 @@ export function NextPlayerButtons({
             </div>
             <button
               onClick={() =>
-                dataUpdate(Events.EndTurnEvent(/* samePlayer= */ true))
+                dataUpdate(Events.EndTurnEvent({ samePlayer: true }))
               }
               className={styles.EndTurnButton}
               style={{ fontSize: rem(16) }}
@@ -1656,9 +1672,7 @@ function PuppetsOnAString({ activeFactionId }: { activeFactionId: FactionId }) {
             key={factionId}
             style={{ borderRadius: "100%", padding: rem(2) }}
             onClick={() =>
-              dataUpdate(
-                Events.EndTurnEvent(/* samePlayer= */ false, factionId),
-              )
+              dataUpdate(Events.EndTurnEvent({ jumpToPlayer: factionId }))
             }
           >
             <FactionComponents.Icon factionId={factionId} size={20} />
