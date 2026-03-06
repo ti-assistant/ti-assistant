@@ -5,6 +5,8 @@ import { getIntl } from "../../../src/util/server";
 import { ProcessedGame } from "../stats/processor";
 import ArchivePage from "./archive-page";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page({ params }: PageProps<"/[locale]/archive">) {
   const locale = (await params).locale;
   const intl = await getIntl(locale);

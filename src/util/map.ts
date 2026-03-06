@@ -392,6 +392,7 @@ function maybeAddMecatol(mapString: string, thundersEdge: boolean) {
 function makeHomeSystemsExplicit(mapString: string, numFactions: number) {
   const systems = mapString.split(" ");
   let explicitHomeSystems = 0;
+  let numericalHomeSystems = 0;
   let implicitHomeSystems = 0;
   for (const system of systems) {
     if (system === "0") {
@@ -400,20 +401,37 @@ function makeHomeSystemsExplicit(mapString: string, numFactions: number) {
     if (isHomeSystem(system)) {
       explicitHomeSystems++;
     }
+    if (isFactionHomeSystem(system)) {
+      numericalHomeSystems++;
+    }
   }
 
   if (explicitHomeSystems === numFactions) {
     return mapString;
   }
 
-  let currentNum = 1;
-  for (let i = 0; i < systems.length; ++i) {
-    if (systems[i] === "0") {
-      systems[i] = `P${currentNum}`;
-      currentNum++;
+  if (implicitHomeSystems === numFactions) {
+    let currentNum = 1;
+    for (let i = 0; i < systems.length; ++i) {
+      if (systems[i] === "0") {
+        systems[i] = `P${currentNum}`;
+        currentNum++;
+      }
     }
+    return systems.join(" ");
   }
-  return systems.join(" ");
+  if (numericalHomeSystems === numFactions) {
+    let currentNum = 1;
+    for (let i = 0; i < systems.length; ++i) {
+      const system = systems[i] ?? "";
+      if (isFactionHomeSystem(system)) {
+        systems[i] = `P${currentNum}`;
+        currentNum++;
+      }
+    }
+    return systems.join(" ");
+  }
+  return mapString;
 }
 
 function allSystemsValid(mapString: string) {
@@ -429,6 +447,7 @@ function allSystemsValid(mapString: string) {
 function hasHomeSystems(mapString: string, numFactions: number) {
   const systems = mapString.split(" ");
   let explicitHomeSystems = 0;
+  let numericalHomeSystems = 0;
   let implicitHomeSystems = 0;
   for (const system of systems) {
     if (system === "0") {
@@ -437,13 +456,20 @@ function hasHomeSystems(mapString: string, numFactions: number) {
     if (isHomeSystem(system)) {
       explicitHomeSystems++;
     }
+    if (isFactionHomeSystem(system)) {
+      numericalHomeSystems++;
+    }
   }
 
   if (explicitHomeSystems === numFactions) {
     return true;
   }
 
-  return implicitHomeSystems === numFactions;
+  if (implicitHomeSystems === numFactions) {
+    return true;
+  }
+
+  return numericalHomeSystems === numFactions;
 }
 
 export function getWormholeNexusSystemNumber(

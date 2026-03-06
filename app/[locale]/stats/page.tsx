@@ -2,6 +2,8 @@ import { getFirestore } from "firebase-admin/firestore";
 import { ProcessedGame } from "./processor";
 import StatsPage from "./stats-page";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page() {
   const db = getFirestore();
 
