@@ -1,5 +1,5 @@
 import { Storage } from "@google-cloud/storage";
-import { getFirestore, Timestamp, WriteResult } from "firebase-admin/firestore";
+import { getFirestore, Timestamp } from "firebase-admin/firestore";
 import { Readable } from "stream";
 import { getFullActionLog, getTimers } from "../../../server/util/fetch";
 import { getBaseData } from "../../../src/data/baseData";
@@ -144,161 +144,51 @@ async function getJSONFileFromStorage(
   return JSON.parse(file.toString("utf8"));
 }
 
-export async function rewriteProcessedGames() {
-  const locale = "en";
-
-  const intlPromise = getIntl(locale);
-  const storage = new Storage({
-    keyFilename: "./server/twilight-imperium-360307-ea7cce25efeb.json",
-  });
-
-  const processedGamesPromise = getJSONFileFromStorage(storage);
-
-  const [intl, processedGames] = await Promise.all([
-    intlPromise,
-    processedGamesPromise,
-  ]);
-
-  const baseData = getBaseData(intl);
-  return maybeUpdateProcessedGames(storage, processedGames, baseData);
-}
-
-const REFRESH_TIME = 86400000;
-
-export async function maybeUpdateProcessedGames(
-  storage: Storage,
-  processedGames: Record<string, ProcessedGame>,
-  baseData: BaseData,
-) {
-  const [metadata] = await storage
-    .bucket("ti-assistant-datastore")
-    .file("processed-games.json")
-    .getMetadata();
-
-  const creationTime = new Date(metadata.timeCreated ?? "");
-
-  const timeDiff = Date.now() - creationTime.valueOf();
-  if (timeDiff < REFRESH_TIME) {
-    return;
-  }
-
-  const deleteDate = new Date();
-  deleteDate.setDate(deleteDate.getDate() + 30);
-
+export async function processGames(baseData: BaseData) {
   const db = getFirestore();
 
   const gamesRef = db.collection("games");
 
-  const gameData = await gamesRef.get();
+  const processedGames = await db.collection("processed").listDocuments();
 
-  let allGames: Record<string, StoredGameData> = {};
-  gameData.forEach((val) => {
-    allGames[val.id] = val.data() as StoredGameData;
-  });
+  const gameIds = await gamesRef.listDocuments();
+  gameIds.forEach(async (val) => {
+    const processed = processedGames.findIndex((p) => p.id === val.id);
+    if (processed !== -1) {
+      return;
+    }
+    const gameData = (await val.get()).data() as StoredGameData;
+    const actionLog = await getFullActionLog(val.id, "games");
 
-  for (const [gameId, game] of Object.entries(allGames)) {
-    if (!!processedGames[gameId]) {
-      continue;
+    if (!isCompletedGame(gameData, baseData, actionLog)) {
+      return;
     }
-    const actionLog = await getFullActionLog(gameId, "games");
-    if (!isCompletedGame(game, baseData, actionLog)) {
-      continue;
-    }
-    const fixedGame = fixGame(game, baseData, actionLog);
+    const fixedGame = fixGame(gameData, baseData, actionLog);
     if (!fixedGame) {
-      continue;
+      return;
     }
-    const timers = await getTimers(gameId, "timers");
+    const timers = await getTimers(val.id, "timers");
     const processedGame = processGame(
       structuredClone(fixedGame),
       baseData,
       timers,
     );
     if (!processedGame) {
-      continue;
+      return;
     }
-    processedGames[gameId] = processedGame;
-    await archiveGame(structuredClone(fixedGame), gameId, timers);
-
-    db.collection("games")
-      .doc(gameId)
-      .update({ deleteAt: Timestamp.fromDate(deleteDate) });
-
-    db.collection("timers")
-      .doc(gameId)
-      .update({ deleteAt: Timestamp.fromDate(deleteDate) });
-  }
-
-  const file = storage
-    .bucket("ti-assistant-datastore")
-    .file("processed-games.json");
-
-  const stream = new Readable();
-  stream.pipe(file.createWriteStream());
-
-  stream.push(JSON.stringify(processedGames));
-  stream.push(null);
+    await db.collection("processed").doc(val.id).create(processedGame);
+    await archiveGame(fixedGame, val.id, timers);
+  });
 }
 
-export async function reprocessGames() {
-  const locale = "en";
-  const intlPromise = getIntl(locale);
-
-  const storage = new Storage({
-    keyFilename: "./server/twilight-imperium-360307-ea7cce25efeb.json",
-  });
-
-  const processedGamesPromise = getJSONFileFromStorage(storage);
-
+export async function migrateProcessedGames(storage: Storage) {
   const db = getFirestore();
 
-  const gamesRef = db.collection("archive");
+  const processedGames = await getJSONFileFromStorage(storage);
 
-  const gameDataPromise = gamesRef.get();
-
-  const [intl, processedGames, gameData] = await Promise.all([
-    intlPromise,
-    processedGamesPromise,
-    gameDataPromise,
-  ]);
-
-  const baseData = getBaseData(intl);
-
-  let allGames: Record<string, StoredGameData> = {};
-  gameData.forEach((val) => {
-    allGames[val.id] = val.data() as StoredGameData;
-  });
-
-  for (const [gameId, game] of Object.entries(allGames)) {
-    const actionLog = await getFullActionLog(gameId, "archive");
-    if (!isCompletedGame(game, baseData, actionLog)) {
-      continue;
-    }
-    const fixedGame = fixGame(game, baseData, actionLog);
-    if (!fixedGame) {
-      continue;
-    }
-    const timers = await getTimers(gameId, "archiveTimers");
-    const processedGame = processGame(
-      structuredClone(fixedGame),
-      baseData,
-      timers,
-    );
-    if (!processedGame) {
-      continue;
-    }
-    processedGames[gameId] = processedGame;
+  for (const [gameId, game] of objectEntries(processedGames)) {
+    await db.collection("processed").doc(gameId).create(game);
   }
-
-  const file = storage
-    .bucket("ti-assistant-datastore")
-    .file("processed-games.json");
-
-  const stream = new Readable();
-  stream.pipe(file.createWriteStream());
-
-  stream.push(JSON.stringify(processedGames));
-  stream.push(null);
 }
 
 export async function processOneGame(gameId: string) {
@@ -405,6 +295,9 @@ function processGame(
 }
 
 function isObjectiveGame(game: StoredGameData, baseData: BaseData) {
+  if (game.options.hide?.includes("OBJECTIVES")) {
+    return false;
+  }
   const foundTypes = new Set<ObjectiveType>();
   const baseObjectives = baseData.objectives;
   for (const faction of Object.values(game.factions)) {
@@ -432,10 +325,16 @@ function isObjectiveGame(game: StoredGameData, baseData: BaseData) {
 }
 
 function isPlanetGame(game: StoredGameData) {
+  if (game.options.hide?.includes("PLANETS")) {
+    return false;
+  }
   return Object.keys(game.planets).length > 30;
 }
 
 function isTechGame(game: StoredGameData) {
+  if (game.options.hide?.includes("TECHS")) {
+    return false;
+  }
   return Object.values(game.factions).reduce((isTechGame, faction) => {
     for (const techId of objectKeys(faction.techs)) {
       if (!(faction.startswith?.techs ?? []).includes(techId)) {

@@ -1,6 +1,8 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
-import { rewriteProcessedGames } from "../../[locale]/stats/processor";
+import { getBaseData } from "../../../src/data/baseData";
+import { getIntl } from "../../../src/util/server";
+import { processGames } from "../../[locale]/stats/processor";
 
 export async function GET() {
   const headerList = await headers();
@@ -9,7 +11,11 @@ export async function GET() {
     throw new Error("Only cronjobs are allowed to call this endpoint.");
   }
 
-  await rewriteProcessedGames();
+  const locale = "en";
+  const intl = await getIntl(locale);
+  const baseData = getBaseData(intl);
+
+  await processGames(baseData);
 
   return NextResponse.json({});
 }
