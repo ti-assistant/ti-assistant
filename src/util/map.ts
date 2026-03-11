@@ -166,6 +166,15 @@ export function getDefaultMapString(
   );
 }
 
+function getDefaultNumTiles(
+  numFactions: number,
+  mapStyle: MapStyle,
+  thundersEdge: boolean,
+) {
+  return getDefaultMapString(numFactions, mapStyle, thundersEdge).split(" ")
+    .length;
+}
+
 export function isValidMapString(mapString: string, numFactions: number) {
   let numFactionSystems = 0;
   const systems = mapString.split(" ");
@@ -343,12 +352,12 @@ export function processMapString(
   }
   if (allSystemsValid(mapString) && hasHomeSystems(mapString, numFactions)) {
     return makeHomeSystemsExplicit(
-      maybeAddMecatol(mapString, thundersEdge),
+      maybeAddMecatol(numFactions, mapString, mapStyle, thundersEdge),
       numFactions,
     );
   }
   const updated = updateMapString(
-    maybeAddMecatol(mapString, thundersEdge),
+    maybeAddMecatol(numFactions, mapString, mapStyle, thundersEdge),
     mapStyle,
     numFactions,
     thundersEdge,
@@ -369,20 +378,34 @@ export function processMapStringForBuilder(
   }
   if (allSystemsValid(mapString) && hasHomeSystems(mapString, numFactions)) {
     return makeHomeSystemsExplicit(
-      maybeAddMecatol(mapString, thundersEdge),
+      maybeAddMecatol(numFactions, mapString, mapStyle, thundersEdge),
       numFactions,
     );
   }
-  return maybeAddMecatol(mapString, thundersEdge);
+  return maybeAddMecatol(numFactions, mapString, mapStyle, thundersEdge);
 }
 
-function maybeAddMecatol(mapString: string, thundersEdge: boolean) {
+function maybeAddMecatol(
+  numFactions: number,
+  mapString: string,
+  mapStyle: MapStyle,
+  thundersEdge: boolean,
+) {
   if (
     mapString.startsWith("112 ") ||
     mapString.startsWith("18 ") ||
     mapString.includes(" 112 ") ||
     mapString.includes(" 18 ")
   ) {
+    return mapString;
+  }
+  const numTiles = mapString.split(" ").length;
+  const defaultNumTiles = getDefaultNumTiles(
+    numFactions,
+    mapStyle,
+    thundersEdge,
+  );
+  if (numTiles === defaultNumTiles) {
     return mapString;
   }
   const mecatolSystem = thundersEdge ? "112" : "18";
