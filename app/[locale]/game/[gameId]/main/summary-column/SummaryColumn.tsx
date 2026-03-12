@@ -3,31 +3,31 @@
 import dynamic from "next/dynamic";
 import { use } from "react";
 import { FormattedMessage } from "react-intl";
-import FactionComponents from "../../../../../../../src/components/FactionComponents/FactionComponents";
-import LabeledDiv from "../../../../../../../src/components/LabeledDiv/LabeledDiv";
-import { SettingsContext } from "../../../../../../../src/context/contexts";
-import { useOptions } from "../../../../../../../src/context/dataHooks";
+import FactionComponents from "../../../../../../src/components/FactionComponents/FactionComponents";
+import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
+import { SettingsContext } from "../../../../../../src/context/contexts";
+import { useOptions } from "../../../../../../src/context/dataHooks";
 import {
   useFactionColor,
   useIsFactionPassed,
   useNumFactions,
-} from "../../../../../../../src/context/factionDataHooks";
+} from "../../../../../../src/context/factionDataHooks";
 import {
   FactionOrdering,
   useCompleteOrderedFactionIds,
-} from "../../../../../../../src/context/gameDataHooks";
+} from "../../../../../../src/context/gameDataHooks";
 import {
   useFinalPhase,
   usePhase,
-} from "../../../../../../../src/context/stateDataHooks";
-import { FactionSummary } from "../../../../../../../src/FactionSummary";
-import { StaticFactionTimer } from "../../../../../../../src/Timer";
-import { SummaryLabel } from "../../../../../../../src/util/settings";
-import { rem } from "../../../../../../../src/util/util";
+} from "../../../../../../src/context/stateDataHooks";
+import { FactionSummary } from "../../../../../../src/FactionSummary";
+import { StaticFactionTimer } from "../../../../../../src/Timer";
+import { SummaryLabel } from "../../../../../../src/util/settings";
+import { rem } from "../../../../../../src/util/util";
 import styles from "./SummaryColumn.module.scss";
 
 const FactionPanel = dynamic(
-  () => import("../../../../../../../src/components/FactionPanel"),
+  () => import("../../../../../../src/components/FactionPanel"),
   {
     loading: () => <div className="popupIcon">&#x24D8;</div>,
     ssr: false,

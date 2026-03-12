@@ -2,8 +2,8 @@ import React, { Suspense } from "react";
 import { Loader } from "../../../../../src/Loader";
 import styles from "./main.module.scss";
 import PhaseSection from "./phase/phase-section";
-import LoadingSummaryColumn from "./summary/column/LoadingSummaryColumn";
-import SummaryColumnSection from "./summary/summary-column";
+import LoadingSummaryColumn from "./summary-column/LoadingSummaryColumn";
+import SummaryColumn from "./summary-column/SummaryColumn";
 
 export default async function Layout({
   children,
@@ -17,7 +17,7 @@ export default async function Layout({
           <PhaseSection />
         </Suspense>
         <Suspense fallback={<LoadingSummaryColumn />}>
-          <SummaryColumnSection />
+          <SummaryColumn />
         </Suspense>
       </div>
       {children}

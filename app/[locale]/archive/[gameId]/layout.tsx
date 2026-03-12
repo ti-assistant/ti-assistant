@@ -8,9 +8,9 @@ import { getIntl } from "../../../../src/util/server";
 import DynamicSidebars from "../../game/[gameId]/dynamic-sidebars";
 import GameCode from "../../game/[gameId]/game-code";
 import GameLoader from "../../game/[gameId]/game-loader";
+import SummaryColumn from "../../game/[gameId]/main/summary-column/SummaryColumn";
 import styles from "./main.module.scss";
 import Phase from "./phase";
-import Summary from "./summary";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
@@ -76,7 +76,7 @@ export default async function Layout({
           <DynamicSidebars />
           <div className={styles.Main}>
             <Phase />
-            <Summary />
+            <SummaryColumn />
           </div>
           {children}
         </DataInitializer>
