@@ -12,7 +12,7 @@ import SetupPhase from "./setup/SetupPhase";
 import StatusPhase from "./status/StatusPhase";
 import StrategyPhase from "./strategy/StrategyPhase";
 
-export default function MainScreenPage() {
+export default function PhaseSection() {
   const gameId = useGameId();
   const phase = usePhase();
 

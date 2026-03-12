@@ -4,6 +4,7 @@ import {
   canEditGame,
   getTimersInTransaction,
 } from "../../../../server/util/fetch";
+import { getFirestoreAdmin } from "../../../../src/util/server";
 
 interface SetPauseData {
   paused: boolean;
@@ -11,7 +12,7 @@ interface SetPauseData {
 
 export async function POST(
   req: Request,
-  { params }: { params: Promise<{ gameId: string }> }
+  { params }: { params: Promise<{ gameId: string }> },
 ) {
   const { gameId } = await params;
   const canEdit = await canEditGame(gameId);
@@ -21,7 +22,7 @@ export async function POST(
     });
   }
 
-  const db = getFirestore();
+  const db = await getFirestoreAdmin();
 
   const timerRef = db.collection("timers").doc(gameId);
 

@@ -5,6 +5,7 @@ import {
 } from "../../../../server/util/fetch";
 import { Optional } from "../../../../src/util/types/types";
 import { NextResponse } from "next/server";
+import { getFirestoreAdmin } from "../../../../src/util/server";
 
 interface UpdateFactionData {
   factionId: FactionId;
@@ -14,7 +15,7 @@ interface UpdateFactionData {
 
 export async function POST(
   req: Request,
-  { params }: { params: Promise<{ gameId: string }> }
+  { params }: { params: Promise<{ gameId: string }> },
 ) {
   const { gameId } = await params;
 
@@ -25,7 +26,7 @@ export async function POST(
     });
   }
 
-  const db = getFirestore();
+  const db = await getFirestoreAdmin();
 
   const gameRef = db.collection("games").doc(gameId);
 

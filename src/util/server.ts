@@ -1,7 +1,9 @@
+import { cert, getApps, initializeApp } from "firebase-admin/app";
+import { getFirestore } from "firebase-admin/firestore";
 import jsSHA from "jssha";
 import { cookies } from "next/headers";
-import { DEFAULT_SETTINGS, Settings } from "./settings";
 import { createIntl, createIntlCache, IntlShape } from "react-intl";
+import "server-only";
 import { intlErrorFn } from "./util";
 
 export const SCHEMA_VERSION = "1.0.0" as const;
@@ -39,4 +41,25 @@ export function hashPassword(password: string) {
   const sha = new jsSHA("SHA-512", "TEXT", { encoding: "UTF8" });
   sha.update(password);
   return sha.getHash("HEX");
+}
+
+export async function getFirestoreAdmin() {
+  const serviceAccount =
+    await import("../../server/twilight-imperium-360307-ea7cce25efeb.json");
+  const apps = getApps();
+  if (apps.length > 0) {
+    return getFirestore();
+  }
+  const env = process.env.NODE_ENV;
+  const emulator = process.env.FIRESTORE_EMULATOR_HOST;
+  const projectId = process.env.NEXT_PUBLIC_TI_PROJECT;
+  if (env === "production" || !emulator) {
+    initializeApp({
+      credential: cert(serviceAccount as any),
+    });
+  } else {
+    initializeApp({ projectId });
+  }
+
+  return getFirestore();
 }

@@ -9,7 +9,7 @@ import {
   AdditionalActions,
   FactionActionButtons,
   NextPlayerButtons,
-} from "../../../main/@phase/action/ActionPhase";
+} from "../../../main/phase/action/ActionPhase";
 
 export default function FactionActionPhase({
   factionId,

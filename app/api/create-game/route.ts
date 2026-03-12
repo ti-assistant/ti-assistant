@@ -4,6 +4,7 @@ import { getFactions } from "../../../server/data/factions";
 import { getPlanets } from "../../../server/data/planets";
 import { getSession, TIASession } from "../../../server/util/fetch";
 import {
+  getFirestoreAdmin,
   getIntl,
   getSessionIdFromCookie,
   hashPassword,
@@ -29,7 +30,7 @@ export async function POST(req: Request) {
 
   let options: Options = json.options;
 
-  const db = getFirestore();
+  const db = await getFirestoreAdmin();
 
   const locale = "en";
   const intl = await getIntl(locale);

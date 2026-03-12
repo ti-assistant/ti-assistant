@@ -6,6 +6,7 @@ import {
   TIASession,
 } from "../../../../server/util/fetch";
 import {
+  getFirestoreAdmin,
   getSessionIdFromCookie,
   hashPassword,
   setSessionIdCookie,
@@ -18,7 +19,7 @@ interface EnterPasswordData {
 
 export async function POST(
   req: Request,
-  { params }: { params: Promise<{ gameId: string }> }
+  { params }: { params: Promise<{ gameId: string }> },
 ) {
   const { gameId } = await params;
 
@@ -41,7 +42,7 @@ export async function POST(
     });
   }
 
-  const db = getFirestore();
+  const db = await getFirestoreAdmin();
 
   let sessionId = await getSessionIdFromCookie();
   let session: Optional<TIASession>;

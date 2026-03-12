@@ -6,7 +6,7 @@ import {
 import { useActiveFactionId } from "../../../../../../../src/context/gameDataHooks";
 import { useUndo } from "../../../../../../../src/util/api/undo";
 import { rem } from "../../../../../../../src/util/util";
-import { StrategyCardSelectList } from "../../../main/@phase/strategy/StrategyPhase";
+import { StrategyCardSelectList } from "../../../main/phase/strategy/StrategyPhase";
 
 export default function FactionStrategyPhase({
   factionId,

@@ -38,7 +38,7 @@ import { useDataUpdate } from "../../../../../../../src/util/api/dataUpdate";
 import { Events } from "../../../../../../../src/util/api/events";
 import { Optional } from "../../../../../../../src/util/types/types";
 import { rem } from "../../../../../../../src/util/util";
-import { computeVotes } from "../../../main/@phase/agenda/AgendaPhase";
+import { computeVotes } from "../../../main/phase/agenda/AgendaPhase";
 import styles from "../faction-page.module.scss";
 
 export default function FactionAgendaPhase({

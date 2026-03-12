@@ -10,7 +10,7 @@ import { getOppositeHandler } from "../../../src/util/api/opposite";
 import { updateActionLog } from "../../../src/util/api/update";
 import { computeVPs } from "../../../src/util/factions";
 import { EndGameHandler } from "../../../src/util/model/endGame";
-import { getIntl } from "../../../src/util/server";
+import { getFirestoreAdmin, getIntl } from "../../../src/util/server";
 import { ActionLog, Optional } from "../../../src/util/types/types";
 import { objectEntries, objectKeys } from "../../../src/util/util";
 
@@ -145,7 +145,7 @@ async function getJSONFileFromStorage(
 }
 
 export async function processGames(baseData: BaseData) {
-  const db = getFirestore();
+  const db = await getFirestoreAdmin();
 
   const gamesRef = db.collection("games");
 
@@ -182,7 +182,7 @@ export async function processGames(baseData: BaseData) {
 }
 
 export async function migrateProcessedGames(storage: Storage) {
-  const db = getFirestore();
+  const db = await getFirestoreAdmin();
 
   const processedGames = await getJSONFileFromStorage(storage);
 
@@ -192,7 +192,7 @@ export async function migrateProcessedGames(storage: Storage) {
 }
 
 export async function processOneGame(gameId: string) {
-  const db = getFirestore();
+  const db = await getFirestoreAdmin();
 
   const gamesRef = db.collection("games").doc(gameId);
 
@@ -618,7 +618,7 @@ async function archiveGame(
   const actionLog = fixedGame.actionLog ?? [];
   delete fixedGame.actionLog;
 
-  const db = getFirestore();
+  const db = await getFirestoreAdmin();
   try {
     db.collection("archive").doc(gameId).set(fixedGame);
   } catch (err) {
