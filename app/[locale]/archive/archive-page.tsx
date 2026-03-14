@@ -219,7 +219,6 @@ export default function ArchivePage({
         processedGames = await getter(
           `/api/archived-games?timestamp=${latestTimestamp}`,
         );
-        console.log("Num Games", Object.keys(processedGames).length);
         safeguard++;
       }
 
