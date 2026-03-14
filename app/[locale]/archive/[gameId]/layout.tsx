@@ -8,7 +8,9 @@ import { getIntl } from "../../../../src/util/server";
 import DynamicSidebars from "../../game/[gameId]/dynamic-sidebars";
 import GameCode from "../../game/[gameId]/game-code";
 import GameLoader from "../../game/[gameId]/game-loader";
+import SummaryColumn from "../../game/[gameId]/main/summary-column/SummaryColumn";
 import styles from "./main.module.scss";
+import Phase from "./phase";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
@@ -52,8 +54,6 @@ function getQRCode(gameId: string, size: number): Promise<string> {
 
 export default async function Layout({
   children,
-  phase,
-  summary,
   params,
 }: LayoutProps<"/[locale]/archive/[gameId]">) {
   const { gameId, locale } = await params;
@@ -75,8 +75,8 @@ export default async function Layout({
         <DataInitializer archive gameId={gameId} data={fetchGameData(gameId)}>
           <DynamicSidebars />
           <div className={styles.Main}>
-            {phase}
-            {summary}
+            <Phase />
+            <SummaryColumn />
           </div>
           {children}
         </DataInitializer>

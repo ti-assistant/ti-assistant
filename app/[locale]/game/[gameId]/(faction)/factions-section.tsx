@@ -31,8 +31,8 @@ import { getStrategyCardsForFaction } from "../../../../../src/util/helpers";
 import { phaseString } from "../../../../../src/util/strings";
 import { Optional } from "../../../../../src/util/types/types";
 import { rem } from "../../../../../src/util/util";
-import { setupPhaseComplete } from "../main/@phase/setup/SetupPhase";
-import { statusPhaseComplete } from "../main/@phase/status/StatusPhase";
+import { setupPhaseComplete } from "../main/phase/setup/SetupPhase";
+import { statusPhaseComplete } from "../main/phase/status/StatusPhase";
 import { useDataUpdate } from "../../../../../src/util/api/dataUpdate";
 import { Events } from "../../../../../src/util/api/events";
 

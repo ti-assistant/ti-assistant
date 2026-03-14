@@ -131,7 +131,7 @@ import { PassHandler, UnpassHandler } from "../../../../src/util/model/unpass";
 import { UpdateBreakthroughStateHandler } from "../../../../src/util/model/updateBreakthroughState";
 import { UpdateLeaderStateHandler } from "../../../../src/util/model/updateLeaderState";
 import { UpdatePlanetStateHandler } from "../../../../src/util/model/updatePlanetState";
-import { SCHEMA_VERSION } from "../../../../src/util/server";
+import { getFirestoreAdmin, SCHEMA_VERSION } from "../../../../src/util/server";
 import { Optional } from "../../../../src/util/types/types";
 
 export async function POST(
@@ -147,7 +147,7 @@ export async function POST(
     });
   }
 
-  const db = getFirestore();
+  const db = await getFirestoreAdmin();
 
   // Uncomment to simulate latency.
   // const delay = (ms: number) =>

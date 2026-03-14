@@ -42,12 +42,8 @@ export default async function RootLayout({
 
   let fontSwitchStyle: Optional<FontStyle>;
   switch (locale) {
-    case "ru":
-      fontSwitchStyle = {
-        "--main-font": "Russo One",
-      };
-      break;
     case "pl":
+    case "ru":
       fontSwitchStyle = {
         "--main-font": "Russo One",
       };

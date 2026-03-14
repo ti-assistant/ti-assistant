@@ -4,6 +4,7 @@ import {
   canEditGame,
   getTimersInTransaction,
 } from "../../../../server/util/fetch";
+import { getFirestoreAdmin } from "../../../../src/util/server";
 
 export async function POST(
   req: Request,
@@ -20,7 +21,7 @@ export async function POST(
 
   const data = (await req.json()) as TimerUpdateData;
 
-  const db = getFirestore();
+  const db = await getFirestoreAdmin();
 
   const timersRef = db.collection("timers").doc(gameId);
 

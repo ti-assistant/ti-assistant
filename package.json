@@ -2,10 +2,10 @@
   "name": "twilight-imperium",
   "version": "3.0.0",
   "dependencies": {
-    "@google-cloud/storage": "^7.19.0",
+    "@google-cloud/storage": "^5.18.3",
     "crypto": "^1.0.1",
     "firebase": "^12.9.0",
-    "firebase-admin": "^13.6.1",
+    "firebase-admin": "^13.7.0",
     "js-cookie": "^3.0.5",
     "jssha": "^3.3.1",
     "negotiator": "^1.0.0",
@@ -24,11 +24,10 @@
   },
   "main": "index.js",
   "scripts": {
-    "analyze": "ANALYZE=true next build",
-    "dev": "node server/app.js",
+    "dev": "next dev",
     "build": "next build --webpack",
     "lint": "next lint",
-    "start": "NODE_ENV=production node server/app.js",
+    "start": "next start",
     "extract": "formatjs extract '{app,pages,server,src}/**/*.{js,ts,tsx}' --ignore '{app,pages,server,src}/**/*.d.ts' --out-file server/lang/en.json",
     "compile": "formatjs compile-folder --ast server/lang server/compiled-lang"
   },

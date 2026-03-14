@@ -10,7 +10,10 @@ import {
   ACTION_TURN_BOUNDARIES,
   TURN_BOUNDARIES,
 } from "../../src/util/api/actionLog";
-import { getSessionIdFromCookie } from "../../src/util/server";
+import {
+  getFirestoreAdmin,
+  getSessionIdFromCookie,
+} from "../../src/util/server";
 import { ActionLog, Optional } from "../../src/util/types/types";
 import { BASE_OPTIONS } from "../data/options";
 
@@ -23,7 +26,7 @@ export async function getGameData(
   gameId: string,
   path: GamePath,
 ): Promise<StoredGameData> {
-  const db = getFirestore();
+  const db = await getFirestoreAdmin();
 
   const gameRef = db.collection(path).doc(gameId);
 
@@ -125,7 +128,7 @@ export async function getCurrentTurnLogEntriesInTransaction(
 }
 
 export async function getFullActionLog(gameId: string, path: GamePath) {
-  const db = getFirestore();
+  const db = await getFirestoreAdmin();
 
   const gameRef = db.collection("games").doc(gameId);
   const logEntry = await gameRef
@@ -150,7 +153,7 @@ export async function getFullActionLog(gameId: string, path: GamePath) {
 type TimerPath = "timers" | "archiveTimers";
 
 export async function getTimers(gameId: string, path: TimerPath) {
-  const db = getFirestore();
+  const db = await getFirestoreAdmin();
 
   const timersRef = db.collection(path).doc(gameId);
 
@@ -190,7 +193,7 @@ export interface TIASession {
 export async function getSession(
   sessionId: string,
 ): Promise<Optional<TIASession>> {
-  const db = getFirestore();
+  const db = await getFirestoreAdmin();
 
   const sessionRef = db.collection("sessions").doc(sessionId);
 
@@ -208,7 +211,7 @@ export async function getSession(
 }
 
 export async function getGamePassword(gameId: string) {
-  const db = getFirestore();
+  const db = await getFirestoreAdmin();
 
   const passwordRef = db.collection("passwords").doc(gameId);
   const passwordDoc = await passwordRef.get();

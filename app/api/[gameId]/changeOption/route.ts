@@ -1,6 +1,7 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { NextResponse } from "next/server";
 import { canEditGame } from "../../../../server/util/fetch";
+import { getFirestoreAdmin } from "../../../../src/util/server";
 
 interface ChangeOptionData {
   option: string;
@@ -19,7 +20,7 @@ export async function POST(
     });
   }
 
-  const db = getFirestore();
+  const db = await getFirestoreAdmin();
 
   const game = await db.collection("games").doc(gameId).get();
 

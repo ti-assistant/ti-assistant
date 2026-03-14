@@ -33,6 +33,14 @@ export function updateArray<Type>(array: Type[], add: Type[], remove: Type[]) {
   return Array.from(set);
 }
 
+export async function getter(url: string) {
+  const res = await fetch(url, {
+    method: "GET",
+    credentials: "include",
+  });
+  return await res.json();
+}
+
 export async function poster(
   url: string,
   data: any,
