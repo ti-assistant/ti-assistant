@@ -1,5 +1,5 @@
 import StatsPage from "./stats-page";
 
 export default async function Loading() {
-  return <StatsPage processedGames={{}} loading />;
+  return <StatsPage loading />;
 }

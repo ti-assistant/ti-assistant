@@ -24,6 +24,7 @@ import { Optional } from "../../../src/util/types/types";
 import { objectEntries, rem } from "../../../src/util/util";
 import { ProcessedGame } from "../stats/processor";
 import styles from "./game-page.module.scss";
+import { getter } from "../../../src/util/api/util";
 
 function FilterButton<T extends string | number>({
   filter,
@@ -170,10 +171,8 @@ interface IncludeExclude<T> {
 export default function ArchivePage({
   baseEvents,
   loading,
-  processedGames,
 }: {
   baseEvents: TIEvent[];
-  processedGames: Record<string, ProcessedGame>;
   loading?: boolean;
 }) {
   const intl = useIntl();
@@ -190,25 +189,44 @@ export default function ArchivePage({
     new Set([10]),
   );
   const [playerCounts, setPlayerCounts] = useState<Set<number>>(new Set([6]));
-  const [localGames, setLocalGames] = useState(
-    applyFilters(processedGames, {
-      events,
-      expansions,
-      playerCounts,
-      victoryPoints,
-    }),
-  );
+  const [processedGames, setProcessedGames] = useState<
+    Record<string, ProcessedGame>
+  >({});
+
+  const localGames = applyFilters(processedGames, {
+    events,
+    expansions,
+    playerCounts,
+    victoryPoints,
+  });
 
   useEffect(() => {
-    setLocalGames(
-      applyFilters(processedGames, {
-        events,
-        expansions,
-        playerCounts,
-        victoryPoints,
-      }),
-    );
-  }, [processedGames, events, expansions, playerCounts, victoryPoints]);
+    const fetchData = async () => {
+      const allProcessedGames: Record<string, ProcessedGame> = {};
+      let processedGames: Record<string, ProcessedGame> = await getter(
+        "/api/archived-games",
+      );
+      let safeguard = 0;
+      while (Object.keys(processedGames).length > 0 && safeguard < 100) {
+        let latestTimestamp = Number.MAX_SAFE_INTEGER;
+        objectEntries(processedGames).forEach(([gameId, game]) => {
+          allProcessedGames[gameId] = game;
+          latestTimestamp = Math.min(game.timestampMillis, latestTimestamp);
+        });
+
+        setProcessedGames({ ...allProcessedGames });
+
+        processedGames = await getter(
+          `/api/archived-games?timestamp=${latestTimestamp}`,
+        );
+        console.log("Num Games", Object.keys(processedGames).length);
+        safeguard++;
+      }
+
+      setProcessedGames({ ...allProcessedGames });
+    };
+    fetchData();
+  }, []);
 
   const orderedGames = objectEntries(localGames).sort((a, b) => {
     if (a[1].timestampMillis < b[1].timestampMillis) {
