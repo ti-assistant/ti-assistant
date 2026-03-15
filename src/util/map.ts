@@ -22,7 +22,7 @@ export function isFactionHomeSystem(systemNumber: string) {
   if (systemId > 50 && systemId < 59) {
     return true;
   }
-  if (systemId > 99 && systemId < 103) {
+  if (systemId > 91 && systemId < 97) {
     return true;
   }
   if (systemId > 1000 && systemId < 1011) {
@@ -742,9 +742,12 @@ export function extractFactionIds(
       return;
     }
 
-    const newSystem = newSystems[index];
+    let newSystem = newSystems[index];
     if (!newSystem) {
       return;
+    }
+    if (newSystem === "96") {
+      newSystem = "96A";
     }
     const factionId = SYSTEMS_TO_FACTIONS[newSystem];
     if (!factionId) {
