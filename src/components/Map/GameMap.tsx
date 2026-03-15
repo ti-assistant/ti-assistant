@@ -415,42 +415,42 @@ function getFracturePosition(
   switch (numFactions) {
     case 3:
       return {
-        left: new Hex(-1, 0, -3),
-        center: new Hex(-2, 0, -1),
-        right: new Hex(-4, 0, 3),
+        left: new Hex(-3, -1, 4),
+        center: new Hex(-1, -2, 3),
+        right: new Hex(3, -4, 1),
       };
     case 4:
     case 5:
       return {
-        left: new Hex(-1, 0, -3),
-        center: new Hex(-3, 0, -1),
-        right: new Hex(-4, 0, 3),
+        left: new Hex(-3, -1, 4),
+        center: new Hex(-1, -3, 4),
+        right: new Hex(3, -4, 1),
       };
     case 6:
       if (mapStyle === "large") {
         return {
-          left: new Hex(-2, 0, -3),
-          center: new Hex(-4, 0, -1),
-          right: new Hex(-5, 0, 3),
+          left: new Hex(-3, -2, 5),
+          center: new Hex(-1, -4, 5),
+          right: new Hex(3, -5, 2),
         };
       }
       return {
-        left: new Hex(-1, 0, -3),
-        center: new Hex(-3, 0, -1),
-        right: new Hex(-4, 0, 3),
+        left: new Hex(-3, -1, 4),
+        center: new Hex(-1, -3, 4),
+        right: new Hex(3, -4, 1),
       };
     case 7:
     case 8:
       return {
-        left: new Hex(-2, 0, -3),
-        center: new Hex(-4, 0, -1),
-        right: new Hex(-5, 0, 3),
+        left: new Hex(-3, -2, 5),
+        center: new Hex(-1, -4, 5),
+        right: new Hex(3, -5, 2),
       };
   }
   return {
-    left: new Hex(-1, 0, -3),
-    center: new Hex(-3, 0, -1),
-    right: new Hex(-4, 0, 3),
+    left: new Hex(-3, -1, 4),
+    center: new Hex(-1, -3, 4),
+    right: new Hex(3, -4, 1),
   };
 }
 
