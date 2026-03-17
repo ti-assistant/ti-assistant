@@ -41,9 +41,9 @@ export default function TimerProvider({ children }: PropsWithChildren) {
   }
 
   function saveTimers() {
-    // Don't update if we haven't updated the timers in over 20 seconds.
+    // Don't update if we haven't updated the timers in over 10 seconds.
     const timeDiffMillis = Date.now() - lastIncrease;
-    if (timeDiffMillis / 1000 > 20) {
+    if (timeDiffMillis / 1000 > 10) {
       return;
     }
     databaseFns.saveTimers();
