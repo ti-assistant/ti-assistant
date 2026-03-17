@@ -120,13 +120,13 @@ export function isCompletedGame(
 
   const gameDiff = gameMax - gameMin;
   const timeDiff = maxTime - minTime;
-  // If game time was used, the game must be longer than 2 hours.
-  if (gameDiff > 120 && gameDiff < 7200) {
+  // If game time was used, the game must be longer than 3 hours.
+  if (gameDiff > 120 && gameDiff < 10800) {
     return false;
   }
 
-  // The wall clock time diff must be longer than 2 hours.
-  if (timeDiff < 7200000) {
+  // The wall clock time diff must be longer than 3 hours.
+  if (timeDiff < 10800000) {
     return false;
   }
 
