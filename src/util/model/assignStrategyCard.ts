@@ -5,26 +5,24 @@ import { getOnDeckFaction } from "../helpers";
 export class AssignStrategyCardHandler implements Handler {
   constructor(
     public gameData: StoredGameData,
-    public data: AssignStrategyCardData
+    public data: AssignStrategyCardData,
   ) {}
 
   validate(): boolean {
-    const cache = createIntlCache();
-    const intl = createIntl({ locale: "en" }, cache);
     if (this.gameData.state.activeplayer !== this.data.event.pickedBy) {
       return false;
     }
-    const strategycards = buildStrategyCards(this.gameData, intl);
+    const numCards = Object.values(this.gameData.strategycards ?? {}).reduce(
+      (value, card) => {
+        if (card.faction === this.data.event.assignedTo) {
+          return value + 1;
+        }
+        return value;
+      },
+      0,
+    );
 
-    const numCards = Object.values(strategycards).reduce((value, card) => {
-      if (card.faction === this.data.event.assignedTo) {
-        return value + 1;
-      }
-      return value;
-    }, 0);
-    const factions = buildFactions(this.gameData, intl);
-
-    switch (Object.keys(factions).length) {
+    switch (Object.keys(this.gameData.factions).length) {
       case 3:
       case 4:
         return numCards < 2;
@@ -50,12 +48,18 @@ export class AssignStrategyCardHandler implements Handler {
     if (this.data.event.assignedTo === "Naalu Collective") {
       updates[`strategycards.${this.data.event.id}.order`] = 0;
     }
+    if (this.gameData.options.expansions.includes("TWILIGHTS FALL")) {
+      const telepathicOwner = this.gameData.abilities?.Telepathic?.owner;
+      if (telepathicOwner && this.data.event.assignedTo === telepathicOwner) {
+        updates[`strategycards.${this.data.event.id}.order`] = 0;
+      }
+    }
     const cache = createIntlCache();
     const intl = createIntl({ locale: "en" }, cache);
     const onDeckFaction = getOnDeckFaction(
       this.gameData.state,
       buildFactions(this.gameData, intl),
-      buildStrategyCards(this.gameData, intl)
+      buildStrategyCards(this.gameData, intl),
     );
 
     updates[`state.activeplayer`] = onDeckFaction ? onDeckFaction.id : "None";
@@ -79,7 +83,7 @@ export class AssignStrategyCardHandler implements Handler {
 export class UnassignStrategyCardHandler implements Handler {
   constructor(
     public gameData: StoredGameData,
-    public data: UnassignStrategyCardData
+    public data: UnassignStrategyCardData,
   ) {}
 
   validate(): boolean {
