@@ -18,7 +18,7 @@
 
 7. Start the app using `npm run dev`.
 
-8. The app will be available on `localhost:8080`.
+8. The app will be available on `localhost:3000`.
 
 ## Building
 
