@@ -155,6 +155,7 @@ interface GainedCardsByType {
   genomes: TFGenomeId[];
   paradigms: TFParadigmId[];
   upgrades: TFUnitUpgradeId[];
+  techs: TechId[];
 }
 
 export function getGainedTFCardsByType(
@@ -164,11 +165,15 @@ export function getGainedTFCardsByType(
   const events = getLogEntries<GainTFCardData>(actionLog, "GAIN_TF_CARD")
     .filter((logEntry) => logEntry.data.event.faction === factionId)
     .map((logEntry) => logEntry.data.event);
+  const techEvents = getLogEntries<AddTechData>(actionLog, "ADD_TECH")
+    .filter((logEntry) => logEntry.data.event.faction === factionId)
+    .map((logEntry) => logEntry.data.event);
   const cardsByType: GainedCardsByType = {
     abilities: [],
     genomes: [],
     paradigms: [],
     upgrades: [],
+    techs: [],
   };
   for (const event of events) {
     switch (event.type) {
@@ -185,6 +190,9 @@ export function getGainedTFCardsByType(
         cardsByType.upgrades.push(event.upgrade);
         break;
     }
+  }
+  for (const techEvent of techEvents) {
+    cardsByType.techs.push(techEvent.tech);
   }
   return cardsByType;
 }

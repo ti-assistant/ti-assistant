@@ -5,7 +5,7 @@ import { Optional } from "./types/types";
  */
 export function filterToClaimedPlanets(
   planets: Partial<Record<PlanetId, Planet>>,
-  factionId: FactionId
+  factionId: FactionId,
 ) {
   return Object.values(planets).filter((planet) => planet.owner === factionId);
 }
@@ -15,7 +15,7 @@ export function filterToClaimedPlanets(
  */
 export function applyAllPlanetAttachments(
   planets: Planet[],
-  attachments: Partial<Record<AttachmentId, Attachment>>
+  attachments: Partial<Record<AttachmentId, Attachment>>,
 ): Planet[] {
   return planets.map((planet) => {
     return applyPlanetAttachments(planet, attachments);
@@ -39,7 +39,7 @@ function hasSkip(planet: Planet) {
  */
 export function applyPlanetAttachments(
   planet: Planet,
-  attachments: Partial<Record<AttachmentId, Attachment>>
+  attachments: Partial<Record<AttachmentId, Attachment>>,
 ) {
   let updatedPlanet = { ...planet };
   if (!attachments) {
@@ -81,7 +81,7 @@ export function applyPlanetAttachments(
 
 export function getPlanetTypeColor(type: Optional<PlanetType>) {
   if (!type) {
-    return "#555";
+    return "var(--hidden-border)";
   }
   switch (type) {
     case "CULTURAL": {
@@ -94,11 +94,10 @@ export function getPlanetTypeColor(type: Optional<PlanetType>) {
       return "Green";
     }
   }
-  return "#555";
 }
 
 export function fracturePlanetsOwned(
-  planets: Partial<Record<PlanetId, Planet>>
+  planets: Partial<Record<PlanetId, Planet>>,
 ) {
   return (
     planets.Styx?.owner ||

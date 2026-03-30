@@ -434,6 +434,8 @@ interface ParadigmEvent {
 interface UpgradeEvent {
   type: "UNIT_UPGRADE";
   upgrade: TFUnitUpgradeId;
+  /** Set by server */
+  prevUpgrade?: TFUnitUpgradeId;
 }
 
 interface TFCardEvent {

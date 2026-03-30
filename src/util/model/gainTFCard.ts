@@ -1,5 +1,8 @@
+import { createIntl, createIntlCache } from "react-intl";
+import { getUnitUpgrades } from "../../../server/data/upgrades";
 import { getCurrentTurnLogEntries } from "../api/actionLog";
 import { Optional } from "../types/types";
+import { objectEntries } from "../util";
 
 type CardEvent = AbilityEvent | GenomeEvent | ParadigmEvent | UpgradeEvent;
 
@@ -27,6 +30,7 @@ export class GainTFCardHandler implements Handler {
     public gameData: StoredGameData,
     public data: GainTFCardData,
   ) {
+    let prevUpgrade: Optional<TFUnitUpgradeId>;
     let prevOwner: Optional<FactionId>;
     switch (this.data.event.type) {
       case "ABILITY":
@@ -42,12 +46,28 @@ export class GainTFCardHandler implements Handler {
         prevOwner = paradigms[this.data.event.paradigm]?.owner;
         break;
       case "UNIT_UPGRADE":
+        const cache = createIntlCache();
+        const intl = createIntl({ locale: "en" }, cache);
         const upgrades = this.gameData.upgrades ?? {};
+        const baseUpgrades = getUnitUpgrades(intl);
         prevOwner = upgrades[this.data.event.upgrade]?.owner;
+        const newType = baseUpgrades[this.data.event.upgrade].unitType;
+        for (const [id, upgrade] of objectEntries(upgrades)) {
+          if (
+            upgrade.owner === this.data.event.faction &&
+            newType === baseUpgrades[id].unitType
+          ) {
+            prevUpgrade = id;
+            break;
+          }
+        }
         break;
     }
     if (prevOwner) {
       this.data.event.prevFaction = prevOwner;
+    }
+    if (prevUpgrade && this.data.event.type === "UNIT_UPGRADE") {
+      this.data.event.prevUpgrade = prevUpgrade;
     }
   }
 
@@ -77,6 +97,9 @@ export class GainTFCardHandler implements Handler {
       case "UNIT_UPGRADE":
         updates[`upgrades.${this.data.event.upgrade}.owner`] =
           this.data.event.faction;
+        if (this.data.event.prevUpgrade) {
+          updates[`upgrades.${this.data.event.prevUpgrade}.owner`] = "DELETE";
+        }
         break;
     }
 
@@ -98,6 +121,15 @@ export class GainTFCardHandler implements Handler {
       return "DELETE";
     }
 
+    if (
+      entry.data.action === "GAIN_TF_CARD" &&
+      this.data.event.type === "UNIT_UPGRADE" &&
+      entry.data.event.type === "UNIT_UPGRADE" &&
+      entry.data.event.prevUpgrade === this.data.event.upgrade
+    ) {
+      return "DELETE";
+    }
+
     return "IGNORE";
   }
 }
@@ -114,11 +146,16 @@ export class LoseTFCardHandler implements Handler {
 
   getUpdates(): Record<string, any> {
     let prevOwner: Optional<string>;
+    let prevUpgrade: Optional<TFUnitUpgradeId>;
     const currentTurn = getCurrentTurnLogEntries(this.gameData.actionLog ?? []);
     for (const entry of currentTurn) {
       const action = this.getActionLogAction(entry);
       if (action === "DELETE") {
         prevOwner = (entry.data as GainTFCardData).event.prevFaction;
+        if ((entry.data as GainTFCardData).event.type === "UNIT_UPGRADE") {
+          prevUpgrade = ((entry.data as GainTFCardData).event as any)
+            .prevUpgrade;
+        }
       }
     }
 
@@ -141,6 +178,10 @@ export class LoseTFCardHandler implements Handler {
         break;
       case "UNIT_UPGRADE":
         updates[`upgrades.${this.data.event.upgrade}.owner`] = updateVal;
+        if (prevUpgrade) {
+          updates[`upgrades.${this.data.event.upgrade}.owner`] =
+            this.data.event.faction;
+        }
         break;
     }
 

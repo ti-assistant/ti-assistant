@@ -19,7 +19,7 @@ import { getGainedTFCardsByType } from "../../util/actionLog";
 import { useDataUpdate } from "../../util/api/dataUpdate";
 import { Events } from "../../util/api/events";
 import { getTechTypeColor } from "../../util/techs";
-import { rem } from "../../util/util";
+import { objectEntries, rem } from "../../util/util";
 import FormattedDescription from "../FormattedDescription/FormattedDescription";
 import IconDiv from "../LabeledDiv/IconDiv";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
@@ -29,6 +29,7 @@ import ParadigmIcon from "../PlanetIcons/ParadigmIcon";
 import UpgradeIcon from "../PlanetIcons/UpgradeIcon";
 import { Selector } from "../Selector/Selector";
 import TechIcon from "../TechIcon/TechIcon";
+import TechResearchSection from "../TechResearchSection/TechResearchSection";
 import UnitIcon from "../Units/Icons";
 import UnitStats from "../UnitStats/UnitStats";
 import styles from "./GainSplicedCard.module.scss";
@@ -50,9 +51,20 @@ function canGainMoreCards(
     cardsByType.abilities.length +
     cardsByType.genomes.length +
     cardsByType.paradigms.length +
-    cardsByType.upgrades.length;
+    cardsByType.upgrades.length +
+    cardsByType.techs.length;
   if (numToGain.total) {
     return totalGained < numToGain.total;
+  }
+
+  const totalToGain =
+    (numToGain.abilities ?? 0) +
+    (numToGain.genomes ?? 0) +
+    (numToGain.paradigms ?? 0) +
+    (numToGain.upgrades ?? 0);
+
+  if (totalGained === totalToGain) {
+    return false;
   }
 
   if (
@@ -81,9 +93,11 @@ export default function GainTFCard({
   steal,
   style,
   numToGain,
+  splice,
 }: {
   factionId: FactionId;
   steal?: boolean;
+  splice?: boolean;
   style?: CSSProperties;
   numToGain: NumberToGain;
 }) {
@@ -132,6 +146,13 @@ export default function GainTFCard({
             steal={steal}
             style={style}
           />
+          {splice ? (
+            <TechResearchSection
+              factionId={factionId}
+              numTechs={2}
+              hideResearchedTechs
+            />
+          ) : null}
         </div>
       ) : null}
     </div>
@@ -143,6 +164,7 @@ interface GainedCardsByType {
   genomes: TFGenomeId[];
   paradigms: TFParadigmId[];
   upgrades: TFUnitUpgradeId[];
+  techs: TechId[];
 }
 
 function GainedCardsSection({
@@ -258,7 +280,7 @@ function GainedCardsSection({
                       style={{ fontSize: rem(40), gap: rem(20) }}
                     >
                       {upgrade.name}
-                      <UnitIcon type={upgrade.unitType} size={40} />
+                      <UnitIcon type={upgrade.unitType} size={20} />
                     </div>
                   }
                   infoContent={
@@ -349,6 +371,12 @@ function GainedCardsSection({
             );
           })}
         </IconDiv>
+      ) : null}
+      {gainedCardsByType.techs.length > 0 ? (
+        <TechResearchSection
+          factionId={factionId}
+          numTechs={gainedCardsByType.techs.length}
+        />
       ) : null}
     </>
   );
@@ -521,7 +549,8 @@ function InnerAbilitySelectMenu({
             return (
               <button
                 key={ability.id}
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   innerCloseFn();
                   outerCloseFn();
                   selectAbility(ability);
@@ -536,6 +565,71 @@ function InnerAbilitySelectMenu({
                 disabled={viewOnly}
               >
                 {ability.name}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    ></ClientOnlyHoverMenu>
+  );
+}
+
+function InnerUpgradeSelectMenu({
+  upgrades,
+  label,
+  selectUpgrade,
+  outerCloseFn,
+}: {
+  upgrades: TFUnitUpgrade[];
+  label: ReactNode;
+  selectUpgrade: (upgrade: TFUnitUpgrade) => void;
+  outerCloseFn: () => void;
+}) {
+  const viewOnly = useViewOnly();
+
+  if (upgrades.length === 0) {
+    return null;
+  }
+
+  return (
+    <ClientOnlyHoverMenu
+      label={label}
+      buttonStyle={{ fontSize: rem(14) }}
+      borderColor={getTechTypeColor("UPGRADE")}
+      renderProps={(innerCloseFn) => (
+        <div
+          style={{
+            display: "grid",
+            gridAutoFlow: "column",
+            gridTemplateRows: `repeat(${Math.min(8, upgrades.length)}, auto)`,
+            padding: rem(8),
+            gap: rem(4),
+            alignItems: "stretch",
+            maxWidth: "88vw",
+            overflowX: "auto",
+          }}
+        >
+          {upgrades.map((upgrade) => {
+            return (
+              <button
+                key={upgrade.id}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  innerCloseFn();
+                  outerCloseFn();
+                  selectUpgrade(upgrade);
+                }}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  fontSize: rem(16),
+                  gap: rem(8),
+                }}
+                disabled={viewOnly}
+              >
+                {upgrade.name}
+                <UnitIcon type={upgrade.unitType} size={16} />
               </button>
             );
           })}
@@ -735,6 +829,17 @@ export function GainUpgradeSection({
     return null;
   }
 
+  const upgradesByType: Partial<Record<UnitType, TFUnitUpgrade[]>> = {};
+  availableUpgrades.forEach((upgrade) => {
+    const units = upgradesByType[upgrade.unitType] ?? [];
+    units.push(upgrade);
+    upgradesByType[upgrade.unitType] = units;
+  });
+
+  const orderedUpgrades = objectEntries(upgradesByType).sort((a, b) => {
+    return a[0] > b[0] ? 1 : -1;
+  });
+
   return (
     <ClientOnlyHoverMenu
       label={
@@ -765,26 +870,18 @@ export function GainUpgradeSection({
       buttonStyle={{ fontSize: rem(14) }}
       renderProps={(innerCloseFn) => (
         <div
+          className={styles.OuterTechSelectMenu}
           style={{
-            display: "grid",
-            gridAutoFlow: "column",
-            gridTemplateRows: `repeat(${Math.min(
-              availableUpgrades.length,
-              11,
-            )}, auto)`,
             padding: rem(8),
-            gap: rem(4),
-            alignItems: "stretch",
-            maxWidth: "88vw",
-            overflowX: "auto",
+            alignItems: "flex-start",
+            overflow: "visible",
           }}
         >
-          {availableUpgrades.map((upgrade) => {
+          {orderedUpgrades.map(([unitType, upgrades]) => {
             return (
-              <button
-                key={upgrade.id}
-                onClick={() => {
-                  innerCloseFn();
+              <InnerUpgradeSelectMenu
+                upgrades={upgrades}
+                selectUpgrade={(upgrade) => {
                   dataUpdate(
                     Events.GainTFCardEvent(factionId, {
                       upgrade: upgrade.id,
@@ -792,18 +889,9 @@ export function GainUpgradeSection({
                     }),
                   );
                 }}
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  fontSize: rem(16),
-                  gap: rem(8),
-                }}
-                disabled={viewOnly}
-              >
-                {upgrade.name}
-                <UnitIcon type={upgrade.unitType} size={16} />
-              </button>
+                outerCloseFn={innerCloseFn}
+                label={<UnitIcon type={unitType} size="1.25em" />}
+              />
             );
           })}
         </div>

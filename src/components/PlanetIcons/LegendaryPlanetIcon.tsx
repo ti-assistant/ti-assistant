@@ -48,7 +48,7 @@ export default function LegendaryPlanetIcon({
               title={<div style={{ fontSize: rem(40) }}>{planetName}</div>}
             >
               <InfoContent ability={ability} />
-            </ModalContent>
+            </ModalContent>,
           );
         }}
         className="flexRow"
@@ -58,7 +58,7 @@ export default function LegendaryPlanetIcon({
           height: rem(16),
           width: rem(16),
           boxShadow: `0px 0px ${rem(2)} ${rem(1.5)} purple`,
-          backgroundColor: "black",
+          backgroundColor: "var(--background-color)",
         }}
       >
         <div

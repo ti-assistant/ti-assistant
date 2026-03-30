@@ -6,7 +6,7 @@ import { PlanetIconWrapper } from "./Wrapper";
 
 export default function RelicPlanetIcon() {
   return (
-    <PlanetIconWrapper color="#efe383">
+    <PlanetIconWrapper color="var(--relic-color)">
       <div
         className="flexRow"
         style={{
@@ -15,7 +15,7 @@ export default function RelicPlanetIcon() {
           height: rem(12),
         }}
       >
-        <RelicMenuSVG color="#efe383" />
+        <RelicMenuSVG color="var(--relic-color)" />
       </div>
     </PlanetIconWrapper>
   );

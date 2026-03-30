@@ -70,6 +70,7 @@ export default function TechResearchSection({
   filter,
   gain = false,
   hideWrapper = false,
+  hideResearchedTechs = false,
   numTechs = 1,
   shareKnowledge = false,
   style,
@@ -80,6 +81,7 @@ export default function TechResearchSection({
   filter?: (tech: Tech) => boolean;
   gain?: boolean;
   hideWrapper?: boolean;
+  hideResearchedTechs?: boolean;
   numTechs?: number;
   shareKnowledge?: boolean;
   style?: CSSProperties;
@@ -113,15 +115,24 @@ export default function TechResearchSection({
   );
   const addTechEvents = getAddTechEvents(currentTurn);
 
+  if (
+    hideResearchedTechs &&
+    (availableTechs.length === 0 || numTechs <= researchedTechs.length)
+  ) {
+    return null;
+  }
+
   return (
     <div className={styles.TechResearchSection} style={style}>
-      <ResearchedTechsSection
-        factionId={factionId}
-        gain={gain}
-        hideWrapper={hideWrapper}
-        researchedTechs={researchedTechs}
-        addTechEvents={addTechEvents}
-      />
+      {hideResearchedTechs ? null : (
+        <ResearchedTechsSection
+          factionId={factionId}
+          gain={gain}
+          hideWrapper={hideWrapper}
+          researchedTechs={researchedTechs}
+          addTechEvents={addTechEvents}
+        />
+      )}
       {!viewOnly && researchedTechs.length < numTechs ? (
         factionId !== "Nekro Virus" || gain ? (
           <TechSelectHoverMenu
