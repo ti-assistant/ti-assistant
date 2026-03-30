@@ -134,7 +134,7 @@ export default function Header({ archive }: { archive?: boolean }) {
     <React.Fragment>
       {mapString ? (
         <button
-          className={styles.Map}
+          className={`${styles.Map} outline`}
           onClick={() =>
             openModal(
               <div

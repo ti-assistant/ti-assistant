@@ -3,10 +3,13 @@ import FactionComponents from "../../../../../../../../src/components/FactionCom
 import LabeledDiv from "../../../../../../../../src/components/LabeledDiv/LabeledDiv";
 import {
   useFaction,
-  useFactionColor,
+  useFactionColors,
 } from "../../../../../../../../src/context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../../../../../../src/context/gameDataHooks";
-import { convertToFactionColor } from "../../../../../../../../src/util/factions";
+import {
+  convertToFactionBorder,
+  convertToFactionColor,
+} from "../../../../../../../../src/util/factions";
 import { rem } from "../../../../../../../../src/util/util";
 
 const Noctis = {
@@ -18,13 +21,14 @@ const Noctis = {
 export default Noctis;
 
 function Primary({ factionId }: { factionId: FactionId }) {
-  const factionColor = useFactionColor(factionId);
+  const colors = useFactionColors(factionId);
 
   return (
     <div style={{ width: "fit-content" }}>
       <LabeledDiv
         label={<FactionComponents.Name factionId={factionId} />}
-        color={factionColor}
+        color={colors.color}
+        borderColor={colors.border}
         blur
       >
         <GainTFCard factionId={factionId} numToGain={{ genomes: 1 }} />
@@ -45,6 +49,7 @@ function Secondary({ factionId }: { factionId: FactionId }) {
       key={factionId}
       label={<FactionComponents.Name factionId={factionId} />}
       color={convertToFactionColor(faction?.color)}
+      borderColor={convertToFactionBorder(faction?.color)}
       opts={{ fixedWidth: true }}
       blur
     >

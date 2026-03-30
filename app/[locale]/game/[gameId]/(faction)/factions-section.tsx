@@ -26,7 +26,10 @@ import {
 } from "../../../../../src/context/stateDataHooks";
 import { LockedButtons } from "../../../../../src/LockedButton";
 import { getLogEntries } from "../../../../../src/util/actionLog";
-import { getFactionColor } from "../../../../../src/util/factions";
+import {
+  getFactionBorder,
+  getFactionColor,
+} from "../../../../../src/util/factions";
 import { getStrategyCardsForFaction } from "../../../../../src/util/helpers";
 import { phaseString } from "../../../../../src/util/strings";
 import { Optional } from "../../../../../src/util/types/types";
@@ -68,6 +71,7 @@ function NextPhaseButtons({}) {
                 onClick: () => {
                   dataUpdate(Events.AdvancePhaseEvent());
                 },
+                primary: true,
               },
             ]}
             viewOnly={viewOnly}
@@ -116,6 +120,7 @@ function NextPhaseButtons({}) {
                 onClick: () => {
                   dataUpdate(Events.AdvancePhaseEvent());
                 },
+                primary: true,
               },
             ]}
             viewOnly={viewOnly}
@@ -131,6 +136,7 @@ function NextPhaseButtons({}) {
             defaultMessage: "Start Next Round",
             description: "Text on a button that will start the next round.",
           }),
+          primary: false,
           onClick: () => {
             dataUpdate(Events.AdvancePhaseEvent(/* skipAgenda= */ true));
           },
@@ -146,6 +152,7 @@ function NextPhaseButtons({}) {
           },
           { phase: phaseString("AGENDA", intl) },
         ),
+        primary: true,
         onClick: () => {
           dataUpdate(Events.AdvancePhaseEvent());
         },
@@ -175,6 +182,7 @@ function NextPhaseButtons({}) {
                 onClick: () => {
                   dataUpdate(Events.AdvancePhaseEvent(/* skipAgenda= */ true));
                 },
+                primary: true,
               },
             ]}
             viewOnly={viewOnly}
@@ -283,21 +291,17 @@ function LocalFactionCircle({ factionId }: { factionId: FactionId }) {
   const isActive =
     (phase === "ACTION" || phase === "STRATEGY") &&
     activeFactionId === factionId;
-  const color = faction.passed ? "#555" : getFactionColor(faction);
+  const borderColor = faction.passed ? "#555" : getFactionBorder(faction);
   const cards = getStrategyCardsForFaction(strategyCards, factionId);
   return (
     <FactionCircle
       key={faction.id}
-      borderColor={color}
+      borderColor={borderColor}
       factionId={faction.id}
       onClick={() => router.push(`/game/${gameId}/${factionId}`)}
       style={{
         backgroundColor: isActive ? "#333" : undefined,
-        boxShadow: isActive
-          ? color === "Black"
-            ? "#eee 0 0 8px 4px"
-            : "var(--border-color) 0 0 8px 4px"
-          : undefined,
+        boxShadow: isActive ? "var(--border-color) 0 0 8px 4px" : undefined,
       }}
       tag={
         cards.length > 0 ? (

@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useIntl } from "react-intl";
-import BorderedDiv from "../../src/components/BorderedDiv/BorderedDiv";
 import { gameIdString } from "../../src/util/strings";
 import { rem } from "../../src/util/util";
 
@@ -31,44 +30,30 @@ export default function JoinGame() {
     <div className="flexRow" style={{ gap: rem(8) }}>
       {validGameId() ? (
         <Link
+          className="outline"
           href={validGameId() ? `/game/${gameId}` : {}}
           onClick={(event) => (!validGameId() ? event.preventDefault() : null)}
+          style={{ fontSize: "1.25rem" }}
         >
-          <BorderedDiv>
-            <div
-              className="flexColumn"
-              style={{
-                width: "100%",
-              }}
-            >
-              {intl.formatMessage({
-                id: "QFhw/l",
-                defaultMessage: "Join Game",
-                description:
-                  "A button that will join the game with a specified ID.",
-              })}
-            </div>
-          </BorderedDiv>
+          {intl.formatMessage({
+            id: "QFhw/l",
+            defaultMessage: "Join Game",
+            description:
+              "A button that will join the game with a specified ID.",
+          })}
         </Link>
       ) : (
-        <BorderedDiv color="#555">
-          <div
-            className="flexColumn"
-            style={{
-              width: "100%",
-              color: "#555",
-            }}
-          >
-            {intl.formatMessage({
-              id: "QFhw/l",
-              defaultMessage: "Join Game",
-              description:
-                "A button that will join the game with a specified ID.",
-            })}
-          </div>
-        </BorderedDiv>
+        <button className="outline" disabled style={{ fontSize: "1.25rem" }}>
+          {intl.formatMessage({
+            id: "QFhw/l",
+            defaultMessage: "Join Game",
+            description:
+              "A button that will join the game with a specified ID.",
+          })}
+        </button>
       )}
       <input
+        type="textbox"
         value={gameId}
         placeholder={placeholder}
         onFocus={maybeClearGameId}

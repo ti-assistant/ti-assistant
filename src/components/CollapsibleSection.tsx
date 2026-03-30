@@ -8,7 +8,7 @@ interface CollapsibleSectionCSS extends CSSProperties {
 
 export function CollapsibleSection({
   children,
-  color = "var(--neutral-border)",
+  color = "var(--hidden-border)",
   title,
   openedByDefault = false,
   style = {},

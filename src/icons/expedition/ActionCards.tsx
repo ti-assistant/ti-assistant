@@ -1,4 +1,8 @@
-export default function ActionCardsSVG({ color = "#eee" }: { color?: string }) {
+export default function ActionCardsSVG({
+  color = "var(--foreground-color)",
+}: {
+  color?: string;
+}) {
   return (
     <svg
       width="100%"

@@ -4,6 +4,7 @@ import FullScreenModal from "../../modals/FullScreenModal";
 import PlanetPanel, { PlanetPanelView } from "./PlanetPanel";
 import Chip from "../Chip/Chip";
 import { SettingsContext } from "../../context/contexts";
+import ChipGroup from "../Chip/ChipGroup";
 
 function PlanetModalSettings() {
   const { settings, updateSetting } = use(SettingsContext);
@@ -17,20 +18,22 @@ function PlanetModalSettings() {
         defaultMessage="View"
       />
       :
-      <Chip
-        selected={planetView === "CLASSIC"}
-        toggleFn={() => updateSetting("planet-panel-view", "CLASSIC")}
-        fontSize={12}
-      >
-        Rows
-      </Chip>
-      <Chip
-        selected={planetView === "GRID"}
-        toggleFn={() => updateSetting("planet-panel-view", "GRID")}
-        fontSize={12}
-      >
-        Grid
-      </Chip>
+      <ChipGroup>
+        <Chip
+          selected={planetView === "CLASSIC"}
+          toggleFn={() => updateSetting("planet-panel-view", "CLASSIC")}
+          fontSize={12}
+        >
+          Rows
+        </Chip>
+        <Chip
+          selected={planetView === "GRID"}
+          toggleFn={() => updateSetting("planet-panel-view", "GRID")}
+          fontSize={12}
+        >
+          Grid
+        </Chip>
+      </ChipGroup>
     </>
   );
 }

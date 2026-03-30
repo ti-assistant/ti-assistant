@@ -43,14 +43,14 @@ export function UnitStat({
       style={{
         width: rem(82),
         boxSizing: "border-box",
-        border: "1px solid #eee",
+        border: "1px solid var(--foreground-color)",
         borderRadius: rem(10),
       }}
     >
       <div
         style={{
           fontSize: rem(24),
-          borderBottom: "1px solid #eee",
+          borderBottom: "1px solid var(--foreground-color)",
         }}
       >
         {stat}
@@ -165,6 +165,7 @@ function AbilitySection({
         leftLabel={leftLabel}
         label={label}
         rightLabel={rightLabel}
+        color={"var(--muted-text)"}
       />
       <div
         className="flexColumn"
@@ -172,7 +173,7 @@ function AbilitySection({
           fontFamily: "Myriad Pro",
           alignItems: "flex-start",
           width: "100%",
-          padding: `0 ${rem(8)}`,
+          paddingInlineStart: rem(16),
         }}
       >
         {children}
@@ -207,11 +208,7 @@ function FactionTech({
       }
       rightLabel={
         tech.type === "UPGRADE" ? (
-          <UnitIcon
-            type={tech.unitType}
-            size={18}
-            color="var(--neutral-border)"
-          />
+          <UnitIcon type={tech.unitType} size={18} color="var(--color)" />
         ) : null
       }
     >
@@ -664,8 +661,8 @@ function FactionPanelContent({
                         <div
                           style={{
                             fontSize: rem(8),
-                            color: "#eee",
-                            border: "1px solid #eee",
+                            color: "var(--foreground-color)",
+                            border: "1px solid var(--foreground-color)",
                             padding: rem(2),
                             borderRadius: rem(2),
                             cursor: viewOnly ? "default" : "pointer",

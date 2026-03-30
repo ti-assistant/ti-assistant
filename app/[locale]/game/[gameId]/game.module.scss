@@ -12,6 +12,14 @@
   z-index: 1;
 }
 
+.Map {
+  display: block;
+  position: fixed;
+  inset-block-start: 0.5rem;
+  inset-inline-end: 5.65rem;
+  z-index: 1;
+}
+
 .Settings {
   position: fixed;
   inset-block-start: 0.5rem;
@@ -28,7 +36,12 @@
 
   .MobileQRCode {
     inset-block-start: 0.5rem;
-    inset-inline-end: 6rem;
+    inset-inline-end: 8.5rem;
+  }
+
+  .Map {
+    inset-block-start: 0.5rem;
+    inset-inline-end: 10.75rem;
   }
 
   .Settings {

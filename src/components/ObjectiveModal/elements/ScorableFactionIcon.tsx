@@ -1,6 +1,6 @@
 import { CSSProperties } from "react";
 import { useViewOnly } from "../../../context/dataHooks";
-import { useFactionColor } from "../../../context/factionDataHooks";
+import { useFactionColors } from "../../../context/factionDataHooks";
 import { useDataUpdate } from "../../../util/api/dataUpdate";
 import { Events } from "../../../util/api/events";
 import FactionComponents from "../../FactionComponents/FactionComponents";
@@ -20,7 +20,7 @@ export default function ScorableFactionIcon({
   objective: Objective;
 }) {
   const dataUpdate = useDataUpdate();
-  const factionColor = useFactionColor(factionId);
+  const colors = useFactionColors(factionId);
   const viewOnly = useViewOnly();
 
   if (!objective) {
@@ -50,7 +50,7 @@ export default function ScorableFactionIcon({
         } ${viewOnly ? styles.viewOnly : ""}`}
         style={
           {
-            "--color": factionColor,
+            "--color": colors.border,
           } as ExtendedCSS
         }
       >

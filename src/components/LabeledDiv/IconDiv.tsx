@@ -32,14 +32,13 @@ export default function IconDiv({
   children,
   className,
   innerClass,
-  color = "var(--neutral-border)",
+  color = "var(--interactive-bg)",
   style = {},
   innerStyle = {},
 }: PropsWithChildren<IconDivProps>) {
   const divStyle: IconDivCSS = {
     "--color": color,
     "--icon-size": rem(iconSize),
-    boxShadow: color === "Black" ? BLACK_BORDER_GLOW : undefined,
     ...style,
   };
   return (

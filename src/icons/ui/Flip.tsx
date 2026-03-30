@@ -1,4 +1,8 @@
-export default function FlipSVG({ color = "#eee" }: { color?: string }) {
+export default function FlipSVG({
+  color = "var(--foreground-color)",
+}: {
+  color?: string;
+}) {
   return (
     <svg
       width="100%"

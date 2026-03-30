@@ -4,11 +4,14 @@ import LabeledDiv from "../../../../../../../../src/components/LabeledDiv/Labele
 import { useCurrentTurn } from "../../../../../../../../src/context/dataHooks";
 import {
   useFaction,
-  useFactionColor,
+  useFactionColors,
 } from "../../../../../../../../src/context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../../../../../../src/context/gameDataHooks";
 import { getResearchedTechs } from "../../../../../../../../src/util/actionLog";
-import { getFactionColor } from "../../../../../../../../src/util/factions";
+import {
+  getFactionBorder,
+  getFactionColor,
+} from "../../../../../../../../src/util/factions";
 import { rem } from "../../../../../../../../src/util/util";
 
 const Magus = {
@@ -20,13 +23,14 @@ const Magus = {
 export default Magus;
 
 function Primary({ factionId }: { factionId: FactionId }) {
-  const factionColor = useFactionColor(factionId);
+  const colors = useFactionColors(factionId);
 
   return (
     <div style={{ width: "fit-content" }}>
       <LabeledDiv
         label={<FactionComponents.Name factionId={factionId} />}
-        color={factionColor}
+        color={colors.color}
+        borderColor={colors.border}
         blur
       >
         <GainTFCard factionId={factionId} numToGain={{ abilities: 2 }} />
@@ -51,6 +55,7 @@ function Secondary({ factionId }: { factionId: FactionId }) {
       key={factionId}
       label={<FactionComponents.Name factionId={factionId} />}
       color={getFactionColor(faction)}
+      borderColor={getFactionBorder(faction)}
       opts={{ fixedWidth: true }}
       blur
     >

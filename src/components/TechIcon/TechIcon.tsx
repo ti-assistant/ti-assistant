@@ -20,7 +20,7 @@ interface TechIconCSS extends CSSProperties {
 }
 
 export default function TechIcon({
-  color = "#eee",
+  color = "var(--foreground-color)",
   outline = false,
   type,
   size,

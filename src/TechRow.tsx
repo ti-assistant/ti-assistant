@@ -15,7 +15,7 @@ import { useOrderedFactionIds } from "./context/gameDataHooks";
 import { useDataUpdate } from "./util/api/dataUpdate";
 import { Events } from "./util/api/events";
 import { hasTech } from "./util/api/techs";
-import { getFactionColor } from "./util/factions";
+import { getFactionBorder } from "./util/factions";
 import { getTechColor } from "./util/techs";
 import { em, objectEntries, rem } from "./util/util";
 
@@ -234,7 +234,9 @@ function ResearchAgreement({ tech }: { tech: Tech }) {
     <FactionSelectRadialMenu
       factions={orderedFactionIds}
       borderColor={
-        selectedFaction ? getFactionColor(factions[selectedFaction]) : undefined
+        selectedFaction
+          ? getFactionBorder(factions[selectedFaction])
+          : undefined
       }
       size={28}
       invalidFactions={fadedFactions}

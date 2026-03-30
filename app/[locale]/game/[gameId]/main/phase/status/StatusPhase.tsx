@@ -25,7 +25,7 @@ import {
   useViewOnly,
 } from "../../../../../../../src/context/dataHooks";
 import {
-  useFactionColor,
+  useAllFactionColors,
   useFactionColors,
   useFactionTechs,
   useFactions,
@@ -71,6 +71,7 @@ import {
   rem,
 } from "../../../../../../../src/util/util";
 import styles from "./StatusPhase.module.scss";
+import ObjectiveCard from "../../../../../../../src/components/ObjectiveRow/ObjectiveCard";
 
 function CommandTokenGains() {
   const factionsWithHyper = useFactionsWithTech("Hyper Metabolism");
@@ -292,7 +293,7 @@ function ActionCardDraws() {
 function MiddleColumn() {
   const actionLog = useActionLog();
   const dataUpdate = useDataUpdate();
-  const factionColors = useFactionColors();
+  const factionColors = useAllFactionColors();
   const objectives = useObjectives();
   const options = useOptions();
   const planets = usePlanets();
@@ -415,7 +416,8 @@ function MiddleColumn() {
                   <div style={{ gridColumn: "1 / 4", width: "100%" }}>
                     <LabeledLine
                       label={<FactionComponents.Name factionId={factionId} />}
-                      color={factionColors[factionId]}
+                      color={factionColors[factionId]?.color}
+                      borderColor={factionColors[factionId]?.border}
                     />
                   </div>
                   {!canScoreObjectives ? (
@@ -620,7 +622,7 @@ export function statusPhaseComplete(currentTurn: ActionLog) {
 export default function StatusPhase() {
   const currentTurn = useCurrentTurn();
   const dataUpdate = useDataUpdate();
-  const factionColors = useFactionColors();
+  const factionColors = useAllFactionColors();
   const objectives = useObjectives();
   const options = useOptions();
   const planets = usePlanets();
@@ -833,6 +835,7 @@ export default function StatusPhase() {
           defaultMessage: "Start Next Round",
           description: "Text on a button that will start the next round.",
         }),
+        primary: true,
         onClick: () =>
           dataUpdate(Events.AdvancePhaseEvent(/* skipAgenda= */ true)),
       });
@@ -847,6 +850,7 @@ export default function StatusPhase() {
         },
         { phase: phaseString("EDICT", intl) },
       ),
+      primary: !!tyrant,
       onClick: () => dataUpdate(Events.AdvancePhaseEvent()),
     });
   } else {
@@ -857,6 +861,7 @@ export default function StatusPhase() {
           defaultMessage: "Start Next Round",
           description: "Text on a button that will start the next round.",
         }),
+        primary: true,
         onClick: () =>
           dataUpdate(Events.AdvancePhaseEvent(/* skipAgenda= */ true)),
       });
@@ -871,6 +876,7 @@ export default function StatusPhase() {
         },
         { phase: phaseString("AGENDA", intl) },
       ),
+      primary: !!agendaUnlocked,
       onClick: () => dataUpdate(Events.AdvancePhaseEvent()),
     });
   }
@@ -917,7 +923,8 @@ export default function StatusPhase() {
                           label={
                             <FactionComponents.Name factionId={factionId} />
                           }
-                          color={factionColors[factionId]}
+                          color={factionColors[factionId]?.color}
+                          borderColor={factionColors[factionId]?.border}
                         >
                           <div
                             className="flexColumn"
@@ -1019,8 +1026,9 @@ export default function StatusPhase() {
                       }}
                     />
                   }
+                  color="var(--muted-text)"
                 >
-                  <ObjectiveRow
+                  <ObjectiveCard
                     objectiveId={revealedObjective}
                     removeObjective={() =>
                       dataUpdate(Events.HideObjectiveEvent(revealedObjective))
@@ -1030,7 +1038,8 @@ export default function StatusPhase() {
               ) : (
                 <LabeledDiv
                   label={<FactionComponents.Name factionId={speaker} />}
-                  color={factionColors[speaker]}
+                  color={factionColors[speaker]?.color}
+                  borderColor={factionColors[speaker]?.border}
                   style={{ width: "100%" }}
                 >
                   <div className="flexRow" style={{ whiteSpace: "nowrap" }}>
@@ -1152,7 +1161,8 @@ export default function StatusPhase() {
                       <LabeledDiv
                         key={factionId}
                         label={<FactionComponents.Name factionId={factionId} />}
-                        color={factionColors[factionId]}
+                        color={factionColors[factionId]?.color}
+                        borderColor={factionColors[factionId]?.border}
                       >
                         <div
                           className="flexColumn"
@@ -1204,7 +1214,7 @@ export default function StatusPhase() {
 
 function EntropicScarResearch({ factionId }: { factionId: FactionId }) {
   const currentTurn = useCurrentTurn();
-  const factionColor = useFactionColor(factionId);
+  const factionColors = useFactionColors(factionId);
   const factionTechs = useFactionTechs(factionId);
   const intl = useIntl();
   const techs = useTechs();
@@ -1236,7 +1246,7 @@ function EntropicScarResearch({ factionId }: { factionId: FactionId }) {
   return (
     <IconDiv
       key={factionId}
-      color={factionColor}
+      color={factionColors.border}
       icon={<FactionComponents.Icon factionId={factionId} size={24} />}
       iconSize={24}
     >

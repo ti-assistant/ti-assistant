@@ -4,7 +4,7 @@ import {
   useCurrentTurn,
   useViewOnly,
 } from "../../../../../../../../src/context/dataHooks";
-import { useFactionColors } from "../../../../../../../../src/context/factionDataHooks";
+import { useAllFactionColors } from "../../../../../../../../src/context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../../../../../../src/context/gameDataHooks";
 import {
   useSpeaker,
@@ -28,7 +28,7 @@ function Primary() {
   const currentTurn = useCurrentTurn();
   const dataUpdate = useDataUpdate();
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
-  const factionColors = useFactionColors();
+  const factionColors = useAllFactionColors();
   const newSpeakerEvent = getNewSpeakerEventFromLog(currentTurn);
   const newTyrantEvent = getNewTyrantEventFromLog(currentTurn);
   const speaker = useSpeaker();
@@ -66,7 +66,7 @@ function Primary() {
         <FactionSelectRadialMenu
           borderColor={
             newSpeakerEvent?.newSpeaker
-              ? factionColors[newSpeakerEvent.newSpeaker]
+              ? factionColors[newSpeakerEvent.newSpeaker]?.border
               : undefined
           }
           onSelect={(factionId, _) => {
@@ -107,7 +107,7 @@ function Primary() {
         <FactionSelectRadialMenu
           borderColor={
             newTyrantEvent?.newTyrant
-              ? factionColors[newTyrantEvent.newTyrant]
+              ? factionColors[newTyrantEvent.newTyrant]?.border
               : undefined
           }
           onSelect={(factionId, _) => {

@@ -9,7 +9,11 @@ import {
 import { useFaction, useFactions } from "../context/factionDataHooks";
 import { useObjectives } from "../context/objectiveDataHooks";
 import { BLACK_TEXT_GLOW } from "../util/borderGlow";
-import { getFactionColor, getFactionName } from "../util/factions";
+import {
+  getFactionBorder,
+  getFactionColor,
+  getFactionName,
+} from "../util/factions";
 import { getTechColor } from "../util/techs";
 import { rem } from "../util/util";
 import ExpeditionIcon from "./Expedition/ExpeditionIcon";
@@ -30,7 +34,6 @@ function ColoredFactionName({ factionId }: { factionId: FactionId }) {
     <span
       style={{
         color,
-        textShadow: color === "Black" ? BLACK_TEXT_GLOW : undefined,
       }}
     >
       {getFactionName(faction)}
@@ -181,6 +184,7 @@ export function LogEntryElement({
       return (
         <LabeledLine
           color={getFactionColor(faction)}
+          borderColor={getFactionBorder(faction)}
           leftLabel={getFactionName(faction)}
           label={logEntry.data.event.action}
           rightLabel={

@@ -1,8 +1,4 @@
-export function SymbolX({
-  color = "var(--neutral-border)",
-}: {
-  color?: string;
-}) {
+export function SymbolX({ color = "var(--selected-bg)" }: { color?: string }) {
   return (
     <svg
       width="100%"

@@ -4,7 +4,11 @@ import { useFactions } from "../../context/factionDataHooks";
 import { SymbolX } from "../../icons/svgs";
 import { getPlayedRelic } from "../../util/actionLog";
 import { useDataUpdate } from "../../util/api/dataUpdate";
-import { getFactionColor, getFactionName } from "../../util/factions";
+import {
+  getFactionBorder,
+  getFactionColor,
+  getFactionName,
+} from "../../util/factions";
 import { rem } from "../../util/util";
 import FactionComponents from "../FactionComponents/FactionComponents";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
@@ -50,6 +54,7 @@ export default function CrownOfEmphidia({}) {
     <LabeledDiv
       label={getFactionName(factions[crownOfEmphidia.owner])}
       color={getFactionColor(factions[crownOfEmphidia.owner])}
+      borderColor={getFactionBorder(factions[crownOfEmphidia.owner])}
     >
       <div className="flexRow">
         <FormattedMessage

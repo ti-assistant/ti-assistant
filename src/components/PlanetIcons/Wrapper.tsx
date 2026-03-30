@@ -3,7 +3,7 @@ import { rem } from "../../util/util";
 
 export function PlanetIconWrapper({
   children,
-  color = "#eee",
+  color = "var(--foreground-color)",
   style,
 }: PropsWithChildren<{
   color?: string;

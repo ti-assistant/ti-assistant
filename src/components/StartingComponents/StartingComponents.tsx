@@ -376,7 +376,7 @@ export default function StartingComponents({
   );
 }
 function UnitIcon({ unit, color }: { unit: UnitType; color: string }) {
-  const iconColor = "#eee"; // color === "Black" ? "#eee" : color;
+  const iconColor = "var(--foreground-color)";
   const size = 14;
   switch (unit) {
     case "Carrier":

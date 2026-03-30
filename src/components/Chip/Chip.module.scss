@@ -1,6 +1,30 @@
+.ChipElement {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+
+  align-items: flex-start;
+}
+
+.ChipElement > label {
+  font-size: 0.75em;
+}
+
+.ChipGroup {
+  --border-color: var(--disabled-bg);
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  font-family: "Myriad Pro";
+  border: 0.125rem solid var(--light-bg);
+  border-radius: 2.25rem;
+  gap: 0;
+  background-color: var(--light-bg);
+}
+
 .ChipContainer {
   --border-color: green;
-  --background-color: #444;
+  // --background-color: #444;
 
   --font-size: 0.75rem;
 
@@ -9,36 +33,47 @@
   justify-content: center;
   align-items: center;
 
-  background-color: var(--background-color);
+  // background-color: var(--background-color);
   border-radius: 1.25rem;
-  border: var(--border-size) solid var(--border-color);
+  // border: var(--border-size) solid var(--interactive-bg);
   color: var(--foreground-color);
   gap: 0;
   white-space: nowrap;
   font-size: var(--font-size);
   padding: 0.125rem calc(2 * var(--font-size) / 3);
+  // background-color: var(--background-color);
   cursor: pointer;
+}
+
+.ChipContainer:first-child {
+  border-top-left-radius: 1.25rem;
+  border-bottom-left-radius: 1.25rem;
+}
+
+.ChipContainer:last-child {
+  border-top-right-radius: 1.25rem;
+  border-bottom-right-radius: 1.25rem;
 }
 
 .ChipContainer:hover {
   background-color: var(--hovered-bg);
-  border: var(--border-size) solid var(--neutral-border);
+  // border: var(--border-size) solid var(--border-color);
   color: var(--foreground-color);
 }
 
 .ChipContainer.disabled,
 .ChipContainer.disabled:hover {
   background-color: var(--disabled-bg);
-  border: var(--border-size) solid var(--disabled-border);
+  // border: var(--border-size) solid var(--disabled-border);
   color: var(--interactive-bg);
   cursor: default;
 }
 
-.ChipContainer:hover:has(input[type="radio"]:checked) {
-  background-color: var(--selected-bg);
-  border: var(--border-size) solid var(--selected-border);
-  color: var(--foreground-color);
-}
+// .ChipContainer:hover:has(input[type="radio"]:checked) {
+//   background-color: var(--selected-bg);
+//   // border: var(--border-size) solid var(--selected-border);
+//   color: var(--foreground-color);
+// }
 
 .ChipContainer > input[type="radio"] {
   appearance: none;
@@ -46,11 +81,18 @@
   margin: unset;
 }
 
+.ChipContainer:has(input[type="radio"]:focus-visible) {
+  outline: 2px solid #d09c01;
+}
+
 .ChipContainer:has(input[type="radio"]:checked) {
-  background-color: var(--selected-bg);
+  background-color: var(--background-color);
   cursor: default;
-  border: var(--border-size) solid var(--selected-border);
-  color: var(--foreground-color);
+  // font-weight: bold;
+  border-radius: 1.25rem;
+  // color: var(--accent-color);
+  // border: var(--border-size) solid var(--selected-border);
+  // color: var(--background-color);
 }
 
 .ChipContainer > * {

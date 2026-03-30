@@ -2,7 +2,6 @@ import QRCode from "qrcode";
 import { Suspense } from "react";
 import "server-only";
 import { getGameData, getTimers } from "../../../../server/util/fetch";
-import QRCodeButton from "../../../../src/components/QRCode/QRCodeButton";
 import DataInitializer from "../../../../src/context/DataWrapper";
 import { getIntl } from "../../../../src/util/server";
 import DynamicSidebars from "../../game/[gameId]/dynamic-sidebars";
@@ -67,9 +66,6 @@ export default async function Layout({
     <>
       <div className={styles.QRCode}>
         <GameCode gameId={gameId} intlPromise={intlPromise} qrCode={qrCode} />
-      </div>
-      <div className={styles.MobileQRCode}>
-        <QRCodeButton gameId={gameId} qrCode={qrCode} />
       </div>
       <Suspense fallback={<GameLoader />}>
         <DataInitializer archive gameId={gameId} data={fetchGameData(gameId)}>

@@ -12,7 +12,10 @@ import {
   useStrategyCards,
   useViewOnly,
 } from "../../context/dataHooks";
-import { useFactionColors, useFactions } from "../../context/factionDataHooks";
+import {
+  useAllFactionColors,
+  useFactions,
+} from "../../context/factionDataHooks";
 import { useOrderedFactionIds } from "../../context/gameDataHooks";
 import { usePhase, useSpeaker, useTyrant } from "../../context/stateDataHooks";
 import MapMenuSVG from "../../icons/ui/MapMenu";
@@ -114,7 +117,7 @@ export default function Footer() {
   const dataUpdate = useDataUpdate();
   const options = useOptions();
   const orderedFactionIds = useOrderedFactionIds("MAP");
-  const factionColors = useFactionColors();
+  const factionColors = useAllFactionColors();
   const phase = usePhase();
   const speaker = useSpeaker();
   const tyrant = useTyrant();
@@ -213,7 +216,7 @@ export default function Footer() {
           <div className="flexRow">
             <Strings.Speaker />:
             <FactionSelectRadialMenu
-              borderColor={factionColors[speaker]}
+              borderColor={factionColors[speaker]?.border}
               selectedFaction={speaker}
               factions={orderedFactionIds}
               invalidFactions={[speaker]}
@@ -232,7 +235,7 @@ export default function Footer() {
           <div className="flexRow">
             <Strings.Tyrant />
             <FactionSelectRadialMenu
-              borderColor={factionColors[tyrant]}
+              borderColor={factionColors[tyrant]?.border}
               selectedFaction={tyrant}
               factions={orderedFactionIds}
               invalidFactions={[speaker, tyrant]}
@@ -281,7 +284,7 @@ export default function Footer() {
           className="flexRow"
           onClick={() => openModal(<ObjectiveModalContent />)}
         >
-          <button>
+          <button className="iconButton">
             <div
               className="flexRow"
               style={{
@@ -300,7 +303,7 @@ export default function Footer() {
           />
         </div>
         <div className="flexRow" onClick={() => openModal(<PlanetModal />)}>
-          <button>
+          <button className="iconButton">
             <div
               className="flexRow"
               style={{
@@ -325,7 +328,7 @@ export default function Footer() {
             className="flexRow"
             onClick={() => openModal(<OtherModalContent />)}
           >
-            <button>
+            <button className="iconButton">
               <div
                 className="flexRow"
                 style={{
@@ -370,7 +373,7 @@ export default function Footer() {
         {!shouldBlockSpeakerUpdates() ? (
           <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
             <FactionSelectRadialMenu
-              borderColor={factionColors[speaker]}
+              borderColor={factionColors[speaker]?.border}
               selectedFaction={speaker}
               factions={orderedFactionIds}
               invalidFactions={[speaker]}
@@ -391,7 +394,7 @@ export default function Footer() {
         <Conditional appSection="TECHS">
           <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
             <button
-              className="flexRow"
+              className="flexRow iconButton"
               onClick={() => openModal(<TechModalContent />)}
               style={{
                 width: rem(34),
@@ -436,6 +439,7 @@ export default function Footer() {
         <Conditional appSection="OBJECTIVES">
           <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
             <button
+              className="iconButton"
               onClick={() => openModal(<ObjectiveModalContent />)}
               style={{
                 position: "relative",
@@ -468,6 +472,7 @@ export default function Footer() {
         <Conditional appSection="PLANETS">
           <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
             <button
+              className="iconButton"
               onClick={() => openModal(<PlanetModal />)}
               style={{
                 position: "relative",
@@ -502,6 +507,7 @@ export default function Footer() {
         !hideThundersEdgeModalButton ? (
           <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
             <button
+              className="iconButton"
               onClick={() => openModal(<OtherModalContent />)}
               style={{
                 display: "flex",
@@ -562,7 +568,7 @@ export default function Footer() {
         {tyrant ? (
           <div className={styles.UpdateBoxElement} style={{ gap: 0 }}>
             <FactionSelectRadialMenu
-              borderColor={factionColors[tyrant]}
+              borderColor={factionColors[tyrant]?.border}
               selectedFaction={tyrant}
               factions={orderedFactionIds}
               invalidFactions={[speaker, tyrant]}
@@ -598,7 +604,16 @@ export default function Footer() {
                 "Loading..."
               )
             }
-            color={selectedFaction ? factionColors[selectedFaction] : undefined}
+            color={
+              selectedFaction
+                ? factionColors[selectedFaction]?.color
+                : undefined
+            }
+            borderColor={
+              selectedFaction
+                ? factionColors[selectedFaction]?.border
+                : undefined
+            }
             style={{ width: "fit-content" }}
           >
             {selectedFaction ? (
@@ -663,7 +678,7 @@ function MapWrapper() {
         )
       }
     >
-      <button>
+      <button className="iconButton">
         <div
           className="flexRow"
           style={{

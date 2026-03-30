@@ -46,6 +46,7 @@ export default function FinishPhaseButton({
         unlocked={setupPhaseComplete(factions, revealedObjectives, options)}
         buttons={[
           {
+            className: "primary",
             text: intl.formatMessage({
               id: "lYD2yu",
               description: "Text on a button that will start a game.",
@@ -55,6 +56,7 @@ export default function FinishPhaseButton({
               dataUpdate(Events.AdvancePhaseEvent());
             },
             style: { fontSize: rem(40) },
+            primary: true,
           },
         ]}
         viewOnly={viewOnly}

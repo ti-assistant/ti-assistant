@@ -56,7 +56,7 @@ export function AgendaRow({
 
   const outcome = useOutcome(agenda.id, intl);
 
-  const textColor = "#eee";
+  const textColor = "var(--foreground-color)";
 
   return (
     <SelectableRow

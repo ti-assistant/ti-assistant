@@ -8,8 +8,10 @@ export function LockedButtons({
 }: {
   buttons: {
     text: string;
+    className?: string;
     style?: CSSProperties;
     onClick: () => void;
+    primary: boolean;
   }[];
   buttonStyle?: CSSProperties;
   style?: CSSProperties;
@@ -35,6 +37,7 @@ export function LockedButtons({
         return (
           <button
             key={button.text}
+            className={`${button.className ?? ""} ${button.primary ? "primary" : ""}`}
             disabled={(!unlocked && locked) || viewOnly}
             onClick={button.onClick}
             style={button.style ?? {}}

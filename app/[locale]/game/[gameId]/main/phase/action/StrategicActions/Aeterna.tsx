@@ -17,7 +17,10 @@ import {
 } from "../../../../../../../../src/util/actionLog";
 import { useDataUpdate } from "../../../../../../../../src/util/api/dataUpdate";
 import { Events } from "../../../../../../../../src/util/api/events";
-import { convertToFactionColor } from "../../../../../../../../src/util/factions";
+import {
+  convertToFactionBorder,
+  convertToFactionColor,
+} from "../../../../../../../../src/util/factions";
 import { rem } from "../../../../../../../../src/util/util";
 
 const Aeterna = {
@@ -165,6 +168,7 @@ function Secondary({ factionId }: { factionId: FactionId }) {
       key={factionId}
       label={<FactionComponents.Name factionId={factionId} />}
       color={convertToFactionColor(faction?.color)}
+      borderColor={convertToFactionBorder(faction?.color)}
       opts={{ fixedWidth: true }}
       blur
     >

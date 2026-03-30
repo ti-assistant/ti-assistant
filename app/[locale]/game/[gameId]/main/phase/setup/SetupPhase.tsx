@@ -11,6 +11,7 @@ import { rem } from "../../../../../../../src/util/util";
 import FinishPhaseButton from "./FinishPhaseButton";
 import styles from "./SetupPhase.module.scss";
 import SetupSteps from "./SetupSteps";
+import ChipGroup from "../../../../../../../src/components/Chip/ChipGroup";
 
 function factionTechChoicesComplete(
   factions: Partial<Record<FactionId, Faction>>,
@@ -137,7 +138,7 @@ export default function SetupPhase() {
           >
             {options.expansions.includes("TWILIGHTS FALL") &&
             !options.hide?.includes("TECHS") ? (
-              <>
+              <ChipGroup>
                 <Chip
                   toggleFn={() => setShowInauguralSplice(false)}
                   selected={!showInauguralSplice}
@@ -160,7 +161,7 @@ export default function SetupPhase() {
                     defaultMessage="Inaugural Splice"
                   />
                 </Chip>
-              </>
+              </ChipGroup>
             ) : (
               <FormattedMessage
                 id="rlGbdz"

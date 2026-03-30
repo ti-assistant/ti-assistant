@@ -13,7 +13,7 @@ import {
   useViewOnly,
 } from "../../../../../../../src/context/dataHooks";
 import {
-  useFactionColor,
+  useAllFactionColors,
   useFactionColors,
   useFactionHasTech,
 } from "../../../../../../../src/context/factionDataHooks";
@@ -115,7 +115,7 @@ function QuantumDatahubNode({
   factionId: FactionId;
   strategyCards: StrategyCard[];
 }) {
-  const factionColor = useFactionColor(factionId);
+  const colors = useFactionColors(factionId);
   const dataUpdate = useDataUpdate();
   const hasQuantum = useFactionHasTech(factionId, "Quantum Datahub Node");
   const viewOnly = useViewOnly();
@@ -151,7 +151,8 @@ function QuantumDatahubNode({
   return (
     <LabeledDiv
       label={<FactionComponents.Name factionId={factionId} />}
-      color={factionColor}
+      color={colors.color}
+      borderColor={colors.border}
     >
       <ClientOnlyHoverMenu
         label={
@@ -264,7 +265,7 @@ function QuantumDatahubNode({
 function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
   const arbiter = useAgenda("Imperial Arbiter");
   const dataUpdate = useDataUpdate();
-  const factionColors = useFactionColors();
+  const factionColors = useAllFactionColors();
   const viewOnly = useViewOnly();
 
   const [quantum, setQuantum] = useState<{
@@ -298,7 +299,8 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
   return (
     <LabeledDiv
       label={<FactionComponents.Name factionId={factionId} />}
-      color={factionColors[factionId]}
+      color={factionColors[factionId]?.color}
+      borderColor={factionColors[factionId]?.border}
     >
       <ClientOnlyHoverMenu
         label={
@@ -517,7 +519,7 @@ export default function StrategyPhase() {
   );
 
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
-  const factionColors = useFactionColors();
+  const factionColors = useAllFactionColors();
   const strategyCards = useStrategyCards();
   const intl = useIntl();
   const viewOnly = useViewOnly();
@@ -695,7 +697,12 @@ export default function StrategyPhase() {
                         label={label}
                         color={
                           factionId !== "Every Player"
-                            ? factionColors[factionId]
+                            ? factionColors[factionId]?.color
+                            : "#555"
+                        }
+                        borderColor={
+                          factionId !== "Every Player"
+                            ? factionColors[factionId]?.border
                             : "#555"
                         }
                       >
@@ -877,7 +884,8 @@ export default function StrategyPhase() {
         </div>
         {activeFactionId ? null : (
           <button
-            style={{ fontSize: rem(20) }}
+            className="primary"
+            style={{ fontSize: rem(28) }}
             onClick={() => dataUpdate(Events.AdvancePhaseEvent())}
             disabled={viewOnly}
           >

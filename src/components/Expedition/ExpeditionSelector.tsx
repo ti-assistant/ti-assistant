@@ -43,7 +43,6 @@ export default function ExpeditionSelector({
   const currentTurn = useCurrentTurn();
   const dataUpdate = useDataUpdate();
   const expedition = useExpedition();
-  const gameId = useGameId();
   const latestExpedition = getLatestExpedition(currentTurn, factionId);
   const thundersEdge = usePlanet("Thunder's Edge");
   const options = useOptions();

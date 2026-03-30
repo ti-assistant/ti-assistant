@@ -1,7 +1,7 @@
 import { em } from "../../util/util";
 
 export default function CarrierSVG({
-  color = "#eee",
+  color = "var(--foreground-color)",
   size,
 }: {
   color?: string;

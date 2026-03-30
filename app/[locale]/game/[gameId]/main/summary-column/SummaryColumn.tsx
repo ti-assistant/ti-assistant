@@ -8,7 +8,7 @@ import LabeledDiv from "../../../../../../src/components/LabeledDiv/LabeledDiv";
 import { SettingsContext } from "../../../../../../src/context/contexts";
 import { useOptions } from "../../../../../../src/context/dataHooks";
 import {
-  useFactionColor,
+  useFactionColors,
   useIsFactionPassed,
   useNumFactions,
 } from "../../../../../../src/context/factionDataHooks";
@@ -88,15 +88,11 @@ export default function SummaryColumn() {
 }
 
 function FactionDiv({ factionId }: { factionId: FactionId }) {
-  const factionColor = useFactionColor(factionId);
+  const colors = useFactionColors(factionId);
   const isPassed = useIsFactionPassed(factionId);
   const options = useOptions();
   const phase = usePhase();
   const { settings } = use(SettingsContext);
-
-  const factionSummaryOptions = {
-    showIcon: true,
-  };
 
   const fadeFaction = phase !== "END" && isPassed;
 
@@ -116,7 +112,8 @@ function FactionDiv({ factionId }: { factionId: FactionId }) {
           label={settings["fs-right-label"]}
         />
       }
-      color={fadeFaction ? "#555" : factionColor}
+      borderColor={fadeFaction ? "var(--hidden-border)" : colors.border}
+      color={fadeFaction ? "var(--interactive-bg)" : colors.color}
       innerStyle={{
         filter: fadeFaction ? "brightness(0.6)" : "unset",
       }}

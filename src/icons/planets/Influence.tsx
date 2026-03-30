@@ -49,7 +49,7 @@ export default function InfluenceSVG({
         <text
           x="140.481"
           y={fontY}
-          fill={color === "#555" ? "#555" : "#eee"}
+          fill={color === "#555" ? "#555" : "var(--foreground-color)"}
           fontFamily="var(--main-font)"
           fontSize={fontSize}
           textAnchor="middle"

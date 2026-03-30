@@ -7,7 +7,7 @@ export default function TechSVG() {
       viewBox="0 0 50 50"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g fill="none" stroke="#eee" strokeWidth="3.1059">
+      <g fill="none" stroke="var(--foreground-color)" strokeWidth="3.1059">
         <circle cx="14.906" cy="8.6941" r="4.1412" />
         <circle cx="14.906" cy="30.953" r="4.1412" />
         <circle cx="35.094" cy="19.254" r="4.1412" />

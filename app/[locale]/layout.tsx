@@ -4,6 +4,7 @@ import "../../public/site.css";
 import { getMessages } from "../../src/util/server";
 import { Optional } from "../../src/util/types/types";
 import { InnerLayout, LoadingLayout } from "./inner-layout";
+import { getTheme } from "../../src/util/theme";
 
 export const metadata: Metadata = {
   title: "Twilight Imperium Assistant",
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  colorScheme: "dark",
+  colorScheme: "dark light",
 };
 
 interface FontStyle extends CSSProperties {
@@ -52,6 +53,9 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: getTheme }} />
+      </head>
       <body style={fontSwitchStyle}>
         <Suspense fallback={<LoadingLayout />}>
           <InnerLayout locale={locale} messagePromise={messagePromise}>

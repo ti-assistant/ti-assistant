@@ -37,6 +37,7 @@ import { useDataUpdate } from "../../../../../../../src/util/api/dataUpdate";
 import { Events } from "../../../../../../../src/util/api/events";
 import { hasScoredObjective } from "../../../../../../../src/util/api/util";
 import {
+  convertToFactionBorder,
   convertToFactionColor,
   getFactionColor,
 } from "../../../../../../../src/util/factions";
@@ -267,6 +268,9 @@ function AgendaSteps() {
             <LabeledDiv
               label={<FactionComponents.Name factionId={state.speaker} />}
               color={convertToFactionColor(factions[state.speaker]?.color)}
+              borderColor={convertToFactionBorder(
+                factions[state.speaker]?.color,
+              )}
             >
               <AgendaSelect />
               <CovertLegislation.RevealOutcomes />
@@ -613,155 +617,6 @@ export default function AgendaPhase() {
         ) : (
           <React.Fragment>
             <VotingColumn speaker={state.speaker} />
-            {/* <div
-              className="flexRow"
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(4, 1fr)",
-                paddingBottom: rem(8),
-                alignItems: "flex-end",
-                maxWidth: rem(400),
-              }}
-            >
-              <div
-                style={{
-                  display: "grid",
-                  gridColumn: "span 4",
-                  gridTemplateColumns: "subgrid",
-                }}
-              >
-                <div style={{ textAlign: "center" }}>
-                  <FormattedMessage
-                    id="ifN0t/"
-                    defaultMessage="Outcome"
-                    description="Header for column listing what voting outcome players have selected."
-                  />
-                </div>
-                <div
-                  className="flexColumn"
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "subgrid",
-                    gridColumn: "span 3",
-                  }}
-                >
-                  <div className="flexRow">
-                    <FormattedMessage
-                      id="5FWWeX"
-                      defaultMessage="Available"
-                      description="Header for column listing how many votes players have available."
-                    />
-                  </div>
-                  <div className="flexRow">
-                    <FormattedMessage
-                      id="VIWZO7"
-                      defaultMessage="Votes"
-                      description="Header for column listing how many votes players have cast."
-                    />
-                  </div>
-                  <div className="flexRow">
-                    <FormattedMessage
-                      id="X3VPhD"
-                      defaultMessage="Extra"
-                      description="Header for column listing how many extra votes players have cast."
-                    />
-                  </div>
-                </div>
-              </div>
-              {votingOrder.map((faction) => {
-                return (
-                  <VoteBlock
-                    key={faction.id}
-                    factionId={faction.id}
-                    agenda={localAgenda}
-                  />
-                );
-              })}
-              {currentAgenda && isTie ? (
-                !tieBreak ? (
-                  <LabeledDiv
-                    label={getFactionName(speaker)}
-                    color={getFactionColor(speaker)}
-                    style={{ width: "auto", gridColumn: "span 4" }}
-                  >
-                    <ClientOnlyHoverMenu
-                      label={
-                        <FormattedMessage
-                          id="Kzzn9t"
-                          description="Text on a hover menu for the speaker choosing the outcome."
-                          defaultMessage="Choose outcome if tied"
-                        />
-                      }
-                    >
-                      <div
-                        className="flexRow"
-                        style={{
-                          alignItems: "stretch",
-                          justifyContent: "flex-start",
-                          maxWidth: "92vw",
-                          overflowX: "auto",
-                          gap: rem(4),
-                          padding: rem(8),
-                          display: "grid",
-                          gridAutoFlow: "column",
-                          gridTemplateRows: `repeat(${items}, auto)`,
-                        }}
-                      >
-                        {selectedTargets.length > 0
-                          ? selectedTargets.map((target) => {
-                              return (
-                                <button
-                                  key={target}
-                                  style={{
-                                    fontSize: rem(14),
-                                    writingMode: "horizontal-tb",
-                                  }}
-                                  onClick={() => selectSpeakerTieBreak(target)}
-                                  disabled={viewOnly}
-                                >
-                                  {target}
-                                </button>
-                              );
-                            })
-                          : allTargets.map((target) => {
-                              if (target.id === "Abstain") {
-                                return null;
-                              }
-                              return (
-                                <button
-                                  key={target.id}
-                                  style={{
-                                    fontSize: rem(14),
-                                    writingMode: "horizontal-tb",
-                                  }}
-                                  onClick={() =>
-                                    selectSpeakerTieBreak(target.id)
-                                  }
-                                  disabled={viewOnly}
-                                >
-                                  {target.name}
-                                </button>
-                              );
-                            })}
-                      </div>
-                    </ClientOnlyHoverMenu>
-                  </LabeledDiv>
-                ) : (
-                  <LabeledDiv
-                    label="Speaker Tie Break"
-                    style={{ gridColumn: "span 4" }}
-                  >
-                    <SelectableRow
-                      itemId={tieBreak}
-                      removeItem={() => selectSpeakerTieBreak(undefined)}
-                      viewOnly={viewOnly}
-                    >
-                      {tieBreak}
-                    </SelectableRow>
-                  </LabeledDiv>
-                )
-              ) : null}
-            </div> */}
             <DictatePolicy />
             <LockedButtons
               unlocked={false}
@@ -781,6 +636,7 @@ export default function AgendaPhase() {
                     fontSize: rem(24),
                   },
                   onClick: () => dataUpdate(Events.AdvancePhaseEvent()),
+                  primary: true,
                 },
               ]}
               viewOnly={viewOnly}

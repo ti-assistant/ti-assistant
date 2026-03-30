@@ -10,15 +10,15 @@ export function getTechColor(tech: Tech) {
 export function getTechTypeColor(type: TechType) {
   switch (type) {
     case "RED":
-      return "indianred";
+      return "var(--red-tech-color)";
     case "YELLOW":
-      return "gold";
+      return "var(--yellow-tech-color)";
     case "BLUE":
-      return "cornflowerblue";
+      return "var(--blue-tech-color)";
     case "GREEN":
-      return "seagreen";
+      return "var(--green-tech-color)";
   }
-  return "#eee";
+  return "var(--foreground-color)";
 }
 
 /**

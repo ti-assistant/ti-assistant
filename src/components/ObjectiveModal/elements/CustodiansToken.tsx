@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useViewOnly } from "../../../context/dataHooks";
-import { useFactionColor } from "../../../context/factionDataHooks";
+import { useFactionColors } from "../../../context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../context/gameDataHooks";
 import { useObjective } from "../../../context/objectiveDataHooks";
 import { useDataUpdate } from "../../../util/api/dataUpdate";
@@ -14,9 +14,7 @@ export default function CustodiansToken() {
   const orderedFactionIds = useOrderedFactionIds("MAP");
   const custodiansToken = useObjective("Custodians Token");
   const custodiansScorerId = (custodiansToken?.scorers ?? [])[0];
-  const factionColor = useFactionColor(
-    custodiansScorerId ?? "Vuil'raith Cabal",
-  );
+  const colors = useFactionColors(custodiansScorerId ?? "Vuil'raith Cabal");
 
   return (
     <div
@@ -61,7 +59,7 @@ export default function CustodiansToken() {
               );
             }
           }}
-          borderColor={custodiansScorerId ? factionColor : undefined}
+          borderColor={custodiansScorerId ? colors.border : undefined}
           viewOnly={viewOnly}
         />
       </div>

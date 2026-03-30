@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import { CSSProperties, PropsWithChildren, ReactNode } from "react";
 import { useOptions } from "../../context/dataHooks";
-import { useFactionColor } from "../../context/factionDataHooks";
+import { useFactionColors } from "../../context/factionDataHooks";
 import { rem } from "../../util/util";
 import FactionComponents from "../FactionComponents/FactionComponents";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
@@ -32,7 +32,6 @@ interface FactionCardProps {
   rightLabel?: ReactNode;
   opts?: FactionCardOpts;
   style?: CSSProperties;
-  viewOnly?: boolean;
 }
 
 export default function FactionCard({
@@ -42,10 +41,9 @@ export default function FactionCard({
   rightLabel,
   style = {},
   opts = {},
-  viewOnly,
 }: PropsWithChildren<FactionCardProps>) {
   const options = useOptions();
-  const factionColor = useFactionColor(factionId);
+  const colors = useFactionColors(factionId);
 
   return (
     <LabeledDiv
@@ -56,7 +54,8 @@ export default function FactionCard({
         </div>
       }
       rightLabel={rightLabel}
-      color={factionColor}
+      borderColor={colors.border}
+      color={colors.color}
       innerStyle={{ justifyContent: "flex-start", ...style }}
     >
       <div

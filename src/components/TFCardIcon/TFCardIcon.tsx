@@ -12,7 +12,7 @@ interface TFCardIconCSS extends CSSProperties {
 
 export default function TFCardIcon({
   size,
-  color = "#eee",
+  color = "var(--foreground-color)",
 }: {
   size: number;
   color?: string;

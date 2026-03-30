@@ -6,7 +6,7 @@ import {
   usePlanet,
   useViewOnly,
 } from "../../context/dataHooks";
-import { useFactionColors } from "../../context/factionDataHooks";
+import { useAllFactionColors } from "../../context/factionDataHooks";
 import { useFactionsWithTech } from "../../context/techDataHooks";
 import ArcaneCitadelSVG from "../../icons/attachments/ArcaneCitadel";
 import CouncilPreserveSVG from "../../icons/attachments/CouncilPreserve";
@@ -55,7 +55,7 @@ export default function PlanetRow({
   const attachments = useAttachments();
   const factionsWithBastionSpaceDock = useFactionsWithTech("4X4IC Helios V2");
   const dataUpdate = useDataUpdate();
-  const factionColors = useFactionColors();
+  const factionColors = useAllFactionColors();
   const viewOnly = useViewOnly();
 
   const { openModal } = use(ModalContext);
@@ -130,10 +130,7 @@ export default function PlanetRow({
     previousOwner !== factionId || opts.showSelfOwned
       ? previousOwner
       : undefined;
-  let claimedColor = previousOwner ? factionColors[previousOwner] : "#999";
-  if (claimedColor === "Black") {
-    claimedColor = "#999";
-  }
+  let claimedColor = previousOwner ? factionColors[previousOwner] : undefined;
 
   function showSpaceDockToggle() {
     if (planet.attributes.includes("space-station")) {
@@ -173,10 +170,10 @@ export default function PlanetRow({
             style={{
               fontFamily: "Myriad Pro",
               position: "absolute",
-              color: claimedColor,
+              color: claimedColor?.color,
               backgroundColor: "var(--background-color)",
               borderRadius: rem(5),
-              border: `${"1px"} solid ${claimedColor}`,
+              border: `${"1px"} solid ${claimedColor?.border}`,
               padding: `0 ${rem(4)}`,
               fontSize: rem(12),
               bottom: 0,

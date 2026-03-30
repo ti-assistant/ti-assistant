@@ -3,7 +3,7 @@ import { FormattedMessage, IntlShape } from "react-intl";
 import Conditional from "../../../../../../../src/components/Conditional/Conditional";
 import FactionDiv from "../../../../../../../src/components/LabeledDiv/FactionDiv";
 import LabeledDiv from "../../../../../../../src/components/LabeledDiv/LabeledDiv";
-import ObjectiveRow from "../../../../../../../src/components/ObjectiveRow/ObjectiveRow";
+import ObjectiveCard from "../../../../../../../src/components/ObjectiveRow/ObjectiveCard";
 import ObjectiveSelectHoverMenu from "../../../../../../../src/components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import StartingComponents from "../../../../../../../src/components/StartingComponents/StartingComponents";
 import {
@@ -159,11 +159,15 @@ export default function SetupSteps({ intl }: { intl: IntlShape }) {
                       values={{ count: revealedObjectives.length }}
                     />
                   }
+                  color="var(--muted-text)"
                 >
-                  <div className="flexColumn" style={{ alignItems: "stretch" }}>
+                  <div
+                    className="flexColumn"
+                    style={{ alignItems: "stretch", fontSize: "1rem" }}
+                  >
                     {revealedObjectives.map((objectiveId) => {
                       return (
-                        <ObjectiveRow
+                        <ObjectiveCard
                           key={objectiveId}
                           objectiveId={objectiveId}
                           removeObjective={() => {

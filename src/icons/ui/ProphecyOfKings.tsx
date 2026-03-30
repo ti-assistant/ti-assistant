@@ -1,5 +1,5 @@
 export default function ProphecyofKingsSVG({
-  color = "#eee",
+  color = "var(--foreground-color)",
 }: {
   color?: string;
 }) {

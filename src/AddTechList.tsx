@@ -9,6 +9,7 @@ import { Tab, TabBody } from "./Tab";
 import { TechRow } from "./TechRow";
 import { sortTechsByName, sortTechsByPreReqAndExpansion } from "./util/techs";
 import { rem } from "./util/util";
+import ChipGroup from "./components/Chip/ChipGroup";
 
 interface AddTechListProps {
   techs: Tech[];
@@ -51,35 +52,49 @@ export function AddTechList({ techs, addTech }: AddTechListProps) {
           width: "100%",
         }}
       >
-        <Tab selectTab={setTabShown} id="blue" selectedId={tabShown}>
-          <div className="flexRow" style={{ width: rem(24), height: rem(28) }}>
-            <BlueTechSVG />
-          </div>
-        </Tab>
-        <Tab selectTab={setTabShown} id="green" selectedId={tabShown}>
-          <div className="flexRow" style={{ width: rem(24), height: rem(28) }}>
-            <GreenTechSVG />
-          </div>
-        </Tab>
-        <Tab selectTab={setTabShown} id="yellow" selectedId={tabShown}>
-          <div className="flexRow" style={{ width: rem(24), height: rem(28) }}>
-            <YellowTechSVG />
-          </div>
-        </Tab>
-        <Tab selectTab={setTabShown} id="red" selectedId={tabShown}>
-          <div className="flexRow" style={{ width: rem(24), height: rem(28) }}>
-            <RedTechSVG />
-          </div>
-        </Tab>
-        <Tab selectTab={setTabShown} id="upgrades" selectedId={tabShown}>
-          <div className="flexRow" style={{ height: rem(28) }}>
-            <FormattedMessage
-              id="2hHU0G"
-              description="Title of uprade techs."
-              defaultMessage="Unit Upgrades"
-            />
-          </div>
-        </Tab>
+        <ChipGroup>
+          <Tab selectTab={setTabShown} id="blue" selectedId={tabShown}>
+            <div
+              className="flexRow"
+              style={{ width: rem(24), height: rem(28) }}
+            >
+              <BlueTechSVG />
+            </div>
+          </Tab>
+          <Tab selectTab={setTabShown} id="green" selectedId={tabShown}>
+            <div
+              className="flexRow"
+              style={{ width: rem(24), height: rem(28) }}
+            >
+              <GreenTechSVG />
+            </div>
+          </Tab>
+          <Tab selectTab={setTabShown} id="yellow" selectedId={tabShown}>
+            <div
+              className="flexRow"
+              style={{ width: rem(24), height: rem(28) }}
+            >
+              <YellowTechSVG />
+            </div>
+          </Tab>
+          <Tab selectTab={setTabShown} id="red" selectedId={tabShown}>
+            <div
+              className="flexRow"
+              style={{ width: rem(24), height: rem(28) }}
+            >
+              <RedTechSVG />
+            </div>
+          </Tab>
+          <Tab selectTab={setTabShown} id="upgrades" selectedId={tabShown}>
+            <div className="flexRow" style={{ height: rem(28) }}>
+              <FormattedMessage
+                id="2hHU0G"
+                description="Title of uprade techs."
+                defaultMessage="Unit Upgrades"
+              />
+            </div>
+          </Tab>
+        </ChipGroup>
       </div>
       <TabBody id="blue" style={{ width: "100%" }} selectedId={tabShown}>
         <div

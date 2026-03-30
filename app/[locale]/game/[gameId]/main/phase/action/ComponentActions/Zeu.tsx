@@ -6,7 +6,10 @@ import {
   usePlanets,
   useViewOnly,
 } from "../../../../../../../../src/context/dataHooks";
-import { useFactionColors } from "../../../../../../../../src/context/factionDataHooks";
+import {
+  useAllFactionColors,
+  useFactionColors,
+} from "../../../../../../../../src/context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../../../../../../src/context/gameDataHooks";
 import { useObjectives } from "../../../../../../../../src/context/objectiveDataHooks";
 import {
@@ -54,7 +57,7 @@ function RightLabel() {
   const dataUpdate = useDataUpdate();
   const factionPicked = getSelectedFaction(currentTurn);
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
-  const factionColors = useFactionColors();
+  const factionColors = useAllFactionColors();
   const viewOnly = useViewOnly();
 
   const selectedFaction = factionPicked === "None" ? undefined : factionPicked;
@@ -67,7 +70,9 @@ function RightLabel() {
         dataUpdate(Events.SelectFactionEvent(factionId ?? "None"));
       }}
       size={44}
-      borderColor={selectedFaction ? factionColors[selectedFaction] : undefined}
+      borderColor={
+        selectedFaction ? factionColors[selectedFaction]?.border : undefined
+      }
       viewOnly={viewOnly}
     />
   );

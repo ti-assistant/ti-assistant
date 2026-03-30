@@ -9,7 +9,7 @@
 
   flex-direction: column;
   align-items: center;
-  color: #eee;
+  color: var(--foreground-color);
   backdrop-filter: blur(0.5rem);
 }
 
@@ -37,7 +37,7 @@
   border-radius: 100%;
   aspect-ratio: 1;
   width: 2.25rem;
-  color: #eee;
+  color: var(--foreground-color);
   cursor: pointer;
   font-size: 1.125rem;
   z-index: 2;

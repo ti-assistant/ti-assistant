@@ -9,6 +9,7 @@ interface LabeledDivProps {
   className?: string;
   innerClass?: string;
   rightLabel?: ReactNode;
+  borderColor?: string;
   color?: string;
   innerStyle?: CSSProperties;
   opts?: LabeledDivOpts;
@@ -20,6 +21,7 @@ interface LabeledDivOpts {
 }
 
 interface LabeledDivCSS extends CSSProperties {
+  "--border-color": string;
   "--color": string;
 }
 
@@ -30,6 +32,7 @@ export default function LabeledDiv({
   className,
   innerClass,
   rightLabel,
+  borderColor = "var(--hidden-border)",
   color = "var(--neutral-border)",
   opts = {},
   style = {},
@@ -37,7 +40,7 @@ export default function LabeledDiv({
 }: PropsWithChildren<LabeledDivProps>) {
   const divStyle: LabeledDivCSS = {
     "--color": color,
-    boxShadow: color === "Black" ? BLACK_BORDER_GLOW : undefined,
+    "--border-color": borderColor ?? color,
     ...style,
   };
   return (
@@ -47,20 +50,12 @@ export default function LabeledDiv({
         className={`${styles.label} ${styles.left}`}
         style={{
           maxWidth: opts.fixedWidth ? `calc(100% - ${rem(14)})` : undefined,
-          textShadow: color === "Black" ? BLACK_TEXT_GLOW : undefined,
         }}
       >
         {label}
       </div>
       {!!rightLabel ? (
-        <div
-          className={`${styles.label} ${styles.right}`}
-          style={{
-            textShadow: color === "Black" ? BLACK_TEXT_GLOW : undefined,
-          }}
-        >
-          {rightLabel}
-        </div>
+        <div className={`${styles.label} ${styles.right}`}>{rightLabel}</div>
       ) : null}
       <div className={styles.hiddenLabel}>
         <div>{label}</div>

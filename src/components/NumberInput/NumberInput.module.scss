@@ -1,6 +1,6 @@
 .NumberInput {
-  --up-arrow-color: #ddd;
-  --down-arrow-color: #ddd;
+  --up-arrow-color: var(--interactive-bg);
+  --down-arrow-color: var(--interactive-bg);
 
   display: grid;
   grid-auto-flow: column;
@@ -28,15 +28,20 @@
 }
 
 .InputBox {
-  --input-border-color: var(--neutral-border);
+  --input-border-color: var(--hidden-border);
 
   display: flex;
   justify-content: center;
 
   width: 2.25rem;
 
-  background-color: #333;
-  color: #eee;
-  border: 2px solid var(--input-border-color);
+  background-color: var(--dark-hover-bg);
+  color: var(--foreground-color);
+  // border: 2px solid var(--input-border-color);
   border-radius: 0.25rem;
+  padding-block: 0.06125rem;
+}
+
+.InputBox:focus-visible {
+  outline: 2px solid var(--accent-color);
 }

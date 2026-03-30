@@ -37,6 +37,7 @@ import { useDataUpdate } from "../../util/api/dataUpdate";
 import { Events } from "../../util/api/events";
 import { hasTech } from "../../util/api/techs";
 import {
+  getFactionBorder,
   getFactionColor,
   getFactionName,
   hasLeader,
@@ -536,6 +537,7 @@ export default function VoteBlock({
     <LabeledDiv
       label={getFactionName(faction)}
       color={getFactionColor(faction)}
+      borderColor={getFactionBorder(faction)}
       style={{
         display: "grid",
         gridColumn: "span 4",

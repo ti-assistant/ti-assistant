@@ -2,7 +2,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import FactionComponents from "../../../../../../../src/components/FactionComponents/FactionComponents";
 import LabeledDiv from "../../../../../../../src/components/LabeledDiv/LabeledDiv";
 import { useViewOnly } from "../../../../../../../src/context/dataHooks";
-import { useFactionColor } from "../../../../../../../src/context/factionDataHooks";
+import { useFactionColors } from "../../../../../../../src/context/factionDataHooks";
 import { useTyrant } from "../../../../../../../src/context/stateDataHooks";
 import { LockedButtons } from "../../../../../../../src/LockedButton";
 import { useDataUpdate } from "../../../../../../../src/util/api/dataUpdate";
@@ -15,7 +15,7 @@ export default function EdictPhase() {
   const intl = useIntl();
   const tyrant = useTyrant() ?? "A Sickening Lurch";
   const viewOnly = useViewOnly();
-  const factionColor = useFactionColor(tyrant);
+  const colors = useFactionColors(tyrant);
 
   return (
     <div
@@ -32,7 +32,8 @@ export default function EdictPhase() {
       </div>
       <LabeledDiv
         label={<FactionComponents.Name factionId={tyrant} />}
-        color={factionColor}
+        color={colors.color}
+        borderColor={colors.border}
         style={{ width: "fit-content" }}
       >
         <FormattedMessage
@@ -58,6 +59,7 @@ export default function EdictPhase() {
               fontSize: rem(24),
             },
             onClick: () => dataUpdate(Events.AdvancePhaseEvent()),
+            primary: true,
           },
         ]}
         viewOnly={viewOnly}

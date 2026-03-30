@@ -5,6 +5,7 @@ import styles from "./LabeledLine.module.scss";
 interface LabeledLineProps {
   className?: string;
   color?: string;
+  borderColor?: string;
   leftLabel?: ReactNode;
   label?: ReactNode;
   rightLabel?: ReactNode;
@@ -12,6 +13,7 @@ interface LabeledLineProps {
 }
 
 interface LabeledLineCSS extends CSSProperties {
+  "--border-color": string;
   "--color": string;
 }
 
@@ -22,8 +24,10 @@ export default function LabeledLine({
   rightLabel,
   style = {},
   color = "var(--neutral-border)",
+  borderColor = "var(--hidden-border)",
 }: LabeledLineProps) {
   const labeledLineStyle: LabeledLineCSS = {
+    "--border-color": borderColor ?? color,
     "--color": color,
     ...style,
   };
@@ -32,43 +36,18 @@ export default function LabeledLine({
       className={`flexColumn ${styles.LabeledLine} ${className}`}
       style={labeledLineStyle}
     >
-      <hr
-        style={{
-          boxShadow: color === "Black" ? BLACK_LINE_GLOW : undefined,
-        }}
-      />
+      <hr />
       {leftLabel ? (
-        <div
-          className={`${styles.label} ${styles.left}`}
-          style={{
-            textShadow: color === "Black" ? BLACK_TEXT_GLOW : undefined,
-          }}
-        >
-          {leftLabel}
-        </div>
+        <div className={`${styles.label} ${styles.left}`}>{leftLabel}</div>
       ) : null}
 
       {label ? (
         <div className="flexRow" style={{ width: "100%" }}>
-          <div
-            className={`${styles.label} ${styles.center}`}
-            style={{
-              textShadow: color === "Black" ? BLACK_TEXT_GLOW : undefined,
-            }}
-          >
-            {label}
-          </div>
+          <div className={`${styles.label} ${styles.center}`}>{label}</div>
         </div>
       ) : null}
       {rightLabel ? (
-        <div
-          className={`${styles.label} ${styles.right}`}
-          style={{
-            textShadow: color === "Black" ? BLACK_TEXT_GLOW : undefined,
-          }}
-        >
-          {rightLabel}
-        </div>
+        <div className={`${styles.label} ${styles.right}`}>{rightLabel}</div>
       ) : null}
       <div className={styles.hiddenLabel}>
         {leftLabel ? <div>{leftLabel}</div> : null}

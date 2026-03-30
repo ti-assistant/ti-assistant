@@ -1,4 +1,4 @@
-import { CSSProperties } from "react";
+import { CSSProperties, ReactNode } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import {
   useAbilities,
@@ -28,6 +28,7 @@ import GenomeIcon from "../PlanetIcons/GenomeIcon";
 import ParadigmIcon from "../PlanetIcons/ParadigmIcon";
 import UpgradeIcon from "../PlanetIcons/UpgradeIcon";
 import { Selector } from "../Selector/Selector";
+import TechIcon from "../TechIcon/TechIcon";
 import UnitIcon from "../Units/Icons";
 import UnitStats from "../UnitStats/UnitStats";
 import styles from "./GainSplicedCard.module.scss";
@@ -452,41 +453,25 @@ export function GainAbilitySection({
         >
           <InnerAbilitySelectMenu
             abilities={greenAbilities}
-            label={intl.formatMessage({
-              id: "2I5JBO",
-              description: "Title of green techs.",
-              defaultMessage: "Biotic",
-            })}
+            label={<TechIcon type="GREEN" size="1.5em" />}
             selectAbility={selectAbility}
             outerCloseFn={outerCloseFn}
           />
           <InnerAbilitySelectMenu
             abilities={blueAbilities}
-            label={intl.formatMessage({
-              id: "Nr4DLa",
-              description: "Title of blue techs.",
-              defaultMessage: "Propulsion",
-            })}
+            label={<TechIcon type="BLUE" size="1.5em" />}
             selectAbility={selectAbility}
             outerCloseFn={outerCloseFn}
           />
           <InnerAbilitySelectMenu
             abilities={yellowAbilities}
-            label={intl.formatMessage({
-              id: "W9OGxl",
-              description: "Title of yellow techs.",
-              defaultMessage: "Cybernetic",
-            })}
+            label={<TechIcon type="YELLOW" size="1.5em" />}
             selectAbility={selectAbility}
             outerCloseFn={outerCloseFn}
           />
           <InnerAbilitySelectMenu
             abilities={redAbilities}
-            label={intl.formatMessage({
-              id: "ZqAjEi",
-              description: "Title of red techs.",
-              defaultMessage: "Warfare",
-            })}
+            label={<TechIcon type="RED" size="1.5em" />}
             selectAbility={selectAbility}
             outerCloseFn={outerCloseFn}
           />
@@ -504,7 +489,7 @@ function InnerAbilitySelectMenu({
   outerCloseFn,
 }: {
   abilities: TFAbility[];
-  label: string;
+  label: ReactNode;
   selectAbility: (ability: TFAbility) => void;
   outerCloseFn: () => void;
 }) {

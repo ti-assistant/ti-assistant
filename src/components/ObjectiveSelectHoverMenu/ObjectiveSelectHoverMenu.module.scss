@@ -13,26 +13,38 @@
   padding: 0.5rem;
 }
 
+.Container {
+  max-width: 80vw;
+
+  overflow-x: auto;
+
+  max-height: 51dvh;
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+
 .ObjectiveGrid {
   --font-size: unset;
   --num-items: 5;
   --per-column: 5;
 
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-
   display: grid;
   justify-content: flex-start;
   grid-auto-flow: column;
-  grid-template-rows: repeat(min(var(--num-items), var(--per-column)), auto);
+  grid-template-rows: repeat(min(var(--num-items), var(--per-column)), 1fr);
+  grid-auto-columns: 1fr;
   gap: 0.25rem;
-
-  max-width: 80vw;
-  overflow-x: auto;
 }
 
 .ObjectiveButton {
   font-size: var(--font-size);
 
   user-select: none;
+
+  font-family: "Slider";
+  // min-width: 10rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }

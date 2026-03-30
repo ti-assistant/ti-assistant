@@ -2,7 +2,7 @@ import { use } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { SettingsContext } from "../../../context/contexts";
 import { useOptions, useViewOnly } from "../../../context/dataHooks";
-import { useFactionColors } from "../../../context/factionDataHooks";
+import { useAllFactionColors } from "../../../context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../context/gameDataHooks";
 import {
   useObjectiveRevealOrder,
@@ -10,7 +10,6 @@ import {
 } from "../../../context/objectiveDataHooks";
 import { useDataUpdate } from "../../../util/api/dataUpdate";
 import { Events } from "../../../util/api/events";
-import { BLACK_BORDER_GLOW } from "../../../util/borderGlow";
 import { objectiveTypeString } from "../../../util/strings";
 import { rem } from "../../../util/util";
 import Chip from "../../Chip/Chip";
@@ -19,6 +18,7 @@ import LabeledDiv from "../../LabeledDiv/LabeledDiv";
 import ObjectiveSelectHoverMenu from "../../ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import ObjectiveGridSection from "./ObjectiveGridSection";
 import SecretSection from "./SecretsSection";
+import ChipGroup from "../../Chip/ChipGroup";
 
 export default function ObjectiveGrid({ asModal }: { asModal?: boolean }) {
   const dataUpdate = useDataUpdate();
@@ -26,7 +26,7 @@ export default function ObjectiveGrid({ asModal }: { asModal?: boolean }) {
   const objectives = useObjectives();
   const options = useOptions();
   const orderedFactionIds = useOrderedFactionIds("ALLIANCE");
-  const factionColors = useFactionColors();
+  const factionColors = useAllFactionColors();
   const revealOrder = useObjectiveRevealOrder();
   const viewOnly = useViewOnly();
 
@@ -142,33 +142,35 @@ export default function ObjectiveGrid({ asModal }: { asModal?: boolean }) {
           defaultMessage="View"
         />
         :
-        <Chip
-          toggleFn={() => {
-            updateSetting("display-objective-description", false);
-          }}
-          selected={!description}
-        >
-          <FormattedMessage
-            id="entq4x"
-            description="Text on a button that will display titles."
-            defaultMessage="Titles"
-          />
-        </Chip>
-        <Chip
-          toggleFn={() => {
-            updateSetting("display-objective-description", true);
-          }}
-          selected={description}
-        >
-          <FormattedMessage
-            id="e1q7sg"
-            description="Text on a button that will display descriptions."
-            defaultMessage="Descriptions"
-          />
-        </Chip>
+        <ChipGroup>
+          <Chip
+            toggleFn={() => {
+              updateSetting("display-objective-description", false);
+            }}
+            selected={!description}
+          >
+            <FormattedMessage
+              id="entq4x"
+              description="Text on a button that will display titles."
+              defaultMessage="Titles"
+            />
+          </Chip>
+          <Chip
+            toggleFn={() => {
+              updateSetting("display-objective-description", true);
+            }}
+            selected={description}
+          >
+            <FormattedMessage
+              id="e1q7sg"
+              description="Text on a button that will display descriptions."
+              defaultMessage="Descriptions"
+            />
+          </Chip>
+        </ChipGroup>
       </div>
       {orderedFactionIds.map((name, index) => {
-        const factionColor = factionColors[name];
+        const factionColor = factionColors[name]?.border;
         return (
           <div
             key={name}
@@ -180,8 +182,6 @@ export default function ObjectiveGrid({ asModal }: { asModal?: boolean }) {
               position: "relative",
               borderRadius: rem(3),
               border: `${"2px"} solid ${factionColor}`,
-              boxShadow:
-                factionColor === "Black" ? BLACK_BORDER_GLOW : undefined,
               whiteSpace: "nowrap",
               // overflow: "hidden",
             }}

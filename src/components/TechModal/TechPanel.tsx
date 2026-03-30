@@ -25,6 +25,7 @@ import { useDataUpdate } from "../../util/api/dataUpdate";
 import { Events } from "../../util/api/events";
 import { hasTech, isTechPurged } from "../../util/api/techs";
 import {
+  convertToFactionBorder,
   convertToFactionColor,
   getFactionColor,
   getFactionName,
@@ -124,6 +125,7 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                 key={factionId}
                 label={<FactionComponents.Name factionId={factionId} />}
                 color={convertToFactionColor(factions[factionId]?.color)}
+                borderColor={convertToFactionBorder(factions[factionId]?.color)}
                 opts={{ fixedWidth: true }}
               >
                 <div

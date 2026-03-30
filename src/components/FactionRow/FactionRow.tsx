@@ -2,7 +2,11 @@ import { useOptions, useStrategyCards } from "../../context/dataHooks";
 import { useObjectives } from "../../context/objectiveDataHooks";
 import { useFactions } from "../../context/factionDataHooks";
 import { useGameState } from "../../context/stateDataHooks";
-import { computeVPs, getFactionColor } from "../../util/factions";
+import {
+  computeVPs,
+  getFactionBorder,
+  getFactionColor,
+} from "../../util/factions";
 import {
   getInitiativeForFaction,
   getStrategyCardsForFaction,
@@ -27,13 +31,13 @@ export default function FactionRow({ onClick }: FactionRowProps) {
     case "SETUP":
     case "STRATEGY":
       orderedFactions = Object.values(factions).sort(
-        (a, b) => a.order - b.order
+        (a, b) => a.order - b.order,
       );
       break;
     case "ACTION":
     case "STATUS":
       const orderedCards = Object.values(strategyCards).sort(
-        (a, b) => a.order - b.order
+        (a, b) => a.order - b.order,
       );
       const orderedIds: FactionId[] = [];
       for (const card of orderedCards) {
@@ -127,7 +131,7 @@ export default function FactionRow({ onClick }: FactionRowProps) {
     <div className={styles.FactionRow}>
       <div className={styles.InnerRow}>
         {orderedFactions.map((faction) => {
-          const color = faction.passed ? "#555" : getFactionColor(faction);
+          const color = faction.passed ? "#555" : getFactionBorder(faction);
           const cards = getStrategyCardsForFaction(strategyCards, faction.id);
           return (
             <FactionCircle

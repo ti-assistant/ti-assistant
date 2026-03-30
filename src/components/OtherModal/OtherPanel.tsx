@@ -7,7 +7,10 @@ import {
   useRelics,
   useViewOnly,
 } from "../../context/dataHooks";
-import { useFactionColors, useFactions } from "../../context/factionDataHooks";
+import {
+  useAllFactionColors,
+  useFactions,
+} from "../../context/factionDataHooks";
 import { useOrderedFactionIds } from "../../context/gameDataHooks";
 import { useObjective } from "../../context/objectiveDataHooks";
 import PromissoryMenuSVG from "../../icons/ui/PromissoryMenu";
@@ -110,7 +113,7 @@ function ExpeditionRadialSelector({
   const dataUpdate = useDataUpdate();
   const expedition = useExpedition();
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
-  const factionColors = useFactionColors();
+  const factionColors = useAllFactionColors();
   const viewOnly = useViewOnly();
 
   const selectedFactionId = expedition[expeditionId];
@@ -132,7 +135,9 @@ function ExpeditionRadialSelector({
       </div>
       <FactionSelectRadialMenu
         borderColor={
-          selectedFactionId ? factionColors[selectedFactionId] : undefined
+          selectedFactionId
+            ? factionColors[selectedFactionId]?.border
+            : undefined
         }
         factions={mapOrderedFactionIds}
         onSelect={(factionId) => {
@@ -148,7 +153,7 @@ function ExpeditionRadialSelector({
 function RelicsSection() {
   const dataUpdate = useDataUpdate();
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
-  const factionColors = useFactionColors();
+  const factionColors = useAllFactionColors();
   const options = useOptions();
   const relics = useRelics();
   const viewOnly = useViewOnly();
@@ -240,7 +245,7 @@ function RelicsSection() {
                   </InfoRow>
                 </SelectableRow>
                 <FactionCircle
-                  borderColor={factionColors[owner]}
+                  borderColor={factionColors[owner]?.border}
                   factionId={owner}
                   size={24}
                 />
@@ -493,9 +498,11 @@ function PromissoriesSection() {
                     }
                   }}
                   selectedFaction={supportHolder}
-                  borderColor={getFactionColor(
-                    supportHolder ? factions[supportHolder] : undefined,
-                  )}
+                  borderColor={
+                    supportHolder
+                      ? getFactionColor(factions[supportHolder])
+                      : undefined
+                  }
                   tag={
                     <FactionComponents.Icon factionId={factionId} size="100%" />
                   }
@@ -571,7 +578,9 @@ function PromissoriesSection() {
                     borderColor={
                       disabled
                         ? "#555"
-                        : getFactionColor(owner ? factions[owner] : undefined)
+                        : owner
+                          ? getFactionColor(factions[owner])
+                          : undefined
                     }
                     tag={
                       <FactionComponents.Icon

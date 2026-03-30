@@ -1,4 +1,8 @@
-export default function SecretIconSVG({ color = "#eee" }: { color?: string }) {
+export default function SecretIconSVG({
+  color = "var(--foreground-color)",
+}: {
+  color?: string;
+}) {
   return (
     <svg
       width="100%"

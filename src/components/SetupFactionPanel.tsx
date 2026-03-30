@@ -9,6 +9,7 @@ import { sortTechsByPreReqAndExpansion } from "../util/techs";
 import { Optional } from "../util/types/types";
 import { adjustForExpansions, rem } from "../util/util";
 import Chip from "./Chip/Chip";
+import ChipGroup from "./Chip/ChipGroup";
 import { CollapsibleSection } from "./CollapsibleSection";
 import FactionComponents from "./FactionComponents/FactionComponents";
 import FormattedDescription from "./FormattedDescription/FormattedDescription";
@@ -35,13 +36,15 @@ function AbilitySection({
       style={{
         position: "relative",
         width: "100%",
-        gap: rem(4),
+        gap: rem(2),
+        marginBottom: rem(6),
       }}
     >
       <LabeledLine
         leftLabel={leftLabel}
         label={label}
         rightLabel={rightLabel}
+        color={"var(--muted-text)"}
       />
       <div
         className="flexColumn"
@@ -49,7 +52,7 @@ function AbilitySection({
           fontFamily: "Myriad Pro",
           alignItems: "flex-start",
           width: "100%",
-          padding: `0 ${rem(8)}`,
+          paddingInlineStart: rem(16),
         }}
       >
         {children}
@@ -169,7 +172,7 @@ function FactionPanelContent({
                         <hr
                           style={{
                             width: "100%",
-                            borderColor: "var(--neutral-border)",
+                            borderColor: "var(--hidden-border)",
                             margin: `${rem(4)} 0`,
                           }}
                         />
@@ -251,7 +254,7 @@ function FactionPanelContent({
                         <UnitIcon
                           type={tech.unitType}
                           size={18}
-                          color="var(--neutral-border)"
+                          color="var(--color)"
                         />
                       ) : null
                     }
@@ -419,11 +422,7 @@ function FactionPanelContent({
                 key={index}
                 leftLabel={leftLabel}
                 label={
-                  <UnitIcon
-                    type={unit.type}
-                    color="var(--neutral-border)"
-                    size={18}
-                  />
+                  <UnitIcon type={unit.type} color="var(--color)" size={18} />
                 }
                 rightLabel={<UnitType type={unit.type} />}
               >
@@ -573,8 +572,8 @@ export default function SetupFactionPanel({
 
   return (
     <>
-      <div
-        className="popupIcon"
+      <button
+        className="popupIcon iconButton"
         style={{
           fontSize: rem(16),
         }}
@@ -589,7 +588,7 @@ export default function SetupFactionPanel({
         }
       >
         &#x24D8;
-      </div>
+      </button>
     </>
   );
 }
@@ -625,13 +624,15 @@ function SetupFactionPanelModal({
       }
       settings={
         altFaction ? (
-          <div className="flexRow" onClick={(e) => e.stopPropagation()}>
-            <Chip selected={!viewAlt} toggleFn={() => setViewAlt(false)}>
-              {faction.name}
-            </Chip>
-            <Chip selected={viewAlt} toggleFn={() => setViewAlt(true)}>
-              {altFaction.name}
-            </Chip>
+          <div onClick={(e) => e.stopPropagation()}>
+            <ChipGroup>
+              <Chip selected={!viewAlt} toggleFn={() => setViewAlt(false)}>
+                {faction.name}
+              </Chip>
+              <Chip selected={viewAlt} toggleFn={() => setViewAlt(true)}>
+                {altFaction.name}
+              </Chip>
+            </ChipGroup>
           </div>
         ) : undefined
       }

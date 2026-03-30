@@ -41,6 +41,7 @@ export default function UndoButton({ gameId }: { gameId: string }) {
 
   return (
     <button
+      className="outline"
       onKeyDown={(event) => {
         if (event.ctrlKey && event.key === "z") {
           undo(gameId);

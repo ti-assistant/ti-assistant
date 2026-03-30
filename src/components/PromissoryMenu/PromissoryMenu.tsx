@@ -3,7 +3,7 @@ import { FormattedMessage } from "react-intl";
 import { useViewOnly } from "../../context/dataHooks";
 import {
   useAllFactionAlliances,
-  useFactionColors,
+  useAllFactionColors,
 } from "../../context/factionDataHooks";
 import { useOrderedFactionIds } from "../../context/gameDataHooks";
 import { useObjective } from "../../context/objectiveDataHooks";
@@ -59,7 +59,7 @@ export default function PromissoryMenu({
   const dataUpdate = useDataUpdate();
   const factionAlliances = useAllFactionAlliances();
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
-  const factionColors = useFactionColors();
+  const factionColors = useAllFactionColors();
   const supportForTheThrone = useObjective("Support for the Throne");
   const viewOnly = useViewOnly();
 
@@ -125,9 +125,9 @@ export default function PromissoryMenu({
               }
             }}
             tag={<FactionComponents.Icon factionId={factionId} size="100%" />}
-            tagBorderColor={factionColors[factionId]}
+            tagBorderColor={factionColors[factionId]?.border}
             borderColor={
-              supportGivenTo ? factionColors[supportGivenTo] : undefined
+              supportGivenTo ? factionColors[supportGivenTo]?.border : undefined
             }
             viewOnly={viewOnly}
           />
@@ -157,9 +157,11 @@ export default function PromissoryMenu({
                 }
               }}
               tag={<FactionComponents.Icon factionId={factionId} size="100%" />}
-              tagBorderColor={factionColors[factionId]}
+              tagBorderColor={factionColors[factionId]?.border}
               borderColor={
-                allianceGivenTo ? factionColors[allianceGivenTo] : undefined
+                allianceGivenTo
+                  ? factionColors[allianceGivenTo]?.border
+                  : undefined
               }
               viewOnly={viewOnly}
             />
@@ -224,7 +226,7 @@ export default function PromissoryMenu({
                     }  ${viewOnly ? styles.viewOnly : ""}`}
                     style={
                       {
-                        "--color": factionColors[id],
+                        "--color": factionColors[id]?.border,
                       } as ExtendedCSS
                     }
                   >
@@ -286,7 +288,7 @@ export default function PromissoryMenu({
                     }  ${viewOnly ? styles.viewOnly : ""}`}
                     style={
                       {
-                        "--color": factionColors[id],
+                        "--color": factionColors[id]?.border,
                       } as ExtendedCSS
                     }
                   >

@@ -32,7 +32,7 @@ function getColorForNum(num: number) {
     return "#ccc";
   }
   if (num < 50) {
-    return "#eee";
+    return "var(--foreground-color)";
   }
   return "#fff";
 }

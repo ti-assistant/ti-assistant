@@ -10,6 +10,7 @@ export default function SettingsButton() {
   const { openModal } = use(ModalContext);
   return (
     <button
+      className="iconButton"
       style={{
         display: "flex",
         justifyContent: "center",
@@ -17,7 +18,7 @@ export default function SettingsButton() {
         borderRadius: "100%",
         width: rem(32),
         height: rem(32),
-        padding: "unset",
+        fontSize: "1rem",
       }}
       onClick={() => openModal(<SettingsModal />)}
     >

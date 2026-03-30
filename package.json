@@ -1,6 +1,12 @@
 {
   "name": "twilight-imperium",
   "version": "3.0.0",
+  "browserslist": [
+    "chrome >= 111",
+    "safari >= 15.4",
+    "firefox >= 113",
+    "edge >= 111"
+  ],
   "dependencies": {
     "@google-cloud/profiler": "^6.0.4",
     "@google-cloud/storage": "^5.18.3",

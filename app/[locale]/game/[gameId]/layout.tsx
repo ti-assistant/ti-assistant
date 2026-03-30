@@ -8,7 +8,6 @@ import {
   getTimers,
   TIASession,
 } from "../../../../server/util/fetch";
-import QRCodeButton from "../../../../src/components/QRCode/QRCodeButton";
 import DataInitializer from "../../../../src/context/DataWrapper";
 import { getIntl, getSessionIdFromCookie } from "../../../../src/util/server";
 import { Optional } from "../../../../src/util/types/types";
@@ -58,8 +57,8 @@ function getQRCode(gameId: string, size: number): Promise<string> {
       `${BASE_URL}/game/${gameId}`,
       {
         color: {
-          dark: "#eeeeeeff",
-          light: "#222222ff",
+          dark: "#cecece",
+          light: "#030303",
         },
         width: size,
         margin: 2,
@@ -92,9 +91,12 @@ export default async function Layout({
       <div className={styles.QRCode}>
         <GameCode gameId={gameId} intlPromise={intlPromise} qrCode={qrCode} />
       </div>
+      {/* <div className={styles.Map}>
+        <MapButton />
+      </div>
       <div className={styles.MobileQRCode}>
         <QRCodeButton gameId={gameId} qrCode={qrCode} />
-      </div>
+      </div> */}
       <Suspense fallback={<GameLoader />}>
         <DataInitializer
           gameId={gameId}

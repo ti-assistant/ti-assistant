@@ -21,21 +21,14 @@ export default async function Page({
         style={{
           alignItems: "stretch",
           maxWidth: rem(500),
-          width: "100%",
+          gap: rem(16),
         }}
       >
-        <Link href={`/game/${gameId}/main`}>
-          <div
-            style={{
-              border: `${"3px"} solid grey`,
-              borderRadius: rem(5),
-              height: `10vh`,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: rem(24),
-              cursor: "pointer",
-            }}
+        <div className="flexColumn" style={{ alignItems: "stretch" }}>
+          <Link
+            href={`/game/${gameId}/main`}
+            className="primary"
+            style={{ fontSize: rem(44), lineHeight: 1 }}
           >
             {intl.formatMessage({
               id: "yBACfb",
@@ -43,21 +36,12 @@ export default async function Page({
                 "Text on a button that opens the main screen of the assistant.",
               defaultMessage: "Main Screen",
             })}
-          </div>
-        </Link>
-        <Conditional appSection="OBJECTIVES">
-          <Link href={`/game/${gameId}/objectives`}>
-            <div
-              style={{
-                border: `${"3px"} solid grey`,
-                borderRadius: rem(5),
-                height: `8vh`,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: rem(24),
-                cursor: "pointer",
-              }}
+          </Link>
+          <Conditional appSection="OBJECTIVES">
+            <Link
+              href={`/game/${gameId}/objectives`}
+              className="outline"
+              style={{ fontSize: rem(32) }}
             >
               {intl.formatMessage({
                 id: "9m91nk",
@@ -65,9 +49,9 @@ export default async function Page({
                   "Text on a button that opens the objective view of the assistant.",
                 defaultMessage: "Objective View",
               })}
-            </div>
-          </Link>
-        </Conditional>
+            </Link>
+          </Conditional>
+        </div>
         <FactionLinks />
       </div>
     </div>

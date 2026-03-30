@@ -1,7 +1,7 @@
 import FactionComponents from "./components/FactionComponents/FactionComponents";
 import LabeledDiv from "./components/LabeledDiv/LabeledDiv";
 import {
-  useFactionColor,
+  useFactionColors,
   useIsFactionPassed,
   useNumFactions,
 } from "./context/factionDataHooks";
@@ -17,11 +17,11 @@ export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
   const factionId = cards[0]?.faction ?? "Vuil'raith Cabal";
 
   const isFactionPassed = useIsFactionPassed(factionId);
-  const factionColor = useFactionColor(factionId);
+  const colors = useFactionColors(factionId);
 
   const initiative = cards.reduce(
     (lowestInitiative, card) => Math.min(lowestInitiative, card.order),
-    Number.MAX_SAFE_INTEGER
+    Number.MAX_SAFE_INTEGER,
   );
 
   let height = "auto";
@@ -31,11 +31,13 @@ export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
     height = rem(50);
   }
 
-  const borderColor = !isFactionPassed ? factionColor : "#555";
+  const color = !isFactionPassed ? colors.color : "var(--interactive-bg)";
+  const borderColor = !isFactionPassed ? colors.border : "var(--hidden-border)";
   return (
     <LabeledDiv
       label={<FactionComponents.Name factionId={factionId} />}
-      color={borderColor}
+      color={color}
+      borderColor={borderColor}
       style={{
         height,
       }}
@@ -57,7 +59,9 @@ export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
             fontSize: numFactions > 7 ? rem(28) : rem(32),
             display: "flex",
             justifyContent: "center",
-            color: isFactionPassed ? "#555" : "#eee",
+            color: isFactionPassed
+              ? "var(--hidden-border)"
+              : "var(--foreground-color)",
             transition: "color 120ms",
           }}
         >
@@ -72,7 +76,9 @@ export function SmallStrategyCard({ cards }: SmallStrategyCardProps) {
           }}
         >
           {cards.map((card) => {
-            const textColor = !card.used ? "#eee" : "#555";
+            const textColor = !card.used
+              ? "var(--foreground-color)"
+              : "var(--hidden-border)";
             return (
               <div key={card.id} style={{ color: textColor }}>
                 {card.name}

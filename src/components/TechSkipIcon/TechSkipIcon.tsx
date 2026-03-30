@@ -9,7 +9,7 @@ interface TechSkipIconCSS extends CSSProperties {
 
 export default function TechSkipIcon({
   size,
-  color = "#eee",
+  color = "var(--foreground-color)",
   outline,
 }: {
   size: number;

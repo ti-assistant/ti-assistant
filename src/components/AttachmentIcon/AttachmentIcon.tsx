@@ -6,7 +6,7 @@ import DemilitarizedZoneSVG from "../../icons/attachments/DemilitarizedZone";
 import OrbitalFoundriesSVG from "../../icons/attachments/OrbitalFoundries";
 import { SymbolX } from "../../icons/svgs";
 import { getTechTypeColor } from "../../util/techs";
-import { rem } from "../../util/util";
+import { em, rem } from "../../util/util";
 import ResourcesIcon from "../ResourcesIcon/ResourcesIcon";
 import TechIcon from "../TechIcon/TechIcon";
 import styles from "./AttachmentIcon.module.scss";
@@ -72,7 +72,7 @@ export default function AttachmentIcon({
       return (
         <div
           className="flexRow"
-          style={{ width: rem(size), aspectRatio: 1, gap: 0 }}
+          style={{ width: em(size), aspectRatio: 1, gap: 0 }}
         >
           <div
             className="flexRow"
@@ -102,8 +102,8 @@ export default function AttachmentIcon({
             className="flexRow"
             style={{
               position: "relative",
-              width: rem(iconSize),
-              height: rem(iconSize),
+              width: em(iconSize),
+              height: em(iconSize),
             }}
           >
             <ArcaneCitadelSVG />
@@ -115,8 +115,8 @@ export default function AttachmentIcon({
             className="flexRow"
             style={{
               position: "relative",
-              width: rem(iconSize),
-              height: rem(iconSize),
+              width: em(iconSize),
+              height: em(iconSize),
             }}
           >
             <CouncilPreserveSVG />
@@ -128,8 +128,8 @@ export default function AttachmentIcon({
             className="flexRow"
             style={{
               position: "relative",
-              width: rem(size - 4),
-              height: rem(size - 4),
+              width: em(size - 4),
+              height: em(size - 4),
             }}
           >
             <DemilitarizedZoneSVG />
@@ -141,8 +141,8 @@ export default function AttachmentIcon({
             className="flexRow"
             style={{
               position: "relative",
-              width: rem(iconSize),
-              height: rem(iconSize),
+              width: em(iconSize),
+              height: em(iconSize),
             }}
           >
             <OrbitalFoundriesSVG />
@@ -158,7 +158,7 @@ export default function AttachmentIcon({
           justifyContent: "center",
           width: "100%",
           aspectRatio: 1,
-          paddingLeft: rem(1),
+          paddingLeft: em(1),
         }}
       >
         <ResourcesIcon
@@ -171,7 +171,7 @@ export default function AttachmentIcon({
   }, [attachment, hasSkip, hideBorder, size]);
 
   const attachmentIconStyle: AttachmentIconCSS = {
-    "--size": typeof size === "string" ? size : rem(size),
+    "--size": typeof size === "string" ? size : em(size),
   };
   return (
     <div className={styles.AttachmentIcon} style={attachmentIconStyle}>

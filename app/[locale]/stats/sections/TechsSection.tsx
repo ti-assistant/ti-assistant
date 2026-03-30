@@ -15,6 +15,7 @@ import { ProcessedGame } from "../processor";
 import { PointsHistogram } from "./Histogram";
 import styles from "./TechsSection.module.scss";
 import { HistogramData } from "./types";
+import ChipGroup from "../../../../src/components/Chip/ChipGroup";
 
 interface FactionTechInfo {
   games: number;
@@ -151,28 +152,30 @@ export default function TechsSection({
           paddingBottom: rem(8),
         }}
       >
-        <Chip
-          fontSize={14}
-          selected={tab === "Non-Faction"}
-          toggleFn={() => setTab("Non-Faction")}
-        >
-          <FormattedMessage
-            id="nYgb4V"
-            defaultMessage="Non-Faction"
-            description="Techs that are not specific to any faction."
-          />
-        </Chip>
-        <Chip
-          fontSize={14}
-          selected={tab === "Faction"}
-          toggleFn={() => setTab("Faction")}
-        >
-          <FormattedMessage
-            id="LuWjGl"
-            defaultMessage="Faction"
-            description="Techs that are specific to a faction."
-          />
-        </Chip>
+        <ChipGroup>
+          <Chip
+            fontSize={14}
+            selected={tab === "Non-Faction"}
+            toggleFn={() => setTab("Non-Faction")}
+          >
+            <FormattedMessage
+              id="nYgb4V"
+              defaultMessage="Non-Faction"
+              description="Techs that are not specific to any faction."
+            />
+          </Chip>
+          <Chip
+            fontSize={14}
+            selected={tab === "Faction"}
+            toggleFn={() => setTab("Faction")}
+          >
+            <FormattedMessage
+              id="LuWjGl"
+              defaultMessage="Faction"
+              description="Techs that are specific to a faction."
+            />
+          </Chip>
+        </ChipGroup>
       </div>
 
       {orderedInfo.map(([id, info]) => {

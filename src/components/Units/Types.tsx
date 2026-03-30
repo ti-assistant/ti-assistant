@@ -9,7 +9,7 @@ export default function UnitType({ type }: { type: UnitType }) {
 }
 
 export function UnitTypeWithIcon({
-  color = "#eee",
+  color = "var(--foreground-color)",
   size = 16,
   type,
 }: {

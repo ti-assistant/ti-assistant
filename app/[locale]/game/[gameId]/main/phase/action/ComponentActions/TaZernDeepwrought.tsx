@@ -13,7 +13,10 @@ import { TechRow } from "../../../../../../../../src/TechRow";
 import { getPurgedTechs } from "../../../../../../../../src/util/actionLog";
 import { useDataUpdate } from "../../../../../../../../src/util/api/dataUpdate";
 import { Events } from "../../../../../../../../src/util/api/events";
-import { getFactionColor } from "../../../../../../../../src/util/factions";
+import {
+  getFactionBorder,
+  getFactionColor,
+} from "../../../../../../../../src/util/factions";
 
 export default function TaZernDeepwrought({
   factionId,
@@ -102,7 +105,7 @@ export default function TaZernDeepwrought({
                 icon={
                   <FactionComponents.Icon factionId={faction.id} size={24} />
                 }
-                color={getFactionColor(faction)}
+                color={getFactionBorder(faction)}
               >
                 <TechResearchSection factionId={faction.id} numTechs={1} />
               </IconDiv>

@@ -8,6 +8,7 @@ import { useDataUpdate } from "../../../../../../../src/util/api/dataUpdate";
 import { Events } from "../../../../../../../src/util/api/events";
 import { objectiveTypeString } from "../../../../../../../src/util/strings";
 import { rem } from "../../../../../../../src/util/util";
+import ChipGroup from "../../../../../../../src/components/Chip/ChipGroup";
 
 function sortObjectivesByName(objectives: Objective[]) {
   objectives.sort((a, b) => {
@@ -272,13 +273,11 @@ export default function ObjectiveTab({ factionId }: { factionId: FactionId }) {
 
   return (
     <div>
-      <div
-        className="flexRow"
+      <ChipGroup
         style={{
+          margin: "auto",
           position: "sticky",
           top: rem(41),
-          backgroundColor: "var(--background-color)",
-          padding: `${rem(4)} ${rem(4)} 0px ${rem(4)}`,
         }}
       >
         <Tab selectTab={changeTab} id="STAGE ONE" selectedId={tabShown}>
@@ -293,7 +292,7 @@ export default function ObjectiveTab({ factionId }: { factionId: FactionId }) {
         <Tab selectTab={changeTab} id="other" selectedId={tabShown}>
           {objectiveTypeString("OTHER", intl)}
         </Tab>
-      </div>
+      </ChipGroup>
       <TabBody id="STAGE ONE" selectedId={tabShown}>
         <div className="largeFont">
           <LabeledLine />

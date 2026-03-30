@@ -1,15 +1,15 @@
 import { CSSProperties, PropsWithChildren } from "react";
-import styles from "./Chip.module.scss";
 import { rem } from "../../util/util";
+import styles from "./Chip.module.scss";
 
 interface SelectedCSSProperties extends CSSProperties {
-  "--border-color": "#b8b8b8";
+  "--border-color": "var(--neutral-border)";
   "--background-color": "var(--selected-bg)";
   "--font-size": string;
 }
 
 interface UnselectedCSSProperties extends CSSProperties {
-  "--border-color": "#111";
+  "--border-color": "var(--background-color)";
   "--background-color": "var(--interactive-bg)";
   "--font-size": string;
 }
@@ -19,13 +19,13 @@ type ChipCSSProperties = SelectedCSSProperties | UnselectedCSSProperties;
 function getChipStyle(selected: boolean, fontSize: number): ChipCSSProperties {
   if (selected) {
     return {
-      "--border-color": "#b8b8b8",
+      "--border-color": "var(--neutral-border)",
       "--background-color": "var(--selected-bg)",
       "--font-size": rem(fontSize),
     };
   }
   return {
-    "--border-color": "#111",
+    "--border-color": "var(--background-color)",
     "--background-color": "var(--interactive-bg)",
     "--font-size": rem(fontSize),
   };
@@ -51,7 +51,7 @@ export default function Chip({
   return (
     <label
       className={`${styles.ChipContainer}  ${disabled ? styles.disabled : ""}`}
-      style={{ ...chipStyle, ...style }}
+      style={{ "--font-size": rem(fontSize), ...style } as CSSProperties}
     >
       <input
         type="radio"

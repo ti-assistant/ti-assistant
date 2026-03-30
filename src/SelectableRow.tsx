@@ -45,22 +45,22 @@ export function SelectableRow<Type extends string>({
   return (
     <div className={styles.SelectableRow} style={style}>
       {!viewOnly && selectItem ? (
-        <div
-          className="icon clickable positive"
+        <button
+          className="icon clickable positive iconButton"
           style={iconStyle}
           onClick={() => selectItem(itemId)}
         >
           +
-        </div>
+        </button>
       ) : null}
       {!viewOnly && removeItem ? (
-        <div
-          className="icon clickable negative"
+        <button
+          className="clickable negative iconButton"
           style={iconStyle}
           onClick={() => removeItem(itemId)}
         >
           &#x2715;
-        </div>
+        </button>
       ) : null}
       {children}
     </div>

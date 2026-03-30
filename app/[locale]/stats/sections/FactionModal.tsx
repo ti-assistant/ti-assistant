@@ -9,6 +9,7 @@ import { Optional } from "../../../../src/util/types/types";
 import { objectEntries, rem } from "../../../../src/util/util";
 import styles from "./FactionModal.module.scss";
 import { FactionSummary, GameCounts, ObjectiveGameCounts } from "./types";
+import ChipGroup from "../../../../src/components/Chip/ChipGroup";
 
 export default function FactionModal({
   info,
@@ -73,33 +74,35 @@ export default function FactionModal({
                   description="Cards that define how to score victory points."
                   defaultMessage="Objectives"
                 />
-                <Chip
-                  fontSize={10}
-                  selected={objectiveType === "STAGE ONE"}
-                  toggleFn={() => {
-                    setObjectiveType("STAGE ONE");
-                  }}
-                >
-                  {objectiveTypeString("STAGE ONE", intl)}
-                </Chip>
-                <Chip
-                  fontSize={10}
-                  selected={objectiveType === "STAGE TWO"}
-                  toggleFn={() => {
-                    setObjectiveType("STAGE TWO");
-                  }}
-                >
-                  {objectiveTypeString("STAGE TWO", intl)}
-                </Chip>
-                <Chip
-                  fontSize={10}
-                  selected={objectiveType === "OTHER"}
-                  toggleFn={() => {
-                    setObjectiveType("OTHER");
-                  }}
-                >
-                  {objectiveTypeString("OTHER", intl)}
-                </Chip>
+                <ChipGroup>
+                  <Chip
+                    fontSize={10}
+                    selected={objectiveType === "STAGE ONE"}
+                    toggleFn={() => {
+                      setObjectiveType("STAGE ONE");
+                    }}
+                  >
+                    {objectiveTypeString("STAGE ONE", intl)}
+                  </Chip>
+                  <Chip
+                    fontSize={10}
+                    selected={objectiveType === "STAGE TWO"}
+                    toggleFn={() => {
+                      setObjectiveType("STAGE TWO");
+                    }}
+                  >
+                    {objectiveTypeString("STAGE TWO", intl)}
+                  </Chip>
+                  <Chip
+                    fontSize={10}
+                    selected={objectiveType === "OTHER"}
+                    toggleFn={() => {
+                      setObjectiveType("OTHER");
+                    }}
+                  >
+                    {objectiveTypeString("OTHER", intl)}
+                  </Chip>
+                </ChipGroup>
               </div>
             }
           >

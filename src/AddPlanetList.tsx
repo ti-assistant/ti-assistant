@@ -3,6 +3,7 @@ import { FormattedMessage } from "react-intl";
 import { Tab, TabBody } from "./Tab";
 import PlanetRow from "./components/PlanetRow/PlanetRow";
 import { rem } from "./util/util";
+import ChipGroup from "./components/Chip/ChipGroup";
 
 function sortPlanetsByFaction(planets: Planet[]) {
   planets.sort((a, b) => {
@@ -57,16 +58,17 @@ export function AddPlanetList({
   const homePlanets = remainingPlanets.filter((planet) => planet.home);
   sortPlanetsByFaction(homePlanets);
   const legendaryPlanets = remainingPlanets.filter((planet) =>
-    planet.attributes.includes("legendary")
+    planet.attributes.includes("legendary"),
   );
 
   return (
-    <div className="flexColumn" style={{ alignItems: "stretch" }}>
-      <div
-        className="flexRow"
+    <div
+      className="flexColumn"
+      style={{ width: "100%", alignItems: "stretch", paddingBlock: "0.5rem" }}
+    >
+      <ChipGroup
         style={{
-          backgroundColor: "var(--background-color)",
-          padding: `${rem(4)} ${rem(4)} 0px ${rem(4)}`,
+          margin: "auto",
         }}
       >
         <Tab selectTab={setTabShown} id="normal" selectedId={tabShown}>
@@ -94,7 +96,7 @@ export function AddPlanetList({
             />
           </Tab>
         ) : null}
-      </div>
+      </ChipGroup>
       <TabBody id="normal" selectedId={tabShown}>
         <div
           className="largeFont"

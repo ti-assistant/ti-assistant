@@ -16,6 +16,9 @@
 
   margin-inline: 5%;
   gap: 0.5rem;
+
+  align-items: stretch;
+  justify-items: stretch;
 }
 
 div.SupportSection {
@@ -28,11 +31,12 @@ div.SupportSection {
   display: grid;
   grid-template-columns: subgrid;
   grid-column: span 2;
+  width: 100%;
 }
 
-.SupportSection > a > div {
-  display: grid;
-  grid-template-columns: subgrid;
-  grid-column: span 2;
-  white-space: nowrap;
-}
+// .SupportSection > button > a > div {
+//   display: grid;
+//   grid-template-columns: subgrid;
+//   grid-column: span 2;
+//   white-space: nowrap;
+// }
