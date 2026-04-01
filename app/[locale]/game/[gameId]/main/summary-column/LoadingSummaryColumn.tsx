@@ -39,7 +39,7 @@ export default function LoadingSummaryColumn() {
                 <StaticFactionTimer
                   active={false}
                   factionId={"Unknown"}
-                  width={84}
+                  width={72}
                 />
               }
               color={"var(--neutral-border)"}

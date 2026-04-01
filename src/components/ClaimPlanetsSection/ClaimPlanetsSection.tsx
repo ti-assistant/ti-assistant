@@ -54,7 +54,6 @@ export default function ClaimPlanetsSection({
 
   const maxPlanets = availablePlanets.length > 50 ? 15 : 12;
   const targetButtonStyle: CSSProperties = {
-    fontFamily: "Myriad Pro",
     padding: rem(8),
     display: "grid",
     gridAutoFlow: "column",

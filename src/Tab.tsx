@@ -17,11 +17,7 @@ export function Tab({
   selectTab,
 }: PropsWithChildren<TabProps>) {
   return (
-    <Chip
-      selected={selectedId === id}
-      toggleFn={() => selectTab(id)}
-      style={{ fontSize: rem(16), fontFamily: "Myriad Pro" }}
-    >
+    <Chip selected={selectedId === id} toggleFn={() => selectTab(id)}>
       {children}
       {selectedId === id && extraContent ? extraContent : null}
     </Chip>

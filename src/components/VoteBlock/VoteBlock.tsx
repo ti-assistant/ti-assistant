@@ -1053,7 +1053,7 @@ function VotingSection({
               </button>
             ) : null}
             {hasCouncilPreserve(factionId, planets) ? (
-              <span style={{ fontFamily: "Myriad Pro" }}>
+              <span>
                 <Toggle
                   selected={councilPreservePlayer === factionId}
                   toggleFn={() => {
@@ -1083,7 +1083,7 @@ function VotingSection({
                 </Toggle>
               </span>
             ) : null}
-            <span style={{ fontSize: rem(14), fontFamily: "Myriad Pro" }}>
+            <span style={{ fontSize: rem(14) }}>
               <Toggle
                 disabled={
                   viewOnly ||

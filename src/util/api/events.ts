@@ -20,6 +20,7 @@ export const Events = {
   GiftOfPrescienceEvent,
   HideAgendaEvent,
   HideObjectiveEvent,
+  HideTFCardEvent,
   LoseAllianceEvent,
   LoseRelicEvent,
   LoseTFCardEvent,
@@ -41,6 +42,7 @@ export const Events = {
   ResolveAgendaEvent,
   RevealAgendaEvent,
   RevealObjectiveEvent,
+  RevealTFCardEvent,
   ScoreObjectiveEvent,
   SelectActionEvent,
   SelectEligibleOutcomesEvent,
@@ -312,6 +314,15 @@ function HideObjectiveEvent(objectiveId: ObjectiveId): HideObjectiveData {
   };
 }
 
+function HideTFCardEvent(
+  event: AbilityEvent | GenomeEvent | ParadigmEvent | UpgradeEvent,
+): HideTFCardData {
+  return {
+    action: "HIDE_TF_CARD",
+    event,
+  };
+}
+
 function LoseAllianceEvent(
   factionId: FactionId,
   fromFactionId: FactionId,
@@ -565,6 +576,15 @@ function RevealObjectiveEvent(objectiveId: ObjectiveId): RevealObjectiveData {
     event: {
       objective: objectiveId,
     },
+  };
+}
+
+function RevealTFCardEvent(
+  event: AbilityEvent | GenomeEvent | ParadigmEvent | UpgradeEvent,
+): RevealTFCardData {
+  return {
+    action: "REVEAL_TF_CARD",
+    event,
   };
 }
 

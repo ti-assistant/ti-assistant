@@ -370,6 +370,7 @@ export function TFTechSummary({
   if (settings["fs-tech-summary-display"] === "NONE") {
     return null;
   }
+  const showTrees = settings["fs-tech-summary-display"].includes("TREE");
 
   let blueTechs = [];
   let yellowTechs = [];
@@ -429,8 +430,26 @@ export function TFTechSummary({
               <TechIcon type={"GREEN"} size={16} />
             </div>
           </OptionalElement>
+          <OptionalElement value={showTrees}>
+            <TechTree
+              factionId={factionId}
+              techs={techs}
+              ownedTechs={ownedTechs}
+              type="GREEN"
+              viewOnly={viewOnly}
+            />
+          </OptionalElement>
         </div>
         <div className={styles.TechSummarySection}>
+          <OptionalElement value={showTrees}>
+            <TechTree
+              factionId={factionId}
+              techs={techs}
+              ownedTechs={ownedTechs}
+              type="BLUE"
+              viewOnly={viewOnly}
+            />
+          </OptionalElement>
           <OptionalElement value={showIcons}>
             <div className="flexRow" style={{ height: "100%" }}>
               <TechIcon type={"BLUE"} size={16} />
@@ -453,8 +472,26 @@ export function TFTechSummary({
               <TechIcon type={"YELLOW"} size={16} />
             </div>
           </OptionalElement>
+          <OptionalElement value={showTrees}>
+            <TechTree
+              factionId={factionId}
+              techs={techs}
+              ownedTechs={ownedTechs}
+              type="YELLOW"
+              viewOnly={viewOnly}
+            />
+          </OptionalElement>
         </div>
         <div className={styles.TechSummarySection}>
+          <OptionalElement value={showTrees}>
+            <TechTree
+              factionId={factionId}
+              techs={techs}
+              ownedTechs={ownedTechs}
+              type="RED"
+              viewOnly={viewOnly}
+            />
+          </OptionalElement>
           <OptionalElement value={showIcons}>
             <div className="flexRow" style={{ height: "100%" }}>
               <TechIcon type={"RED"} size={16} />
@@ -479,6 +516,15 @@ export function TFTechSummary({
             <div className="flexRow" style={{ height: "100%" }}>
               <TechIcon type={"UPGRADE"} size={16} />
             </div>
+          </OptionalElement>
+          <OptionalElement value={showTrees}>
+            <TechTree
+              factionId={factionId}
+              techs={techs}
+              ownedTechs={ownedTechs}
+              type="UPGRADE"
+              viewOnly={viewOnly}
+            />
           </OptionalElement>
           <OptionalElement value={showIcons}>
             <div className="flexRow" style={{ height: "100%" }}>

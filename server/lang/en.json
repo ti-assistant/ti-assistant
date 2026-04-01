@@ -10903,6 +10903,10 @@
     "defaultMessage": "Gained Relic",
     "description": "Label for section listing the relic gained."
   },
+  "cxkvcc": {
+    "defaultMessage": "Reveal Genome",
+    "description": "Text on a button that will reveal a Genome card"
+  },
   "d0uSBF": {
     "defaultMessage": "Options",
     "description": "Label on a menu for changing game options"
@@ -11142,10 +11146,6 @@
   "p9XVGB": {
     "defaultMessage": "Prophecy of Kings",
     "description": "Text on a button that will enable/disable the Prophecy of Kings expansion."
-  },
-  "pKlkVZ": {
-    "defaultMessage": "FAQ",
-    "description": "A button that will open the Frequently Asked Questions page."
   },
   "pPpzkR": {
     "defaultMessage": "Relics",

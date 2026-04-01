@@ -291,7 +291,9 @@ function LocalFactionCircle({ factionId }: { factionId: FactionId }) {
   const isActive =
     (phase === "ACTION" || phase === "STRATEGY") &&
     activeFactionId === factionId;
-  const borderColor = faction.passed ? "#555" : getFactionBorder(faction);
+  const borderColor = faction.passed
+    ? "var(--passed-text)"
+    : getFactionBorder(faction);
   const cards = getStrategyCardsForFaction(strategyCards, factionId);
   return (
     <FactionCircle
@@ -308,14 +310,14 @@ function LocalFactionCircle({ factionId }: { factionId: FactionId }) {
           <div
             style={{
               fontSize: rem(18),
-              color: cards[0]?.used ? "#555" : cards[0]?.color,
+              color: cards[0]?.used ? "var(--passed-text)" : cards[0]?.color,
             }}
           >
             {cards[0]?.order}
           </div>
         ) : undefined
       }
-      tagBorderColor={cards[0]?.used ? "#555" : cards[0]?.color}
+      tagBorderColor={cards[0]?.used ? "var(--passed-text)" : cards[0]?.color}
     />
   );
 }

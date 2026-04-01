@@ -49,7 +49,6 @@ function AbilitySection({
       <div
         className="flexColumn"
         style={{
-          fontFamily: "Myriad Pro",
           alignItems: "flex-start",
           width: "100%",
           paddingInlineStart: rem(16),
@@ -285,9 +284,7 @@ function FactionPanelContent({
                             }}
                           >
                             {tech.abilities.map((ability) => {
-                              return (
-                                <div key={ability}>{ability.toUpperCase()}</div>
-                              );
+                              return <div key={ability}>{ability}</div>;
                             })}
                           </div>
                         ) : null}
@@ -336,10 +333,7 @@ function FactionPanelContent({
             >
               {faction.abilities.map((ability) => {
                 return (
-                  <AbilitySection
-                    key={ability.name}
-                    leftLabel={ability.name.toUpperCase()}
-                  >
+                  <AbilitySection key={ability.name} leftLabel={ability.name}>
                     <FormattedDescription description={ability.description} />
                   </AbilitySection>
                 );
@@ -441,7 +435,7 @@ function FactionPanelContent({
                     }}
                   >
                     {localUnit.abilities?.map((ability) => {
-                      return <div key={ability}>{ability.toUpperCase()}</div>;
+                      return <div key={ability}>{ability}</div>;
                     })}
                   </div>
                 ) : null}
@@ -481,7 +475,7 @@ function FactionBreakthrough({ faction }: { faction: BaseFaction }) {
     return null;
   }
 
-  let name = faction.breakthrough.name.toUpperCase();
+  let name = faction.breakthrough.name;
   let description: Optional<string> = faction.breakthrough.description;
   let abilities: string[] = [];
   if (reverse && faction.breakthrough.reverse) {

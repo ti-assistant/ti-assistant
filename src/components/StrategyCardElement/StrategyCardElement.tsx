@@ -15,7 +15,7 @@ interface StrategyCardProps {
 
 interface StrategyCardElementCSS extends CSSProperties {
   "--color": string;
-  "--text-color": "var(--foreground-color)" | "#555";
+  "--text-color": "var(--foreground-color)" | "var(--passed-text)";
 }
 
 export function StrategyCardElement({
@@ -25,8 +25,8 @@ export function StrategyCardElement({
   fontSize,
   onClick,
 }: PropsWithChildren<StrategyCardProps>) {
-  const color = active ? card.color : "#555";
-  const textColor = active ? "var(--foreground-color)" : "#555";
+  const color = active ? card.color : "var(--passed-text)";
+  const textColor = active ? "var(--foreground-color)" : "var(--passed-text)";
   const colors = useFactionColors(card.faction ?? "Vuil'raith Cabal");
 
   const strategyCardElementCSS: StrategyCardElementCSS = {

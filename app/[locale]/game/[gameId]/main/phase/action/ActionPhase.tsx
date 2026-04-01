@@ -129,7 +129,7 @@ function SecondaryFactionCheck({
           color:
             primaryCompleted && secondaryState === "PENDING"
               ? "var(--foreground-color)"
-              : "#555",
+              : "var(--passed-text)",
         }}
       />
     </div>
@@ -1769,7 +1769,7 @@ function ActivePlayerColumn({
                     style={{
                       fontSize: rem(16),
                     }}
-                    width={84}
+                    width={72}
                   />
                 }
                 color={onDeckColors.color}
@@ -1871,16 +1871,18 @@ function StrategyCardColumn({
           return null;
         }
         const isActivePlayer = primaryCard.faction === activeFactionId;
+        const paddingInlineStart = isActivePlayer ? rem(40) : 0;
+        const paddingInlineEnd = isActivePlayer ? 0 : rem(40);
         return (
           <div
             key={primaryCard.id}
             style={{
               transition: "padding 120ms",
-              paddingRight: isActivePlayer ? 0 : rem(40),
-              paddingLeft: isActivePlayer ? rem(40) : 0,
+              paddingInlineStart,
+              paddingInlineEnd,
             }}
           >
-            <SmallStrategyCard cards={cards} />
+            <SmallStrategyCard cards={cards} isActivePlayer={isActivePlayer} />
           </div>
         );
       })}
@@ -1890,7 +1892,6 @@ function StrategyCardColumn({
 
 export default function ActionPhase() {
   const dataUpdate = useDataUpdate();
-  const gameId = useGameId();
   const intl = useIntl();
   const viewOnly = useViewOnly();
 

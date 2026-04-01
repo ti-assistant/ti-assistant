@@ -170,7 +170,6 @@ function AbilitySection({
       <div
         className="flexColumn"
         style={{
-          fontFamily: "Myriad Pro",
           alignItems: "flex-start",
           width: "100%",
           paddingInlineStart: rem(16),
@@ -462,7 +461,6 @@ function FactionPanelContent({
   const intl = useIntl();
   const dataUpdate = useDataUpdate();
   const faction = useFaction(factionId);
-  // let faction: BaseFaction | Faction = buildFaction(factionId, options, intl);
   const leaders = useLeaders();
   const techs = useTechs();
   const viewOnly = useViewOnly();

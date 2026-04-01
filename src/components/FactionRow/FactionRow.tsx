@@ -131,7 +131,9 @@ export default function FactionRow({ onClick }: FactionRowProps) {
     <div className={styles.FactionRow}>
       <div className={styles.InnerRow}>
         {orderedFactions.map((faction) => {
-          const color = faction.passed ? "#555" : getFactionBorder(faction);
+          const color = faction.passed
+            ? "var(--passed-text)"
+            : getFactionBorder(faction);
           const cards = getStrategyCardsForFaction(strategyCards, faction.id);
           return (
             <FactionCircle

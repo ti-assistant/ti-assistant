@@ -242,11 +242,7 @@ export default function StartingComponents({
           />
         </div>
       ) : null}
-      <div
-        style={{
-          fontFamily: "Myriad Pro",
-        }}
-      >
+      <div>
         {orderedTechs.length === 0 &&
         !startswith.choice &&
         !options.expansions.includes("TWILIGHTS FALL") ? (
@@ -291,7 +287,6 @@ export default function StartingComponents({
             fallback={
               <div
                 style={{
-                  fontFamily: "Myriad Pro",
                   whiteSpace: "normal",
                   display: "flex",
                   flexDirection: "column",
@@ -348,7 +343,6 @@ export default function StartingComponents({
           // gridTemplateRows: `repeat(${Math.ceil(
           //   orderedUnits.length / 2,
           // )}, 1fr)`,
-          fontFamily: "Myriad Pro",
           columnGap: rem(8),
           fontSize: rem(14),
           width: "100%",
@@ -415,7 +409,6 @@ function TFFactionSelect({
   const allFactions = getFactions(intl);
   const dataUpdate = useDataUpdate();
   const factions = useFactions();
-  const gameId = useGameId();
   const options = useOptions();
   const viewOnly = useViewOnly();
 
@@ -548,7 +541,7 @@ function TFFactionSelect({
                     <ExpansionIcon
                       expansion={faction.expansion}
                       size={8}
-                      color={faded ? "#555" : undefined}
+                      color={faded ? "var(--passed-text)" : undefined}
                     />
                   </div>
                 </>

@@ -62,6 +62,7 @@ import {
   HideObjectiveHandler,
   RevealObjectiveHandler,
 } from "../model/revealObjective";
+import { HideTFCardHandler, RevealTFCardHandler } from "../model/revealTFCard";
 import {
   ScoreObjectiveHandler,
   UnscoreObjectiveHandler,
@@ -247,5 +248,9 @@ export function getHandler(gameData: StoredGameData, data: GameUpdateData) {
       return new GainTFCardHandler(gameData, data);
     case "LOSE_TF_CARD":
       return new LoseTFCardHandler(gameData, data);
+    case "REVEAL_TF_CARD":
+      return new RevealTFCardHandler(gameData, data);
+    case "HIDE_TF_CARD":
+      return new HideTFCardHandler(gameData, data);
   }
 }

@@ -14,6 +14,7 @@ import {
 } from "../../../../../../src/context/factionDataHooks";
 import {
   FactionOrdering,
+  useActiveFactionId,
   useCompleteOrderedFactionIds,
 } from "../../../../../../src/context/gameDataHooks";
 import {
@@ -25,6 +26,7 @@ import { StaticFactionTimer } from "../../../../../../src/Timer";
 import { SummaryLabel } from "../../../../../../src/util/settings";
 import { rem } from "../../../../../../src/util/util";
 import styles from "./SummaryColumn.module.scss";
+import FactionIcon from "../../../../../../src/components/FactionIcon/FactionIcon";
 
 const FactionPanel = dynamic(
   () => import("../../../../../../src/components/FactionPanel"),
@@ -132,19 +134,35 @@ function FactionSummaryLabel({
   options: Options;
   label: SummaryLabel;
 }) {
+  const activeFactionId = useActiveFactionId();
+  const isActive = activeFactionId === factionId;
   switch (label) {
     case "NONE":
       return null;
     case "NAME":
       return (
-        <div className="flexRow" style={{ gap: 0 }}>
+        <div
+          className="flexRow"
+          style={{
+            gap: "0.25rem",
+            fontFamily: isActive ? "var(--main-font)" : undefined,
+          }}
+        >
+          <FactionIcon factionId={factionId} size={16} />
           <FactionComponents.Name factionId={factionId} />
           <FactionPanel factionId={factionId} options={options} />
         </div>
       );
     case "TIMER":
       return (
-        <StaticFactionTimer active={false} factionId={factionId} width={84} />
+        <StaticFactionTimer
+          active={false}
+          factionId={factionId}
+          style={{
+            fontFamily: isActive ? "var(--main-font)" : undefined,
+          }}
+          width={isActive ? 84 : 72}
+        />
       );
     case "VPS":
       return (

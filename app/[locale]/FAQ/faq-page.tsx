@@ -27,7 +27,6 @@ export default function FAQPage({ intl }: { intl: IntlShape }) {
             <LabeledLine leftLabel="Q: I have a question that isn't answered here." />
             <div
               style={{
-                fontFamily: "Myriad Pro",
                 marginLeft: "8px",
               }}
             >
@@ -52,7 +51,6 @@ export default function FAQPage({ intl }: { intl: IntlShape }) {
             <LabeledLine leftLabel="Q: How do I use this app ?" />
             <div
               style={{
-                fontFamily: "Myriad Pro",
                 marginLeft: "8px",
               }}
             >
@@ -70,7 +68,6 @@ export default function FAQPage({ intl }: { intl: IntlShape }) {
             <LabeledLine leftLabel="Q: Do I have to record everything during a game ?" />
             <div
               style={{
-                fontFamily: "Myriad Pro",
                 marginLeft: "8px",
               }}
             >
@@ -89,7 +86,6 @@ export default function FAQPage({ intl }: { intl: IntlShape }) {
 
             <div
               style={{
-                fontFamily: "Myriad Pro",
                 marginLeft: "8px",
               }}
             >
@@ -106,7 +102,6 @@ export default function FAQPage({ intl }: { intl: IntlShape }) {
 
           <div
             style={{
-              fontFamily: "Myriad Pro",
               marginLeft: "8px",
             }}
           >

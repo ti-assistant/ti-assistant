@@ -168,7 +168,6 @@ export default function PlanetRow({
         {claimed ? (
           <div
             style={{
-              fontFamily: "Myriad Pro",
               position: "absolute",
               color: claimedColor?.color,
               backgroundColor: "var(--background-color)",

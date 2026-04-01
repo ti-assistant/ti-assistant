@@ -96,7 +96,7 @@ function SettingsModalContent() {
         <Chip
           toggleFn={() => setSelectedTab("DISPLAY SETTINGS")}
           selected={selectedTab === "DISPLAY SETTINGS"}
-          style={{ fontFamily: "Myriad Pro", fontSize: rem(16) }}
+          style={{ fontSize: rem(16) }}
         >
           Display Settings
         </Chip>
@@ -104,7 +104,7 @@ function SettingsModalContent() {
           <Chip
             toggleFn={() => setSelectedTab("GAME SETTINGS")}
             selected={selectedTab === "GAME SETTINGS"}
-            style={{ fontFamily: "Myriad Pro", fontSize: rem(16) }}
+            style={{fontSize: rem(16) }}
           >
             <FormattedMessage
               id="+XKsgE"
@@ -154,7 +154,6 @@ function SettingsModalContent() {
               <LabeledDiv
                 label="Tech Summary"
                 innerStyle={{
-                  fontFamily: "Myriad Pro",
                   flexDirection: "row",
                   flexWrap: "wrap",
                   gap: rem(4),

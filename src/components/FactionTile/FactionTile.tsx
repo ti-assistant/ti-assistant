@@ -21,7 +21,7 @@ export default function FactionTile({
   const colors = useFactionColors(factionId);
   const isPassed = useIsFactionPassed(factionId);
 
-  const color = isPassed ? "#555" : colors.border;
+  const color = isPassed ? "var(--passed-text)" : colors.border;
 
   const factionTileCSS = {
     "--color": color,

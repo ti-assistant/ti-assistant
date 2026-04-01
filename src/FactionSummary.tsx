@@ -280,9 +280,9 @@ function ObjectiveDots({ factionId }: { factionId: FactionId }) {
                           style={{
                             width: rem(4),
                             height: rem(4),
-                            border: `1px solid #ccc`,
+                            border: `1px solid var(--foreground-color)`,
                             borderRadius: "100%",
-                            backgroundColor: "#ccc",
+                            backgroundColor: "var(--foreground-color)",
                           }}
                         ></div>
                       );
@@ -294,7 +294,9 @@ function ObjectiveDots({ factionId }: { factionId: FactionId }) {
 
             const scorers = obj.scorers ?? [];
             const color =
-              obj.id === "Mutiny" && obj.points === -1 ? "#555" : "#ccc";
+              obj.id === "Mutiny" && obj.points === -1
+                ? "var(--passed-text)"
+                : "var(--foreground-color)";
             const title =
               obj.id === "Mutiny"
                 ? `${obj.name} - ${obj.points === 1 ? "For" : "Against"}`

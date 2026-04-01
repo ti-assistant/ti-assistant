@@ -698,12 +698,12 @@ export default function StrategyPhase() {
                         color={
                           factionId !== "Every Player"
                             ? factionColors[factionId]?.color
-                            : "#555"
+                            : "var(--passed-text)"
                         }
                         borderColor={
                           factionId !== "Every Player"
                             ? factionColors[factionId]?.border
-                            : "#555"
+                            : "var(--passed-text)"
                         }
                       >
                         <div

@@ -24,7 +24,12 @@ export default function ObjectiveCard({
       <div style={{ fontSize: "1em" }}>
         <div
           className="flexRow"
-          style={{ justifyContent: "space-between", width: "100%" }}
+          style={{
+            fontFamily: "Slider",
+            // fontWeight: "bold",
+            justifyContent: "space-between",
+            width: "100%",
+          }}
         >
           {objective.name}
           {hideZoomButton ? null : (
@@ -35,10 +40,9 @@ export default function ObjectiveCard({
         </div>
         <div
           style={{
-            fontFamily: "Myriad Pro",
             fontSize: "0.75em",
             color: "var(--muted-text)",
-            lineHeight: "1em",
+            lineHeight: "1.25em",
             whiteSpace: "normal",
             textAlign: "left",
           }}

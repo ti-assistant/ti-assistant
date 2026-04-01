@@ -58,7 +58,6 @@ export function LogEntryElement({
 }: LogEntryElementProps) {
   const agendas = useAgendas();
   const factions = useFactions();
-  const objectives = useObjectives();
   const planets = useAllPlanets();
   const relics = useRelics();
   const techs = useTechs();
@@ -71,7 +70,6 @@ export function LogEntryElement({
           style={{
             padding: `0 ${rem(10)}`,
             gap: rem(4),
-            fontFamily: "Myriad Pro",
           }}
         >
           Attached {logEntry.data.event.attachment} to{" "}
@@ -86,7 +84,6 @@ export function LogEntryElement({
           style={{
             padding: `0 ${rem(10)}`,
             gap: rem(4),
-            fontFamily: "Myriad Pro",
           }}
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} /> used
@@ -206,7 +203,6 @@ export function LogEntryElement({
           style={{
             padding: `0 ${rem(10)}`,
             gap: rem(4),
-            fontFamily: "Myriad Pro",
           }}
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} /> gained
@@ -221,7 +217,6 @@ export function LogEntryElement({
           style={{
             padding: `0 ${rem(10)}`,
             gap: rem(4),
-            fontFamily: "Myriad Pro",
           }}
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} /> lost
@@ -245,7 +240,6 @@ export function LogEntryElement({
           style={{
             padding: `0 ${rem(10)}`,
             gap: rem(4),
-            fontFamily: "Myriad Pro",
           }}
         >
           <ColoredFactionName factionId={activePlayer} /> used{" "}
@@ -259,7 +253,6 @@ export function LogEntryElement({
           style={{
             padding: `0 ${rem(10)}`,
             gap: rem(4),
-            fontFamily: "Myriad Pro",
           }}
         >
           Used Ssruu as {logEntry.data.event.subComponent}
@@ -272,7 +265,6 @@ export function LogEntryElement({
           style={{
             padding: `0 ${rem(10)}`,
             gap: rem(4),
-            fontFamily: "Myriad Pro",
           }}
         >
           Used Z&apos;eu Ω on {logEntry.data.event.faction}
@@ -286,7 +278,6 @@ export function LogEntryElement({
           style={{
             padding: `0 ${rem(10)}`,
             gap: rem(4),
-            fontFamily: "Myriad Pro",
           }}
         >
           New Speaker:
@@ -304,7 +295,6 @@ export function LogEntryElement({
           style={{
             padding: `0 ${rem(10)}`,
             gap: rem(4),
-            fontFamily: "Myriad Pro",
           }}
         >
           New Tyrant:
@@ -319,7 +309,6 @@ export function LogEntryElement({
           style={{
             padding: `0 ${rem(10)}`,
             gap: rem(4),
-            fontFamily: "Myriad Pro",
           }}
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} />
@@ -336,7 +325,6 @@ export function LogEntryElement({
           style={{
             padding: `0 ${rem(10)}`,
             gap: rem(4),
-            fontFamily: "Myriad Pro",
           }}
         >
           Eligible outcomes revealed as{" "}
@@ -352,7 +340,6 @@ export function LogEntryElement({
           style={{
             padding: `0 ${rem(10)}`,
             gap: rem(4),
-            fontFamily: "Myriad Pro",
           }}
         >
           Covert agenda revealed as {subAgenda}
@@ -367,7 +354,6 @@ export function LogEntryElement({
           style={{
             padding: `0 ${rem(10)}`,
             gap: rem(4),
-            fontFamily: "Myriad Pro",
           }}
         >
           {objective} removed
@@ -382,7 +368,6 @@ export function LogEntryElement({
           style={{
             padding: `0 ${rem(10)}`,
             gap: rem(4),
-            fontFamily: "Myriad Pro",
           }}
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} />
@@ -397,7 +382,6 @@ export function LogEntryElement({
           style={{
             padding: `0 ${rem(10)}`,
             gap: rem(4),
-            fontFamily: "Myriad Pro",
           }}
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} />
@@ -413,7 +397,6 @@ export function LogEntryElement({
           style={{
             padding: `0 ${rem(10)}`,
             gap: rem(4),
-            fontFamily: "Myriad Pro",
           }}
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} />
@@ -439,7 +422,6 @@ export function LogEntryElement({
           style={{
             padding: `0 ${rem(10)}`,
             gap: rem(4),
-            fontFamily: "Myriad Pro",
           }}
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} />
@@ -458,7 +440,6 @@ export function LogEntryElement({
           style={{
             padding: `0 ${rem(10)}`,
             gap: rem(4),
-            fontFamily: "Myriad Pro",
           }}
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} />
@@ -482,7 +463,6 @@ export function LogEntryElement({
           style={{
             padding: `0 ${rem(10)}`,
             gap: rem(4),
-            fontFamily: "Myriad Pro",
           }}
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} />
@@ -502,7 +482,6 @@ export function LogEntryElement({
           style={{
             padding: `0 ${rem(10)}`,
             gap: rem(4),
-            fontFamily: "Myriad Pro",
           }}
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} />
@@ -522,7 +501,6 @@ export function LogEntryElement({
           style={{
             padding: `0 ${rem(10)}`,
             gap: rem(4),
-            fontFamily: "Myriad Pro",
           }}
         >
           <ColoredFactionName factionId={logEntry.data.event.faction} /> took
@@ -633,7 +611,6 @@ export function LogEntryElement({
               style={{
                 padding: `0 ${rem(10)}`,
                 gap: rem(4),
-                fontFamily: "Myriad Pro",
               }}
             >
               <ColoredFactionName factionId={relicOwner} />
@@ -649,7 +626,6 @@ export function LogEntryElement({
               style={{
                 padding: `0 ${rem(10)}`,
                 gap: rem(4),
-                fontFamily: "Myriad Pro",
               }}
             >
               <ColoredFactionName factionId={relicOwner} />
@@ -667,7 +643,6 @@ export function LogEntryElement({
           style={{
             padding: `0 ${rem(10)}`,
             gap: rem(4),
-            fontFamily: "Myriad Pro",
           }}
         >
           <ColoredFactionName factionId="Embers of Muaat" />
@@ -723,7 +698,6 @@ export function LogEntryElement({
           style={{
             padding: `0 ${rem(10)}`,
             gap: rem(4),
-            fontFamily: "Myriad Pro",
           }}
         >
           Purged System: {logEntry.data.event.systemId}
@@ -741,7 +715,6 @@ export function LogEntryElement({
           style={{
             padding: `0 ${rem(10)}`,
             gap: rem(4),
-            fontFamily: "Myriad Pro",
           }}
         >
           {logEntry.data.event.factionId ? (
@@ -767,7 +740,6 @@ export function LogEntryElement({
           style={{
             padding: `0 ${rem(10)}`,
             gap: rem(4),
-            fontFamily: "Myriad Pro",
           }}
         >
           <ColoredFactionName factionId={logEntry.data.event.factionId} />
@@ -783,7 +755,6 @@ export function LogEntryElement({
           style={{
             padding: `0 ${rem(10)}`,
             gap: rem(4),
-            fontFamily: "Myriad Pro",
           }}
         >
           <ColoredFactionName factionId={logEntry.data.event.factionId} />

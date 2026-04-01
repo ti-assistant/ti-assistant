@@ -577,7 +577,7 @@ function PromissoriesSection() {
                     selectedFaction={owner}
                     borderColor={
                       disabled
-                        ? "#555"
+                        ? "var(--passed-text)"
                         : owner
                           ? getFactionColor(factions[owner])
                           : undefined

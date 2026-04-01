@@ -44,6 +44,7 @@ import {
   HideObjectiveHandler,
   RevealObjectiveHandler,
 } from "../model/revealObjective";
+import { HideTFCardHandler, RevealTFCardHandler } from "../model/revealTFCard";
 import {
   ScoreObjectiveHandler,
   UnscoreObjectiveHandler,
@@ -586,6 +587,16 @@ export function getOppositeHandler(
     case "LOSE_TF_CARD":
       return new GainTFCardHandler(gameData, {
         action: "GAIN_TF_CARD",
+        event: data.event,
+      });
+    case "REVEAL_TF_CARD":
+      return new HideTFCardHandler(gameData, {
+        action: "HIDE_TF_CARD",
+        event: data.event,
+      });
+    case "HIDE_TF_CARD":
+      return new RevealTFCardHandler(gameData, {
+        action: "REVEAL_TF_CARD",
         event: data.event,
       });
     case "MANUAL_VOTE_UPDATE":

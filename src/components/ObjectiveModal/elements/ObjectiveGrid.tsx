@@ -133,7 +133,6 @@ export default function ObjectiveGrid({ asModal }: { asModal?: boolean }) {
           top: 0,
           right: 0,
           gap: rem(4),
-          fontFamily: "Myriad Pro",
         }}
       >
         <FormattedMessage

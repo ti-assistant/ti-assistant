@@ -220,6 +220,7 @@ export default function AttachmentSelectRadialMenu({
       ) : null}
       <Circle
         borderColor={borderColor}
+        backgroundColor="var(--background-color)"
         tag={tag}
         tagBorderColor={tagBorderColor}
         size={size}

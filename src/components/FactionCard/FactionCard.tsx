@@ -6,6 +6,7 @@ import { rem } from "../../util/util";
 import FactionComponents from "../FactionComponents/FactionComponents";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import styles from "./FactionCard.module.scss";
+import FactionIcon from "../FactionIcon/FactionIcon";
 
 const FactionPanel = dynamic(() => import("../FactionPanel"), {
   loading: () => (
@@ -48,8 +49,9 @@ export default function FactionCard({
   return (
     <LabeledDiv
       label={
-        <div className="flexRow" style={{ gap: 0 }}>
-          {<FactionComponents.Name factionId={factionId} />}
+        <div className="flexRow" style={{ gap: "0.25rem" }}>
+          <FactionIcon factionId={factionId} size={16} />
+          <FactionComponents.Name factionId={factionId} />
           <FactionPanel factionId={factionId} options={options} />
         </div>
       }

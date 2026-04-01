@@ -5,7 +5,6 @@ import {
   Firestore,
   Timestamp,
   Transaction,
-  getFirestore,
 } from "firebase-admin/firestore";
 import { NextResponse } from "next/server";
 import {
@@ -107,6 +106,10 @@ import {
   HideObjectiveHandler,
   RevealObjectiveHandler,
 } from "../../../../src/util/model/revealObjective";
+import {
+  HideTFCardHandler,
+  RevealTFCardHandler,
+} from "../../../../src/util/model/revealTFCard";
 import {
   ScoreObjectiveHandler,
   UnscoreObjectiveHandler,
@@ -658,6 +661,12 @@ function updateInTransaction(
         break;
       case "LOSE_TF_CARD":
         handler = new LoseTFCardHandler(gameData, data);
+        break;
+      case "REVEAL_TF_CARD":
+        handler = new RevealTFCardHandler(gameData, data);
+        break;
+      case "HIDE_TF_CARD":
+        handler = new HideTFCardHandler(gameData, data);
         break;
 
       case "UNDO": {

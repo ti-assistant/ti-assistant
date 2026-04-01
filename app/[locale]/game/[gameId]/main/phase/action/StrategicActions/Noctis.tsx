@@ -1,6 +1,13 @@
+import { use } from "react";
 import GainTFCard from "../../../../../../../../src/components/Actions/GainSplicedCard";
 import FactionComponents from "../../../../../../../../src/components/FactionComponents/FactionComponents";
+import FactionIcon from "../../../../../../../../src/components/FactionIcon/FactionIcon";
+import FormattedDescription from "../../../../../../../../src/components/FormattedDescription/FormattedDescription";
 import LabeledDiv from "../../../../../../../../src/components/LabeledDiv/LabeledDiv";
+import SpliceModal from "../../../../../../../../src/components/Splice/SpliceModal";
+import Toggle from "../../../../../../../../src/components/Toggle/Toggle";
+import { ModalContext } from "../../../../../../../../src/context/contexts";
+import { useActionCard } from "../../../../../../../../src/context/dataHooks";
 import {
   useFaction,
   useFactionColors,
@@ -22,6 +29,26 @@ export default Noctis;
 
 function Primary({ factionId }: { factionId: FactionId }) {
   const colors = useFactionColors(factionId);
+  const engineer = useActionCard("Engineer");
+
+  return (
+    <div>
+      {engineer ? (
+        <Toggle
+          selected={false}
+          toggleFn={() => {}}
+          info={{
+            title: engineer.name,
+            description: (
+              <FormattedDescription description={engineer.description} />
+            ),
+          }}
+        >
+          {engineer.name}
+        </Toggle>
+      ) : null}
+    </div>
+  );
 
   return (
     <div style={{ width: "fit-content" }}>
@@ -61,10 +88,37 @@ function Secondary({ factionId }: { factionId: FactionId }) {
 }
 
 function AllSecondaries({ activeFactionId }: { activeFactionId: FactionId }) {
+  const { openModal } = use(ModalContext);
   const orderedFactionIds = useOrderedFactionIds(
     "SPEAKER",
     undefined,
     activeFactionId,
+  );
+
+  return (
+    <div className="flexColumn">
+      Participants
+      <div className="flexRow">
+        {orderedFactionIds.map((factionId) => {
+          if (factionId === activeFactionId) {
+            return null;
+          }
+          return (
+            <Toggle key={factionId} selected={false} toggleFn={() => {}}>
+              <FactionIcon factionId={factionId} size={24} />
+            </Toggle>
+          );
+        })}
+      </div>
+      <button
+        className="outline"
+        onClick={() =>
+          openModal(<SpliceModal activeFactionId={activeFactionId} />)
+        }
+      >
+        Start Splice
+      </button>
+    </div>
   );
 
   return (

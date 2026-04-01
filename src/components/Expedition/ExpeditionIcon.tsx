@@ -36,7 +36,7 @@ export default function ExpeditionIcon({
             className="flexRow"
             style={{ position: "relative", width: rem(20) }}
           >
-            <ActionCardsSVG color={faded ? "#555" : undefined} />
+            <ActionCardsSVG color={faded ? "var(--passed-text)" : undefined} />
           </div>
         </>
       );
@@ -47,7 +47,10 @@ export default function ExpeditionIcon({
           className="flexRow"
           style={{ position: "relative", width: rem(32) }}
         >
-          <InfluenceSVG influence={5} color={faded ? "#555" : undefined} />
+          <InfluenceSVG
+            influence={5}
+            color={faded ? "var(--passed-text)" : undefined}
+          />
         </div>
       );
       break;
@@ -57,7 +60,10 @@ export default function ExpeditionIcon({
           className="flexRow"
           style={{ position: "relative", width: rem(32) }}
         >
-          <ResourcesSVG resources={5} color={faded ? "#555" : undefined} />
+          <ResourcesSVG
+            resources={5}
+            color={faded ? "var(--passed-text)" : undefined}
+          />
         </div>
       );
       break;
@@ -74,7 +80,7 @@ export default function ExpeditionIcon({
             className="flexRow"
             style={{ position: "relative", width: rem(20) }}
           >
-            <SecretIconSVG color={faded ? "#555" : undefined} />
+            <SecretIconSVG color={faded ? "var(--passed-text)" : undefined} />
           </div>
         </>
       );
@@ -84,7 +90,7 @@ export default function ExpeditionIcon({
         <TechSkipIcon
           size={24}
           outline={faded}
-          color={faded ? "#555" : undefined}
+          color={faded ? "var(--passed-text)" : undefined}
         />
       );
       break;
@@ -108,7 +114,9 @@ export default function ExpeditionIcon({
               filter: faded ? "grayscale(1)" : undefined,
             }}
           >
-            <TripleTradeGoodSVG color={faded ? "#555" : undefined} />
+            <TripleTradeGoodSVG
+              color={faded ? "var(--passed-text)" : undefined}
+            />
           </div>
         </>
       );

@@ -29,7 +29,7 @@ function getColorForNum(num: number) {
     return "#aaa";
   }
   if (num < 40) {
-    return "#ccc";
+    return "var(--foreground-color)";
   }
   if (num < 50) {
     return "var(--foreground-color)";

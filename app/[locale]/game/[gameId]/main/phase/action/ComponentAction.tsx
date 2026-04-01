@@ -190,7 +190,6 @@ function ComponentSelect({
 
   const numRows = options.expansions.includes("THUNDERS EDGE") ? 12 : 10;
   const innerStyle: CSSProperties = {
-    fontFamily: "Myriad Pro",
     padding: rem(8),
     display: "grid",
     gridAutoFlow: "column",
@@ -371,7 +370,9 @@ function ComponentSelect({
                           width: rem(10),
                         }}
                       >
-                        <RelicMenuSVG color={faded ? "#555" : undefined} />
+                        <RelicMenuSVG
+                          color={faded ? "var(--passed-text)" : undefined}
+                        />
                       </div>
                     </>
                   ) : null}

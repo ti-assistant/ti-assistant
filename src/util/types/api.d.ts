@@ -67,6 +67,7 @@ type GameUpdateData =
   | (PurgeSystemData | UnpurgeSystemData)
   | ToggleStructureData
   | (GainTFCardData | LoseTFCardData)
+  | (RevealTFCardData | HideTFCardData)
   | ChooseTFFactionData
   | UndoData;
 
@@ -453,6 +454,16 @@ interface LoseTFCardData {
   action: "LOSE_TF_CARD";
   event: TFCardEvent &
     (AbilityEvent | GenomeEvent | ParadigmEvent | UpgradeEvent);
+}
+
+interface RevealTFCardData {
+  action: "REVEAL_TF_CARD";
+  event: AbilityEvent | GenomeEvent | ParadigmEvent | UpgradeEvent;
+}
+
+interface HideTFCardData {
+  action: "HIDE_TF_CARD";
+  event: AbilityEvent | GenomeEvent | ParadigmEvent | UpgradeEvent;
 }
 
 interface GainAllianceEvent {

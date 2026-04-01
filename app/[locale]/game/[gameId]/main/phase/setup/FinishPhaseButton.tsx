@@ -1,6 +1,5 @@
 import { IntlShape, useIntl } from "react-intl";
 import {
-  useGameId,
   useLogEntries,
   useOptions,
   useViewOnly,
@@ -21,7 +20,6 @@ export default function FinishPhaseButton({
 }) {
   const dataUpdate = useDataUpdate();
   const factions = useFactions();
-  const gameId = useGameId();
   const intl = useIntl();
   const options = useOptions();
   const viewOnly = useViewOnly();
@@ -35,7 +33,6 @@ export default function FinishPhaseButton({
         <div
           style={{
             color: "firebrick",
-            fontFamily: "Myriad Pro",
             fontWeight: "bold",
           }}
         >

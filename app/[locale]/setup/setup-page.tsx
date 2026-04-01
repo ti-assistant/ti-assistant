@@ -41,6 +41,7 @@ import ColorPicker from "./components/ColorPicker";
 import PlayerNameInput from "./components/PlayerNameInput";
 import styles from "./setup.module.scss";
 import ChipGroup from "../../../src/components/Chip/ChipGroup";
+import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
 
 const SetupFactionPanel = dynamic(
   () => import("../../../src/components/SetupFactionPanel"),
@@ -1112,10 +1113,10 @@ function FactionSelect({
             zIndex: -1,
           }}
         >
-          <FactionComponents.Icon
+          {/* <FactionComponents.Icon
             factionId={faction.id}
             size={mobile ? 52 : 48}
-          />
+          /> */}
         </div>
       ) : null}
       <div
@@ -1152,8 +1153,9 @@ function FactionSelect({
                 <SelectableRow
                   itemId={updatedFactions[faction.id].name}
                   removeItem={() => selectFaction(undefined)}
-                  style={{ height: rem(32.67) }}
+                  style={{ height: rem(32.67), gap: "0.25rem" }}
                 >
+                  <FactionIcon factionId={faction.id} size={24} />
                   {updatedFactions[faction.id].name}
                   <SetupFactionPanel
                     faction={updatedFactions[faction.id]}
@@ -1230,7 +1232,7 @@ function FactionSelect({
                               <ExpansionIcon
                                 expansion={faction.expansion}
                                 size={8}
-                                color={faded ? "#555" : undefined}
+                                color={faded ? "var(--passed-text)" : undefined}
                               />
                             </div>
                           </>

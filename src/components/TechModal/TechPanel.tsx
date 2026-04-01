@@ -562,7 +562,7 @@ function TechsByFaction({
           style={{
             width: "100%",
             zIndex: 1,
-            borderBottom: "1px solid #555",
+            borderBottom: "1px solid var(--passed-text)",
           }}
         >
           {options.expansions.includes("TWILIGHTS FALL") ? (

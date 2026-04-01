@@ -141,6 +141,14 @@ export function getGainedCCs(actionLog: ActionLog, factionId: FactionId) {
     }, 0);
 }
 
+export function getGainedTFCards(actionLog: ActionLog) {
+  return getLogEntries<GainTFCardData>(actionLog, "GAIN_TF_CARD");
+}
+
+export function getRevealedTFCards(actionLog: ActionLog) {
+  return getLogEntries<RevealTFCardData>(actionLog, "REVEAL_TF_CARD");
+}
+
 export function getGainedTFCardLogEntries(
   actionLog: ActionLog,
   factionId: FactionId,

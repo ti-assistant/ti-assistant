@@ -67,7 +67,6 @@ export default function ObjectiveColumn({
             justifyContent: "space-between",
             gap: rem(2),
             position: "relative",
-            fontFamily: description ? "Myriad Pro" : undefined,
             fontSize: description ? rem(12) : undefined,
           }}
         >

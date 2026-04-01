@@ -5,6 +5,11 @@ import { getMessages } from "../../src/util/server";
 import { Optional } from "../../src/util/types/types";
 import { InnerLayout, LoadingLayout } from "./inner-layout";
 import { getTheme } from "../../src/util/theme";
+import { Mulish } from "next/font/google";
+
+const mulish = Mulish({
+  subsets: ["latin", "cyrillic"],
+});
 
 export const metadata: Metadata = {
   title: "Twilight Imperium Assistant",
@@ -52,7 +57,7 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang={locale}>
+    <html lang={locale} className={mulish.className}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: getTheme }} />
       </head>

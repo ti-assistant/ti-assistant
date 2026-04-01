@@ -46,7 +46,7 @@ export async function InnerLayout({
                       selectedLocale={locale}
                       locales={SUPPORTED_LOCALES}
                       invalidLocales={[locale]}
-                      size={28}
+                      size={24}
                     />
                   </div>
                 </div>

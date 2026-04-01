@@ -52,13 +52,16 @@ export default function GameTimer({ frozen = false }) {
       >
         <TimerDisplay
           time={!timers ? 0 : gameTimer}
-          style={{ fontSize: rem(28) }}
+          style={{ fontSize: rem(28), fontFamily: "var(--main-font)" }}
         />
       </div>
       {frozen ? null : (
         <div className="flexRow">
           {viewOnly ? null : (
-            <button className={styles.PauseButton} onClick={togglePause}>
+            <button
+              className={`${styles.PauseButton} outline`}
+              onClick={togglePause}
+            >
               {paused ? (
                 <FormattedMessage
                   id="dNmJ1r"

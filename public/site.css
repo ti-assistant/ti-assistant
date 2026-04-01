@@ -17,6 +17,7 @@
 
   --relic-color: #efe383;
 
+  --passed-text: oklch(0.45 0 0);
   --muted-text: oklch(0.6 0 0);
   --dimmed-text: oklch(0.7 0 0);
   --foreground-color: oklch(0.85 0 0);
@@ -95,6 +96,7 @@
   --relic-color: #b3a302;
 
 
+  --passed-text: oklch(0.80 0 0);
   --neutral-border: oklch(0.25 0 0);
   --muted-text: oklch(0.7 0 0);
   --dimmed-text: oklch(0.7 0 0);
@@ -131,7 +133,7 @@
 
 html {
   box-sizing: border-box;
-  font-size: clamp(16px, 1.25vw, 32px)
+  font-size: clamp(16px, 1.25vw, 32px);
 }
 
 *, *:before, *:after {
@@ -172,7 +174,7 @@ html {
 
 body {
   --main-font: "Slider";
-  font-family: var(--main-font);
+  font-family: var(--primary-font);
   margin: 0px 3.25rem;
   background-color: var(--background-color);
   color: var(--foreground-color);
@@ -282,7 +284,6 @@ a.primary:hover {
 a.outline {
   --border-color: var(--interactive-bg);
   --hover-color: var(--accent-color);
-  font-family: "Slider";
   padding: 0.25em 0.75em;
   border-radius: 0.25rem;
   background-color: var(--background-color);
@@ -310,8 +311,7 @@ svg {
 
 button {
   all: unset;
-  font-family: "Myriad Pro";
-  background-color: var(--interactive-bg);
+  background-color: var(--background-color);
   color: var(--foreground-color);
   padding: 0.1875rem 0.3125rem;
   border-radius: 0.25rem;
@@ -323,7 +323,7 @@ button {
 }
 
 button:hover {
-  background-color: var(--hovered-bg);
+  background-color: var(--dark-hover-bg);
   /* border: var(--border-size) solid var(--neutral-border); */
 }
 
@@ -332,11 +332,8 @@ button:focus-visible {
 }
 
 button.faded {
-  background-color: var(--disabled-bg);
-  color: #555;
-  /* box-sizing: border-box; */
-  /* border: 1px solid #333; */
-  border: none;
+  /* background-color: var(--disabled-bg); */
+  color: var(--selected-bg);
   filter: saturate(0.25);
 }
 
@@ -400,7 +397,6 @@ button.primary:not(:disabled):hover {
 button.outline {
   --border-color: var(--interactive-bg);
   --hover-color: var(--accent-color);
-  font-family: "Slider";
   background-color: var(--background-color);
   border: var(--border-size) solid var(--border-color);
   padding: 0.25em 0.75em;
@@ -464,7 +460,6 @@ input[type="textbox"]:invalid {
 }
 
 .popupIcon {
-  margin-left: 0.5rem;
   font-size: 1rem;
   position: relative;
   cursor: pointer;

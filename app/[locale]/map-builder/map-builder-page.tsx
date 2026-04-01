@@ -486,7 +486,7 @@ export default function MapBuilderPage() {
                   description="Label for a selector to change the number of players"
                 />
               </label>
-              <ChipGroup style={{ fontFamily: "Myriad Pro", gap: rem(4) }}>
+              <ChipGroup style={{ gap: rem(4) }}>
                 {[...Array(6)].map((e, index) => {
                   const number = index + 3;
                   return (
@@ -541,7 +541,6 @@ export default function MapBuilderPage() {
                   <ChipGroup
                     style={{
                       gap: rem(4),
-                      fontFamily: "Myriad Pro",
                     }}
                   >
                     {mapStyles.map((style) => {

@@ -77,35 +77,16 @@ export default async function Layout({
   children,
   params,
 }: LayoutProps<"/[locale]/game/[gameId]">) {
-  const { gameId, locale } = await params;
-  const intlPromise = getIntl(locale);
-
-  const qrCodePromise = getQRCode(gameId, 280);
-
-  const qrCode = await qrCodePromise;
+  const { gameId } = await params;
 
   const sessionId = await getSessionIdFromCookie();
 
   return (
-    <>
-      <div className={styles.QRCode}>
-        <GameCode gameId={gameId} intlPromise={intlPromise} qrCode={qrCode} />
-      </div>
-      {/* <div className={styles.Map}>
-        <MapButton />
-      </div>
-      <div className={styles.MobileQRCode}>
-        <QRCodeButton gameId={gameId} qrCode={qrCode} />
-      </div> */}
-      <Suspense fallback={<GameLoader />}>
-        <DataInitializer
-          gameId={gameId}
-          data={fetchGameData(gameId, sessionId)}
-        >
-          <DynamicSidebars />
-          {children}
-        </DataInitializer>
-      </Suspense>
-    </>
+    <Suspense fallback={<GameLoader />}>
+      <DataInitializer gameId={gameId} data={fetchGameData(gameId, sessionId)}>
+        <DynamicSidebars />
+        {children}
+      </DataInitializer>
+    </Suspense>
   );
 }

@@ -6,7 +6,7 @@ import { objectEntries } from "../util";
 
 type CardEvent = AbilityEvent | GenomeEvent | ParadigmEvent | UpgradeEvent;
 
-function equals(
+function tfCardEquals(
   a: TFCardEvent & CardEvent,
   b: TFCardEvent & CardEvent,
 ): boolean {
@@ -116,7 +116,7 @@ export class GainTFCardHandler implements Handler {
   getActionLogAction(entry: ActionLogEntry<GameUpdateData>): ActionLogAction {
     if (
       entry.data.action === "LOSE_TF_CARD" &&
-      equals(entry.data.event, this.data.event)
+      tfCardEquals(entry.data.event, this.data.event)
     ) {
       return "DELETE";
     }
@@ -198,7 +198,7 @@ export class LoseTFCardHandler implements Handler {
   getActionLogAction(entry: ActionLogEntry<GameUpdateData>): ActionLogAction {
     if (
       entry.data.action === "GAIN_TF_CARD" &&
-      equals(entry.data.event, this.data.event)
+      tfCardEquals(entry.data.event, this.data.event)
     ) {
       return "DELETE";
     }
