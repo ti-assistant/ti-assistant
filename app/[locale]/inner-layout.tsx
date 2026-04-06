@@ -69,7 +69,7 @@ export function LoadingLayout() {
         <div className={styles.LoadingLogo}>
           <SiteLogo />
         </div>
-        Twilight Imperium Assistant
+        TI Assistant
       </div>
     </>
   );

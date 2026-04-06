@@ -13,7 +13,6 @@ interface InfoContentProps {
 function InfoContent({ objective }: InfoContentProps) {
   return (
     <div
-      className="myriadPro"
       style={{
         boxSizing: "border-box",
         maxWidth: rem(800),

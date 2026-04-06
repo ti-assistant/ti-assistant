@@ -13,7 +13,6 @@ import ScorableFactionIcon from "./ScorableFactionIcon";
 function InfoContent({ objective }: { objective: Objective }) {
   return (
     <div
-      className="myriadPro"
       style={{
         boxSizing: "border-box",
         maxWidth: rem(800),

@@ -272,7 +272,6 @@ function MobileOptions({
               className="flexRow"
               style={{
                 justifyContent: "flex-start",
-                fontFamily: "Source Sans",
                 gap: rem(4),
               }}
             >
@@ -364,7 +363,6 @@ function MobileOptions({
                   style={{
                     justifyContent: "flex-start",
                     padding: `0 ${rem(16)}`,
-                    fontFamily: "Source Sans",
                   }}
                 >
                   <Toggle
@@ -397,7 +395,6 @@ function MobileOptions({
                       gridTemplateColumns: "repeat(5, 1fr)",
                       justifyContent: "flex-start",
                       alignContent: "flex-start",
-                      fontFamily: "Source Sans",
                       gap: rem(4),
                       overflowX: "scroll",
                       width: "100%",
@@ -437,7 +434,6 @@ function MobileOptions({
                 <div
                   className="flexColumn"
                   style={{
-                    fontFamily: "Source Sans",
                     padding: `${rem(8)} ${rem(16)}`,
                     alignItems: "flex-start",
                     whiteSpace: "pre-wrap",
@@ -670,7 +666,6 @@ function Options({
               className="flexRow"
               style={{
                 justifyContent: "flex-start",
-                fontFamily: "Source Sans",
                 gap: rem(4),
               }}
             >
@@ -759,7 +754,6 @@ function Options({
                 style={{
                   justifyContent: "flex-start",
                   padding: `0 ${rem(20)}`,
-                  fontFamily: "Source Sans",
                 }}
               >
                 <Toggle
@@ -793,7 +787,6 @@ function Options({
                     justifyContent: "flex-start",
                     alignContent: "flex-start",
                     padding: `0 ${rem(20)}`,
-                    fontFamily: "Source Sans",
                     gap: rem(4),
                   }}
                 >
@@ -1897,7 +1890,6 @@ export default function SetupPage() {
                 display: "grid",
                 gridTemplateColumns: "min-content 1fr",
                 gridAutoFlow: "row",
-                fontFamily: "Source Sans",
                 fontSize: rem(12),
                 width: "100%",
                 whiteSpace: "nowrap",
@@ -1968,7 +1960,6 @@ export default function SetupPage() {
                 style={{
                   width: "100%",
                   fontSize: rem(12),
-                  fontFamily: "Source Sans",
                 }}
                 value={options["map-string"]}
                 onChange={(event) => {
@@ -2381,7 +2372,6 @@ export default function SetupPage() {
               style={{
                 color: "firebrick",
                 maxWidth: rem(240),
-                fontFamily: "Source Sans",
               }}
             >
               <FormattedMessage

@@ -21,6 +21,8 @@ export const Events = {
   HideAgendaEvent,
   HideObjectiveEvent,
   HideTFCardEvent,
+  JoinSpliceEvent,
+  LeaveSpliceEvent,
   LoseAllianceEvent,
   LoseRelicEvent,
   LoseTFCardEvent,
@@ -59,6 +61,7 @@ export const Events = {
   ToggleStructureEvent,
   UnclaimPlanetEvent,
   UndoAdjudicatorBaalEvent,
+  UndoGenomeEvent,
   UnpassEvent,
   UnplayActionCardEvent,
   UnplayPromissoryNoteEvent,
@@ -70,6 +73,7 @@ export const Events = {
   UpdateBreakthroughStateEvent,
   UpdateLeaderStateEvent,
   UpdatePlanetStateEvent,
+  UseGenomeEvent,
 } as const;
 
 function AddAttachmentEvent(
@@ -320,6 +324,20 @@ function HideTFCardEvent(
   return {
     action: "HIDE_TF_CARD",
     event,
+  };
+}
+
+function JoinSpliceEvent(factionId: FactionId): JoinSpliceData {
+  return {
+    action: "JOIN_SPLICE",
+    event: { factionId },
+  };
+}
+
+function LeaveSpliceEvent(factionId: FactionId): LeaveSpliceData {
+  return {
+    action: "LEAVE_SPLICE",
+    event: { factionId },
   };
 }
 
@@ -770,6 +788,15 @@ function UndoAdjudicatorBaalEvent(systemId: SystemId): UndoAdjudicatorBaalData {
   };
 }
 
+function UndoGenomeEvent(genomeId: TFGenomeId): UndoGenomeData {
+  return {
+    action: "UNDO_GENOME",
+    event: {
+      genomeId,
+    },
+  };
+}
+
 function UnpassEvent(factionId: FactionId): UnpassData {
   return {
     action: "UNPASS",
@@ -895,6 +922,15 @@ function UpdatePlanetStateEvent(
     event: {
       planet,
       state,
+    },
+  };
+}
+
+function UseGenomeEvent(genomeId: TFGenomeId): UseGenomeData {
+  return {
+    action: "USE_GENOME",
+    event: {
+      genomeId,
     },
   };
 }

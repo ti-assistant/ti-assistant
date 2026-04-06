@@ -26,6 +26,7 @@ import {
 import { GainRelicHandler, LoseRelicHandler } from "../model/gainRelic";
 import { GainTFCardHandler, LoseTFCardHandler } from "../model/gainTFCard";
 import { GiftOfPrescienceHandler } from "../model/giftOfPrescience";
+import { JoinSpliceHandler, LeaveSpliceHandler } from "../model/joinSplice";
 import { ManualCCUpdateHandler } from "../model/manualCCUpdate";
 import { ManualVoteUpdateHandler } from "../model/manualVoteUpdate";
 import { ManualVPUpdateHandler } from "../model/manualVPUpdate";
@@ -90,6 +91,7 @@ import { PassHandler, UnpassHandler } from "../model/unpass";
 import { UpdateBreakthroughStateHandler } from "../model/updateBreakthroughState";
 import { UpdateLeaderStateHandler } from "../model/updateLeaderState";
 import { UpdatePlanetStateHandler } from "../model/updatePlanetState";
+import { UndoGenomeHandler, UseGenomeHandler } from "../model/useGenome";
 import { getOppositeHandler } from "./opposite";
 
 export function getHandler(gameData: StoredGameData, data: GameUpdateData) {
@@ -252,5 +254,13 @@ export function getHandler(gameData: StoredGameData, data: GameUpdateData) {
       return new RevealTFCardHandler(gameData, data);
     case "HIDE_TF_CARD":
       return new HideTFCardHandler(gameData, data);
+    case "USE_GENOME":
+      return new UseGenomeHandler(gameData, data);
+    case "UNDO_GENOME":
+      return new UndoGenomeHandler(gameData, data);
+    case "JOIN_SPLICE":
+      return new JoinSpliceHandler(gameData, data);
+    case "LEAVE_SPLICE":
+      return new LeaveSpliceHandler(gameData, data);
   }
 }

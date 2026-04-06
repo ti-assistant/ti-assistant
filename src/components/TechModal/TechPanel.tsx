@@ -907,7 +907,7 @@ function TFTechList({
                       }
                       infoContent={
                         <div
-                          className="myriadPro flexColumn"
+                          className="flexColumn"
                           style={{
                             width: "100%",
                             padding: rem(4),

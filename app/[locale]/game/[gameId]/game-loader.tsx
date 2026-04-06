@@ -10,7 +10,7 @@ export default function GameLoader({}) {
         <div className={styles.LoadingLogo}>
           <SiteLogo />
         </div>
-        Twilight Imperium Assistant
+        TI Assistant
       </div>
     </>
   );

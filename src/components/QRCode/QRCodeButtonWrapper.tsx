@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useGameId } from "../../context/dataHooks";
 import QRCodeButton from "./QRCodeButton";
 import { usePathname } from "next/navigation";
+import UndoButton from "../UndoButton/UndoButton";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
@@ -55,4 +56,18 @@ export default function QRCodeButtonWrapper() {
   }
 
   return <QRCodeButton gameId={gameId} qrCode={qrCode} />;
+}
+
+export function UndoButtonWrapper() {
+  const pathname = usePathname();
+  const gameId = useGameId();
+
+  if (!gameId || gameId === "") {
+    return null;
+  }
+  if (!pathname.includes("/game/") && !pathname.includes("/archive/")) {
+    return null;
+  }
+
+  return <UndoButton gameId={gameId} />;
 }

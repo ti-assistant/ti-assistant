@@ -152,7 +152,7 @@ export default function ObjectivesSection({
         return (
           <Fragment key={objId}>
             <LabeledDiv key={objId} label={objId} innerStyle={{ gap: rem(4) }}>
-              <div style={{ fontFamily: "Source Sans", fontSize: rem(14) }}>
+              <div style={{fontSize: rem(14) }}>
                 {baseObjectives[objId].description}
               </div>
               {tab !== "SECRET" && tab !== "OTHER" ? (
@@ -264,7 +264,7 @@ function FactionsTable({
             games = factionGames[factionId] ?? 0;
           }
           return (
-            <tr key={factionId} style={{ fontFamily: "Source Sans" }}>
+            <tr key={factionId}>
               <td
                 style={{
                   display: "flex",

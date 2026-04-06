@@ -2,12 +2,8 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { getFactions } from "../../../server/data/factions";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import { SelectableRow } from "../../SelectableRow";
-import {
-  useGameId,
-  useOptions,
-  useTechs,
-  useViewOnly,
-} from "../../context/dataHooks";
+import { TechRow } from "../../TechRow";
+import { useOptions, useTechs, useViewOnly } from "../../context/dataHooks";
 import {
   useFaction,
   useFactions,
@@ -29,11 +25,7 @@ import { useDataUpdate } from "../../util/api/dataUpdate";
 import { Events } from "../../util/api/events";
 import { getFactionColor } from "../../util/factions";
 import { getMapString } from "../../util/options";
-import {
-  canResearchTech,
-  getFactionPreReqs,
-  getTechColor,
-} from "../../util/techs";
+import { canResearchTech, getFactionPreReqs } from "../../util/techs";
 import { objectEntries, rem } from "../../util/util";
 import Conditional from "../Conditional/Conditional";
 import ExpansionIcon from "../ExpansionIcon/ExpansionIcon";
@@ -44,7 +36,6 @@ import TechIcon from "../TechIcon/TechIcon";
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
 import { Strings } from "../strings";
 import styles from "./StartingComponents.module.scss";
-import { TechRow } from "../../TechRow";
 
 interface StartingComponentsProps {
   factionId: FactionId;
@@ -72,7 +63,6 @@ export default function StartingComponents({
 }: StartingComponentsProps) {
   const dataUpdate = useDataUpdate();
   const faction = useFaction(factionId);
-  const gameId = useGameId();
   const options = useOptions();
   const techs = useTechs();
   const viewOnly = useViewOnly();
@@ -192,11 +182,6 @@ export default function StartingComponents({
 
   return (
     <div className={styles.StartingComponents}>
-      {showFactionIcon ? (
-        <div className={styles.FactionIcon}>
-          <FactionComponents.Icon factionId={factionId} size={60} />
-        </div>
-      ) : null}
       {options.expansions.includes("TWILIGHTS FALL") ? (
         <div className={styles.TFFactionSelectSection}>
           {options.hide?.includes("PLANETS") && !mapString ? null : (

@@ -299,3 +299,47 @@ export function sortTechsByName(techs: Tech[]) {
     return -1;
   });
 }
+
+export function getAntimatterForFaction(factionId: FactionId): TechId {
+  switch (factionId) {
+    case "A Sickening Lurch":
+      return "Antimatter Black";
+    case "Avarice Rex":
+      return "Antimatter Yellow";
+    case "El Nen Janovet":
+      return "Antimatter Pink";
+    case "Il Na Viroset":
+      return "Antimatter Purple";
+    case "Il Sai Lakoe":
+      return "Antimatter Green";
+    case "The Ruby Monarch":
+      return "Antimatter Red";
+    case "The Saint of Swords":
+      return "Antimatter Blue";
+    case "Radiant Aur":
+      return "Antimatter Orange";
+  }
+  return "Antimatter Black";
+}
+
+export function getWavelengthForFaction(factionId: FactionId): TechId {
+  switch (factionId) {
+    case "A Sickening Lurch":
+      return "Wavelength Black";
+    case "Avarice Rex":
+      return "Wavelength Yellow";
+    case "El Nen Janovet":
+      return "Wavelength Pink";
+    case "Il Na Viroset":
+      return "Wavelength Purple";
+    case "Il Sai Lakoe":
+      return "Wavelength Green";
+    case "The Ruby Monarch":
+      return "Wavelength Red";
+    case "The Saint of Swords":
+      return "Wavelength Blue";
+    case "Radiant Aur":
+      return "Wavelength Orange";
+  }
+  return "Wavelength Black";
+}

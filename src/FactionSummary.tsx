@@ -376,31 +376,6 @@ function FactionObjectiveSummary({ factionId }: { factionId: FactionId }) {
   return (
     <div className={styles.VPGrid}>
       <div
-        className="flexColumn"
-        style={{
-          position: "absolute",
-          zIndex: -1,
-          width: "100%",
-          height: "100%",
-          top: 0,
-          left: 0,
-        }}
-      >
-        <div
-          className="flexColumn"
-          style={{
-            position: "absolute",
-            zIndex: -1,
-            opacity: 0.25,
-            width: rem(60),
-            height: rem(60),
-            userSelect: "none",
-          }}
-        >
-          <FactionComponents.Icon factionId={factionId} size="100%" />
-        </div>
-      </div>
-      <div
         className="flexRow"
         style={{
           gap: rem(4),

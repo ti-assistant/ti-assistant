@@ -114,6 +114,14 @@ export function getActionCardTargets(actionLog: ActionLog, card: string) {
     .map((logEntry) => logEntry.data.event.target);
 }
 
+export function wasGenomeUsed(actionLog: ActionLog, genomeId: TFGenomeId) {
+  return (
+    getLogEntries<UseGenomeData>(actionLog, "USE_GENOME").filter(
+      (logEntry) => logEntry.data.event.genomeId === genomeId,
+    ).length > 0
+  );
+}
+
 export function getPromissoryTargets(actionLog: ActionLog, card: string) {
   return getLogEntries<PlayPromissoryNoteData>(
     actionLog,
@@ -308,4 +316,10 @@ export function getLatestExpedition(
   )
     .filter((logEntry) => logEntry.data.event.factionId === factionId)
     .map((logEntry) => logEntry.data.event)[0];
+}
+
+export function getSpliceParticipants(actionLog: ActionLog) {
+  return getLogEntries<JoinSpliceData>(actionLog, "JOIN_SPLICE").map(
+    (entry) => entry.data.event.factionId,
+  );
 }

@@ -12,7 +12,6 @@ function InfoContent({ agenda }: { agenda: Agenda }) {
 
   return (
     <div
-      className="myriadPro"
       style={{
         boxSizing: "border-box",
         width: "100%",

@@ -2,22 +2,20 @@ import { use } from "react";
 import GainTFCard from "../../../../../../../../src/components/Actions/GainSplicedCard";
 import FactionComponents from "../../../../../../../../src/components/FactionComponents/FactionComponents";
 import FactionIcon from "../../../../../../../../src/components/FactionIcon/FactionIcon";
-import FormattedDescription from "../../../../../../../../src/components/FormattedDescription/FormattedDescription";
 import LabeledDiv from "../../../../../../../../src/components/LabeledDiv/LabeledDiv";
 import SpliceModal from "../../../../../../../../src/components/Splice/SpliceModal";
 import Toggle from "../../../../../../../../src/components/Toggle/Toggle";
 import { ModalContext } from "../../../../../../../../src/context/contexts";
-import { useActionCard } from "../../../../../../../../src/context/dataHooks";
-import {
-  useFaction,
-  useFactionColors,
-} from "../../../../../../../../src/context/factionDataHooks";
+import { useCurrentTurn } from "../../../../../../../../src/context/dataHooks";
+import { useFaction } from "../../../../../../../../src/context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../../../../../../src/context/gameDataHooks";
+import { getSpliceParticipants } from "../../../../../../../../src/util/actionLog";
+import { useDataUpdate } from "../../../../../../../../src/util/api/dataUpdate";
+import { Events } from "../../../../../../../../src/util/api/events";
 import {
   convertToFactionBorder,
   convertToFactionColor,
 } from "../../../../../../../../src/util/factions";
-import { rem } from "../../../../../../../../src/util/util";
 
 const Noctis = {
   Primary,
@@ -28,40 +26,7 @@ const Noctis = {
 export default Noctis;
 
 function Primary({ factionId }: { factionId: FactionId }) {
-  const colors = useFactionColors(factionId);
-  const engineer = useActionCard("Engineer");
-
-  return (
-    <div>
-      {engineer ? (
-        <Toggle
-          selected={false}
-          toggleFn={() => {}}
-          info={{
-            title: engineer.name,
-            description: (
-              <FormattedDescription description={engineer.description} />
-            ),
-          }}
-        >
-          {engineer.name}
-        </Toggle>
-      ) : null}
-    </div>
-  );
-
-  return (
-    <div style={{ width: "fit-content" }}>
-      <LabeledDiv
-        label={<FactionComponents.Name factionId={factionId} />}
-        color={colors.color}
-        borderColor={colors.border}
-        blur
-      >
-        <GainTFCard factionId={factionId} numToGain={{ genomes: 1 }} splice />
-      </LabeledDiv>
-    </div>
-  );
+  return null;
 }
 
 function Secondary({ factionId }: { factionId: FactionId }) {
@@ -94,52 +59,48 @@ function AllSecondaries({ activeFactionId }: { activeFactionId: FactionId }) {
     undefined,
     activeFactionId,
   );
+  const dataUpdate = useDataUpdate();
+  const currentTurn = useCurrentTurn();
+
+  const spliceParticipants = new Set(getSpliceParticipants(currentTurn));
 
   return (
-    <div className="flexColumn">
-      Participants
-      <div className="flexRow">
-        {orderedFactionIds.map((factionId) => {
-          if (factionId === activeFactionId) {
-            return null;
-          }
-          return (
-            <Toggle key={factionId} selected={false} toggleFn={() => {}}>
-              <FactionIcon factionId={factionId} size={24} />
-            </Toggle>
-          );
-        })}
-      </div>
+    <div className="flexColumn" style={{ fontSize: "1rem" }}>
+      <LabeledDiv label="Participate" rightLabel="Cost: 1 CC">
+        <div className="flexRow">
+          {orderedFactionIds.map((factionId) => {
+            if (factionId === activeFactionId) {
+              return null;
+            }
+            const inSplice = spliceParticipants.has(factionId);
+            return (
+              <Toggle
+                key={factionId}
+                selected={inSplice}
+                toggleFn={() => {
+                  if (inSplice) {
+                    dataUpdate(Events.LeaveSpliceEvent(factionId));
+                  } else {
+                    dataUpdate(Events.JoinSpliceEvent(factionId));
+                  }
+                }}
+              >
+                <FactionIcon factionId={factionId} size={24} />
+              </Toggle>
+            );
+          })}
+        </div>
+      </LabeledDiv>
       <button
         className="outline"
         onClick={() =>
-          openModal(<SpliceModal activeFactionId={activeFactionId} />)
+          openModal(
+            <SpliceModal activeFactionId={activeFactionId} type="GENOME" />,
+          )
         }
       >
         Start Splice
       </button>
-    </div>
-  );
-
-  return (
-    <div
-      className="flexRow mediumFont"
-      style={{
-        paddingTop: rem(4),
-        width: "100%",
-        flexWrap: "wrap",
-      }}
-    >
-      {orderedFactionIds.map((factionId) => {
-        if (factionId === activeFactionId) {
-          return null;
-        }
-        return (
-          <div key={factionId} style={{ width: "48%" }}>
-            <Secondary factionId={factionId} />
-          </div>
-        );
-      })}
     </div>
   );
 }

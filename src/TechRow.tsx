@@ -23,7 +23,7 @@ function InfoContent({ tech }: { tech: Tech }) {
   if (tech.type === "UPGRADE") {
     return (
       <div
-        className="myriadPro flexColumn"
+        className="flexColumn"
         style={{
           width: "100%",
           padding: rem(4),
@@ -62,7 +62,7 @@ function InfoContent({ tech }: { tech: Tech }) {
   }
   return (
     <div
-      className="myriadPro flexColumn"
+      className="flexColumn"
       style={{
         width: "100%",
         padding: rem(4),

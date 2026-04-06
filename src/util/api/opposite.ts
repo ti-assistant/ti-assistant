@@ -20,6 +20,7 @@ import {
 import { GainRelicHandler, LoseRelicHandler } from "../model/gainRelic";
 import { GainTFCardHandler, LoseTFCardHandler } from "../model/gainTFCard";
 import { GiftOfPrescienceHandler } from "../model/giftOfPrescience";
+import { JoinSpliceHandler, LeaveSpliceHandler } from "../model/joinSplice";
 import { ManualCCUpdateHandler } from "../model/manualCCUpdate";
 import { ManualVoteUpdateHandler } from "../model/manualVoteUpdate";
 import { ManualVPUpdateHandler } from "../model/manualVPUpdate";
@@ -66,6 +67,7 @@ import { PassHandler, UnpassHandler } from "../model/unpass";
 import { UpdateBreakthroughStateHandler } from "../model/updateBreakthroughState";
 import { UpdateLeaderStateHandler } from "../model/updateLeaderState";
 import { UpdatePlanetStateHandler } from "../model/updatePlanetState";
+import { UndoGenomeHandler, UseGenomeHandler } from "../model/useGenome";
 
 export function getOppositeHandler(
   gameData: StoredGameData,
@@ -606,6 +608,26 @@ export function getOppositeHandler(
           faction: data.event.faction,
           votes: 0 - data.event.votes,
         },
+      });
+    case "USE_GENOME":
+      return new UndoGenomeHandler(gameData, {
+        action: "UNDO_GENOME",
+        event: data.event,
+      });
+    case "UNDO_GENOME":
+      return new UseGenomeHandler(gameData, {
+        action: "USE_GENOME",
+        event: data.event,
+      });
+    case "JOIN_SPLICE":
+      return new LeaveSpliceHandler(gameData, {
+        action: "LEAVE_SPLICE",
+        event: data.event,
+      });
+    case "LEAVE_SPLICE":
+      return new JoinSpliceHandler(gameData, {
+        action: "JOIN_SPLICE",
+        event: data.event,
       });
   }
 }

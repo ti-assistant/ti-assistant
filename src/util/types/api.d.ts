@@ -69,6 +69,8 @@ type GameUpdateData =
   | (GainTFCardData | LoseTFCardData)
   | (RevealTFCardData | HideTFCardData)
   | ChooseTFFactionData
+  | (UseGenomeData | UndoGenomeData)
+  | (JoinSpliceData | LeaveSpliceData)
   | UndoData;
 
 type Secondary = "PENDING" | "DONE" | "SKIPPED";
@@ -464,6 +466,20 @@ interface RevealTFCardData {
 interface HideTFCardData {
   action: "HIDE_TF_CARD";
   event: AbilityEvent | GenomeEvent | ParadigmEvent | UpgradeEvent;
+}
+
+interface JoinSpliceEvent {
+  factionId: FactionId;
+}
+
+interface JoinSpliceData {
+  action: "JOIN_SPLICE";
+  event: JoinSpliceEvent;
+}
+
+interface LeaveSpliceData {
+  action: "LEAVE_SPLICE";
+  event: JoinSpliceEvent;
 }
 
 interface GainAllianceEvent {
@@ -902,4 +918,16 @@ interface CommitToExpeditionEvent {
 interface CommitToExpeditionData {
   action: "COMMIT_TO_EXPEDITION";
   event: CommitToExpeditionEvent;
+}
+
+interface UseGenomeEvent {
+  genomeId: TFGenomeId;
+}
+interface UseGenomeData {
+  action: "USE_GENOME";
+  event: UseGenomeEvent;
+}
+interface UndoGenomeData {
+  action: "UNDO_GENOME";
+  event: UseGenomeEvent;
 }

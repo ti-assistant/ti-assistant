@@ -184,10 +184,6 @@ input {
   font-size: 0.75rem;
 }
 
-.symbol {
-  font-family: "Source Sans";
-}
-
 .icon {
   display: flex;
   align-items: center;
@@ -340,7 +336,7 @@ button.faded {
 button.selected {
   border: var(--border-size) solid #aaa;
   background-color: var(--selected-bg);
-  color: #fff;
+  color: var(--foreground-color);
 }
 
 button:disabled {
@@ -610,11 +606,13 @@ input[type="textbox"]:invalid {
   }
 }
 
-.hoverInfo:has(.hoverParent.hover) {
+.hoverInfo:has(.hoverParent.hover),
+.hoverInfo:has(.hoverParent:focus-within) {
   clip-path: polygon(-1000% -1000%, -1000% 1000%, 1000% 1000%, 1000% -1000%);
 }
 
-.hoverInfo:has(.hover)  {
+.hoverInfo:has(.hover),
+.hoverInfo:has(:focus-within) {
   clip-path: polygon(-1000% -1000%, -1000% 1000%, 1000% 1000%, 1000% -1000%) !important;
 }
 

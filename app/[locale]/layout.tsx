@@ -5,14 +5,15 @@ import { getMessages } from "../../src/util/server";
 import { Optional } from "../../src/util/types/types";
 import { InnerLayout, LoadingLayout } from "./inner-layout";
 import { getTheme } from "../../src/util/theme";
-import { Mulish } from "next/font/google";
+import { Finlandica } from "next/font/google";
 
-const mulish = Mulish({
+const finlandica = Finlandica({
   subsets: ["latin", "cyrillic"],
+  variable: "--primary-font",
 });
 
 export const metadata: Metadata = {
-  title: "Twilight Imperium Assistant",
+  title: "TI Assistant",
   description:
     "Help your Twilight Imperium 4 games run more smoothly with TI Assistant, a fully featured assistant application that can be used by any number of players on their phone and on a shared screen.",
   icons: {
@@ -57,7 +58,7 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang={locale} className={mulish.className}>
+    <html lang={locale} className={finlandica.variable}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: getTheme }} />
       </head>

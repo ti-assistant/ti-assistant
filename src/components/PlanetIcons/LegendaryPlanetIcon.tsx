@@ -11,7 +11,7 @@ function InfoContent({ ability }: { ability: string }) {
   const description = ability.replaceAll("\\n", "\n");
   return (
     <div
-      className="myriadPro flexColumn"
+      className="flexColumn"
       style={{
         width: "100%",
         padding: rem(4),

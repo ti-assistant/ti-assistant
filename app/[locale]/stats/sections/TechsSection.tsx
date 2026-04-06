@@ -212,7 +212,6 @@ export default function TechsSection({
             <div
               className="flexColumn"
               style={{
-                fontFamily: "Source Sans",
                 justifyContent: "flex-start",
                 alignItems: "flex-start",
                 gap: 0,
@@ -276,7 +275,6 @@ export default function TechsSection({
               <div
                 className="flexColumn"
                 style={{
-                  fontFamily: "Source Sans",
                   justifyContent: "flex-start",
                   alignItems: "flex-start",
                   gap: 0,
@@ -377,7 +375,7 @@ function FactionsTechTable({
         {orderedFactions.map(([factionId, info]) => {
           let games = factionGames[factionId] ?? 1;
           return (
-            <tr key={factionId} style={{ fontFamily: "Source Sans" }}>
+            <tr key={factionId} >
               <td
                 style={{
                   display: "flex",

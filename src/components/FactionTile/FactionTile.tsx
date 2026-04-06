@@ -35,20 +35,12 @@ export default function FactionTile({
         style={{
           height: rem(iconSize),
           minWidth: rem(iconSize),
+          fontFamily: "var(--primary-font)",
         }}
       >
-        <div
-          className={styles.Icon}
-          style={{
-            height: rem(iconSize),
-            opacity: "60%",
-            userSelect: "none",
-          }}
-        >
-          <FactionComponents.Icon factionId={factionId} size="100%" />
-        </div>
         <div className={styles.Name}>
-          {<FactionComponents.Name factionId={factionId} />}
+          <FactionComponents.Icon factionId={factionId} size={20} />
+          <FactionComponents.Name factionId={factionId} />
         </div>
       </div>
     </div>

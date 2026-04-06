@@ -179,8 +179,7 @@ export class LoseTFCardHandler implements Handler {
       case "UNIT_UPGRADE":
         updates[`upgrades.${this.data.event.upgrade}.owner`] = updateVal;
         if (prevUpgrade) {
-          updates[`upgrades.${this.data.event.upgrade}.owner`] =
-            this.data.event.faction;
+          updates[`upgrades.${prevUpgrade}.owner`] = this.data.event.faction;
         }
         break;
     }

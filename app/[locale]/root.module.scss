@@ -9,8 +9,8 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding-inline: 0.75rem;
-  padding-block: 0.75rem;
+  padding-inline: 0.25rem;
+  padding-block: 0.5rem;
   align-items: center;
   font-size: 1rem;
 
@@ -65,14 +65,4 @@
   position: relative;
   width: 4rem;
   height: 4rem;
-}
-
-@media only screen and (min-width: 68.75rem) {
-  .FullName {
-    display: inline-block;
-  }
-
-  .ShortName {
-    display: none;
-  }
 }

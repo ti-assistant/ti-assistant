@@ -132,42 +132,6 @@ export default function Header({ archive }: { archive?: boolean }) {
 
   return (
     <React.Fragment>
-      {mapString ? (
-        <button
-          className={`${styles.Map} outline`}
-          onClick={() =>
-            openModal(
-              <div
-                style={{
-                  position: "relative",
-                  width: "min(100dvh, 100dvw)",
-                  height: "min(100dvh, 100dvw)",
-                }}
-              >
-                <GameMap
-                  factions={mapOrderedFactions}
-                  mapString={mapString}
-                  mapStyle={options["map-style"]}
-                  wormholeNexus={getWormholeNexusSystemNumber(
-                    options,
-                    planets,
-                    factions,
-                  )}
-                  planets={allPlanets}
-                  expansions={options.expansions}
-                  hideFracture={!fracturePlanetsOwned(allPlanets)}
-                />
-              </div>,
-            )
-          }
-        >
-          <FormattedMessage
-            id="xDzJ9/"
-            description="Text shown on a button that opens the map."
-            defaultMessage="View Map"
-          />
-        </button>
-      ) : null}
       {state.phase !== "SETUP" ? (
         <div className={styles.GameTimer}>
           <GameTimer frozen={state.phase === "END"} />
@@ -198,7 +162,6 @@ export default function Header({ archive }: { archive?: boolean }) {
         </div>
       ) : (
         <div className={styles.ControlButtons}>
-          <UndoButton gameId={gameId} />
           {gameFinished ? (
             state?.phase === "END" ? (
               <button

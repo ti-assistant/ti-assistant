@@ -529,7 +529,7 @@ function UpgradeTreeContent({
                             >
                               <div className={styles.infoContent}>
                                 <div
-                                  className="myriadPro flexColumn"
+                                  className="flexColumn"
                                   style={{
                                     width: "100%",
                                     padding: rem(4),
@@ -634,7 +634,7 @@ function AbilityTreeContent({
                       >
                         <div className={styles.infoContent}>
                           <div
-                            className="myriadPro flexColumn"
+                            className="flexColumn"
                             style={{
                               width: "100%",
                               padding: rem(4),

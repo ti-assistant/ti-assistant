@@ -136,6 +136,14 @@ import { UpdateLeaderStateHandler } from "../../../../src/util/model/updateLeade
 import { UpdatePlanetStateHandler } from "../../../../src/util/model/updatePlanetState";
 import { getFirestoreAdmin, SCHEMA_VERSION } from "../../../../src/util/server";
 import { Optional } from "../../../../src/util/types/types";
+import {
+  UndoGenomeHandler,
+  UseGenomeHandler,
+} from "../../../../src/util/model/useGenome";
+import {
+  JoinSpliceHandler,
+  LeaveSpliceHandler,
+} from "../../../../src/util/model/joinSplice";
 
 export async function POST(
   req: Request,
@@ -667,6 +675,18 @@ function updateInTransaction(
         break;
       case "HIDE_TF_CARD":
         handler = new HideTFCardHandler(gameData, data);
+        break;
+      case "USE_GENOME":
+        handler = new UseGenomeHandler(gameData, data);
+        break;
+      case "UNDO_GENOME":
+        handler = new UndoGenomeHandler(gameData, data);
+        break;
+      case "JOIN_SPLICE":
+        handler = new JoinSpliceHandler(gameData, data);
+        break;
+      case "LEAVE_SPLICE":
+        handler = new LeaveSpliceHandler(gameData, data);
         break;
 
       case "UNDO": {

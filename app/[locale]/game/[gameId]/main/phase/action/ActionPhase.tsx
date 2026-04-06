@@ -74,6 +74,7 @@ import Faunus from "./Actions/Faunus";
 import { ComponentAction } from "./ComponentAction";
 import StrategicActions from "./StrategicActions/StrategicActions";
 import ChipGroup from "../../../../../../../src/components/Chip/ChipGroup";
+import FactionIcon from "../../../../../../../src/components/FactionIcon/FactionIcon";
 
 interface FactionActionButtonsProps {
   factionId: FactionId;
@@ -759,7 +760,6 @@ export function AdditionalActions({
               </Toggle>
             }
           />
-          <StrategicActions.Noctis.Primary factionId={factionId} />
           <LabeledLine
             leftLabel={
               <InfoRow
@@ -784,11 +784,6 @@ export function AdditionalActions({
             }
           />
           <StrategicActions.Noctis.AllSecondaries activeFactionId={factionId} />
-          <SecondaryCheck
-            activeFactionId={factionId}
-            primaryCompleted={primaryCompleted}
-            orderedFactionIds={orderedFactionIds}
-          />
         </div>
       );
     }
@@ -931,11 +926,6 @@ export function AdditionalActions({
             }
           />
           <StrategicActions.Magus.AllSecondaries activeFactionId={factionId} />
-          <SecondaryCheck
-            activeFactionId={factionId}
-            primaryCompleted={primaryCompleted}
-            orderedFactionIds={orderedFactionIds}
-          />
         </div>
       );
     }
@@ -980,7 +970,6 @@ export function AdditionalActions({
               </Toggle>
             }
           />
-          <StrategicActions.Calamitas.Primary factionId={factionId} />
           <LabeledLine
             leftLabel={
               <InfoRow
@@ -1006,11 +995,6 @@ export function AdditionalActions({
           />
           <StrategicActions.Calamitas.AllSecondaries
             activeFactionId={factionId}
-          />
-          <SecondaryCheck
-            activeFactionId={factionId}
-            primaryCompleted={primaryCompleted}
-            orderedFactionIds={orderedFactionIds}
           />
         </div>
       );
@@ -1719,7 +1703,11 @@ function ActivePlayerColumn({
               <FactionTimer
                 active={!primaryCompleted || allSecondariesCompleted}
                 factionId={activeFactionId}
-                style={{ fontSize: rem(16), width: "auto" }}
+                style={{
+                  fontSize: rem(16),
+                  width: rem(84),
+                  fontFamily: "var(--main-font)",
+                }}
               />
             }
             opts={{
@@ -1781,32 +1769,19 @@ function ActivePlayerColumn({
               >
                 <div
                   ref={secondaryRef}
-                  className="flexColumn"
+                  className="flexRow"
                   style={{
                     width: "100%",
                     height: rem(44),
                     whiteSpace: "nowrap",
                     gap: rem(4),
                     fontSize: rem(24),
+                    fontFamily: "var(--main-font)",
                   }}
                 >
+                  <FactionIcon factionId={onDeckFactionId} size={16} />
                   {<FactionComponents.Name factionId={onDeckFactionId} />}
-                  <div
-                    className="flexRow"
-                    style={{
-                      position: "absolute",
-                      width: rem(44),
-                      height: rem(44),
-                      zIndex: -1,
-                      opacity: 0.7,
-                      userSelect: "none",
-                    }}
-                  >
-                    <FactionComponents.Icon
-                      factionId={onDeckFactionId}
-                      size="100%"
-                    />
-                  </div>
+                  <FactionIcon factionId={onDeckFactionId} size={16} />
                 </div>
               </LabeledDiv>
             </CSSTransition>

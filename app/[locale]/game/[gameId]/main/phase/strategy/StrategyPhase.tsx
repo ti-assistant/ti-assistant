@@ -413,7 +413,6 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
 function InfoContent({ children }: PropsWithChildren) {
   return (
     <div
-      className="myriadPro"
       style={{
         minWidth: rem(320),
         padding: rem(4),
@@ -818,7 +817,10 @@ export default function StrategyPhase() {
                   <FactionTimer
                     active
                     factionId={activeFactionId}
-                    style={{ fontSize: rem(28) }}
+                    style={{
+                      fontSize: rem(28),
+                      fontFamily: "var(--main-font)",
+                    }}
                   />
                 </div>
               </FactionCard>

@@ -288,7 +288,7 @@ function ObjectiveTable({
           }
           const baseObj = baseObjectives[objective];
           return (
-            <tr key={objective} style={{ fontFamily: "Source Sans" }}>
+            <tr key={objective} >
               <td
                 className="flexColumn"
                 style={{
@@ -297,7 +297,7 @@ function ObjectiveTable({
                 }}
               >
                 <div>{baseObj.name}</div>
-                <div style={{ fontFamily: "Source Sans", fontSize: rem(10) }}>
+                <div style={{  fontSize: rem(10) }}>
                   {baseObj.description}
                 </div>
               </td>
@@ -396,14 +396,14 @@ function TechTable({
           const baseTech = baseTechs[tech];
           return (
             <Fragment key={tech}>
-              <tr key={tech} style={{ fontFamily: "Source Sans" }}>
+              <tr key={tech}>
                 <td>{baseTech.name}</td>
                 <td>
                   {Math.floor(((1.0 * info.games) / techGames) * 10000) / 100}%
                   ({info.games} of {techGames})
                 </td>
                 {info.games < 3 ? (
-                  <td style={{ fontSize: rem(10), fontFamily: "Source Sans" }}>
+                  <td style={{ fontSize: rem(10)}}>
                     -
                   </td>
                 ) : (
@@ -413,7 +413,7 @@ function TechTable({
                   </td>
                 )}
                 {techGames - info.games < 3 ? (
-                  <td style={{ fontSize: rem(10), fontFamily: "Source Sans" }}>
+                  <td style={{ fontSize: rem(10)}}>
                     -
                   </td>
                 ) : (
@@ -427,7 +427,7 @@ function TechTable({
                   </td>
                 )}
                 {info.games < 3 ? (
-                  <td style={{ fontSize: rem(10), fontFamily: "Source Sans" }}>
+                  <td style={{ fontSize: rem(10) }}>
                     -
                   </td>
                 ) : (
@@ -436,7 +436,7 @@ function TechTable({
                   </td>
                 )}
                 {techGames - info.games < 3 ? (
-                  <td style={{ fontSize: rem(10), fontFamily: "Source Sans" }}>
+                  <td style={{ fontSize: rem(10)}}>
                     -
                   </td>
                 ) : (

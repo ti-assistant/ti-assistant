@@ -5,13 +5,15 @@
   justify-content: center;
   white-space: normal;
 
-  min-height: calc(100dvh - 6.5rem);
+  min-height: calc(100dvh - 14rem);
 }
 
 .SetupList {
   align-items: stretch;
   justify-content: flex-start;
   padding: 0 0 0 1.25rem;
+
+  gap: 0;
 }
 
 .Embedded {

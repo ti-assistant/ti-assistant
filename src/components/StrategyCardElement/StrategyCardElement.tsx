@@ -33,6 +33,7 @@ export function StrategyCardElement({
     "--color": color,
     "--text-color": textColor,
     fontSize: rem(fontSize),
+    fontFamily: "var(--main-font)",
     cursor: onClick ? "pointer" : "auto",
     backgroundColor: active && onClick ? undefined : "var(--disabled-bg)",
   };
@@ -66,7 +67,7 @@ export function StrategyCardElement({
             <FactionCircle
               factionId={card.faction}
               borderColor={colors.border}
-              size={36}
+              size={24}
             />
           </div>
         </>

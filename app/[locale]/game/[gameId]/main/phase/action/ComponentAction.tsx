@@ -62,7 +62,6 @@ function InfoContent({
 }) {
   return (
     <div
-      className="myriadPro"
       style={{
         boxSizing: "border-box",
         width: "100%",

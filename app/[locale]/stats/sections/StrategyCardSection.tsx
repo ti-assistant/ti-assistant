@@ -202,7 +202,6 @@ export default function StrategyCardSection({
                             key={index}
                             style={{
                               textAlign: "right",
-                              fontFamily: "Source Sans",
                               color: getColorForNum(0),
                             }}
                           >
@@ -215,7 +214,6 @@ export default function StrategyCardSection({
                           key={index}
                           style={{
                             textAlign: "right",
-                            fontFamily: "Source Sans",
                             color: getColorForNum(
                               (pickRate.pickCount / totalRounds) * 100,
                             ),
@@ -229,7 +227,6 @@ export default function StrategyCardSection({
                     <td
                       style={{
                         textAlign: "center",
-                        fontFamily: "Source Sans",
                         color: getColorForNum(
                           (remainingRounds / totalRounds) * 100,
                         ),
@@ -238,12 +235,12 @@ export default function StrategyCardSection({
                       {Math.round((remainingRounds / totalRounds) * 100)}%
                     </td>
                     <td
-                      style={{ textAlign: "center", fontFamily: "Source Sans" }}
+                      style={{ textAlign: "center"}}
                     >
                       {Math.round((winRounds / totalRounds) * 100)}%
                     </td>
                     <td
-                      style={{ textAlign: "center", fontFamily: "Source Sans" }}
+                      style={{ textAlign: "center" }}
                     >
                       {Math.round(
                         (totalPoints / (totalRounds - remainingRounds)) * 100,

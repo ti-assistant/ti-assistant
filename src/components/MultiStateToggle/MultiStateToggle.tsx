@@ -110,7 +110,6 @@ export default function MultiStateToggle({
 function InfoContent({ description }: { description: ReactNode }) {
   return (
     <div
-      className="myriadPro"
       style={{
         boxSizing: "border-box",
         width: "100%",

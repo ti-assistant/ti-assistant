@@ -1,5 +1,5 @@
 import { CSSProperties, ReactNode } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import {
   useAbilities,
   useCurrentTurn,
@@ -28,7 +28,7 @@ import GenomeIcon from "../PlanetIcons/GenomeIcon";
 import ParadigmIcon from "../PlanetIcons/ParadigmIcon";
 import UpgradeIcon from "../PlanetIcons/UpgradeIcon";
 import { Selector } from "../Selector/Selector";
-import TechIcon from "../TechIcon/TechIcon";
+import AbilitySelectMenu from "../Splice/AbilitySelectMenu";
 import TechResearchSection from "../TechResearchSection/TechResearchSection";
 import UnitIcon from "../Units/Icons";
 import UnitStats from "../UnitStats/UnitStats";
@@ -285,7 +285,7 @@ function GainedCardsSection({
                   }
                   infoContent={
                     <div
-                      className="myriadPro flexColumn"
+                      className="flexColumn"
                       style={{
                         width: "100%",
                         padding: rem(4),
@@ -403,7 +403,6 @@ export function GainAbilitySection({
 }) {
   const abilities = useAbilities();
   const dataUpdate = useDataUpdate();
-  const intl = useIntl();
 
   let availableAbilities = Object.values(abilities)
     .filter((ability) => !ability.owner)
@@ -419,30 +418,9 @@ export function GainAbilitySection({
     return null;
   }
 
-  const redAbilities = availableAbilities.filter(
-    (ability) => ability.type === "RED",
-  );
-  const yellowAbilities = availableAbilities.filter(
-    (ability) => ability.type === "YELLOW",
-  );
-  const blueAbilities = availableAbilities.filter(
-    (ability) => ability.type === "BLUE",
-  );
-  const greenAbilities = availableAbilities.filter(
-    (ability) => ability.type === "GREEN",
-  );
-
-  function selectAbility(ability: TFAbility) {
-    dataUpdate(
-      Events.GainTFCardEvent(factionId, {
-        ability: ability.id,
-        type: "ABILITY",
-      }),
-    );
-  }
-
   return (
-    <ClientOnlyHoverMenu
+    <AbilitySelectMenu
+      factionId={factionId}
       label={
         steal ? (
           <div className="flexRow" style={{ gap: rem(6) }}>
@@ -468,109 +446,17 @@ export function GainAbilitySection({
           </div>
         )
       }
-      style={{ whiteSpace: "nowrap" }}
-      buttonStyle={{ fontSize: rem(14) }}
-      renderProps={(outerCloseFn) => (
-        <div
-          className={styles.OuterTechSelectMenu}
-          style={{
-            padding: rem(8),
-            alignItems: "flex-start",
-            overflow: "visible",
-          }}
-        >
-          <InnerAbilitySelectMenu
-            abilities={greenAbilities}
-            label={<TechIcon type="GREEN" size="1.5em" />}
-            selectAbility={selectAbility}
-            outerCloseFn={outerCloseFn}
-          />
-          <InnerAbilitySelectMenu
-            abilities={blueAbilities}
-            label={<TechIcon type="BLUE" size="1.5em" />}
-            selectAbility={selectAbility}
-            outerCloseFn={outerCloseFn}
-          />
-          <InnerAbilitySelectMenu
-            abilities={yellowAbilities}
-            label={<TechIcon type="YELLOW" size="1.5em" />}
-            selectAbility={selectAbility}
-            outerCloseFn={outerCloseFn}
-          />
-          <InnerAbilitySelectMenu
-            abilities={redAbilities}
-            label={<TechIcon type="RED" size="1.5em" />}
-            selectAbility={selectAbility}
-            outerCloseFn={outerCloseFn}
-          />
-        </div>
-      )}
-    ></ClientOnlyHoverMenu>
-  );
-}
-
-// TODO: Add faction icons (simplified?).
-function InnerAbilitySelectMenu({
-  abilities,
-  label,
-  selectAbility,
-  outerCloseFn,
-}: {
-  abilities: TFAbility[];
-  label: ReactNode;
-  selectAbility: (ability: TFAbility) => void;
-  outerCloseFn: () => void;
-}) {
-  const viewOnly = useViewOnly();
-
-  if (abilities.length === 0) {
-    return null;
-  }
-
-  return (
-    <ClientOnlyHoverMenu
-      label={label}
-      buttonStyle={{ fontSize: rem(14) }}
-      borderColor={getTechTypeColor(abilities[0]?.type ?? "UPGRADE")}
-      renderProps={(innerCloseFn) => (
-        <div
-          style={{
-            display: "grid",
-            gridAutoFlow: "column",
-            gridTemplateRows: `repeat(${Math.min(8, abilities.length)}, auto)`,
-            padding: rem(8),
-            gap: rem(4),
-            alignItems: "stretch",
-            maxWidth: "88vw",
-            overflowX: "auto",
-          }}
-        >
-          {abilities.map((ability) => {
-            return (
-              <button
-                key={ability.id}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  innerCloseFn();
-                  outerCloseFn();
-                  selectAbility(ability);
-                }}
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  fontSize: rem(16),
-                  gap: rem(8),
-                }}
-                disabled={viewOnly}
-              >
-                {ability.name}
-              </button>
-            );
-          })}
-        </div>
-      )}
-    ></ClientOnlyHoverMenu>
+      selectAbility={(ability: TFAbilityId) => {
+        dataUpdate(
+          Events.GainTFCardEvent(factionId, {
+            ability,
+            type: "ABILITY",
+          }),
+        );
+      }}
+      steal={steal}
+      style={style}
+    />
   );
 }
 

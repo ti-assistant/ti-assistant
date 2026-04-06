@@ -7,10 +7,8 @@ import ObjectiveCard from "../../../../../../../src/components/ObjectiveRow/Obje
 import ObjectiveSelectHoverMenu from "../../../../../../../src/components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import StartingComponents from "../../../../../../../src/components/StartingComponents/StartingComponents";
 import {
-  useGameId,
   useLogEntries,
   useOptions,
-  useViewOnly,
 } from "../../../../../../../src/context/dataHooks";
 import { useOrderedFactionIds } from "../../../../../../../src/context/gameDataHooks";
 import { useObjectives } from "../../../../../../../src/context/objectiveDataHooks";
@@ -23,13 +21,12 @@ import { rem } from "../../../../../../../src/util/util";
 import FinishPhaseButton from "./FinishPhaseButton";
 import MapStringInput from "./MapStringInput";
 import styles from "./SetupPhase.module.scss";
+import InauguralSplice from "../../../../../../../src/components/StartingComponents/InauguralSplice";
 
 export default function SetupSteps({ intl }: { intl: IntlShape }) {
   const dataUpdate = useDataUpdate();
-  const gameId = useGameId();
   const options = useOptions();
   const objectives = useObjectives();
-  const viewOnly = useViewOnly();
   const orderedFactionIds = useOrderedFactionIds("SPEAKER");
   const revealedObjectives = useLogEntries<RevealObjectiveData>(
     "REVEAL_OBJECTIVE",
@@ -54,7 +51,10 @@ export default function SetupSteps({ intl }: { intl: IntlShape }) {
           defaultMessage="Setup Game"
         />
       </div>
-      <ol className={`flexColumn largeFont ${styles.SetupList}`}>
+      <ol
+        className={`flexColumn largeFont ${styles.SetupList}`}
+        style={{ gap: "0.5em" }}
+      >
         <NumberedItem>
           <FormattedMessage
             id="+mUg6N"
@@ -214,11 +214,51 @@ export default function SetupSteps({ intl }: { intl: IntlShape }) {
               description="A step in the setup phase: The inaugural splice."
               defaultMessage="Inaugural Splice"
             />
+            <Conditional appSection="TECHS">
+              <div className={styles.Embedded}>
+                <div
+                  style={{
+                    display: "grid",
+                    gridAutoFlow: "row",
+                    width: "100%",
+                    gridTemplateColumns: "1fr",
+                    gap: rem(8),
+                    paddingTop: rem(6),
+                  }}
+                >
+                  {Object.values(orderedFactionIds).map((factionId) => {
+                    return (
+                      <InauguralSpliceDiv
+                        key={factionId}
+                        factionId={factionId}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            </Conditional>
           </NumberedItem>
         ) : null}
         <FinishPhaseButton embedded />
       </ol>
     </div>
+  );
+}
+
+function InauguralSpliceDiv({ factionId }: { factionId: FactionId }) {
+  return (
+    <FactionDiv factionId={factionId}>
+      <div
+        className="flexColumn"
+        style={{
+          alignItems: "flex-start",
+          height: "100%",
+          width: "100%",
+        }}
+      >
+        <InauguralSplice factionId={factionId} />
+      </div>
+    </FactionDiv>
   );
 }
 
