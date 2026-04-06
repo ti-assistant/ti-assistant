@@ -6,6 +6,7 @@ export const Events = {
   AdvancePhaseEvent,
   AssignStrategyCardEvent,
   CastVotesEvent,
+  ChooseEdictEvent,
   ChooseStartingTechEvent,
   ChooseSubFactionEvent,
   ChooseTFFactionEvent,
@@ -19,6 +20,7 @@ export const Events = {
   GainTFCardEvent,
   GiftOfPrescienceEvent,
   HideAgendaEvent,
+  HideEdictEvent,
   HideObjectiveEvent,
   HideTFCardEvent,
   JoinSpliceEvent,
@@ -145,6 +147,19 @@ function CastVotesEvent(
       votes,
       extraVotes,
       target,
+    },
+  };
+}
+
+function ChooseEdictEvent(
+  edictId: TFEdictId,
+  tyrant: boolean,
+): ChooseEdictData {
+  return {
+    action: "CHOOSE_EDICT",
+    event: {
+      edictId,
+      tyrant,
     },
   };
 }
@@ -305,6 +320,16 @@ function HideAgendaEvent(agendaId: AgendaId, veto?: boolean): HideAgendaData {
     event: {
       agenda: agendaId,
       veto,
+    },
+  };
+}
+
+function HideEdictEvent(edictId: TFEdictId, tyrant: boolean): HideEdictData {
+  return {
+    action: "HIDE_EDICT",
+    event: {
+      edictId,
+      tyrant,
     },
   };
 }

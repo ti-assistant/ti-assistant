@@ -9,6 +9,7 @@ import {
   UnassignStrategyCardHandler,
 } from "../model/assignStrategyCard";
 import { CastVotesHandler } from "../model/castVotes";
+import { ChooseEdictHandler, HideEdictHandler } from "../model/chooseEdict";
 import {
   ChooseStartingTechHandler,
   RemoveStartingTechHandler,
@@ -262,5 +263,9 @@ export function getHandler(gameData: StoredGameData, data: GameUpdateData) {
       return new JoinSpliceHandler(gameData, data);
     case "LEAVE_SPLICE":
       return new LeaveSpliceHandler(gameData, data);
+    case "CHOOSE_EDICT":
+      return new ChooseEdictHandler(gameData, data);
+    case "HIDE_EDICT":
+      return new HideEdictHandler(gameData, data);
   }
 }

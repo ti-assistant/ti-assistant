@@ -32,6 +32,8 @@ import {
   buildCompleteSystems,
   buildCompleteTechs,
 } from "./gameDataBuilder";
+import getTwilightsFallEdicts from "../../server/data/twilightsfall/edicts";
+import { getEdicts } from "../../server/data/edicts";
 
 export function buildBaseData(intl: IntlShape): BaseData {
   return {
@@ -51,6 +53,7 @@ export function buildBaseData(intl: IntlShape): BaseData {
     techs: getTechs(intl),
 
     abilities: getAbilities(intl),
+    edicts: getEdicts(intl),
     genomes: getGenomes(intl),
     paradigms: getParadigms(intl),
     upgrades: getUnitUpgrades(intl),

@@ -144,6 +144,10 @@ import {
   JoinSpliceHandler,
   LeaveSpliceHandler,
 } from "../../../../src/util/model/joinSplice";
+import {
+  ChooseEdictHandler,
+  HideEdictHandler,
+} from "../../../../src/util/model/chooseEdict";
 
 export async function POST(
   req: Request,
@@ -687,6 +691,12 @@ function updateInTransaction(
         break;
       case "LEAVE_SPLICE":
         handler = new LeaveSpliceHandler(gameData, data);
+        break;
+      case "CHOOSE_EDICT":
+        handler = new ChooseEdictHandler(gameData, data);
+        break;
+      case "HIDE_EDICT":
+        handler = new HideEdictHandler(gameData, data);
         break;
 
       case "UNDO": {

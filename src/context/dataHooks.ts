@@ -117,6 +117,11 @@ export function useAbilities() {
   return useGameDataValue<Abilities>("abilities", {});
 }
 
+type Edicts = Partial<Record<TFEdictId, TFEdict>>;
+export function useEdicts() {
+  return useGameDataValue<Edicts>("edicts", {});
+}
+
 type Genomes = Partial<Record<TFGenomeId, TFGenome>>;
 export function useGenomes() {
   return useGameDataValue<Genomes>("genomes", {});

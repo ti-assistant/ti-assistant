@@ -28,6 +28,7 @@ export function buildCompleteGameData(
     timers: storedGameData.timers,
 
     abilities: buildCompleteAbilities(baseData, storedGameData),
+    edicts: buildCompleteEdicts(baseData, storedGameData),
     genomes: buildCompleteGenomes(baseData, storedGameData),
     paradigms: buildCompleteParadigms(baseData, storedGameData),
     upgrades: buildCompleteUpgrades(baseData, storedGameData),
@@ -716,6 +717,30 @@ export function buildCompleteAbilities(
   });
 
   return abilities;
+}
+
+export function buildCompleteEdicts(
+  baseData: BaseData,
+  storedGameData: StoredGameData,
+) {
+  const storedEdicts = storedGameData.edicts ?? {};
+  const edicts: Partial<Record<TFEdictId, TFEdict>> = {};
+
+  objectEntries(baseData.edicts).forEach(([edictId, edict]) => {
+    if (
+      edict.expansion &&
+      !storedGameData.options.expansions.includes(edict.expansion)
+    ) {
+      return;
+    }
+
+    edicts[edictId] = {
+      ...edict,
+      ...(storedEdicts[edictId] ?? {}),
+    };
+  });
+
+  return edicts;
 }
 
 export function buildCompleteGenomes(

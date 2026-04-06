@@ -163,10 +163,6 @@
     "defaultMessage": "Hover to see full text.",
     "description": "Text telling the user that they can hover over objectives to see the full text."
   },
-  "49oatW": {
-    "defaultMessage": "Undo",
-    "description": "Text shown on a button that will undo the previous action."
-  },
   "4PYolM": {
     "defaultMessage": "Start of {phase} Phase",
     "description": "Text showing that something will occur at the start of a specific phase."
@@ -234,6 +230,10 @@
   "6L07nG": {
     "defaultMessage": "Reveal Objective",
     "description": "Text telling the user to reveal an objective."
+  },
+  "6ZifFF": {
+    "defaultMessage": "At the start of the edict phase, if your flagship is on the game board, draw and resolve 1 edict.",
+    "description": "Instructions for Radiant Aur Edict Phase"
   },
   "73882v": {
     "defaultMessage": "Score Public Objective",

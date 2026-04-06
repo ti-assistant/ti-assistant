@@ -37,7 +37,7 @@ export function LockedButtons({
         return (
           <button
             key={button.text}
-            className={`${button.className ?? ""} ${button.primary ? "primary" : ""}`}
+            className={`${button.className ?? ""} ${button.primary ? "primary" : "outline"}`}
             disabled={(!unlocked && locked) || viewOnly}
             onClick={button.onClick}
             style={button.style ?? {}}

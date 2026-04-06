@@ -71,6 +71,7 @@ type GameUpdateData =
   | ChooseTFFactionData
   | (UseGenomeData | UndoGenomeData)
   | (JoinSpliceData | LeaveSpliceData)
+  | (ChooseEdictData | HideEdictData)
   | UndoData;
 
 type Secondary = "PENDING" | "DONE" | "SKIPPED";
@@ -101,6 +102,7 @@ interface BaseData {
 
   // Twilight's Fall Specific
   abilities: Record<TFAbilityId, TFBaseAbility>;
+  edicts: Record<TFEdictId, TFBaseEdict>;
   genomes: Record<TFGenomeId, TFBaseGenome>;
   paradigms: Record<TFParadigmId, TFBaseParadigm>;
   upgrades: Record<TFUnitUpgradeId, TFBaseUnitUpgrade>;
@@ -129,6 +131,7 @@ interface GameData {
 
   // Twilight's Fall Specific
   abilities?: Partial<Record<TFAbilityId, TFAbility>>;
+  edicts?: Partial<Record<TFEdictId, TFEdict>>;
   genomes?: Partial<Record<TFGenomeId, TFGenome>>;
   paradigms?: Partial<Record<TFParadigmId, TFParadigm>>;
   upgrades?: Partial<Record<TFUnitUpgradeId, TFUnitUpgrade>>;
@@ -169,6 +172,7 @@ interface StoredGameData {
   techs?: Partial<Record<TechId, GameTech>>;
   // Twilight's Fall Specific
   abilities?: Partial<Record<TFAbilityId, TFGameAbility>>;
+  edicts?: Partial<Record<TFEdictId, TFGameEdict>>;
   genomes?: Partial<Record<TFGenomeId, TFGameGenome>>;
   paradigms?: Partial<Record<TFParadigmId, TFGameParadigm>>;
   upgrades?: Partial<Record<TFUnitUpgradeId, TFGameUnitUpgrade>>;
@@ -930,4 +934,18 @@ interface UseGenomeData {
 interface UndoGenomeData {
   action: "UNDO_GENOME";
   event: UseGenomeEvent;
+}
+
+interface EdictEvent {
+  edictId: TFEdictId;
+  tyrant: boolean;
+}
+
+interface ChooseEdictData {
+  action: "CHOOSE_EDICT";
+  event: EdictEvent;
+}
+interface HideEdictData {
+  action: "HIDE_EDICT";
+  event: EdictEvent;
 }

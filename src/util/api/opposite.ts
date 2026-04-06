@@ -6,6 +6,7 @@ import { AddTechHandler, RemoveTechHandler } from "../model/addTech";
 import { RewindPhaseHandler } from "../model/advancePhase";
 import { UnassignStrategyCardHandler } from "../model/assignStrategyCard";
 import { CastVotesHandler } from "../model/castVotes";
+import { ChooseEdictHandler, HideEdictHandler } from "../model/chooseEdict";
 import { RemoveStartingTechHandler } from "../model/chooseStartingTech";
 import { ChooseSubFactionHandler } from "../model/chooseSubFaction";
 import { ChooseTFFactionHandler } from "../model/chooseTFFaction";
@@ -627,6 +628,16 @@ export function getOppositeHandler(
     case "LEAVE_SPLICE":
       return new JoinSpliceHandler(gameData, {
         action: "JOIN_SPLICE",
+        event: data.event,
+      });
+    case "CHOOSE_EDICT":
+      return new HideEdictHandler(gameData, {
+        action: "HIDE_EDICT",
+        event: data.event,
+      });
+    case "HIDE_EDICT":
+      return new ChooseEdictHandler(gameData, {
+        action: "CHOOSE_EDICT",
         event: data.event,
       });
   }
