@@ -50,6 +50,8 @@ import {
   leaderTypeString,
   unitTypeString,
 } from "../../../../../../../src/util/strings";
+import DiscardTFCard from "../../../../../../../src/components/Actions/DiscardSplicedCard";
+import Splice from "../edict/Splice";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -781,6 +783,20 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       );
       break;
     }
+    case "Genophage": {
+      innerContent = (
+        <DiscardTFCard
+          factionId={factionId}
+          other
+          numToDiscard={{ genomes: 1 }}
+        />
+      );
+      break;
+    }
+    case "Helix": {
+      innerContent = <Splice factionId={factionId} />;
+      break;
+    }
     case "Irradiate": {
       innerContent = (
         <GainTFCard factionId={factionId} numToGain={{ upgrades: 1 }} />
@@ -788,9 +804,28 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       break;
     }
     case "Mutate": {
-      // TODO: Add ability removal.
       innerContent = (
-        <GainTFCard factionId={factionId} numToGain={{ abilities: 1 }} />
+        <div
+          style={{
+            display: "grid",
+            gridAutoFlow: "row",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            columnGap: "0.5rem",
+            rowGap: "0.25rem",
+            fontSize: "1rem",
+          }}
+        >
+          <div>Discarded Card</div>
+          <div>Gained Card</div>
+          <DiscardTFCard
+            factionId={factionId}
+            numToDiscard={{
+              abilities: 1,
+            }}
+          />
+          {/* TODO: Only show if ability is discarded */}
+          <GainTFCard factionId={factionId} numToGain={{ abilities: 1 }} />
+        </div>
       );
       break;
     }

@@ -162,7 +162,6 @@ export function HoverMenu({
     if (!menu.current) {
       return;
     }
-    console.log("CLOSING");
     menu.current.classList.remove("hover");
     setClosing(true);
     setTimeout(() => setClosing(false), 200);
@@ -226,8 +225,6 @@ export function HoverMenu({
         menu.current.classList.remove("hover");
       }}
       onClick={() => {
-        console.log("Clicked");
-        console.log("Closing", closing);
         if (!menu.current || closing) {
           return;
         }

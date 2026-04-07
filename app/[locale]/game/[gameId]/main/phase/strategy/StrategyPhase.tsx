@@ -8,6 +8,7 @@ import LabeledDiv from "../../../../../../../src/components/LabeledDiv/LabeledDi
 import { Selector } from "../../../../../../../src/components/Selector/Selector";
 import { StrategyCardElement } from "../../../../../../../src/components/StrategyCardElement/StrategyCardElement";
 import {
+  useAbilities,
   useAgenda,
   useStrategyCards,
   useViewOnly,
@@ -115,10 +116,15 @@ function QuantumDatahubNode({
   factionId: FactionId;
   strategyCards: StrategyCard[];
 }) {
+  const abilities = useAbilities();
   const colors = useFactionColors(factionId);
   const dataUpdate = useDataUpdate();
-  const hasQuantum = useFactionHasTech(factionId, "Quantum Datahub Node");
+  let hasQuantum = useFactionHasTech(factionId, "Quantum Datahub Node");
   const viewOnly = useViewOnly();
+
+  if (abilities["Quantum Datahub Node"]?.owner === factionId) {
+    hasQuantum = true;
+  }
 
   const [quantum, setQuantum] = useState<{
     mainCard: Optional<StrategyCardId>;
@@ -240,6 +246,7 @@ function QuantumDatahubNode({
             }}
           >
             <button
+              className="outline"
               disabled={viewOnly || !quantum.mainCard || !quantum.otherCard}
               onClick={() => {
                 quantumDatahubNode();
@@ -516,6 +523,9 @@ export default function StrategyPhase() {
     "Nekro Virus",
     "Quantum Datahub Node",
   );
+  const abilities = useAbilities();
+
+  const qdnOwner = abilities["Quantum Datahub Node"]?.owner;
 
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
   const factionColors = useAllFactionColors();
@@ -624,6 +634,9 @@ export default function StrategyPhase() {
       return true;
     }
     if (nekroHasQuantum) {
+      return true;
+    }
+    if (qdnOwner) {
       return true;
     }
     if (imperialArbiter && imperialArbiter.resolved && imperialArbiter.target) {
@@ -784,6 +797,12 @@ export default function StrategyPhase() {
               factionId={"Nekro Virus"}
               strategyCards={orderedStrategyCards}
             />
+            {qdnOwner ? (
+              <QuantumDatahubNode
+                factionId={qdnOwner}
+                strategyCards={orderedStrategyCards}
+              />
+            ) : null}
             <ImperialArbiter strategyCards={orderedStrategyCards} />
           </div>
         ) : null}
