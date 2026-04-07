@@ -448,6 +448,8 @@ interface UpgradeEvent {
 interface TFCardEvent {
   faction: FactionId;
   prevFaction?: FactionId;
+  // Used to prevent a discard from being overwritten.
+  discard?: boolean;
 }
 
 interface GainTFCardData {
@@ -464,12 +466,12 @@ interface LoseTFCardData {
 
 interface RevealTFCardData {
   action: "REVEAL_TF_CARD";
-  event: AbilityEvent | GenomeEvent | ParadigmEvent | UpgradeEvent;
+  event: AbilityEvent | GenomeEvent | UpgradeEvent;
 }
 
 interface HideTFCardData {
   action: "HIDE_TF_CARD";
-  event: AbilityEvent | GenomeEvent | ParadigmEvent | UpgradeEvent;
+  event: AbilityEvent | GenomeEvent | UpgradeEvent;
 }
 
 interface JoinSpliceEvent {

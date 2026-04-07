@@ -21,7 +21,7 @@ export default function ObjectiveCard({
 
   return (
     <SelectableRow itemId={objective.id} removeItem={removeObjective}>
-      <div style={{ fontSize: "1em" }}>
+      <div style={{ fontSize: "1em", width: "100%" }}>
         <div
           className="flexRow"
           style={{

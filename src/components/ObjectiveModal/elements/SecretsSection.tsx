@@ -15,6 +15,7 @@ import { ModalContent } from "../../Modal/Modal";
 import ObjectiveRow from "../../ObjectiveRow/ObjectiveRow";
 import ObjectiveSelectHoverMenu from "../../ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import GridHeader from "./GridHeader";
+import ObjectiveCard from "../../ObjectiveRow/ObjectiveCard";
 
 export default function SecretSection({
   numRows,
@@ -195,12 +196,12 @@ function SecretModalContent({ factionId }: { factionId: FactionId }) {
       style={{
         width: "100%",
         padding: rem(8),
-        alignItems: "center",
+        alignItems: "stretch",
       }}
     >
       {scoredSecrets.map((secret) => {
         return (
-          <ObjectiveRow
+          <ObjectiveCard
             key={secret.name}
             objectiveId={secret.id}
             removeObjective={

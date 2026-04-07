@@ -10,7 +10,7 @@ function tfCardEquals(
   a: TFCardEvent & CardEvent,
   b: TFCardEvent & CardEvent,
 ): boolean {
-  if (a.faction !== b.faction) {
+  if (a.faction !== b.faction || a.discard !== b.discard) {
     return false;
   }
   switch (a.type) {

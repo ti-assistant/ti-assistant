@@ -17,15 +17,15 @@
 
   overflow-x: auto;
 
-  max-height: 51dvh;
+  max-height: 55dvh;
   overflow-y: auto;
   padding: 0.5rem;
 }
 
 .ObjectiveGrid {
   --font-size: unset;
-  --num-items: 5;
-  --per-column: 5;
+  --num-items: 4;
+  --per-column: 4;
 
   display: grid;
   justify-content: flex-start;

@@ -13,6 +13,7 @@ import { useOrderedFactionIds } from "../../context/gameDataHooks";
 import AbilitySVG from "../../icons/twilightsfall/ability";
 import GenomeSVG from "../../icons/twilightsfall/genome";
 import UpgradeSVG from "../../icons/twilightsfall/upgrade";
+import InfoModal from "../../InfoModal";
 import FullScreenModal from "../../modals/FullScreenModal";
 import { SelectableRow } from "../../SelectableRow";
 import {
@@ -25,6 +26,10 @@ import {
 } from "../../util/actionLog";
 import { useDataUpdate } from "../../util/api/dataUpdate";
 import { Events } from "../../util/api/events";
+import {
+  getAntimatterForFaction,
+  getWavelengthForFaction,
+} from "../../util/techs";
 import { Optional } from "../../util/types/types";
 import { rem } from "../../util/util";
 import { CollapsibleSection } from "../CollapsibleSection";
@@ -37,14 +42,9 @@ import TechIcon from "../TechIcon/TechIcon";
 import Toggle from "../Toggle/Toggle";
 import UnitIcon from "../Units/Icons";
 import UnitStats from "../UnitStats/UnitStats";
-import styles from "./SpliceModal.module.scss";
-import InfoModal from "../../InfoModal";
 import AbilitySelectMenu from "./AbilitySelectMenu";
+import styles from "./SpliceModal.module.scss";
 import UpgradeSelectMenu from "./UpgradeSelectMenu";
-import {
-  getAntimatterForFaction,
-  getWavelengthForFaction,
-} from "../../util/techs";
 
 function entriesEqual(
   a: ActionLogEntry<GainTFCardData>,
@@ -64,11 +64,6 @@ function entriesEqual(
         return false;
       }
       return a.data.event.genome === b.data.event.genome;
-    case "PARADIGM":
-      if (b.data.event.type !== "PARADIGM") {
-        return false;
-      }
-      return a.data.event.paradigm === b.data.event.paradigm;
     case "UNIT_UPGRADE":
       if (b.data.event.type !== "UNIT_UPGRADE") {
         return false;
@@ -78,13 +73,13 @@ function entriesEqual(
 }
 
 export default function SpliceModal({
+  allPlayers,
   activeFactionId,
   type,
-  extra,
 }: {
   activeFactionId: FactionId;
+  allPlayers?: boolean;
   type: "ABILITY" | "GENOME" | "UNIT_UPGRADE";
-  extra?: boolean;
 }) {
   let title = "";
   switch (type) {
@@ -103,7 +98,7 @@ export default function SpliceModal({
     <FullScreenModal title={title}>
       <SpliceModalContent
         activeFactionId={activeFactionId}
-        extra={extra}
+        allPlayers={allPlayers}
         type={type}
       />
     </FullScreenModal>
@@ -281,11 +276,11 @@ function ThieveButton({
 
 function SpliceModalContent({
   activeFactionId,
-  extra,
+  allPlayers,
   type,
 }: {
   activeFactionId: FactionId;
-  extra?: boolean;
+  allPlayers?: boolean;
   type: "ABILITY" | "GENOME" | "UNIT_UPGRADE";
 }) {
   const orderedFactionIds = useOrderedFactionIds(
@@ -295,7 +290,11 @@ function SpliceModalContent({
   );
   const currentTurn = useCurrentTurn();
   const dataUpdate = useDataUpdate();
-  const spliceParticipants = new Set(getSpliceParticipants(currentTurn));
+  let spliceParticipants = new Set(getSpliceParticipants(currentTurn));
+  if (allPlayers) {
+    spliceParticipants = new Set(orderedFactionIds);
+    spliceParticipants.delete(activeFactionId);
+  }
   const reversePlayed = getActionCardTargets(currentTurn, "Reverse").length > 0;
 
   const localOrder = [...orderedFactionIds];
@@ -304,7 +303,6 @@ function SpliceModalContent({
     localOrder.reverse();
   }
   localOrder.unshift(activeFactionId);
-  console.log("Ordered", localOrder);
   const factionColors = useAllFactionColors();
 
   const engineerPlayed =
@@ -344,14 +342,6 @@ function SpliceModalContent({
   }
 
   let currentFaction = factionsToPick[currentIndex];
-
-  if (!currentFaction && extra) {
-    currentFaction = factionsToPick[0];
-  }
-
-  if (!currentFaction) {
-    console.log("No factions left");
-  }
 
   let isThieve = false;
   if (!currentFaction) {
@@ -417,20 +407,22 @@ function SpliceModalContent({
             </div>
           </div>
         </CollapsibleSection>
-        <CollapsibleSection title="End of Splice">
-          <div
-            className="flexRow"
-            style={{
-              width: "100%",
-              justifyContent: "center",
-            }}
-          >
-            <ThieveButton
-              isSpliceFinished={!currentFaction}
-              possibleThieves={theiveFactions}
-            />
-          </div>
-        </CollapsibleSection>
+        {allPlayers ? null : (
+          <CollapsibleSection title="End of Splice">
+            <div
+              className="flexRow"
+              style={{
+                width: "100%",
+                justifyContent: "center",
+              }}
+            >
+              <ThieveButton
+                isSpliceFinished={!currentFaction}
+                possibleThieves={theiveFactions}
+              />
+            </div>
+          </CollapsibleSection>
+        )}
       </div>
       <div
         style={{
@@ -888,6 +880,9 @@ function GenomeSelector({
             </div>
           }
           filter={(ability) => {
+            if (ability.owner) {
+              return false;
+            }
             for (const revealedCard of revealedTFCards) {
               if (
                 revealedCard.data.event.type === "ABILITY" &&

@@ -295,11 +295,13 @@ function GainRelicEvent(
 function GainTFCardEvent(
   faction: FactionId,
   event: AbilityEvent | GenomeEvent | ParadigmEvent | UpgradeEvent,
+  discard?: boolean,
 ): GainTFCardData {
   return {
     action: "GAIN_TF_CARD",
     event: {
       faction,
+      discard,
       ...event,
     },
   };
@@ -344,7 +346,7 @@ function HideObjectiveEvent(objectiveId: ObjectiveId): HideObjectiveData {
 }
 
 function HideTFCardEvent(
-  event: AbilityEvent | GenomeEvent | ParadigmEvent | UpgradeEvent,
+  event: AbilityEvent | GenomeEvent | UpgradeEvent,
 ): HideTFCardData {
   return {
     action: "HIDE_TF_CARD",
@@ -397,11 +399,13 @@ function LoseRelicEvent(
 function LoseTFCardEvent(
   faction: FactionId,
   event: AbilityEvent | GenomeEvent | ParadigmEvent | UpgradeEvent,
+  discard?: boolean,
 ): LoseTFCardData {
   return {
     action: "LOSE_TF_CARD",
     event: {
       faction,
+      discard,
       ...event,
     },
   };
@@ -623,7 +627,7 @@ function RevealObjectiveEvent(objectiveId: ObjectiveId): RevealObjectiveData {
 }
 
 function RevealTFCardEvent(
-  event: AbilityEvent | GenomeEvent | ParadigmEvent | UpgradeEvent,
+  event: AbilityEvent | GenomeEvent | UpgradeEvent,
 ): RevealTFCardData {
   return {
     action: "REVEAL_TF_CARD",

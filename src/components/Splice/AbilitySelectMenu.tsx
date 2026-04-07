@@ -7,33 +7,22 @@ import TechIcon from "../TechIcon/TechIcon";
 import styles from "./Splice.module.scss";
 
 export default function AbilitySelectMenu({
-  factionId,
   filter,
   label,
   selectAbility,
-  steal,
   style,
 }: {
-  factionId?: FactionId;
-  filter?: (ability: TFAbility) => boolean;
+  filter: (ability: TFAbility) => boolean;
   label: ReactNode;
   selectAbility: (ability: TFAbilityId) => void;
-  steal?: boolean;
   style?: CSSProperties;
 }) {
   const abilities = useAbilities();
 
-  let availableAbilities = Object.values(abilities)
-    .filter((ability) => !ability.owner)
-    .sort((a, b) => (a.name > b.name ? 1 : -1));
-  if (steal) {
-    availableAbilities = Object.values(abilities)
-      .filter((ability) => !!ability.owner && ability.owner !== factionId)
-      .sort((a, b) => (a.name > b.name ? 1 : -1));
-  }
+  let availableAbilities = Object.values(abilities).filter(filter);
 
-  if (filter) {
-    availableAbilities = availableAbilities.filter(filter);
+  if (availableAbilities.length === 0) {
+    return null;
   }
 
   const redAbilities = availableAbilities.filter(

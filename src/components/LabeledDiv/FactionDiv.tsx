@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import { CSSProperties, PropsWithChildren, ReactNode } from "react";
 import { useFactionColors } from "../../context/factionDataHooks";
 import FactionComponents from "../FactionComponents/FactionComponents";
 import LabeledDiv from "./LabeledDiv";
@@ -7,7 +7,13 @@ import FactionIcon from "../FactionIcon/FactionIcon";
 export default function FactionDiv({
   children,
   factionId,
-}: PropsWithChildren<{ factionId: FactionId }>) {
+  rightLabel,
+  style = {},
+}: PropsWithChildren<{
+  factionId: FactionId;
+  rightLabel?: ReactNode;
+  style?: CSSProperties;
+}>) {
   const colors = useFactionColors(factionId);
 
   return (
@@ -18,8 +24,10 @@ export default function FactionDiv({
           <FactionComponents.Name factionId={factionId} />
         </div>
       }
+      rightLabel={rightLabel}
       borderColor={colors.border}
       color={colors.color}
+      style={style}
     >
       {children}
     </LabeledDiv>

@@ -10,6 +10,14 @@
   font-size: 0.75em;
 }
 
+.ChipGroupOuter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+
+  font-size: 0.75em;
+}
+
 .ChipGroup {
   --border-color: var(--disabled-bg);
   width: fit-content;
@@ -63,9 +71,10 @@
 
 .ChipContainer.disabled,
 .ChipContainer.disabled:hover {
-  background-color: var(--disabled-bg);
+  background-color: var(--light-bg);
   // border: var(--border-size) solid var(--disabled-border);
-  color: var(--interactive-bg);
+  // color: var(--muted-text);
+  opacity: 0.4;
   cursor: default;
 }
 

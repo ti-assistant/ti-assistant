@@ -26,7 +26,7 @@ export default function ObjectiveSelectHoverMenu({
   fontSize = "1rem",
   label,
   objectives,
-  perColumn = 5,
+  perColumn = 4,
   buttonStyle = {},
 }: ObjectiveSelectHoverMenuProps) {
   const intl = useIntl();

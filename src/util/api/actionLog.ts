@@ -7,6 +7,7 @@ export const TURN_BOUNDARIES = [
   "HIDE_AGENDA",
   "RESOLVE_AGENDA",
   "END_GAME",
+  "CHOOSE_EDICT",
 ];
 
 export const ACTION_TURN_BOUNDARIES = ["ADVANCE_PHASE", "END_TURN", "END_GAME"];
@@ -73,7 +74,7 @@ export function getCurrentPhasePreviousLogEntries(actionLog: ActionLog) {
 export function getNthMostRecentAction(
   actionLog: ActionLog,
   action: ActionLogEntry<GameUpdateData>["data"]["action"],
-  num: number
+  num: number,
 ) {
   let count = 1;
   for (const logEntry of actionLog) {

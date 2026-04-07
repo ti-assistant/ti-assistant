@@ -1,58 +1,76 @@
 import { FormattedMessage, useIntl } from "react-intl";
+import GainRelic from "../../../../../../../src/components/Actions/GainRelic";
+import GainTFCard from "../../../../../../../src/components/Actions/GainSplicedCard";
 import FactionComponents from "../../../../../../../src/components/FactionComponents/FactionComponents";
+import FactionIcon from "../../../../../../../src/components/FactionIcon/FactionIcon";
+import FormattedDescription from "../../../../../../../src/components/FormattedDescription/FormattedDescription";
 import LabeledDiv from "../../../../../../../src/components/LabeledDiv/LabeledDiv";
+import LabeledLine from "../../../../../../../src/components/LabeledLine/LabeledLine";
 import { Selector } from "../../../../../../../src/components/Selector/Selector";
 import {
-  useCurrentTurn,
+  useCurrentPhase,
   useEdicts,
   useViewOnly,
 } from "../../../../../../../src/context/dataHooks";
 import {
+  useAllFactionColors,
   useFaction,
   useFactionColors,
 } from "../../../../../../../src/context/factionDataHooks";
 import { useTyrant } from "../../../../../../../src/context/stateDataHooks";
+import { InfoRow } from "../../../../../../../src/InfoRow";
 import { LockedButtons } from "../../../../../../../src/LockedButton";
+import { SelectableRow } from "../../../../../../../src/SelectableRow";
 import { getLogEntries } from "../../../../../../../src/util/actionLog";
 import { useDataUpdate } from "../../../../../../../src/util/api/dataUpdate";
 import { Events } from "../../../../../../../src/util/api/events";
-import { phaseString } from "../../../../../../../src/util/strings";
-import { rem } from "../../../../../../../src/util/util";
-import { SelectableRow } from "../../../../../../../src/SelectableRow";
-import { InfoRow } from "../../../../../../../src/InfoRow";
-import FormattedDescription from "../../../../../../../src/components/FormattedDescription/FormattedDescription";
 import {
   getFactionBorder,
   getFactionColor,
 } from "../../../../../../../src/util/factions";
-import FactionIcon from "../../../../../../../src/components/FactionIcon/FactionIcon";
+import { phaseString } from "../../../../../../../src/util/strings";
+import { rem } from "../../../../../../../src/util/util";
+import Arbitrate from "./Arbitrate";
+import Convene from "./Convene";
+import LegacyOfIxth from "./LegacyOfIxth";
+import Splice from "./Splice";
 
 export default function EdictPhase() {
-  const currentTurn = useCurrentTurn();
+  const currentPhase = useCurrentPhase();
   const dataUpdate = useDataUpdate();
   const edicts = useEdicts();
   const intl = useIntl();
-  const tyrant = useTyrant() ?? "A Sickening Lurch";
+  const tyrant = useTyrant();
   const viewOnly = useViewOnly();
-  const colors = useFactionColors(tyrant);
+  const colors = useAllFactionColors();
   const aur = useFaction("Radiant Aur");
 
   const selectedEdicts = getLogEntries<ChooseEdictData>(
-    currentTurn,
+    currentPhase,
     "CHOOSE_EDICT",
   );
+
+  const lastAction = currentPhase[currentPhase.length - 1];
 
   const aurEdict = selectedEdicts.filter(
     (entry) => !entry.data.event.tyrant,
   )[0];
+  const canRemoveAur =
+    lastAction?.data.action === "CHOOSE_EDICT" && !lastAction.data.event.tyrant;
   const tyrantEdict = selectedEdicts.filter(
     (entry) => entry.data.event.tyrant,
   )[0];
+  const canRemoveTyrant =
+    lastAction?.data.action === "CHOOSE_EDICT" && lastAction.data.event.tyrant;
 
   return (
     <div
       className="flexColumn"
-      style={{ alignItems: "center", width: "100%", paddingTop: rem(160) }}
+      style={{
+        width: "100%",
+        paddingTop: rem(40),
+        marginBlockEnd: rem(100),
+      }}
     >
       <div style={{ fontSize: rem(24) }}>
         <FormattedMessage
@@ -80,6 +98,7 @@ export default function EdictPhase() {
             defaultMessage:
               "At the start of the edict phase, if your flagship is on the game board, draw and resolve 1 edict.",
           })}
+
           <Selector
             selectedItem={aurEdict?.data.event.edictId}
             hoverMenuLabel="Draw Edict"
@@ -96,81 +115,119 @@ export default function EdictPhase() {
                 return null;
               }
               return (
-                <SelectableRow
-                  removeItem={() => {
-                    dataUpdate(Events.HideEdictEvent(edictId, false));
-                  }}
-                  itemId={edictId}
-                >
-                  <InfoRow
-                    infoTitle={edict.name}
-                    infoContent={
-                      <FormattedDescription description={edict.description} />
-                    }
-                  >
-                    {edict.name}
-                  </InfoRow>
-                </SelectableRow>
+                <LabeledLine
+                  leftLabel={
+                    <SelectableRow
+                      removeItem={
+                        canRemoveAur
+                          ? () => {
+                              dataUpdate(Events.HideEdictEvent(edictId, false));
+                            }
+                          : undefined
+                      }
+                      itemId={edictId}
+                      style={{ fontFamily: "var(--main-font)" }}
+                    >
+                      <InfoRow
+                        infoTitle={edict.name}
+                        infoContent={
+                          <FormattedDescription
+                            description={edict.description}
+                          />
+                        }
+                      >
+                        {edict.name}
+                      </InfoRow>
+                    </SelectableRow>
+                  }
+                />
               );
             }}
             options={Object.values(edicts)}
           />
+          {aurEdict?.data.event.edictId ? (
+            <EdictDetails
+              edictId={aurEdict.data.event.edictId}
+              factionId="Radiant Aur"
+              finished={!!tyrantEdict}
+            />
+          ) : null}
         </LabeledDiv>
       ) : null}
-      <LabeledDiv
-        label={
-          <div className="flexRow" style={{ gap: "0.25rem" }}>
-            <FactionIcon factionId={tyrant} size={16} />
-            <FactionComponents.Name factionId={tyrant} />
-          </div>
-        }
-        color={colors.color}
-        borderColor={colors.border}
-        style={{ width: "fit-content" }}
-      >
-        <FormattedMessage
-          id="BATnO1"
-          defaultMessage="Draw 3 Edicts and choose 1 to resolve."
-          description="Instructions for the Tyrant to resolve the Edict phase."
-        />
-        <Selector
-          selectedItem={tyrantEdict?.data.event.edictId}
-          hoverMenuLabel="Choose Edict"
-          toggleItem={(edictId, add) => {
-            if (add) {
-              dataUpdate(Events.ChooseEdictEvent(edictId, true));
-            } else {
-              dataUpdate(Events.HideEdictEvent(edictId, true));
-            }
-          }}
-          renderItem={(edictId) => {
-            const edict = edicts[edictId];
-            if (!edict) {
-              return null;
-            }
-            return (
-              <SelectableRow
-                removeItem={() => {
-                  dataUpdate(Events.HideEdictEvent(edictId, true));
-                }}
-                itemId={edictId}
-              >
-                <InfoRow
-                  infoTitle={edict.name}
-                  infoContent={
-                    <FormattedDescription description={edict.description} />
+      {tyrant ? (
+        <LabeledDiv
+          label={
+            <div className="flexRow" style={{ gap: "0.25rem" }}>
+              <FactionIcon factionId={tyrant} size={16} />
+              <FactionComponents.Name factionId={tyrant} />
+            </div>
+          }
+          color={colors[tyrant]?.color}
+          borderColor={colors[tyrant]?.border}
+          style={{ width: "fit-content" }}
+        >
+          <FormattedMessage
+            id="BATnO1"
+            defaultMessage="Draw 3 Edicts and choose 1 to resolve."
+            description="Instructions for the Tyrant to resolve the Edict phase."
+          />
+
+          <Selector
+            selectedItem={tyrantEdict?.data.event.edictId}
+            hoverMenuLabel="Choose Edict"
+            toggleItem={(edictId, add) => {
+              if (add) {
+                dataUpdate(Events.ChooseEdictEvent(edictId, true));
+              } else {
+                dataUpdate(Events.HideEdictEvent(edictId, true));
+              }
+            }}
+            renderItem={(edictId) => {
+              const edict = edicts[edictId];
+              if (!edict) {
+                return null;
+              }
+              return (
+                <LabeledLine
+                  leftLabel={
+                    <SelectableRow
+                      removeItem={
+                        canRemoveTyrant
+                          ? () => {
+                              dataUpdate(Events.HideEdictEvent(edictId, true));
+                            }
+                          : undefined
+                      }
+                      itemId={edictId}
+                      style={{ fontFamily: "var(--main-font)" }}
+                    >
+                      <InfoRow
+                        infoTitle={edict.name}
+                        infoContent={
+                          <FormattedDescription
+                            description={edict.description}
+                          />
+                        }
+                      >
+                        {edict.name}
+                      </InfoRow>
+                    </SelectableRow>
                   }
-                >
-                  {edict.name}
-                </InfoRow>
-              </SelectableRow>
-            );
-          }}
-          options={Object.values(edicts)}
-        />
-      </LabeledDiv>
+                />
+              );
+            }}
+            options={Object.values(edicts)}
+          />
+          {tyrantEdict?.data.event.edictId ? (
+            <EdictDetails
+              edictId={tyrantEdict.data.event.edictId}
+              factionId={tyrant}
+            />
+          ) : null}
+        </LabeledDiv>
+      ) : null}
       <LockedButtons
-        unlocked={true}
+        unlocked={!tyrant || !!tyrantEdict}
         style={{
           marginTop: rem(12),
           justifyContent: "center",
@@ -193,4 +250,51 @@ export default function EdictPhase() {
       />
     </div>
   );
+}
+
+function EdictDetails({
+  edictId,
+  factionId,
+  finished,
+}: {
+  edictId: TFEdictId;
+  factionId: FactionId;
+  finished?: boolean;
+}) {
+  if (finished) {
+    return null;
+  }
+  switch (edictId) {
+    case "Arbitrate":
+      return <Arbitrate factionId={factionId} />;
+    case "Arise":
+      return null;
+    case "Artifice":
+      return (
+        <div className="flexColumn" style={{ alignItems: "flex-start" }}>
+          <GainRelic factionId={factionId} />
+          <GainTFCard
+            factionId={factionId}
+            numToGain={{
+              paradigms: 1,
+            }}
+          />
+        </div>
+      );
+    case "Bless":
+      // TODO: Need to update for tracking command counters.
+      return null;
+    case "Censure":
+      return null;
+    case "Convene":
+      return <Convene factionId={factionId} />;
+    case "Execute":
+      return null;
+    case "Foretell":
+      return null;
+    case "Legacy of Ixth":
+      return <LegacyOfIxth factionId={factionId} />;
+    case "Splice":
+      return <Splice factionId={factionId} />;
+  }
 }
