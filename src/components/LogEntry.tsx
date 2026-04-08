@@ -1,23 +1,28 @@
 import { FormattedMessage } from "react-intl";
 import { AgendaRow } from "../AgendaRow";
 import {
+  useAbilities,
   useAgendas,
   useAllPlanets,
+  useGenomes,
+  useParadigms,
   useRelics,
   useTechs,
+  useUpgrades,
 } from "../context/dataHooks";
 import { useFaction, useFactions } from "../context/factionDataHooks";
-import { useObjectives } from "../context/objectiveDataHooks";
-import { BLACK_TEXT_GLOW } from "../util/borderGlow";
+import { InfoRow } from "../InfoRow";
 import {
   getFactionBorder,
   getFactionColor,
   getFactionName,
 } from "../util/factions";
-import { getTechColor } from "../util/techs";
+import { getTechColor, getTechTypeColor } from "../util/techs";
 import { rem } from "../util/util";
 import ExpeditionIcon from "./Expedition/ExpeditionIcon";
 import FactionComponents from "./FactionComponents/FactionComponents";
+import FactionIcon from "./FactionIcon/FactionIcon";
+import FormattedDescription from "./FormattedDescription/FormattedDescription";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 import TimerDisplay from "./TimerDisplay/TimerDisplay";
@@ -61,6 +66,11 @@ export function LogEntryElement({
   const planets = useAllPlanets();
   const relics = useRelics();
   const techs = useTechs();
+
+  const abilities = useAbilities();
+  const genomes = useGenomes();
+  const upgrades = useUpgrades();
+  const paradigms = useParadigms();
 
   switch (logEntry.data.action) {
     case "ADD_ATTACHMENT": {
@@ -761,6 +771,131 @@ export function LogEntryElement({
           chose to no longer be passed
         </div>
       );
+    }
+    case "CHOOSE_TF_FACTION": {
+      return (
+        <div
+          className="flexRow"
+          style={{
+            padding: `0 ${rem(10)}`,
+            gap: rem(4),
+          }}
+        >
+          <ColoredFactionName factionId={logEntry.data.event.factionId} />
+          selected{" "}
+          <FactionIcon
+            factionId={logEntry.data.event.subFaction}
+            size={16}
+          />{" "}
+          for their{" "}
+          {logEntry.data.event.type === "Planet"
+            ? "Home System"
+            : "Starting Units"}
+        </div>
+      );
+    }
+    case "GAIN_TF_CARD": {
+      switch (logEntry.data.event.type) {
+        case "ABILITY":
+          const ability = abilities[logEntry.data.event.ability];
+          if (!ability) {
+            return null;
+          }
+          return (
+            <InfoRow
+              infoTitle={ability.name}
+              infoContent={
+                <FormattedDescription description={ability.description} />
+              }
+            >
+              <div
+                className="flexRow"
+                style={{
+                  padding: `0 ${rem(10)}`,
+                  gap: rem(4),
+                }}
+              >
+                <ColoredFactionName factionId={logEntry.data.event.faction} />
+                gained{" "}
+                <span style={{ color: getTechTypeColor(ability.type) }}>
+                  {ability.name}
+                </span>
+              </div>
+            </InfoRow>
+          );
+        case "GENOME":
+          const genome = genomes[logEntry.data.event.genome];
+          if (!genome) {
+            return null;
+          }
+          return (
+            <InfoRow
+              infoTitle={genome.name}
+              infoContent={
+                <FormattedDescription description={genome.description} />
+              }
+            >
+              <div
+                className="flexRow"
+                style={{
+                  padding: `0 ${rem(10)}`,
+                  gap: rem(4),
+                }}
+              >
+                <ColoredFactionName factionId={logEntry.data.event.faction} />
+                gained {genome.name}
+              </div>
+            </InfoRow>
+          );
+        case "PARADIGM":
+          const paradigm = paradigms[logEntry.data.event.paradigm];
+          if (!paradigm) {
+            return null;
+          }
+          return (
+            <InfoRow
+              infoTitle={paradigm.name}
+              infoContent={
+                <FormattedDescription description={paradigm.description} />
+              }
+            >
+              <div
+                className="flexRow"
+                style={{
+                  padding: `0 ${rem(10)}`,
+                  gap: rem(4),
+                }}
+              >
+                <ColoredFactionName factionId={logEntry.data.event.faction} />
+                gained {paradigm.name}
+              </div>
+            </InfoRow>
+          );
+        case "UNIT_UPGRADE":
+          const upgrade = upgrades[logEntry.data.event.upgrade];
+          if (!upgrade) {
+            return null;
+          }
+          return (
+            <InfoRow
+              infoTitle={upgrade.name}
+              infoContent={
+                <FormattedDescription description={upgrade.description} />
+              }
+            >
+              <div
+                className="flexRow"
+                style={{
+                  padding: `0 ${rem(10)}`,
+                  gap: rem(4),
+                }}
+              >
+                <ColoredFactionName factionId={logEntry.data.event.faction} />
+                gained {upgrade.name}
+              </div>
+            </InfoRow>
+          );
+      }
     }
     case "RESOLVE_AGENDA":
     case "PLAY_ACTION_CARD":
