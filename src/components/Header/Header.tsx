@@ -21,6 +21,7 @@ import { computeVPs } from "../../util/factions";
 import { rem } from "../../util/util";
 import GameTimer from "../GameTimer/GameTimer";
 import styles from "./Header.module.scss";
+import Link from "next/link";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"

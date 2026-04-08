@@ -14,8 +14,20 @@ div.ClaimedPlanetsSection {
   padding-left: 0.25rem;
 }
 
+.Select {
+  display: none;
+}
+
 @media only screen and (max-width: 44rem) {
   div.ClaimPlanetsSection {
     align-items: flex-start;
+  }
+
+  .Select {
+    display: block;
+  }
+
+  .HoverMenu {
+    display: none;
   }
 }

@@ -435,10 +435,6 @@ input[type="textbox"]:invalid {
   outline: none;
 }
 
-.myriadPro {
-  font-family: "Myriad Pro";
-}
-
 .flexRow {
   display: flex;
   flex-direction: row;

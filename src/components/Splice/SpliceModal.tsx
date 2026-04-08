@@ -357,7 +357,7 @@ function SpliceModalContent({
         style={{
           display: "grid",
           gridAutoFlow: "row",
-          gridTemplateColumns: "repeat(3, 1fr)",
+          gridTemplateColumns: "1fr 2fr 1fr",
           alignItems: "stretch",
           marginBlockEnd: "0.5rem",
         }}
@@ -429,7 +429,8 @@ function SpliceModalContent({
           display: "grid",
           gridAutoFlow: "row",
           justifyContent: "center",
-          gridTemplateColumns: "repeat(auto-fill, minmax(450px, 1fr))",
+          gridTemplateColumns:
+            "repeat(auto-fill, minmax(clamp(240px, 19rem, 98vw), 1fr))",
           width: "98vw",
           gap: "0.5rem",
         }}
@@ -653,6 +654,9 @@ function SpliceCard({
               justifyContent: "center",
             }}
           >
+            {card.owner ? (
+              <FactionIcon factionId={card.owner} size={16} />
+            ) : null}
             {card.name}
             {type === "UNIT_UPGRADE" ? (
               <UnitIcon type={(card as TFUnitUpgrade).unitType} />
@@ -683,6 +687,7 @@ function SpliceCard({
           style={{
             alignItems: "flex-start",
             marginBlockEnd: "auto",
+            width: "100%",
           }}
         >
           <FormattedDescription description={card.description} />

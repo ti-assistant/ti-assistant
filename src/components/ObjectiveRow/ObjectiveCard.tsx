@@ -25,7 +25,7 @@ export default function ObjectiveCard({
         <div
           className="flexRow"
           style={{
-            fontFamily: "Slider",
+            fontFamily: "var(--main-font)",
             // fontWeight: "bold",
             justifyContent: "space-between",
             width: "100%",

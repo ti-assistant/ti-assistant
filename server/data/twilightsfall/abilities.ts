@@ -1,7 +1,7 @@
 import { IntlShape } from "react-intl";
 
 export default function getTwilightsFallAbilities(
-  intl: IntlShape
+  intl: IntlShape,
 ): Record<TwilightsFall.TFAbilityId, TFBaseAbility> {
   return {
     Abundance: {
@@ -12,7 +12,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "When 1 or more of your units use PRODUCTION, you may gain 1 trade good.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Abundance",
       name: intl.formatMessage({
@@ -32,7 +32,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "Other players cannot move ships through systems that contain your structures.{br}Each planet that contains 1 or more of your structures gains the PRODUCTION 1 ability as if it were a unit.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Aerie Hololattice",
       name: intl.formatMessage({
@@ -52,7 +52,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "After you or one of your neighbors activates a system that is adjacent to an anomaly:{br}You may apply +1 to the move value of all of that player's ships during this tactical action.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Aetherstream",
       name: intl.formatMessage({
@@ -72,7 +72,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "Once per action, when you resolve a unit's PRODUCTION ability:{br}You may resolve another of your unit's PRODUCTION abilities in any system.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Agency Supply Network",
       name: intl.formatMessage({
@@ -92,7 +92,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "Capture your opponent's non-structure units that are destroyed during combat.{br}When you produce a unit, you may return 1 captured unit of that type to produce that unit without spending resources.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Amalgamation",
       name: intl.formatMessage({
@@ -112,7 +112,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "At the start of a space combat:{br}You may roll 1 die for each of up to 2 of your cruisers or destroyers in the system. For each result equal to or greater than that ship's combat value, produce 1 hit; your opponent must assign it to 1 of their ships.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Ambush",
       name: intl.formatMessage({
@@ -132,7 +132,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "The maximum number of non-fighter ships you can have in each system is equal to 2 more than the number of tokens in your fleet pool.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Armada",
       name: intl.formatMessage({
@@ -152,7 +152,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "When you gain control of a planet:{br}Replace each structure on that planet with a matching unit from your reinforcements.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Assimilate",
       name: intl.formatMessage({
@@ -172,7 +172,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "After you activate a system that contains 1 or more of your infantry, you may replace 1 of those infantry with a PDS from your reinforcements.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Awaken",
       name: intl.formatMessage({
@@ -192,7 +192,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             'Your action cards cannot be canceled by "Shatter" action cards.{br}Your other abilities cannot be taken, purged, or discarded by other players and cannot have singularity tokens placed on them.',
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "BioSynthetic Synergy",
       name: intl.formatMessage({
@@ -212,7 +212,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "At the start of the status phase:{br}You may remove any number of ground forces from planets you control and place them on 1 or more planets you control in the same or adjacent systems.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Bioplasmosis",
       name: intl.formatMessage({
@@ -232,7 +232,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "At the start of your turn during the action phase:{br}You may produce 1 unit in a system that contains at least 1 of your units that has PRODUCTION.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Chaos Mapping",
       name: intl.formatMessage({
@@ -242,7 +242,7 @@ export default function getTwilightsFallAbilities(
       }),
       origin: "Clan of Saar",
       timing: "OTHER",
-      type: "BLUE",
+      type: "YELLOW",
     },
     Crafty: {
       description: intl.formatMessage(
@@ -252,7 +252,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "You can have any number of action cards in your hand. Game effects cannot prevent you from using this ability.{br}During your turn of the action phase, players that have passed cannot play action cards.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Crafty",
       name: intl.formatMessage({
@@ -272,7 +272,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "Your ships do not roll for gravity rifts; apply an additional +1 to the move values of your ships that would move out of or through a gravity rift instead.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Crucible",
       name: intl.formatMessage({
@@ -292,7 +292,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "After you activate a system:{br}You may move your structures from adjacent systems that do not contain your command tokens onto planets you control in the active system.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Courier Transport",
       name: intl.formatMessage({
@@ -312,7 +312,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "After each space combat round:{br}You may destroy 1 of your cruisers or destroyers in the active system to produce 1 hit and assign it to 1 of your opponent's ships in that system.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Devotion",
       name: intl.formatMessage({
@@ -332,7 +332,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "At the start of a space combat in a system that contains a wormhole and 1 or more of your ships:{br}You may produce 1 hit and assign it to 1 of your opponent's ships.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Dimensional Splicer",
       name: intl.formatMessage({
@@ -352,7 +352,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "Systems that contain your space docks are also gravity rifts; your ships do not roll for these gravity rifts. Place a dimensional tear token beneath your space docks as a reminder.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       id: "Dimensional Tear",
@@ -373,7 +373,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "When you explore a planet that contains 1 of your mechs:{br}You may draw 1 additional card; choose 1 to resolve and discard the rest.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Distant Suns",
       expansion: "POK",
@@ -394,7 +394,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "After another player activates a system that contains 1 or more of your ships:{br}Gain 4 trade goods.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "ERes Siphons",
       name: intl.formatMessage({
@@ -414,7 +414,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "At the end of any player's combat:{br}Gain 1 commodity or convert 1 of your commodities to a trade good.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Entropic Harvest",
       name: intl.formatMessage({
@@ -434,7 +434,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "ACTION: Either purge 2 of your relic fragments of the same type to gain 1 relic or purge 1 of your relic fragments to gain 1 command token.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       expansion: "POK",
       id: "Fabrication",
@@ -455,7 +455,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "During each of your turns of the action phase, you may perform 2 actions instead of 1.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Fleet Logistics",
       name: intl.formatMessage({
@@ -475,7 +475,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "After another player moves ships into a system that contains 1 or more of your ships:{br}You may place 1 command token from your reinforcements in an adjacent system that does not contain another player's ships; move your ships from the active system into that system.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Foresight",
       name: intl.formatMessage({
@@ -495,7 +495,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             'When you gain trade goods from choosing a previously unchosen strategy card or from the "Amicus" strategy card:{br}Triple those trade goods.',
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Future Path",
       name: intl.formatMessage({
@@ -515,7 +515,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "At the start of the status phase:{br}Choose a technology color and gain trade goods equal to the number of abilities you own that have that technology color.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Genetic Research",
       name: intl.formatMessage({
@@ -535,7 +535,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "You can negotiate transactions with players who are not your neighbor.{br}You can exchange action cards with other players as part of transactions.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Guild Ships",
       name: intl.formatMessage({
@@ -555,7 +555,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "At the end of each round of ground combat:{br}Your ships in the active system may use their BOMBARDMENT abilities against your opponent's ground forces on the planet.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Harrow",
       name: intl.formatMessage({
@@ -576,7 +576,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "When 1 or more of your units use PRODUCITON:{br}You may swap the resource and influence values of 1 planet you control during this use of PRODUCTION.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Hegemonic Trade Policy",
       name: intl.formatMessage({
@@ -596,7 +596,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "At the start of a ground combat:{br}You may spend 2 influence to replace 1 of your opponent's participating infantry with 1 infantry from your reinforcements.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Indoctrination",
       name: intl.formatMessage({
@@ -616,7 +616,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "During the status phase:{br}Draw 1 additional action card and gain 1 additional command token.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Inheritance Systems",
       name: intl.formatMessage({
@@ -636,7 +636,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "When another player plays an action card:{br}You may spend 1 token from your strategy pool to cancel that action card.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Instinct Training",
       name: intl.formatMessage({
@@ -656,7 +656,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "During your tactical actions:{br}Treat systems that contain legendary planets you do not control as if they contain both an alpha and beta wormhole.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Lazax Gate Folding",
       name: intl.formatMessage({
@@ -676,7 +676,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "When you gain control of a planet:{br}Ready that planet if it contains a number of your infantry equal to or greater than that planet's resource value; otherwise, place 1 infantry on that planet.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Liberate",
       name: intl.formatMessage({
@@ -696,7 +696,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "Your units can move into and through supernovas.{br}Each supernova that does not contain other players' units and each system that contains 1 or more of your war suns gains the PRODUCTION 5 ability as if it were one of your units.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Magmus Reactor",
       name: intl.formatMessage({
@@ -716,7 +716,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "When you spend trade goods:{br}Each trade good is worth 2 resources or influence instead of 1.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Mirror Computing",
       name: intl.formatMessage({
@@ -736,7 +736,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "At the start of the status phase:{br}Place 1 infantry from your reinforcements on any planet you control.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Mitosis",
       name: intl.formatMessage({
@@ -756,7 +756,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "At the start of each round of space combat:{br}You may spend 2 trade goods; you may reroll any number of your dice during this combat round.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Munitions Reserves",
       name: intl.formatMessage({
@@ -776,7 +776,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "ACTION: Exhaust this card to place 1 PDS on a planet you control.{br}ACTION: Exhaust this card to repair all of your damaged units.{br}ACTION: Exhaust this card and discard 1 action card to draw 1 action card.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Nanomachines",
       name: intl.formatMessage({
@@ -796,7 +796,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "At the start of your turn:{br}Destroy 1 of another player's infantry in or adjacent to a system that contains your infantry.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Neural Parasite",
       name: intl.formatMessage({
@@ -816,7 +816,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "After another player actvates a system that contains 1 or more of your ships:{br}That player removes 1 token from their fleet pool and returns it to their reinforcements.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Neuroglaive",
       name: intl.formatMessage({
@@ -836,7 +836,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "You can score objectives even if you do not control the planets in your home system.{br}Other players cannot activate asteroid fields that contain 1 or more of your ships.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Nomadic",
       name: intl.formatMessage({
@@ -857,7 +857,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "When 1 of your units uses SUSTAIN DAMAGE:{br}Cancel 2 hits instead of 1.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "NonEuclidean Shielding",
       name: intl.formatMessage({
@@ -877,7 +877,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "When another player activates a system that contains 1 or more of your ships:{br}You may exhaust this card and spend 1 token from your strategy pool to immediately end that player's turn.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Nullification Field",
       name: intl.formatMessage({
@@ -897,7 +897,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "ACTION: Spend 1 token from your strategy pool to place 2 infantry from your reinforcements on 1 planet you control.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Orbital Drop",
       name: intl.formatMessage({
@@ -917,7 +917,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "After another player moves ships into a system that contains 1 of your command tokens:{br}You may return that token to your reinforcements.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Overwatch",
       name: intl.formatMessage({
@@ -937,7 +937,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "When ground forces are committed:{br}If your units on that planet are not already coexisting, you may choose for your units to coexist.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Pacifist",
       name: intl.formatMessage({
@@ -957,7 +957,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "After you spend a token from your strategy pool:{br}You may gain control of 1 planet that does not contain the custodians token or any units and is adjacent to a planet you control.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Peace Accords",
       name: intl.formatMessage({
@@ -977,7 +977,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "After 1 of your neighbors gains trade goods or resolves a transaction:{br}If they have 3 or more trade goods, you may take 1 of their trade goods or commodities.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Pillage",
       name: intl.formatMessage({
@@ -997,7 +997,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "When you gain this card, put The Fracture into play.{br}Apply +1 to the MOVE value of each of your ships that start its movement in The Fracture.{br}Apply +2 to the result of each of your units' combat rolls in The Fracture.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Planesplitter",
       name: intl.formatMessage({
@@ -1007,7 +1007,7 @@ export default function getTwilightsFallAbilities(
       }),
       origin: "Obsidian",
       timing: "OTHER",
-      type: "YELLOW",
+      type: "RED",
     },
     "Proxima Targeting VI": {
       description: intl.formatMessage(
@@ -1017,7 +1017,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "Cancel 1 hit produced by each BOMBARDMENT roll against your units.{br}At the start of a round of ground combat, you may resolve BOMBARDMENT 7 (x3) against your opponent's ground forces; if you do, resolve BOMBARDMENT 7 (x3) against your own ground forces.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Proxima Targeting VI",
       name: intl.formatMessage({
@@ -1037,7 +1037,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "At the start of the strategy phase:{br}Replenish your commodities, then gain 1 trade good.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Puppet Council",
       name: intl.formatMessage({
@@ -1057,7 +1057,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "At the end of the strategy phase:{br}You may spend 1 token from your strategy pool and give another player 3 of your trade goods. If you do, give 1 of your strategy cards to that player and take 1 of their strategy cards.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Quantum Datahub Node",
       name: intl.formatMessage({
@@ -1077,7 +1077,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "You can produce your flagship without spending resources.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Quantum Drive",
       name: intl.formatMessage({
@@ -1097,7 +1097,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "You treat all systems that contain either an alpha or beta wormhole as adjacent to each other. Game effects cannot prevent you from using this ability.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Quantum Entanglement",
       name: intl.formatMessage({
@@ -1117,7 +1117,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "At the start of the status phase:{br}You may choose to replace 1 of your abilities; if you do, reveal abilities from the deck until you reveal another ability with the same technology color and gain it; shuffle the replaced ability and the other revealed cards back into the deck.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Radical Advancement",
       name: intl.formatMessage({
@@ -1137,7 +1137,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "When 1 or more of your units uses ANTI-FIGHTER BARRAGE:{br}For each hit produced in excess of your opponent's fighters, choose 1 of your opponent's ships that has SUSTAIN DAMAGE to become damaged.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Raid Formation",
       name: intl.formatMessage({
@@ -1157,7 +1157,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "After you resolve an action during which you gained control of a legendary planet:{br}You may place 1 PDS and 1 space dock from your reinforcements on that planet.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Reclamation",
       name: intl.formatMessage({
@@ -1177,7 +1177,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "After you gain control of a planet:{br}Gain 1 trade good.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Scavenge",
       name: intl.formatMessage({
@@ -1197,7 +1197,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "When you draw 1 or more action cards:{br}Draw 1 additional action card. Then, choose and discard 1 action card from your hand.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Scheming",
       name: intl.formatMessage({
@@ -1217,7 +1217,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "Once per combat, after 1 of your opponent's units is destroyed:{br}You may place the \"Singularity X\" token on one of your opponent's abilities. While that token is on a card, this card gains that card's text. You cannot place a singularity token on a card that already has a singularity token.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Singularity X",
       name: intl.formatMessage({
@@ -1237,7 +1237,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "Once per combat, after 1 of your opponent's units is destroyed:{br}You may place the \"Singularity Y\" token on one of your opponent's abilities. While that token is on a card, this card gains that card's text. You cannot place a singularity token on a card that already has a singularity token.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Singularity Y",
       name: intl.formatMessage({
@@ -1257,7 +1257,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "Once per combat, after 1 of your opponent's units is destroyed:{br}You may place the \"Singularity Z\" token on one of your opponent's abilities. While that token is on a card, this card gains that card's text. You cannot place a singularity token on a card that already has a singularity token.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Singularity Z",
       name: intl.formatMessage({
@@ -1277,7 +1277,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "When 1 or more of your units use PRODUCTION:{br}Reduce the combined cost of the produced units by 2.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Sled Factories",
       name: intl.formatMessage({
@@ -1297,7 +1297,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "During your tactical actions:{br}Apply +1 to the move value of each of your ships that starts its movement in a system that contains a wormhole.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Slipstream",
       name: intl.formatMessage({
@@ -1317,7 +1317,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "Other players' units in or adjacent to systems that contain your structures lose all of their unit abilities.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Smothering Presence",
       name: intl.formatMessage({
@@ -1338,7 +1338,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "After you activate a system that contains 1 or more of your units:{br}That system is adjacent to all other systems that contain 1 or more of your units during this action.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Spatial Conduit Cylinder",
       name: intl.formatMessage({
@@ -1359,7 +1359,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "After 1 of your ground forces is destroyed:{br}Roll 1 die. If the result is 5 or greater, place the unit on this card. At the start of your next turn, place each unit that is on this card on a planet you control in your home system.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Spec Ops Training",
       name: intl.formatMessage({
@@ -1378,7 +1378,7 @@ export default function getTwilightsFallAbilities(
           description: "Text of Twilight's Fall Ability: Stall Tactics",
           defaultMessage: "	ACTION: Discard 1 action card from your hand.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Stall Tactics",
       name: intl.formatMessage({
@@ -1398,7 +1398,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "ACTION: Spend 1 token from your strategy pool to place either 2 fighters or 1 destroyer from your reinforcements in a system that contains 1 or more of your ships.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Star Forge",
       name: intl.formatMessage({
@@ -1418,7 +1418,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "After you spend a token from your strategy pool:{br}You may gain 1 trade good.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Stellar Genesis",
       name: intl.formatMessage({
@@ -1438,7 +1438,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "After another player moves ships into a system that contains 1 or more of your units:{br}You may place 1 command token from that player's reinforcements in any non-home system.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Stymie",
       name: intl.formatMessage({
@@ -1458,7 +1458,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "When one of your ships is destroyed:{br}You may produce a ship of the same type at a space dock in your home system.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Subatomic Splicer",
       name: intl.formatMessage({
@@ -1478,7 +1478,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "Before making a combat roll:{br}Choose 1 of your units and apply +2 to the results of its combat roll.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Supercharge",
       name: intl.formatMessage({
@@ -1498,7 +1498,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "After a player actives a system that contains your ships:{br}You may move up to 2 of your ships into the active system from adjacent systems that do not contain your command tokens.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Survival Instinct",
       name: intl.formatMessage({
@@ -1518,7 +1518,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "After you roll dice for a unit ability:{br}You may reroll any of those dice.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Tactical Brilliance",
       name: intl.formatMessage({
@@ -1538,7 +1538,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             'At the end of the strategy phase:{br}Place the Naalu "0" token on your strategy card; you are first in initiative order.{br}This card cannot have a singularity token placed on it.',
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Telepathic",
       name: intl.formatMessage({
@@ -1560,7 +1560,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "After any player's genome becomes exhausted:{br}You may spend 3 influence to ready that genome; if you ready another player's genome, you may perform a transaction with that player.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Temporal Command Suite",
       name: intl.formatMessage({
@@ -1580,7 +1580,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "Planets that contain your structures are treated as having all 3 planet traits (cultural, hazardous, and industrial)",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Terraform",
       name: intl.formatMessage({
@@ -1600,7 +1600,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "You can treat planets in systems that contain your ships as if you contolled them for the purpose of scoring secret objectives.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "The Burning Eye",
       name: intl.formatMessage({
@@ -1620,7 +1620,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "Apply +1 to the result of each of your unit's combat rolls.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Unrelenting",
       name: intl.formatMessage({
@@ -1641,7 +1641,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "After making combat rolls during a round of ground combat:{br}If your opponent produced 1 or more hits, you produce 1 additional hit.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Valkyrie Particle Weave",
       name: intl.formatMessage({
@@ -1661,7 +1661,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             'During the "Commit Ground Forces" step:{br}You can commit up to 1 ground force from each planet in the active system and each planet in adjacent systems that do not contain 1 of your command tokens.',
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Valkyrie Vanguard",
       name: intl.formatMessage({
@@ -1681,7 +1681,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "When you gain command tokens during the status phase:{br}Gain 1 additional command token.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Versatile",
       name: intl.formatMessage({
@@ -1701,7 +1701,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "Nebulae do not affect your ships' movement.{br}You can allow other players to move their ships through systems that contain your ships.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Voidborn",
       name: intl.formatMessage({
@@ -1721,7 +1721,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "When you score an objective:{br}Draw 1 genome, ability,  or unit upgrade.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Yin Ascendant",
       name: intl.formatMessage({
@@ -1741,7 +1741,7 @@ export default function getTwilightsFallAbilities(
           defaultMessage:
             "When 1 or more of your units roll dice for a unit ability:{br}You may choose 1 of those units to roll 1 additional die.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       id: "Zealous",
       name: intl.formatMessage({

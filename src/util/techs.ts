@@ -343,3 +343,24 @@ export function getWavelengthForFaction(factionId: FactionId): TechId {
   }
   return "Wavelength Black";
 }
+
+export function getCombatValues(combat: string | number | undefined) {
+  if (!combat) {
+    return {
+      combat: 0,
+      num: 0,
+    };
+  }
+  if (typeof combat === "number") {
+    return {
+      combat,
+      num: 0,
+    };
+  }
+  const vals = combat.split("(x");
+
+  return {
+    combat: parseInt(vals[0] ?? "0"),
+    num: parseInt(vals[1]?.split(")")[0] ?? "0"),
+  };
+}

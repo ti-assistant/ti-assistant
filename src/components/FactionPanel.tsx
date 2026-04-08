@@ -2,9 +2,13 @@ import { PropsWithChildren, ReactNode, use, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { ModalContext } from "../context/contexts";
 import {
+  useAbilities,
+  useGenomes,
   useLeaders,
+  useParadigms,
   useRelic,
   useTechs,
+  useUpgrades,
   useViewOnly,
 } from "../context/dataHooks";
 import { useFaction } from "../context/factionDataHooks";
@@ -17,7 +21,7 @@ import { useDataUpdate } from "../util/api/dataUpdate";
 import { Events } from "../util/api/events";
 import { hasTech } from "../util/api/techs";
 import { leaderTypeString } from "../util/strings";
-import { sortTechs } from "../util/techs";
+import { getCombatValues, getTechTypeColor, sortTechs } from "../util/techs";
 import { Optional } from "../util/types/types";
 import { rem } from "../util/util";
 import { CollapsibleSection } from "./CollapsibleSection";
@@ -29,6 +33,12 @@ import RelicPlanetIcon from "./PlanetIcons/RelicPlanetIcon";
 import TechIcon from "./TechIcon/TechIcon";
 import UnitIcon from "./Units/Icons";
 import UnitStats from "./UnitStats/UnitStats";
+import AbilitySVG from "../icons/twilightsfall/ability";
+import FactionIcon from "./FactionIcon/FactionIcon";
+import UpgradeSVG from "../icons/twilightsfall/upgrade";
+import GenomeSVG from "../icons/twilightsfall/genome";
+import ParadigmSVG from "../icons/twilightsfall/paradigm";
+import Toggle from "./Toggle/Toggle";
 
 export function UnitStat({
   name,
@@ -208,7 +218,18 @@ function FactionTech({
       rightLabel={
         tech.type === "UPGRADE" ? (
           <UnitIcon type={tech.unitType} size={18} color="var(--color)" />
-        ) : null
+        ) : (
+          <Toggle
+            selected={hasTech(faction, tech)}
+            toggleFn={(prev) => {
+              if (prev) {
+                dataUpdate(Events.RemoveTechEvent(faction.id, tech.id));
+              } else {
+                dataUpdate(Events.AddTechEvent(faction.id, tech.id));
+              }
+            }}
+          />
+        )
       }
     >
       <FormattedDescription description={tech.description} />
@@ -261,13 +282,23 @@ function FactionTech({
   );
 }
 
+interface SubUnit {
+  abilities?: string[];
+  description?: string;
+  name: string;
+  stats: UnitStats;
+  type: UnitType;
+  upgrade?: TechId;
+  reverse?: SubUnit;
+}
+
 function FactionUnit({
   unit,
   faction,
   viewUpgrade,
   viewOnly,
 }: {
-  unit: Unit;
+  unit: SubUnit;
   faction: Faction;
   viewUpgrade: boolean;
   viewOnly?: boolean;
@@ -458,6 +489,10 @@ function FactionPanelContent({
   factionId: FactionId;
   options: Options;
 }) {
+  const abilities = useAbilities();
+  const genomes = useGenomes();
+  const paradigms = useParadigms();
+  const upgrades = useUpgrades();
   const intl = useIntl();
   const dataUpdate = useDataUpdate();
   const faction = useFaction(factionId);
@@ -501,6 +536,19 @@ function FactionPanelContent({
   if (!faction) {
     return null;
   }
+
+  const factionAbilities = Object.values(abilities)
+    .filter((ability) => ability.owner === factionId)
+    .sort((a, b) => (a.name > b.name ? 1 : -1));
+  const factionGenomes = Object.values(genomes)
+    .filter((genome) => genome.owner === factionId)
+    .sort((a, b) => (a.name > b.name ? 1 : -1));
+  const factionParadigms = Object.values(paradigms)
+    .filter((paradigm) => paradigm.owner === factionId)
+    .sort((a, b) => (a.name > b.name ? 1 : -1));
+  const factionUpgrades = Object.values(upgrades)
+    .filter((upgrade) => upgrade.owner === factionId)
+    .sort((a, b) => (a.name > b.name ? 1 : -1));
 
   return (
     <div className={styles.factionInfoGrid}>
@@ -732,6 +780,54 @@ function FactionPanelContent({
             </div>
           </CollapsibleSection>
         ) : null}
+        {factionGenomes.length > 0 ? (
+          <CollapsibleSection
+            title={
+              <div
+                className="flexRow"
+                style={{ height: "1em", justifyContent: "center" }}
+              >
+                <span style={{ width: "1em", height: "1em" }}>
+                  <GenomeSVG />
+                </span>
+                <FormattedMessage
+                  id="vi7bc7"
+                  defaultMessage="{count, plural, one {Genome} other {Genomes}}"
+                  description="Header for a section listing out genomes."
+                  values={{
+                    count: factionGenomes.length,
+                  }}
+                />
+                <span style={{ width: "1em", height: "1em" }}>
+                  <GenomeSVG />
+                </span>
+              </div>
+            }
+            style={{ width: "100%" }}
+          >
+            <div
+              className="flexColumn"
+              style={{
+                width: "100%",
+                gap: rem(4),
+                padding: `0 ${rem(4)} ${rem(4)}`,
+                fontSize: rem(14),
+              }}
+            >
+              {factionGenomes.map((genome) => {
+                return (
+                  <AbilitySection
+                    key={genome.name}
+                    leftLabel={genome.name}
+                    // TODO: Add one-color faction icon.
+                  >
+                    <FormattedDescription description={genome.description} />
+                  </AbilitySection>
+                );
+              })}
+            </div>
+          </CollapsibleSection>
+        ) : null}
       </div>
       <div
         className="flexColumn"
@@ -814,6 +910,104 @@ function FactionPanelContent({
             </div>
           </CollapsibleSection>
         ) : null}
+        {factionAbilities.length > 0 ? (
+          <CollapsibleSection
+            title={
+              <div
+                className="flexRow"
+                style={{ height: "1em", justifyContent: "center" }}
+              >
+                <span style={{ width: "1em" }}>
+                  <AbilitySVG />
+                </span>
+                <FormattedMessage
+                  id="I54oy6"
+                  defaultMessage="{count, plural, one {Ability} other {Abilities}}"
+                  description="Header for a section listing out abilities."
+                  values={{
+                    count: factionAbilities.length,
+                  }}
+                />
+                <span style={{ width: "1em" }}>
+                  <AbilitySVG />
+                </span>
+              </div>
+            }
+            style={{ width: "100%" }}
+          >
+            <div
+              className="flexColumn"
+              style={{
+                width: "100%",
+                gap: rem(4),
+                padding: `0 ${rem(4)} ${rem(4)}`,
+                fontSize: rem(14),
+              }}
+            >
+              {factionAbilities.map((ability) => {
+                return (
+                  <AbilitySection
+                    key={ability.name}
+                    leftLabel={
+                      <span style={{ color: getTechTypeColor(ability.type) }}>
+                        {ability.name}
+                      </span>
+                    }
+                    // TODO: Add one-color faction icon.
+                  >
+                    <FormattedDescription description={ability.description} />
+                  </AbilitySection>
+                );
+              })}
+            </div>
+          </CollapsibleSection>
+        ) : null}
+        {factionParadigms.length > 0 ? (
+          <CollapsibleSection
+            title={
+              <div
+                className="flexRow"
+                style={{ height: "1em", justifyContent: "center" }}
+              >
+                <span style={{ width: "1em", height: "1em" }}>
+                  <ParadigmSVG />
+                </span>
+                <FormattedMessage
+                  id="i9uwBj"
+                  description="Header for a section listing out paradigms."
+                  defaultMessage="{count, plural, one {Paradigm} other {Paradigms}}"
+                  values={{ count: factionParadigms.length }}
+                />
+                <span style={{ width: "1em", height: "1em" }}>
+                  <ParadigmSVG />
+                </span>
+              </div>
+            }
+            style={{ width: "100%" }}
+          >
+            <div
+              className="flexColumn"
+              style={{
+                width: "100%",
+                gap: rem(4),
+                padding: `0 ${rem(4)} ${rem(4)}`,
+                fontSize: rem(14),
+              }}
+            >
+              {factionParadigms.map((paradigm) => {
+                return (
+                  <AbilitySection
+                    key={paradigm.name}
+                    leftLabel={paradigm.name}
+                    // TODO: Add one-color faction icon.
+                  >
+                    <FormattedDescription description={paradigm.description} />
+                  </AbilitySection>
+                );
+              })}
+            </div>
+          </CollapsibleSection>
+        ) : null}
       </div>
       <div
         className="flexColumn"
@@ -843,10 +1037,39 @@ function FactionPanelContent({
                 : undefined;
               const showUpgrade =
                 (unit.upgrade && hasTech(faction, unitUpgradeTech)) ?? false;
+
+              let adjustedUnit = structuredClone(unit);
+              if (
+                unit.type === "Flagship" &&
+                upgrades["Echo of Ascension"]?.owner === factionId
+              ) {
+                adjustedUnit.stats.capacity = (unit.stats.capacity ?? 0) + 2;
+                adjustedUnit.stats.move = (unit.stats.move ?? 0) + 1;
+                let { combat, num } = getCombatValues(unit.stats.combat);
+                combat -= 1;
+                num += 1;
+                adjustedUnit.stats.combat = `${combat}(x${num})`;
+              }
+              if (unit.type === "Mech") {
+                if (upgrades["Eidolon Landwaster"]?.owner === factionId) {
+                  let { combat, num } = getCombatValues(unit.stats.combat);
+                  num += 1;
+                  adjustedUnit.stats.combat =
+                    num > 0 ? `${combat}(x${num})` : combat;
+                } else if (upgrades["Eidolon Terminus"]?.owner === factionId) {
+                  let { combat, num } = getCombatValues(unit.stats.combat);
+                  combat -= 1;
+                  adjustedUnit.stats.combat =
+                    num > 0 ? `${combat}(x${num})` : combat;
+                } else if (upgrades["Valefar Prime"]?.owner === factionId) {
+                  adjustedUnit.stats.cost = 1;
+                }
+              }
+
               return (
                 <FactionUnit
                   key={unit.name}
-                  unit={unit}
+                  unit={adjustedUnit}
                   faction={faction}
                   viewUpgrade={showUpgrade}
                   viewOnly={viewOnly}
@@ -855,6 +1078,49 @@ function FactionPanelContent({
             })}
           </div>
         </CollapsibleSection>
+        {factionUpgrades.length > 0 ? (
+          <CollapsibleSection
+            title={
+              <div
+                className="flexRow"
+                style={{ height: "1em", justifyContent: "center" }}
+              >
+                <span style={{ height: "1em" }}>
+                  <UpgradeSVG />
+                </span>
+                <FormattedMessage
+                  id="2hHU0G"
+                  description="Title of uprade techs."
+                  defaultMessage="Unit Upgrades"
+                />
+                <span style={{ height: "1em" }}>
+                  <UpgradeSVG />
+                </span>
+              </div>
+            }
+          >
+            <div
+              className="flexColumn"
+              style={{
+                gap: rem(4),
+                padding: `0 ${rem(4)} ${rem(4)}`,
+                fontSize: rem(14),
+              }}
+            >
+              {factionUpgrades.map((unit) => {
+                return (
+                  <FactionUnit
+                    key={unit.name}
+                    unit={{ ...unit, type: unit.unitType }}
+                    faction={faction}
+                    viewUpgrade={false}
+                    viewOnly={viewOnly}
+                  />
+                );
+              })}
+            </div>
+          </CollapsibleSection>
+        ) : null}
       </div>
     </div>
   );

@@ -3,7 +3,6 @@ import { FormattedMessage } from "react-intl";
 import {
   useAttachments,
   useCurrentTurn,
-  useGameId,
   useLeader,
   useOptions,
   usePlanets,
@@ -36,7 +35,6 @@ export default function ClaimPlanetsSection({
 }) {
   const claimedPlanetEvents = useClaimedPlanetEvents(factionId);
   const dataUpdate = useDataUpdate();
-  const gameId = useGameId();
   const options = useOptions();
   const planets = usePlanets();
   const viewOnly = useViewOnly();
@@ -79,41 +77,63 @@ export default function ClaimPlanetsSection({
     >
       <ClaimedPlanetsSection factionId={factionId} hideWrapper={hideWrapper} />
       {!complete && availablePlanets.length > 0 ? (
-        <ClientOnlyHoverMenu
-          label={
-            <FormattedMessage
-              id="+8kwFc"
-              description="Text on a hover menu allowing a player to take control of planets."
-              defaultMessage="Take Control of Planet"
-            />
-          }
-          renderProps={(closeFn) => (
-            <div className="flexRow" style={targetButtonStyle}>
-              {availablePlanets.map((planet) => {
-                return (
-                  <button
-                    key={planet.id}
-                    style={{
-                      minWidth:
-                        availablePlanets.length > 50 ? rem(72) : rem(90),
-                      fontSize:
-                        availablePlanets.length > 50 ? rem(14) : undefined,
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                    }}
-                    onClick={() => {
-                      closeFn();
-                      dataUpdate(Events.ClaimPlanetEvent(factionId, planet.id));
-                    }}
-                    disabled={viewOnly}
-                  >
-                    {planet.name}
-                  </button>
-                );
-              })}
-            </div>
-          )}
-        ></ClientOnlyHoverMenu>
+        <>
+          <select
+            className={styles.Select}
+            onChange={(e) => {
+              dataUpdate(
+                Events.ClaimPlanetEvent(factionId, e.target.value as PlanetId),
+              );
+            }}
+            style={{ fontSize: "1em", fontFamily: "var(--primary-font)" }}
+          >
+            <option value="" hidden>
+              Take Control of Planet
+            </option>
+            {availablePlanets.map((planet) => {
+              return <option value={planet.id}>{planet.name}</option>;
+            })}
+          </select>
+          <span className={styles.HoverMenu}>
+            <ClientOnlyHoverMenu
+              label={
+                <FormattedMessage
+                  id="+8kwFc"
+                  description="Text on a hover menu allowing a player to take control of planets."
+                  defaultMessage="Take Control of Planet"
+                />
+              }
+              renderProps={(closeFn) => (
+                <div className="flexRow" style={targetButtonStyle}>
+                  {availablePlanets.map((planet) => {
+                    return (
+                      <button
+                        key={planet.id}
+                        style={{
+                          minWidth:
+                            availablePlanets.length > 50 ? rem(72) : rem(90),
+                          fontSize:
+                            availablePlanets.length > 50 ? rem(14) : undefined,
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                        onClick={() => {
+                          closeFn();
+                          dataUpdate(
+                            Events.ClaimPlanetEvent(factionId, planet.id),
+                          );
+                        }}
+                        disabled={viewOnly}
+                      >
+                        {planet.name}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            ></ClientOnlyHoverMenu>
+          </span>
+        </>
       ) : null}
     </div>
   );
@@ -165,7 +185,6 @@ function ClaimedPlanetsSection({
 export function ClaimedPlanetRow({ event }: { event: ClaimPlanetEvent }) {
   const attachments = useAttachments();
   const dataUpdate = useDataUpdate();
-  const gameId = useGameId();
   const planets = usePlanets();
   const planet = planets[event.planet];
 
@@ -221,7 +240,6 @@ function AddAttachment({ event }: { event: ClaimPlanetEvent }) {
   const currentTurn = useCurrentTurn();
   const dartAndTai = useLeader("Dart and Tai");
   const dataUpdate = useDataUpdate();
-  const gameId = useGameId();
   const planets = usePlanets();
 
   const planet = planets[event.planet];
