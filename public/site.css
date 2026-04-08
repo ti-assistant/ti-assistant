@@ -460,7 +460,7 @@ input[type="textbox"]:invalid {
 }
 
 .arrowUp {
-  --color: #ddd;
+  --color: var(--interactive-bg);
   width: 0;
   height: 0;
   border-left: 0.375rem solid transparent;
@@ -472,7 +472,7 @@ input[type="textbox"]:invalid {
 }
 
 .arrowDown {
-  --color: #ddd;
+  --color: var(--interactive-bg);
   width: 0;
   height: 0;
   border-left: 0.375rem solid transparent;
