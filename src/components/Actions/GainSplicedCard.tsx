@@ -281,7 +281,7 @@ function GainedCardsSection({
                       style={{ fontSize: rem(40), gap: rem(20) }}
                     >
                       {upgrade.name}
-                      <UnitIcon type={upgrade.unitType} size={20} />
+                      <UnitIcon type={upgrade.unitType} size="1em" />
                     </div>
                   }
                   infoContent={

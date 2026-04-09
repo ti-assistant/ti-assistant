@@ -18,72 +18,112 @@ export default async function Page({ params }: PageProps<"/[locale]">) {
     <>
       <div className="flexColumn" style={{ gap: "1rem" }}>
         <NonGameHeader leftSidebar="TI ASSISTANT" rightSidebar="TI ASSISTANT" />
+
         <div className={styles.CenterColumn}>
           <div
             style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "stretch",
-              gap: "0.5rem",
+              paddingInline: "1rem",
+              maxWidth: "36rem",
             }}
           >
-            <Link
-              href={"/setup"}
-              className="primary"
-              style={{ fontSize: rem(44), lineHeight: 1 }}
+            <h1
+              style={{
+                fontFamily: "var(--main-font)",
+                fontWeight: "normal",
+                marginBlockStart: 0,
+                marginBlockEnd: "0.25rem",
+                fontSize: "1.75rem",
+              }}
             >
               {intl.formatMessage({
-                id: "+HPhsr",
-                defaultMessage: "New Game",
-                description: "A button that will start a new game.",
+                id: "m6nb4H",
+                defaultMessage: "The best way to play Twilight Imperium",
+                description: "Tag line on the home page for TI Assistant.",
               })}
-            </Link>
-            {prevGameId ? (
+            </h1>
+            <h2
+              style={{
+                fontWeight: "normal",
+                marginBlock: 0,
+                fontSize: "1rem",
+                textWrap: "balance",
+              }}
+            >
+              {intl.formatMessage({
+                id: "l02mfP",
+                defaultMessage:
+                  "TI Assistant keeps track of whose turn it is, how much time has elapsed, and all the other details so you can focus on playing the game.",
+                description: "More info on the home page for TI Assistant.",
+              })}
+            </h2>
+          </div>
+          <div className={styles.ButtonSection}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "stretch",
+                gap: "0.5rem",
+              }}
+            >
               <Link
-                href={`/game/${prevGameId}`}
-                className="outline"
-                style={{ fontSize: "2rem" }}
+                href={"/setup"}
+                className="primary"
+                style={{ fontSize: rem(44), lineHeight: 1 }}
               >
                 {intl.formatMessage({
-                  id: "+/Qpw/",
-                  defaultMessage: "Continue Game",
-                  description: "A button that will rejoin the previous game.",
+                  id: "+HPhsr",
+                  defaultMessage: "New Game",
+                  description: "A button that will start a new game.",
                 })}
               </Link>
-            ) : null}
-            <JoinGame />
+              {prevGameId ? (
+                <Link
+                  href={`/game/${prevGameId}`}
+                  className="outline"
+                  style={{ fontSize: "2rem" }}
+                >
+                  {intl.formatMessage({
+                    id: "+/Qpw/",
+                    defaultMessage: "Continue Game",
+                    description: "A button that will rejoin the previous game.",
+                  })}
+                </Link>
+              ) : null}
+              <JoinGame />
+            </div>
+            <div className={styles.OtherLinks}>
+              <Link href={"/archive"} className="outline">
+                {intl.formatMessage({
+                  id: "zOtJ5A",
+                  defaultMessage: "Archive",
+                  description: "A button that will open the archive page.",
+                })}
+              </Link>
+              <Link href={"/stats"} className="outline">
+                {intl.formatMessage({
+                  id: "aO0PYJ",
+                  defaultMessage: "Stats",
+                  description: "A button that will open the statistics page.",
+                })}
+              </Link>
+              <Link href={"/map-builder"} className="outline">
+                {intl.formatMessage({
+                  id: "OAXWRP",
+                  defaultMessage: "Map Builder",
+                  description: "A button that will open the map builder.",
+                })}
+              </Link>
+              <Link href={`/supporters`} className="outline">
+                {intl.formatMessage({
+                  id: "4Z//RZ",
+                  defaultMessage: "Supporters",
+                  description: "A button that will open the supporters page.",
+                })}
+              </Link>
+            </div>
+            <SupportSection intl={intl} />
           </div>
-          <div className={styles.OtherLinks}>
-            <Link href={"/archive"} className="outline">
-              {intl.formatMessage({
-                id: "zOtJ5A",
-                defaultMessage: "Archive",
-                description: "A button that will open the archive page.",
-              })}
-            </Link>
-            <Link href={"/stats"} className="outline">
-              {intl.formatMessage({
-                id: "aO0PYJ",
-                defaultMessage: "Stats",
-                description: "A button that will open the statistics page.",
-              })}
-            </Link>
-            <Link href={"/map-builder"} className="outline">
-              {intl.formatMessage({
-                id: "OAXWRP",
-                defaultMessage: "Map Builder",
-                description: "A button that will open the map builder.",
-              })}
-            </Link>
-            <Link href={`/supporters`} className="outline">
-              {intl.formatMessage({
-                id: "4Z//RZ",
-                defaultMessage: "Supporters",
-                description: "A button that will open the supporters page.",
-              })}
-            </Link>
-          </div>
-          <SupportSection intl={intl} />
         </div>
         <div
           className="flexColumn"

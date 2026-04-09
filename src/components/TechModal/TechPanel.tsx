@@ -902,7 +902,7 @@ function TFTechList({
                           style={{ fontSize: rem(40), gap: rem(20) }}
                         >
                           {upgrade.name}
-                          <UnitIcon type={upgrade.unitType} size={40} />
+                          <UnitIcon type={upgrade.unitType} size={20} />
                         </div>
                       }
                       infoContent={

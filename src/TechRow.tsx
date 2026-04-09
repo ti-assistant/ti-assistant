@@ -136,6 +136,7 @@ export function TechRow({
               color: getTechColor(tech),
               zIndex: 0,
               gap: "0.5em",
+              fontFamily: "var(--main-font)",
             }}
           >
             {tech.name}

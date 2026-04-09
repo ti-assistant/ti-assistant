@@ -169,6 +169,7 @@ function AbilitySection({
         position: "relative",
         width: "100%",
         gap: rem(4),
+        fontFamily: "var(--main-font)",
       }}
     >
       <LabeledLine
@@ -183,6 +184,7 @@ function AbilitySection({
           alignItems: "flex-start",
           width: "100%",
           paddingInlineStart: rem(16),
+          fontFamily: "var(--primary-font)",
         }}
       >
         {children}
@@ -335,11 +337,7 @@ function FactionUnit({
         </div>
       }
       rightLabel={
-        <UnitIcon
-          type={localUnit.type}
-          color="var(--neutral-border)"
-          size={18}
-        />
+        <UnitIcon type={localUnit.type} color="var(--color)" size={18} />
       }
     >
       <FormattedDescription description={localUnit.description} />
@@ -1011,7 +1009,11 @@ function FactionPanelContent({
       </div>
       <div
         className="flexColumn"
-        style={{ width: "100%", justifyContent: "flex-start" }}
+        style={{
+          width: "100%",
+          alignItems: "stretch",
+          justifyContent: "flex-start",
+        }}
       >
         <CollapsibleSection
           title={

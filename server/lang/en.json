@@ -2659,6 +2659,22 @@
     "defaultMessage": "ACTION: Exhaust X-89 BACTERIAL WEAPON to choose 1 planet in a system that contains 1 of your units that has BOMBARDMENT; purge its planet card and all attachments or legendary planet ability cards associated with it.",
     "description": "Description for Component: Conventions of War Abandoned"
   },
+  "Components.Discard Ability.Title": {
+    "defaultMessage": "Discard Ability",
+    "description": "Title of Component: Discard Ability"
+  },
+  "Components.Discard Genome.Title": {
+    "defaultMessage": "Discard Genome",
+    "description": "Title of Component: Discard Genome"
+  },
+  "Components.Discard Paradigm.Title": {
+    "defaultMessage": "Discard Paradigm",
+    "description": "Title of Component: Discard Paradigm"
+  },
+  "Components.Discard Unit Upgrade.Title": {
+    "defaultMessage": "Discard Unit Upgrade",
+    "description": "Title of Component: Discard Unit Upgrade"
+  },
   "Components.Enigmatic Device.Description": {
     "defaultMessage": "ACTION: You may spend 6 resources and purge this card to research 1 technology.",
     "description": "Description for Component: Enigmatic Device"
@@ -11083,6 +11099,10 @@
     "defaultMessage": "German (de) Translation: {name}",
     "description": "Credit for the german translation of TI Assistant."
   },
+  "l02mfP": {
+    "defaultMessage": "TI Assistant keeps track of whose turn it is, how much time has elapsed, and all the other details so you can focus on playing the game.",
+    "description": "More info on the home page for TI Assistant."
+  },
   "l6pQCt": {
     "defaultMessage": "Swap {firstCard} for {secondCard}",
     "description": "Text describing which strategy card a player is swapping for a different card."
@@ -11102,6 +11122,10 @@
   "ljd6rP": {
     "defaultMessage": "Purged {count, plural, one {Relic} other {Relics}}",
     "description": "Relics which have been purged."
+  },
+  "m6nb4H": {
+    "defaultMessage": "The best way to play Twilight Imperium",
+    "description": "Tag line on the home page for TI Assistant."
   },
   "mYdPrP": {
     "defaultMessage": "Researched in {perc}% of games ({count} of {games})",
