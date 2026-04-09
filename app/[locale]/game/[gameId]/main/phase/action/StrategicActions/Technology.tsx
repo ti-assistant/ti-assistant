@@ -5,11 +5,14 @@ import TechResearchSection from "../../../../../../../../src/components/TechRese
 import { useCurrentTurn } from "../../../../../../../../src/context/dataHooks";
 import {
   useFaction,
-  useFactionColor,
+  useFactionColors,
 } from "../../../../../../../../src/context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../../../../../../src/context/gameDataHooks";
 import { getResearchedTechs } from "../../../../../../../../src/util/actionLog";
-import { getFactionColor } from "../../../../../../../../src/util/factions";
+import {
+  getFactionBorder,
+  getFactionColor,
+} from "../../../../../../../../src/util/factions";
 import { rem } from "../../../../../../../../src/util/util";
 
 const Technology = {
@@ -21,14 +24,15 @@ const Technology = {
 export default Technology;
 
 function Primary({ factionId }: { factionId: FactionId }) {
-  const factionColor = useFactionColor(factionId);
+  const colors = useFactionColors(factionId);
 
   return (
     <Conditional appSection="TECHS">
       <div style={{ width: "fit-content" }}>
         <LabeledDiv
           label={<FactionComponents.Name factionId={factionId} />}
-          color={factionColor}
+          color={colors.color}
+          borderColor={colors.border}
           blur
         >
           <TechResearchSection factionId={factionId} numTechs={2} hideWrapper />
@@ -59,6 +63,7 @@ function Secondary({ factionId }: { factionId: FactionId }) {
         key={factionId}
         label={<FactionComponents.Name factionId={factionId} />}
         color={getFactionColor(faction)}
+        borderColor={getFactionBorder(faction)}
         opts={{ fixedWidth: true }}
         blur
       >

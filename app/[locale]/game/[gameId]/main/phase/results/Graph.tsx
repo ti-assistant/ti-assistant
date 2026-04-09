@@ -43,7 +43,7 @@ export default function Graph({
         return (
           <Fragment key={index}>
             <text
-              fill="#eee"
+              fill="var(--foreground-color)"
               fontSize="4"
               fontFamily="var(--main-font)"
               x={x}
@@ -53,7 +53,7 @@ export default function Graph({
               {xAxis.min + index}
             </text>
             <line
-              stroke="#eee"
+              stroke="var(--foreground-color)"
               opacity={xAxis.min + index === 0 ? 0.75 : 0.25}
               strokeWidth={0.1}
               x1={x}
@@ -69,7 +69,7 @@ export default function Graph({
         return (
           <Fragment key={index}>
             <text
-              fill="#eee"
+              fill="var(--foreground-color)"
               fontSize="4"
               fontFamily="var(--main-font)"
               x="0"
@@ -79,7 +79,7 @@ export default function Graph({
               {yAxis.min + index}
             </text>
             <line
-              stroke="#eee"
+              stroke="var(--foreground-color)"
               opacity={yAxis.min + index === 0 ? 0.75 : 0.25}
               strokeWidth={0.1}
               x1="4"

@@ -63,7 +63,13 @@ export default function Toggle({
       ></input>
       {children}
       {info ? (
-        <InfoModal title={info.title} style={{ marginLeft: rem(8) }}>
+        <InfoModal
+          title={info.title}
+          style={{
+            marginLeft: rem(8),
+            color: disabled ? "var(--interactive-bg)" : undefined,
+          }}
+        >
           <InfoContent description={info.description} />
         </InfoModal>
       ) : null}

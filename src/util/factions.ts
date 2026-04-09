@@ -12,18 +12,20 @@ export function convertToFactionColor(color: Optional<string>) {
   if (!color) {
     return "var(--neutral-border)";
   }
-  switch (color) {
-    case "Blue":
-      return "cornflowerblue";
-    case "Purple":
-      return "mediumpurple";
-    case "Magenta":
-      return "hotpink";
-    case "Yellow":
-      return "gold";
-    // TODO: Mess around with other colors.
+
+  return `var(--${color.toLowerCase()}-faction-color)`;
+}
+
+export function getFactionBorder(faction: Optional<Faction>) {
+  return convertToFactionBorder(faction?.color);
+}
+
+export function convertToFactionBorder(color: Optional<string>) {
+  if (!color) {
+    return "var(--hidden-border)";
   }
-  return color;
+
+  return `var(--${color.toLowerCase()}-faction-border)`;
 }
 
 export function getFactionName(faction: Optional<Faction>) {

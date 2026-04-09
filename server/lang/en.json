@@ -163,10 +163,6 @@
     "defaultMessage": "Hover to see full text.",
     "description": "Text telling the user that they can hover over objectives to see the full text."
   },
-  "49oatW": {
-    "defaultMessage": "Undo",
-    "description": "Text shown on a button that will undo the previous action."
-  },
   "4PYolM": {
     "defaultMessage": "Start of {phase} Phase",
     "description": "Text showing that something will occur at the start of a specific phase."
@@ -234,6 +230,10 @@
   "6L07nG": {
     "defaultMessage": "Reveal Objective",
     "description": "Text telling the user to reveal an objective."
+  },
+  "6ZifFF": {
+    "defaultMessage": "At the start of the edict phase, if your flagship is on the game board, draw and resolve 1 edict.",
+    "description": "Instructions for Radiant Aur Edict Phase"
   },
   "73882v": {
     "defaultMessage": "Score Public Objective",
@@ -2658,6 +2658,22 @@
   "Components.Conventions of War Abandoned.Description": {
     "defaultMessage": "ACTION: Exhaust X-89 BACTERIAL WEAPON to choose 1 planet in a system that contains 1 of your units that has BOMBARDMENT; purge its planet card and all attachments or legendary planet ability cards associated with it.",
     "description": "Description for Component: Conventions of War Abandoned"
+  },
+  "Components.Discard Ability.Title": {
+    "defaultMessage": "Discard Ability",
+    "description": "Title of Component: Discard Ability"
+  },
+  "Components.Discard Genome.Title": {
+    "defaultMessage": "Discard Genome",
+    "description": "Title of Component: Discard Genome"
+  },
+  "Components.Discard Paradigm.Title": {
+    "defaultMessage": "Discard Paradigm",
+    "description": "Title of Component: Discard Paradigm"
+  },
+  "Components.Discard Unit Upgrade.Title": {
+    "defaultMessage": "Discard Unit Upgrade",
+    "description": "Title of Component: Discard Unit Upgrade"
   },
   "Components.Enigmatic Device.Description": {
     "defaultMessage": "ACTION: You may spend 6 resources and purge this card to research 1 technology.",
@@ -10903,6 +10919,10 @@
     "defaultMessage": "Gained Relic",
     "description": "Label for section listing the relic gained."
   },
+  "cxkvcc": {
+    "defaultMessage": "Reveal Genome",
+    "description": "Text on a button that will reveal a Genome card"
+  },
   "d0uSBF": {
     "defaultMessage": "Options",
     "description": "Label on a menu for changing game options"
@@ -11079,6 +11099,10 @@
     "defaultMessage": "German (de) Translation: {name}",
     "description": "Credit for the german translation of TI Assistant."
   },
+  "l02mfP": {
+    "defaultMessage": "TI Assistant keeps track of whose turn it is, how much time has elapsed, and all the other details so you can focus on playing the game.",
+    "description": "More info on the home page for TI Assistant."
+  },
   "l6pQCt": {
     "defaultMessage": "Swap {firstCard} for {secondCard}",
     "description": "Text describing which strategy card a player is swapping for a different card."
@@ -11098,6 +11122,10 @@
   "ljd6rP": {
     "defaultMessage": "Purged {count, plural, one {Relic} other {Relics}}",
     "description": "Relics which have been purged."
+  },
+  "m6nb4H": {
+    "defaultMessage": "The best way to play Twilight Imperium",
+    "description": "Tag line on the home page for TI Assistant."
   },
   "mYdPrP": {
     "defaultMessage": "Researched in {perc}% of games ({count} of {games})",
@@ -11142,10 +11170,6 @@
   "p9XVGB": {
     "defaultMessage": "Prophecy of Kings",
     "description": "Text on a button that will enable/disable the Prophecy of Kings expansion."
-  },
-  "pKlkVZ": {
-    "defaultMessage": "FAQ",
-    "description": "A button that will open the Frequently Asked Questions page."
   },
   "pPpzkR": {
     "defaultMessage": "Relics",

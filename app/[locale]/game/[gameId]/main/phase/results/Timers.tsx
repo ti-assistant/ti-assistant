@@ -2,7 +2,10 @@ import LabeledDiv from "../../../../../../../src/components/LabeledDiv/LabeledDi
 import TimerDisplay from "../../../../../../../src/components/TimerDisplay/TimerDisplay";
 import { useTimers } from "../../../../../../../src/context/dataHooks";
 import { useFactions } from "../../../../../../../src/context/factionDataHooks";
-import { getFactionColor } from "../../../../../../../src/util/factions";
+import {
+  getFactionBorder,
+  getFactionColor,
+} from "../../../../../../../src/util/factions";
 import { objectEntries, rem } from "../../../../../../../src/util/util";
 
 interface TimerData {
@@ -66,6 +69,7 @@ export default function Timers({
             key={key}
             label={key}
             color={getFactionColor(factions[key])}
+            borderColor={getFactionBorder(factions[key])}
           >
             <div
               className="flexColumn"

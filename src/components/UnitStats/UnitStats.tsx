@@ -90,7 +90,7 @@ function UnitStat({
       <div
         style={{
           fontSize: "calc(1em / 3)",
-          borderBottom: "1px solid #eee",
+          borderBottom: "1px solid var(--foreground-color)",
         }}
       >
         <FormattedStat stat={stat} statType={statType} unitType={unitType} />

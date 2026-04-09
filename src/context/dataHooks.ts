@@ -2,7 +2,10 @@ import { use, useEffect, useState } from "react";
 import stableHash from "stable-hash";
 import { BASE_OPTIONS } from "../../server/data/options";
 import { getLogEntries, isPrimaryComplete } from "../util/actionLog";
-import { getCurrentTurnLogEntries } from "../util/api/actionLog";
+import {
+  getCurrentPhaseLogEntries,
+  getCurrentTurnLogEntries,
+} from "../util/api/actionLog";
 import { ActionLog, Optional } from "../util/types/types";
 import { DatabaseFnsContext } from "./contexts";
 
@@ -87,6 +90,13 @@ export function useCurrentTurn() {
     (log) => getCurrentTurnLogEntries(log),
   );
 }
+export function useCurrentPhase() {
+  return useMemoizedGameDataValue<ActionLog, ActionLog>(
+    "actionLog",
+    [],
+    (log) => getCurrentPhaseLogEntries(log),
+  );
+}
 export function usePrimaryCompleted() {
   return useMemoizedGameDataValue<ActionLog, boolean>(
     "actionLog",
@@ -115,6 +125,11 @@ export function useLogEntries<DataType extends GameUpdateData>(
 type Abilities = Partial<Record<TFAbilityId, TFAbility>>;
 export function useAbilities() {
   return useGameDataValue<Abilities>("abilities", {});
+}
+
+type Edicts = Partial<Record<TFEdictId, TFEdict>>;
+export function useEdicts() {
+  return useGameDataValue<Edicts>("edicts", {});
 }
 
 type Genomes = Partial<Record<TFGenomeId, TFGenome>>;

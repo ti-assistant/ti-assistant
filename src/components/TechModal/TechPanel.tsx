@@ -25,6 +25,7 @@ import { useDataUpdate } from "../../util/api/dataUpdate";
 import { Events } from "../../util/api/events";
 import { hasTech, isTechPurged } from "../../util/api/techs";
 import {
+  convertToFactionBorder,
   convertToFactionColor,
   getFactionColor,
   getFactionName,
@@ -124,6 +125,7 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                 key={factionId}
                 label={<FactionComponents.Name factionId={factionId} />}
                 color={convertToFactionColor(factions[factionId]?.color)}
+                borderColor={convertToFactionBorder(factions[factionId]?.color)}
                 opts={{ fixedWidth: true }}
               >
                 <div
@@ -560,7 +562,7 @@ function TechsByFaction({
           style={{
             width: "100%",
             zIndex: 1,
-            borderBottom: "1px solid #555",
+            borderBottom: "1px solid var(--passed-text)",
           }}
         >
           {options.expansions.includes("TWILIGHTS FALL") ? (
@@ -900,12 +902,12 @@ function TFTechList({
                           style={{ fontSize: rem(40), gap: rem(20) }}
                         >
                           {upgrade.name}
-                          <UnitIcon type={upgrade.unitType} size={40} />
+                          <UnitIcon type={upgrade.unitType} size={20} />
                         </div>
                       }
                       infoContent={
                         <div
-                          className="myriadPro flexColumn"
+                          className="flexColumn"
                           style={{
                             width: "100%",
                             padding: rem(4),

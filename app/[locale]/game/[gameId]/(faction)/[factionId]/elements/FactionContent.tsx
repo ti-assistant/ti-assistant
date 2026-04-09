@@ -9,6 +9,7 @@ import ObjectiveTab from "./ObjectiveTab";
 import PhaseSection from "./PhaseSection";
 import PlanetTab from "./PlanetTab";
 import TechTab from "./TechTab";
+import ChipGroup from "../../../../../../../src/components/Chip/ChipGroup";
 
 export default function FactionContent({
   factionId,
@@ -68,10 +69,7 @@ export default function FactionContent({
               style={{ gap: 0, alignItems: "stretch" }}
             >
               {/* Tabs */}
-              <div
-                className="flexRow"
-                style={{ width: "100%", margin: `0 ${rem(4)}` }}
-              >
+              <ChipGroup style={{ margin: "auto" }}>
                 <Conditional appSection="TECHS">
                   <Tab
                     selectTab={toggleTabShown}
@@ -111,7 +109,7 @@ export default function FactionContent({
                     />
                   </Tab>
                 </Conditional>
-              </div>
+              </ChipGroup>
               <Conditional appSection="TECHS">
                 <TabBody id="techs" selectedId={tabShown}>
                   <LabeledLine />

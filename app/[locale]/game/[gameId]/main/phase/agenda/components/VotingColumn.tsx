@@ -23,7 +23,10 @@ import {
 } from "../../../../../../../../src/util/actionLog";
 import { useDataUpdate } from "../../../../../../../../src/util/api/dataUpdate";
 import { Events } from "../../../../../../../../src/util/api/events";
-import { convertToFactionColor } from "../../../../../../../../src/util/factions";
+import {
+  convertToFactionBorder,
+  convertToFactionColor,
+} from "../../../../../../../../src/util/factions";
 import { objectKeys, rem } from "../../../../../../../../src/util/util";
 import { computeVotes } from "../AgendaPhase";
 
@@ -234,6 +237,7 @@ function SpeakerTieBreak({ speaker }: { speaker: FactionId }) {
     <LabeledDiv
       label={<FactionComponents.Name factionId={speaker} />}
       color={convertToFactionColor(factions[speaker]?.color)}
+      borderColor={convertToFactionBorder(factions[speaker]?.color)}
       style={{ width: "auto", gridColumn: "span 4" }}
     >
       <ClientOnlyHoverMenu

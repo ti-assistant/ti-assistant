@@ -41,7 +41,7 @@ export default function TimerDisplay({
     width: rem(width),
     gap: 0,
     // Should not require other fonts.
-    fontFamily: "Slider",
+    fontFamily: "var(--primary-font)",
     justifyContent: "center",
     display: "grid",
     gridTemplateColumns: template,
@@ -66,7 +66,7 @@ export default function TimerDisplay({
             top: rem(-12),
             left: rem(-12),
             fontSize: rem(12),
-            fontFamily: "Myriad Pro",
+            fontFamily: "var(--primary-font)",
           }}
         >
           {label}

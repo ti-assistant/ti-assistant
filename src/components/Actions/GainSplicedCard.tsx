@@ -1,5 +1,5 @@
-import { CSSProperties } from "react";
-import { FormattedMessage, useIntl } from "react-intl";
+import { CSSProperties, ReactNode } from "react";
+import { FormattedMessage } from "react-intl";
 import {
   useAbilities,
   useCurrentTurn,
@@ -19,7 +19,7 @@ import { getGainedTFCardsByType } from "../../util/actionLog";
 import { useDataUpdate } from "../../util/api/dataUpdate";
 import { Events } from "../../util/api/events";
 import { getTechTypeColor } from "../../util/techs";
-import { rem } from "../../util/util";
+import { objectEntries, rem } from "../../util/util";
 import FormattedDescription from "../FormattedDescription/FormattedDescription";
 import IconDiv from "../LabeledDiv/IconDiv";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
@@ -28,6 +28,8 @@ import GenomeIcon from "../PlanetIcons/GenomeIcon";
 import ParadigmIcon from "../PlanetIcons/ParadigmIcon";
 import UpgradeIcon from "../PlanetIcons/UpgradeIcon";
 import { Selector } from "../Selector/Selector";
+import AbilitySelectMenu from "../Splice/AbilitySelectMenu";
+import TechResearchSection from "../TechResearchSection/TechResearchSection";
 import UnitIcon from "../Units/Icons";
 import UnitStats from "../UnitStats/UnitStats";
 import styles from "./GainSplicedCard.module.scss";
@@ -49,9 +51,20 @@ function canGainMoreCards(
     cardsByType.abilities.length +
     cardsByType.genomes.length +
     cardsByType.paradigms.length +
-    cardsByType.upgrades.length;
+    cardsByType.upgrades.length +
+    cardsByType.techs.length;
   if (numToGain.total) {
     return totalGained < numToGain.total;
+  }
+
+  const totalToGain =
+    (numToGain.abilities ?? 0) +
+    (numToGain.genomes ?? 0) +
+    (numToGain.paradigms ?? 0) +
+    (numToGain.upgrades ?? 0);
+
+  if (totalGained === totalToGain) {
+    return false;
   }
 
   if (
@@ -80,9 +93,11 @@ export default function GainTFCard({
   steal,
   style,
   numToGain,
+  splice,
 }: {
   factionId: FactionId;
   steal?: boolean;
+  splice?: boolean;
   style?: CSSProperties;
   numToGain: NumberToGain;
 }) {
@@ -100,6 +115,7 @@ export default function GainTFCard({
       <GainedCardsSection
         factionId={factionId}
         gainedCardsByType={gainedCardsByType}
+        splice={splice}
       />
       {canGainMore ? (
         <div className="flexColumn" style={{ alignItems: "flex-start" }}>
@@ -131,6 +147,13 @@ export default function GainTFCard({
             steal={steal}
             style={style}
           />
+          {splice ? (
+            <TechResearchSection
+              factionId={factionId}
+              numTechs={2}
+              hideResearchedTechs
+            />
+          ) : null}
         </div>
       ) : null}
     </div>
@@ -142,16 +165,16 @@ interface GainedCardsByType {
   genomes: TFGenomeId[];
   paradigms: TFParadigmId[];
   upgrades: TFUnitUpgradeId[];
+  techs: TechId[];
 }
 
 function GainedCardsSection({
   factionId,
   gainedCardsByType,
-  hideWrapper,
+  splice,
 }: {
   factionId: FactionId;
-  steal?: boolean;
-  hideWrapper?: boolean;
+  splice?: boolean;
   gainedCardsByType: GainedCardsByType;
 }) {
   const abilities = useAbilities();
@@ -165,7 +188,8 @@ function GainedCardsSection({
     gainedCardsByType.abilities.length === 0 &&
     gainedCardsByType.genomes.length === 0 &&
     gainedCardsByType.paradigms.length === 0 &&
-    gainedCardsByType.upgrades.length === 0
+    gainedCardsByType.upgrades.length === 0 &&
+    (!splice || gainedCardsByType.techs.length === 0)
   ) {
     return null;
   }
@@ -257,12 +281,12 @@ function GainedCardsSection({
                       style={{ fontSize: rem(40), gap: rem(20) }}
                     >
                       {upgrade.name}
-                      <UnitIcon type={upgrade.unitType} size={40} />
+                      <UnitIcon type={upgrade.unitType} size="1em" />
                     </div>
                   }
                   infoContent={
                     <div
-                      className="myriadPro flexColumn"
+                      className="flexColumn"
                       style={{
                         width: "100%",
                         padding: rem(4),
@@ -349,6 +373,12 @@ function GainedCardsSection({
           })}
         </IconDiv>
       ) : null}
+      {splice && gainedCardsByType.techs.length > 0 ? (
+        <TechResearchSection
+          factionId={factionId}
+          numTechs={gainedCardsByType.techs.length}
+        />
+      ) : null}
     </>
   );
 
@@ -372,48 +402,22 @@ export function GainAbilitySection({
   steal?: boolean;
   style?: CSSProperties;
 }) {
-  const abilities = useAbilities();
   const dataUpdate = useDataUpdate();
-  const intl = useIntl();
 
-  let availableAbilities = Object.values(abilities)
-    .filter((ability) => !ability.owner)
-    .sort((a, b) => (a.name > b.name ? 1 : -1));
-  if (steal) {
-    availableAbilities = Object.values(abilities)
-      .filter((ability) => !!ability.owner && ability.owner !== factionId)
-      .sort((a, b) => (a.name > b.name ? 1 : -1));
-  }
   const abilitiesToGain = (numToGain ?? 0) - gainedAbilities.length;
 
   if (abilitiesToGain < 1) {
     return null;
   }
 
-  const redAbilities = availableAbilities.filter(
-    (ability) => ability.type === "RED",
-  );
-  const yellowAbilities = availableAbilities.filter(
-    (ability) => ability.type === "YELLOW",
-  );
-  const blueAbilities = availableAbilities.filter(
-    (ability) => ability.type === "BLUE",
-  );
-  const greenAbilities = availableAbilities.filter(
-    (ability) => ability.type === "GREEN",
-  );
-
-  function selectAbility(ability: TFAbility) {
-    dataUpdate(
-      Events.GainTFCardEvent(factionId, {
-        ability: ability.id,
-        type: "ABILITY",
-      }),
-    );
-  }
-
   return (
-    <ClientOnlyHoverMenu
+    <AbilitySelectMenu
+      filter={(ability) => {
+        if (steal) {
+          return !!ability.owner && ability.owner !== factionId;
+        }
+        return !ability.owner;
+      }}
       label={
         steal ? (
           <div className="flexRow" style={{ gap: rem(6) }}>
@@ -439,78 +443,33 @@ export function GainAbilitySection({
           </div>
         )
       }
-      style={{ whiteSpace: "nowrap" }}
-      buttonStyle={{ fontSize: rem(14) }}
-      renderProps={(outerCloseFn) => (
-        <div
-          className={styles.OuterTechSelectMenu}
-          style={{
-            padding: rem(8),
-            alignItems: "flex-start",
-            overflow: "visible",
-          }}
-        >
-          <InnerAbilitySelectMenu
-            abilities={greenAbilities}
-            label={intl.formatMessage({
-              id: "2I5JBO",
-              description: "Title of green techs.",
-              defaultMessage: "Biotic",
-            })}
-            selectAbility={selectAbility}
-            outerCloseFn={outerCloseFn}
-          />
-          <InnerAbilitySelectMenu
-            abilities={blueAbilities}
-            label={intl.formatMessage({
-              id: "Nr4DLa",
-              description: "Title of blue techs.",
-              defaultMessage: "Propulsion",
-            })}
-            selectAbility={selectAbility}
-            outerCloseFn={outerCloseFn}
-          />
-          <InnerAbilitySelectMenu
-            abilities={yellowAbilities}
-            label={intl.formatMessage({
-              id: "W9OGxl",
-              description: "Title of yellow techs.",
-              defaultMessage: "Cybernetic",
-            })}
-            selectAbility={selectAbility}
-            outerCloseFn={outerCloseFn}
-          />
-          <InnerAbilitySelectMenu
-            abilities={redAbilities}
-            label={intl.formatMessage({
-              id: "ZqAjEi",
-              description: "Title of red techs.",
-              defaultMessage: "Warfare",
-            })}
-            selectAbility={selectAbility}
-            outerCloseFn={outerCloseFn}
-          />
-        </div>
-      )}
-    ></ClientOnlyHoverMenu>
+      selectAbility={(ability: TFAbilityId) => {
+        dataUpdate(
+          Events.GainTFCardEvent(factionId, {
+            ability,
+            type: "ABILITY",
+          }),
+        );
+      }}
+      style={style}
+    />
   );
 }
 
-// TODO: Add faction icons (simplified?).
-function InnerAbilitySelectMenu({
-  abilities,
+function InnerUpgradeSelectMenu({
+  upgrades,
   label,
-  selectAbility,
+  selectUpgrade,
   outerCloseFn,
 }: {
-  abilities: TFAbility[];
-  label: string;
-  selectAbility: (ability: TFAbility) => void;
+  upgrades: TFUnitUpgrade[];
+  label: ReactNode;
+  selectUpgrade: (upgrade: TFUnitUpgrade) => void;
   outerCloseFn: () => void;
 }) {
   const viewOnly = useViewOnly();
 
-  if (abilities.length === 0) {
+  if (upgrades.length === 0) {
     return null;
   }
 
@@ -518,13 +477,13 @@ function InnerAbilitySelectMenu({
     <ClientOnlyHoverMenu
       label={label}
       buttonStyle={{ fontSize: rem(14) }}
-      borderColor={getTechTypeColor(abilities[0]?.type ?? "UPGRADE")}
+      borderColor={getTechTypeColor("UPGRADE")}
       renderProps={(innerCloseFn) => (
         <div
           style={{
             display: "grid",
             gridAutoFlow: "column",
-            gridTemplateRows: `repeat(${Math.min(8, abilities.length)}, auto)`,
+            gridTemplateRows: `repeat(${Math.min(8, upgrades.length)}, auto)`,
             padding: rem(8),
             gap: rem(4),
             alignItems: "stretch",
@@ -532,14 +491,15 @@ function InnerAbilitySelectMenu({
             overflowX: "auto",
           }}
         >
-          {abilities.map((ability) => {
+          {upgrades.map((upgrade) => {
             return (
               <button
-                key={ability.id}
-                onClick={() => {
+                key={upgrade.id}
+                onClick={(e) => {
+                  e.stopPropagation();
                   innerCloseFn();
                   outerCloseFn();
-                  selectAbility(ability);
+                  selectUpgrade(upgrade);
                 }}
                 style={{
                   display: "flex",
@@ -550,7 +510,8 @@ function InnerAbilitySelectMenu({
                 }}
                 disabled={viewOnly}
               >
-                {ability.name}
+                {upgrade.name}
+                <UnitIcon type={upgrade.unitType} size={16} />
               </button>
             );
           })}
@@ -734,7 +695,6 @@ export function GainUpgradeSection({
 }) {
   const dataUpdate = useDataUpdate();
   const upgrades = useUpgrades();
-  const viewOnly = useViewOnly();
 
   let availableUpgrades = Object.values(upgrades)
     .filter((upgrade) => !upgrade.owner)
@@ -749,6 +709,17 @@ export function GainUpgradeSection({
   if (upgradesToGain < 1) {
     return null;
   }
+
+  const upgradesByType: Partial<Record<UnitType, TFUnitUpgrade[]>> = {};
+  availableUpgrades.forEach((upgrade) => {
+    const units = upgradesByType[upgrade.unitType] ?? [];
+    units.push(upgrade);
+    upgradesByType[upgrade.unitType] = units;
+  });
+
+  const orderedUpgrades = objectEntries(upgradesByType).sort((a, b) => {
+    return a[0] > b[0] ? 1 : -1;
+  });
 
   return (
     <ClientOnlyHoverMenu
@@ -780,26 +751,18 @@ export function GainUpgradeSection({
       buttonStyle={{ fontSize: rem(14) }}
       renderProps={(innerCloseFn) => (
         <div
+          className={styles.OuterTechSelectMenu}
           style={{
-            display: "grid",
-            gridAutoFlow: "column",
-            gridTemplateRows: `repeat(${Math.min(
-              availableUpgrades.length,
-              11,
-            )}, auto)`,
             padding: rem(8),
-            gap: rem(4),
-            alignItems: "stretch",
-            maxWidth: "88vw",
-            overflowX: "auto",
+            alignItems: "flex-start",
+            overflow: "visible",
           }}
         >
-          {availableUpgrades.map((upgrade) => {
+          {orderedUpgrades.map(([unitType, upgrades]) => {
             return (
-              <button
-                key={upgrade.id}
-                onClick={() => {
-                  innerCloseFn();
+              <InnerUpgradeSelectMenu
+                upgrades={upgrades}
+                selectUpgrade={(upgrade) => {
                   dataUpdate(
                     Events.GainTFCardEvent(factionId, {
                       upgrade: upgrade.id,
@@ -807,18 +770,9 @@ export function GainUpgradeSection({
                     }),
                   );
                 }}
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  fontSize: rem(16),
-                  gap: rem(8),
-                }}
-                disabled={viewOnly}
-              >
-                {upgrade.name}
-                <UnitIcon type={upgrade.unitType} size={16} />
-              </button>
+                outerCloseFn={innerCloseFn}
+                label={<UnitIcon type={unitType} size="1.25em" />}
+              />
             );
           })}
         </div>

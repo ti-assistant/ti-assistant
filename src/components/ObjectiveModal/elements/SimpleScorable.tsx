@@ -1,5 +1,5 @@
 import { useOptions, useViewOnly } from "../../../context/dataHooks";
-import { useFactionColors } from "../../../context/factionDataHooks";
+import { useAllFactionColors } from "../../../context/factionDataHooks";
 import { useObjective } from "../../../context/objectiveDataHooks";
 import InfoModal from "../../../InfoModal";
 import { useDataUpdate } from "../../../util/api/dataUpdate";
@@ -32,7 +32,7 @@ export default function SimpleScorable({
   info?: string;
 }) {
   const dataUpdate = useDataUpdate();
-  const factionColors = useFactionColors();
+  const factionColors = useAllFactionColors();
   const objective = useObjective(objectiveId);
   const options = useOptions();
   const viewOnly = useViewOnly();
@@ -95,7 +95,7 @@ export default function SimpleScorable({
                     );
                   }
                 }}
-                borderColor={scorer ? factionColors[scorer] : undefined}
+                borderColor={scorer ? factionColors[scorer]?.border : undefined}
                 size={size}
                 tag={
                   showTag ? (

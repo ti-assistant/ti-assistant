@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { IntlShape } from "react-intl";
-import BorderedDiv from "../../../src/components/BorderedDiv/BorderedDiv";
 import LabeledLine from "../../../src/components/LabeledLine/LabeledLine";
 import NonGameHeader from "../../../src/components/NonGameHeader/NonGameHeader";
 
@@ -28,7 +27,6 @@ export default function FAQPage({ intl }: { intl: IntlShape }) {
             <LabeledLine leftLabel="Q: I have a question that isn't answered here." />
             <div
               style={{
-                fontFamily: "Myriad Pro",
                 marginLeft: "8px",
               }}
             >
@@ -53,7 +51,6 @@ export default function FAQPage({ intl }: { intl: IntlShape }) {
             <LabeledLine leftLabel="Q: How do I use this app ?" />
             <div
               style={{
-                fontFamily: "Myriad Pro",
                 marginLeft: "8px",
               }}
             >
@@ -71,7 +68,6 @@ export default function FAQPage({ intl }: { intl: IntlShape }) {
             <LabeledLine leftLabel="Q: Do I have to record everything during a game ?" />
             <div
               style={{
-                fontFamily: "Myriad Pro",
                 marginLeft: "8px",
               }}
             >
@@ -90,7 +86,6 @@ export default function FAQPage({ intl }: { intl: IntlShape }) {
 
             <div
               style={{
-                fontFamily: "Myriad Pro",
                 marginLeft: "8px",
               }}
             >
@@ -107,7 +102,6 @@ export default function FAQPage({ intl }: { intl: IntlShape }) {
 
           <div
             style={{
-              fontFamily: "Myriad Pro",
               marginLeft: "8px",
             }}
           >
@@ -123,22 +117,17 @@ export default function FAQPage({ intl }: { intl: IntlShape }) {
             , and I&apos;ll get back to you as soon as I can.
           </div>
         </div>
-        <Link href={`/`} style={{ marginTop: "12px" }}>
-          <BorderedDiv style={{ minWidth: "190px" }}>
-            <div
-              className="flexColumn"
-              style={{
-                minWidth: "190px",
-              }}
-            >
-              {intl.formatMessage({
-                id: "LNmymU",
-                defaultMessage: "Back",
-                description:
-                  "Text on a button that goes back to the previous page.",
-              })}
-            </div>
-          </BorderedDiv>
+        <Link
+          className="outline"
+          href={`/`}
+          style={{ marginTop: "12px", minWidth: "190px" }}
+        >
+          {intl.formatMessage({
+            id: "LNmymU",
+            defaultMessage: "Back",
+            description:
+              "Text on a button that goes back to the previous page.",
+          })}
         </Link>
       </div>
     </div>

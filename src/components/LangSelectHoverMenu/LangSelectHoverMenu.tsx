@@ -53,7 +53,7 @@ export default function LangSelectHoverMenu({
   const hoverMenuStyle: CSSProperties = {
     left: 0,
     borderRadius: em(size / 2),
-    border: `var(--border-size) solid var(--neutral-border)`,
+    border: `var(--border-size) solid var(--interactive-bg)`,
   };
 
   return (
@@ -73,7 +73,11 @@ export default function LangSelectHoverMenu({
       }}
       ref={menu}
     >
-      <Circle borderColor="var(--neutral-border)" size={size}>
+      <Circle
+        backgroundColor="var(--background-color)"
+        borderColor="var(--interactive-bg)"
+        size={size}
+      >
         <LanguageIcon locale={selectedLocale} />
       </Circle>
       <div
@@ -129,7 +133,7 @@ export default function LangSelectHoverMenu({
                 Cookies.set("TI_LOCALE", locale);
               }}
             >
-              <div  
+              <div
                 style={{
                   position: "relative",
                   width: em(size - 10),

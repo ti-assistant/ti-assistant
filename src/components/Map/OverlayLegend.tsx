@@ -5,6 +5,7 @@ import Chip from "../Chip/Chip";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import styles from "./GameMap.module.scss";
 import { OverlayDetails } from "./PlanetOverlay";
+import ChipGroup from "../Chip/ChipGroup";
 
 export default function OverlayLegend({
   overlayDetails,
@@ -34,61 +35,69 @@ export default function OverlayLegend({
         }}
       >
         <div className={styles.LegendContent}>
-          <Chip
-            fontSize={16}
-            selected={overlayDetails === "NONE"}
-            toggleFn={() => setOverlayDetails("NONE")}
+          <ChipGroup
+            style={{
+              flexDirection: "column",
+              borderRadius: "0.6em",
+              gap: "0.125em",
+            }}
           >
-            <FormattedMessage
-              id="n8jSwp"
-              description="Text on a button that will show no overlay."
-              defaultMessage="None"
-            />
-          </Chip>
-          <Chip
-            fontSize={16}
-            selected={overlayDetails === "OWNERS"}
-            toggleFn={() => setOverlayDetails("OWNERS")}
-          >
-            <FormattedMessage
-              id="FhKQXR"
-              description="Text on a button that will show planet ownership."
-              defaultMessage="Owners"
-            />
-          </Chip>
-          <Chip
-            fontSize={16}
-            selected={overlayDetails === "TYPES"}
-            toggleFn={() => setOverlayDetails("TYPES")}
-          >
-            <FormattedMessage
-              id="wDLqxZ"
-              description="Text on a button that will show planet types."
-              defaultMessage="Types"
-            />
-          </Chip>
-          <Chip
-            fontSize={16}
-            selected={overlayDetails === "TECH_SKIPS"}
-            toggleFn={() => setOverlayDetails("TECH_SKIPS")}
-          >
-            <FormattedMessage
-              id="j3n7Nr"
-              description="Text on a button that will show planets with tech skips."
-              defaultMessage="Tech Skips"
-            />
-          </Chip>
-          <Chip
-            fontSize={16}
-            selected={overlayDetails === "ATTACHMENTS"}
-            toggleFn={() => setOverlayDetails("ATTACHMENTS")}
-          >
-            <FormattedMessage
-              id="1odgd1"
-              description="Text on a button that will show planet attachments."
-              defaultMessage="Attachments"
-            />
-          </Chip>
+            <Chip
+              fontSize={16}
+              selected={overlayDetails === "NONE"}
+              toggleFn={() => setOverlayDetails("NONE")}
+            >
+              <FormattedMessage
+                id="n8jSwp"
+                description="Text on a button that will show no overlay."
+                defaultMessage="None"
+              />
+            </Chip>
+            <Chip
+              fontSize={16}
+              selected={overlayDetails === "OWNERS"}
+              toggleFn={() => setOverlayDetails("OWNERS")}
+            >
+              <FormattedMessage
+                id="FhKQXR"
+                description="Text on a button that will show planet ownership."
+                defaultMessage="Owners"
+              />
+            </Chip>
+            <Chip
+              fontSize={16}
+              selected={overlayDetails === "TYPES"}
+              toggleFn={() => setOverlayDetails("TYPES")}
+            >
+              <FormattedMessage
+                id="wDLqxZ"
+                description="Text on a button that will show planet types."
+                defaultMessage="Types"
+              />
+            </Chip>
+            <Chip
+              fontSize={16}
+              selected={overlayDetails === "TECH_SKIPS"}
+              toggleFn={() => setOverlayDetails("TECH_SKIPS")}
+            >
+              <FormattedMessage
+                id="j3n7Nr"
+                description="Text on a button that will show planets with tech skips."
+                defaultMessage="Tech Skips"
+              />
+            </Chip>
+            <Chip
+              fontSize={16}
+              selected={overlayDetails === "ATTACHMENTS"}
+              toggleFn={() => setOverlayDetails("ATTACHMENTS")}
+            >
+              <FormattedMessage
+                id="1odgd1"
+                description="Text on a button that will show planet attachments."
+                defaultMessage="Attachments"
+              />
+            </Chip>
+          </ChipGroup>
         </div>
       </LabeledDiv>
     </div>

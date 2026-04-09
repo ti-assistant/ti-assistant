@@ -66,7 +66,7 @@ export default function AgendaTimer({ agendaNum }: { agendaNum: number }) {
           time={timerEnd - timerStart}
           label={label}
           width={120}
-          style={{ fontSize: rem(20) }}
+          style={{ fontSize: rem(20), fontFamily: "var(--main-font)" }}
         />
       </div>
     </div>

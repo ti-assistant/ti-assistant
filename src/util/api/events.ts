@@ -6,6 +6,7 @@ export const Events = {
   AdvancePhaseEvent,
   AssignStrategyCardEvent,
   CastVotesEvent,
+  ChooseEdictEvent,
   ChooseStartingTechEvent,
   ChooseSubFactionEvent,
   ChooseTFFactionEvent,
@@ -19,7 +20,11 @@ export const Events = {
   GainTFCardEvent,
   GiftOfPrescienceEvent,
   HideAgendaEvent,
+  HideEdictEvent,
   HideObjectiveEvent,
+  HideTFCardEvent,
+  JoinSpliceEvent,
+  LeaveSpliceEvent,
   LoseAllianceEvent,
   LoseRelicEvent,
   LoseTFCardEvent,
@@ -41,6 +46,7 @@ export const Events = {
   ResolveAgendaEvent,
   RevealAgendaEvent,
   RevealObjectiveEvent,
+  RevealTFCardEvent,
   ScoreObjectiveEvent,
   SelectActionEvent,
   SelectEligibleOutcomesEvent,
@@ -57,6 +63,7 @@ export const Events = {
   ToggleStructureEvent,
   UnclaimPlanetEvent,
   UndoAdjudicatorBaalEvent,
+  UndoGenomeEvent,
   UnpassEvent,
   UnplayActionCardEvent,
   UnplayPromissoryNoteEvent,
@@ -68,6 +75,7 @@ export const Events = {
   UpdateBreakthroughStateEvent,
   UpdateLeaderStateEvent,
   UpdatePlanetStateEvent,
+  UseGenomeEvent,
 } as const;
 
 function AddAttachmentEvent(
@@ -139,6 +147,19 @@ function CastVotesEvent(
       votes,
       extraVotes,
       target,
+    },
+  };
+}
+
+function ChooseEdictEvent(
+  edictId: TFEdictId,
+  tyrant: boolean,
+): ChooseEdictData {
+  return {
+    action: "CHOOSE_EDICT",
+    event: {
+      edictId,
+      tyrant,
     },
   };
 }
@@ -274,11 +295,13 @@ function GainRelicEvent(
 function GainTFCardEvent(
   faction: FactionId,
   event: AbilityEvent | GenomeEvent | ParadigmEvent | UpgradeEvent,
+  discard?: boolean,
 ): GainTFCardData {
   return {
     action: "GAIN_TF_CARD",
     event: {
       faction,
+      discard,
       ...event,
     },
   };
@@ -303,12 +326,45 @@ function HideAgendaEvent(agendaId: AgendaId, veto?: boolean): HideAgendaData {
   };
 }
 
+function HideEdictEvent(edictId: TFEdictId, tyrant: boolean): HideEdictData {
+  return {
+    action: "HIDE_EDICT",
+    event: {
+      edictId,
+      tyrant,
+    },
+  };
+}
+
 function HideObjectiveEvent(objectiveId: ObjectiveId): HideObjectiveData {
   return {
     action: "HIDE_OBJECTIVE",
     event: {
       objective: objectiveId,
     },
+  };
+}
+
+function HideTFCardEvent(
+  event: AbilityEvent | GenomeEvent | UpgradeEvent,
+): HideTFCardData {
+  return {
+    action: "HIDE_TF_CARD",
+    event,
+  };
+}
+
+function JoinSpliceEvent(factionId: FactionId): JoinSpliceData {
+  return {
+    action: "JOIN_SPLICE",
+    event: { factionId },
+  };
+}
+
+function LeaveSpliceEvent(factionId: FactionId): LeaveSpliceData {
+  return {
+    action: "LEAVE_SPLICE",
+    event: { factionId },
   };
 }
 
@@ -343,11 +399,13 @@ function LoseRelicEvent(
 function LoseTFCardEvent(
   faction: FactionId,
   event: AbilityEvent | GenomeEvent | ParadigmEvent | UpgradeEvent,
+  discard?: boolean,
 ): LoseTFCardData {
   return {
     action: "LOSE_TF_CARD",
     event: {
       faction,
+      discard,
       ...event,
     },
   };
@@ -568,6 +626,15 @@ function RevealObjectiveEvent(objectiveId: ObjectiveId): RevealObjectiveData {
   };
 }
 
+function RevealTFCardEvent(
+  event: AbilityEvent | GenomeEvent | UpgradeEvent,
+): RevealTFCardData {
+  return {
+    action: "REVEAL_TF_CARD",
+    event,
+  };
+}
+
 function ScoreObjectiveEvent(
   factionId: FactionId,
   objectiveId: ObjectiveId,
@@ -750,6 +817,15 @@ function UndoAdjudicatorBaalEvent(systemId: SystemId): UndoAdjudicatorBaalData {
   };
 }
 
+function UndoGenomeEvent(genomeId: TFGenomeId): UndoGenomeData {
+  return {
+    action: "UNDO_GENOME",
+    event: {
+      genomeId,
+    },
+  };
+}
+
 function UnpassEvent(factionId: FactionId): UnpassData {
   return {
     action: "UNPASS",
@@ -875,6 +951,15 @@ function UpdatePlanetStateEvent(
     event: {
       planet,
       state,
+    },
+  };
+}
+
+function UseGenomeEvent(genomeId: TFGenomeId): UseGenomeData {
+  return {
+    action: "USE_GENOME",
+    event: {
+      genomeId,
     },
   };
 }

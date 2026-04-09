@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useOptions, useViewOnly } from "../../../context/dataHooks";
-import { useFactionColors } from "../../../context/factionDataHooks";
+import { useAllFactionColors } from "../../../context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../context/gameDataHooks";
 import { useObjective } from "../../../context/objectiveDataHooks";
 import { useDataUpdate } from "../../../util/api/dataUpdate";
@@ -10,7 +10,7 @@ import FactionSelectRadialMenu from "../../FactionSelectRadialMenu/FactionSelect
 
 export default function Styx() {
   const dataUpdate = useDataUpdate();
-  const factionColors = useFactionColors();
+  const factionColors = useAllFactionColors();
   const options = useOptions();
   const orderedFactionIds = useOrderedFactionIds("MAP");
   const styx = useObjective("Styx");
@@ -59,7 +59,9 @@ export default function Styx() {
               dataUpdate(Events.ScoreObjectiveEvent(factionId, "Styx"));
             }
           }}
-          borderColor={styxScorerId ? factionColors[styxScorerId] : undefined}
+          borderColor={
+            styxScorerId ? factionColors[styxScorerId]?.border : undefined
+          }
           viewOnly={viewOnly}
         />
       </div>

@@ -3,7 +3,6 @@ import { FormattedMessage } from "react-intl";
 import {
   useAttachments,
   useCurrentTurn,
-  useGameId,
   useLeader,
   useOptions,
   usePlanets,
@@ -36,7 +35,6 @@ export default function ClaimPlanetsSection({
 }) {
   const claimedPlanetEvents = useClaimedPlanetEvents(factionId);
   const dataUpdate = useDataUpdate();
-  const gameId = useGameId();
   const options = useOptions();
   const planets = usePlanets();
   const viewOnly = useViewOnly();
@@ -54,7 +52,6 @@ export default function ClaimPlanetsSection({
 
   const maxPlanets = availablePlanets.length > 50 ? 15 : 12;
   const targetButtonStyle: CSSProperties = {
-    fontFamily: "Myriad Pro",
     padding: rem(8),
     display: "grid",
     gridAutoFlow: "column",
@@ -166,7 +163,6 @@ function ClaimedPlanetsSection({
 export function ClaimedPlanetRow({ event }: { event: ClaimPlanetEvent }) {
   const attachments = useAttachments();
   const dataUpdate = useDataUpdate();
-  const gameId = useGameId();
   const planets = usePlanets();
   const planet = planets[event.planet];
 
@@ -222,7 +218,6 @@ function AddAttachment({ event }: { event: ClaimPlanetEvent }) {
   const currentTurn = useCurrentTurn();
   const dartAndTai = useLeader("Dart and Tai");
   const dataUpdate = useDataUpdate();
-  const gameId = useGameId();
   const planets = usePlanets();
 
   const planet = planets[event.planet];

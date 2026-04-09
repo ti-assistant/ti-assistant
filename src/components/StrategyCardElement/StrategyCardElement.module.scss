@@ -6,7 +6,7 @@
   grid-template-columns: subgrid;
   grid-auto-flow: row;
   // flex-direction: column;
-  border: var(--border-size) solid var(--color);
+  // border: var(--border-size) solid var(--color);
   border-radius: 0.375rem;
   justify-content: center;
   // justify-items: center;
@@ -41,6 +41,7 @@
     display: flex;
     grid-column: 3 / 5;
     justify-self: center;
+    margin-right: 0.25em;
   }
   .FactionTile {
     display: none;

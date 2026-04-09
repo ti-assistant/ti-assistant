@@ -67,7 +67,11 @@ type GameUpdateData =
   | (PurgeSystemData | UnpurgeSystemData)
   | ToggleStructureData
   | (GainTFCardData | LoseTFCardData)
+  | (RevealTFCardData | HideTFCardData)
   | ChooseTFFactionData
+  | (UseGenomeData | UndoGenomeData)
+  | (JoinSpliceData | LeaveSpliceData)
+  | (ChooseEdictData | HideEdictData)
   | UndoData;
 
 type Secondary = "PENDING" | "DONE" | "SKIPPED";
@@ -98,6 +102,7 @@ interface BaseData {
 
   // Twilight's Fall Specific
   abilities: Record<TFAbilityId, TFBaseAbility>;
+  edicts: Record<TFEdictId, TFBaseEdict>;
   genomes: Record<TFGenomeId, TFBaseGenome>;
   paradigms: Record<TFParadigmId, TFBaseParadigm>;
   upgrades: Record<TFUnitUpgradeId, TFBaseUnitUpgrade>;
@@ -126,6 +131,7 @@ interface GameData {
 
   // Twilight's Fall Specific
   abilities?: Partial<Record<TFAbilityId, TFAbility>>;
+  edicts?: Partial<Record<TFEdictId, TFEdict>>;
   genomes?: Partial<Record<TFGenomeId, TFGenome>>;
   paradigms?: Partial<Record<TFParadigmId, TFParadigm>>;
   upgrades?: Partial<Record<TFUnitUpgradeId, TFUnitUpgrade>>;
@@ -166,6 +172,7 @@ interface StoredGameData {
   techs?: Partial<Record<TechId, GameTech>>;
   // Twilight's Fall Specific
   abilities?: Partial<Record<TFAbilityId, TFGameAbility>>;
+  edicts?: Partial<Record<TFEdictId, TFGameEdict>>;
   genomes?: Partial<Record<TFGenomeId, TFGameGenome>>;
   paradigms?: Partial<Record<TFParadigmId, TFGameParadigm>>;
   upgrades?: Partial<Record<TFUnitUpgradeId, TFGameUnitUpgrade>>;
@@ -434,11 +441,15 @@ interface ParadigmEvent {
 interface UpgradeEvent {
   type: "UNIT_UPGRADE";
   upgrade: TFUnitUpgradeId;
+  /** Set by server */
+  prevUpgrade?: TFUnitUpgradeId;
 }
 
 interface TFCardEvent {
   faction: FactionId;
   prevFaction?: FactionId;
+  // Used to prevent a discard from being overwritten.
+  discard?: boolean;
 }
 
 interface GainTFCardData {
@@ -451,6 +462,30 @@ interface LoseTFCardData {
   action: "LOSE_TF_CARD";
   event: TFCardEvent &
     (AbilityEvent | GenomeEvent | ParadigmEvent | UpgradeEvent);
+}
+
+interface RevealTFCardData {
+  action: "REVEAL_TF_CARD";
+  event: AbilityEvent | GenomeEvent | UpgradeEvent;
+}
+
+interface HideTFCardData {
+  action: "HIDE_TF_CARD";
+  event: AbilityEvent | GenomeEvent | UpgradeEvent;
+}
+
+interface JoinSpliceEvent {
+  factionId: FactionId;
+}
+
+interface JoinSpliceData {
+  action: "JOIN_SPLICE";
+  event: JoinSpliceEvent;
+}
+
+interface LeaveSpliceData {
+  action: "LEAVE_SPLICE";
+  event: JoinSpliceEvent;
 }
 
 interface GainAllianceEvent {
@@ -889,4 +924,30 @@ interface CommitToExpeditionEvent {
 interface CommitToExpeditionData {
   action: "COMMIT_TO_EXPEDITION";
   event: CommitToExpeditionEvent;
+}
+
+interface UseGenomeEvent {
+  genomeId: TFGenomeId;
+}
+interface UseGenomeData {
+  action: "USE_GENOME";
+  event: UseGenomeEvent;
+}
+interface UndoGenomeData {
+  action: "UNDO_GENOME";
+  event: UseGenomeEvent;
+}
+
+interface EdictEvent {
+  edictId: TFEdictId;
+  tyrant: boolean;
+}
+
+interface ChooseEdictData {
+  action: "CHOOSE_EDICT";
+  event: EdictEvent;
+}
+interface HideEdictData {
+  action: "HIDE_EDICT";
+  event: EdictEvent;
 }

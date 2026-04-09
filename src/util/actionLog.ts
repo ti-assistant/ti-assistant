@@ -114,6 +114,14 @@ export function getActionCardTargets(actionLog: ActionLog, card: string) {
     .map((logEntry) => logEntry.data.event.target);
 }
 
+export function wasGenomeUsed(actionLog: ActionLog, genomeId: TFGenomeId) {
+  return (
+    getLogEntries<UseGenomeData>(actionLog, "USE_GENOME").filter(
+      (logEntry) => logEntry.data.event.genomeId === genomeId,
+    ).length > 0
+  );
+}
+
 export function getPromissoryTargets(actionLog: ActionLog, card: string) {
   return getLogEntries<PlayPromissoryNoteData>(
     actionLog,
@@ -141,6 +149,14 @@ export function getGainedCCs(actionLog: ActionLog, factionId: FactionId) {
     }, 0);
 }
 
+export function getGainedTFCards(actionLog: ActionLog) {
+  return getLogEntries<GainTFCardData>(actionLog, "GAIN_TF_CARD");
+}
+
+export function getRevealedTFCards(actionLog: ActionLog) {
+  return getLogEntries<RevealTFCardData>(actionLog, "REVEAL_TF_CARD");
+}
+
 export function getGainedTFCardLogEntries(
   actionLog: ActionLog,
   factionId: FactionId,
@@ -150,11 +166,16 @@ export function getGainedTFCardLogEntries(
   );
 }
 
+export function getDiscardedTFCards(actionLog: ActionLog) {
+  return getLogEntries<LoseTFCardData>(actionLog, "LOSE_TF_CARD");
+}
+
 interface GainedCardsByType {
   abilities: TFAbilityId[];
   genomes: TFGenomeId[];
   paradigms: TFParadigmId[];
   upgrades: TFUnitUpgradeId[];
+  techs: TechId[];
 }
 
 export function getGainedTFCardsByType(
@@ -164,11 +185,116 @@ export function getGainedTFCardsByType(
   const events = getLogEntries<GainTFCardData>(actionLog, "GAIN_TF_CARD")
     .filter((logEntry) => logEntry.data.event.faction === factionId)
     .map((logEntry) => logEntry.data.event);
+  const techEvents = getLogEntries<AddTechData>(actionLog, "ADD_TECH")
+    .filter((logEntry) => logEntry.data.event.faction === factionId)
+    .map((logEntry) => logEntry.data.event);
   const cardsByType: GainedCardsByType = {
     abilities: [],
     genomes: [],
     paradigms: [],
     upgrades: [],
+    techs: [],
+  };
+  for (const event of events) {
+    switch (event.type) {
+      case "ABILITY":
+        cardsByType.abilities.push(event.ability);
+        break;
+      case "GENOME":
+        cardsByType.genomes.push(event.genome);
+        break;
+      case "PARADIGM":
+        cardsByType.paradigms.push(event.paradigm);
+        break;
+      case "UNIT_UPGRADE":
+        cardsByType.upgrades.push(event.upgrade);
+        break;
+    }
+  }
+  for (const techEvent of techEvents) {
+    cardsByType.techs.push(techEvent.tech);
+  }
+  return cardsByType;
+}
+
+export interface GainedCards {
+  abilities: {
+    id: TFAbilityId;
+    factionId: FactionId;
+  }[];
+  genomes: {
+    id: TFGenomeId;
+    factionId: FactionId;
+  }[];
+  upgrades: {
+    id: TFUnitUpgradeId;
+    factionId: FactionId;
+  }[];
+  paradigms: {
+    id: TFParadigmId;
+    factionId: FactionId;
+  }[];
+  techs: {
+    id: TechId;
+    factionId: FactionId;
+  }[];
+}
+
+export function getDiscardedTFCardsByTypeWithFaction(actionLog: ActionLog) {
+  const events = getLogEntries<LoseTFCardData>(actionLog, "LOSE_TF_CARD").map(
+    (logEntry) => logEntry.data.event,
+  );
+  const cardsByType: GainedCards = {
+    abilities: [],
+    genomes: [],
+    paradigms: [],
+    upgrades: [],
+    techs: [],
+  };
+  for (const event of events) {
+    switch (event.type) {
+      case "ABILITY":
+        cardsByType.abilities.push({
+          id: event.ability,
+          factionId: event.faction,
+        });
+        break;
+      case "GENOME":
+        cardsByType.genomes.push({
+          id: event.genome,
+          factionId: event.faction,
+        });
+        break;
+      case "PARADIGM":
+        cardsByType.paradigms.push({
+          id: event.paradigm,
+          factionId: event.faction,
+        });
+        break;
+      case "UNIT_UPGRADE":
+        cardsByType.upgrades.push({
+          id: event.upgrade,
+          factionId: event.faction,
+        });
+        break;
+    }
+  }
+  return cardsByType;
+}
+
+export function getDiscardedTFCardsByType(
+  actionLog: ActionLog,
+  factionId: FactionId,
+) {
+  const events = getLogEntries<LoseTFCardData>(actionLog, "LOSE_TF_CARD")
+    .filter((logEntry) => logEntry.data.event.faction === factionId)
+    .map((logEntry) => logEntry.data.event);
+  const cardsByType: GainedCardsByType = {
+    abilities: [],
+    genomes: [],
+    paradigms: [],
+    upgrades: [],
+    techs: [],
   };
   for (const event of events) {
     switch (event.type) {
@@ -292,4 +418,10 @@ export function getLatestExpedition(
   )
     .filter((logEntry) => logEntry.data.event.factionId === factionId)
     .map((logEntry) => logEntry.data.event)[0];
+}
+
+export function getSpliceParticipants(actionLog: ActionLog) {
+  return getLogEntries<JoinSpliceData>(actionLog, "JOIN_SPLICE").map(
+    (entry) => entry.data.event.factionId,
+  );
 }

@@ -21,8 +21,9 @@ export function ClientOnlyHoverMenu({
   buttonStyle = {},
   children,
   renderProps,
-  borderColor = "#aaa",
+  borderColor = "var(--interactive-bg)",
   postContent,
+  important,
 }: PropsWithChildren<HoverMenuProps>) {
   const [onClient, setOnClient] = useState(false);
 
@@ -44,7 +45,7 @@ export function ClientOnlyHoverMenu({
               borderRadius: "0.3125rem",
               padding: `0.25rem 0.5rem`,
               whiteSpace: "nowrap",
-              backgroundColor: "var(--light-bg)",
+              backgroundColor: "var(--background-color)",
             } as CSSProperties
           }
         >
@@ -63,6 +64,7 @@ export function ClientOnlyHoverMenu({
       borderColor={borderColor}
       renderProps={renderProps}
       postContent={postContent}
+      important={important}
     >
       {children}
     </HoverMenu>
@@ -77,6 +79,7 @@ interface HoverMenuProps {
   buttonStyle?: CSSProperties;
   borderColor?: string;
   postContent?: ReactNode;
+  important?: boolean;
 }
 
 export function HoverMenu({
@@ -86,8 +89,9 @@ export function HoverMenu({
   buttonStyle = {},
   children,
   renderProps,
-  borderColor = "#aaa",
+  borderColor = "var(--interactive-bg)",
   postContent,
+  important,
 }: PropsWithChildren<HoverMenuProps>) {
   const menu = useRef<HTMLDivElement>(null);
   const innerMenu = useRef<HTMLDivElement>(null);
@@ -163,25 +167,41 @@ export function HoverMenu({
     setTimeout(() => setClosing(false), 200);
   }
 
+  const hoveredBorder =
+    borderColor === "var(--interactive-bg)"
+      ? important
+        ? "var(--accent-color)"
+        : "var(--interactive-bg)"
+      : borderColor;
   const hoverMenuStyle: CSSProperties & {
-    "--background-color": "var(--light-bg)";
+    "--bg-color": "var(--background-color)";
+    "--border-color": string;
   } = {
-    "--background-color": "var(--light-bg)",
+    "--bg-color": "var(--background-color)",
+    "--border-color": "hoveredBorder",
     position: "absolute",
     zIndex: 1000,
     alignItems: side === "left" ? "flex-end" : "flex-start",
     justifyContent: side === "left" ? "flex-end" : "flex-start",
     top: direction === "down" ? 0 : "auto",
     bottom: direction === "up" ? 0 : "auto",
-    border: borderless ? undefined : `var(--border-size) solid ${borderColor}`,
+    border: borderless
+      ? undefined
+      : `var(--border-size) solid ${hoveredBorder}`,
     borderRadius: "0.3125rem",
-    backgroundColor: "var(--background-color)",
+    backgroundColor: "var(--bg-color)",
     overflow: "visible",
     whiteSpace: "nowrap",
     gap: 0,
     left: side === "right" ? 0 : "auto",
     right: side === "left" ? 0 : "auto",
     ...style,
+  };
+
+  const buttonDefaultStyle: CSSProperties & {
+    "--corner-color": string;
+  } = {
+    "--corner-color": !important ? borderColor : "var(--accent-color)",
   };
 
   const classNames =
@@ -191,7 +211,7 @@ export function HoverMenu({
 
   return (
     <div
-      className="hoverParent largeFont"
+      className="hoverParent largeFont "
       onMouseEnter={() => {
         if (!menu.current || closing) {
           return;
@@ -204,11 +224,17 @@ export function HoverMenu({
         }
         menu.current.classList.remove("hover");
       }}
+      onClick={() => {
+        if (!menu.current || closing) {
+          return;
+        }
+        menu.current.classList.add("hover");
+      }}
       ref={menu}
-      style={buttonStyle}
+      style={{ ...buttonDefaultStyle, ...buttonStyle }}
     >
       <div
-        className={styles.hoverLabel}
+        className={`${styles.hoverLabel} ${side === "left" ? styles.left : ""} ${direction === "up" ? styles.up : ""}`}
         style={
           {
             "--color": borderColor,
@@ -218,7 +244,7 @@ export function HoverMenu({
             borderRadius: "0.3125rem",
             padding: `0.25rem 0.5rem`,
             whiteSpace: "nowrap",
-            backgroundColor: "var(--light-bg)",
+            backgroundColor: "var(--background-color)",
           } as CSSProperties
         }
       >
@@ -227,7 +253,7 @@ export function HoverMenu({
       <div className={classNames} style={hoverMenuStyle} ref={innerMenu}>
         {direction === "down" ? (
           <div
-            className={styles.innerHoverLabel}
+            className={`${styles.innerHoverLabel} ${side === "left" ? styles.left : ""}`}
             style={
               {
                 "--color": borderColor,
@@ -243,6 +269,7 @@ export function HoverMenu({
         {direction !== "up" && postContent ? postContent : null}
         {direction === "up" ? (
           <div
+            className={`${styles.innerHoverLabel} ${side === "left" ? styles.left : ""} ${styles.up}`}
             style={{
               padding: `0.25rem 0.5rem`,
             }}

@@ -50,7 +50,7 @@ function EmptyHex() {
         alt={`System Tile`}
         sizes={rem(64)}
         fill
-        style={{ opacity: "10%", objectFit: "contain" }}
+        style={{ opacity: "20%", objectFit: "contain" }}
         priority
       />
     </div>
@@ -122,13 +122,13 @@ export default function SystemImage({
   let classNames: Optional<string> = "";
   if (systemNumber.includes("A") && systemNumber.split("A").length > 1) {
     classNames = getRotationClassFromNumber(
-      parseInt(systemNumber.split("A")[1] ?? "0")
+      parseInt(systemNumber.split("A")[1] ?? "0"),
     );
     systemNumber = `${systemNumber.split("A")[0] ?? ""}A`;
   }
   if (systemNumber.includes("B") && systemNumber.split("B").length > 1) {
     classNames = getRotationClassFromNumber(
-      parseInt(systemNumber.split("B")[1] ?? "0")
+      parseInt(systemNumber.split("B")[1] ?? "0"),
     );
     systemNumber = `${systemNumber.split("B")[0] ?? ""}B`;
   }

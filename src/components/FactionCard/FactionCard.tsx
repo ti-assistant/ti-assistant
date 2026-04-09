@@ -1,11 +1,13 @@
 import dynamic from "next/dynamic";
 import { CSSProperties, PropsWithChildren, ReactNode } from "react";
 import { useOptions } from "../../context/dataHooks";
-import { useFactionColor } from "../../context/factionDataHooks";
+import { useFactionColors } from "../../context/factionDataHooks";
 import { rem } from "../../util/util";
 import FactionComponents from "../FactionComponents/FactionComponents";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import styles from "./FactionCard.module.scss";
+import FactionIcon from "../FactionIcon/FactionIcon";
+import { useActiveFactionId } from "../../context/gameDataHooks";
 
 const FactionPanel = dynamic(() => import("../FactionPanel"), {
   loading: () => (
@@ -32,7 +34,6 @@ interface FactionCardProps {
   rightLabel?: ReactNode;
   opts?: FactionCardOpts;
   style?: CSSProperties;
-  viewOnly?: boolean;
 }
 
 export default function FactionCard({
@@ -42,21 +43,30 @@ export default function FactionCard({
   rightLabel,
   style = {},
   opts = {},
-  viewOnly,
 }: PropsWithChildren<FactionCardProps>) {
+  const activeFactionId = useActiveFactionId();
   const options = useOptions();
-  const factionColor = useFactionColor(factionId);
+  const colors = useFactionColors(factionId);
 
   return (
     <LabeledDiv
       label={
-        <div className="flexRow" style={{ gap: 0 }}>
-          {<FactionComponents.Name factionId={factionId} />}
+        <div
+          className="flexRow"
+          style={{
+            gap: "0.25rem",
+            fontFamily:
+              activeFactionId === factionId ? "var(--main-font) " : undefined,
+          }}
+        >
+          <FactionIcon factionId={factionId} size={16} />
+          <FactionComponents.Name factionId={factionId} />
           <FactionPanel factionId={factionId} options={options} />
         </div>
       }
       rightLabel={rightLabel}
-      color={factionColor}
+      borderColor={colors.border}
+      color={colors.color}
       innerStyle={{ justifyContent: "flex-start", ...style }}
     >
       <div
@@ -65,7 +75,7 @@ export default function FactionCard({
           fontSize: opts.fontSize ?? undefined,
         }}
       >
-        {hideIcon ? null : (
+        {/* {hideIcon ? null : (
           <div
             className="flexRow"
             style={{
@@ -90,7 +100,7 @@ export default function FactionCard({
               <FactionComponents.Icon factionId={factionId} size="100%" />
             </div>
           </div>
-        )}
+        )} */}
         {children}
       </div>
     </LabeledDiv>

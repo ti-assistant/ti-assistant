@@ -48,7 +48,11 @@ export default function ResourcesSVG({
         <text
           x="141.05365"
           y={fontY}
-          fill={color === "#555" ? "#555" : "#eee"}
+          fill={
+            color === "var(--passed-text)"
+              ? "var(--passed-text)"
+              : "var(--foreground-color)"
+          }
           fontFamily="var(--main-font)"
           fontSize={fontSize}
           textAnchor="middle"

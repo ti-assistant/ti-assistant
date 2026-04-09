@@ -10,15 +10,15 @@ export function getTechColor(tech: Tech) {
 export function getTechTypeColor(type: TechType) {
   switch (type) {
     case "RED":
-      return "indianred";
+      return "var(--red-tech-color)";
     case "YELLOW":
-      return "gold";
+      return "var(--yellow-tech-color)";
     case "BLUE":
-      return "cornflowerblue";
+      return "var(--blue-tech-color)";
     case "GREEN":
-      return "seagreen";
+      return "var(--green-tech-color)";
   }
-  return "#eee";
+  return "var(--foreground-color)";
 }
 
 /**
@@ -298,4 +298,69 @@ export function sortTechsByName(techs: Tech[]) {
     }
     return -1;
   });
+}
+
+export function getAntimatterForFaction(factionId: FactionId): TechId {
+  switch (factionId) {
+    case "A Sickening Lurch":
+      return "Antimatter Black";
+    case "Avarice Rex":
+      return "Antimatter Yellow";
+    case "El Nen Janovet":
+      return "Antimatter Pink";
+    case "Il Na Viroset":
+      return "Antimatter Purple";
+    case "Il Sai Lakoe":
+      return "Antimatter Green";
+    case "The Ruby Monarch":
+      return "Antimatter Red";
+    case "The Saint of Swords":
+      return "Antimatter Blue";
+    case "Radiant Aur":
+      return "Antimatter Orange";
+  }
+  return "Antimatter Black";
+}
+
+export function getWavelengthForFaction(factionId: FactionId): TechId {
+  switch (factionId) {
+    case "A Sickening Lurch":
+      return "Wavelength Black";
+    case "Avarice Rex":
+      return "Wavelength Yellow";
+    case "El Nen Janovet":
+      return "Wavelength Pink";
+    case "Il Na Viroset":
+      return "Wavelength Purple";
+    case "Il Sai Lakoe":
+      return "Wavelength Green";
+    case "The Ruby Monarch":
+      return "Wavelength Red";
+    case "The Saint of Swords":
+      return "Wavelength Blue";
+    case "Radiant Aur":
+      return "Wavelength Orange";
+  }
+  return "Wavelength Black";
+}
+
+export function getCombatValues(combat: string | number | undefined) {
+  if (!combat) {
+    return {
+      combat: 0,
+      num: 0,
+    };
+  }
+  if (typeof combat === "number") {
+    return {
+      combat,
+      num: 0,
+    };
+  }
+  const vals = combat.split("(x");
+
+  return {
+    combat: parseInt(vals[0] ?? "0"),
+    num: parseInt(vals[1]?.split(")")[0] ?? "0"),
+  };
 }

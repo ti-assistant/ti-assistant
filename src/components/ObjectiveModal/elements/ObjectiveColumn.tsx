@@ -13,7 +13,6 @@ import ScorableFactionIcon from "./ScorableFactionIcon";
 function InfoContent({ objective }: { objective: Objective }) {
   return (
     <div
-      className="myriadPro"
       style={{
         boxSizing: "border-box",
         maxWidth: rem(800),
@@ -67,7 +66,6 @@ export default function ObjectiveColumn({
             justifyContent: "space-between",
             gap: rem(2),
             position: "relative",
-            fontFamily: description ? "Myriad Pro" : undefined,
             fontSize: description ? rem(12) : undefined,
           }}
         >

@@ -5,6 +5,7 @@ import styles from "./Circle.module.scss";
 
 interface CircleProps {
   blur?: boolean;
+  backgroundColor?: string;
   borderColor?: string;
   fade?: boolean;
   onClick?: () => void;
@@ -21,6 +22,7 @@ interface CircleCSS extends CSSProperties {
 
 export default function Circle({
   blur,
+  backgroundColor = "var(--light-bg)",
   borderColor = "#444",
   children,
   fade = false,
@@ -33,9 +35,8 @@ export default function Circle({
   const factionCircleStyle: CircleCSS = {
     "--border-color": borderColor,
     "--size": em(size),
-    backgroundColor: blur ? undefined : "var(--light-bg)",
+    backgroundColor: blur ? undefined : backgroundColor,
     backdropFilter: blur ? `blur(${rem(4)})` : undefined,
-    boxShadow: borderColor === "Black" ? BLACK_BORDER_GLOW : undefined,
     cursor: onClick ? "pointer" : undefined,
     ...style,
   };

@@ -41,8 +41,10 @@ export default function NumberInput({
   }
 
   const numberInputStyle: NumberInputCSS = {
-    "--down-arrow-color": value <= softMin ? "#555" : "#ddd",
-    "--up-arrow-color": value >= softMax ? "#555" : "#ddd",
+    "--down-arrow-color":
+      value <= softMin ? "var(--disabled-bg)" : "var(--dark-hover-bg)",
+    "--up-arrow-color":
+      value >= softMax ? "var(--disabled-bg)" : "var(--interactive-bg)",
   };
 
   return (

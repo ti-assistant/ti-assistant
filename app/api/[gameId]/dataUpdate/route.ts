@@ -5,7 +5,6 @@ import {
   Firestore,
   Timestamp,
   Transaction,
-  getFirestore,
 } from "firebase-admin/firestore";
 import { NextResponse } from "next/server";
 import {
@@ -108,6 +107,10 @@ import {
   RevealObjectiveHandler,
 } from "../../../../src/util/model/revealObjective";
 import {
+  HideTFCardHandler,
+  RevealTFCardHandler,
+} from "../../../../src/util/model/revealTFCard";
+import {
   ScoreObjectiveHandler,
   UnscoreObjectiveHandler,
 } from "../../../../src/util/model/scoreObjective";
@@ -133,6 +136,18 @@ import { UpdateLeaderStateHandler } from "../../../../src/util/model/updateLeade
 import { UpdatePlanetStateHandler } from "../../../../src/util/model/updatePlanetState";
 import { getFirestoreAdmin, SCHEMA_VERSION } from "../../../../src/util/server";
 import { Optional } from "../../../../src/util/types/types";
+import {
+  UndoGenomeHandler,
+  UseGenomeHandler,
+} from "../../../../src/util/model/useGenome";
+import {
+  JoinSpliceHandler,
+  LeaveSpliceHandler,
+} from "../../../../src/util/model/joinSplice";
+import {
+  ChooseEdictHandler,
+  HideEdictHandler,
+} from "../../../../src/util/model/chooseEdict";
 
 export async function POST(
   req: Request,
@@ -658,6 +673,30 @@ function updateInTransaction(
         break;
       case "LOSE_TF_CARD":
         handler = new LoseTFCardHandler(gameData, data);
+        break;
+      case "REVEAL_TF_CARD":
+        handler = new RevealTFCardHandler(gameData, data);
+        break;
+      case "HIDE_TF_CARD":
+        handler = new HideTFCardHandler(gameData, data);
+        break;
+      case "USE_GENOME":
+        handler = new UseGenomeHandler(gameData, data);
+        break;
+      case "UNDO_GENOME":
+        handler = new UndoGenomeHandler(gameData, data);
+        break;
+      case "JOIN_SPLICE":
+        handler = new JoinSpliceHandler(gameData, data);
+        break;
+      case "LEAVE_SPLICE":
+        handler = new LeaveSpliceHandler(gameData, data);
+        break;
+      case "CHOOSE_EDICT":
+        handler = new ChooseEdictHandler(gameData, data);
+        break;
+      case "HIDE_EDICT":
+        handler = new HideEdictHandler(gameData, data);
         break;
 
       case "UNDO": {

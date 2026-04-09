@@ -8,7 +8,9 @@ import DataStoreWrapper from "../../src/context/DataStoreWrapper";
 import ModalProvider from "../../src/context/ModalProvider";
 import TimerProvider from "../../src/context/TimerProvider";
 import styles from "./root.module.scss";
+import ThemeToggleWrapper from "./ThemeToggleWrapper";
 import Wrapper, { SettingsProvider } from "./wrapper";
+import NavBarButtons from "./NavBarButtons";
 
 const SUPPORTED_LOCALES = ["en", "de", "fr", "ru", "pl", "pt-BR"];
 
@@ -29,7 +31,7 @@ export async function InnerLayout({
           <TimerProvider>
             <ModalProvider>
               <div className={styles.NavBar}>
-                <div className="flexRow">
+                <div className="flexRow" style={{ marginInlineEnd: "auto" }}>
                   <Link href={"/"} className={styles.HomeLink}>
                     <div className={styles.Logo}>
                       <SiteLogo />
@@ -44,13 +46,11 @@ export async function InnerLayout({
                       selectedLocale={locale}
                       locales={SUPPORTED_LOCALES}
                       invalidLocales={[locale]}
-                      size={28}
+                      size={24}
                     />
                   </div>
                 </div>
-                <div className={styles.Settings}>
-                  <SettingsButton />
-                </div>
+                <NavBarButtons />
               </div>
               {children}
             </ModalProvider>
@@ -69,7 +69,7 @@ export function LoadingLayout() {
         <div className={styles.LoadingLogo}>
           <SiteLogo />
         </div>
-        Twilight Imperium Assistant
+        TI Assistant
       </div>
     </>
   );

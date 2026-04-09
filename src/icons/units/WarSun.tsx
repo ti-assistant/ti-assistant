@@ -2,7 +2,7 @@ import { em } from "../../util/util";
 
 export default function WarSunSVG({
   size,
-  color = "#eee",
+  color = "var(--foreground-color)",
 }: {
   size: number | string;
   color?: string;

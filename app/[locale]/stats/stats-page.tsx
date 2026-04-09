@@ -10,13 +10,16 @@ import {
 } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import Chip from "../../../src/components/Chip/Chip";
+import ChipGroup from "../../../src/components/Chip/ChipGroup";
 import LabeledDiv from "../../../src/components/LabeledDiv/LabeledDiv";
 import MultiStateToggle from "../../../src/components/MultiStateToggle/MultiStateToggle";
 import NonGameHeader from "../../../src/components/NonGameHeader/NonGameHeader";
 import { Strings } from "../../../src/components/strings";
 import TimerDisplay from "../../../src/components/TimerDisplay/TimerDisplay";
 import Toggle from "../../../src/components/Toggle/Toggle";
+import { DatabaseFnsContext } from "../../../src/context/contexts";
 import { Loader } from "../../../src/Loader";
+import { getter } from "../../../src/util/api/util";
 import { Optional } from "../../../src/util/types/types";
 import { objectEntries, objectKeys, rem } from "../../../src/util/util";
 import { ProcessedGame } from "./processor";
@@ -27,8 +30,6 @@ import StrategyCardSection from "./sections/StrategyCardSection";
 import TechsSection from "./sections/TechsSection";
 import { HistogramData } from "./sections/types";
 import styles from "./StatsPage.module.scss";
-import { DatabaseFnsContext } from "../../../src/context/contexts";
-import { getter } from "../../../src/util/api/util";
 
 function FilterButton<T extends string | number>({
   filter,
@@ -496,7 +497,7 @@ function DetailsSection({
 
   return (
     <div className="flexColumn" style={{ paddingBottom: rem(8) }}>
-      <div className="flexRow" style={{ gap: rem(4) }}>
+      <ChipGroup style={{ gap: rem(4) }}>
         <Chip
           fontSize={14}
           selected={tab === "Factions"}
@@ -541,7 +542,7 @@ function DetailsSection({
             defaultMessage="Strategy Cards"
           />
         </Chip>
-      </div>
+      </ChipGroup>
       <div className={styles.DetailsSection}>{tabContent}</div>
     </div>
   );
@@ -626,7 +627,7 @@ function GameDataSection({
           <TimerDisplay
             time={Math.floor(totalGameLength / numGames)}
             width={72}
-            style={{ fontSize: rem(16), fontFamily: "Source Sans" }}
+            style={{ fontSize: rem(16)}}
           />
         </div>
         <div className="flexRow" style={{ justifyContent: "space-between" }}>

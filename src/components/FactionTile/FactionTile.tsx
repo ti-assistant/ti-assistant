@@ -1,5 +1,5 @@
 import {
-  useFactionColor,
+  useFactionColors,
   useIsFactionPassed,
 } from "../../context/factionDataHooks";
 import { BLACK_BORDER_GLOW } from "../../util/borderGlow";
@@ -18,14 +18,13 @@ export default function FactionTile({
   fontSize,
   iconSize,
 }: FactionTileProps) {
-  const factionColor = useFactionColor(factionId);
+  const colors = useFactionColors(factionId);
   const isPassed = useIsFactionPassed(factionId);
 
-  const color = isPassed ? "#555" : factionColor;
+  const color = isPassed ? "var(--passed-text)" : colors.border;
 
   const factionTileCSS = {
     "--color": color,
-    boxShadow: color === "Black" ? BLACK_BORDER_GLOW : undefined,
     fontSize: rem(fontSize),
   };
 
@@ -36,20 +35,12 @@ export default function FactionTile({
         style={{
           height: rem(iconSize),
           minWidth: rem(iconSize),
+          fontFamily: "var(--primary-font)",
         }}
       >
-        <div
-          className={styles.Icon}
-          style={{
-            height: rem(iconSize),
-            opacity: "60%",
-            userSelect: "none",
-          }}
-        >
-          <FactionComponents.Icon factionId={factionId} size="100%" />
-        </div>
         <div className={styles.Name}>
-          {<FactionComponents.Name factionId={factionId} />}
+          <FactionComponents.Icon factionId={factionId} size={20} />
+          <FactionComponents.Name factionId={factionId} />
         </div>
       </div>
     </div>

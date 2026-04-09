@@ -17,7 +17,6 @@ export async function GET(request: NextRequest) {
     .limit(50);
 
   if (latestTimestamp) {
-    console.log("Starting after", latestTimestamp);
     processedRef = processedRef.startAfter(parseInt(latestTimestamp));
   }
 

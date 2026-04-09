@@ -12,7 +12,6 @@ function InfoContent({ agenda }: { agenda: Agenda }) {
 
   return (
     <div
-      className="myriadPro"
       style={{
         boxSizing: "border-box",
         width: "100%",
@@ -56,7 +55,7 @@ export function AgendaRow({
 
   const outcome = useOutcome(agenda.id, intl);
 
-  const textColor = "#eee";
+  const textColor = "var(--foreground-color)";
 
   return (
     <SelectableRow

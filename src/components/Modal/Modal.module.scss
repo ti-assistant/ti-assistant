@@ -11,7 +11,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #eee;
+  color: var(--foreground-color);
 
   backdrop-filter: blur(0.5rem);
 }
@@ -32,7 +32,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  color: #eee;
+  color: var(--foreground-color);
 
   overflow-y: auto;
 }
@@ -40,7 +40,7 @@
 .ModalContent .Content {
   position: relative;
   background-color: var(--background-color);
-  border: 1px solid var(--neutral-border);
+  border: 1px solid var(--hidden-border);
   max-width: 85%;
   border-radius: 0.625rem;
   margin-block: auto;
@@ -53,7 +53,7 @@
   align-items: center;
 
   padding: 0.25rem 2.25rem;
-  border-bottom: var(--border-size) solid var(--neutral-border);
+  border-bottom: var(--border-size) solid var(--hidden-border);
 }
 
 .ModalContent .CloseButton {
@@ -69,6 +69,7 @@
 .ModalContent .Title {
   text-align: center;
   font-size: 2.5rem;
+  font-family: var(--main-font);
 }
 
 .ModalContent .Body {

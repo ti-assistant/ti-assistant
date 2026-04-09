@@ -1,4 +1,8 @@
-import { convertToFactionColor, getFactionName } from "../util/factions";
+import {
+  convertToFactionBorder,
+  convertToFactionColor,
+  getFactionName,
+} from "../util/factions";
 import { Optional } from "../util/types/types";
 import { objectEntries } from "../util/util";
 import { useGameDataValue, useMemoizedGameDataValue } from "./dataHooks";
@@ -52,26 +56,38 @@ export function usePassedFactionIds() {
   );
 }
 
-export function useFactionColor(factionId: FactionId) {
-  return useMemoizedGameDataValue<Optional<string>, string>(
+interface FactionColors {
+  color: string;
+  border: string;
+}
+
+export function useFactionColors(factionId: FactionId) {
+  return useMemoizedGameDataValue<Optional<string>, FactionColors>(
     `factions.${factionId}.color`,
-    "#555",
-    (color) => convertToFactionColor(color),
+    { color: "var(--passed-text)", border: "var(--passed-text)" },
+    (color) => {
+      return {
+        color: convertToFactionColor(color),
+        border: convertToFactionBorder(color),
+      };
+    },
   );
 }
 
-export function useFactionColors() {
-  return useMemoizedGameDataValue<Factions, Partial<Record<FactionId, string>>>(
-    `factions`,
-    {},
-    (factions) => {
-      const colors: Partial<Record<FactionId, string>> = {};
-      Object.values(factions).forEach((faction) => {
-        colors[faction.id] = convertToFactionColor(faction.color);
-      });
-      return colors;
-    },
-  );
+export function useAllFactionColors() {
+  return useMemoizedGameDataValue<
+    Factions,
+    Partial<Record<FactionId, FactionColors>>
+  >(`factions`, {}, (factions) => {
+    const colors: Partial<Record<FactionId, FactionColors>> = {};
+    Object.values(factions).forEach((faction) => {
+      colors[faction.id] = {
+        color: convertToFactionColor(faction.color),
+        border: convertToFactionBorder(faction.color),
+      };
+    });
+    return colors;
+  });
 }
 
 export function useIsFactionPassed(factionId: FactionId) {

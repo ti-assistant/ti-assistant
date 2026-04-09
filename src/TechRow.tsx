@@ -15,7 +15,7 @@ import { useOrderedFactionIds } from "./context/gameDataHooks";
 import { useDataUpdate } from "./util/api/dataUpdate";
 import { Events } from "./util/api/events";
 import { hasTech } from "./util/api/techs";
-import { getFactionColor } from "./util/factions";
+import { getFactionBorder } from "./util/factions";
 import { getTechColor } from "./util/techs";
 import { em, objectEntries, rem } from "./util/util";
 
@@ -23,7 +23,7 @@ function InfoContent({ tech }: { tech: Tech }) {
   if (tech.type === "UPGRADE") {
     return (
       <div
-        className="myriadPro flexColumn"
+        className="flexColumn"
         style={{
           width: "100%",
           padding: rem(4),
@@ -62,7 +62,7 @@ function InfoContent({ tech }: { tech: Tech }) {
   }
   return (
     <div
-      className="myriadPro flexColumn"
+      className="flexColumn"
       style={{
         width: "100%",
         padding: rem(4),
@@ -136,6 +136,7 @@ export function TechRow({
               color: getTechColor(tech),
               zIndex: 0,
               gap: "0.5em",
+              fontFamily: "var(--main-font)",
             }}
           >
             {tech.name}
@@ -234,7 +235,9 @@ function ResearchAgreement({ tech }: { tech: Tech }) {
     <FactionSelectRadialMenu
       factions={orderedFactionIds}
       borderColor={
-        selectedFaction ? getFactionColor(factions[selectedFaction]) : undefined
+        selectedFaction
+          ? getFactionBorder(factions[selectedFaction])
+          : undefined
       }
       size={28}
       invalidFactions={fadedFactions}

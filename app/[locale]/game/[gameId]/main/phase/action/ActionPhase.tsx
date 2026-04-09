@@ -32,7 +32,7 @@ import {
 import {
   useAllSecondariesCompleted,
   useFaction,
-  useFactionColor,
+  useFactionColors,
   useFactionSecondary,
   useIsFactionPassed,
   usePassedFactionIds,
@@ -60,7 +60,10 @@ import {
 import { getSelectedActionFromLog } from "../../../../../../../src/util/api/data";
 import { useDataUpdate } from "../../../../../../../src/util/api/dataUpdate";
 import { Events } from "../../../../../../../src/util/api/events";
-import { getFactionColor } from "../../../../../../../src/util/factions";
+import {
+  getFactionBorder,
+  getFactionColor,
+} from "../../../../../../../src/util/factions";
 import { getStrategyCardsForFaction } from "../../../../../../../src/util/helpers";
 import { sortStrategyCards } from "../../../../../../../src/util/strategyCards";
 import { phaseString } from "../../../../../../../src/util/strings";
@@ -70,6 +73,8 @@ import styles from "./ActionPhase.module.scss";
 import Faunus from "./Actions/Faunus";
 import { ComponentAction } from "./ComponentAction";
 import StrategicActions from "./StrategicActions/StrategicActions";
+import ChipGroup from "../../../../../../../src/components/Chip/ChipGroup";
+import FactionIcon from "../../../../../../../src/components/FactionIcon/FactionIcon";
 
 interface FactionActionButtonsProps {
   factionId: FactionId;
@@ -123,7 +128,9 @@ function SecondaryFactionCheck({
           fontSize: rem(16),
           width: "auto",
           color:
-            primaryCompleted && secondaryState === "PENDING" ? "#eee" : "#555",
+            primaryCompleted && secondaryState === "PENDING"
+              ? "var(--foreground-color)"
+              : "var(--passed-text)",
         }}
       />
     </div>
@@ -198,18 +205,7 @@ export function FactionActionButtons({ factionId }: FactionActionButtonsProps) {
   }
 
   return (
-    <div
-      className="flexRow"
-      style={{
-        padding: `0 ${rem(8)}`,
-        boxSizing: "border-box",
-        width: "100%",
-        flexWrap: "wrap",
-        fontFamily: "Myriad Pro",
-        gap: rem(4),
-        justifyContent: "center",
-      }}
-    >
+    <ChipGroup>
       {getStrategyCardsForFaction(strategyCards, factionId).map((card) => {
         if (card.used) {
           return null;
@@ -264,7 +260,7 @@ export function FactionActionButtons({ factionId }: FactionActionButtonsProps) {
           />
         </Chip>
       ) : null}
-    </div>
+    </ChipGroup>
   );
 }
 
@@ -304,7 +300,7 @@ export function AdditionalActions({
   const state = useGameState();
   const strategyCards = useStrategyCards();
   const viewOnly = useViewOnly();
-  const factionColor = useFactionColor(factionId);
+  const factionColor = useFactionColors(factionId);
 
   const currentTurn = useCurrentTurn();
   const orderedFactionIds = useOrderedFactionIds(
@@ -764,7 +760,6 @@ export function AdditionalActions({
               </Toggle>
             }
           />
-          <StrategicActions.Noctis.Primary factionId={factionId} />
           <LabeledLine
             leftLabel={
               <InfoRow
@@ -789,11 +784,6 @@ export function AdditionalActions({
             }
           />
           <StrategicActions.Noctis.AllSecondaries activeFactionId={factionId} />
-          <SecondaryCheck
-            activeFactionId={factionId}
-            primaryCompleted={primaryCompleted}
-            orderedFactionIds={orderedFactionIds}
-          />
         </div>
       );
     }
@@ -936,11 +926,6 @@ export function AdditionalActions({
             }
           />
           <StrategicActions.Magus.AllSecondaries activeFactionId={factionId} />
-          <SecondaryCheck
-            activeFactionId={factionId}
-            primaryCompleted={primaryCompleted}
-            orderedFactionIds={orderedFactionIds}
-          />
         </div>
       );
     }
@@ -985,7 +970,6 @@ export function AdditionalActions({
               </Toggle>
             }
           />
-          <StrategicActions.Calamitas.Primary factionId={factionId} />
           <LabeledLine
             leftLabel={
               <InfoRow
@@ -1011,11 +995,6 @@ export function AdditionalActions({
           />
           <StrategicActions.Calamitas.AllSecondaries
             activeFactionId={factionId}
-          />
-          <SecondaryCheck
-            activeFactionId={factionId}
-            primaryCompleted={primaryCompleted}
-            orderedFactionIds={orderedFactionIds}
           />
         </div>
       );
@@ -1459,7 +1438,7 @@ export function AdditionalActions({
               <FactionCircle
                 key={factionId}
                 blur
-                borderColor={factionColor}
+                borderColor={factionColor.border}
                 factionId={factionId}
                 onClick={
                   viewOnly
@@ -1579,8 +1558,9 @@ export function NextPlayerButtons({
         <div className="flexRow" style={{ gap: rem(8) }}>
           <button
             onClick={() => dataUpdate(Events.EndTurnEvent({ skipTurn: true }))}
-            className={styles.EndTurnButton}
+            className={`${styles.EndTurnButton} outline`}
             disabled={viewOnly}
+            style={{ fontSize: "1rem" }}
           >
             <FormattedMessage
               id="EfG8OO"
@@ -1602,7 +1582,7 @@ export function NextPlayerButtons({
       <div className="flexRow" style={{ gap: rem(8) }}>
         <button
           onClick={() => dataUpdate(Events.EndTurnEvent({}))}
-          className={styles.EndTurnButton}
+          className={`${styles.EndTurnButton} primary`}
           disabled={viewOnly}
         >
           <FormattedMessage
@@ -1624,7 +1604,7 @@ export function NextPlayerButtons({
               onClick={() =>
                 dataUpdate(Events.EndTurnEvent({ samePlayer: true }))
               }
-              className={styles.EndTurnButton}
+              className={`${styles.EndTurnButton} outline`}
               style={{ fontSize: rem(16) }}
               disabled={viewOnly}
             >
@@ -1694,7 +1674,6 @@ function ActivePlayerColumn({
 }: ActivePlayerColumnProps) {
   const allSecondariesCompleted = useAllSecondariesCompleted();
   const dataUpdate = useDataUpdate();
-  const gameId = useGameId();
   const intl = useIntl();
   const primaryCompleted = usePrimaryCompleted();
   const viewOnly = useViewOnly();
@@ -1702,9 +1681,7 @@ function ActivePlayerColumn({
   const primaryRef = useRef<HTMLDivElement>(null);
   const secondaryRef = useRef<HTMLDivElement>(null);
 
-  const onDeckFactionColor = useFactionColor(
-    onDeckFactionId ?? "Vuil'raith Cabal",
-  );
+  const onDeckColors = useFactionColors(onDeckFactionId ?? "Vuil'raith Cabal");
 
   return (
     <div className={styles.ActivePlayerColumn}>
@@ -1726,7 +1703,11 @@ function ActivePlayerColumn({
               <FactionTimer
                 active={!primaryCompleted || allSecondariesCompleted}
                 factionId={activeFactionId}
-                style={{ fontSize: rem(16), width: "auto" }}
+                style={{
+                  fontSize: rem(16),
+                  width: rem(84),
+                  fontFamily: "var(--main-font)",
+                }}
               />
             }
             opts={{
@@ -1776,10 +1757,11 @@ function ActivePlayerColumn({
                     style={{
                       fontSize: rem(16),
                     }}
-                    width={84}
+                    width={72}
                   />
                 }
-                color={onDeckFactionColor}
+                color={onDeckColors.color}
+                borderColor={onDeckColors.border}
                 style={{
                   width: "fit-content",
                   minWidth: rem(200),
@@ -1787,32 +1769,19 @@ function ActivePlayerColumn({
               >
                 <div
                   ref={secondaryRef}
-                  className="flexColumn"
+                  className="flexRow"
                   style={{
                     width: "100%",
                     height: rem(44),
                     whiteSpace: "nowrap",
                     gap: rem(4),
                     fontSize: rem(24),
+                    fontFamily: "var(--main-font)",
                   }}
                 >
+                  <FactionIcon factionId={onDeckFactionId} size={16} />
                   {<FactionComponents.Name factionId={onDeckFactionId} />}
-                  <div
-                    className="flexRow"
-                    style={{
-                      position: "absolute",
-                      width: rem(44),
-                      height: rem(44),
-                      zIndex: -1,
-                      opacity: 0.7,
-                      userSelect: "none",
-                    }}
-                  >
-                    <FactionComponents.Icon
-                      factionId={onDeckFactionId}
-                      size="100%"
-                    />
-                  </div>
+                  <FactionIcon factionId={onDeckFactionId} size={16} />
                 </div>
               </LabeledDiv>
             </CSSTransition>
@@ -1836,6 +1805,8 @@ function ActivePlayerColumn({
             onClick: () => {
               dataUpdate(Events.AdvancePhaseEvent());
             },
+            primary: true,
+            style: { fontSize: rem(24) },
           },
         ]}
         viewOnly={viewOnly}
@@ -1875,16 +1846,18 @@ function StrategyCardColumn({
           return null;
         }
         const isActivePlayer = primaryCard.faction === activeFactionId;
+        const paddingInlineStart = isActivePlayer ? rem(40) : 0;
+        const paddingInlineEnd = isActivePlayer ? 0 : rem(40);
         return (
           <div
             key={primaryCard.id}
             style={{
               transition: "padding 120ms",
-              paddingRight: isActivePlayer ? 0 : rem(40),
-              paddingLeft: isActivePlayer ? rem(40) : 0,
+              paddingInlineStart,
+              paddingInlineEnd,
             }}
           >
-            <SmallStrategyCard cards={cards} />
+            <SmallStrategyCard cards={cards} isActivePlayer={isActivePlayer} />
           </div>
         );
       })}
@@ -1894,7 +1867,6 @@ function StrategyCardColumn({
 
 export default function ActionPhase() {
   const dataUpdate = useDataUpdate();
-  const gameId = useGameId();
   const intl = useIntl();
   const viewOnly = useViewOnly();
 
@@ -1948,6 +1920,8 @@ export default function ActionPhase() {
                     onClick: () => {
                       dataUpdate(Events.AdvancePhaseEvent());
                     },
+                    primary: true,
+                    style: { fontSize: rem(32) },
                   },
                 ]}
                 viewOnly={viewOnly}
@@ -1976,6 +1950,7 @@ function UnpassSection() {
   return (
     <LabeledDiv
       label={<FactionComponents.Name factionId={ralNel.id} />}
+      borderColor={getFactionBorder(ralNel)}
       color={getFactionColor(ralNel)}
       style={{ width: "min-content" }}
     >

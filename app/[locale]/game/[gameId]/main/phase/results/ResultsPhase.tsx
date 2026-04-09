@@ -2,7 +2,6 @@
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { IntlShape, useIntl } from "react-intl";
-import BorderedDiv from "../../../../../../../src/components/BorderedDiv/BorderedDiv";
 import Chip from "../../../../../../../src/components/Chip/Chip";
 import { GameLog } from "../../../../../../../src/components/GameLog/GameLog";
 import LabeledDiv from "../../../../../../../src/components/LabeledDiv/LabeledDiv";
@@ -23,6 +22,7 @@ import MapLapse from "./MapLapse";
 import TechGraph from "./TechGraph";
 import Timers from "./Timers";
 import { VictoryPointsGraph } from "./VictoryPointsGraph";
+import ChipGroup from "../../../../../../../src/components/Chip/ChipGroup";
 
 type View = "Game Log" | "Victory Points" | "Techs" | "Map Lapse" | "Timers";
 
@@ -45,45 +45,54 @@ export default function ResultsPhase() {
         style={{ minHeight: "calc(100dvh - 6.25rem)", width: "25%" }}
       >
         <LabeledDiv label="View">
-          <Chip
-            selected={viewing === "Game Log"}
-            toggleFn={() => setViewing("Game Log")}
+          <ChipGroup
+            style={{
+              flexDirection: "column",
+              borderRadius: "0.6em",
+              gap: "0.125em",
+            }}
           >
-            Game Log
-          </Chip>
-          <Chip
-            selected={viewing === "Victory Points"}
-            toggleFn={() => setViewing("Victory Points")}
-          >
-            Victory Points
-          </Chip>
-          <Chip
-            selected={viewing === "Techs"}
-            toggleFn={() => setViewing("Techs")}
-          >
-            Techs
-          </Chip>
-          {mapString ? (
             <Chip
-              selected={viewing === "Map Lapse"}
-              toggleFn={() => setViewing("Map Lapse")}
+              selected={viewing === "Game Log"}
+              toggleFn={() => setViewing("Game Log")}
             >
-              Map Lapse
+              Game Log
             </Chip>
-          ) : null}
-          <Chip
-            selected={viewing === "Timers"}
-            toggleFn={() => setViewing("Timers")}
-          >
-            Timers
-          </Chip>
+            <Chip
+              selected={viewing === "Victory Points"}
+              toggleFn={() => setViewing("Victory Points")}
+            >
+              Victory Points
+            </Chip>
+            <Chip
+              selected={viewing === "Techs"}
+              toggleFn={() => setViewing("Techs")}
+            >
+              Techs
+            </Chip>
+            {mapString ? (
+              <Chip
+                selected={viewing === "Map Lapse"}
+                toggleFn={() => setViewing("Map Lapse")}
+              >
+                Map Lapse
+              </Chip>
+            ) : null}
+            <Chip
+              selected={viewing === "Timers"}
+              toggleFn={() => setViewing("Timers")}
+            >
+              Timers
+            </Chip>
+          </ChipGroup>
         </LabeledDiv>
         <a
+          className="outline"
           href={`/api/${gameId}/download`}
           download={`${gameId}_data`}
           style={{ textAlign: "center" }}
         >
-          <BorderedDiv>Download Game Data</BorderedDiv>
+          Download Game Data
         </a>
       </div>
       <div style={{ marginTop: "2.5rem", width: "100%" }}>

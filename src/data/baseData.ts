@@ -17,6 +17,7 @@ import { getGenomes } from "../../server/data/genomes";
 import { getParadigms } from "../../server/data/paradigms";
 import { getUnitUpgrades } from "../../server/data/upgrades";
 import { BASE_COLORS } from "../../server/data/colors";
+import { getEdicts } from "../../server/data/edicts";
 
 export function getBaseData(intl: IntlShape): BaseData {
   return {
@@ -36,6 +37,7 @@ export function getBaseData(intl: IntlShape): BaseData {
     techs: getTechs(intl),
     // Twilight's Fall
     abilities: getAbilities(intl),
+    edicts: getEdicts(intl),
     genomes: getGenomes(intl),
     paradigms: getParadigms(intl),
     upgrades: getUnitUpgrades(intl),

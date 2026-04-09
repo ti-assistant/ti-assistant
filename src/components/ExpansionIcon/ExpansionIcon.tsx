@@ -5,7 +5,7 @@ import TwilightsFallSVG from "../../icons/ui/TwilightsFall";
 import { rem } from "../../util/util";
 
 export default function ExpansionIcon({
-  color = "#eee",
+  color = "var(--foreground-color)",
   expansion,
   size,
 }: {

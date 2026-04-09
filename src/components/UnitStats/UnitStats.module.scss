@@ -10,7 +10,7 @@
 
 .UnitStat {
   width: 1em;
-  border: 1px solid #eee;
+  border: 1px solid var(--foreground-color);
   border-radius: 0.625rem;
   text-align: center;
 }

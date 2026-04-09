@@ -2,12 +2,8 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { getFactions } from "../../../server/data/factions";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import { SelectableRow } from "../../SelectableRow";
-import {
-  useGameId,
-  useOptions,
-  useTechs,
-  useViewOnly,
-} from "../../context/dataHooks";
+import { TechRow } from "../../TechRow";
+import { useOptions, useTechs, useViewOnly } from "../../context/dataHooks";
 import {
   useFaction,
   useFactions,
@@ -29,11 +25,7 @@ import { useDataUpdate } from "../../util/api/dataUpdate";
 import { Events } from "../../util/api/events";
 import { getFactionColor } from "../../util/factions";
 import { getMapString } from "../../util/options";
-import {
-  canResearchTech,
-  getFactionPreReqs,
-  getTechColor,
-} from "../../util/techs";
+import { canResearchTech, getFactionPreReqs } from "../../util/techs";
 import { objectEntries, rem } from "../../util/util";
 import Conditional from "../Conditional/Conditional";
 import ExpansionIcon from "../ExpansionIcon/ExpansionIcon";
@@ -44,7 +36,6 @@ import TechIcon from "../TechIcon/TechIcon";
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
 import { Strings } from "../strings";
 import styles from "./StartingComponents.module.scss";
-import { TechRow } from "../../TechRow";
 
 interface StartingComponentsProps {
   factionId: FactionId;
@@ -72,7 +63,6 @@ export default function StartingComponents({
 }: StartingComponentsProps) {
   const dataUpdate = useDataUpdate();
   const faction = useFaction(factionId);
-  const gameId = useGameId();
   const options = useOptions();
   const techs = useTechs();
   const viewOnly = useViewOnly();
@@ -192,11 +182,6 @@ export default function StartingComponents({
 
   return (
     <div className={styles.StartingComponents}>
-      {showFactionIcon ? (
-        <div className={styles.FactionIcon}>
-          <FactionComponents.Icon factionId={factionId} size={60} />
-        </div>
-      ) : null}
       {options.expansions.includes("TWILIGHTS FALL") ? (
         <div className={styles.TFFactionSelectSection}>
           {options.hide?.includes("PLANETS") && !mapString ? null : (
@@ -242,11 +227,7 @@ export default function StartingComponents({
           />
         </div>
       ) : null}
-      <div
-        style={{
-          fontFamily: "Myriad Pro",
-        }}
-      >
+      <div>
         {orderedTechs.length === 0 &&
         !startswith.choice &&
         !options.expansions.includes("TWILIGHTS FALL") ? (
@@ -291,7 +272,6 @@ export default function StartingComponents({
             fallback={
               <div
                 style={{
-                  fontFamily: "Myriad Pro",
                   whiteSpace: "normal",
                   display: "flex",
                   flexDirection: "column",
@@ -348,7 +328,6 @@ export default function StartingComponents({
           // gridTemplateRows: `repeat(${Math.ceil(
           //   orderedUnits.length / 2,
           // )}, 1fr)`,
-          fontFamily: "Myriad Pro",
           columnGap: rem(8),
           fontSize: rem(14),
           width: "100%",
@@ -376,7 +355,7 @@ export default function StartingComponents({
   );
 }
 function UnitIcon({ unit, color }: { unit: UnitType; color: string }) {
-  const iconColor = "#eee"; // color === "Black" ? "#eee" : color;
+  const iconColor = "var(--foreground-color)";
   const size = 14;
   switch (unit) {
     case "Carrier":
@@ -415,7 +394,6 @@ function TFFactionSelect({
   const allFactions = getFactions(intl);
   const dataUpdate = useDataUpdate();
   const factions = useFactions();
-  const gameId = useGameId();
   const options = useOptions();
   const viewOnly = useViewOnly();
 
@@ -548,7 +526,7 @@ function TFFactionSelect({
                     <ExpansionIcon
                       expansion={faction.expansion}
                       size={8}
-                      color={faded ? "#555" : undefined}
+                      color={faded ? "var(--passed-text)" : undefined}
                     />
                   </div>
                 </>

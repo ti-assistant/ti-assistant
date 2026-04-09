@@ -1,5 +1,4 @@
 import GainTFCard from "../Actions/GainSplicedCard";
-import FactionComponents from "../FactionComponents/FactionComponents";
 import styles from "./StartingComponents.module.scss";
 
 export default function InauguralSplice({
@@ -9,12 +8,10 @@ export default function InauguralSplice({
 }) {
   return (
     <div className={styles.StartingComponents}>
-      <div className={styles.FactionIcon}>
-        <FactionComponents.Icon factionId={factionId} size={60} />
-      </div>
       <GainTFCard
         factionId={factionId}
         numToGain={{ abilities: 2, genomes: 1, upgrades: 1 }}
+        splice
       />
     </div>
   );

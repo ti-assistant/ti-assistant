@@ -38,7 +38,6 @@ div.UpdateBox {
 
 .ButtonLabel {
   text-align: center;
-  font-family: Myriad Pro;
   font-size: 0.625rem;
   letter-spacing: 0.02rem;
 }
@@ -100,7 +99,7 @@ div.UpdateBox {
   .MenuBar {
     height: 0.25rem;
     width: 1.5rem;
-    background-color: #eee;
+    background-color: var(--foreground-color);
 
     border-radius: 0.25rem;
   }

@@ -1,5 +1,5 @@
 import { useActionLog, useViewOnly } from "../../context/dataHooks";
-import { useFactionColors } from "../../context/factionDataHooks";
+import { useAllFactionColors } from "../../context/factionDataHooks";
 import { useOrderedFactionIds } from "../../context/gameDataHooks";
 import { useObjective } from "../../context/objectiveDataHooks";
 import { SymbolX } from "../../icons/svgs";
@@ -24,7 +24,7 @@ export default function ScoreObjectiveRow({
   const currentTurn = getCurrentTurnLogEntries(actionLog);
   const dataUpdate = useDataUpdate();
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
-  const factionColors = useFactionColors();
+  const factionColors = useAllFactionColors();
   const objective = useObjective(objectiveId);
   const viewOnly = useViewOnly();
 
@@ -72,7 +72,9 @@ export default function ScoreObjectiveRow({
             }
           }}
           borderColor={
-            currentScorers[0] ? factionColors[currentScorers[0]] : undefined
+            currentScorers[0]
+              ? factionColors[currentScorers[0]]?.border
+              : undefined
           }
           selectedFaction={currentScorers[0]}
           factions={orderedScorers}
@@ -85,7 +87,7 @@ export default function ScoreObjectiveRow({
             <FactionCircle
               key={factionId}
               blur
-              borderColor={factionColors[factionId]}
+              borderColor={factionColors[factionId]?.border}
               factionId={factionId}
               onClick={
                 viewOnly

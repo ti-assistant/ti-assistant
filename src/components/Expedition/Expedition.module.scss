@@ -29,8 +29,8 @@
 
 .InfluenceIcon.Faded,
 .ResourcesIcon.Faded {
-  color: #555;
-  text-shadow: 0 0 4px #555;
+  color: var(--passed-text);
+  text-shadow: 0 0 4px var(--passed-text);
 }
 
 .InfluenceText {

@@ -2,7 +2,7 @@ import Image from "next/image";
 import { ReactNode } from "react";
 import { useAttachments } from "../../context/dataHooks";
 import { useFactions } from "../../context/factionDataHooks";
-import { getFactionColor } from "../../util/factions";
+import { getFactionBorder } from "../../util/factions";
 import {
   applyAllPlanetAttachments,
   getPlanetTypeColor,
@@ -126,7 +126,7 @@ export default function PlanetOverlay({
                 style={{
                   position: "absolute",
                   backgroundColor: "var(--background-color)",
-                  border: `var(--border-size) solid ${getFactionColor(
+                  border: `var(--border-size) solid ${getFactionBorder(
                     factions[planet.owner],
                   )}`,
                   borderRadius: "100%",
@@ -184,7 +184,7 @@ export default function PlanetOverlay({
                 style={{
                   position: "absolute",
                   backgroundColor: "var(--background-color)",
-                  border: `var(--border-size) solid ${"#eee"}`,
+                  border: `var(--border-size) solid var(--foreground-color)`,
                   borderRadius: "100%",
                   width: width,
                   height: height,

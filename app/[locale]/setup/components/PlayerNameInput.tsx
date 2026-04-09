@@ -43,7 +43,6 @@ export default function PlayerNameInput({
       className={styles.PlayerNameInput}
       style={{
         borderColor: color,
-        boxShadow: color === "Black" ? OUTER_BLACK_BORDER_GLOW : undefined,
       }}
       onFocus={(e) => (e.currentTarget.value = "")}
       onClick={(e) => (e.currentTarget.value = "")}

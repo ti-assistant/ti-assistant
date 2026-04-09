@@ -126,7 +126,8 @@ export function Selector<Id extends string, Name extends string>({
                 key={option.id}
                 className={fadedOptions.includes(option.id) ? "faded" : ""}
                 style={{ fontSize: rem(14) }}
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   closeFn();
                   toggleItem(option.id, true);
                 }}

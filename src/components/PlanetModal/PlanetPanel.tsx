@@ -3,12 +3,11 @@ import { FormattedMessage } from "react-intl";
 import { SettingsContext } from "../../context/contexts";
 import {
   useAttachments,
-  useGameId,
   useLeader,
   usePlanets,
   useViewOnly,
 } from "../../context/dataHooks";
-import { useFactionColor } from "../../context/factionDataHooks";
+import { useFactionColors } from "../../context/factionDataHooks";
 import { useOrderedFactionIds } from "../../context/gameDataHooks";
 import { useDataUpdate } from "../../util/api/dataUpdate";
 import { Events } from "../../util/api/events";
@@ -36,8 +35,7 @@ function PlanetSection({
 }) {
   const attachments = useAttachments();
   const dataUpdate = useDataUpdate();
-  const factionColor = useFactionColor(factionId);
-  const gameId = useGameId();
+  const colors = useFactionColors(factionId);
   const planets = usePlanets();
   const viewOnly = useViewOnly();
   const xxekirGrom = useLeader("Xxekir Grom");
@@ -60,7 +58,7 @@ function PlanetSection({
 
   return (
     <CollapsibleSection
-      color={factionColor}
+      color={colors.border}
       openedByDefault={openedByDefault}
       title={
         <div className={styles.planetTitle}>

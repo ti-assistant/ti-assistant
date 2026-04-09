@@ -37,6 +37,7 @@ import { useDataUpdate } from "../../util/api/dataUpdate";
 import { Events } from "../../util/api/events";
 import { hasTech } from "../../util/api/techs";
 import {
+  getFactionBorder,
   getFactionColor,
   getFactionName,
   hasLeader,
@@ -536,6 +537,7 @@ export default function VoteBlock({
     <LabeledDiv
       label={getFactionName(faction)}
       color={getFactionColor(faction)}
+      borderColor={getFactionBorder(faction)}
       style={{
         display: "grid",
         gridColumn: "span 4",
@@ -1051,7 +1053,7 @@ function VotingSection({
               </button>
             ) : null}
             {hasCouncilPreserve(factionId, planets) ? (
-              <span style={{ fontFamily: "Myriad Pro" }}>
+              <span>
                 <Toggle
                   selected={councilPreservePlayer === factionId}
                   toggleFn={() => {
@@ -1081,7 +1083,7 @@ function VotingSection({
                 </Toggle>
               </span>
             ) : null}
-            <span style={{ fontSize: rem(14), fontFamily: "Myriad Pro" }}>
+            <span style={{ fontSize: rem(14) }}>
               <Toggle
                 disabled={
                   viewOnly ||

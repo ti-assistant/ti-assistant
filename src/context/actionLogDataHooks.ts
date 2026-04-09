@@ -11,7 +11,7 @@ export function useCurrentAgenda() {
   return useMemoizedGameDataValue<ActionLog, Optional<AgendaId>>(
     "actionLog",
     undefined,
-    (log) => getActiveAgenda(getCurrentTurnLogEntries(log))
+    (log) => getActiveAgenda(getCurrentTurnLogEntries(log)),
   );
 }
 
@@ -19,7 +19,7 @@ export function useSelectedAction() {
   return useMemoizedGameDataValue<ActionLog, Optional<Action>>(
     "actionLog",
     undefined,
-    (log) => getSelectedActionFromLog(getCurrentTurnLogEntries(log))
+    (log) => getSelectedActionFromLog(getCurrentTurnLogEntries(log)),
   );
 }
 
@@ -28,6 +28,6 @@ export function useNewSpeaker() {
     "actionLog",
     undefined,
     (log) =>
-      getNewSpeakerEventFromLog(getCurrentTurnLogEntries(log))?.newSpeaker
+      getNewSpeakerEventFromLog(getCurrentTurnLogEntries(log))?.newSpeaker,
   );
 }

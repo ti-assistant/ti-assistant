@@ -6,6 +6,7 @@ import { AddTechHandler, RemoveTechHandler } from "../model/addTech";
 import { RewindPhaseHandler } from "../model/advancePhase";
 import { UnassignStrategyCardHandler } from "../model/assignStrategyCard";
 import { CastVotesHandler } from "../model/castVotes";
+import { ChooseEdictHandler, HideEdictHandler } from "../model/chooseEdict";
 import { RemoveStartingTechHandler } from "../model/chooseStartingTech";
 import { ChooseSubFactionHandler } from "../model/chooseSubFaction";
 import { ChooseTFFactionHandler } from "../model/chooseTFFaction";
@@ -20,6 +21,7 @@ import {
 import { GainRelicHandler, LoseRelicHandler } from "../model/gainRelic";
 import { GainTFCardHandler, LoseTFCardHandler } from "../model/gainTFCard";
 import { GiftOfPrescienceHandler } from "../model/giftOfPrescience";
+import { JoinSpliceHandler, LeaveSpliceHandler } from "../model/joinSplice";
 import { ManualCCUpdateHandler } from "../model/manualCCUpdate";
 import { ManualVoteUpdateHandler } from "../model/manualVoteUpdate";
 import { ManualVPUpdateHandler } from "../model/manualVPUpdate";
@@ -44,6 +46,7 @@ import {
   HideObjectiveHandler,
   RevealObjectiveHandler,
 } from "../model/revealObjective";
+import { HideTFCardHandler, RevealTFCardHandler } from "../model/revealTFCard";
 import {
   ScoreObjectiveHandler,
   UnscoreObjectiveHandler,
@@ -65,6 +68,7 @@ import { PassHandler, UnpassHandler } from "../model/unpass";
 import { UpdateBreakthroughStateHandler } from "../model/updateBreakthroughState";
 import { UpdateLeaderStateHandler } from "../model/updateLeaderState";
 import { UpdatePlanetStateHandler } from "../model/updatePlanetState";
+import { UndoGenomeHandler, UseGenomeHandler } from "../model/useGenome";
 
 export function getOppositeHandler(
   gameData: StoredGameData,
@@ -588,6 +592,16 @@ export function getOppositeHandler(
         action: "GAIN_TF_CARD",
         event: data.event,
       });
+    case "REVEAL_TF_CARD":
+      return new HideTFCardHandler(gameData, {
+        action: "HIDE_TF_CARD",
+        event: data.event,
+      });
+    case "HIDE_TF_CARD":
+      return new RevealTFCardHandler(gameData, {
+        action: "REVEAL_TF_CARD",
+        event: data.event,
+      });
     case "MANUAL_VOTE_UPDATE":
       return new ManualVoteUpdateHandler(gameData, {
         action: "MANUAL_VOTE_UPDATE",
@@ -595,6 +609,36 @@ export function getOppositeHandler(
           faction: data.event.faction,
           votes: 0 - data.event.votes,
         },
+      });
+    case "USE_GENOME":
+      return new UndoGenomeHandler(gameData, {
+        action: "UNDO_GENOME",
+        event: data.event,
+      });
+    case "UNDO_GENOME":
+      return new UseGenomeHandler(gameData, {
+        action: "USE_GENOME",
+        event: data.event,
+      });
+    case "JOIN_SPLICE":
+      return new LeaveSpliceHandler(gameData, {
+        action: "LEAVE_SPLICE",
+        event: data.event,
+      });
+    case "LEAVE_SPLICE":
+      return new JoinSpliceHandler(gameData, {
+        action: "JOIN_SPLICE",
+        event: data.event,
+      });
+    case "CHOOSE_EDICT":
+      return new HideEdictHandler(gameData, {
+        action: "HIDE_EDICT",
+        event: data.event,
+      });
+    case "HIDE_EDICT":
+      return new ChooseEdictHandler(gameData, {
+        action: "CHOOSE_EDICT",
+        event: data.event,
       });
   }
 }

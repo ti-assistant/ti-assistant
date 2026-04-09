@@ -33,7 +33,7 @@ import { useDataUpdate } from "../../../../../../../../src/util/api/dataUpdate";
 import { Events } from "../../../../../../../../src/util/api/events";
 import {
   computeVPs,
-  getFactionColor,
+  getFactionBorder,
 } from "../../../../../../../../src/util/factions";
 import { objectiveTypeString } from "../../../../../../../../src/util/strings";
 import {
@@ -174,7 +174,7 @@ export default function AgendaDetails({
           :{" "}
           <FactionCircle
             blur
-            borderColor={getFactionColor((factions ?? {})[driveTheDebate])}
+            borderColor={getFactionBorder(factions[driveTheDebate])}
             factionId={driveTheDebate}
             onClick={() => {
               if (hasScoredDrive) {

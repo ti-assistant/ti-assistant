@@ -9,6 +9,7 @@ import { Optional } from "../../../../src/util/types/types";
 import { objectEntries, rem } from "../../../../src/util/util";
 import styles from "./FactionModal.module.scss";
 import { FactionSummary, GameCounts, ObjectiveGameCounts } from "./types";
+import ChipGroup from "../../../../src/components/Chip/ChipGroup";
 
 export default function FactionModal({
   info,
@@ -73,33 +74,35 @@ export default function FactionModal({
                   description="Cards that define how to score victory points."
                   defaultMessage="Objectives"
                 />
-                <Chip
-                  fontSize={10}
-                  selected={objectiveType === "STAGE ONE"}
-                  toggleFn={() => {
-                    setObjectiveType("STAGE ONE");
-                  }}
-                >
-                  {objectiveTypeString("STAGE ONE", intl)}
-                </Chip>
-                <Chip
-                  fontSize={10}
-                  selected={objectiveType === "STAGE TWO"}
-                  toggleFn={() => {
-                    setObjectiveType("STAGE TWO");
-                  }}
-                >
-                  {objectiveTypeString("STAGE TWO", intl)}
-                </Chip>
-                <Chip
-                  fontSize={10}
-                  selected={objectiveType === "OTHER"}
-                  toggleFn={() => {
-                    setObjectiveType("OTHER");
-                  }}
-                >
-                  {objectiveTypeString("OTHER", intl)}
-                </Chip>
+                <ChipGroup>
+                  <Chip
+                    fontSize={10}
+                    selected={objectiveType === "STAGE ONE"}
+                    toggleFn={() => {
+                      setObjectiveType("STAGE ONE");
+                    }}
+                  >
+                    {objectiveTypeString("STAGE ONE", intl)}
+                  </Chip>
+                  <Chip
+                    fontSize={10}
+                    selected={objectiveType === "STAGE TWO"}
+                    toggleFn={() => {
+                      setObjectiveType("STAGE TWO");
+                    }}
+                  >
+                    {objectiveTypeString("STAGE TWO", intl)}
+                  </Chip>
+                  <Chip
+                    fontSize={10}
+                    selected={objectiveType === "OTHER"}
+                    toggleFn={() => {
+                      setObjectiveType("OTHER");
+                    }}
+                  >
+                    {objectiveTypeString("OTHER", intl)}
+                  </Chip>
+                </ChipGroup>
               </div>
             }
           >
@@ -285,7 +288,7 @@ function ObjectiveTable({
           }
           const baseObj = baseObjectives[objective];
           return (
-            <tr key={objective} style={{ fontFamily: "Source Sans" }}>
+            <tr key={objective} >
               <td
                 className="flexColumn"
                 style={{
@@ -294,7 +297,7 @@ function ObjectiveTable({
                 }}
               >
                 <div>{baseObj.name}</div>
-                <div style={{ fontFamily: "Source Sans", fontSize: rem(10) }}>
+                <div style={{  fontSize: rem(10) }}>
                   {baseObj.description}
                 </div>
               </td>
@@ -393,14 +396,14 @@ function TechTable({
           const baseTech = baseTechs[tech];
           return (
             <Fragment key={tech}>
-              <tr key={tech} style={{ fontFamily: "Source Sans" }}>
+              <tr key={tech}>
                 <td>{baseTech.name}</td>
                 <td>
                   {Math.floor(((1.0 * info.games) / techGames) * 10000) / 100}%
                   ({info.games} of {techGames})
                 </td>
                 {info.games < 3 ? (
-                  <td style={{ fontSize: rem(10), fontFamily: "Source Sans" }}>
+                  <td style={{ fontSize: rem(10)}}>
                     -
                   </td>
                 ) : (
@@ -410,7 +413,7 @@ function TechTable({
                   </td>
                 )}
                 {techGames - info.games < 3 ? (
-                  <td style={{ fontSize: rem(10), fontFamily: "Source Sans" }}>
+                  <td style={{ fontSize: rem(10)}}>
                     -
                   </td>
                 ) : (
@@ -424,7 +427,7 @@ function TechTable({
                   </td>
                 )}
                 {info.games < 3 ? (
-                  <td style={{ fontSize: rem(10), fontFamily: "Source Sans" }}>
+                  <td style={{ fontSize: rem(10) }}>
                     -
                   </td>
                 ) : (
@@ -433,7 +436,7 @@ function TechTable({
                   </td>
                 )}
                 {techGames - info.games < 3 ? (
-                  <td style={{ fontSize: rem(10), fontFamily: "Source Sans" }}>
+                  <td style={{ fontSize: rem(10)}}>
                     -
                   </td>
                 ) : (

@@ -4,6 +4,7 @@ import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import { useGameId, useViewOnly } from "../../context/dataHooks";
 import styles from "./ObjectiveSelectHoverMenu.module.scss";
 import FormattedDescription from "../FormattedDescription/FormattedDescription";
+import ObjectiveCard from "../ObjectiveRow/ObjectiveCard";
 
 interface ObjectiveGridCSSProperties extends CSSProperties {
   "--font-size": string;
@@ -22,14 +23,13 @@ interface ObjectiveSelectHoverMenuProps {
 
 export default function ObjectiveSelectHoverMenu({
   action,
-  fontSize = "unset",
+  fontSize = "1rem",
   label,
   objectives,
-  perColumn = 5,
+  perColumn = 4,
   buttonStyle = {},
 }: ObjectiveSelectHoverMenuProps) {
   const intl = useIntl();
-  const gameId = useGameId();
   const viewOnly = useViewOnly();
 
   const [description, setDescription] = useState("Hover to see full text.");
@@ -51,7 +51,7 @@ export default function ObjectiveSelectHoverMenu({
     <ClientOnlyHoverMenu
       label={label}
       renderProps={(closeFn) => (
-        <>
+        <div className={styles.Container} style={objectiveGridCSSProperties}>
           <div
             className={styles.ObjectiveGrid}
             style={objectiveGridCSSProperties}
@@ -70,27 +70,24 @@ export default function ObjectiveSelectHoverMenu({
               return (
                 <button
                   key={objective.id}
-                  className={styles.ObjectiveButton}
-                  onClick={() => {
+                  className={`${styles.ObjectiveButton}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
                     closeFn();
                     action(objective.id);
                   }}
                   onMouseEnter={() => setDescription(objective.description)}
                   disabled={viewOnly}
+                  style={{ padding: "0.25rem" }}
                 >
-                  {objective.name}
+                  <ObjectiveCard objectiveId={objective.id} hideZoomButton />
                 </button>
               );
             })}
           </div>
-        </>
+        </div>
       )}
       buttonStyle={buttonStyle}
-      postContent={
-        <div className={styles.Description} style={{ fontSize: fontSize }}>
-          <FormattedDescription description={description} />
-        </div>
-      }
     ></ClientOnlyHoverMenu>
   );
 }

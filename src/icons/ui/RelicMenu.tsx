@@ -1,4 +1,8 @@
-export default function RelicMenuSVG({ color = "#eee" }: { color?: string }) {
+export default function RelicMenuSVG({
+  color = "var(--foreground-color)",
+}: {
+  color?: string;
+}) {
   return (
     <svg
       width="100%"

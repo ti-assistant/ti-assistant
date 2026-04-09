@@ -21,10 +21,11 @@
 .ModalTitle {
   background-color: var(--background-color);
   border-radius: 0.25rem;
-  border: 1px solid var(--neutral-border);
+  border: 1px solid var(--hidden-border);
   padding: 0.25rem 0.5rem;
   width: min-content;
 
+  font-family: var(--main-font);
   font-size: 1.5rem;
 
   white-space: nowrap;

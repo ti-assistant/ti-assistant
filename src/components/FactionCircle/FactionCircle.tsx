@@ -5,6 +5,7 @@ import FactionComponents from "../FactionComponents/FactionComponents";
 
 interface FactionCircleProps {
   blur?: boolean;
+  backgroundColor?: string;
   borderColor?: string;
   factionId?: FactionId;
   fade?: boolean;
@@ -17,6 +18,7 @@ interface FactionCircleProps {
 
 export default function FactionCircle({
   blur,
+  backgroundColor = "var(--background-color)",
   borderColor = "var(--neutral-border)",
   factionId,
   fade = false,
@@ -29,6 +31,7 @@ export default function FactionCircle({
   return (
     <Circle
       blur={blur}
+      backgroundColor={backgroundColor}
       borderColor={borderColor}
       fade={fade}
       onClick={onClick}

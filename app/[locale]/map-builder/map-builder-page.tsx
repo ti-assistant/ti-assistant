@@ -6,6 +6,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
 import Chip from "../../../src/components/Chip/Chip";
+import ChipGroup from "../../../src/components/Chip/ChipGroup";
 import LabeledDiv from "../../../src/components/LabeledDiv/LabeledDiv";
 import MapBuilder, {
   SystemImage,
@@ -18,7 +19,6 @@ import ThundersEdgeMenuSVG from "../../../src/icons/ui/ThundersEdgeMenu";
 import {
   getDefaultMapString,
   getMapError,
-  isValidMapString,
   processMapStringForBuilder,
 } from "../../../src/util/map";
 import { mapStyleString } from "../../../src/util/strings";
@@ -486,10 +486,7 @@ export default function MapBuilderPage() {
                   description="Label for a selector to change the number of players"
                 />
               </label>
-              <div
-                className="flexRow"
-                style={{ fontFamily: "Myriad Pro", gap: rem(4) }}
-              >
+              <ChipGroup style={{ gap: rem(4) }}>
                 {[...Array(6)].map((e, index) => {
                   const number = index + 3;
                   return (
@@ -522,7 +519,7 @@ export default function MapBuilderPage() {
                     </Chip>
                   );
                 })}
-              </div>
+              </ChipGroup>
             </div>
             <div
               style={{
@@ -541,11 +538,9 @@ export default function MapBuilderPage() {
                       description="A label for a selector for selecting which map style to use."
                     />
                   </label>
-                  <div
-                    className="flexRow"
+                  <ChipGroup
                     style={{
                       gap: rem(4),
-                      fontFamily: "Myriad Pro",
                     }}
                   >
                     {mapStyles.map((style) => {
@@ -578,7 +573,7 @@ export default function MapBuilderPage() {
                         </Chip>
                       );
                     })}
-                  </div>
+                  </ChipGroup>
                 </div>
               ) : null}
             </div>
@@ -617,6 +612,7 @@ export default function MapBuilderPage() {
               style={{ position: "absolute", right: rem(16), bottom: rem(16) }}
             >
               <button
+                className="outline"
                 onClick={() => {
                   setMapString(
                     getDefaultMapString(numFactions, mapStyle, true),

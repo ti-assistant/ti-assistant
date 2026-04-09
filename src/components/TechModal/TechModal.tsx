@@ -4,6 +4,7 @@ import { SettingsContext } from "../../context/contexts";
 import { useOptions } from "../../context/dataHooks";
 import FullScreenModal from "../../modals/FullScreenModal";
 import Chip from "../Chip/Chip";
+import ChipGroup from "../Chip/ChipGroup";
 import TechPanel from "./TechPanel";
 
 function TechModalTitle({ expansions }: { expansions: Expansion[] }) {
@@ -41,58 +42,60 @@ function TechModalSettings({
           defaultMessage="View"
         />
         :
-        <Chip
-          selected={tfCardType === "ABILITY"}
-          toggleFn={() => setTFCardType("ABILITY")}
-          fontSize={12}
-        >
-          <FormattedMessage
-            id="I54oy6"
-            defaultMessage="{count, plural, one {Ability} other {Abilities}}"
-            description="Header for a section listing out abilities."
-            values={{
-              count: 2,
-            }}
-          />
-        </Chip>
-        <Chip
-          selected={tfCardType === "GENOME"}
-          toggleFn={() => setTFCardType("GENOME")}
-          fontSize={12}
-        >
-          <FormattedMessage
-            id="vi7bc7"
-            defaultMessage="{count, plural, one {Genome} other {Genomes}}"
-            description="Header for a section listing out genomes."
-            values={{
-              count: 2,
-            }}
-          />
-        </Chip>
-        <Chip
-          selected={tfCardType === "UNIT_UPGRADE"}
-          toggleFn={() => setTFCardType("UNIT_UPGRADE")}
-          fontSize={12}
-        >
-          <FormattedMessage
-            id="lGDH2d"
-            description="Unit upgrade techs."
-            defaultMessage="{count, plural, =0 {Upgrades} one {Upgrade} other {Upgrades}}"
-            values={{ count: 2 }}
-          />
-        </Chip>
-        <Chip
-          selected={tfCardType === "PARADIGM"}
-          toggleFn={() => setTFCardType("PARADIGM")}
-          fontSize={12}
-        >
-          <FormattedMessage
-            id="i9uwBj"
-            description="Header for a section listing out paradigms."
-            defaultMessage="{count, plural, one {Paradigm} other {Paradigms}}"
-            values={{ count: 2 }}
-          />
-        </Chip>
+        <ChipGroup>
+          <Chip
+            selected={tfCardType === "ABILITY"}
+            toggleFn={() => setTFCardType("ABILITY")}
+            fontSize={12}
+          >
+            <FormattedMessage
+              id="I54oy6"
+              defaultMessage="{count, plural, one {Ability} other {Abilities}}"
+              description="Header for a section listing out abilities."
+              values={{
+                count: 2,
+              }}
+            />
+          </Chip>
+          <Chip
+            selected={tfCardType === "GENOME"}
+            toggleFn={() => setTFCardType("GENOME")}
+            fontSize={12}
+          >
+            <FormattedMessage
+              id="vi7bc7"
+              defaultMessage="{count, plural, one {Genome} other {Genomes}}"
+              description="Header for a section listing out genomes."
+              values={{
+                count: 2,
+              }}
+            />
+          </Chip>
+          <Chip
+            selected={tfCardType === "UNIT_UPGRADE"}
+            toggleFn={() => setTFCardType("UNIT_UPGRADE")}
+            fontSize={12}
+          >
+            <FormattedMessage
+              id="lGDH2d"
+              description="Unit upgrade techs."
+              defaultMessage="{count, plural, =0 {Upgrades} one {Upgrade} other {Upgrades}}"
+              values={{ count: 2 }}
+            />
+          </Chip>
+          <Chip
+            selected={tfCardType === "PARADIGM"}
+            toggleFn={() => setTFCardType("PARADIGM")}
+            fontSize={12}
+          >
+            <FormattedMessage
+              id="i9uwBj"
+              description="Header for a section listing out paradigms."
+              defaultMessage="{count, plural, one {Paradigm} other {Paradigms}}"
+              values={{ count: 2 }}
+            />
+          </Chip>
+        </ChipGroup>
       </>
     );
   }
@@ -105,28 +108,30 @@ function TechModalSettings({
         defaultMessage="Group by"
       />
       :
-      <Chip
-        selected={!groupTechsByFaction}
-        toggleFn={() => updateSetting("group-techs-by-faction", false)}
-        fontSize={12}
-      >
-        <FormattedMessage
-          id="ys7uwX"
-          description="Shortened version of technologies."
-          defaultMessage="Techs"
-        />
-      </Chip>
-      <Chip
-        selected={groupTechsByFaction}
-        toggleFn={() => updateSetting("group-techs-by-faction", true)}
-        fontSize={12}
-      >
-        <FormattedMessage
-          id="r2htpd"
-          description="Text on a button that will randomize factions."
-          defaultMessage="Factions"
-        />
-      </Chip>
+      <ChipGroup>
+        <Chip
+          selected={!groupTechsByFaction}
+          toggleFn={() => updateSetting("group-techs-by-faction", false)}
+          fontSize={12}
+        >
+          <FormattedMessage
+            id="ys7uwX"
+            description="Shortened version of technologies."
+            defaultMessage="Techs"
+          />
+        </Chip>
+        <Chip
+          selected={groupTechsByFaction}
+          toggleFn={() => updateSetting("group-techs-by-faction", true)}
+          fontSize={12}
+        >
+          <FormattedMessage
+            id="r2htpd"
+            description="Text on a button that will randomize factions."
+            defaultMessage="Factions"
+          />
+        </Chip>
+      </ChipGroup>
     </>
   );
 }

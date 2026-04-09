@@ -8,12 +8,13 @@ import LabeledDiv from "../../../../../../../src/components/LabeledDiv/LabeledDi
 import { Selector } from "../../../../../../../src/components/Selector/Selector";
 import { StrategyCardElement } from "../../../../../../../src/components/StrategyCardElement/StrategyCardElement";
 import {
+  useAbilities,
   useAgenda,
   useStrategyCards,
   useViewOnly,
 } from "../../../../../../../src/context/dataHooks";
 import {
-  useFactionColor,
+  useAllFactionColors,
   useFactionColors,
   useFactionHasTech,
 } from "../../../../../../../src/context/factionDataHooks";
@@ -115,10 +116,15 @@ function QuantumDatahubNode({
   factionId: FactionId;
   strategyCards: StrategyCard[];
 }) {
-  const factionColor = useFactionColor(factionId);
+  const abilities = useAbilities();
+  const colors = useFactionColors(factionId);
   const dataUpdate = useDataUpdate();
-  const hasQuantum = useFactionHasTech(factionId, "Quantum Datahub Node");
+  let hasQuantum = useFactionHasTech(factionId, "Quantum Datahub Node");
   const viewOnly = useViewOnly();
+
+  if (abilities["Quantum Datahub Node"]?.owner === factionId) {
+    hasQuantum = true;
+  }
 
   const [quantum, setQuantum] = useState<{
     mainCard: Optional<StrategyCardId>;
@@ -151,7 +157,8 @@ function QuantumDatahubNode({
   return (
     <LabeledDiv
       label={<FactionComponents.Name factionId={factionId} />}
-      color={factionColor}
+      color={colors.color}
+      borderColor={colors.border}
     >
       <ClientOnlyHoverMenu
         label={
@@ -239,6 +246,7 @@ function QuantumDatahubNode({
             }}
           >
             <button
+              className="outline"
               disabled={viewOnly || !quantum.mainCard || !quantum.otherCard}
               onClick={() => {
                 quantumDatahubNode();
@@ -264,7 +272,7 @@ function QuantumDatahubNode({
 function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
   const arbiter = useAgenda("Imperial Arbiter");
   const dataUpdate = useDataUpdate();
-  const factionColors = useFactionColors();
+  const factionColors = useAllFactionColors();
   const viewOnly = useViewOnly();
 
   const [quantum, setQuantum] = useState<{
@@ -298,7 +306,8 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
   return (
     <LabeledDiv
       label={<FactionComponents.Name factionId={factionId} />}
-      color={factionColors[factionId]}
+      color={factionColors[factionId]?.color}
+      borderColor={factionColors[factionId]?.border}
     >
       <ClientOnlyHoverMenu
         label={
@@ -411,7 +420,6 @@ function ImperialArbiter({ strategyCards }: { strategyCards: StrategyCard[] }) {
 function InfoContent({ children }: PropsWithChildren) {
   return (
     <div
-      className="myriadPro"
       style={{
         minWidth: rem(320),
         padding: rem(4),
@@ -515,9 +523,12 @@ export default function StrategyPhase() {
     "Nekro Virus",
     "Quantum Datahub Node",
   );
+  const abilities = useAbilities();
+
+  const qdnOwner = abilities["Quantum Datahub Node"]?.owner;
 
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
-  const factionColors = useFactionColors();
+  const factionColors = useAllFactionColors();
   const strategyCards = useStrategyCards();
   const intl = useIntl();
   const viewOnly = useViewOnly();
@@ -625,6 +636,9 @@ export default function StrategyPhase() {
     if (nekroHasQuantum) {
       return true;
     }
+    if (qdnOwner) {
+      return true;
+    }
     if (imperialArbiter && imperialArbiter.resolved && imperialArbiter.target) {
       return true;
     }
@@ -695,8 +709,13 @@ export default function StrategyPhase() {
                         label={label}
                         color={
                           factionId !== "Every Player"
-                            ? factionColors[factionId]
-                            : "#555"
+                            ? factionColors[factionId]?.color
+                            : "var(--passed-text)"
+                        }
+                        borderColor={
+                          factionId !== "Every Player"
+                            ? factionColors[factionId]?.border
+                            : "var(--passed-text)"
                         }
                       >
                         <div
@@ -778,6 +797,12 @@ export default function StrategyPhase() {
               factionId={"Nekro Virus"}
               strategyCards={orderedStrategyCards}
             />
+            {qdnOwner ? (
+              <QuantumDatahubNode
+                factionId={qdnOwner}
+                strategyCards={orderedStrategyCards}
+              />
+            ) : null}
             <ImperialArbiter strategyCards={orderedStrategyCards} />
           </div>
         ) : null}
@@ -811,7 +836,10 @@ export default function StrategyPhase() {
                   <FactionTimer
                     active
                     factionId={activeFactionId}
-                    style={{ fontSize: rem(28) }}
+                    style={{
+                      fontSize: rem(28),
+                      fontFamily: "var(--main-font)",
+                    }}
                   />
                 </div>
               </FactionCard>
@@ -877,7 +905,8 @@ export default function StrategyPhase() {
         </div>
         {activeFactionId ? null : (
           <button
-            style={{ fontSize: rem(20) }}
+            className="primary"
+            style={{ fontSize: rem(28) }}
             onClick={() => dataUpdate(Events.AdvancePhaseEvent())}
             disabled={viewOnly}
           >

@@ -1,5 +1,5 @@
 import React, { CSSProperties, PropsWithChildren } from "react";
-import { useFactionColor } from "../../context/factionDataHooks";
+import { useFactionColors } from "../../context/factionDataHooks";
 import TradeGoodSVG from "../../icons/ui/TradeGood";
 import { rem } from "../../util/util";
 import FactionCircle from "../FactionCircle/FactionCircle";
@@ -15,7 +15,7 @@ interface StrategyCardProps {
 
 interface StrategyCardElementCSS extends CSSProperties {
   "--color": string;
-  "--text-color": "#eee" | "#555";
+  "--text-color": "var(--foreground-color)" | "var(--passed-text)";
 }
 
 export function StrategyCardElement({
@@ -25,23 +25,21 @@ export function StrategyCardElement({
   fontSize,
   onClick,
 }: PropsWithChildren<StrategyCardProps>) {
-  const color = active ? card.color : "#555";
-  const textColor = active ? "#eee" : "#555";
-  const factionColor = useFactionColor(card.faction ?? "Vuil'raith Cabal");
+  const color = active ? card.color : "var(--passed-text)";
+  const textColor = active ? "var(--foreground-color)" : "var(--passed-text)";
+  const colors = useFactionColors(card.faction ?? "Vuil'raith Cabal");
 
   const strategyCardElementCSS: StrategyCardElementCSS = {
     "--color": color,
     "--text-color": textColor,
     fontSize: rem(fontSize),
+    fontFamily: "var(--main-font)",
     cursor: onClick ? "pointer" : "auto",
     backgroundColor: active && onClick ? undefined : "var(--disabled-bg)",
   };
-  return (
-    <div
-      className={styles.StrategyCardElement}
-      onClick={onClick}
-      style={strategyCardElementCSS}
-    >
+
+  const innerContent = (
+    <>
       <div
         className={styles.Number}
         style={{
@@ -60,6 +58,7 @@ export function StrategyCardElement({
               gridColumn: "3 / 5",
               paddingLeft: rem(4),
               paddingRight: rem(3),
+              color: "var(--foreground-color)",
             }}
           >
             <FactionTile factionId={card.faction} fontSize={16} iconSize={32} />
@@ -67,8 +66,8 @@ export function StrategyCardElement({
           <div className={styles.FactionCircle}>
             <FactionCircle
               factionId={card.faction}
-              borderColor={factionColor}
-              size={36}
+              borderColor={colors.border}
+              size={24}
             />
           </div>
         </>
@@ -120,6 +119,53 @@ export function StrategyCardElement({
           )}
         </React.Fragment>
       )}
+    </>
+  );
+
+  if (onClick) {
+    return (
+      <button
+        className={`${styles.StrategyCardElement} outline`}
+        onClick={onClick}
+        style={
+          {
+            ...strategyCardElementCSS,
+            padding: "unset",
+            "--border-color": card.color,
+            "--hover-color": card.color,
+          } as CSSProperties
+        }
+      >
+        {innerContent}
+      </button>
+    );
+  } else {
+    return (
+      <button
+        className={`${styles.StrategyCardElement} outline`}
+        onClick={onClick}
+        disabled
+        style={
+          {
+            ...strategyCardElementCSS,
+            padding: "unset",
+            "--border-color": card.color,
+            "--hover-color": card.color,
+          } as CSSProperties
+        }
+      >
+        {innerContent}
+      </button>
+    );
+  }
+
+  return (
+    <div
+      className={styles.StrategyCardElement}
+      onClick={onClick}
+      style={strategyCardElementCSS}
+    >
+      {innerContent}
     </div>
     // </div>
   );

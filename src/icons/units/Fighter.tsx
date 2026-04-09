@@ -2,7 +2,7 @@ import { em } from "../../util/util";
 
 export default function FighterSVG({
   size,
-  color = "#eee",
+  color = "var(--foreground-color)",
 }: {
   size: number | string;
   color?: string;

@@ -1,5 +1,5 @@
 export default function RedTechSVG({
-  color = "#eee",
+  color = "var(--foreground-color)",
   outline = false,
 }: {
   color?: string;

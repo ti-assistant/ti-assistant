@@ -7,6 +7,7 @@ import { useGameState } from "../../../../../../../src/context/stateDataHooks";
 import { getWormholeNexusSystemNumber } from "../../../../../../../src/util/map";
 import { fracturePlanetsOwned } from "../../../../../../../src/util/planets";
 import { objectKeys, rem } from "../../../../../../../src/util/util";
+import ChipGroup from "../../../../../../../src/components/Chip/ChipGroup";
 
 interface RoundInfo {
   planets: Partial<Record<PlanetId, Planet>>;
@@ -52,7 +53,14 @@ export default function MapLapse({
         gap: 0,
       }}
     >
-      <div className="flexColumn" style={{ alignItems: "flex-start" }}>
+      <ChipGroup
+        style={{
+          flexDirection: "column",
+          borderRadius: "0.6em",
+          gap: "0.125em",
+          alignItems: "flex-start",
+        }}
+      >
         {objectKeys(rounds).map((roundNum) => {
           return (
             <Chip
@@ -68,7 +76,7 @@ export default function MapLapse({
             </Chip>
           );
         })}
-      </div>
+      </ChipGroup>
       <div
         className="flexColumn"
         style={{

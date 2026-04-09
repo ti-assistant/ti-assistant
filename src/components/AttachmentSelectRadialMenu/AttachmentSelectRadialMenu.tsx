@@ -3,7 +3,7 @@ import { useAttachments, useViewOnly } from "../../context/dataHooks";
 import { SymbolX } from "../../icons/svgs";
 import { getTechTypeColor } from "../../util/techs";
 import { Optional } from "../../util/types/types";
-import { rem } from "../../util/util";
+import { em } from "../../util/util";
 import AttachmentIcon from "../AttachmentIcon/AttachmentIcon";
 import Circle from "../Circle/Circle";
 import styles from "./AttachmentSelectRadialMenu.module.scss";
@@ -15,7 +15,7 @@ interface AttachmentSelectRadialMenuProps {
   hasSkip?: boolean;
   onSelect: (
     attachmentId: Optional<AttachmentId>,
-    prevAttachment: Optional<AttachmentId>
+    prevAttachment: Optional<AttachmentId>,
   ) => void;
   size?: number;
   tag?: ReactNode;
@@ -27,10 +27,10 @@ function getRadialPosition(index: number, numOptions: number, size: number) {
 
   const center = (size * 3) / 2;
   const pos = {
-    "--y-pos": rem(center - size * Math.cos(radians) - size / 2 + 2),
-    "--x-pos": rem(center - size * -Math.sin(radians) - size / 2 + 2),
-    "--initial-y": rem(size + 2),
-    "--initial-x": rem(size + 2),
+    "--y-pos": em(center - size * Math.cos(radians) - size / 2 + 2),
+    "--x-pos": em(center - size * -Math.sin(radians) - size / 2 + 2),
+    "--initial-y": em(size + 2),
+    "--initial-x": em(size + 2),
   };
   return pos;
 }
@@ -56,7 +56,7 @@ export default function AttachmentSelectRadialMenu({
   onSelect,
   size = 44,
   tag,
-  tagBorderColor = "var(--neutral-border)",
+  tagBorderColor = "var(--interactive-bg)",
 }: AttachmentSelectRadialMenuProps) {
   const attachmentData = useAttachments();
   const viewOnly = useViewOnly();
@@ -74,7 +74,7 @@ export default function AttachmentSelectRadialMenu({
     setTimeout(() => setClosing(false), 200);
   }
 
-  let borderColor = "var(--neutral-border)";
+  let borderColor = "var(--interactive-bg)";
   if (
     selectedAttachment &&
     attachmentData[selectedAttachment]?.attribute?.includes("-skip")
@@ -88,7 +88,7 @@ export default function AttachmentSelectRadialMenu({
 
   const hoverParentStyle: AttachmentSelectRadialMenuCSS = {
     "--border-color": borderColor,
-    "--size": rem(size),
+    "--size": em(size),
   };
 
   return (
@@ -125,8 +125,8 @@ export default function AttachmentSelectRadialMenu({
                   : 1;
               const factionSelectStyle: AttachmentSelectCSS = {
                 "--opacity": opacity,
-                width: rem(size - 4),
-                height: rem(size - 4),
+                width: em(size - 4),
+                height: em(size - 4),
                 ...getRadialPosition(index, attachments.length, size),
               };
               return (
@@ -147,8 +147,8 @@ export default function AttachmentSelectRadialMenu({
                     className="flexRow"
                     style={{
                       position: "relative",
-                      width: rem(size - 8),
-                      height: rem(size - 8),
+                      width: em(size - 8),
+                      height: em(size - 8),
                       whiteSpace: "pre-wrap",
                       gap: 0,
                     }}
@@ -169,24 +169,23 @@ export default function AttachmentSelectRadialMenu({
             <div
               className={`flexRow ${styles.centerCircle}`}
               style={{
-                width: rem(size - 2),
-                height: rem(size - 2),
+                width: em(size - 2),
+                height: em(size - 2),
               }}
             >
               <div
                 className="flexRow"
                 style={{
-                  width: rem(size - 4),
-                  height: rem(size - 4),
-                  fontSize: rem(size - 8),
+                  width: em(size - 4),
+                  height: em(size - 4),
                 }}
               >
                 <div
                   className="flexRow"
                   style={{
                     position: "relative",
-                    width: rem(size - 10),
-                    height: rem(size - 10),
+                    width: em(size - 10),
+                    height: em(size - 10),
                   }}
                 >
                   {selectedAttachment ? (
@@ -207,8 +206,8 @@ export default function AttachmentSelectRadialMenu({
                     style={{
                       border: `${"1px"} solid ${tagBorderColor}`,
                       boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
-                      width: rem(size / 2),
-                      height: rem(size / 2),
+                      width: em(size / 2),
+                      height: em(size / 2),
                     }}
                   >
                     {tag}
@@ -221,6 +220,7 @@ export default function AttachmentSelectRadialMenu({
       ) : null}
       <Circle
         borderColor={borderColor}
+        backgroundColor="var(--background-color)"
         tag={tag}
         tagBorderColor={tagBorderColor}
         size={size}

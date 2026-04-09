@@ -63,8 +63,8 @@ export default function FactionSelectRadialMenu({
   onSelect,
   size = 44,
   tag,
-  borderColor = "var(--neutral-border)",
-  tagBorderColor = "var(--neutral-border)",
+  borderColor = "var(--interactive-bg)",
+  tagBorderColor = "var(--interactive-bg)",
   viewOnly,
   disabled,
 }: FactionSelectRadialMenuProps) {
@@ -76,6 +76,10 @@ export default function FactionSelectRadialMenu({
     if (!menu.current || !styles.hover) {
       return;
     }
+    if (document.activeElement) {
+      (document.activeElement as HTMLElement).blur();
+    }
+    menu.current.classList.remove("hover");
     menu.current.classList.remove(styles.hover);
     setClosing(true);
     setTimeout(() => setClosing(false), 200);
@@ -104,6 +108,13 @@ export default function FactionSelectRadialMenu({
         menu.current.classList.remove(styles.hover);
         menu.current.classList.remove("hover");
       }}
+      onClick={() => {
+        if (!menu.current || closing || !styles.hover) {
+          return;
+        }
+        menu.current.classList.add(styles.hover);
+        menu.current.classList.add("hover");
+      }}
       ref={menu}
     >
       {factions.length > 0 && !viewOnly && !disabled ? (
@@ -130,7 +141,8 @@ export default function FactionSelectRadialMenu({
                   key={factionId}
                   className={`flexRow ${styles.factionSelect}`}
                   style={factionSelectStyle}
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
                     closeFn();
                     if (factionId === selectedFaction) {
                       onSelect(undefined, selectedFaction);
@@ -139,11 +151,13 @@ export default function FactionSelectRadialMenu({
                     onSelect(factionId, selectedFaction);
                   }}
                 >
-                  <div
+                  <button
+                    className="iconButton"
                     style={{
                       width: em(size - 10),
                       height: em(size - 10),
                     }}
+                    disabled={isInvalid}
                   >
                     {factionId === selectedFaction && !isInvalid ? (
                       <SymbolX />
@@ -153,7 +167,7 @@ export default function FactionSelectRadialMenu({
                         size="100%"
                       />
                     )}
-                  </div>
+                  </button>
                 </div>
               );
             })}
@@ -194,7 +208,7 @@ export default function FactionSelectRadialMenu({
         </React.Fragment>
       ) : null}
       <FactionCircle
-        borderColor={borderColor}
+        borderColor={disabled ? "var(--disabled-bg)" : borderColor}
         factionId={selectedFaction}
         tag={tag}
         tagBorderColor={tagBorderColor}
@@ -202,7 +216,7 @@ export default function FactionSelectRadialMenu({
         style={
           disabled
             ? {
-                color: "#555",
+                color: "var(--disabled-bg)",
                 backgroundColor: "var(--background-color)",
               }
             : undefined

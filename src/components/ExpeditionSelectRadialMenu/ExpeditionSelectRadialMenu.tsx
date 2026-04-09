@@ -14,11 +14,10 @@ import styles from "./ExpeditionSelectRadialMenu.module.scss";
 interface ExpeditionSelectRadialMenuProps {
   selectedExpedition?: ExpeditionId;
   expeditions: ExpeditionId[];
-  fadedExpeditions?: ExpeditionId[];
   invalidExpeditions?: ExpeditionId[];
   onSelect: (
     expeditionId: Optional<ExpeditionId>,
-    prevExpedition: Optional<ExpeditionId>
+    prevExpedition: Optional<ExpeditionId>,
   ) => void;
   size?: number;
   tag?: ReactNode;
@@ -54,15 +53,12 @@ interface ExpeditionSelectCSS extends CSSProperties {
 export default function ExpeditionSelectRadialMenu({
   selectedExpedition,
   expeditions,
-  fadedExpeditions = [],
   invalidExpeditions = [],
   onSelect,
   size = 44,
   tag,
   tagBorderColor = "var(--neutral-border)",
 }: ExpeditionSelectRadialMenuProps) {
-  const attachmentData = useAttachments();
-  const expedition = useExpedition();
   const viewOnly = useViewOnly();
 
   const menu = useRef<HTMLDivElement>(null);
@@ -78,7 +74,7 @@ export default function ExpeditionSelectRadialMenu({
     setTimeout(() => setClosing(false), 200);
   }
 
-  let borderColor = "var(--neutral-border)";
+  let borderColor = "var(--hidden-border)";
 
   const hoverParentStyle: ExpeditionSelectRadialMenuCSS = {
     "--border-color": borderColor,
@@ -115,8 +111,8 @@ export default function ExpeditionSelectRadialMenu({
                 expeditionId !== selectedExpedition;
               const color =
                 isInvalid && expeditionId !== selectedExpedition
-                  ? "#555"
-                  : "#eee";
+                  ? "var(--hidden-border)"
+                  : "var(--foreground-color)";
               const factionSelectStyle: ExpeditionSelectCSS = {
                 "--opacity": 1,
                 color: color,
@@ -154,7 +150,7 @@ export default function ExpeditionSelectRadialMenu({
                     ) : (
                       <ExpeditionIcon
                         expedition={expeditionId}
-                        faded={color === "#555"}
+                        faded={color === "var(--hidden-border)"}
                       />
                     )}
                   </div>
@@ -220,6 +216,7 @@ export default function ExpeditionSelectRadialMenu({
         </React.Fragment>
       ) : null}
       <Circle
+        backgroundColor="var(--background-color)"
         borderColor={borderColor}
         tag={tag}
         tagBorderColor={tagBorderColor}

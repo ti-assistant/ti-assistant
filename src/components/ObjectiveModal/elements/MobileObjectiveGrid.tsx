@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { ModalContext } from "../../../context/contexts";
 import { useOptions, useViewOnly } from "../../../context/dataHooks";
 import {
-  useFactionColor,
+  useAllFactionColors,
   useFactionColors,
 } from "../../../context/factionDataHooks";
 import {
@@ -44,7 +44,7 @@ export default function MobileObjectiveGrid() {
   const objectives = useObjectives();
   const options = useOptions();
   const orderedFactionIds = useOrderedFactionIds("MAP");
-  const factionColors = useFactionColors();
+  const factionColors = useAllFactionColors();
   const revealOrder = useObjectiveRevealOrder();
   const viewOnly = useViewOnly();
 
@@ -492,7 +492,6 @@ export default function MobileObjectiveGrid() {
                           position: "absolute",
                           left: 0,
                           top: rem(-4),
-                          fontFamily: "Myriad Pro",
                           fontWeight: "bold",
                           height: rem(16),
                           width: rem(16),
@@ -527,7 +526,6 @@ export default function MobileObjectiveGrid() {
                           position: "absolute",
                           right: 0,
                           top: rem(-4),
-                          fontFamily: "Myriad Pro",
                           border: `${"1px"} solid #333`,
                           fontWeight: "bold",
                           borderRadius: "100%",
@@ -623,7 +621,6 @@ export default function MobileObjectiveGrid() {
                             position: "absolute",
                             left: 0,
                             top: rem(-4),
-                            fontFamily: "Myriad Pro",
                             fontWeight: "bold",
                             height: rem(16),
                             width: rem(16),
@@ -658,7 +655,6 @@ export default function MobileObjectiveGrid() {
                             position: "absolute",
                             right: 0,
                             top: rem(-4),
-                            fontFamily: "Myriad Pro",
                             border: `${"1px"} solid #333`,
                             fontWeight: "bold",
                             borderRadius: "100%",
@@ -760,8 +756,10 @@ export default function MobileObjectiveGrid() {
                       }
                     }}
                     tag={<FactionComponents.Icon factionId={id} size="100%" />}
-                    tagBorderColor={factionColors[id]}
-                    borderColor={scorer ? factionColors[scorer] : undefined}
+                    tagBorderColor={factionColors[id]?.border}
+                    borderColor={
+                      scorer ? factionColors[scorer]?.border : undefined
+                    }
                     viewOnly={viewOnly}
                   />
                 </div>
@@ -982,14 +980,15 @@ function FactionNameAndVPs({ factionId }: { factionId: FactionId }) {
   const manualVPs = useManualFactionVPs(factionId);
   const scoredVPs = useScoredFactionVPs(factionId);
   const viewOnly = useViewOnly();
-  const factionColor = useFactionColor(factionId);
+  const colors = useFactionColors(factionId);
 
   const VPs = manualVPs + scoredVPs;
 
   return (
     <LabeledDiv
       label={<FactionComponents.Name factionId={factionId} />}
-      color={factionColor}
+      color={colors.color}
+      borderColor={colors.border}
       opts={{ fixedWidth: true }}
     >
       <div

@@ -9,6 +9,7 @@ import { sortTechsByPreReqAndExpansion } from "../util/techs";
 import { Optional } from "../util/types/types";
 import { adjustForExpansions, rem } from "../util/util";
 import Chip from "./Chip/Chip";
+import ChipGroup from "./Chip/ChipGroup";
 import { CollapsibleSection } from "./CollapsibleSection";
 import FactionComponents from "./FactionComponents/FactionComponents";
 import FormattedDescription from "./FormattedDescription/FormattedDescription";
@@ -35,21 +36,22 @@ function AbilitySection({
       style={{
         position: "relative",
         width: "100%",
-        gap: rem(4),
+        gap: rem(2),
+        marginBottom: rem(6),
       }}
     >
       <LabeledLine
         leftLabel={leftLabel}
         label={label}
         rightLabel={rightLabel}
+        color={"var(--muted-text)"}
       />
       <div
         className="flexColumn"
         style={{
-          fontFamily: "Myriad Pro",
           alignItems: "flex-start",
           width: "100%",
-          padding: `0 ${rem(8)}`,
+          paddingInlineStart: rem(16),
         }}
       >
         {children}
@@ -169,7 +171,7 @@ function FactionPanelContent({
                         <hr
                           style={{
                             width: "100%",
-                            borderColor: "var(--neutral-border)",
+                            borderColor: "var(--hidden-border)",
                             margin: `${rem(4)} 0`,
                           }}
                         />
@@ -251,7 +253,7 @@ function FactionPanelContent({
                         <UnitIcon
                           type={tech.unitType}
                           size={18}
-                          color="var(--neutral-border)"
+                          color="var(--color)"
                         />
                       ) : null
                     }
@@ -282,9 +284,7 @@ function FactionPanelContent({
                             }}
                           >
                             {tech.abilities.map((ability) => {
-                              return (
-                                <div key={ability}>{ability.toUpperCase()}</div>
-                              );
+                              return <div key={ability}>{ability}</div>;
                             })}
                           </div>
                         ) : null}
@@ -333,10 +333,7 @@ function FactionPanelContent({
             >
               {faction.abilities.map((ability) => {
                 return (
-                  <AbilitySection
-                    key={ability.name}
-                    leftLabel={ability.name.toUpperCase()}
-                  >
+                  <AbilitySection key={ability.name} leftLabel={ability.name}>
                     <FormattedDescription description={ability.description} />
                   </AbilitySection>
                 );
@@ -419,11 +416,7 @@ function FactionPanelContent({
                 key={index}
                 leftLabel={leftLabel}
                 label={
-                  <UnitIcon
-                    type={unit.type}
-                    color="var(--neutral-border)"
-                    size={18}
-                  />
+                  <UnitIcon type={unit.type} color="var(--color)" size={18} />
                 }
                 rightLabel={<UnitType type={unit.type} />}
               >
@@ -442,7 +435,7 @@ function FactionPanelContent({
                     }}
                   >
                     {localUnit.abilities?.map((ability) => {
-                      return <div key={ability}>{ability.toUpperCase()}</div>;
+                      return <div key={ability}>{ability}</div>;
                     })}
                   </div>
                 ) : null}
@@ -482,7 +475,7 @@ function FactionBreakthrough({ faction }: { faction: BaseFaction }) {
     return null;
   }
 
-  let name = faction.breakthrough.name.toUpperCase();
+  let name = faction.breakthrough.name;
   let description: Optional<string> = faction.breakthrough.description;
   let abilities: string[] = [];
   if (reverse && faction.breakthrough.reverse) {
@@ -573,8 +566,8 @@ export default function SetupFactionPanel({
 
   return (
     <>
-      <div
-        className="popupIcon"
+      <button
+        className="popupIcon iconButton"
         style={{
           fontSize: rem(16),
         }}
@@ -589,7 +582,7 @@ export default function SetupFactionPanel({
         }
       >
         &#x24D8;
-      </div>
+      </button>
     </>
   );
 }
@@ -625,13 +618,15 @@ function SetupFactionPanelModal({
       }
       settings={
         altFaction ? (
-          <div className="flexRow" onClick={(e) => e.stopPropagation()}>
-            <Chip selected={!viewAlt} toggleFn={() => setViewAlt(false)}>
-              {faction.name}
-            </Chip>
-            <Chip selected={viewAlt} toggleFn={() => setViewAlt(true)}>
-              {altFaction.name}
-            </Chip>
+          <div onClick={(e) => e.stopPropagation()}>
+            <ChipGroup>
+              <Chip selected={!viewAlt} toggleFn={() => setViewAlt(false)}>
+                {faction.name}
+              </Chip>
+              <Chip selected={viewAlt} toggleFn={() => setViewAlt(true)}>
+                {altFaction.name}
+              </Chip>
+            </ChipGroup>
           </div>
         ) : undefined
       }

@@ -189,7 +189,7 @@ export function CastVotesSection({
             gap: rem(4),
             padding: `${rem(8)} ${rem(20)}`,
             alignItems: "flex-start",
-            border: `${"1px"} solid #555`,
+            border: `${"1px"} solid var(--passed-text)`,
             borderRadius: rem(10),
             width: "100%",
           }}

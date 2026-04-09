@@ -12,12 +12,12 @@ import DummyFactionSummary, {
 } from "../../InnerFactionSummary";
 import { useChangeOption } from "../../util/api/changeOption";
 import { useUpdateFaction } from "../../util/api/updateFaction";
-import { BLACK_BORDER_GLOW } from "../../util/borderGlow";
 import { getSettings } from "../../util/client";
-import { convertToFactionColor } from "../../util/factions";
+import { convertToFactionBorder } from "../../util/factions";
 import { Settings } from "../../util/settings";
 import { rem } from "../../util/util";
 import Chip from "../Chip/Chip";
+import ChipGroup from "../Chip/ChipGroup";
 import FactionComponents from "../FactionComponents/FactionComponents";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import NumberInput from "../NumberInput/NumberInput";
@@ -37,7 +37,7 @@ export default function SettingsModal() {
         <div
           style={{
             backgroundColor: "var(--background-color)",
-            border: "1px solid var(--neutral-border)",
+            border: "1px solid var(--hidden-border)",
             padding: `${rem(4)} ${rem(8)}`,
             borderRadius: rem(4),
             width: "min-content",
@@ -92,14 +92,11 @@ function SettingsModalContent() {
 
   return (
     <>
-      <div
-        className="flexRow"
-        style={{ fontSize: rem(24), width: "min-content" }}
-      >
+      <ChipGroup style={{ fontSize: rem(24), width: "min-content" }}>
         <Chip
           toggleFn={() => setSelectedTab("DISPLAY SETTINGS")}
           selected={selectedTab === "DISPLAY SETTINGS"}
-          style={{ fontFamily: "Myriad Pro", fontSize: rem(16) }}
+          style={{ fontSize: rem(16) }}
         >
           Display Settings
         </Chip>
@@ -107,7 +104,7 @@ function SettingsModalContent() {
           <Chip
             toggleFn={() => setSelectedTab("GAME SETTINGS")}
             selected={selectedTab === "GAME SETTINGS"}
-            style={{ fontFamily: "Myriad Pro", fontSize: rem(16) }}
+            style={{fontSize: rem(16) }}
           >
             <FormattedMessage
               id="+XKsgE"
@@ -117,7 +114,7 @@ function SettingsModalContent() {
             : {gameId}
           </Chip>
         ) : null}
-      </div>
+      </ChipGroup>
 
       <div
         className="flexColumn"
@@ -126,7 +123,7 @@ function SettingsModalContent() {
           width: "fit-content",
           backgroundColor: "var(--background-color)",
           borderRadius: rem(4),
-          border: `${rem(1)} solid #eee`,
+          border: `${rem(1)} solid var(--hidden-border)`,
           padding: rem(8),
         }}
       >
@@ -147,6 +144,7 @@ function SettingsModalContent() {
                     label={localSettings["fs-right-label"]}
                   />
                 }
+                borderColor="var(--hidden-border)"
                 color="var(--neutral-border)"
               >
                 <DummyFactionSummary settings={localSettings} />
@@ -156,243 +154,302 @@ function SettingsModalContent() {
               <LabeledDiv
                 label="Tech Summary"
                 innerStyle={{
-                  fontFamily: "Myriad Pro",
                   flexDirection: "row",
                   flexWrap: "wrap",
                   gap: rem(4),
                 }}
               >
-                <Chip
-                  toggleFn={() =>
-                    updateLocalSetting(
-                      "fs-tech-summary-display",
-                      "NUMBER+ICON+TREE",
-                    )
-                  }
-                  selected={techSummarySetting === "NUMBER+ICON+TREE"}
-                  style={{ height: rem(32) }}
-                >
-                  <div
-                    className="flexRow"
-                    style={{ gap: rem(4), fontFamily: "var(--main-font)" }}
+                <ChipGroup>
+                  <Chip
+                    toggleFn={() =>
+                      updateLocalSetting(
+                        "fs-tech-summary-display",
+                        "NUMBER+ICON+TREE",
+                      )
+                    }
+                    selected={techSummarySetting === "NUMBER+ICON+TREE"}
+                    style={{ height: rem(32) }}
                   >
-                    2<TechIcon type="GREEN" size={16} />
-                    <DummyTechTree />
-                  </div>
-                </Chip>
-                <Chip
-                  toggleFn={() =>
-                    updateLocalSetting("fs-tech-summary-display", "NUMBER+ICON")
-                  }
-                  selected={techSummarySetting === "NUMBER+ICON"}
-                  style={{ height: rem(32) }}
-                >
-                  <div
-                    className="flexRow"
-                    style={{ gap: rem(4), fontFamily: "var(--main-font)" }}
+                    <div
+                      className="flexRow"
+                      style={{ gap: rem(4), fontFamily: "var(--main-font)" }}
+                    >
+                      2<TechIcon type="GREEN" size={16} />
+                      <DummyTechTree />
+                    </div>
+                  </Chip>
+                  <Chip
+                    toggleFn={() =>
+                      updateLocalSetting(
+                        "fs-tech-summary-display",
+                        "NUMBER+ICON",
+                      )
+                    }
+                    selected={techSummarySetting === "NUMBER+ICON"}
+                    style={{ height: rem(32) }}
                   >
-                    2<TechIcon type="GREEN" size={16} />
-                  </div>
-                </Chip>
-                <Chip
-                  toggleFn={() =>
-                    updateLocalSetting("fs-tech-summary-display", "ICON+TREE")
-                  }
-                  selected={techSummarySetting === "ICON+TREE"}
-                  style={{ height: rem(32) }}
-                >
-                  <div
-                    className="flexRow"
-                    style={{ gap: rem(4), fontFamily: "var(--main-font)" }}
+                    <div
+                      className="flexRow"
+                      style={{ gap: rem(4), fontFamily: "var(--main-font)" }}
+                    >
+                      2<TechIcon type="GREEN" size={16} />
+                    </div>
+                  </Chip>
+                  <Chip
+                    toggleFn={() =>
+                      updateLocalSetting("fs-tech-summary-display", "ICON+TREE")
+                    }
+                    selected={techSummarySetting === "ICON+TREE"}
+                    style={{ height: rem(32) }}
                   >
-                    <TechIcon type="GREEN" size={16} />
-                    <DummyTechTree />
-                  </div>
-                </Chip>
-                <Chip
-                  toggleFn={() =>
-                    updateLocalSetting("fs-tech-summary-display", "NUMBER+TREE")
-                  }
-                  selected={techSummarySetting === "NUMBER+TREE"}
-                  style={{ height: rem(32) }}
-                >
-                  <div
-                    className="flexRow"
-                    style={{ gap: rem(4), fontFamily: "var(--main-font)" }}
+                    <div
+                      className="flexRow"
+                      style={{ gap: rem(4), fontFamily: "var(--main-font)" }}
+                    >
+                      <TechIcon type="GREEN" size={16} />
+                      <DummyTechTree />
+                    </div>
+                  </Chip>
+                  <Chip
+                    toggleFn={() =>
+                      updateLocalSetting(
+                        "fs-tech-summary-display",
+                        "NUMBER+TREE",
+                      )
+                    }
+                    selected={techSummarySetting === "NUMBER+TREE"}
+                    style={{ height: rem(32) }}
                   >
-                    2
-                    <DummyTechTree />
-                  </div>
-                </Chip>
-                <Chip
-                  toggleFn={() =>
-                    updateLocalSetting("fs-tech-summary-display", "TREE")
-                  }
-                  selected={techSummarySetting === "TREE"}
-                  style={{ height: rem(32) }}
-                >
-                  <div
-                    className="flexRow"
-                    style={{ gap: rem(4), fontFamily: "var(--main-font)" }}
+                    <div
+                      className="flexRow"
+                      style={{ gap: rem(4), fontFamily: "var(--main-font)" }}
+                    >
+                      2
+                      <DummyTechTree />
+                    </div>
+                  </Chip>
+                  <Chip
+                    toggleFn={() =>
+                      updateLocalSetting("fs-tech-summary-display", "TREE")
+                    }
+                    selected={techSummarySetting === "TREE"}
+                    style={{ height: rem(32) }}
                   >
-                    <DummyTechTree />
-                  </div>
-                </Chip>
+                    <div
+                      className="flexRow"
+                      style={{ gap: rem(4), fontFamily: "var(--main-font)" }}
+                    >
+                      <DummyTechTree />
+                    </div>
+                  </Chip>
+                </ChipGroup>
               </LabeledDiv>
             </div>
             <div className="flexRow">
               <div>
                 Left:
-                <Chip
-                  selected={localSettings["fs-left"] === "NONE"}
-                  toggleFn={() => updateLocalSetting("fs-left", "NONE")}
+                <ChipGroup
+                  style={{
+                    flexDirection: "column",
+                    borderRadius: "0.6em",
+                    gap: "0.125em",
+                  }}
                 >
-                  None
-                </Chip>
-                <Chip
-                  selected={localSettings["fs-left"] === "TECHS"}
-                  toggleFn={() => updateLocalSetting("fs-left", "TECHS")}
-                >
-                  Techs
-                </Chip>
-                <Chip
-                  selected={localSettings["fs-left"] === "OBJECTIVES"}
-                  toggleFn={() => updateLocalSetting("fs-left", "OBJECTIVES")}
-                >
-                  Objectives
-                </Chip>
-                <Chip
-                  selected={localSettings["fs-left"] === "PLANETS"}
-                  toggleFn={() => updateLocalSetting("fs-left", "PLANETS")}
-                >
-                  Planets
-                </Chip>
-                <Chip
-                  selected={localSettings["fs-left"] === "TIMER"}
-                  toggleFn={() => updateLocalSetting("fs-left", "TIMER")}
-                >
-                  Timer
-                </Chip>
+                  <Chip
+                    selected={localSettings["fs-left"] === "NONE"}
+                    toggleFn={() => updateLocalSetting("fs-left", "NONE")}
+                  >
+                    None
+                  </Chip>
+                  <Chip
+                    selected={localSettings["fs-left"] === "TECHS"}
+                    toggleFn={() => updateLocalSetting("fs-left", "TECHS")}
+                  >
+                    Techs
+                  </Chip>
+                  <Chip
+                    selected={localSettings["fs-left"] === "OBJECTIVES"}
+                    toggleFn={() => updateLocalSetting("fs-left", "OBJECTIVES")}
+                  >
+                    Objectives
+                  </Chip>
+                  <Chip
+                    selected={localSettings["fs-left"] === "PLANETS"}
+                    toggleFn={() => updateLocalSetting("fs-left", "PLANETS")}
+                  >
+                    Planets
+                  </Chip>
+                  <Chip
+                    selected={localSettings["fs-left"] === "TIMER"}
+                    toggleFn={() => updateLocalSetting("fs-left", "TIMER")}
+                  >
+                    Timer
+                  </Chip>
+                </ChipGroup>
               </div>
               <div>
                 Center:
-                <Chip
-                  selected={localSettings["fs-center"] === "NONE"}
-                  toggleFn={() => updateLocalSetting("fs-center", "NONE")}
+                <ChipGroup
+                  style={{
+                    flexDirection: "column",
+                    borderRadius: "0.6em",
+                    gap: "0.125em",
+                  }}
                 >
-                  None
-                </Chip>
-                <Chip
-                  selected={localSettings["fs-center"] === "TECHS"}
-                  toggleFn={() => updateLocalSetting("fs-center", "TECHS")}
-                >
-                  Techs
-                </Chip>
-                <Chip
-                  selected={localSettings["fs-center"] === "OBJECTIVES"}
-                  toggleFn={() => updateLocalSetting("fs-center", "OBJECTIVES")}
-                >
-                  Objectives
-                </Chip>
-                <Chip
-                  selected={localSettings["fs-center"] === "PLANETS"}
-                  toggleFn={() => updateLocalSetting("fs-center", "PLANETS")}
-                >
-                  Planets
-                </Chip>
-                <Chip
-                  selected={localSettings["fs-center"] === "TIMER"}
-                  toggleFn={() => updateLocalSetting("fs-center", "TIMER")}
-                >
-                  Timer
-                </Chip>
+                  <Chip
+                    selected={localSettings["fs-center"] === "NONE"}
+                    toggleFn={() => updateLocalSetting("fs-center", "NONE")}
+                  >
+                    None
+                  </Chip>
+                  <Chip
+                    selected={localSettings["fs-center"] === "TECHS"}
+                    toggleFn={() => updateLocalSetting("fs-center", "TECHS")}
+                  >
+                    Techs
+                  </Chip>
+                  <Chip
+                    selected={localSettings["fs-center"] === "OBJECTIVES"}
+                    toggleFn={() =>
+                      updateLocalSetting("fs-center", "OBJECTIVES")
+                    }
+                  >
+                    Objectives
+                  </Chip>
+                  <Chip
+                    selected={localSettings["fs-center"] === "PLANETS"}
+                    toggleFn={() => updateLocalSetting("fs-center", "PLANETS")}
+                  >
+                    Planets
+                  </Chip>
+                  <Chip
+                    selected={localSettings["fs-center"] === "TIMER"}
+                    toggleFn={() => updateLocalSetting("fs-center", "TIMER")}
+                  >
+                    Timer
+                  </Chip>
+                </ChipGroup>
               </div>
               <div>
                 Right:
-                <Chip
-                  selected={localSettings["fs-right"] === "NONE"}
-                  toggleFn={() => updateLocalSetting("fs-right", "NONE")}
+                <ChipGroup
+                  style={{
+                    flexDirection: "column",
+                    borderRadius: "0.6em",
+                    gap: "0.125em",
+                  }}
                 >
-                  None
-                </Chip>
-                <Chip
-                  selected={localSettings["fs-right"] === "TECHS"}
-                  toggleFn={() => updateLocalSetting("fs-right", "TECHS")}
-                >
-                  Techs
-                </Chip>
-                <Chip
-                  selected={localSettings["fs-right"] === "OBJECTIVES"}
-                  toggleFn={() => updateLocalSetting("fs-right", "OBJECTIVES")}
-                >
-                  Objectives
-                </Chip>
-                <Chip
-                  selected={localSettings["fs-right"] === "PLANETS"}
-                  toggleFn={() => updateLocalSetting("fs-right", "PLANETS")}
-                >
-                  Planets
-                </Chip>
-                <Chip
-                  selected={localSettings["fs-right"] === "TIMER"}
-                  toggleFn={() => updateLocalSetting("fs-right", "TIMER")}
-                >
-                  Timer
-                </Chip>
+                  <Chip
+                    selected={localSettings["fs-right"] === "NONE"}
+                    toggleFn={() => updateLocalSetting("fs-right", "NONE")}
+                  >
+                    None
+                  </Chip>
+                  <Chip
+                    selected={localSettings["fs-right"] === "TECHS"}
+                    toggleFn={() => updateLocalSetting("fs-right", "TECHS")}
+                  >
+                    Techs
+                  </Chip>
+                  <Chip
+                    selected={localSettings["fs-right"] === "OBJECTIVES"}
+                    toggleFn={() =>
+                      updateLocalSetting("fs-right", "OBJECTIVES")
+                    }
+                  >
+                    Objectives
+                  </Chip>
+                  <Chip
+                    selected={localSettings["fs-right"] === "PLANETS"}
+                    toggleFn={() => updateLocalSetting("fs-right", "PLANETS")}
+                  >
+                    Planets
+                  </Chip>
+                  <Chip
+                    selected={localSettings["fs-right"] === "TIMER"}
+                    toggleFn={() => updateLocalSetting("fs-right", "TIMER")}
+                  >
+                    Timer
+                  </Chip>
+                </ChipGroup>
               </div>
               <div>
                 Left Label:
-                <Chip
-                  selected={localSettings["fs-left-label"] === "NONE"}
-                  toggleFn={() => updateLocalSetting("fs-left-label", "NONE")}
+                <ChipGroup
+                  style={{
+                    flexDirection: "column",
+                    borderRadius: "0.6em",
+                    gap: "0.125em",
+                  }}
                 >
-                  None
-                </Chip>
-                <Chip
-                  selected={localSettings["fs-left-label"] === "NAME"}
-                  toggleFn={() => updateLocalSetting("fs-left-label", "NAME")}
-                >
-                  Name
-                </Chip>
-                <Chip
-                  selected={localSettings["fs-left-label"] === "TIMER"}
-                  toggleFn={() => updateLocalSetting("fs-left-label", "TIMER")}
-                >
-                  Timer
-                </Chip>
-                <Chip
-                  selected={localSettings["fs-left-label"] === "VPS"}
-                  toggleFn={() => updateLocalSetting("fs-left-label", "VPS")}
-                >
-                  VPs
-                </Chip>
+                  <Chip
+                    selected={localSettings["fs-left-label"] === "NONE"}
+                    toggleFn={() => updateLocalSetting("fs-left-label", "NONE")}
+                  >
+                    None
+                  </Chip>
+                  <Chip
+                    selected={localSettings["fs-left-label"] === "NAME"}
+                    toggleFn={() => updateLocalSetting("fs-left-label", "NAME")}
+                  >
+                    Name
+                  </Chip>
+                  <Chip
+                    selected={localSettings["fs-left-label"] === "TIMER"}
+                    toggleFn={() =>
+                      updateLocalSetting("fs-left-label", "TIMER")
+                    }
+                  >
+                    Timer
+                  </Chip>
+                  <Chip
+                    selected={localSettings["fs-left-label"] === "VPS"}
+                    toggleFn={() => updateLocalSetting("fs-left-label", "VPS")}
+                  >
+                    VPs
+                  </Chip>
+                </ChipGroup>
               </div>
               <div>
-                Right Label:
-                <Chip
-                  selected={localSettings["fs-right-label"] === "NONE"}
-                  toggleFn={() => updateLocalSetting("fs-right-label", "NONE")}
+                Right Label:{" "}
+                <ChipGroup
+                  style={{
+                    flexDirection: "column",
+                    borderRadius: "0.6em",
+                    gap: "0.125em",
+                  }}
                 >
-                  None
-                </Chip>
-                <Chip
-                  selected={localSettings["fs-right-label"] === "NAME"}
-                  toggleFn={() => updateLocalSetting("fs-right-label", "NAME")}
-                >
-                  Name
-                </Chip>
-                <Chip
-                  selected={localSettings["fs-right-label"] === "TIMER"}
-                  toggleFn={() => updateLocalSetting("fs-right-label", "TIMER")}
-                >
-                  Timer
-                </Chip>
-                <Chip
-                  selected={localSettings["fs-right-label"] === "VPS"}
-                  toggleFn={() => updateLocalSetting("fs-right-label", "VPS")}
-                >
-                  VPs
-                </Chip>
+                  <Chip
+                    selected={localSettings["fs-right-label"] === "NONE"}
+                    toggleFn={() =>
+                      updateLocalSetting("fs-right-label", "NONE")
+                    }
+                  >
+                    None
+                  </Chip>
+                  <Chip
+                    selected={localSettings["fs-right-label"] === "NAME"}
+                    toggleFn={() =>
+                      updateLocalSetting("fs-right-label", "NAME")
+                    }
+                  >
+                    Name
+                  </Chip>
+                  <Chip
+                    selected={localSettings["fs-right-label"] === "TIMER"}
+                    toggleFn={() =>
+                      updateLocalSetting("fs-right-label", "TIMER")
+                    }
+                  >
+                    Timer
+                  </Chip>
+                  <Chip
+                    selected={localSettings["fs-right-label"] === "VPS"}
+                    toggleFn={() => updateLocalSetting("fs-right-label", "VPS")}
+                  >
+                    VPs
+                  </Chip>
+                </ChipGroup>
               </div>
             </div>
           </>
@@ -455,16 +512,14 @@ function GameSettings({ gameId }: { gameId: string }) {
               <div
                 style={{
                   borderRadius: "100%",
-                  border: `2px solid ${convertToFactionColor(faction.color)}`,
+                  border: `2px solid ${convertToFactionBorder(faction.color)}`,
                   padding: rem(2),
-                  boxShadow:
-                    faction.color === "Black" ? BLACK_BORDER_GLOW : undefined,
                 }}
               >
                 <FactionComponents.Icon factionId={faction.id} size={36} />
               </div>
               <PlayerNameInput
-                color={convertToFactionColor(faction.color)}
+                color={convertToFactionBorder(faction.color)}
                 playerName={faction.playerName}
                 updatePlayerName={(name) =>
                   updateFaction(gameId, factionId, { playerName: name })

@@ -91,9 +91,12 @@ export default function GameMap({
   let ghostsCorner: Optional<NexusPosition>;
   let rebellionCorner: Optional<NexusPosition>;
   factions.forEach((faction, index) => {
+    const planetFaction = faction.startswith?.planetFaction;
     if (
       faction.id === "Ghosts of Creuss" ||
-      faction.id === "Crimson Rebellion"
+      faction.id === "Crimson Rebellion" ||
+      planetFaction === "Ghosts of Creuss" ||
+      planetFaction === "Crimson Rebellion"
     ) {
       let positionPriority: NexusPosition[] = ["bottom-left", "bottom-right"];
       switch (factions.length) {
@@ -242,13 +245,19 @@ export default function GameMap({
           break;
       }
 
-      if (faction.id === "Ghosts of Creuss") {
+      if (
+        faction.id === "Ghosts of Creuss" ||
+        planetFaction === "Ghosts of Creuss"
+      ) {
         ghosts = true;
         ghostsCorner = positionPriority[0];
         if (rebellionCorner === ghostsCorner) {
           ghostsCorner = positionPriority[1];
         }
-      } else if (faction.id === "Crimson Rebellion") {
+      } else if (
+        faction.id === "Crimson Rebellion" ||
+        planetFaction === "Crimson Rebellion"
+      ) {
         rebellion = true;
         rebellionCorner = positionPriority[0];
         if (ghostsCorner === rebellionCorner) {
@@ -382,17 +391,6 @@ export default function GameMap({
       </div>
     </div>
   );
-}
-
-function getWormholeNexusHeight(
-  mallice: string | SystemId,
-  tilePercentage: number,
-  hexRatio: number,
-) {
-  if (mallice === "A" || mallice === "B") {
-    return tilePercentage * hexRatio;
-  }
-  return tilePercentage;
 }
 
 function getWormholeNexusSystemNum(mallice: string | SystemId) {

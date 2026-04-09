@@ -1,7 +1,7 @@
 import { CSSProperties } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useOptions, useViewOnly } from "../../../context/dataHooks";
-import { useFactionColors } from "../../../context/factionDataHooks";
+import { useAllFactionColors } from "../../../context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../context/gameDataHooks";
 import { useObjective } from "../../../context/objectiveDataHooks";
 import { useDataUpdate } from "../../../util/api/dataUpdate";
@@ -9,6 +9,7 @@ import { Events } from "../../../util/api/events";
 import { Optional } from "../../../util/types/types";
 import { rem } from "../../../util/util";
 import Chip from "../../Chip/Chip";
+import ChipGroup from "../../Chip/ChipGroup";
 import FactionComponents from "../../FactionComponents/FactionComponents";
 import FactionSelectRadialMenu from "../../FactionSelectRadialMenu/FactionSelectRadialMenu";
 import LabeledDiv from "../../LabeledDiv/LabeledDiv";
@@ -67,7 +68,7 @@ function SupportForTheThrone({
 }) {
   const dataUpdate = useDataUpdate();
   const supportForTheThrone = useObjective("Support for the Throne");
-  const factionColors = useFactionColors();
+  const factionColors = useAllFactionColors();
   const viewOnly = useViewOnly();
 
   if (!supportForTheThrone) {
@@ -138,8 +139,8 @@ function SupportForTheThrone({
                 tag={
                   <FactionComponents.Icon factionId={factionId} size="100%" />
                 }
-                tagBorderColor={factionColors[factionId]}
-                borderColor={scorer ? factionColors[scorer] : undefined}
+                tagBorderColor={factionColors[factionId]?.border}
+                borderColor={scorer ? factionColors[scorer]?.border : undefined}
                 viewOnly={viewOnly}
               />
             </div>
@@ -192,7 +193,6 @@ function ImperialPoints({
                     position: "absolute",
                     left: 0,
                     top: rem(-4),
-                    fontFamily: "Myriad Pro",
                     fontWeight: "bold",
                     height: rem(16),
                     width: rem(16),
@@ -222,7 +222,6 @@ function ImperialPoints({
                     position: "absolute",
                     right: 0,
                     top: rem(-4),
-                    fontFamily: "Myriad Pro",
                     // border: `${"1px"} solid #333`,
                     fontWeight: "bold",
                     borderRadius: "100%",
@@ -524,7 +523,7 @@ function Mutiny({ orderedFactionIds }: { orderedFactionIds: FactionId[] }) {
             })}]`
           )
         ) : (
-          <div className="flexRow" style={{ gap: rem(4) }}>
+          <ChipGroup style={{ gap: rem(4) }}>
             <Chip
               selected={mutinyDirection === "[For]"}
               toggleFn={() =>
@@ -553,7 +552,7 @@ function Mutiny({ orderedFactionIds }: { orderedFactionIds: FactionId[] }) {
               })}
               ]
             </Chip>
-          </div>
+          </ChipGroup>
         )}
       </div>
       <div
@@ -690,7 +689,6 @@ function TotalWar({ orderedFactionIds }: { orderedFactionIds: FactionId[] }) {
                     position: "absolute",
                     left: 0,
                     top: rem(-4),
-                    fontFamily: "Myriad Pro",
                     fontWeight: "bold",
                     height: rem(16),
                     width: rem(16),
@@ -720,7 +718,6 @@ function TotalWar({ orderedFactionIds }: { orderedFactionIds: FactionId[] }) {
                     position: "absolute",
                     right: 0,
                     top: rem(-4),
-                    fontFamily: "Myriad Pro",
                     // border: `${"1px"} solid #333`,
                     fontWeight: "bold",
                     borderRadius: "100%",

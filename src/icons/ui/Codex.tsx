@@ -1,4 +1,8 @@
-export default function CodexSVG({ color = "#eee" }: { color?: string }) {
+export default function CodexSVG({
+  color = "var(--foreground-color)",
+}: {
+  color?: string;
+}) {
   return (
     <svg
       width="100%"

@@ -12,6 +12,7 @@ import { objectEntries, objectKeys, rem } from "../../../../src/util/util";
 import { ProcessedGame } from "../processor";
 import styles from "./ObjectivesSection.module.scss";
 import { ObjectiveGameCounts } from "./types";
+import ChipGroup from "../../../../src/components/Chip/ChipGroup";
 
 interface ObjectiveInfo {
   games: number;
@@ -115,41 +116,43 @@ export default function ObjectivesSection({
           paddingBottom: rem(8),
         }}
       >
-        <Chip
-          style={{ fontSize: rem(14) }}
-          selected={tab === "STAGE ONE"}
-          toggleFn={() => setTab("STAGE ONE")}
-        >
-          Stage I
-        </Chip>
-        <Chip
-          style={{ fontSize: rem(14) }}
-          selected={tab === "STAGE TWO"}
-          toggleFn={() => setTab("STAGE TWO")}
-        >
-          Stage II
-        </Chip>
-        <Chip
-          style={{ fontSize: rem(14) }}
-          selected={tab === "SECRET"}
-          toggleFn={() => setTab("SECRET")}
-        >
-          Secrets
-        </Chip>
-        <Chip
-          style={{ fontSize: rem(14) }}
-          selected={tab === "OTHER"}
-          toggleFn={() => setTab("OTHER")}
-        >
-          Other
-        </Chip>
+        <ChipGroup>
+          <Chip
+            style={{ fontSize: rem(14) }}
+            selected={tab === "STAGE ONE"}
+            toggleFn={() => setTab("STAGE ONE")}
+          >
+            Stage I
+          </Chip>
+          <Chip
+            style={{ fontSize: rem(14) }}
+            selected={tab === "STAGE TWO"}
+            toggleFn={() => setTab("STAGE TWO")}
+          >
+            Stage II
+          </Chip>
+          <Chip
+            style={{ fontSize: rem(14) }}
+            selected={tab === "SECRET"}
+            toggleFn={() => setTab("SECRET")}
+          >
+            Secrets
+          </Chip>
+          <Chip
+            style={{ fontSize: rem(14) }}
+            selected={tab === "OTHER"}
+            toggleFn={() => setTab("OTHER")}
+          >
+            Other
+          </Chip>
+        </ChipGroup>
       </div>
 
       {orderedObjectives.map(([objId, objInfo]) => {
         return (
           <Fragment key={objId}>
             <LabeledDiv key={objId} label={objId} innerStyle={{ gap: rem(4) }}>
-              <div style={{ fontFamily: "Source Sans", fontSize: rem(14) }}>
+              <div style={{fontSize: rem(14) }}>
                 {baseObjectives[objId].description}
               </div>
               {tab !== "SECRET" && tab !== "OTHER" ? (
@@ -261,7 +264,7 @@ function FactionsTable({
             games = factionGames[factionId] ?? 0;
           }
           return (
-            <tr key={factionId} style={{ fontFamily: "Source Sans" }}>
+            <tr key={factionId}>
               <td
                 style={{
                   display: "flex",

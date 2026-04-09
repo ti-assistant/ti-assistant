@@ -111,9 +111,9 @@ export default function PlanetSummary({
                       viewOnly ? styles.viewOnly : ""
                     }`}
                     style={{
-                      border: `1px solid ${ocean.owner ? "#eee" : "#444"}`,
+                      border: `1px solid ${ocean.owner ? "var(--foreground-color)" : "#444"}`,
                       backgroundColor: ocean.owner
-                        ? "#eee"
+                        ? "var(--foreground-color)"
                         : "var(--background-color)",
                       ...position,
                     }}

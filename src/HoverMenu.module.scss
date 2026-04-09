@@ -6,9 +6,29 @@
   top: 0;
   left: 0;
   border-right: 0.75rem solid transparent;
-  border-top: 0.75rem solid var(--color);
+  border-top: 0.75rem solid var(--corner-color);
   box-sizing: border-box;
-  border-top-left-radius: 0.375rem;
+  border-radius: 0.375rem 0 0 0;
+}
+
+.hoverLabel.left::before {
+  right: 0;
+  left: unset;
+  border-left: 0.75rem solid transparent;
+  border-right: unset;
+  border-radius: 0 0.375rem 0 0;
+}
+
+.hoverLabel.up::before {
+  bottom: 0;
+  top: unset;
+  border-bottom: 0.75rem solid var(--corner-color);
+  border-top: unset;
+  border-radius: 0 0 0 0.375rem;
+}
+
+.hoverLabel.up.left::before {
+  border-radius: 0 0 0.375rem 0;
 }
 
 .innerHoverLabel::before {
@@ -22,7 +42,27 @@
   top: round(calc(-1 * var(--border-size)), 0.5px);
   left: round(calc(-1 * var(--border-size)), 0.5px);
   border-right: 0.75rem solid transparent;
-  border-top: 0.75rem solid var(--color);
+  border-top: 0.75rem solid var(--corner-color);
   box-sizing: border-box;
   border-top-left-radius: 0.375rem;
+}
+
+.innerHoverLabel.left::before {
+  right: round(calc(-1 * var(--border-size)), 0.5px);
+  left: unset;
+  border-left: 0.75rem solid transparent;
+  border-right: unset;
+  border-radius: 0 0.375rem 0 0;
+}
+
+.innerHoverLabel.up::before {
+  bottom: round(calc(-1 * var(--border-size)), 0.5px);
+  top: unset;
+  border-bottom: 0.75rem solid var(--corner-color);
+  border-top: unset;
+  border-radius: 0 0 0 0.375rem;
+}
+
+.innerHoverLabel.up.left::before {
+  border-radius: 0 0 0.375rem 0;
 }

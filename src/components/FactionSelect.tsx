@@ -38,7 +38,7 @@ export function FactionSelectHoverMenu({
   const hoverMenuStyle: CSSProperties = {
     left: 0,
     borderRadius: em(Math.floor(size / 2)),
-    border: `var(--border-size) solid var(--neutral-border)`,
+    border: `var(--border-size) solid var(--interactive-bg)`,
     flexDirection: forceDirection,
   };
 
@@ -60,8 +60,8 @@ export function FactionSelectHoverMenu({
       ref={menu}
     >
       <FactionCircle
-        borderColor="var(--neutral-border)"
-        tagBorderColor="var(--neutral-border)"
+        borderColor="var(--interactive-bg)"
+        tagBorderColor="var(--interactive-bg)"
         size={size}
       />
       <div
@@ -75,7 +75,7 @@ export function FactionSelectHoverMenu({
             position: "relative",
             width: `calc(${em(size)} - 4px)`,
             height: `calc(${em(size)} - 4px)`,
-            color: "var(--neutral-border)",
+            color: "var(--interactive-bg)",
           }}
         >
           <div

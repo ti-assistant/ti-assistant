@@ -1,17 +1,14 @@
 "use client";
 
 import QRCode from "qrcode";
-import React, { use, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { AgendaRow } from "../../AgendaRow";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
-import { ModalContext } from "../../context/contexts";
 import {
   useAgendas,
-  useAllPlanets,
   useGameId,
   useOptions,
-  usePlanets,
   useViewOnly,
 } from "../../context/dataHooks";
 import { useFactions } from "../../context/factionDataHooks";
@@ -21,14 +18,10 @@ import { useDataUpdate } from "../../util/api/dataUpdate";
 import { useEnterPassword } from "../../util/api/enterPassword";
 import { Events } from "../../util/api/events";
 import { computeVPs } from "../../util/factions";
-import { getWormholeNexusSystemNumber } from "../../util/map";
-import { getMapString } from "../../util/options";
-import { fracturePlanetsOwned } from "../../util/planets";
 import { rem } from "../../util/util";
 import GameTimer from "../GameTimer/GameTimer";
-import GameMap from "../Map/GameMap";
-import UndoButton from "../UndoButton/UndoButton";
 import styles from "./Header.module.scss";
+import Link from "next/link";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
@@ -42,8 +35,6 @@ export default function Header({ archive }: { archive?: boolean }) {
   const gameId = useGameId();
   const objectives = useObjectives();
   const options = useOptions();
-  const planets = usePlanets();
-  const allPlanets = useAllPlanets();
   const state = useGameState();
   const viewOnly = useViewOnly();
 
@@ -52,8 +43,6 @@ export default function Header({ archive }: { archive?: boolean }) {
   const intl = useIntl();
 
   const [qrCode, setQrCode] = useState<string>();
-
-  const { openModal } = use(ModalContext);
 
   if (!qrCode && gameId) {
     QRCode.toDataURL(
@@ -76,10 +65,6 @@ export default function Header({ archive }: { archive?: boolean }) {
       },
     );
   }
-
-  const mapOrderedFactions = Object.values(factions ?? {}).sort(
-    (a, b) => a.mapPosition - b.mapPosition,
-  );
 
   let gameFinished = false;
   if (options && factions) {
@@ -128,46 +113,8 @@ export default function Header({ archive }: { archive?: boolean }) {
     }
   }
 
-  const mapString = getMapString(options, mapOrderedFactions.length);
-
   return (
     <React.Fragment>
-      {mapString ? (
-        <button
-          className={styles.Map}
-          onClick={() =>
-            openModal(
-              <div
-                style={{
-                  position: "relative",
-                  width: "min(100dvh, 100dvw)",
-                  height: "min(100dvh, 100dvw)",
-                }}
-              >
-                <GameMap
-                  factions={mapOrderedFactions}
-                  mapString={mapString}
-                  mapStyle={options["map-style"]}
-                  wormholeNexus={getWormholeNexusSystemNumber(
-                    options,
-                    planets,
-                    factions,
-                  )}
-                  planets={allPlanets}
-                  expansions={options.expansions}
-                  hideFracture={!fracturePlanetsOwned(allPlanets)}
-                />
-              </div>,
-            )
-          }
-        >
-          <FormattedMessage
-            id="xDzJ9/"
-            description="Text shown on a button that opens the map."
-            defaultMessage="View Map"
-          />
-        </button>
-      ) : null}
       {state.phase !== "SETUP" ? (
         <div className={styles.GameTimer}>
           <GameTimer frozen={state.phase === "END"} />
@@ -198,10 +145,10 @@ export default function Header({ archive }: { archive?: boolean }) {
         </div>
       ) : (
         <div className={styles.ControlButtons}>
-          <UndoButton gameId={gameId} />
           {gameFinished ? (
             state?.phase === "END" ? (
               <button
+                className="primary"
                 style={{ fontSize: rem(24) }}
                 onClick={() => {
                   dataUpdate(Events.ContinueGameEvent());
@@ -215,6 +162,7 @@ export default function Header({ archive }: { archive?: boolean }) {
               </button>
             ) : (
               <button
+                className="primary"
                 style={{ fontFamily: "var(--main-font)", fontSize: rem(32) }}
                 onClick={() => {
                   dataUpdate(Events.EndGameEvent());

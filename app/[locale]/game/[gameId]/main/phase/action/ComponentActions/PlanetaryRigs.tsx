@@ -123,7 +123,6 @@ export default function PlanetaryRigs({ factionId }: { factionId: FactionId }) {
         <div
           className="flexRow"
           style={{
-            fontFamily: "Myriad Pro",
             padding: rem(8),
             display: "grid",
             gridAutoFlow: "column",

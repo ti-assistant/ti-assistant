@@ -8,7 +8,6 @@ import {
   getTimers,
   TIASession,
 } from "../../../../server/util/fetch";
-import QRCodeButton from "../../../../src/components/QRCode/QRCodeButton";
 import DataInitializer from "../../../../src/context/DataWrapper";
 import { getIntl, getSessionIdFromCookie } from "../../../../src/util/server";
 import { Optional } from "../../../../src/util/types/types";
@@ -58,8 +57,8 @@ function getQRCode(gameId: string, size: number): Promise<string> {
       `${BASE_URL}/game/${gameId}`,
       {
         color: {
-          dark: "#eeeeeeff",
-          light: "#222222ff",
+          dark: "#cecece",
+          light: "#030303",
         },
         width: size,
         margin: 2,
@@ -78,32 +77,16 @@ export default async function Layout({
   children,
   params,
 }: LayoutProps<"/[locale]/game/[gameId]">) {
-  const { gameId, locale } = await params;
-  const intlPromise = getIntl(locale);
-
-  const qrCodePromise = getQRCode(gameId, 280);
-
-  const qrCode = await qrCodePromise;
+  const { gameId } = await params;
 
   const sessionId = await getSessionIdFromCookie();
 
   return (
-    <>
-      <div className={styles.QRCode}>
-        <GameCode gameId={gameId} intlPromise={intlPromise} qrCode={qrCode} />
-      </div>
-      <div className={styles.MobileQRCode}>
-        <QRCodeButton gameId={gameId} qrCode={qrCode} />
-      </div>
-      <Suspense fallback={<GameLoader />}>
-        <DataInitializer
-          gameId={gameId}
-          data={fetchGameData(gameId, sessionId)}
-        >
-          <DynamicSidebars />
-          {children}
-        </DataInitializer>
-      </Suspense>
-    </>
+    <Suspense fallback={<GameLoader />}>
+      <DataInitializer gameId={gameId} data={fetchGameData(gameId, sessionId)}>
+        <DynamicSidebars />
+        {children}
+      </DataInitializer>
+    </Suspense>
   );
 }

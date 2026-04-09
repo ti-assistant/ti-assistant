@@ -14,13 +14,13 @@ export default function CommandTokensSVG({ tokens }: { tokens: number }) {
         <path
           d="m57.8 9.25-48.3 82.2 9.02 15.3h98.6l9.48-16.1-47.9-81.4z"
           fill="none"
-          stroke="#eee"
+          stroke="var(--foreground-color)"
           strokeWidth="2.51"
         />
         <text
           x="68"
           y={fontY}
-          fill="#eee"
+          fill="var(--foreground-color)"
           fontFamily="var(--main-font)"
           fontSize={fontSize}
           textAnchor="middle"

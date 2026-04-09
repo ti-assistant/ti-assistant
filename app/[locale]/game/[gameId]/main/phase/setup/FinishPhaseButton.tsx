@@ -1,6 +1,5 @@
 import { IntlShape, useIntl } from "react-intl";
 import {
-  useGameId,
   useLogEntries,
   useOptions,
   useViewOnly,
@@ -21,7 +20,6 @@ export default function FinishPhaseButton({
 }) {
   const dataUpdate = useDataUpdate();
   const factions = useFactions();
-  const gameId = useGameId();
   const intl = useIntl();
   const options = useOptions();
   const viewOnly = useViewOnly();
@@ -35,7 +33,6 @@ export default function FinishPhaseButton({
         <div
           style={{
             color: "firebrick",
-            fontFamily: "Myriad Pro",
             fontWeight: "bold",
           }}
         >
@@ -46,6 +43,7 @@ export default function FinishPhaseButton({
         unlocked={setupPhaseComplete(factions, revealedObjectives, options)}
         buttons={[
           {
+            className: "primary",
             text: intl.formatMessage({
               id: "lYD2yu",
               description: "Text on a button that will start a game.",
@@ -55,6 +53,7 @@ export default function FinishPhaseButton({
               dataUpdate(Events.AdvancePhaseEvent());
             },
             style: { fontSize: rem(40) },
+            primary: true,
           },
         ]}
         viewOnly={viewOnly}

@@ -10,9 +10,9 @@
   justify-content: space-between;
   align-items: center;
 
-  background-color: var(--toggle-color);
+  background-color: var(--light-bg);
   border-radius: 1.25rem;
-  border: var(--border-size) solid var(--border-color);
+  // border: var(--border-size) solid var(--border-color);
   gap: 0.25rem;
   padding-right: 0.375rem;
   cursor: pointer;
@@ -20,8 +20,13 @@
   font-size: 0.875rem;
 }
 
+.ToggleContainer:has(input:focus-visible) {
+  outline: 2px solid var(--accent-color);
+}
+
 .ToggleContainer > input[type="checkbox"] {
   appearance: none;
+  outline: none;
 }
 
 .ToggleContainer > input[type="checkbox"]::before {
@@ -36,14 +41,13 @@
 }
 
 .ToggleContainer:hover {
-  background-color: var(--hovered-bg);
-  border: var(--border-size) solid var(--neutral-border);
+  background-color: var(--dark-hover-bg);
 }
 
 .ToggleContainer.disabled,
 .ToggleContainer.disabled:hover {
   background-color: var(--disabled-bg);
-  border: var(--border-size) solid var(--disabled-border);
+  // border: var(--border-size) solid var(--disabled-border);
   color: var(--interactive-bg);
   cursor: default;
 }
@@ -61,8 +65,8 @@
 .ToggleContainer.Positive > input[type="checkbox"]:checked::before {
   content: "✓";
   font-size: 0.7rem;
-  background-color: var(--selected-border);
-  color: var(--background-color);
+  background-color: var(--background-color);
+  // color: var(--background-color);
 }
 
 .ToggleContainer.Negative > input[type="checkbox"]:checked::before {
@@ -70,7 +74,7 @@
   font-size: 0.8rem;
   line-height: 0.85rem;
   background-color: var(--background-color);
-  color: var(--neutral-border);
+  // color: var(--neutral-border);
 }
 
 .ToggleContainer * {
@@ -82,7 +86,6 @@
 }
 
 .ToggleInfo {
-  font-family: "Myriad Pro";
   box-sizing: border-box;
   width: 100%;
   min-width: 20rem;

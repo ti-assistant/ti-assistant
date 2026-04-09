@@ -1,7 +1,7 @@
 import { FormattedMessage, useIntl } from "react-intl";
 import { useCurrentTurn, useRelic, useTechs } from "../../context/dataHooks";
 import {
-  useFactionColor,
+  useFactionColors,
   useFactionTechs,
 } from "../../context/factionDataHooks";
 import { TechRow } from "../../TechRow";
@@ -23,9 +23,7 @@ export default function MawOfWorlds({}) {
   const factionTechs = useFactionTechs(
     mawOfWorlds?.owner ?? "Vuil'raith Cabal",
   );
-  const factionColor = useFactionColor(
-    mawOfWorlds?.owner ?? "Vuil'raith Cabal",
-  );
+  const colors = useFactionColors(mawOfWorlds?.owner ?? "Vuil'raith Cabal");
 
   if (!mawOfWorlds || !mawOfWorlds.owner) {
     return null;
@@ -50,7 +48,8 @@ export default function MawOfWorlds({}) {
             <FactionComponents.Icon factionId={mawOfWorlds.owner} size={16} />
           </div>
         }
-        color={factionColor}
+        color={colors.color}
+        borderColor={colors.border}
         style={{ fontSize: rem(14) }}
       >
         <TechRow
@@ -83,7 +82,8 @@ export default function MawOfWorlds({}) {
   return (
     <LabeledDiv
       label={<FactionComponents.Name factionId={mawOfWorlds.owner} />}
-      color={factionColor}
+      color={colors.color}
+      borderColor={colors.border}
     >
       <TechSelectHoverMenu
         factionId={mawOfWorlds.owner}

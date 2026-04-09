@@ -11,8 +11,8 @@ export default function InfoModal({
   const { openModal } = use(ModalContext);
 
   return (
-    <div
-      className={styles.infoIcon}
+    <button
+      className={`${styles.infoIcon} iconButton`}
       style={style}
       onClick={(e) => {
         e.preventDefault();
@@ -25,6 +25,6 @@ export default function InfoModal({
       }}
     >
       &#x24D8;
-    </div>
+    </button>
   );
 }

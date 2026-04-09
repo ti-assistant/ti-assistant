@@ -8,3 +8,5 @@ interface TFBaseEdict {
 interface TFGameEdict {}
 
 type TFEdict = TFBaseEdict & TFGameEdict;
+
+type TFEdictId = TwilightsFall.TFEdictId;

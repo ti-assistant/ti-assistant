@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { IntlShape } from "react-intl";
-import BorderedDiv from "../../../src/components/BorderedDiv/BorderedDiv";
 import LabeledDiv from "../../../src/components/LabeledDiv/LabeledDiv";
 import NonGameHeader from "../../../src/components/NonGameHeader/NonGameHeader";
 import { rem } from "../../../src/util/util";
@@ -244,22 +243,20 @@ export default function Supporters({ intl }: { intl: IntlShape }) {
           </div>
         </LabeledDiv>
 
-        <Link href={`/`} style={{ marginTop: rem(12) }}>
-          <BorderedDiv>
-            <div
-              className="flexColumn mediumFont"
-              style={{
-                minWidth: rem(190),
-              }}
-            >
-              {intl.formatMessage({
-                id: "LNmymU",
-                defaultMessage: "Back",
-                description:
-                  "Text on a button that goes back to the previous page.",
-              })}
-            </div>
-          </BorderedDiv>
+        <Link className="outline" href={`/`} style={{ marginTop: rem(12) }}>
+          <div
+            className="flexColumn mediumFont"
+            style={{
+              minWidth: rem(190),
+            }}
+          >
+            {intl.formatMessage({
+              id: "LNmymU",
+              defaultMessage: "Back",
+              description:
+                "Text on a button that goes back to the previous page.",
+            })}
+          </div>
         </Link>
       </div>
     </div>

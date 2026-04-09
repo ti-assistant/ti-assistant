@@ -29,7 +29,10 @@ import TwilightsFallSVG from "../../../src/icons/ui/TwilightsFall";
 import { InfoRow } from "../../../src/InfoRow";
 import { SelectableRow } from "../../../src/SelectableRow";
 import { buildMergeFunction } from "../../../src/util/expansions";
-import { convertToFactionColor } from "../../../src/util/factions";
+import {
+  convertToFactionBorder,
+  convertToFactionColor,
+} from "../../../src/util/factions";
 import { extractFactionIds, processMapString } from "../../../src/util/map";
 import { mapStyleString } from "../../../src/util/strings";
 import { Optional } from "../../../src/util/types/types";
@@ -37,6 +40,8 @@ import { objectEntries, rem } from "../../../src/util/util";
 import ColorPicker from "./components/ColorPicker";
 import PlayerNameInput from "./components/PlayerNameInput";
 import styles from "./setup.module.scss";
+import ChipGroup from "../../../src/components/Chip/ChipGroup";
+import FactionIcon from "../../../src/components/FactionIcon/FactionIcon";
 
 const SetupFactionPanel = dynamic(
   () => import("../../../src/components/SetupFactionPanel"),
@@ -178,10 +183,7 @@ function MobileOptions({
           description="Label for a selector to change the number of players"
         />
       </label>
-      <div
-        className="flexRow"
-        style={{ gap: rem(4), fontFamily: "Source Sans" }}
-      >
+      <ChipGroup>
         {[...Array(maxFactions - 2)].map((e, index) => {
           const number = index + 3;
           return (
@@ -195,7 +197,7 @@ function MobileOptions({
             </Chip>
           );
         })}
-      </div>
+      </ChipGroup>
       <div className="flexRow">
         <FormattedMessage
           id="R06tnh"
@@ -270,7 +272,6 @@ function MobileOptions({
               className="flexRow"
               style={{
                 justifyContent: "flex-start",
-                fontFamily: "Source Sans",
                 gap: rem(4),
               }}
             >
@@ -362,7 +363,6 @@ function MobileOptions({
                   style={{
                     justifyContent: "flex-start",
                     padding: `0 ${rem(16)}`,
-                    fontFamily: "Source Sans",
                   }}
                 >
                   <Toggle
@@ -395,7 +395,6 @@ function MobileOptions({
                       gridTemplateColumns: "repeat(5, 1fr)",
                       justifyContent: "flex-start",
                       alignContent: "flex-start",
-                      fontFamily: "Source Sans",
                       gap: rem(4),
                       overflowX: "scroll",
                       width: "100%",
@@ -435,7 +434,6 @@ function MobileOptions({
                 <div
                   className="flexColumn"
                   style={{
-                    fontFamily: "Source Sans",
                     padding: `${rem(8)} ${rem(16)}`,
                     alignItems: "flex-start",
                     whiteSpace: "pre-wrap",
@@ -449,10 +447,7 @@ function MobileOptions({
                         defaultMessage="Map Type"
                       />
                       :
-                      <div
-                        className="flexRow"
-                        style={{ paddingLeft: `${rem(16)}`, gap: rem(4) }}
-                      >
+                      <ChipGroup>
                         {mapStyles.map((style) => {
                           return (
                             <Chip
@@ -475,7 +470,7 @@ function MobileOptions({
                             </Chip>
                           );
                         })}
-                      </div>
+                      </ChipGroup>
                     </React.Fragment>
                   ) : null}
                   <FormattedMessage
@@ -580,10 +575,7 @@ function Options({
           description="Label for a selector to change the number of players"
         />
       </label>
-      <div
-        className="flexRow"
-        style={{ gap: rem(4), fontFamily: "Source Sans" }}
-      >
+      <ChipGroup>
         {[...Array(maxFactions - 2)].map((e, index) => {
           const number = index + 3;
           return (
@@ -597,7 +589,7 @@ function Options({
             </Chip>
           );
         })}
-      </div>
+      </ChipGroup>
       <div className="flexRow">
         <FormattedMessage
           id="R06tnh"
@@ -674,7 +666,6 @@ function Options({
               className="flexRow"
               style={{
                 justifyContent: "flex-start",
-                fontFamily: "Source Sans",
                 gap: rem(4),
               }}
             >
@@ -763,7 +754,6 @@ function Options({
                 style={{
                   justifyContent: "flex-start",
                   padding: `0 ${rem(20)}`,
-                  fontFamily: "Source Sans",
                 }}
               >
                 <Toggle
@@ -797,7 +787,6 @@ function Options({
                     justifyContent: "flex-start",
                     alignContent: "flex-start",
                     padding: `0 ${rem(20)}`,
-                    fontFamily: "Source Sans",
                     gap: rem(4),
                   }}
                 >
@@ -832,15 +821,7 @@ function Options({
                 style={{ alignItems: "flex-start", paddingBottom: rem(8) }}
               >
                 Variants (WIP):
-                <div
-                  className="flexRow"
-                  style={{
-                    alignItems: "flex-start",
-                    padding: `0 ${rem(20)}`,
-                    gap: rem(4),
-                    fontFamily: "Source Sans",
-                  }}
-                >
+                <ChipGroup>
                   {variants.map((variant) => {
                     let variantText = capitalizeFirstLetter(variant);
                     let baseVPs = 10;
@@ -868,7 +849,7 @@ function Options({
                       </Chip>
                     );
                   })}
-                </div>
+                </ChipGroup>
               </div>
             ) : null}
           </div>
@@ -1089,6 +1070,9 @@ function FactionSelect({
   }
 
   const factionColor = convertToFactionColor(faction.color);
+  const borderColor = faction.color
+    ? convertToFactionBorder(faction.color)
+    : undefined;
 
   const selectedColors = factions
     .map((faction) => faction.color)
@@ -1098,7 +1082,7 @@ function FactionSelect({
     <LabeledDiv
       label={
         <PlayerNameInput
-          color={factionColor === "#555" ? undefined : factionColor}
+          color={!faction.color ? undefined : factionColor}
           playerName={faction.playerName}
           tabIndex={position + 1}
           updatePlayerName={savePlayerName}
@@ -1106,6 +1090,7 @@ function FactionSelect({
       }
       rightLabel={isSpeaker ? <Strings.Speaker /> : undefined}
       color={factionColor}
+      borderColor={borderColor}
       style={{ width: mobile ? "100%" : "28vw", minWidth: rem(260) }}
     >
       {faction.id ? (
@@ -1121,10 +1106,10 @@ function FactionSelect({
             zIndex: -1,
           }}
         >
-          <FactionComponents.Icon
+          {/* <FactionComponents.Icon
             factionId={faction.id}
             size={mobile ? 52 : 48}
-          />
+          /> */}
         </div>
       ) : null}
       <div
@@ -1161,8 +1146,9 @@ function FactionSelect({
                 <SelectableRow
                   itemId={updatedFactions[faction.id].name}
                   removeItem={() => selectFaction(undefined)}
-                  style={{ height: rem(32.67) }}
+                  style={{ height: rem(32.67), gap: "0.25rem" }}
                 >
+                  <FactionIcon factionId={faction.id} size={24} />
                   {updatedFactions[faction.id].name}
                   <SetupFactionPanel
                     faction={updatedFactions[faction.id]}
@@ -1191,6 +1177,7 @@ function FactionSelect({
                     defaultMessage="Pick Faction"
                   />
                 }
+                important
               >
                 <div
                   style={{
@@ -1238,7 +1225,7 @@ function FactionSelect({
                               <ExpansionIcon
                                 expansion={faction.expansion}
                                 size={8}
-                                color={faded ? "#555" : undefined}
+                                color={faded ? "var(--passed-text)" : undefined}
                               />
                             </div>
                           </>
@@ -1903,7 +1890,6 @@ export default function SetupPage() {
                 display: "grid",
                 gridTemplateColumns: "min-content 1fr",
                 gridAutoFlow: "row",
-                fontFamily: "Source Sans",
                 fontSize: rem(12),
                 width: "100%",
                 whiteSpace: "nowrap",
@@ -1922,10 +1908,7 @@ export default function SetupPage() {
                     />
                     :
                   </div>
-                  <div
-                    className="flexRow"
-                    style={{ gap: rem(4), justifyContent: "flex-start" }}
-                  >
+                  <ChipGroup>
                     {getMapStyles(numFactions).map((style) => {
                       return (
                         <Chip
@@ -1957,7 +1940,7 @@ export default function SetupPage() {
                         </Chip>
                       );
                     })}
-                  </div>
+                  </ChipGroup>
                 </>
               ) : (
                 <div style={{ height: rem(20), gridColumn: "1 / 3" }}></div>
@@ -1977,7 +1960,6 @@ export default function SetupPage() {
                 style={{
                   width: "100%",
                   fontSize: rem(12),
-                  fontFamily: "Source Sans",
                 }}
                 value={options["map-string"]}
                 onChange={(event) => {
@@ -2068,10 +2050,15 @@ export default function SetupPage() {
               className="flexRow"
               style={{ whiteSpace: "nowrap", minWidth: rem(200) }}
             >
-              <button style={{ textAlign: "center" }} onClick={randomSpeaker}>
+              <button
+                className="outline"
+                style={{ textAlign: "center" }}
+                onClick={randomSpeaker}
+              >
                 <Strings.Speaker />
               </button>
               <button
+                className="outline"
                 style={{ textAlign: "center" }}
                 onClick={randomFactions}
                 disabled={disableRandomizeFactionButton()}
@@ -2084,7 +2071,7 @@ export default function SetupPage() {
               </button>
             </div>
           </LabeledDiv>
-          <button onClick={reset}>
+          <button className="outline" onClick={reset}>
             <FormattedMessage
               id="tocXJ4"
               description="Text on a button that will reset selections."
@@ -2297,7 +2284,9 @@ export default function SetupPage() {
             <Strings.Speaker />:
             <FactionSelectRadialMenu
               selectedFaction={setupFactions[speaker]?.id}
-              borderColor={convertToFactionColor(setupFactions[speaker]?.color)}
+              borderColor={convertToFactionBorder(
+                setupFactions[speaker]?.color,
+              )}
               size={36}
               invalidFactions={
                 setupFactions[speaker]?.id ? [setupFactions[speaker].id] : []
@@ -2337,6 +2326,7 @@ export default function SetupPage() {
             </InfoRow>
           </div>
           <button
+            className="primary"
             style={{
               fontSize: rem(40),
               fontFamily: "var(--main-font)",
@@ -2382,7 +2372,6 @@ export default function SetupPage() {
               style={{
                 color: "firebrick",
                 maxWidth: rem(240),
-                fontFamily: "Source Sans",
               }}
             >
               <FormattedMessage
@@ -2453,10 +2442,15 @@ export default function SetupPage() {
                 className="flexRow"
                 style={{ whiteSpace: "nowrap", width: "100%" }}
               >
-                <button style={{ textAlign: "center" }} onClick={randomSpeaker}>
+                <button
+                  className="outline"
+                  style={{ textAlign: "center" }}
+                  onClick={randomSpeaker}
+                >
                   <Strings.Speaker />
                 </button>
                 <button
+                  className="outline"
                   style={{ textAlign: "center" }}
                   onClick={randomFactions}
                   disabled={disableRandomizeFactionButton()}
@@ -2581,7 +2575,7 @@ export default function SetupPage() {
               <Strings.Speaker />:
               <FactionSelectRadialMenu
                 selectedFaction={setupFactions[speaker]?.id}
-                borderColor={convertToFactionColor(
+                borderColor={convertToFactionBorder(
                   setupFactions[speaker]?.color,
                 )}
                 size={36}
@@ -2623,6 +2617,7 @@ export default function SetupPage() {
               </InfoRow>
             </div>
             <button
+              className="primary"
               style={{
                 fontSize: rem(40),
                 fontFamily: "var(--main-font)",

@@ -11,7 +11,7 @@ import SpaceDockSVG from "../../icons/units/SpaceDock";
 import WarSunSVG from "../../icons/units/WarSun";
 
 export default function UnitIcon({
-  color = "#eee",
+  color = "var(--foreground-color)",
   type,
   size = 14,
 }: {
