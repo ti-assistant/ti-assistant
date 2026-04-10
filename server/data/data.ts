@@ -4,6 +4,7 @@ export const BASE_GAME_DATA: StoredGameData = {
   factions: {},
   options: BASE_OPTIONS,
   planets: {},
+  players: {},
   state: {
     phase: "SETUP",
     speaker: "Vuil'raith Cabal",

@@ -100,15 +100,6 @@ interface BaseFaction {
   units: Unit[];
 }
 
-interface TFFaction {
-  color: FactionColor;
-  commodities: number;
-  id: TwilightsFall.FactionId;
-  name: string;
-  shortname: string;
-  units: Unit[];
-}
-
 interface GameFaction {
   alliancePartner?: FactionId;
   alliances?: FactionId[];

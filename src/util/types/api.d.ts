@@ -121,6 +121,7 @@ interface GameData {
   objectives?: Partial<Record<ObjectiveId, Objective>>;
   options: Options;
   planets: Partial<Record<PlanetId, Planet>>;
+  players: Partial<Record<PlayerId, Player>>;
   relics?: Partial<Record<RelicId, Relic>>;
   sequenceNum: number;
   state: GameState;
@@ -165,6 +166,7 @@ interface StoredGameData {
   objectives?: Partial<Record<ObjectiveId, GameObjective>>;
   options: Options;
   planets: Partial<Record<PlanetId, GamePlanet>>;
+  players: Partial<Record<PlayerId, GamePlayer>>;
   relics?: Partial<Record<RelicId, GameRelic>>;
   state: GameState;
   strategycards?: Partial<Record<StrategyCardId, GameStrategyCard>>;
