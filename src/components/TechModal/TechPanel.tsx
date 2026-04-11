@@ -257,29 +257,26 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                       }
                       const factionHasTech = hasTech(faction, tech);
                       return (
-                        <div
-                          key={tech.id}
-                          onClick={() => {
-                            if (viewOnly) {
-                              return;
-                            }
-                            if (factionHasTech) {
-                              dataUpdate(
-                                Events.RemoveTechEvent(factionId, tech.id),
-                              );
-                            } else {
-                              dataUpdate(
-                                Events.AddTechEvent(factionId, tech.id),
-                              );
-                            }
-                          }}
-                          style={{ maxWidth: "100%" }}
-                        >
+                        <div key={tech.id} style={{ maxWidth: "100%" }}>
                           <TechRow
                             className={`${styles.factionTechRow} ${
                               factionHasTech ? styles.selected : ""
                             } ${viewOnly ? styles.viewOnly : ""}`}
                             techId={tech.id}
+                            onClick={() => {
+                              if (viewOnly) {
+                                return;
+                              }
+                              if (factionHasTech) {
+                                dataUpdate(
+                                  Events.RemoveTechEvent(factionId, tech.id),
+                                );
+                              } else {
+                                dataUpdate(
+                                  Events.AddTechEvent(factionId, tech.id),
+                                );
+                              }
+                            }}
                             opts={{
                               hideSymbols: true,
                               hideIcon: true,

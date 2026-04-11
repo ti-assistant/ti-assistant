@@ -18,6 +18,9 @@ import { hasTech } from "./util/api/techs";
 import { getFactionBorder } from "./util/factions";
 import { getTechColor } from "./util/techs";
 import { em, objectEntries, rem } from "./util/util";
+import { use } from "react";
+import { ModalContext } from "./context/contexts";
+import { ModalContent } from "./components/Modal/Modal";
 
 function InfoContent({ tech }: { tech: Tech }) {
   if (tech.type === "UPGRADE") {
@@ -82,6 +85,7 @@ interface TechRowProps {
   techId: TechId;
   removeTech?: (techId: TechId) => void;
   addTech?: (techId: TechId) => void;
+  onClick?: () => void;
   opts?: TechRowOptions;
   researchAgreement?: boolean;
 }
@@ -99,10 +103,12 @@ export function TechRow({
   removeTech,
   addTech,
   researchAgreement,
+  onClick,
   opts = {},
 }: TechRowProps) {
   const tech = useTech(techId);
   const viewOnly = useViewOnly();
+  const { openModal } = use(ModalContext);
   if (!tech) {
     return null;
   }
@@ -137,7 +143,36 @@ export function TechRow({
               zIndex: 0,
               gap: "0.5em",
               fontFamily: "var(--main-font)",
+              cursor: "pointer",
             }}
+            onClick={
+              onClick
+                ? onClick
+                : (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openModal(
+                      <ModalContent
+                        title={
+                          <div
+                            className="flexRow"
+                            style={{ fontSize: rem(40), gap: rem(20) }}
+                          >
+                            {tech.name}
+                            {tech.type === "UPGRADE" ? (
+                              <UnitIcon type={tech.unitType} size={20} />
+                            ) : null}
+                            <TechPrereqDots prereqs={tech.prereqs} width={4} />
+                          </div>
+                        }
+                      >
+                        <div className={styles.infoContent}>
+                          <InfoContent tech={tech} />
+                        </div>
+                      </ModalContent>,
+                    );
+                  }
+            }
           >
             {tech.name}
             {tech.type === "UPGRADE" ? <UnitIcon type={tech.unitType} /> : null}
@@ -166,23 +201,25 @@ export function TechRow({
             ) : null}
             <TechPrereqDots prereqs={tech.prereqs} />
           </div>
-          <InfoModal
-            title={
-              <div
-                className="flexRow"
-                style={{ fontSize: rem(40), gap: rem(20) }}
-              >
-                {tech.name}
-                {tech.type === "UPGRADE" ? (
-                  <UnitIcon type={tech.unitType} size={20} />
-                ) : null}
-                <TechPrereqDots prereqs={tech.prereqs} width={4} />
-              </div>
-            }
-            style={{ marginLeft: em(8) }}
-          >
-            <InfoContent tech={tech} />
-          </InfoModal>
+          {onClick ? (
+            <InfoModal
+              title={
+                <div
+                  className="flexRow"
+                  style={{ fontSize: rem(40), gap: rem(20) }}
+                >
+                  {tech.name}
+                  {tech.type === "UPGRADE" ? (
+                    <UnitIcon type={tech.unitType} size={20} />
+                  ) : null}
+                  <TechPrereqDots prereqs={tech.prereqs} width={4} />
+                </div>
+              }
+              style={{ marginLeft: em(8) }}
+            >
+              <InfoContent tech={tech} />
+            </InfoModal>
+          ) : undefined}
         </div>
         {opts.hideSymbols ? null : (
           <div

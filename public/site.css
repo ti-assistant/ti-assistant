@@ -2,6 +2,7 @@
   color-scheme: dark;
   /* --background-color: #131115; */
   --background-color: oklch(0.10 0 0);
+  --local-background: var(--background-color);
 
   --200: oklch(0.15 0 0);
   --disabled-bg: oklch(0.20 0 0);
@@ -80,6 +81,7 @@
 :root[data-theme='dark'] {
   color-scheme: light;
   --background-color: oklch(0.975 0 0);
+  --local-background: var(--background-color);
 
   --disabled-bg: oklch(0.95 0 0);
   

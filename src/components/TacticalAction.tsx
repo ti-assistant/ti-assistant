@@ -12,8 +12,8 @@ import {
   useViewOnly,
 } from "../context/dataHooks";
 import { useFactions } from "../context/factionDataHooks";
-import { useObjectives } from "../context/objectiveDataHooks";
 import { ClientOnlyHoverMenu } from "../HoverMenu";
+import ObjectivesMenuSVG from "../icons/ui/ObjectivesMenu";
 import { SelectableRow } from "../SelectableRow";
 import {
   getAdjudicatorBaalSystem,
@@ -28,17 +28,19 @@ import { getWormholeNexusSystemNumber } from "../util/map";
 import { getMapString } from "../util/options";
 import { objectKeys, rem } from "../util/util";
 import GainRelic from "./Actions/GainRelic";
+import Card from "./Card/Card";
 import ClaimPlanetsSection from "./ClaimPlanetsSection/ClaimPlanetsSection";
 import Conditional from "./Conditional/Conditional";
 import FrontierExploration from "./FrontierExploration/FrontierExploration";
 import LabeledDiv from "./LabeledDiv/LabeledDiv";
 import LabeledLine from "./LabeledLine/LabeledLine";
 import GameMap from "./Map/GameMap";
-import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
+import ObjectiveCard from "./ObjectiveRow/ObjectiveCard";
 import ScoreObjectiveRow from "./ObjectiveRow/ScoreObjectiveRow";
 import ObjectiveSelectHoverMenu from "./ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import styles from "./TacticalAction.module.scss";
 import TechResearchSection from "./TechResearchSection/TechResearchSection";
+import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 
 export function TacticalAction({
   activeFactionId,
@@ -60,7 +62,6 @@ export function TacticalAction({
   const currentTurn = useCurrentTurn();
   const dataUpdate = useDataUpdate();
   const factions = useFactions();
-  const objectives = useObjectives();
   const relics = useRelics();
   const techs = useTechs();
   const nekroTechs = getResearchedTechs(currentTurn, "Nekro Virus");
@@ -123,65 +124,96 @@ export function TacticalAction({
         />
       ) : null}
       <Conditional appSection="OBJECTIVES">
-        {(scoredObjectives.length > 0 && !hasCustodiansPoint) ||
-        scoredObjectives.length > 1 ? (
-          <LabeledDiv
-            label={
-              <FormattedMessage
-                id="DGs6vS"
-                description="Label for section of scored action phase objectives."
-                defaultMessage="Scored Action Phase {count, plural, one {Objective} other {Objectives}}"
-                values={{ count: scoredObjectives.length }}
-              />
-            }
-            blur
-          >
+        <Card
+          label={
             <div
-              className="flexColumn"
-              style={{ alignItems: "stretch", paddingLeft: rem(4) }}
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                height: "1em",
+                width: "100%",
+              }}
             >
-              {scoredObjectives.map((objectiveId) => {
-                if (
-                  objectiveId === "Custodians Token" ||
-                  objectiveId === "Support for the Throne"
-                ) {
-                  return null;
-                }
-                return (
-                  <ObjectiveRow
-                    key={objectiveId}
-                    objectiveId={objectiveId}
-                    removeObjective={() =>
-                      dataUpdate(
-                        Events.UnscoreObjectiveEvent(
-                          activeFactionId,
-                          objectiveId,
-                        ),
-                      )
-                    }
-                  />
-                );
-              })}
+              Action Phase Objectives
+              <div style={{ width: "1.5em", height: "1.5em" }}>
+                <ObjectivesMenuSVG
+                  color="var(--muted-text)"
+                  borderColor="var(--muted-text)"
+                />
+              </div>
             </div>
-          </LabeledDiv>
-        ) : null}
-        {scorableObjectives.length > 0 && scoredObjectives.length < 4 ? (
-          <ObjectiveSelectHoverMenu
-            action={(objectiveId) => {
-              dataUpdate(
-                Events.ScoreObjectiveEvent(activeFactionId, objectiveId),
-              );
-            }}
-            label={
-              <FormattedMessage
-                id="fCdj3q"
-                description="Text on a hover menu allowing a player to score an action phase objective."
-                defaultMessage="Score Action Phase Objective"
+          }
+        >
+          <div className="flexColumn" style={{ alignItems: "flex-start" }}>
+            {(scoredObjectives.length > 0 && !hasCustodiansPoint) ||
+            scoredObjectives.length > 1 ? (
+              // <LabeledDiv
+              //   label={
+              //     <div style={{ fontSize: "0.8rem", lineHeight: "1em" }}>
+              //       <FormattedMessage
+              //         id="DGs6vS"
+              //         description="Label for section of scored action phase objectives."
+              //         defaultMessage="Scored Action Phase {count, plural, one {Objective} other {Objectives}}"
+              //         values={{ count: scoredObjectives.length }}
+              //       />
+              //     </div>
+              //   }
+              //   color="var(--muted-text)"
+              //   blur
+              // >
+              <div
+                className="flexColumn"
+                style={{
+                  alignItems: "stretch",
+                  paddingLeft: rem(4),
+                  fontSize: "1rem",
+                  textWrap: "balance",
+                }}
+              >
+                {scoredObjectives.map((objectiveId) => {
+                  if (
+                    objectiveId === "Custodians Token" ||
+                    objectiveId === "Support for the Throne"
+                  ) {
+                    return null;
+                  }
+                  return (
+                    <ObjectiveRow
+                      key={objectiveId}
+                      objectiveId={objectiveId}
+                      removeObjective={() =>
+                        dataUpdate(
+                          Events.UnscoreObjectiveEvent(
+                            activeFactionId,
+                            objectiveId,
+                          ),
+                        )
+                      }
+                    />
+                  );
+                })}
+              </div>
+            ) : // </LabeledDiv>
+            null}
+            {scorableObjectives.length > 0 && scoredObjectives.length < 4 ? (
+              <ObjectiveSelectHoverMenu
+                action={(objectiveId) => {
+                  dataUpdate(
+                    Events.ScoreObjectiveEvent(activeFactionId, objectiveId),
+                  );
+                }}
+                label={
+                  <FormattedMessage
+                    id="fCdj3q"
+                    description="Text on a hover menu allowing a player to score an action phase objective."
+                    defaultMessage="Score Action Phase Objective"
+                  />
+                }
+                objectives={scorableObjectives}
               />
-            }
-            objectives={scorableObjectives}
-          />
-        ) : null}
+            ) : null}
+          </div>
+        </Card>
       </Conditional>
       {relic && frontier && conqueredPlanets.length === 0 ? (
         <GainRelic factionId={activeFactionId} blur />
@@ -210,8 +242,8 @@ export function TacticalAction({
       canExploreFrontier &&
       conqueredPlanets.length === 0 &&
       !relic ? (
-        <React.Fragment>
-          <ClientOnlyHoverMenu
+        <Card label="Frontier Exploration">
+          {/* <ClientOnlyHoverMenu
             label={
               <FormattedMessage
                 id="GyiC2A"
@@ -221,19 +253,20 @@ export function TacticalAction({
             }
             style={{ whiteSpace: "nowrap" }}
             buttonStyle={{ fontSize: rem(14) }}
+          > */}
+          <div
+            className={styles.OuterTechSelectMenu}
+            style={{
+              // padding: rem(8),
+              alignItems: "flex-start",
+              overflow: "visible",
+              width: "100%",
+            }}
           >
-            <div
-              className={styles.OuterTechSelectMenu}
-              style={{
-                padding: rem(8),
-                alignItems: "flex-start",
-                overflow: "visible",
-              }}
-            >
-              <FrontierExploration factionId={activeFactionId} />
-            </div>
-          </ClientOnlyHoverMenu>
-        </React.Fragment>
+            <FrontierExploration factionId={activeFactionId} />
+          </div>
+          {/* </ClientOnlyHoverMenu> */}
+        </Card>
       ) : null}
       {activeFactionId === "Embers of Muaat" ? <AdjudicatorBaal /> : null}
 

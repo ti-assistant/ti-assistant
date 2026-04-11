@@ -6,7 +6,7 @@ import { createIntl, createIntlCache, IntlShape } from "react-intl";
 import "server-only";
 import { intlErrorFn } from "./util";
 
-export const SCHEMA_VERSION = "1.0.0" as const;
+export const SCHEMA_VERSION = "2.0.0" as const;
 
 export async function getMessages(
   locale: string,

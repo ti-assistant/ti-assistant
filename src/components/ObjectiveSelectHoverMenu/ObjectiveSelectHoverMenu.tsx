@@ -73,7 +73,6 @@ export default function ObjectiveSelectHoverMenu({
                   className={`${styles.ObjectiveButton}`}
                   onClick={(e) => {
                     e.stopPropagation();
-                    closeFn();
                     action(objective.id);
                   }}
                   onMouseEnter={() => setDescription(objective.description)}

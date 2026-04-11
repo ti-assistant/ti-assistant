@@ -11,6 +11,7 @@ import { Optional } from "../../util/types/types";
 import GainRelic from "../Actions/GainRelic";
 import { ClaimedPlanetRow } from "../ClaimPlanetsSection/ClaimPlanetsSection";
 import Conditional from "../Conditional/Conditional";
+import { rem } from "../../util/util";
 
 export default function FrontierExploration({
   factionId,
@@ -41,11 +42,12 @@ export default function FrontierExploration({
 
   const mirageFound = mirage?.owner;
   return (
-    <div className="flexRow" style={{ width: "100%" }}>
+    <div className="flexRow" style={{ width: "100%", fontSize: rem(14) }}>
       <GainRelic factionId={factionId} />
       <Conditional appSection="PLANETS">
         {!mirageFound && !gainedRelic ? (
           <button
+            className="outline"
             onClick={() => {
               dataUpdate(Events.ClaimPlanetEvent(factionId, "Mirage"));
             }}

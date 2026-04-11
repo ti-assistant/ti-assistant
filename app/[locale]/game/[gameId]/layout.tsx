@@ -1,4 +1,3 @@
-import QRCode from "qrcode";
 import { Suspense } from "react";
 import "server-only";
 import {
@@ -9,17 +8,10 @@ import {
   TIASession,
 } from "../../../../server/util/fetch";
 import DataInitializer from "../../../../src/context/DataWrapper";
-import { getIntl, getSessionIdFromCookie } from "../../../../src/util/server";
+import { getSessionIdFromCookie } from "../../../../src/util/server";
 import { Optional } from "../../../../src/util/types/types";
 import DynamicSidebars from "./dynamic-sidebars";
-import GameCode from "./game-code";
 import GameLoader from "./game-loader";
-import styles from "./game.module.scss";
-
-const BASE_URL =
-  process.env.GAE_SERVICE === "dev"
-    ? "https://dev-dot-twilight-imperium-360307.wm.r.appspot.com"
-    : "https://ti-assistant.com";
 
 async function fetchGameData(gameId: string, sessionId: Optional<string>) {
   const dataPromise = getGameData(gameId, "games");
@@ -49,28 +41,6 @@ async function fetchGameData(gameId: string, sessionId: Optional<string>) {
   }
 
   return storedData;
-}
-
-function getQRCode(gameId: string, size: number): Promise<string> {
-  return new Promise<string>((resolve) => {
-    QRCode.toDataURL(
-      `${BASE_URL}/game/${gameId}`,
-      {
-        color: {
-          dark: "#cecece",
-          light: "#030303",
-        },
-        width: size,
-        margin: 2,
-      },
-      (err, url) => {
-        if (err) {
-          throw err;
-        }
-        resolve(url);
-      },
-    );
-  });
 }
 
 export default async function Layout({

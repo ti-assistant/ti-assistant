@@ -52,6 +52,7 @@ import {
 } from "../../../../../../../src/util/strings";
 import DiscardTFCard from "../../../../../../../src/components/Actions/DiscardSplicedCard";
 import Splice from "../edict/Splice";
+import Card from "../../../../../../../src/components/Card/Card";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -948,12 +949,12 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
     return (
       <Conditional appSection={conditional}>
         <div className="flexColumn" style={{ width: "100%", gap: rem(4) }}>
-          <LabeledLine
+          {/* <LabeledLine
             leftLabel={leftLabel}
             label={label}
             rightLabel={rightLabel}
             color={lineColor}
-          />
+          /> */}
           <div
             className="flexColumn"
             style={{ alignItems: "flex-start", width: "100%" }}
@@ -1151,31 +1152,33 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
     });
 
     return (
-      <ClientOnlyHoverMenu
-        label={
-          <FormattedMessage
-            id="mkUb00"
-            description="Text on a hover menu for selecting a component action."
-            defaultMessage="Select Component"
+      <Card label="Component Details">
+        <ClientOnlyHoverMenu
+          label={
+            <FormattedMessage
+              id="mkUb00"
+              description="Text on a hover menu for selecting a component action."
+              defaultMessage="Select Component"
+            />
+          }
+        >
+          <ComponentSelect
+            components={filteredComponents}
+            selectComponent={selectComponent}
+            factionId={factionId}
           />
-        }
-      >
-        <ComponentSelect
-          components={filteredComponents}
-          selectComponent={selectComponent}
-          factionId={factionId}
-        />
-      </ClientOnlyHoverMenu>
+        </ClientOnlyHoverMenu>
+      </Card>
     );
   }
 
   return (
-    <React.Fragment>
+    <Card label="Component Details">
       <div
         className="flexColumn largeFont"
-        style={{ width: "100%", justifyContent: "flex-start" }}
+        style={{ width: "100%", alignItems: "flex-start" }}
       >
-        <LabeledDiv
+        {/* <LabeledDiv
           blur
           label={
             <FormattedMessage
@@ -1185,47 +1188,47 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
             />
           }
           style={{ width: "90%" }}
+        > */}
+        <SelectableRow
+          itemId={component.id}
+          removeItem={() => unselectComponent(component.id)}
+          viewOnly={viewOnly}
         >
-          <SelectableRow
-            itemId={component.id}
-            removeItem={() => unselectComponent(component.id)}
-            viewOnly={viewOnly}
+          <InfoRow
+            infoTitle={
+              <div className="flexColumn" style={{ fontSize: rem(40) }}>
+                {component.name}
+              </div>
+            }
+            infoContent={<InfoContent component={component} />}
           >
-            <InfoRow
-              infoTitle={
-                <div className="flexColumn" style={{ fontSize: rem(40) }}>
-                  {component.name}
-                </div>
-              }
-              infoContent={<InfoContent component={component} />}
-            >
-              {component.name}
-            </InfoRow>
-          </SelectableRow>
-          {component.id === "Ssruu" ? (
-            <div className="flexRow" style={{ paddingLeft: rem(16) }}>
-              Using the ability of
-              <Selector
-                hoverMenuLabel="Select Agent"
-                options={agentsForSsruu}
-                selectedItem={getSelectedSubComponent(currentTurn)}
-                toggleItem={(agent, add) => {
-                  const updatedName = agent
-                    .replace(/\./g, "")
-                    .replace(/,/g, "")
-                    .replace(/ Ω/g, "");
-                  dataUpdate(
-                    Events.SelectSubComponentEvent(add ? updatedName : "None"),
-                  );
-                }}
-                viewOnly={viewOnly}
-              />
-            </div>
-          ) : null}
-          <ComponentDetails factionId={factionId} />
-        </LabeledDiv>
+            {component.name}
+          </InfoRow>
+        </SelectableRow>
+        {component.id === "Ssruu" ? (
+          <div className="flexRow" style={{ paddingLeft: rem(16) }}>
+            Using the ability of
+            <Selector
+              hoverMenuLabel="Select Agent"
+              options={agentsForSsruu}
+              selectedItem={getSelectedSubComponent(currentTurn)}
+              toggleItem={(agent, add) => {
+                const updatedName = agent
+                  .replace(/\./g, "")
+                  .replace(/,/g, "")
+                  .replace(/ Ω/g, "");
+                dataUpdate(
+                  Events.SelectSubComponentEvent(add ? updatedName : "None"),
+                );
+              }}
+              viewOnly={viewOnly}
+            />
+          </div>
+        ) : null}
+        <ComponentDetails factionId={factionId} />
+        {/* </LabeledDiv> */}
       </div>
-    </React.Fragment>
+    </Card>
   );
 
   return null;

@@ -5,6 +5,23 @@ div.ClaimedPlanetsSection {
   row-gap: 0.25rem;
 }
 
+div.ClaimPlanetsSection {
+  width: "100%";
+  background-color: var(--disabled-bg);
+  align-items: flex-start;
+
+  // outline: 1px solid pink;
+  padding: 0.25rem;
+
+  border-radius: 0.125rem;
+}
+
+.ClaimPlanetsSection > label {
+  font-size: 0.75em;
+  line-height: 1em;
+  color: var(--muted-text);
+}
+
 .ClaimedPlanetRow {
   width: 100%;
   display: grid;

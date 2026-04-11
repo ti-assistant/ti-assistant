@@ -21,6 +21,8 @@ import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import PlanetRow from "../PlanetRow/PlanetRow";
 import styles from "./ClaimPlanetsSection.module.scss";
+import Card from "../Card/Card";
+import PlanetMenuSVG from "../../icons/ui/PlanetMenu";
 
 export default function ClaimPlanetsSection({
   availablePlanets,
@@ -71,9 +73,22 @@ export default function ClaimPlanetsSection({
   }
 
   return (
-    <div
-      className={`flexColumn ${styles.ClaimPlanetsSection}`}
-      style={{ width: "100%" }}
+    <Card
+      label={
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            height: "1em",
+            width: "100%",
+          }}
+        >
+          Planets
+          <div style={{ width: "1.5em", height: "1.5em" }}>
+            <PlanetMenuSVG color="var(--muted-text)" />
+          </div>
+        </div>
+      }
     >
       <ClaimedPlanetsSection factionId={factionId} hideWrapper={hideWrapper} />
       {!complete && availablePlanets.length > 0 ? (
@@ -113,7 +128,7 @@ export default function ClaimPlanetsSection({
           )}
         ></ClientOnlyHoverMenu>
       ) : null}
-    </div>
+    </Card>
   );
 }
 
@@ -130,7 +145,7 @@ function ClaimedPlanetsSection({
     return null;
   }
 
-  if (hideWrapper) {
+  if (true) {
     return (
       <div className={styles.ClaimedPlanetsSection}>
         {claimedPlanetEvents.map((event) => {
@@ -281,7 +296,7 @@ function AddAttachment({ event }: { event: ClaimPlanetEvent }) {
     <div className="flexRow" style={{ justifyContent: "center" }}>
       <AttachmentSelectRadialMenu
         attachments={availableAttachments}
-        size={40}
+        size={32}
         hasSkip={planetHasSkip}
         onSelect={(attachmentId, prevAttachment) => {
           if (prevAttachment) {
