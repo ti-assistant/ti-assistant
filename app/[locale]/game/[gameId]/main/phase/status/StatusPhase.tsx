@@ -584,7 +584,7 @@ function MiddleColumn() {
                           }
                           objectives={secrets}
                           fontSize={rem(14)}
-                          perColumn={10}
+                          perColumn={13}
                         />
                       )}
                     </div>

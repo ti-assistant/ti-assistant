@@ -924,6 +924,7 @@ function TFTechList({
                                 style={{
                                   whiteSpace: "nowrap",
                                   fontFamily: "var(--main-font)",
+
                                   paddingLeft: rem(8),
                                   rowGap: rem(2),
                                   width: "100%",

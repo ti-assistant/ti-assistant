@@ -19,6 +19,7 @@ import CustodiansToken from "./CustodiansToken";
 import ScorableFactionIcon from "./ScorableFactionIcon";
 import SimpleScorable from "./SimpleScorable";
 import Styx from "./Styx";
+import Card from "../../Card/Card";
 
 export default function OtherObjectivesGrid() {
   const orderedFactionIds = useOrderedFactionIds("MAP");
@@ -76,7 +77,7 @@ function SupportForTheThrone({
   }
 
   return (
-    <LabeledDiv
+    <Card
       label={
         <FormattedMessage
           id="Objectives.Support for the Throne.Title"
@@ -147,7 +148,7 @@ function SupportForTheThrone({
           );
         })}
       </div>
-    </LabeledDiv>
+    </Card>
   );
 }
 
@@ -161,7 +162,7 @@ function ImperialPoints({
   const viewOnly = useViewOnly();
 
   return (
-    <LabeledDiv
+    <Card
       label={
         <FormattedMessage
           id="eGEjSH"
@@ -275,7 +276,7 @@ function ImperialPoints({
           );
         })}
       </div>
-    </LabeledDiv>
+    </Card>
   );
 }
 
@@ -332,7 +333,7 @@ function RelicObjectives({
   }
 
   return (
-    <LabeledDiv
+    <Card
       label={
         <FormattedMessage
           id="pPpzkR"
@@ -377,7 +378,7 @@ function RelicObjectives({
           orderedFactionIds={orderedFactionIds}
         />
       </div>
-    </LabeledDiv>
+    </Card>
   );
 }
 
@@ -396,7 +397,7 @@ function LawObjectives({
   }
 
   return (
-    <LabeledDiv
+    <Card
       label={
         <FormattedMessage
           id="hMWeZX"
@@ -409,30 +410,34 @@ function LawObjectives({
         width: "100%",
         height: "100%",
       }}
-      innerStyle={{
-        flexDirection: "row",
-        fontSize: !includesPoK ? rem(12) : undefined,
-      }}
     >
-      <SimpleScorable
-        objectiveId="Holy Planet of Ixth"
-        orderedFactionIds={orderedFactionIds}
-      />
-      {!includesPoK ? (
+      <div
+        className="flexRow"
+        style={{
+          width: "100%",
+          fontSize: !includesPoK ? rem(12) : undefined,
+        }}
+      >
         <SimpleScorable
-          objectiveId="Shard of the Throne"
+          objectiveId="Holy Planet of Ixth"
           orderedFactionIds={orderedFactionIds}
         />
-      ) : null}
-      <SimpleScorable
-        objectiveId="The Crown of Emphidia"
-        orderedFactionIds={orderedFactionIds}
-      />
-      <SimpleScorable
-        objectiveId="Political Censure"
-        orderedFactionIds={orderedFactionIds}
-      />
-    </LabeledDiv>
+        {!includesPoK ? (
+          <SimpleScorable
+            objectiveId="Shard of the Throne"
+            orderedFactionIds={orderedFactionIds}
+          />
+        ) : null}
+        <SimpleScorable
+          objectiveId="The Crown of Emphidia"
+          orderedFactionIds={orderedFactionIds}
+        />
+        <SimpleScorable
+          objectiveId="Political Censure"
+          orderedFactionIds={orderedFactionIds}
+        />
+      </div>
+    </Card>
   );
 }
 
@@ -450,7 +455,7 @@ function DirectiveObjectives({
   }
 
   return (
-    <LabeledDiv
+    <Card
       label={
         <FormattedMessage
           id="t6v2oN"
@@ -464,14 +469,10 @@ function DirectiveObjectives({
         width: "100%",
         height: "100%",
       }}
-      innerStyle={{
-        padding: 0,
-        paddingTop: rem(8),
-      }}
     >
       <Mutiny orderedFactionIds={orderedFactionIds} />
       <SeedOfAnEmpire orderedFactionIds={orderedFactionIds} />
-    </LabeledDiv>
+    </Card>
   );
 }
 

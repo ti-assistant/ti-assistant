@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import FactionCard from "../../../../../../../src/components/FactionCard/FactionCard";
+import FancyFactionDiv from "../../../../../../../src/components/FactionCard/FactionCard";
 import FactionComponents from "../../../../../../../src/components/FactionComponents/FactionComponents";
 import FactionSelectRadialMenu from "../../../../../../../src/components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import FormattedDescription from "../../../../../../../src/components/FormattedDescription/FormattedDescription";
@@ -819,12 +819,9 @@ export default function StrategyPhase() {
                 description="Label showing that the specific player is the current player."
                 defaultMessage="Active Player"
               />
-              <FactionCard
+              <FancyFactionDiv
                 factionId={activeFactionId}
                 style={{ height: rem(80) }}
-                opts={{
-                  iconSize: rem(60),
-                }}
               >
                 <div
                   className="flexColumn"
@@ -842,7 +839,7 @@ export default function StrategyPhase() {
                     }}
                   />
                 </div>
-              </FactionCard>
+              </FancyFactionDiv>
             </div>
           ) : (
             <div
@@ -865,11 +862,10 @@ export default function StrategyPhase() {
                 description="Label showing that the specific player is up next."
                 defaultMessage="On Deck"
               />
-              <FactionCard
+              <FancyFactionDiv
                 factionId={onDeckFactionId}
                 style={{ height: rem(64) }}
                 opts={{
-                  iconSize: rem(44),
                   fontSize: rem(24),
                 }}
               >
@@ -889,7 +885,7 @@ export default function StrategyPhase() {
                     width={96}
                   />
                 </div>
-              </FactionCard>
+              </FancyFactionDiv>
             </div>
           ) : null}
         </div>

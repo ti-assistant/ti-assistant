@@ -1,10 +1,9 @@
-import { CSSProperties, ReactNode, useState } from "react";
+import { CSSProperties, ReactNode } from "react";
 import { useIntl } from "react-intl";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
-import { useGameId, useViewOnly } from "../../context/dataHooks";
-import styles from "./ObjectiveSelectHoverMenu.module.scss";
-import FormattedDescription from "../FormattedDescription/FormattedDescription";
+import { useViewOnly } from "../../context/dataHooks";
 import ObjectiveCard from "../ObjectiveRow/ObjectiveCard";
+import styles from "./ObjectiveSelectHoverMenu.module.scss";
 
 interface ObjectiveGridCSSProperties extends CSSProperties {
   "--font-size": string;
@@ -26,13 +25,10 @@ export default function ObjectiveSelectHoverMenu({
   fontSize = "1rem",
   label,
   objectives,
-  perColumn = 4,
+  perColumn = 5,
   buttonStyle = {},
 }: ObjectiveSelectHoverMenuProps) {
-  const intl = useIntl();
   const viewOnly = useViewOnly();
-
-  const [description, setDescription] = useState("Hover to see full text.");
 
   const objectiveGridCSSProperties: ObjectiveGridCSSProperties = {
     "--font-size": fontSize,
@@ -55,16 +51,6 @@ export default function ObjectiveSelectHoverMenu({
           <div
             className={styles.ObjectiveGrid}
             style={objectiveGridCSSProperties}
-            onMouseLeave={() =>
-              setDescription(
-                intl.formatMessage({
-                  id: "49U8Wl",
-                  description:
-                    "Text telling the user that they can hover over objectives to see the full text.",
-                  defaultMessage: "Hover to see full text.",
-                }),
-              )
-            }
           >
             {sortedObjectives.map((objective) => {
               return (
@@ -75,9 +61,8 @@ export default function ObjectiveSelectHoverMenu({
                     e.stopPropagation();
                     action(objective.id);
                   }}
-                  onMouseEnter={() => setDescription(objective.description)}
                   disabled={viewOnly}
-                  style={{ padding: "0.25rem" }}
+                  style={{ padding: "0.25rem", fontSize }}
                 >
                   <ObjectiveCard objectiveId={objective.id} hideZoomButton />
                 </button>

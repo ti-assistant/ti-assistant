@@ -30,16 +30,14 @@ interface FactionCardOpts {
 
 interface FactionCardProps {
   factionId: FactionId;
-  hideIcon?: boolean;
   rightLabel?: ReactNode;
   opts?: FactionCardOpts;
   style?: CSSProperties;
 }
 
-export default function FactionCard({
+export default function FancyFactionDiv({
   children,
   factionId,
-  hideIcon = false,
   rightLabel,
   style = {},
   opts = {},
@@ -57,6 +55,7 @@ export default function FactionCard({
             gap: "0.25rem",
             fontFamily:
               activeFactionId === factionId ? "var(--main-font) " : undefined,
+            fontSize: opts.fontSize,
           }}
         >
           <FactionIcon factionId={factionId} size={16} />
@@ -75,32 +74,6 @@ export default function FactionCard({
           fontSize: opts.fontSize ?? undefined,
         }}
       >
-        {/* {hideIcon ? null : (
-          <div
-            className="flexRow"
-            style={{
-              zIndex: -2,
-              position: "absolute",
-              width: "100%",
-              height: "100%",
-            }}
-          >
-            <div
-              className="flexRow"
-              style={{
-                zIndex: -1,
-                opacity: "40%",
-                position: "absolute",
-                top: 0,
-                width: opts.iconSize ? opts.iconSize : "100%",
-                height: opts.iconSize ? opts.iconSize : "100%",
-                userSelect: "none",
-              }}
-            >
-              <FactionComponents.Icon factionId={factionId} size="100%" />
-            </div>
-          </div>
-        )} */}
         {children}
       </div>
     </LabeledDiv>

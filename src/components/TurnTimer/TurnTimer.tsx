@@ -57,7 +57,10 @@ export default function TurnTimer({ gameTime }: { gameTime: number }) {
           time={Math.max(gameTime - prevTurnStartTime, 0)}
           label={label}
           width={120}
-          style={{ fontSize: rem(20), fontFamily: "var(--main-font)" }}
+          style={{
+            fontSize: rem(20),
+            fontFamily: "var(--main-font)",
+          }}
         />
       </div>
     </div>

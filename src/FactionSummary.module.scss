@@ -1,3 +1,5 @@
+@use "./styles/mixins" as *;
+
 .FactionSummary {
   display: flex;
   gap: 0.5rem;
@@ -8,7 +10,8 @@
 }
 
 .VPGrid {
-  font-family: var(--main-font);
+  @include main-font;
+
   position: relative;
   align-items: center;
   display: flex;

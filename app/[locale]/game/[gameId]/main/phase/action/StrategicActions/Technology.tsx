@@ -1,3 +1,4 @@
+import { FactionCard } from "../../../../../../../../src/components/Card/Card";
 import Conditional from "../../../../../../../../src/components/Conditional/Conditional";
 import FactionComponents from "../../../../../../../../src/components/FactionComponents/FactionComponents";
 import LabeledDiv from "../../../../../../../../src/components/LabeledDiv/LabeledDiv";
@@ -9,10 +10,6 @@ import {
 } from "../../../../../../../../src/context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../../../../../../src/context/gameDataHooks";
 import { getResearchedTechs } from "../../../../../../../../src/util/actionLog";
-import {
-  getFactionBorder,
-  getFactionColor,
-} from "../../../../../../../../src/util/factions";
 import { rem } from "../../../../../../../../src/util/util";
 
 const Technology = {
@@ -28,15 +25,13 @@ function Primary({ factionId }: { factionId: FactionId }) {
 
   return (
     <Conditional appSection="TECHS">
-      <div style={{ width: "fit-content" }}>
-        <LabeledDiv
+      <div style={{ minWidth: rem(300) }}>
+        <FactionCard
+          factionId={factionId}
           label={<FactionComponents.Name factionId={factionId} />}
-          color={colors.color}
-          borderColor={colors.border}
-          blur
         >
           <TechResearchSection factionId={factionId} numTechs={2} hideWrapper />
-        </LabeledDiv>
+        </FactionCard>
       </div>
     </Conditional>
   );
@@ -59,22 +54,16 @@ function Secondary({ factionId }: { factionId: FactionId }) {
   }
   return (
     <Conditional appSection="TECHS">
-      <LabeledDiv
-        key={factionId}
+      <FactionCard
+        factionId={factionId}
         label={<FactionComponents.Name factionId={factionId} />}
-        color={getFactionColor(faction)}
-        borderColor={getFactionBorder(faction)}
-        opts={{ fixedWidth: true }}
-        blur
       >
-        <>
-          <TechResearchSection
-            factionId={factionId}
-            numTechs={maxTechs}
-            hideWrapper
-          />
-        </>
-      </LabeledDiv>
+        <TechResearchSection
+          factionId={factionId}
+          numTechs={maxTechs}
+          hideWrapper
+        />
+      </FactionCard>
     </Conditional>
   );
 }

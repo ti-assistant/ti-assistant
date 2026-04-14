@@ -44,6 +44,7 @@ function InfoContent({ tech }: { tech: Tech }) {
               style={{
                 whiteSpace: "nowrap",
                 fontFamily: "var(--main-font)",
+
                 paddingLeft: rem(8),
                 rowGap: rem(2),
                 width: "100%",
@@ -143,6 +144,7 @@ export function TechRow({
               zIndex: 0,
               gap: "0.5em",
               fontFamily: "var(--main-font)",
+
               cursor: "pointer",
             }}
             onClick={

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import FactionCard from "../../../../../../src/components/FactionCard/FactionCard";
+import FancyFactionDiv from "../../../../../../src/components/FactionCard/FactionCard";
 import { useGameId } from "../../../../../../src/context/dataHooks";
 import { useFaction } from "../../../../../../src/context/factionDataHooks";
 import { StaticFactionTimer } from "../../../../../../src/Timer";
@@ -24,9 +24,8 @@ export default function FactionPage({ factionId }: { factionId: FactionId }) {
   return (
     <>
       <div style={{ width: "100%", margin: rem(4) }}>
-        <FactionCard
+        <FancyFactionDiv
           factionId={faction.id}
-          hideIcon
           style={{ width: "100%" }}
           rightLabel={
             <StaticFactionTimer
@@ -40,7 +39,7 @@ export default function FactionPage({ factionId }: { factionId: FactionId }) {
           }
         >
           <FactionContent factionId={factionId} />
-        </FactionCard>
+        </FancyFactionDiv>
       </div>
     </>
   );

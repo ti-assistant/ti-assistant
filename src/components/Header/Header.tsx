@@ -162,7 +162,7 @@ export default function Header({ archive }: { archive?: boolean }) {
             ) : (
               <button
                 className="primary"
-                style={{ fontFamily: "var(--main-font)", fontSize: rem(32) }}
+                style={{ fontSize: rem(32) }}
                 onClick={() => {
                   dataUpdate(Events.EndGameEvent());
                 }}

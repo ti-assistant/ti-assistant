@@ -1,3 +1,5 @@
+@use "../../styles/mixins" as *;
+
 .PlanetSummary {
   display: flex;
   flex-direction: row;
@@ -22,6 +24,8 @@
 }
 
 .PlanetTotal {
+  @include main-font;
+
   position: absolute;
   width: 1.7rem;
   height: 1.7rem;
@@ -29,8 +33,6 @@
   right: 0;
   border: 1px solid #444;
   border-radius: 100%;
-
-  font-family: var(--main-font);
 
   display: flex;
   flex-direction: column;

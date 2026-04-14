@@ -1,5 +1,6 @@
 .Card {
   display: flex;
+  position: relative;
   flex-direction: column;
   align-items: flex-start;
 
@@ -12,6 +13,18 @@
   width: 100%;
 }
 
+.CardBody {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.Card:has(.CardBody:empty) {
+  display: none;
+}
+
 .Card > label {
   font-size: 0.875rem;
   line-height: 1em;
@@ -19,4 +32,11 @@
   margin-bottom: 0.25rem;
 
   width: 100%;
+}
+
+.Card > .Icon {
+  position: absolute;
+  right: 0.25rem;
+  top: 0.25rem;
+  z-index: 1;
 }

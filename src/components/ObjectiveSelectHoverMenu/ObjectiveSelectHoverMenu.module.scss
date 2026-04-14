@@ -13,25 +13,28 @@
 }
 
 .Container {
-  max-width: 80vw;
+  max-width: clamp(14em, 64em, 70vw);
 
   overflow-x: auto;
 
-  max-height: 55dvh;
+  max-height: 50dvh;
   overflow-y: auto;
   padding: 0.5rem;
 }
 
 .ObjectiveGrid {
   --font-size: unset;
-  --num-items: 4;
-  --per-column: 4;
+  --num-items: 5;
+  --per-column: 5;
 
   display: grid;
   justify-content: flex-start;
   grid-auto-flow: column;
   grid-template-rows: repeat(min(var(--num-items), var(--per-column)), 1fr);
-  grid-auto-columns: 1fr;
+  grid-template-rows: repeat(var(--num-items), 1fr);
+
+  grid-auto-columns: minmax(14em, 1fr);
+  white-space: normal;
   gap: 0.25rem;
 }
 
@@ -45,4 +48,10 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+}
+
+@media only screen and (max-width: 27rem) {
+  .ObjectiveGrid {
+    grid-template-rows: repeat(var(--num-items), 1fr);
+  }
 }

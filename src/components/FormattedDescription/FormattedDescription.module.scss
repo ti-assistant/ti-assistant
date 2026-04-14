@@ -1,6 +1,10 @@
+@use "../../styles/mixins" as *;
+
 .Ability {
-  font-family: var(--main-font);
+  @include main-font;
+
   font-weight: normal;
+  letter-spacing: 0;
   font-size: 90%;
 }
 

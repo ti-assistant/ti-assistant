@@ -64,7 +64,10 @@ interface FactionColors {
 export function useFactionColors(factionId: FactionId) {
   return useMemoizedGameDataValue<Optional<string>, FactionColors>(
     `factions.${factionId}.color`,
-    { color: "var(--passed-text)", border: "var(--passed-text)" },
+    {
+      color: "var(--passed-text)",
+      border: "var(--passed-text)",
+    },
     (color) => {
       return {
         color: convertToFactionColor(color),

@@ -40,7 +40,6 @@ import ScoreObjectiveRow from "./ObjectiveRow/ScoreObjectiveRow";
 import ObjectiveSelectHoverMenu from "./ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import styles from "./TacticalAction.module.scss";
 import TechResearchSection from "./TechResearchSection/TechResearchSection";
-import ObjectiveRow from "./ObjectiveRow/ObjectiveRow";
 
 export function TacticalAction({
   activeFactionId,
@@ -145,22 +144,7 @@ export function TacticalAction({
           }
         >
           <div className="flexColumn" style={{ alignItems: "flex-start" }}>
-            {(scoredObjectives.length > 0 && !hasCustodiansPoint) ||
-            scoredObjectives.length > 1 ? (
-              // <LabeledDiv
-              //   label={
-              //     <div style={{ fontSize: "0.8rem", lineHeight: "1em" }}>
-              //       <FormattedMessage
-              //         id="DGs6vS"
-              //         description="Label for section of scored action phase objectives."
-              //         defaultMessage="Scored Action Phase {count, plural, one {Objective} other {Objectives}}"
-              //         values={{ count: scoredObjectives.length }}
-              //       />
-              //     </div>
-              //   }
-              //   color="var(--muted-text)"
-              //   blur
-              // >
+            {scoredObjectives.length > 0 ? (
               <div
                 className="flexColumn"
                 style={{
@@ -178,7 +162,7 @@ export function TacticalAction({
                     return null;
                   }
                   return (
-                    <ObjectiveRow
+                    <ObjectiveCard
                       key={objectiveId}
                       objectiveId={objectiveId}
                       removeObjective={() =>
@@ -193,8 +177,7 @@ export function TacticalAction({
                   );
                 })}
               </div>
-            ) : // </LabeledDiv>
-            null}
+            ) : null}
             {scorableObjectives.length > 0 && scoredObjectives.length < 4 ? (
               <ObjectiveSelectHoverMenu
                 action={(objectiveId) => {

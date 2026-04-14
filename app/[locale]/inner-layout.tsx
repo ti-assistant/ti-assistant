@@ -1,16 +1,14 @@
 import Link from "next/link";
 import { PropsWithChildren } from "react";
 import LangSelectHoverMenu from "../../src/components/LangSelectHoverMenu/LangSelectHoverMenu";
-import SettingsButton from "../../src/components/SettingsModal/SettingsButton";
 import Sidebars from "../../src/components/Sidebars/Sidebars";
 import SiteLogo from "../../src/components/SiteLogo/SiteLogo";
 import DataStoreWrapper from "../../src/context/DataStoreWrapper";
 import ModalProvider from "../../src/context/ModalProvider";
 import TimerProvider from "../../src/context/TimerProvider";
-import styles from "./root.module.scss";
-import ThemeToggleWrapper from "./ThemeToggleWrapper";
-import Wrapper, { SettingsProvider } from "./wrapper";
 import NavBarButtons from "./NavBarButtons";
+import styles from "./root.module.scss";
+import Wrapper, { SettingsProvider } from "./wrapper";
 
 const SUPPORTED_LOCALES = ["en", "de", "fr", "ru", "pl", "pt-BR"];
 

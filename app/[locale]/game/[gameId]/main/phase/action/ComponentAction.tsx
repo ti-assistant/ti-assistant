@@ -53,6 +53,7 @@ import {
 import DiscardTFCard from "../../../../../../../src/components/Actions/DiscardSplicedCard";
 import Splice from "../edict/Splice";
 import Card from "../../../../../../../src/components/Card/Card";
+import ActionCardsSVG from "../../../../../../../src/icons/expedition/ActionCards";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -983,7 +984,13 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
   );
 }
 
-export function ComponentAction({ factionId }: { factionId: FactionId }) {
+export function ComponentAction({
+  factionId,
+  style,
+}: {
+  factionId: FactionId;
+  style?: CSSProperties;
+}) {
   const actionCards = useActionCards();
   const actionLog = useActionLog();
   const components = useComponents();
@@ -1152,7 +1159,10 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
     });
 
     return (
-      <Card label="Component Details">
+      <Card
+        label="Component Details"
+        style={{ ...style, width: "fit-content" }}
+      >
         <ClientOnlyHoverMenu
           label={
             <FormattedMessage
@@ -1173,7 +1183,7 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
   }
 
   return (
-    <Card label="Component Details">
+    <Card label="Component Details" style={{ ...style, width: "fit-content" }}>
       <div
         className="flexColumn largeFont"
         style={{ width: "100%", alignItems: "flex-start" }}
@@ -1202,7 +1212,25 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
             }
             infoContent={<InfoContent component={component} />}
           >
-            {component.name}
+            <div style={{ fontSize: "1em", width: rem(350) }}>
+              {component.name}
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.5em",
+                  fontSize: "0.75em",
+                  color: "var(--muted-text)",
+                  lineHeight: "1.25em",
+                  whiteSpace: "normal",
+                  textAlign: "left",
+                  fontFamily: "var(--primary-font)",
+                  textWrap: "balance",
+                }}
+              >
+                <FormattedDescription description={component.description} />
+              </div>
+            </div>
           </InfoRow>
         </SelectableRow>
         {component.id === "Ssruu" ? (

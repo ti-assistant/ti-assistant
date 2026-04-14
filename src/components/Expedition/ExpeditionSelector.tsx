@@ -14,6 +14,9 @@ import { Events } from "../../util/api/events";
 import { objectEntries, objectKeys, rem } from "../../util/util";
 import ExpeditionSelectRadialMenu from "../ExpeditionSelectRadialMenu/ExpeditionSelectRadialMenu";
 import FactionSelectRadialMenu from "../FactionSelectRadialMenu/FactionSelectRadialMenu";
+import Card from "../Card/Card";
+import ThundersEdgeMenuSVG from "../../icons/ui/ThundersEdgeMenu";
+import { useAllFactionColors } from "../../context/factionDataHooks";
 
 function expeditionComplete(expedition: Expedition) {
   return objectKeys(expedition).length === 6;
@@ -48,6 +51,7 @@ export default function ExpeditionSelector({
   const options = useOptions();
   const viewOnly = useViewOnly();
   const selectedAction = getSelectedActionFromLog(currentTurn);
+  const factionColors = useAllFactionColors();
 
   if (
     !options.expansions.includes("THUNDERS EDGE") ||
@@ -67,7 +71,10 @@ export default function ExpeditionSelector({
   const newOwner = getNewOwner(currentTurn, "Thunder's Edge");
 
   return (
-    <>
+    <div
+      className="flexColumn"
+      style={{ alignItems: "flex-start", gap: rem(4) }}
+    >
       <div className="flexRow" style={{ fontSize: rem(16), gap: rem(4) }}>
         <FormattedMessage
           id="1bUwOq"
@@ -119,10 +126,12 @@ export default function ExpeditionSelector({
               }
             }}
             selectedFaction={newOwner}
+            borderColor={newOwner ? factionColors[newOwner]?.border : undefined}
             viewOnly={viewOnly}
+            size={40}
           />
         </div>
       ) : null}
-    </>
+    </div>
   );
 }

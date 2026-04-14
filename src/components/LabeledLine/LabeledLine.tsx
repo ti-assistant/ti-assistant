@@ -23,7 +23,7 @@ export default function LabeledLine({
   label,
   rightLabel,
   style = {},
-  color = "var(--neutral-border)",
+  color = "var(--foreground-color)",
   borderColor = "var(--hidden-border)",
 }: LabeledLineProps) {
   const labeledLineStyle: LabeledLineCSS = {

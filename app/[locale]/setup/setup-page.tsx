@@ -2330,6 +2330,7 @@ export default function SetupPage() {
             style={{
               fontSize: rem(40),
               fontFamily: "var(--main-font)",
+
               color: creatingGame ? "var(--disabled-bg)" : undefined,
               position: "relative",
             }}
@@ -2621,6 +2622,7 @@ export default function SetupPage() {
               style={{
                 fontSize: rem(40),
                 fontFamily: "var(--main-font)",
+
                 color: creatingGame ? "var(--disabled-bg)" : undefined,
                 position: "relative",
               }}

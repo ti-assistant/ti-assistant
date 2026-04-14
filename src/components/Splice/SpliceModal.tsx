@@ -644,6 +644,7 @@ function SpliceCard({
             width: "100%",
             justifyContent: "center",
             fontFamily: "var(--main-font)",
+
             paddingInline: "0.25rem",
           }}
         >
@@ -700,6 +701,7 @@ function SpliceCard({
                 style={{
                   whiteSpace: "nowrap",
                   fontFamily: "var(--main-font)",
+
                   paddingLeft: rem(8),
                   rowGap: rem(2),
                   width: "100%",

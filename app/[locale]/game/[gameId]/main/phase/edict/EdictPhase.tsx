@@ -126,7 +126,9 @@ export default function EdictPhase() {
                           : undefined
                       }
                       itemId={edictId}
-                      style={{ fontFamily: "var(--main-font)" }}
+                      style={{
+                        fontFamily: "var(--main-font)",
+                      }}
                     >
                       <InfoRow
                         infoTitle={edict.name}
@@ -199,7 +201,9 @@ export default function EdictPhase() {
                           : undefined
                       }
                       itemId={edictId}
-                      style={{ fontFamily: "var(--main-font)" }}
+                      style={{
+                        fontFamily: "var(--main-font)",
+                      }}
                     >
                       <InfoRow
                         infoTitle={edict.name}
