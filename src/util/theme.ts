@@ -25,13 +25,13 @@ const code = function () {
     } catch (err) {}
   };
 
-  var darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  var lightQuery = window.matchMedia("(prefers-color-scheme: light)");
 
-  darkQuery.addEventListener("change", function (e) {
-    (window as any).__setPreferredTheme(e.matches ? "dark" : "light");
+  lightQuery.addEventListener("change", function (e) {
+    (window as any).__setPreferredTheme(e.matches ? "light" : "dark");
   });
 
-  setTheme(preferredTheme || (darkQuery.matches ? "dark" : "light"));
+  setTheme(preferredTheme || (lightQuery.matches ? "light" : "dark"));
 };
 
 export const getTheme = `(${code})();`;

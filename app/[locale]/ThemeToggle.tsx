@@ -37,7 +37,7 @@ const ThemeToggle = () => {
       onClick={toggleTheme}
     >
       <div className="flexRow" style={{ width: rem(24), height: rem(24) }}>
-        {isDark ? <DarkModeSVG /> : <LightModeSVG />}
+        {isDark ? <LightModeSVG /> : <DarkModeSVG />}
       </div>
     </button>
   );
