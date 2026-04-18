@@ -174,10 +174,10 @@ export function HoverMenu({
         : "var(--interactive-bg)"
       : borderColor;
   const hoverMenuStyle: CSSProperties & {
-    "--bg-color": "var(--background-color)";
+    "--local-background": "var(--background-color)";
     "--border-color": string;
   } = {
-    "--bg-color": "var(--background-color)",
+    "--local-background": "var(--background-color)",
     "--border-color": "hoveredBorder",
     position: "absolute",
     zIndex: 1000,
@@ -189,7 +189,7 @@ export function HoverMenu({
       ? undefined
       : `var(--border-size) solid ${hoveredBorder}`,
     borderRadius: "0.3125rem",
-    backgroundColor: "var(--bg-color)",
+    backgroundColor: "var(--local-background)",
     overflow: "visible",
     whiteSpace: "nowrap",
     gap: 0,

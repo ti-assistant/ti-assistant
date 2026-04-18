@@ -1,3 +1,4 @@
+import { use } from "react";
 import { useViewOnly } from "../../context/dataHooks";
 import { useObjective } from "../../context/objectiveDataHooks";
 import InfoModal from "../../InfoModal";
@@ -5,6 +6,8 @@ import { SelectableRow } from "../../SelectableRow";
 import { em, rem } from "../../util/util";
 import FactionComponents from "../FactionComponents/FactionComponents";
 import FormattedDescription from "../FormattedDescription/FormattedDescription";
+import { ModalContext } from "../../context/contexts";
+import { ModalContent } from "../Modal/Modal";
 
 interface InfoContentProps {
   objective: Objective;
@@ -45,6 +48,7 @@ export default function ObjectiveRow({
   scoreObjective,
 }: ObjectiveRowProps) {
   const objective = useObjective(objectiveId);
+  const { openModal } = use(ModalContext);
   const viewOnly = useViewOnly();
 
   if (!objective) {
@@ -85,14 +89,27 @@ export default function ObjectiveRow({
               alignItems: "center",
               flexBasis: "50%",
               flexGrow: 2,
+              cursor: "pointer",
+            }}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              openModal(
+                <ModalContent title={objective.name}>
+                  <InfoContent objective={objective} />
+                </ModalContent>,
+              );
             }}
           >
-            <div style={{ display: "flex", flex: "2 0 50%" }}>
+            <div
+              style={{
+                display: "flex",
+                flex: "2 0 50%",
+                fontFamily: "var(--main-font)",
+              }}
+            >
               {objective.name}
             </div>
-            <InfoModal title={objective.name} style={{ marginLeft: em(8) }}>
-              <InfoContent objective={objective} />
-            </InfoModal>
           </div>
           {canScore(objective) && scoreObjective ? (
             <button

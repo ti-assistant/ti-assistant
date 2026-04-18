@@ -24,7 +24,11 @@ const Tyrannus = {
 
 export default Tyrannus;
 
-function Primary() {
+function Primary({
+  allowSpeakerToBeTyrant,
+}: {
+  allowSpeakerToBeTyrant?: boolean;
+}) {
   const currentTurn = useCurrentTurn();
   const dataUpdate = useDataUpdate();
   const mapOrderedFactionIds = useOrderedFactionIds("MAP");
@@ -38,7 +42,7 @@ function Primary() {
   const invalidTyrants: FactionId[] = [speaker];
   if (newTyrantEvent?.prevTyrant) {
     invalidTyrants.push(newTyrantEvent.prevTyrant);
-  } else if (!newTyrantEvent && tyrant) {
+  } else if (!newTyrantEvent && tyrant && !allowSpeakerToBeTyrant) {
     invalidTyrants.push(tyrant);
   }
   return (

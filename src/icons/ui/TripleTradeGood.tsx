@@ -10,7 +10,7 @@ export default function TripleTradeGoodSVG({ color }: { color?: string }) {
     >
       <defs>
         <linearGradient id="linearGradient114742">
-          <stop stopColor="#fff" offset="0" />
+          <stop stopColor="#eee" offset="0" />
           <stop stopColor="#e2cd33" offset="1" />
         </linearGradient>
         <radialGradient

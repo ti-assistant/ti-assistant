@@ -104,7 +104,7 @@ function SettingsModalContent() {
           <Chip
             toggleFn={() => setSelectedTab("GAME SETTINGS")}
             selected={selectedTab === "GAME SETTINGS"}
-            style={{fontSize: rem(16) }}
+            style={{ fontSize: rem(16) }}
           >
             <FormattedMessage
               id="+XKsgE"
@@ -172,7 +172,10 @@ function SettingsModalContent() {
                   >
                     <div
                       className="flexRow"
-                      style={{ gap: rem(4), fontFamily: "var(--main-font)" }}
+                      style={{
+                        gap: rem(4),
+                        fontFamily: "var(--main-font)",
+                      }}
                     >
                       2<TechIcon type="GREEN" size={16} />
                       <DummyTechTree />
@@ -190,7 +193,10 @@ function SettingsModalContent() {
                   >
                     <div
                       className="flexRow"
-                      style={{ gap: rem(4), fontFamily: "var(--main-font)" }}
+                      style={{
+                        gap: rem(4),
+                        fontFamily: "var(--main-font)",
+                      }}
                     >
                       2<TechIcon type="GREEN" size={16} />
                     </div>
@@ -204,7 +210,10 @@ function SettingsModalContent() {
                   >
                     <div
                       className="flexRow"
-                      style={{ gap: rem(4), fontFamily: "var(--main-font)" }}
+                      style={{
+                        gap: rem(4),
+                        fontFamily: "var(--main-font)",
+                      }}
                     >
                       <TechIcon type="GREEN" size={16} />
                       <DummyTechTree />
@@ -222,7 +231,10 @@ function SettingsModalContent() {
                   >
                     <div
                       className="flexRow"
-                      style={{ gap: rem(4), fontFamily: "var(--main-font)" }}
+                      style={{
+                        gap: rem(4),
+                        fontFamily: "var(--main-font)",
+                      }}
                     >
                       2
                       <DummyTechTree />
@@ -237,7 +249,10 @@ function SettingsModalContent() {
                   >
                     <div
                       className="flexRow"
-                      style={{ gap: rem(4), fontFamily: "var(--main-font)" }}
+                      style={{
+                        gap: rem(4),
+                        fontFamily: "var(--main-font)",
+                      }}
                     >
                       <DummyTechTree />
                     </div>

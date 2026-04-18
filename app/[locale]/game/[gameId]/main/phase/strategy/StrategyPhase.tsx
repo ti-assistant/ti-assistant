@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import FactionCard from "../../../../../../../src/components/FactionCard/FactionCard";
+import FancyFactionDiv from "../../../../../../../src/components/FactionCard/FactionCard";
 import FactionComponents from "../../../../../../../src/components/FactionComponents/FactionComponents";
 import FactionSelectRadialMenu from "../../../../../../../src/components/FactionSelectRadialMenu/FactionSelectRadialMenu";
 import FormattedDescription from "../../../../../../../src/components/FormattedDescription/FormattedDescription";
@@ -537,6 +537,10 @@ export default function StrategyPhase() {
   const onDeckFactionId = useOnDeckFactionId();
   const round = useRound();
 
+  const onDeckColors = onDeckFactionId
+    ? factionColors[onDeckFactionId]
+    : undefined;
+
   interface Ability {
     name: string;
     description: string;
@@ -810,7 +814,11 @@ export default function StrategyPhase() {
       <div className={styles.MainColumn}>
         <div
           className="flexRow"
-          style={{ position: "relative", maxWidth: rem(420) }}
+          style={{
+            position: "relative",
+            alignItems: "center",
+            maxWidth: rem(420),
+          }}
         >
           {activeFactionId ? (
             <div className="flexColumn" style={{ alignItems: "center" }}>
@@ -819,11 +827,11 @@ export default function StrategyPhase() {
                 description="Label showing that the specific player is the current player."
                 defaultMessage="Active Player"
               />
-              <FactionCard
+              <FancyFactionDiv
                 factionId={activeFactionId}
                 style={{ height: rem(80) }}
                 opts={{
-                  iconSize: rem(60),
+                  fontSize: rem(24),
                 }}
               >
                 <div
@@ -842,7 +850,7 @@ export default function StrategyPhase() {
                     }}
                   />
                 </div>
-              </FactionCard>
+              </FancyFactionDiv>
             </div>
           ) : (
             <div
@@ -860,36 +868,53 @@ export default function StrategyPhase() {
           )}
           {onDeckFactionId ? (
             <div className="flexColumn" style={{ alignItems: "center" }}>
-              <FormattedMessage
-                id="S0vXJt"
-                description="Label showing that the specific player is up next."
-                defaultMessage="On Deck"
-              />
-              <FactionCard
-                factionId={onDeckFactionId}
-                style={{ height: rem(64) }}
-                opts={{
-                  iconSize: rem(44),
-                  fontSize: rem(24),
-                }}
-              >
-                <div
-                  className="flexColumn"
-                  style={{
-                    paddingBottom: rem(4),
-                    height: "100%",
-                  }}
-                >
+              <LabeledDiv
+                label={
+                  <FormattedMessage
+                    id="S0vXJt"
+                    description="Label showing that the specific player is up next."
+                    defaultMessage="On Deck"
+                  />
+                }
+                rightLabel={
                   <StaticFactionTimer
                     active={false}
                     factionId={onDeckFactionId}
                     style={{
-                      fontSize: rem(18),
+                      fontSize: rem(16),
                     }}
-                    width={96}
+                    width={72}
+                  />
+                }
+                color={onDeckColors?.color}
+                borderColor={onDeckColors?.border}
+                style={{
+                  width: "fit-content",
+                  minWidth: rem(200),
+                }}
+              >
+                <div
+                  className="flexRow"
+                  style={{
+                    width: "100%",
+                    height: rem(44),
+                    whiteSpace: "nowrap",
+                    gap: rem(4),
+                    fontSize: rem(24),
+                    fontFamily: "var(--main-font)",
+                  }}
+                >
+                  <FactionComponents.Icon
+                    factionId={onDeckFactionId}
+                    size={16}
+                  />
+                  {<FactionComponents.Name factionId={onDeckFactionId} />}
+                  <FactionComponents.Icon
+                    factionId={onDeckFactionId}
+                    size={16}
                   />
                 </div>
-              </FactionCard>
+              </LabeledDiv>
             </div>
           ) : null}
         </div>

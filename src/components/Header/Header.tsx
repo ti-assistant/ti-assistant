@@ -21,7 +21,6 @@ import { computeVPs } from "../../util/factions";
 import { rem } from "../../util/util";
 import GameTimer from "../GameTimer/GameTimer";
 import styles from "./Header.module.scss";
-import Link from "next/link";
 
 const BASE_URL =
   process.env.GAE_SERVICE === "dev"
@@ -163,7 +162,7 @@ export default function Header({ archive }: { archive?: boolean }) {
             ) : (
               <button
                 className="primary"
-                style={{ fontFamily: "var(--main-font)", fontSize: rem(32) }}
+                style={{ fontSize: rem(32) }}
                 onClick={() => {
                   dataUpdate(Events.EndGameEvent());
                 }}

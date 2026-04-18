@@ -10,6 +10,7 @@ import {
 } from "../../context/dataHooks";
 import { useClaimedPlanetEvents } from "../../context/planetDataHooks";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
+import PlanetMenuSVG from "../../icons/ui/PlanetMenu";
 import { getAttachments } from "../../util/actionLog";
 import { useDataUpdate } from "../../util/api/dataUpdate";
 import { Events } from "../../util/api/events";
@@ -17,6 +18,7 @@ import { applyPlanetAttachments } from "../../util/planets";
 import { rem } from "../../util/util";
 import GainRelic from "../Actions/GainRelic";
 import AttachmentSelectRadialMenu from "../AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
+import Card from "../Card/Card";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import PlanetRow from "../PlanetRow/PlanetRow";
@@ -71,9 +73,13 @@ export default function ClaimPlanetsSection({
   }
 
   return (
-    <div
-      className={`flexColumn ${styles.ClaimPlanetsSection}`}
-      style={{ width: "100%" }}
+    <Card
+      label="Planets"
+      icon={
+        <div style={{ width: "1.25em", height: "1.25em" }}>
+          <PlanetMenuSVG color="var(--muted-text)" />
+        </div>
+      }
     >
       <ClaimedPlanetsSection factionId={factionId} hideWrapper={hideWrapper} />
       {!complete && availablePlanets.length > 0 ? (
@@ -113,7 +119,7 @@ export default function ClaimPlanetsSection({
           )}
         ></ClientOnlyHoverMenu>
       ) : null}
-    </div>
+    </Card>
   );
 }
 
@@ -130,7 +136,7 @@ function ClaimedPlanetsSection({
     return null;
   }
 
-  if (hideWrapper) {
+  if (true) {
     return (
       <div className={styles.ClaimedPlanetsSection}>
         {claimedPlanetEvents.map((event) => {
@@ -281,7 +287,7 @@ function AddAttachment({ event }: { event: ClaimPlanetEvent }) {
     <div className="flexRow" style={{ justifyContent: "center" }}>
       <AttachmentSelectRadialMenu
         attachments={availableAttachments}
-        size={40}
+        size={32}
         hasSkip={planetHasSkip}
         onSelect={(attachmentId, prevAttachment) => {
           if (prevAttachment) {

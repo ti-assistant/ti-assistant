@@ -24,7 +24,12 @@ function InfoContent({ agenda }: { agenda: Agenda }) {
     >
       <div className="flexColumn" style={{ gap: rem(32) }}>
         {agenda.elect !== "For/Against" ? (
-          <div style={{ paddingTop: rem(12), fontFamily: "var(--main-font)" }}>
+          <div
+            style={{
+              paddingTop: rem(12),
+              fontFamily: "var(--main-font)",
+            }}
+          >
             <FormattedMessage
               id="EAsvAe"
               defaultMessage="Elect {outcomeType}"

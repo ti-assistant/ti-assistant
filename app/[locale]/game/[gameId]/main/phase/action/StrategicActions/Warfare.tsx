@@ -104,7 +104,6 @@ function Primary({ factionId }: { factionId: FactionId }) {
       conqueredPlanets={claimedPlanets}
       scorableObjectives={scorableObjectives}
       scoredObjectives={scoredActionPhaseObjectives}
-      style={{ width: "100%" }}
     />
   );
 }

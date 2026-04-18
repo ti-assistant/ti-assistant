@@ -159,7 +159,7 @@ export default function AttachmentSelectRadialMenu({
                       <AttachmentIcon
                         attachment={attachment}
                         hasSkip={hasSkip}
-                        size={size - 8}
+                        size={size - 4}
                       />
                     )}
                   </div>
@@ -193,7 +193,7 @@ export default function AttachmentSelectRadialMenu({
                       attachment={attachmentData[selectedAttachment]}
                       hasSkip={hasSkip}
                       hideBorder
-                      size={size - 8}
+                      size={size - 4}
                     />
                   ) : (
                     <SymbolX />
@@ -231,7 +231,7 @@ export default function AttachmentSelectRadialMenu({
           }
           hasSkip={hasSkip}
           hideBorder
-          size={size - 8}
+          size={size - 4}
         />
       </Circle>
     </div>

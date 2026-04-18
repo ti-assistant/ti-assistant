@@ -79,6 +79,7 @@ function CardGainSection({
             <FactionDiv factionId={faction}>
               <GainTFCard
                 factionId={faction}
+                action={{ to: factionId }}
                 numToGain={{ total: 1, abilities: 1, genomes: 1, upgrades: 1 }}
               />
             </FactionDiv>
@@ -92,6 +93,7 @@ function CardGainSection({
     <FactionDiv factionId={factionId}>
       <GainTFCard
         factionId={factionId}
+        action={{ to: factionId }}
         numToGain={{ total: 2, abilities: 2, genomes: 2, upgrades: 2 }}
       />
     </FactionDiv>

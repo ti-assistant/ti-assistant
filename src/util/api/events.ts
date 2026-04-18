@@ -37,6 +37,7 @@ export const Events = {
   PlayAdjudicatorBaalEvent,
   PlayPromissoryNoteEvent,
   PlayRiderEvent,
+  PurgeRelicEvent,
   PurgeSystemEvent,
   PurgeTechEvent,
   RemoveAttachmentEvent,
@@ -68,6 +69,7 @@ export const Events = {
   UnplayActionCardEvent,
   UnplayPromissoryNoteEvent,
   UnplayRiderEvent,
+  UnpurgeRelicEvent,
   UnpurgeSystemEvent,
   UnpurgeTechEvent,
   UnscoreObjectiveEvent,
@@ -522,6 +524,16 @@ function PlayRiderEvent(
   };
 }
 
+function PurgeRelicEvent(relicId: RelicId, unravel?: boolean): PurgeRelicData {
+  return {
+    action: "PURGE_RELIC",
+    event: {
+      relic: relicId,
+      unravel,
+    },
+  };
+}
+
 function PurgeSystemEvent(systemId: SystemId): PurgeSystemData {
   return {
     action: "PURGE_SYSTEM",
@@ -866,6 +878,19 @@ function UnplayRiderEvent(rider: string): UnplayRiderData {
     action: "UNPLAY_RIDER",
     event: {
       rider,
+    },
+  };
+}
+
+function UnpurgeRelicEvent(
+  relicId: RelicId,
+  unravel?: boolean,
+): UnpurgeRelicData {
+  return {
+    action: "UNPURGE_RELIC",
+    event: {
+      relic: relicId,
+      unravel,
     },
   };
 }

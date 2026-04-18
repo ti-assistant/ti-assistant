@@ -1,6 +1,8 @@
 .TacticalAction {
   display: flex;
   flex-direction: column;
+
+  width: clamp(120px, 25rem, 100%);
 }
 
 .OtherFactionsLabel:only-child {
@@ -11,7 +13,5 @@
   .TacticalAction {
     justify-content: flex-start;
     align-items: flex-start;
-
-    padding-left: 1rem;
   }
 }

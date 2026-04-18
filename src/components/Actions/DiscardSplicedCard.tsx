@@ -17,7 +17,6 @@ import { InfoRow } from "../../InfoRow";
 import { SelectableRow } from "../../SelectableRow";
 import {
   GainedCards,
-  getDiscardedTFCards,
   getDiscardedTFCardsByType,
   getDiscardedTFCardsByTypeWithFaction,
   getGainedTFCardsByType,
@@ -25,7 +24,9 @@ import {
 import { useDataUpdate } from "../../util/api/dataUpdate";
 import { Events } from "../../util/api/events";
 import { getTechTypeColor } from "../../util/techs";
-import { objectEntries, rem } from "../../util/util";
+import { rem } from "../../util/util";
+import Card from "../Card/Card";
+import FactionIcon from "../FactionIcon/FactionIcon";
 import FormattedDescription from "../FormattedDescription/FormattedDescription";
 import IconDiv from "../LabeledDiv/IconDiv";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
@@ -39,7 +40,6 @@ import TechResearchSection from "../TechResearchSection/TechResearchSection";
 import UnitIcon from "../Units/Icons";
 import UnitStats from "../UnitStats/UnitStats";
 import styles from "./GainSplicedCard.module.scss";
-import FactionIcon from "../FactionIcon/FactionIcon";
 
 interface NumberToDiscard {
   abilities?: number;
@@ -105,11 +105,9 @@ export default function DiscardTFCard({
   other,
   style,
   numToDiscard,
-  splice,
 }: {
   factionId: FactionId;
   other?: boolean;
-  splice?: boolean;
   style?: CSSProperties;
   numToDiscard: NumberToDiscard;
 }) {
@@ -133,55 +131,38 @@ export default function DiscardTFCard({
       className="flexColumn"
       style={{ width: "fit-content", alignItems: "flex-start" }}
     >
-      <GainedCardsSection
+      <AbilitiesCard
         factionId={factionId}
         allDiscarded={allDiscarded}
         gainedCardsByType={discardedCardsByType}
-        splice={splice}
+        numToGain={numToDiscard}
         steal={other}
+        style={style}
       />
-      {canDiscardMore ? (
-        <div
-          className={`flexColumn ${styles.GainContainer}`}
-          style={{ alignItems: "flex-start" }}
-        >
-          <GainAbilitySection
-            discardedAbilities={discardedCardsByType.abilities}
-            factionId={factionId}
-            numToGain={numToDiscard.abilities}
-            steal={other}
-            style={style}
-          />
-          <GainGenomeSection
-            discardedGenomes={discardedCardsByType.genomes}
-            factionId={factionId}
-            numToGain={numToDiscard.genomes}
-            steal={other}
-            style={style}
-          />
-          <GainParadigmSection
-            gainedParadigms={discardedCardsByType.paradigms}
-            factionId={factionId}
-            numToGain={numToDiscard.paradigms}
-            steal={other}
-            style={style}
-          />
-          <GainUpgradeSection
-            gainedUpgrades={discardedCardsByType.upgrades}
-            factionId={factionId}
-            numToGain={numToDiscard.upgrades}
-            steal={other}
-            style={style}
-          />
-          {splice ? (
-            <TechResearchSection
-              factionId={factionId}
-              numTechs={2}
-              hideResearchedTechs
-            />
-          ) : null}
-        </div>
-      ) : null}
+      <GenomesCard
+        factionId={factionId}
+        allDiscarded={allDiscarded}
+        gainedCardsByType={discardedCardsByType}
+        numToGain={numToDiscard}
+        steal={other}
+        style={style}
+      />
+      <UpgradesCard
+        factionId={factionId}
+        allDiscarded={allDiscarded}
+        gainedCardsByType={discardedCardsByType}
+        numToGain={numToDiscard}
+        steal={other}
+        style={style}
+      />
+      <ParadigmsCard
+        factionId={factionId}
+        allDiscarded={allDiscarded}
+        gainedCardsByType={discardedCardsByType}
+        numToGain={numToDiscard}
+        steal={other}
+        style={style}
+      />
     </div>
   );
 }
@@ -411,6 +392,7 @@ function GainedCardsSection({
                             style={{
                               whiteSpace: "nowrap",
                               fontFamily: "var(--main-font)",
+
                               paddingLeft: rem(8),
                               rowGap: rem(2),
                               width: "100%",
@@ -503,18 +485,626 @@ function GainedCardsSection({
   return <LabeledDiv label="TODO">{innerContent}</LabeledDiv>;
 }
 
+function AbilitiesCard({
+  factionId,
+  gainedCardsByType,
+  allDiscarded,
+  numToGain,
+  steal,
+  style,
+}: {
+  factionId: FactionId;
+  allDiscarded: GainedCards;
+  gainedCardsByType: GainedCardsByType;
+  numToGain: NumberToDiscard;
+  steal?: boolean;
+  style?: CSSProperties;
+}) {
+  const abilities = useAbilities();
+  const dataUpdate = useDataUpdate();
+  const viewOnly = useViewOnly();
+
+  let canGainMore = canDiscardMoreCards(numToGain, gainedCardsByType);
+  let discardedCount = gainedCardsByType.abilities.length;
+  let availableAbilities = Object.values(abilities)
+    .filter((ability) => ability.owner === factionId)
+    .filter((ability) => !gainedCardsByType.abilities.includes(ability.id))
+    .sort((a, b) => (a.name > b.name ? 1 : -1));
+
+  if (steal) {
+    canGainMore = canDiscardMoreCards(numToGain, allDiscarded);
+    discardedCount = allDiscarded.abilities.length;
+    availableAbilities = Object.values(abilities)
+      .filter((ability) => !!ability.owner && ability.owner !== factionId)
+      .sort((a, b) => (a.name > b.name ? 1 : -1));
+  }
+  const totalToGain = numToGain.abilities ?? 0;
+  const abilitiesToGain = totalToGain - discardedCount;
+
+  if ((!canGainMore || abilitiesToGain < 1) && discardedCount < 1) {
+    return null;
+  }
+
+  if (availableAbilities.length === 0 && discardedCount === 0) {
+    return null;
+  }
+
+  const label =
+    totalToGain > 100 || totalToGain === 0 ? (
+      <FormattedMessage
+        id="Nwro0F"
+        defaultMessage="Discard any number of Abilities"
+        description="Label for a section used to discard abilities."
+      />
+    ) : (
+      <FormattedMessage
+        id="9k9JtR"
+        defaultMessage="Discard {count} {count, plural, one {Ability} other {Abilities}}"
+        description="Label for a section used to discard abilities."
+        values={{ count: totalToGain }}
+      />
+    );
+
+  return (
+    <Card
+      label={label}
+      icon={
+        <div
+          style={{
+            position: "relative",
+            width: "1em",
+            height: "1em",
+          }}
+        >
+          <AbilitySVG color="var(--muted-text)" />
+        </div>
+      }
+    >
+      <div
+        className="flexColumn"
+        style={{ gap: "0.25rem", alignItems: "flex-start" }}
+      >
+        {allDiscarded.abilities.map((abilityEvent) => {
+          if (!steal && abilityEvent.factionId !== factionId) {
+            return null;
+          }
+          const ability = abilities[abilityEvent.id];
+          if (!ability) {
+            return null;
+          }
+          return (
+            <SelectableRow
+              key={abilityEvent.id}
+              itemId={abilityEvent.id}
+              removeItem={() =>
+                dataUpdate(
+                  Events.GainTFCardEvent(
+                    abilityEvent.factionId,
+                    {
+                      ability: abilityEvent.id,
+                      type: "ABILITY",
+                    },
+                    true,
+                  ),
+                )
+              }
+              viewOnly={viewOnly}
+              style={{ width: "100%" }}
+            >
+              <div
+                className="flexRow"
+                style={{
+                  justifyContent: "space-between",
+                  width: "100%",
+                  gap: rem(4),
+                }}
+              >
+                <InfoRow
+                  infoTitle={ability.name}
+                  infoContent={
+                    <FormattedDescription description={ability.description} />
+                  }
+                >
+                  {steal ? (
+                    <FactionIcon factionId={abilityEvent.factionId} size={16} />
+                  ) : null}
+                  <div style={{ color: getTechTypeColor(ability.type) }}>
+                    {ability.name}
+                  </div>
+                </InfoRow>
+              </div>
+            </SelectableRow>
+          );
+        })}
+        {canGainMore && abilitiesToGain > 0 ? (
+          <GainAbilitySection
+            factionId={factionId}
+            discardedAbilities={gainedCardsByType.abilities}
+            numToGain={totalToGain}
+            steal={steal}
+            style={style}
+            hideIcon
+          />
+        ) : null}
+      </div>
+    </Card>
+  );
+}
+
+function GenomesCard({
+  factionId,
+  gainedCardsByType,
+  allDiscarded,
+  numToGain,
+  steal,
+  style,
+}: {
+  factionId: FactionId;
+  allDiscarded: GainedCards;
+  gainedCardsByType: GainedCardsByType;
+  numToGain: NumberToDiscard;
+  steal?: boolean;
+  style?: CSSProperties;
+}) {
+  const dataUpdate = useDataUpdate();
+  const genomes = useGenomes();
+  const viewOnly = useViewOnly();
+
+  let canGainMore = canDiscardMoreCards(numToGain, gainedCardsByType);
+  let discardedCount = gainedCardsByType.genomes.length;
+  let availableGenomes = Object.values(genomes)
+    .filter((genome) => genome.owner === factionId)
+    .filter((genome) => !gainedCardsByType.genomes.includes(genome.id))
+    .sort((a, b) => (a.name > b.name ? 1 : -1));
+
+  if (steal) {
+    canGainMore = canDiscardMoreCards(numToGain, allDiscarded);
+    discardedCount = allDiscarded.genomes.length;
+    availableGenomes = Object.values(genomes)
+      .filter((genome) => !!genome.owner && genome.owner !== factionId)
+      .sort((a, b) => (a.name > b.name ? 1 : -1));
+  }
+  const totalToGain = numToGain.genomes ?? 0;
+  const genomesToGain = totalToGain - discardedCount;
+
+  if ((!canGainMore || genomesToGain < 1) && discardedCount < 1) {
+    return null;
+  }
+
+  if (availableGenomes.length === 0 && discardedCount === 0) {
+    return null;
+  }
+
+  const label =
+    totalToGain > 100 || totalToGain === 0 ? (
+      <FormattedMessage
+        id="z3Fj4q"
+        defaultMessage="Discard any number of Genomes"
+        description="Label for a section used to discard genomes."
+      />
+    ) : (
+      <FormattedMessage
+        id="XIEHjL"
+        defaultMessage="Discard {count} {count, plural, one {Genome} other {Genomes}}"
+        description="Label for a section used to discard genomes."
+        values={{ count: totalToGain }}
+      />
+    );
+
+  return (
+    <Card
+      label={label}
+      icon={
+        <div
+          style={{
+            position: "relative",
+            width: "1em",
+            height: "1em",
+          }}
+        >
+          <GenomeSVG color="var(--muted-text)" />
+        </div>
+      }
+    >
+      <div
+        className="flexColumn"
+        style={{ gap: "0.25rem", alignItems: "flex-start" }}
+      >
+        {allDiscarded.genomes.map((genomeEvent) => {
+          if (!steal && genomeEvent.factionId !== factionId) {
+            return null;
+          }
+          const genome = genomes[genomeEvent.id];
+          if (!genome) {
+            return null;
+          }
+          return (
+            <SelectableRow
+              key={genomeEvent.id}
+              itemId={genomeEvent.id}
+              removeItem={() =>
+                dataUpdate(
+                  Events.GainTFCardEvent(
+                    genomeEvent.factionId,
+                    {
+                      genome: genomeEvent.id,
+                      type: "GENOME",
+                    },
+                    true,
+                  ),
+                )
+              }
+              viewOnly={viewOnly}
+              style={{ width: "100%" }}
+            >
+              <div
+                className="flexRow"
+                style={{
+                  justifyContent: "space-between",
+                  width: "100%",
+                  gap: rem(4),
+                }}
+              >
+                <InfoRow
+                  infoTitle={genome.name}
+                  infoContent={
+                    <FormattedDescription description={genome.description} />
+                  }
+                >
+                  {steal ? (
+                    <FactionIcon factionId={genomeEvent.factionId} size={16} />
+                  ) : null}
+                  {genome.name}
+                </InfoRow>
+              </div>
+            </SelectableRow>
+          );
+        })}
+        {canGainMore && genomesToGain > 0 ? (
+          <GainGenomeSection
+            factionId={factionId}
+            discardedGenomes={gainedCardsByType.genomes}
+            numToGain={totalToGain}
+            steal={steal}
+            style={style}
+            hideIcon
+          />
+        ) : null}
+      </div>
+    </Card>
+  );
+}
+
+function UpgradesCard({
+  factionId,
+  gainedCardsByType,
+  allDiscarded,
+  numToGain,
+  steal,
+  style,
+}: {
+  factionId: FactionId;
+  allDiscarded: GainedCards;
+  gainedCardsByType: GainedCardsByType;
+  numToGain: NumberToDiscard;
+  steal?: boolean;
+  style?: CSSProperties;
+}) {
+  const dataUpdate = useDataUpdate();
+  const upgrades = useUpgrades();
+  const viewOnly = useViewOnly();
+
+  let canGainMore = canDiscardMoreCards(numToGain, gainedCardsByType);
+  const totalToGain = numToGain.upgrades ?? 0;
+  let discardedCount = gainedCardsByType.upgrades.length;
+  let availableUpgrades = Object.values(upgrades)
+    .filter((upgrade) => upgrade.owner === factionId)
+    .filter((upgrade) => !gainedCardsByType.upgrades.includes(upgrade.id))
+    .sort((a, b) => (a.name > b.name ? 1 : -1));
+
+  if (steal) {
+    canGainMore = canDiscardMoreCards(numToGain, allDiscarded);
+    discardedCount = allDiscarded.upgrades.length;
+    availableUpgrades = Object.values(upgrades)
+      .filter((upgrade) => !!upgrade.owner && upgrade.owner !== factionId)
+      .sort((a, b) => (a.name > b.name ? 1 : -1));
+  }
+
+  const upgradesToGain = totalToGain - discardedCount;
+
+  if ((!canGainMore || upgradesToGain < 1) && discardedCount < 1) {
+    return null;
+  }
+
+  if (availableUpgrades.length === 0 && discardedCount === 0) {
+    return null;
+  }
+
+  const label =
+    totalToGain > 100 || totalToGain === 0 ? (
+      <FormattedMessage
+        id="SqFE9l"
+        defaultMessage="Discard any number of Unit Upgrades"
+        description="Label for a section used to discard unit upgrades."
+      />
+    ) : (
+      <FormattedMessage
+        id="xps7l+"
+        defaultMessage="Discard {count} {count, plural, one {Unit Upgrade} other {Unit Upgrades}}"
+        description="Label for a section used to discard unit upgrades."
+        values={{ count: totalToGain }}
+      />
+    );
+
+  return (
+    <Card
+      label={label}
+      icon={
+        <div
+          style={{
+            position: "relative",
+            width: "1em",
+            height: "1em",
+          }}
+        >
+          <UpgradeSVG color="var(--muted-text)" />
+        </div>
+      }
+    >
+      <div
+        className="flexColumn"
+        style={{ gap: "0.25rem", alignItems: "flex-start" }}
+      >
+        {allDiscarded.upgrades.map((upgradeEvent) => {
+          if (!steal && upgradeEvent.factionId !== factionId) {
+            return null;
+          }
+          const upgrade = upgrades[upgradeEvent.id];
+          if (!upgrade) {
+            return null;
+          }
+          return (
+            <SelectableRow
+              key={upgradeEvent.id}
+              itemId={upgradeEvent.id}
+              removeItem={() =>
+                dataUpdate(
+                  Events.GainTFCardEvent(
+                    upgradeEvent.factionId,
+                    {
+                      upgrade: upgradeEvent.id,
+                      type: "UNIT_UPGRADE",
+                    },
+                    true,
+                  ),
+                )
+              }
+              viewOnly={viewOnly}
+            >
+              <InfoRow
+                infoTitle={
+                  <div
+                    className="flexRow"
+                    style={{ fontSize: rem(40), gap: rem(20) }}
+                  >
+                    {upgrade.name}
+                    <UnitIcon type={upgrade.unitType} size={20} />
+                  </div>
+                }
+                infoContent={
+                  <div
+                    className="flexColumn"
+                    style={{
+                      width: "100%",
+                      padding: rem(4),
+                      whiteSpace: "pre-line",
+                      textAlign: "center",
+                      fontSize: rem(32),
+                      gap: rem(32),
+                    }}
+                  >
+                    <FormattedDescription description={upgrade.description} />
+                    <div className="flexColumn" style={{ width: "100%" }}>
+                      {upgrade.abilities.length > 0 ? (
+                        <div
+                          className={styles.UpgradeTechAbilities}
+                          style={{
+                            whiteSpace: "nowrap",
+                            fontFamily: "var(--main-font)",
+
+                            paddingLeft: rem(8),
+                            rowGap: rem(2),
+                            width: "100%",
+                          }}
+                        >
+                          {upgrade.abilities.map((ability) => {
+                            return (
+                              <div key={ability}>{ability.toUpperCase()}</div>
+                            );
+                          })}
+                        </div>
+                      ) : null}
+                      <UnitStats
+                        stats={upgrade.stats}
+                        type={upgrade.unitType}
+                        className={styles.UnitStats}
+                      />
+                    </div>
+                  </div>
+                }
+              >
+                <div
+                  className="flexRow"
+                  style={{ position: "relative", gap: rem(8) }}
+                >
+                  {upgrade.name}
+                  <UnitIcon type={upgrade.unitType} size="1em" />
+                </div>
+              </InfoRow>
+            </SelectableRow>
+          );
+        })}
+        {canGainMore && upgradesToGain > 0 ? (
+          <GainUpgradeSection
+            factionId={factionId}
+            gainedUpgrades={gainedCardsByType.upgrades}
+            numToGain={totalToGain}
+            steal={steal}
+            style={style}
+            hideIcon
+          />
+        ) : null}
+      </div>
+    </Card>
+  );
+}
+
+function ParadigmsCard({
+  factionId,
+  gainedCardsByType,
+  allDiscarded,
+  numToGain,
+  steal,
+  style,
+}: {
+  factionId: FactionId;
+  allDiscarded: GainedCards;
+  gainedCardsByType: GainedCardsByType;
+  numToGain: NumberToDiscard;
+  steal?: boolean;
+  style?: CSSProperties;
+}) {
+  const dataUpdate = useDataUpdate();
+  const paradigms = useParadigms();
+  const viewOnly = useViewOnly();
+
+  let canGainMore = canDiscardMoreCards(numToGain, gainedCardsByType);
+  let discardedCount = gainedCardsByType.paradigms.length;
+  let availableParadigms = Object.values(paradigms)
+    .filter((paradigm) => paradigm.owner === factionId)
+    .filter((paradigm) => !gainedCardsByType.paradigms.includes(paradigm.id))
+    .sort((a, b) => (a.name > b.name ? 1 : -1));
+
+  if (steal) {
+    canGainMore = canDiscardMoreCards(numToGain, allDiscarded);
+    discardedCount = allDiscarded.paradigms.length;
+    availableParadigms = Object.values(paradigms)
+      .filter((paradigm) => !!paradigm.owner && paradigm.owner !== factionId)
+      .sort((a, b) => (a.name > b.name ? 1 : -1));
+  }
+  const totalToGain = numToGain.paradigms ?? 0;
+  const paradigmsToGain = totalToGain - discardedCount;
+
+  if ((!canGainMore || paradigmsToGain < 1) && discardedCount < 1) {
+    return null;
+  }
+
+  if (availableParadigms.length === 0 && discardedCount === 0) {
+    return null;
+  }
+
+  const label =
+    totalToGain > 100 || totalToGain === 0 ? (
+      <FormattedMessage
+        id="WV1Cwe"
+        defaultMessage="Discard any number of Paradigms"
+        description="Label for a section used to discard paradigms."
+      />
+    ) : (
+      <FormattedMessage
+        id="9INv4t"
+        defaultMessage="Discard {count} {count, plural, one {Paradigm} other {Paradigms}}"
+        description="Label for a section used to discard paradigms."
+        values={{ count: totalToGain }}
+      />
+    );
+
+  return (
+    <Card
+      label={label}
+      icon={
+        <div
+          style={{
+            position: "relative",
+            width: "1em",
+            height: "1em",
+          }}
+        >
+          <ParadigmSVG color="var(--muted-text)" />
+        </div>
+      }
+    >
+      <div
+        className="flexColumn"
+        style={{ gap: "0.25rem", alignItems: "flex-start" }}
+      >
+        {allDiscarded.paradigms.map((paradigmEvent) => {
+          if (!steal && paradigmEvent.factionId !== factionId) {
+            return null;
+          }
+          const paradigm = paradigms[paradigmEvent.id];
+          if (!paradigm) {
+            return null;
+          }
+          return (
+            <SelectableRow
+              key={paradigmEvent.id}
+              itemId={paradigmEvent.id}
+              removeItem={() =>
+                dataUpdate(
+                  Events.GainTFCardEvent(
+                    paradigmEvent.factionId,
+                    {
+                      paradigm: paradigmEvent.id,
+                      type: "PARADIGM",
+                    },
+                    true,
+                  ),
+                )
+              }
+              viewOnly={viewOnly}
+              style={{ width: "100%" }}
+            >
+              <InfoRow
+                infoTitle={paradigm.name}
+                infoContent={
+                  <FormattedDescription description={paradigm.description} />
+                }
+              >
+                {paradigm.name}
+              </InfoRow>
+            </SelectableRow>
+          );
+        })}
+        {canGainMore && paradigmsToGain > 0 ? (
+          <GainParadigmSection
+            factionId={factionId}
+            gainedParadigms={gainedCardsByType.paradigms}
+            numToGain={totalToGain}
+            steal={steal}
+            style={style}
+            hideIcon
+          />
+        ) : null}
+      </div>
+    </Card>
+  );
+}
+
 export function GainAbilitySection({
   factionId,
   discardedAbilities,
   numToGain,
   steal,
   style,
+  hideIcon,
 }: {
   factionId: FactionId;
   discardedAbilities: TFAbilityId[];
   numToGain?: number;
   steal?: boolean;
   style?: CSSProperties;
+  hideIcon?: boolean;
 }) {
   const currentTurn = useCurrentTurn();
   const dataUpdate = useDataUpdate();
@@ -540,9 +1130,11 @@ export function GainAbilitySection({
       }}
       label={
         <div className="flexRow" style={{ gap: rem(6) }}>
-          <span style={{ width: "1em" }}>
-            <AbilitySVG />
-          </span>
+          {hideIcon ? null : (
+            <span style={{ width: "1em" }}>
+              <AbilitySVG />
+            </span>
+          )}
           <FormattedMessage
             id="Components.Discard Ability.Title"
             description="Title of Component: Discard Ability"
@@ -639,12 +1231,14 @@ export function GainGenomeSection({
   numToGain,
   steal,
   style,
+  hideIcon,
 }: {
   factionId: FactionId;
   discardedGenomes: TFGenomeId[];
   numToGain?: number;
   steal?: boolean;
   style?: CSSProperties;
+  hideIcon?: boolean;
 }) {
   const currentTurn = useCurrentTurn();
   const dataUpdate = useDataUpdate();
@@ -672,9 +1266,11 @@ export function GainGenomeSection({
     <ClientOnlyHoverMenu
       label={
         <div className="flexRow" style={{ gap: rem(6) }}>
-          <span style={{ width: "0.61em" }}>
-            <GenomeSVG />
-          </span>
+          {hideIcon ? null : (
+            <span style={{ width: "0.61em" }}>
+              <GenomeSVG />
+            </span>
+          )}
           <FormattedMessage
             id="Components.Discard Genome.Title"
             description="Title of Component: Discard Genome"
@@ -780,12 +1376,14 @@ export function GainParadigmSection({
   numToGain,
   steal,
   style,
+  hideIcon,
 }: {
   factionId: FactionId;
   gainedParadigms: TFParadigmId[];
   numToGain?: number;
   steal?: boolean;
   style?: CSSProperties;
+  hideIcon?: boolean;
 }) {
   const dataUpdate = useDataUpdate();
   const paradigms = useParadigms();
@@ -809,9 +1407,11 @@ export function GainParadigmSection({
     <Selector
       hoverMenuLabel={
         <div className="flexRow" style={{ gap: rem(6) }}>
-          <span style={{ width: "0.64em" }}>
-            <ParadigmSVG />
-          </span>
+          {hideIcon ? null : (
+            <span style={{ width: "0.64em" }}>
+              <ParadigmSVG />
+            </span>
+          )}
           <FormattedMessage
             id="Components.Discard Paradigm.Title"
             description="Title of Component: Discard Paradigm"
@@ -849,12 +1449,14 @@ export function GainUpgradeSection({
   numToGain,
   steal,
   style,
+  hideIcon,
 }: {
   factionId: FactionId;
   gainedUpgrades: TFUnitUpgradeId[];
   numToGain?: number;
   steal?: boolean;
   style?: CSSProperties;
+  hideIcon?: boolean;
 }) {
   const currentTurn = useCurrentTurn();
   const dataUpdate = useDataUpdate();
@@ -878,24 +1480,19 @@ export function GainUpgradeSection({
     return null;
   }
 
-  const upgradesByType: Partial<Record<UnitType, TFUnitUpgrade[]>> = {};
-  availableUpgrades.forEach((upgrade) => {
-    const units = upgradesByType[upgrade.unitType] ?? [];
-    units.push(upgrade);
-    upgradesByType[upgrade.unitType] = units;
-  });
-
-  const orderedUpgrades = objectEntries(upgradesByType).sort((a, b) => {
-    return a[0] > b[0] ? 1 : -1;
+  const orderedUpgrades = availableUpgrades.sort((a, b) => {
+    return a.name > b.name ? 1 : -1;
   });
 
   return (
     <ClientOnlyHoverMenu
       label={
         <div className="flexRow" style={{ gap: rem(6) }}>
-          <span style={{ width: "0.52em" }}>
-            <UpgradeSVG />
-          </span>
+          {hideIcon ? null : (
+            <span style={{ width: "0.52em" }}>
+              <UpgradeSVG />
+            </span>
+          )}
           <FormattedMessage
             id="Components.Discard Unit Upgrade.Title"
             description="Title of Component: Discard Unit Upgrade"
@@ -906,18 +1503,23 @@ export function GainUpgradeSection({
       buttonStyle={{ fontSize: rem(14) }}
       renderProps={(innerCloseFn) => (
         <div
-          className={styles.OuterTechSelectMenu}
           style={{
+            display: "grid",
+            gridAutoFlow: "column",
+            gridTemplateRows: `repeat(${Math.min(11, orderedUpgrades.length)}, auto)`,
             padding: rem(8),
-            alignItems: "flex-start",
-            overflow: "visible",
+            gap: rem(4),
+            alignItems: "stretch",
+            maxWidth: "88vw",
+            overflowX: "auto",
           }}
         >
-          {orderedUpgrades.map(([unitType, upgrades]) => {
+          {orderedUpgrades.map((upgrade) => {
             return (
-              <InnerUpgradeSelectMenu
-                upgrades={upgrades}
-                selectUpgrade={(upgrade) => {
+              <button
+                key={upgrade.id}
+                onClick={() => {
+                  innerCloseFn();
                   dataUpdate(
                     Events.LoseTFCardEvent(
                       factionId,
@@ -929,13 +1531,25 @@ export function GainUpgradeSection({
                     ),
                   );
                 }}
-                outerCloseFn={innerCloseFn}
-                label={<UnitIcon type={unitType} size="1.25em" />}
-              />
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  fontSize: rem(16),
+                  gap: rem(8),
+                }}
+                disabled={viewOnly}
+              >
+                {upgrade.name}
+                <div className="flexRow" style={{ gap: rem(4) }}>
+                  <UnitIcon type={upgrade.unitType} size={16} />
+                </div>
+              </button>
             );
           })}
         </div>
       )}
+      style={style}
     ></ClientOnlyHoverMenu>
   );
 }

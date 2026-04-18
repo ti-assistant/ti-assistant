@@ -257,29 +257,26 @@ function FactionTechSection({ openedByDefault }: { openedByDefault: boolean }) {
                       }
                       const factionHasTech = hasTech(faction, tech);
                       return (
-                        <div
-                          key={tech.id}
-                          onClick={() => {
-                            if (viewOnly) {
-                              return;
-                            }
-                            if (factionHasTech) {
-                              dataUpdate(
-                                Events.RemoveTechEvent(factionId, tech.id),
-                              );
-                            } else {
-                              dataUpdate(
-                                Events.AddTechEvent(factionId, tech.id),
-                              );
-                            }
-                          }}
-                          style={{ maxWidth: "100%" }}
-                        >
+                        <div key={tech.id} style={{ maxWidth: "100%" }}>
                           <TechRow
                             className={`${styles.factionTechRow} ${
                               factionHasTech ? styles.selected : ""
                             } ${viewOnly ? styles.viewOnly : ""}`}
                             techId={tech.id}
+                            onClick={() => {
+                              if (viewOnly) {
+                                return;
+                              }
+                              if (factionHasTech) {
+                                dataUpdate(
+                                  Events.RemoveTechEvent(factionId, tech.id),
+                                );
+                              } else {
+                                dataUpdate(
+                                  Events.AddTechEvent(factionId, tech.id),
+                                );
+                              }
+                            }}
                             opts={{
                               hideSymbols: true,
                               hideIcon: true,
@@ -523,6 +520,8 @@ function TechsByFaction({
             justifyContent: "center",
             fontSize: rem(18),
             whiteSpace: "nowrap",
+            fontFamily: "var(--main-font)",
+            color: getFactionColor(faction),
           }}
         >
           <FactionComponents.Icon factionId={factionId} size={20} />
@@ -755,6 +754,7 @@ function TFTechList({
               factionId={factionId}
               gainedAbilities={[]}
               numToGain={1}
+              action={{ to: factionId }}
             />
           </div>
           <div className={styles.factionTechListWrapper}>
@@ -805,6 +805,7 @@ function TFTechList({
               factionId={factionId}
               gainedGenomes={[]}
               numToGain={1}
+              action={{ to: factionId }}
             />
           </div>
           <div className={styles.factionTechListWrapper}>
@@ -825,6 +826,7 @@ function TFTechList({
               factionId={factionId}
               gainedParadigms={[]}
               numToGain={1}
+              action={{ to: factionId }}
             />
           </div>
           <div className={styles.factionTechListWrapper}>
@@ -873,6 +875,7 @@ function TFTechList({
               factionId={factionId}
               gainedUpgrades={[]}
               numToGain={1}
+              action={{ to: factionId }}
             />
           </div>
           <div className={styles.factionTechListWrapper}>
@@ -927,6 +930,7 @@ function TFTechList({
                                 style={{
                                   whiteSpace: "nowrap",
                                   fontFamily: "var(--main-font)",
+
                                   paddingLeft: rem(8),
                                   rowGap: rem(2),
                                   width: "100%",

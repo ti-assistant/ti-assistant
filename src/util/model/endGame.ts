@@ -20,7 +20,7 @@ export class EndGameHandler implements Handler {
     return {
       timestampMillis: Date.now(),
       data: this.data,
-      schema: "1.0.0",
+      schema: "2.0.0",
     };
   }
 
@@ -52,7 +52,7 @@ export class ContinueGameHandler implements Handler {
     return {
       timestampMillis: Date.now(),
       data: this.data,
-      schema: "1.0.0",
+      schema: "2.0.0",
     };
   }
 

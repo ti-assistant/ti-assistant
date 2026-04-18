@@ -309,6 +309,44 @@
       "value": "Research Tech"
     }
   ],
+  "3seFjE": [
+    {
+      "type": 0,
+      "value": "Gain "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Genome"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Genomes"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
   "3xEbCN": [
     {
       "type": 0,
@@ -325,18 +363,6 @@
     {
       "type": 0,
       "value": "Map:"
-    }
-  ],
-  "49U8Wl": [
-    {
-      "type": 0,
-      "value": "Hover to see full text."
-    }
-  ],
-  "49oatW": [
-    {
-      "type": 0,
-      "value": "Undo"
     }
   ],
   "4PYolM": [
@@ -473,6 +499,12 @@
       "value": "Reveal Objective"
     }
   ],
+  "6ZifFF": [
+    {
+      "type": 0,
+      "value": "At the start of the edict phase, if your flagship is on the game board, draw and resolve 1 edict."
+    }
+  ],
   "73882v": [
     {
       "type": 0,
@@ -551,6 +583,44 @@
       "value": "Done"
     }
   ],
+  "9INv4t": [
+    {
+      "type": 0,
+      "value": "Discard "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Paradigm"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Paradigms"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
   "9eqKm5": [
     {
       "type": 0,
@@ -572,6 +642,44 @@
             {
               "type": 0,
               "value": "Units"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "9k9JtR": [
+    {
+      "type": 0,
+      "value": "Discard "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ability"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Abilities"
             }
           ]
         }
@@ -5785,6 +5893,30 @@
       "value": "ACTION: Exhaust X-89 BACTERIAL WEAPON to choose 1 planet in a system that contains 1 of your units that has BOMBARDMENT; purge its planet card and all attachments or legendary planet ability cards associated with it."
     }
   ],
+  "Components.Discard Ability.Title": [
+    {
+      "type": 0,
+      "value": "Discard Ability"
+    }
+  ],
+  "Components.Discard Genome.Title": [
+    {
+      "type": 0,
+      "value": "Discard Genome"
+    }
+  ],
+  "Components.Discard Paradigm.Title": [
+    {
+      "type": 0,
+      "value": "Discard Paradigm"
+    }
+  ],
+  "Components.Discard Unit Upgrade.Title": [
+    {
+      "type": 0,
+      "value": "Discard Unit Upgrade"
+    }
+  ],
   "Components.Enigmatic Device.Description": [
     {
       "type": 0,
@@ -5833,40 +5965,64 @@
       "value": "Gain Unit Upgrade"
     }
   ],
+  "Components.Give Ability.Title": [
+    {
+      "type": 0,
+      "value": "Give Ability"
+    }
+  ],
+  "Components.Give Genome.Title": [
+    {
+      "type": 0,
+      "value": "Give Genome"
+    }
+  ],
+  "Components.Give Paradigm.Title": [
+    {
+      "type": 0,
+      "value": "Give Paradigm"
+    }
+  ],
+  "Components.Give Unit Upgrade.Title": [
+    {
+      "type": 0,
+      "value": "Give Unit Upgrade"
+    }
+  ],
   "Components.Mercenaries for Hire.Description": [
     {
       "type": 0,
       "value": "ACTION: Spend 3 trade goods to gain the top card of the mercenary deck and place it in your play area."
     }
   ],
-  "Components.Steal Ability.Title": [
-    {
-      "type": 0,
-      "value": "Steal Ability"
-    }
-  ],
-  "Components.Steal Genome.Title": [
-    {
-      "type": 0,
-      "value": "Steal Genome"
-    }
-  ],
-  "Components.Steal Paradigm.Title": [
-    {
-      "type": 0,
-      "value": "Steal Paradigm"
-    }
-  ],
-  "Components.Steal Unit Upgrade.Title": [
-    {
-      "type": 0,
-      "value": "Steal Unit Upgrade"
-    }
-  ],
   "Components.Stellar Atomics.Description": [
     {
       "type": 0,
       "value": "ACTION: Discard your control token from the Stellar Atomics card to destroy all ground forces and structures on any non-home planet."
+    }
+  ],
+  "Components.Take Ability.Title": [
+    {
+      "type": 0,
+      "value": "Take Ability"
+    }
+  ],
+  "Components.Take Genome.Title": [
+    {
+      "type": 0,
+      "value": "Take Genome"
+    }
+  ],
+  "Components.Take Paradigm.Title": [
+    {
+      "type": 0,
+      "value": "Take Paradigm"
+    }
+  ],
+  "Components.Take Unit Upgrade.Title": [
+    {
+      "type": 0,
+      "value": "Take Unit Upgrade"
     }
   ],
   "Components.Total War.Description": [
@@ -6443,36 +6599,6 @@
     {
       "type": 1,
       "value": "value"
-    }
-  ],
-  "DGs6vS": [
-    {
-      "type": 0,
-      "value": "Scored Action Phase "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "Objective"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "Objectives"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "count"
     }
   ],
   "DS.Planets.Abyssus.Name": [
@@ -11663,6 +11789,12 @@
       "value": "Propulsion"
     }
   ],
+  "Nwro0F": [
+    {
+      "type": 0,
+      "value": "Discard any number of Abilities"
+    }
+  ],
   "NxpzKH": [
     {
       "type": 0,
@@ -13083,6 +13215,44 @@
     {
       "type": 0,
       "value": "Track"
+    }
+  ],
+  "PXvHO0": [
+    {
+      "type": 0,
+      "value": "Gain "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Unit Upgrade"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Unit Upgrades"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
   "Phase.Action": [
@@ -15319,6 +15489,12 @@
       "value": "Thunder's Edge"
     }
   ],
+  "SqFE9l": [
+    {
+      "type": 0,
+      "value": "Discard any number of Unit Upgrades"
+    }
+  ],
   "Strategy Cards.Aeterna.Primary": [
     {
       "type": 0,
@@ -15746,7 +15922,7 @@
     },
     {
       "type": 0,
-      "value": "Choose a player other than the speaker or tyrant. That player gainst the benediction token."
+      "value": "Choose a player other than the speaker or tyrant. That player gains the benediction token."
     },
     {
       "type": 1,
@@ -20757,6 +20933,12 @@
       "value": "Score Objectives"
     }
   ],
+  "WV1Cwe": [
+    {
+      "type": 0,
+      "value": "Discard any number of Paradigms"
+    }
+  ],
   "WVs5Hr": [
     {
       "type": 0,
@@ -21121,6 +21303,50 @@
     {
       "type": 0,
       "value": "Return Tech"
+    }
+  ],
+  "XIEHjL": [
+    {
+      "type": 0,
+      "value": "Discard "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Genome"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Genomes"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "Xf1B6k": [
+    {
+      "type": 0,
+      "value": "Aeterna Points"
     }
   ],
   "Xxcha Kingdom.Abilities.Peace Accords.Description": [
@@ -22055,6 +22281,12 @@
       "value": "Gained Relic"
     }
   ],
+  "cxkvcc": [
+    {
+      "type": 0,
+      "value": "Reveal Genome"
+    }
+  ],
   "d0uSBF": [
     {
       "type": 0,
@@ -22467,6 +22699,12 @@
       "value": "name"
     }
   ],
+  "l02mfP": [
+    {
+      "type": 0,
+      "value": "TI Assistant keeps track of whose turn it is, how much time has elapsed, and all the other details so you can focus on playing the game."
+    }
+  ],
   "l6pQCt": [
     {
       "type": 0,
@@ -22602,6 +22840,12 @@
       "value": "count"
     }
   ],
+  "m6nb4H": [
+    {
+      "type": 0,
+      "value": "The best way to play Twilight Imperium"
+    }
+  ],
   "mYdPrP": [
     {
       "type": 0,
@@ -22724,12 +22968,6 @@
       "value": "Prophecy of Kings"
     }
   ],
-  "pKlkVZ": [
-    {
-      "type": 0,
-      "value": "FAQ"
-    }
-  ],
   "pPpzkR": [
     {
       "type": 0,
@@ -22804,6 +23042,82 @@
     {
       "type": 0,
       "value": "Phase"
+    }
+  ],
+  "rojlVT": [
+    {
+      "type": 0,
+      "value": "Gain "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ability"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Abilities"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "rpByRO": [
+    {
+      "type": 0,
+      "value": "Gain "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Paradigm"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Paradigms"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
   "sJ5zBj": [
@@ -23152,6 +23466,44 @@
       "value": "Repair Units"
     }
   ],
+  "xps7l+": [
+    {
+      "type": 0,
+      "value": "Discard "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Unit Upgrade"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Unit Upgrades"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
   "xtgxwA": [
     {
       "type": 0,
@@ -23216,6 +23568,12 @@
     {
       "type": 0,
       "value": "Techs"
+    }
+  ],
+  "z3Fj4q": [
+    {
+      "type": 0,
+      "value": "Discard any number of Genomes"
     }
   ],
   "zAhkl6": [

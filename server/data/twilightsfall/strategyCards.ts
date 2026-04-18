@@ -1,7 +1,7 @@
 import { IntlShape } from "react-intl";
 
 export default function getTwilightsFallStrategyCards(
-  intl: IntlShape
+  intl: IntlShape,
 ): Record<TwilightsFall.StrategyCardId, BaseStrategyCard> {
   return {
     Lux: {
@@ -22,7 +22,7 @@ export default function getTwilightsFallStrategyCards(
           defaultMessage:
             "Gain 3 command tokens.{br}Spend any amount of influence to gain 1 command token for every 3 influence spent.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       secondary: intl.formatMessage(
         {
@@ -31,7 +31,7 @@ export default function getTwilightsFallStrategyCards(
           defaultMessage:
             "Spend any amount of influence to gain 1 command token for every 3 influence spent.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
     },
     Noctis: {
@@ -51,7 +51,7 @@ export default function getTwilightsFallStrategyCards(
           description: "Primary of Strategy Card: Noctis",
           defaultMessage: "Initiate a genome splice.{br}Ready up to 2 planets.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       secondary: intl.formatMessage(
         {
@@ -60,7 +60,7 @@ export default function getTwilightsFallStrategyCards(
           defaultMessage:
             "Spend 1 token from your strategy pool to participate in the genome splice.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
     },
     Tyrannus: {
@@ -79,9 +79,9 @@ export default function getTwilightsFallStrategyCards(
           id: "Strategy Cards.Tyrannus.Primary",
           description: "Primary of Strategy Card: Tyrannus",
           defaultMessage:
-            "Choose a player other than the speaker. That player gains the speaker token.{br}Choose a player other than the speaker or tyrant. That player gainst the benediction token.{br}Draw 2 action cards.",
+            "Choose a player other than the speaker. That player gains the speaker token.{br}Choose a player other than the speaker or tyrant. That player gains the benediction token.{br}Draw 2 action cards.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       secondary: intl.formatMessage(
         {
@@ -90,7 +90,7 @@ export default function getTwilightsFallStrategyCards(
           defaultMessage:
             "Spend 1 token from your strategy pool to draw 2 action cards.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
     },
     Civitas: {
@@ -111,7 +111,7 @@ export default function getTwilightsFallStrategyCards(
           defaultMessage:
             "Either place 1 structure on a planet you control or use the PRODUCTION ability of 1 of your space docks.{br}Place 1 structure on a planet you control.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       secondary: intl.formatMessage(
         {
@@ -120,7 +120,7 @@ export default function getTwilightsFallStrategyCards(
           defaultMessage:
             "Spend 1 token from your strategy pool to place 1 structure on a planet you control.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
     },
     Amicus: {
@@ -141,7 +141,7 @@ export default function getTwilightsFallStrategyCards(
           defaultMessage:
             "Gain 3 trade goods.{br}Replenish commodities.{br}Choose any number of other players. Those players use the secondary ability of this strategy card without spending a command token.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       secondary: intl.formatMessage(
         {
@@ -150,7 +150,7 @@ export default function getTwilightsFallStrategyCards(
           defaultMessage:
             "Spend 1 token from your strategy pool to replenish your commodities.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
     },
     Calamitas: {
@@ -171,7 +171,7 @@ export default function getTwilightsFallStrategyCards(
           defaultMessage:
             "Initiate a unit upgrade splice.{br}Resolve the PRODUCTION abilities of your units in 1 system.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       secondary: intl.formatMessage(
         {
@@ -180,7 +180,7 @@ export default function getTwilightsFallStrategyCards(
           defaultMessage:
             "Spend 1 token from your strategy pool and 4 resources to either participate in the unit upgrade splice or use the PRODUCTION abilities of the units in your home system.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
     },
     Magus: {
@@ -201,7 +201,7 @@ export default function getTwilightsFallStrategyCards(
           defaultMessage:
             "Initiate an ability splice. You may spend 3 resources and 3 influence to add 1 additional ability to the pool; if you do, after each player has chosen, it passes back to you and you take an additional ability.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       secondary: intl.formatMessage(
         {
@@ -210,7 +210,7 @@ export default function getTwilightsFallStrategyCards(
           defaultMessage:
             "Spend 1 token from your strategy pool and 3 resources or 3 influence to participate in the ability splice.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
     },
     Aeterna: {
@@ -231,7 +231,7 @@ export default function getTwilightsFallStrategyCards(
           defaultMessage:
             "Immediately score 1 public objective if you fulfill its requirements; otherwise, draw 1 paradigm.{br}Gain 1 victory point if you control Mecatol Rex; otherwise, draw 1 secret objective.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
       secondary: intl.formatMessage(
         {
@@ -240,7 +240,7 @@ export default function getTwilightsFallStrategyCards(
           defaultMessage:
             "Spend 1 token from your strategy pool to draw 1 secret objective or 1 paradigm.",
         },
-        { br: "\n\n" }
+        { br: "\n\n" },
       ),
     },
   };

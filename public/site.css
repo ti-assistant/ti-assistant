@@ -2,6 +2,9 @@
   color-scheme: dark;
   /* --background-color: #131115; */
   --background-color: oklch(0.10 0 0);
+  --local-background: var(--background-color);
+
+  --darker-bg: oklch(0 0 0);
 
   --200: oklch(0.15 0 0);
   --disabled-bg: oklch(0.20 0 0);
@@ -11,7 +14,7 @@
   --interactive-bg: oklch(0.35 0 0);
   --hovered-bg: oklch(0.40 0 0);
   --selected-bg: oklch(0.40 0 0);
-  --200: oklch(0.45 0 0);
+  /* --200: oklch(0.45 0 0); */
 
   --accent-color: oklch(0.72 0.135 88);
 
@@ -61,7 +64,6 @@
   --magenta-faction-color:  oklch(0.66 0.24 352);
   --black-faction-color: oklch(0.66 0 0);
 
-
   --red-faction-border: oklch(0.30 0.12 29);
   --orange-faction-border: oklch(0.30 0.06 70);
   --yellow-faction-border: oklch(0.30 0.06 90);
@@ -77,9 +79,14 @@
   --green-tech-color: oklch(0.85 0.074 142);
 }
 
-:root[data-theme='dark'] {
+:root[data-theme='light'] {
   color-scheme: light;
   --background-color: oklch(0.975 0 0);
+  --local-background: var(--background-color);
+  
+  --darker-bg: oklch(0.95 0 0);
+
+  --200: oklch(0.9625 0 0);
 
   --disabled-bg: oklch(0.95 0 0);
   
@@ -175,7 +182,7 @@ html {
 body {
   --main-font: "Slider";
   font-family: var(--primary-font);
-  margin: 0px 3.25rem;
+  margin: 0px 3rem;
   background-color: var(--background-color);
   color: var(--foreground-color);
 }
@@ -256,7 +263,7 @@ a.primary:hover {
 
 
 a.primary {
-  font-family: "Slider";
+  font-family: var(--main-font);
   padding: 0.25em 0.55em;
   border-radius: 0.25rem;
   background-color: #584101;
@@ -367,7 +374,7 @@ button.iconButton:hover {
 }
 
 button.primary {
-  font-family: "Slider";
+  font-family: var(--main-font);
   line-height: 1em;
   background-color: #584101;
   background-color: #454545;
@@ -514,9 +521,11 @@ input[type="textbox"]:invalid {
 }
 
 .hoverInfo {
+  /* display: none; */
+  visibility: hidden;
   transform-origin: top left;
   position: absolute;
-  transition: clip-path 200ms;
+  transition: display 200ms allow-discrete, visibility 200ms allow-discrete, clip-path 200ms;
   box-sizing: border-box;
   clip-path: polygon(0% 0%, 0% 0%, 0% 0%, 0% 0%);
 }
@@ -583,9 +592,11 @@ input[type="textbox"]:invalid {
 .hoverParent.hover > .hoverInfo,
 .hoverParent:focus-within > .hoverInfo{
   display: flex;
+  visibility: visible;
   position: absolute;
   z-index: 1000;
   clip-path: polygon(0% 0%, 0% 101%, 101% 101%, 101% 0%);
+  @starting-style { clip-path: polygon(0% 0%, 0% 0%, 0% 0%, 0% 0%); }
 }
 .hoverParent.hover > .hoverRadio,
 .hoverParent:focus-within > .hoverRadio {

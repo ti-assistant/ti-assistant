@@ -1,3 +1,5 @@
+@use "../styles/mixins" as *;
+
 .Modal {
   display: flex;
   flex-direction: column;
@@ -19,13 +21,14 @@
 }
 
 .ModalTitle {
+  @include main-font;
+
   background-color: var(--background-color);
   border-radius: 0.25rem;
   border: 1px solid var(--hidden-border);
   padding: 0.25rem 0.5rem;
   width: min-content;
 
-  font-family: var(--main-font);
   font-size: 1.5rem;
 
   white-space: nowrap;

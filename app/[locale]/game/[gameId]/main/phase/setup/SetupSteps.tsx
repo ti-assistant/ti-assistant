@@ -1,10 +1,11 @@
 import { useMemo } from "react";
 import { FormattedMessage, IntlShape } from "react-intl";
+import { FactionCard } from "../../../../../../../src/components/Card/Card";
 import Conditional from "../../../../../../../src/components/Conditional/Conditional";
 import FactionDiv from "../../../../../../../src/components/LabeledDiv/FactionDiv";
-import LabeledDiv from "../../../../../../../src/components/LabeledDiv/LabeledDiv";
 import ObjectiveCard from "../../../../../../../src/components/ObjectiveRow/ObjectiveCard";
 import ObjectiveSelectHoverMenu from "../../../../../../../src/components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
+import InauguralSplice from "../../../../../../../src/components/StartingComponents/InauguralSplice";
 import StartingComponents from "../../../../../../../src/components/StartingComponents/StartingComponents";
 import {
   useLogEntries,
@@ -21,7 +22,6 @@ import { rem } from "../../../../../../../src/util/util";
 import FinishPhaseButton from "./FinishPhaseButton";
 import MapStringInput from "./MapStringInput";
 import styles from "./SetupPhase.module.scss";
-import InauguralSplice from "../../../../../../../src/components/StartingComponents/InauguralSplice";
 
 export default function SetupSteps({ intl }: { intl: IntlShape }) {
   const dataUpdate = useDataUpdate();
@@ -148,22 +148,32 @@ export default function SetupSteps({ intl }: { intl: IntlShape }) {
               />
             }
           >
-            <div className="flexColumn">
-              {revealedObjectives.length > 0 ? (
-                <LabeledDiv
-                  label={
-                    <FormattedMessage
-                      id="RBlsAq"
-                      description="A label for the stage I objectives that have been revealed"
-                      defaultMessage="Revealed stage I {count, plural, one {objective} other {objectives}}"
-                      values={{ count: revealedObjectives.length }}
-                    />
-                  }
-                  color="var(--muted-text)"
-                >
+            <FactionCard
+              label={
+                <FormattedMessage
+                  id="lDBTCO"
+                  description="Instruction telling the speaker to reveal objectives."
+                  defaultMessage="Reveal {count, number} {type} {count, plural, one {objective} other {objectives}}"
+                  values={{
+                    count: 2,
+                    type: objectiveTypeString("STAGE ONE", intl),
+                  }}
+                />
+              }
+              factionId={speaker}
+            >
+              <div
+                className="flexColumn"
+                style={{ width: "100%", gap: "0.25rem" }}
+              >
+                {revealedObjectives.length > 0 ? (
                   <div
                     className="flexColumn"
-                    style={{ alignItems: "stretch", fontSize: "1rem" }}
+                    style={{
+                      width: "100%",
+                      alignItems: "stretch",
+                      fontSize: "1rem",
+                    }}
                   >
                     {revealedObjectives.map((objectiveId) => {
                       return (
@@ -177,23 +187,17 @@ export default function SetupSteps({ intl }: { intl: IntlShape }) {
                       );
                     })}
                   </div>
-                </LabeledDiv>
-              ) : null}
-              {revealedObjectives.length < 2 ? (
-                <FactionDiv factionId={speaker}>
+                ) : null}
+                {revealedObjectives.length < 2 ? (
                   <ObjectiveSelectHoverMenu
                     action={(objectiveId) =>
                       dataUpdate(Events.RevealObjectiveEvent(objectiveId))
                     }
                     label={
                       <FormattedMessage
-                        id="lDBTCO"
-                        description="Instruction telling the speaker to reveal objectives."
-                        defaultMessage="Reveal {count, number} {type} {count, plural, one {objective} other {objectives}}"
-                        values={{
-                          count: 2,
-                          type: objectiveTypeString("STAGE ONE", intl),
-                        }}
+                        id="6L07nG"
+                        description="Text telling the user to reveal an objective."
+                        defaultMessage="Reveal Objective"
                       />
                     }
                     objectives={Object.values(availableObjectives).filter(
@@ -202,9 +206,9 @@ export default function SetupSteps({ intl }: { intl: IntlShape }) {
                       },
                     )}
                   />
-                </FactionDiv>
-              ) : null}
-            </div>
+                ) : null}
+              </div>
+            </FactionCard>
           </Conditional>
         </NumberedItem>
         {options.expansions.includes("TWILIGHTS FALL") ? (

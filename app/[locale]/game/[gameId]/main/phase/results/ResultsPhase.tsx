@@ -303,6 +303,7 @@ function buildInitialGameData(
   );
 
   let baseFactions: Partial<Record<FactionId, GameFaction>> = {};
+  let basePlayers: Partial<Record<PlayerId, GamePlayer>> = {};
   let speakerName: Optional<FactionId>;
   gameFactions.forEach((faction, index) => {
     if (index === setupData.speaker) {
@@ -332,6 +333,14 @@ function buildInitialGameData(
       }
     }
     baseFactions[faction.id] = localFaction;
+    if (faction.id === "Obsidian") {
+      return;
+    }
+    basePlayers[faction.id] = {
+      factionId: faction.id,
+      id: faction.id,
+      mapPosition: localFaction.mapPosition,
+    };
   });
 
   let baseObjectives: Partial<Record<ObjectiveId, GameObjective>> = {
@@ -357,6 +366,7 @@ function buildInitialGameData(
     },
     factions: baseFactions,
     planets: gamePlanets,
+    players: basePlayers,
     options: setupData.options,
     objectives: baseObjectives,
     sequenceNum: 1,

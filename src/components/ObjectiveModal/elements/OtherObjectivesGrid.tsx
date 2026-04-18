@@ -4,10 +4,12 @@ import { useOptions, useViewOnly } from "../../../context/dataHooks";
 import { useAllFactionColors } from "../../../context/factionDataHooks";
 import { useOrderedFactionIds } from "../../../context/gameDataHooks";
 import { useObjective } from "../../../context/objectiveDataHooks";
+import RelicMenuSVG from "../../../icons/ui/RelicMenu";
 import { useDataUpdate } from "../../../util/api/dataUpdate";
 import { Events } from "../../../util/api/events";
 import { Optional } from "../../../util/types/types";
 import { rem } from "../../../util/util";
+import Card from "../../Card/Card";
 import Chip from "../../Chip/Chip";
 import ChipGroup from "../../Chip/ChipGroup";
 import FactionComponents from "../../FactionComponents/FactionComponents";
@@ -19,6 +21,7 @@ import CustodiansToken from "./CustodiansToken";
 import ScorableFactionIcon from "./ScorableFactionIcon";
 import SimpleScorable from "./SimpleScorable";
 import Styx from "./Styx";
+import PromissoryMenuSVG from "../../../icons/ui/PromissoryMenu";
 
 export default function OtherObjectivesGrid() {
   const orderedFactionIds = useOrderedFactionIds("MAP");
@@ -76,13 +79,18 @@ function SupportForTheThrone({
   }
 
   return (
-    <LabeledDiv
+    <Card
       label={
         <FormattedMessage
           id="Objectives.Support for the Throne.Title"
           description="Title of Objective: Support for the Throne"
           defaultMessage="Support for the Throne"
         />
+      }
+      icon={
+        <div style={{ width: "1.25em", height: "1em", position: "relative" }}>
+          <PromissoryMenuSVG color="var(--muted-text)" />
+        </div>
       }
       style={{ gridColumn: "3 / 9" }}
     >
@@ -147,7 +155,7 @@ function SupportForTheThrone({
           );
         })}
       </div>
-    </LabeledDiv>
+    </Card>
   );
 }
 
@@ -158,16 +166,25 @@ function ImperialPoints({
 }) {
   const dataUpdate = useDataUpdate();
   const imperialPoint = useObjective("Imperial Point");
+  const options = useOptions();
   const viewOnly = useViewOnly();
 
   return (
-    <LabeledDiv
+    <Card
       label={
-        <FormattedMessage
-          id="eGEjSH"
-          description="The title of points granted from using Imperial."
-          defaultMessage="Imperial Points"
-        />
+        options.expansions.includes("TWILIGHTS FALL") ? (
+          <FormattedMessage
+            id="Xf1B6k"
+            description="The title of points granted from using Aeterna."
+            defaultMessage="Aeterna Points"
+          />
+        ) : (
+          <FormattedMessage
+            id="eGEjSH"
+            description="The title of points granted from using Imperial."
+            defaultMessage="Imperial Points"
+          />
+        )
       }
       style={{ gridColumn: "9 / 13" }}
     >
@@ -275,7 +292,7 @@ function ImperialPoints({
           );
         })}
       </div>
-    </LabeledDiv>
+    </Card>
   );
 }
 
@@ -332,13 +349,18 @@ function RelicObjectives({
   }
 
   return (
-    <LabeledDiv
+    <Card
       label={
         <FormattedMessage
           id="pPpzkR"
           description="The title of relic cards."
           defaultMessage="Relics"
         />
+      }
+      icon={
+        <div style={{ width: "1.25em", height: "1.25em" }}>
+          <RelicMenuSVG color="var(--muted-text)" />
+        </div>
       }
       style={{
         width: "100%",
@@ -377,7 +399,7 @@ function RelicObjectives({
           orderedFactionIds={orderedFactionIds}
         />
       </div>
-    </LabeledDiv>
+    </Card>
   );
 }
 
@@ -396,7 +418,7 @@ function LawObjectives({
   }
 
   return (
-    <LabeledDiv
+    <Card
       label={
         <FormattedMessage
           id="hMWeZX"
@@ -409,30 +431,34 @@ function LawObjectives({
         width: "100%",
         height: "100%",
       }}
-      innerStyle={{
-        flexDirection: "row",
-        fontSize: !includesPoK ? rem(12) : undefined,
-      }}
     >
-      <SimpleScorable
-        objectiveId="Holy Planet of Ixth"
-        orderedFactionIds={orderedFactionIds}
-      />
-      {!includesPoK ? (
+      <div
+        className="flexRow"
+        style={{
+          width: "100%",
+          fontSize: !includesPoK ? rem(12) : undefined,
+        }}
+      >
         <SimpleScorable
-          objectiveId="Shard of the Throne"
+          objectiveId="Holy Planet of Ixth"
           orderedFactionIds={orderedFactionIds}
         />
-      ) : null}
-      <SimpleScorable
-        objectiveId="The Crown of Emphidia"
-        orderedFactionIds={orderedFactionIds}
-      />
-      <SimpleScorable
-        objectiveId="Political Censure"
-        orderedFactionIds={orderedFactionIds}
-      />
-    </LabeledDiv>
+        {!includesPoK ? (
+          <SimpleScorable
+            objectiveId="Shard of the Throne"
+            orderedFactionIds={orderedFactionIds}
+          />
+        ) : null}
+        <SimpleScorable
+          objectiveId="The Crown of Emphidia"
+          orderedFactionIds={orderedFactionIds}
+        />
+        <SimpleScorable
+          objectiveId="Political Censure"
+          orderedFactionIds={orderedFactionIds}
+        />
+      </div>
+    </Card>
   );
 }
 
@@ -450,7 +476,7 @@ function DirectiveObjectives({
   }
 
   return (
-    <LabeledDiv
+    <Card
       label={
         <FormattedMessage
           id="t6v2oN"
@@ -464,14 +490,10 @@ function DirectiveObjectives({
         width: "100%",
         height: "100%",
       }}
-      innerStyle={{
-        padding: 0,
-        paddingTop: rem(8),
-      }}
     >
       <Mutiny orderedFactionIds={orderedFactionIds} />
       <SeedOfAnEmpire orderedFactionIds={orderedFactionIds} />
-    </LabeledDiv>
+    </Card>
   );
 }
 

@@ -169,7 +169,6 @@ export default function ExpeditionSelectRadialMenu({
                 style={{
                   width: rem(size - 4),
                   height: rem(size - 4),
-                  fontSize: rem(size - 8),
                 }}
               >
                 <div

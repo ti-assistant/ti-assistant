@@ -192,7 +192,13 @@ export default function PlanetRow({
             isolation: "isolate",
           }}
         >
-          <div style={{ fontFamily: "var(--main-font)" }}>{planet.name}</div>
+          <div
+            style={{
+              fontFamily: "var(--main-font)",
+            }}
+          >
+            {planet.name}
+          </div>
           <div
             style={{
               position: "relative",

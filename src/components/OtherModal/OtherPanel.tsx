@@ -126,6 +126,7 @@ function ExpeditionRadialSelector({
           position: "relative",
           height: rem(28),
           fontFamily: "var(--main-font)",
+
           gap: rem(4),
           justifyContent: "center",
           alignItems: "center",

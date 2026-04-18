@@ -53,6 +53,7 @@ import {
 } from "../model/playPromissoryNote";
 import { PlayRelicHandler, UnplayRelicHandler } from "../model/playRelic";
 import { PlayRiderHandler, UnplayRiderHandler } from "../model/playRider";
+import { PurgeRelicHandler, UnpurgeRelicHandler } from "../model/purgeRelic";
 import { PurgeSystemHandler, UnpurgeSystemHandler } from "../model/purgeSystem";
 import { PurgeTechHandler, UnpurgeTechHandler } from "../model/purgeTech";
 import {
@@ -267,5 +268,9 @@ export function getHandler(gameData: StoredGameData, data: GameUpdateData) {
       return new ChooseEdictHandler(gameData, data);
     case "HIDE_EDICT":
       return new HideEdictHandler(gameData, data);
+    case "PURGE_RELIC":
+      return new PurgeRelicHandler(gameData, data);
+    case "UNPURGE_RELIC":
+      return new UnpurgeRelicHandler(gameData, data);
   }
 }

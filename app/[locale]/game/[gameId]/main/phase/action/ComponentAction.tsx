@@ -52,6 +52,9 @@ import {
 } from "../../../../../../../src/util/strings";
 import DiscardTFCard from "../../../../../../../src/components/Actions/DiscardSplicedCard";
 import Splice from "../edict/Splice";
+import Card from "../../../../../../../src/components/Card/Card";
+import ActionCardsSVG from "../../../../../../../src/icons/expedition/ActionCards";
+import PurgeRelic from "../../../../../../../src/components/Actions/PurgeRelic";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -712,6 +715,17 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       innerContent = <ComponentActions.Zeu.Content />;
       break;
     }
+    case "Transpose": {
+      leftLabel = undefined;
+      label = <ComponentActions.Transpose.Label />;
+      rightLabel = (
+        <ComponentActions.Transpose.RightLabel factionId={factionId} />
+      );
+      innerContent = (
+        <ComponentActions.Transpose.Content factionId={factionId} />
+      );
+      break;
+    }
     case "UNITDSGNFLAYESH": {
       conditional = "TECHS";
       innerContent = (
@@ -762,14 +776,25 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       break;
     }
     case "Coerce": {
+      conditional = "TECHS";
       innerContent = (
-        <GainTFCard factionId={factionId} steal numToGain={{ abilities: 1 }} />
+        <GainTFCard
+          factionId={factionId}
+          action={{ from: "ALL", to: factionId }}
+          numToGain={{ abilities: 1 }}
+          // noCards
+        />
       );
       break;
     }
     case "Elevate": {
+      conditional = "TECHS";
       innerContent = (
-        <GainTFCard factionId={factionId} numToGain={{ paradigms: 1 }} />
+        <GainTFCard
+          factionId={factionId}
+          action={{ to: factionId }}
+          numToGain={{ paradigms: 1 }}
+        />
       );
       break;
     }
@@ -778,6 +803,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       innerContent = (
         <GainTFCard
           factionId={factionId}
+          action={{ to: factionId }}
           numToGain={{ abilities: 1, genomes: 1, upgrades: 1, total: 1 }}
         />
       );
@@ -799,7 +825,11 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
     }
     case "Irradiate": {
       innerContent = (
-        <GainTFCard factionId={factionId} numToGain={{ upgrades: 1 }} />
+        <GainTFCard
+          factionId={factionId}
+          action={{ to: factionId }}
+          numToGain={{ upgrades: 1 }}
+        />
       );
       break;
     }
@@ -824,7 +854,11 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
             }}
           />
           {/* TODO: Only show if ability is discarded */}
-          <GainTFCard factionId={factionId} numToGain={{ abilities: 1 }} />
+          <GainTFCard
+            factionId={factionId}
+            action={{ to: factionId }}
+            numToGain={{ abilities: 1 }}
+          />
         </div>
       );
       break;
@@ -833,6 +867,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       innerContent = (
         <GainTFCard
           factionId={factionId}
+          action={{ to: factionId }}
           numToGain={{ abilities: 1, genomes: 1, upgrades: 1 }}
         />
       );
@@ -840,12 +875,26 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
     }
     case "Devour World": {
       innerContent = (
-        <GainTFCard factionId={factionId} numToGain={{ abilities: 1 }} />
+        <GainTFCard
+          factionId={factionId}
+          action={{ to: factionId }}
+          numToGain={{ abilities: 1 }}
+        />
       );
       break;
     }
     case "Witching Hour": {
-      innerContent = <StrategicActions.Tyrannus.Primary />;
+      innerContent = (
+        <StrategicActions.Tyrannus.Primary allowSpeakerToBeTyrant />
+      );
+      break;
+    }
+    case "Unravel": {
+      innerContent = (
+        <>
+          <PurgeRelic factionId={factionId} unravel />
+        </>
+      );
       break;
     }
     // case "Repeal Law": {
@@ -948,12 +997,12 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
     return (
       <Conditional appSection={conditional}>
         <div className="flexColumn" style={{ width: "100%", gap: rem(4) }}>
-          <LabeledLine
+          {/* <LabeledLine
             leftLabel={leftLabel}
             label={label}
             rightLabel={rightLabel}
             color={lineColor}
-          />
+          /> */}
           <div
             className="flexColumn"
             style={{ alignItems: "flex-start", width: "100%" }}
@@ -982,7 +1031,13 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
   );
 }
 
-export function ComponentAction({ factionId }: { factionId: FactionId }) {
+export function ComponentAction({
+  factionId,
+  style,
+}: {
+  factionId: FactionId;
+  style?: CSSProperties;
+}) {
   const actionCards = useActionCards();
   const actionLog = useActionLog();
   const components = useComponents();
@@ -1151,31 +1206,36 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
     });
 
     return (
-      <ClientOnlyHoverMenu
-        label={
-          <FormattedMessage
-            id="mkUb00"
-            description="Text on a hover menu for selecting a component action."
-            defaultMessage="Select Component"
-          />
-        }
+      <Card
+        label="Component Details"
+        style={{ ...style, width: "fit-content" }}
       >
-        <ComponentSelect
-          components={filteredComponents}
-          selectComponent={selectComponent}
-          factionId={factionId}
-        />
-      </ClientOnlyHoverMenu>
+        <ClientOnlyHoverMenu
+          label={
+            <FormattedMessage
+              id="mkUb00"
+              description="Text on a hover menu for selecting a component action."
+              defaultMessage="Select Component"
+            />
+          }
+        >
+          <ComponentSelect
+            components={filteredComponents}
+            selectComponent={selectComponent}
+            factionId={factionId}
+          />
+        </ClientOnlyHoverMenu>
+      </Card>
     );
   }
 
   return (
-    <React.Fragment>
+    <Card label="Component Details" style={{ ...style, width: "fit-content" }}>
       <div
         className="flexColumn largeFont"
-        style={{ width: "100%", justifyContent: "flex-start" }}
+        style={{ width: "100%", alignItems: "flex-start" }}
       >
-        <LabeledDiv
+        {/* <LabeledDiv
           blur
           label={
             <FormattedMessage
@@ -1185,47 +1245,65 @@ export function ComponentAction({ factionId }: { factionId: FactionId }) {
             />
           }
           style={{ width: "90%" }}
+        > */}
+        <SelectableRow
+          itemId={component.id}
+          removeItem={() => unselectComponent(component.id)}
+          viewOnly={viewOnly}
         >
-          <SelectableRow
-            itemId={component.id}
-            removeItem={() => unselectComponent(component.id)}
-            viewOnly={viewOnly}
+          <InfoRow
+            infoTitle={
+              <div className="flexColumn" style={{ fontSize: rem(40) }}>
+                {component.name}
+              </div>
+            }
+            infoContent={<InfoContent component={component} />}
           >
-            <InfoRow
-              infoTitle={
-                <div className="flexColumn" style={{ fontSize: rem(40) }}>
-                  {component.name}
-                </div>
-              }
-              infoContent={<InfoContent component={component} />}
-            >
+            <div style={{ fontSize: "1em", width: rem(350) }}>
               {component.name}
-            </InfoRow>
-          </SelectableRow>
-          {component.id === "Ssruu" ? (
-            <div className="flexRow" style={{ paddingLeft: rem(16) }}>
-              Using the ability of
-              <Selector
-                hoverMenuLabel="Select Agent"
-                options={agentsForSsruu}
-                selectedItem={getSelectedSubComponent(currentTurn)}
-                toggleItem={(agent, add) => {
-                  const updatedName = agent
-                    .replace(/\./g, "")
-                    .replace(/,/g, "")
-                    .replace(/ Ω/g, "");
-                  dataUpdate(
-                    Events.SelectSubComponentEvent(add ? updatedName : "None"),
-                  );
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.5em",
+                  fontSize: "0.75em",
+                  color: "var(--muted-text)",
+                  lineHeight: "1.25em",
+                  whiteSpace: "normal",
+                  textAlign: "left",
+                  fontFamily: "var(--primary-font)",
+                  textWrap: "balance",
                 }}
-                viewOnly={viewOnly}
-              />
+              >
+                <FormattedDescription description={component.description} />
+              </div>
             </div>
-          ) : null}
-          <ComponentDetails factionId={factionId} />
-        </LabeledDiv>
+          </InfoRow>
+        </SelectableRow>
+        {component.id === "Ssruu" ? (
+          <div className="flexRow" style={{ paddingLeft: rem(16) }}>
+            Using the ability of
+            <Selector
+              hoverMenuLabel="Select Agent"
+              options={agentsForSsruu}
+              selectedItem={getSelectedSubComponent(currentTurn)}
+              toggleItem={(agent, add) => {
+                const updatedName = agent
+                  .replace(/\./g, "")
+                  .replace(/,/g, "")
+                  .replace(/ Ω/g, "");
+                dataUpdate(
+                  Events.SelectSubComponentEvent(add ? updatedName : "None"),
+                );
+              }}
+              viewOnly={viewOnly}
+            />
+          </div>
+        ) : null}
+        <ComponentDetails factionId={factionId} />
+        {/* </LabeledDiv> */}
       </div>
-    </React.Fragment>
+    </Card>
   );
 
   return null;

@@ -47,6 +47,7 @@ type GameUpdateData =
   | (PlayPromissoryNoteData | UnplayPromissoryNoteData)
   | (PlayComponentData | UnplayComponentData)
   | (GainRelicData | LoseRelicData)
+  | (PurgeRelicData | UnpurgeRelicData)
   | UpdatePlanetStateData
   | UpdateLeaderStateData
   | UpdateBreakthroughStateData
@@ -121,6 +122,7 @@ interface GameData {
   objectives?: Partial<Record<ObjectiveId, Objective>>;
   options: Options;
   planets: Partial<Record<PlanetId, Planet>>;
+  players: Partial<Record<PlayerId, Player>>;
   relics?: Partial<Record<RelicId, Relic>>;
   sequenceNum: number;
   state: GameState;
@@ -165,6 +167,7 @@ interface StoredGameData {
   objectives?: Partial<Record<ObjectiveId, GameObjective>>;
   options: Options;
   planets: Partial<Record<PlanetId, GamePlanet>>;
+  players: Partial<Record<PlayerId, GamePlayer>>;
   relics?: Partial<Record<RelicId, GameRelic>>;
   state: GameState;
   strategycards?: Partial<Record<StrategyCardId, GameStrategyCard>>;
@@ -513,6 +516,21 @@ interface LoseAllianceData {
 interface LoseRelicData {
   action: "LOSE_RELIC";
   event: GainRelicEvent;
+}
+
+interface PurgeRelicEvent {
+  relic: RelicId;
+  unravel?: boolean;
+}
+
+interface PurgeRelicData {
+  action: "PURGE_RELIC";
+  event: PurgeRelicEvent;
+}
+
+interface UnpurgeRelicData {
+  action: "UNPURGE_RELIC";
+  event: PurgeRelicEvent;
 }
 
 interface GiftOfPrescienceEvent {

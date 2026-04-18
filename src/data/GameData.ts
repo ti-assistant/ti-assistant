@@ -5,6 +5,7 @@ import { getAgendas } from "../../server/data/agendas";
 import { getAttachments } from "../../server/data/attachments";
 import { BASE_COLORS } from "../../server/data/colors";
 import { getComponents } from "../../server/data/components";
+import { getEdicts } from "../../server/data/edicts";
 import { getEvents } from "../../server/data/events";
 import { getFactions } from "../../server/data/factions";
 import { getGenomes } from "../../server/data/genomes";
@@ -32,8 +33,6 @@ import {
   buildCompleteSystems,
   buildCompleteTechs,
 } from "./gameDataBuilder";
-import getTwilightsFallEdicts from "../../server/data/twilightsfall/edicts";
-import { getEdicts } from "../../server/data/edicts";
 
 export function buildBaseData(intl: IntlShape): BaseData {
   return {

@@ -133,6 +133,7 @@ export async function POST(req: Request) {
   });
 
   let baseFactions: Partial<Record<FactionId, GameFaction>> = {};
+  let basePlayers: Partial<Record<PlayerId, GamePlayer>> = {};
   let speakerName: Optional<FactionId>;
   gameFactions.forEach((faction, index) => {
     const baseFaction = BASE_FACTIONS[faction.id];
@@ -161,6 +162,14 @@ export async function POST(req: Request) {
       localFaction.startswith = startsWith;
     }
     baseFactions[faction.id] = localFaction;
+    if (faction.id === "Obsidian") {
+      return;
+    }
+    basePlayers[faction.id] = {
+      factionId: faction.id,
+      id: faction.id,
+      mapPosition: localFaction.mapPosition,
+    };
   });
 
   let baseObjectives: Partial<Record<ObjectiveId, GameObjective>> = {
@@ -190,6 +199,7 @@ export async function POST(req: Request) {
     },
     factions: baseFactions,
     planets: gamePlanets,
+    players: basePlayers,
     options: options,
     objectives: baseObjectives,
     deleteAt: Timestamp.fromDate(deleteDate),

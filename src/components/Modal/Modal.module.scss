@@ -1,3 +1,5 @@
+@use "../../styles/mixins" as *;
+
 .Modal {
   position: fixed;
   left: 0;
@@ -67,9 +69,9 @@
 }
 
 .ModalContent .Title {
+  @include main-font;
   text-align: center;
   font-size: 2.5rem;
-  font-family: var(--main-font);
 }
 
 .ModalContent .Body {

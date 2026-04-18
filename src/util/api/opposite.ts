@@ -35,6 +35,7 @@ import { UnplayComponentHandler } from "../model/playComponent";
 import { UnplayPromissoryNoteHandler } from "../model/playPromissoryNote";
 import { UnplayRelicHandler } from "../model/playRelic";
 import { UnplayRiderHandler } from "../model/playRider";
+import { PurgeRelicHandler, UnpurgeRelicHandler } from "../model/purgeRelic";
 import { PurgeSystemHandler, UnpurgeSystemHandler } from "../model/purgeSystem";
 import { PurgeTechHandler, UnpurgeTechHandler } from "../model/purgeTech";
 import {
@@ -385,6 +386,18 @@ export function getOppositeHandler(
     case "LOSE_RELIC": {
       return new GainRelicHandler(gameData, {
         action: "GAIN_RELIC",
+        event: data.event,
+      });
+    }
+    case "PURGE_RELIC": {
+      return new UnpurgeRelicHandler(gameData, {
+        action: "UNPURGE_RELIC",
+        event: data.event,
+      });
+    }
+    case "UNPURGE_RELIC": {
+      return new PurgeRelicHandler(gameData, {
+        action: "PURGE_RELIC",
         event: data.event,
       });
     }

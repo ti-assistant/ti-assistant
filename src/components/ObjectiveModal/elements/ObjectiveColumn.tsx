@@ -67,6 +67,7 @@ export default function ObjectiveColumn({
             gap: rem(2),
             position: "relative",
             fontSize: description ? rem(12) : undefined,
+            fontFamily: !description ? "var(--main-font)" : undefined,
           }}
         >
           {numScorers === 0 && !viewOnly ? (

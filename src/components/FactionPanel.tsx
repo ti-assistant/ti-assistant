@@ -39,6 +39,7 @@ import UpgradeSVG from "../icons/twilightsfall/upgrade";
 import GenomeSVG from "../icons/twilightsfall/genome";
 import ParadigmSVG from "../icons/twilightsfall/paradigm";
 import Toggle from "./Toggle/Toggle";
+import { AllGenomesList } from "./Actions/GenomeRow";
 
 export function UnitStat({
   name,
@@ -245,13 +246,14 @@ function FactionTech({
                 whiteSpace: "nowrap",
                 gridTemplateColumns: "repeat(2, 1fr)",
                 fontFamily: "var(--main-font)",
+
                 paddingLeft: rem(8),
                 rowGap: rem(2),
                 width: "100%",
               }}
             >
               {tech.abilities.map((ability) => {
-                return <div key={ability}>{ability.toUpperCase()}</div>;
+                return <div key={ability}>{ability}</div>;
               })}
             </div>
           ) : null}
@@ -349,13 +351,14 @@ function FactionUnit({
             whiteSpace: "nowrap",
             gridTemplateColumns: "repeat(2, 1fr)",
             fontFamily: "var(--main-font)",
+
             paddingLeft: rem(8),
             rowGap: rem(2),
             width: "100%",
           }}
         >
           {abilities.map((ability) => {
-            return <div key={ability}>{ability.toUpperCase()}</div>;
+            return <div key={ability}>{ability}</div>;
           })}
         </div>
       ) : null}
@@ -415,6 +418,7 @@ function UnitStatBlock({ stats, type }: { stats?: UnitStats; type: UnitType }) {
           gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
           gap: rem(4),
           fontFamily: "var(--main-font)",
+
           width: "fit-content",
           boxSizing: "border-box",
         }}
@@ -735,10 +739,7 @@ function FactionPanelContent({
                     key={leader.name}
                     leftLabel={leftLabel}
                     label={label}
-                    rightLabel={leaderTypeString(
-                      leader.type,
-                      intl,
-                    ).toUpperCase()}
+                    rightLabel={leaderTypeString(leader.type, intl)}
                   >
                     {innerContent}
                   </AbilitySection>
@@ -820,6 +821,9 @@ function FactionPanelContent({
                     // TODO: Add one-color faction icon.
                   >
                     <FormattedDescription description={genome.description} />
+                    {genome.id === "Clever Genome" && !!genome.owner ? (
+                      <AllGenomesList owner={genome.owner} />
+                    ) : null}
                   </AbilitySection>
                 );
               })}
@@ -858,10 +862,7 @@ function FactionPanelContent({
             >
               {faction.abilities.map((ability) => {
                 return (
-                  <AbilitySection
-                    key={ability.name}
-                    leftLabel={ability.name.toUpperCase()}
-                  >
+                  <AbilitySection key={ability.name} leftLabel={ability.name}>
                     <FormattedDescription description={ability.description} />
                   </AbilitySection>
                 );
@@ -1137,7 +1138,7 @@ function FactionBreakthrough({ faction }: { faction: Faction }) {
     return null;
   }
 
-  let name = faction.breakthrough.name.toUpperCase();
+  let name = faction.breakthrough.name;
   let description: Optional<string> = faction.breakthrough.description;
   let abilities: string[] = [];
   if (reverse && faction.breakthrough.reverse) {
@@ -1209,13 +1210,14 @@ function FactionBreakthrough({ faction }: { faction: Faction }) {
             whiteSpace: "nowrap",
             gridTemplateColumns: "repeat(2, 1fr)",
             fontFamily: "var(--main-font)",
+
             paddingLeft: rem(8),
             rowGap: rem(2),
             width: "100%",
           }}
         >
           {abilities.map((ability) => {
-            return <div key={ability}>{ability.toUpperCase()}</div>;
+            return <div key={ability}>{ability}</div>;
           })}
         </div>
       ) : null}

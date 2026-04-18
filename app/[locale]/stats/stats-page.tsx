@@ -627,7 +627,7 @@ function GameDataSection({
           <TimerDisplay
             time={Math.floor(totalGameLength / numGames)}
             width={72}
-            style={{ fontSize: rem(16)}}
+            style={{ fontSize: rem(16) }}
           />
         </div>
         <div className="flexRow" style={{ justifyContent: "space-between" }}>

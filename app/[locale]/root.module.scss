@@ -1,3 +1,5 @@
+@use "../../src/styles/mixins" as *;
+
 .NavBar {
   position: sticky;
   inset-block-start: 0;
@@ -31,13 +33,14 @@
 .FullName {
   display: none;
   // Should not require other fonts.
-  font-family: var(--main-font);
+
+  @include main-font;
 }
 
 .ShortName {
   display: inline-block;
-  // Should not require other fonts.
-  font-family: var(--main-font);
+
+  @include main-font;
 }
 
 .Logo {
@@ -47,8 +50,9 @@
 }
 
 .Loader {
+  @include main-font;
+
   position: absolute;
-  font-family: var(--main-font);
   top: 0;
   left: 0;
   width: 100%;

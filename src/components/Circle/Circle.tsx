@@ -71,7 +71,7 @@ export default function Circle({
             className={`flexRow ${styles.tag}`}
             style={{
               border: `1px solid ${tagBorderColor}`,
-              boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
+              // boxShadow: `${"1px"} ${"1px"} ${"4px"} black`,
               fontSize: em(size / 2),
               width: "1em",
               height: "1em",

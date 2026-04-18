@@ -12,6 +12,9 @@ import FinishPhaseButton from "./FinishPhaseButton";
 import styles from "./SetupPhase.module.scss";
 import SetupSteps from "./SetupSteps";
 import ChipGroup from "../../../../../../../src/components/Chip/ChipGroup";
+import { FactionCard } from "../../../../../../../src/components/Card/Card";
+import FactionName from "../../../../../../../src/components/FactionComponents/FactionName";
+import { useFactionColors } from "../../../../../../../src/context/factionDataHooks";
 
 function factionTechChoicesComplete(
   factions: Partial<Record<FactionId, Faction>>,
@@ -175,20 +178,32 @@ export default function SetupPhase() {
               display: "grid",
               width: "100%",
               gridAutoFlow: "row",
-              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-              // gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+              gridTemplateColumns: "repeat(auto-fit, minmax(15rem, 1fr))",
               gap: rem(8),
               paddingTop: rem(6),
             }}
           >
             {Object.values(orderedFactionIds).map((factionId) => {
-              if (showInauguralSplice) {
-                return (
-                  <InauguralSpliceDiv key={factionId} factionId={factionId} />
-                );
-              }
               return (
-                <StartingComponentDiv key={factionId} factionId={factionId} />
+                <FactionCard factionId={factionId}>
+                  <div
+                    className="flexColumn"
+                    style={{
+                      alignItems: "flex-start",
+                      height: "100%",
+                      width: "100%",
+                    }}
+                  >
+                    {showInauguralSplice ? (
+                      <InauguralSplice factionId={factionId} />
+                    ) : (
+                      <StartingComponents
+                        factionId={factionId}
+                        showFactionIcon
+                      />
+                    )}
+                  </div>
+                </FactionCard>
               );
             })}
           </div>
@@ -196,39 +211,5 @@ export default function SetupPhase() {
         </div>
       </div>
     </>
-  );
-}
-
-function InauguralSpliceDiv({ factionId }: { factionId: FactionId }) {
-  return (
-    <FactionDiv factionId={factionId}>
-      <div
-        className="flexColumn"
-        style={{
-          alignItems: "flex-start",
-          height: "100%",
-          width: "100%",
-        }}
-      >
-        <InauguralSplice factionId={factionId} />
-      </div>
-    </FactionDiv>
-  );
-}
-
-function StartingComponentDiv({ factionId }: { factionId: FactionId }) {
-  return (
-    <FactionDiv factionId={factionId}>
-      <div
-        className="flexColumn"
-        style={{
-          alignItems: "flex-start",
-          height: "100%",
-          width: "100%",
-        }}
-      >
-        <StartingComponents factionId={factionId} showFactionIcon />
-      </div>
-    </FactionDiv>
   );
 }

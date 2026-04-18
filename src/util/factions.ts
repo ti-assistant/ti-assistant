@@ -1,5 +1,4 @@
 import { Optional } from "./types/types";
-import { objectEntries } from "./util";
 
 export function getFactionColor(faction: Optional<Faction>) {
   if (!faction) {

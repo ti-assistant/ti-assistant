@@ -72,7 +72,7 @@ export default function AttachmentIcon({
       return (
         <div
           className="flexRow"
-          style={{ width: em(size), aspectRatio: 1, gap: 0 }}
+          style={{ width: em(size - 4), aspectRatio: 1, gap: 0 }}
         >
           <div
             className="flexRow"

@@ -23,7 +23,7 @@ export function InfoRow({
         flexDirection: "row",
         gap: "0.5rem",
         alignItems: "center",
-        cursor: "pointer",
+        cursor: "zoom-in",
         fontFamily: "var(--main-font)",
       }}
       onClick={(e) => {

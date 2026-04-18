@@ -52,7 +52,10 @@ export default function GameTimer({ frozen = false }) {
       >
         <TimerDisplay
           time={!timers ? 0 : gameTimer}
-          style={{ fontSize: rem(28), fontFamily: "var(--main-font)" }}
+          style={{
+            fontSize: rem(28),
+            fontFamily: "var(--main-font)",
+          }}
         />
       </div>
       {frozen ? null : (

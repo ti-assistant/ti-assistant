@@ -22,6 +22,7 @@ export function useGameData() {
     leaders: {},
     options: BASE_OPTIONS,
     planets: {},
+    players: {},
     sequenceNum: 0,
     state: {
       phase: "UNKNOWN",

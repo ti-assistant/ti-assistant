@@ -17,7 +17,7 @@ export function PlanetIconWrapper({
         height: rem(16),
         width: rem(16),
         boxShadow: `0px 0px ${rem(2)} ${rem(1.5)} ${color}`,
-        backgroundColor: "var(--background-color)",
+        backgroundColor: "var(--local-background)",
         flexShrink: 0,
         ...style,
       }}

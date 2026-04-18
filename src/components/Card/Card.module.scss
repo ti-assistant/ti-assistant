@@ -1,0 +1,49 @@
+.Card {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: flex-start;
+
+  padding: 0.25rem;
+  background-color: var(--disabled-bg);
+  --local-background: var(--disabled-bg);
+  // --background-color: var(--disabled-bg);
+
+  border-radius: 0.375rem;
+  width: 100%;
+}
+
+.CardBody {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.Card:has(.CardBody:empty) {
+  display: none;
+}
+
+.Card .Card {
+  background-color: var(--light-bg);
+  --local-background: var(--light-bg);
+}
+
+.Card > label {
+  font-size: 0.875rem;
+  line-height: 1em;
+  color: var(--muted-text);
+  margin-block-end: 0.125rem;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  width: 100%;
+}
+
+.Card .Icon {
+  // Reset font size to ensure icons are all the same size.
+  font-size: 1rem;
+}

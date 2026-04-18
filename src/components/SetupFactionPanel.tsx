@@ -278,6 +278,7 @@ function FactionPanelContent({
                               whiteSpace: "nowrap",
                               gridTemplateColumns: "repeat(2, 1fr)",
                               fontFamily: "var(--main-font)",
+
                               paddingLeft: rem(8),
                               rowGap: rem(2),
                               width: "100%",
@@ -430,6 +431,7 @@ function FactionPanelContent({
                       gridTemplateColumns: "repeat(2, 1fr)",
                       fontFamily: "var(--main-font)",
                       paddingLeft: rem(8),
+
                       rowGap: rem(2),
                       width: "100%",
                     }}
@@ -517,6 +519,7 @@ function FactionBreakthrough({ faction }: { faction: BaseFaction }) {
             whiteSpace: "nowrap",
             gridTemplateColumns: "repeat(2, 1fr)",
             fontFamily: "var(--main-font)",
+
             paddingLeft: rem(8),
             rowGap: rem(2),
             width: "100%",

@@ -22,7 +22,11 @@ export default function Convene({ factionId }: { factionId: FactionId }) {
       {orderedFactionIds.map((faction) => {
         return (
           <FactionDiv factionId={faction}>
-            <GainTFCard factionId={faction} numToGain={{ abilities: 1 }} />
+            <GainTFCard
+              factionId={faction}
+              action={{ to: factionId }}
+              numToGain={{ abilities: 1 }}
+            />
           </FactionDiv>
         );
       })}

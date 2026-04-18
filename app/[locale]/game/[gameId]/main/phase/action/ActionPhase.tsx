@@ -1,12 +1,15 @@
 import React, { CSSProperties, useRef } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
+import Card from "../../../../../../../src/components/Card/Card";
 import Chip from "../../../../../../../src/components/Chip/Chip";
+import ChipGroup from "../../../../../../../src/components/Chip/ChipGroup";
 import Conditional from "../../../../../../../src/components/Conditional/Conditional";
 import ExpeditionSelector from "../../../../../../../src/components/Expedition/ExpeditionSelector";
-import FactionCard from "../../../../../../../src/components/FactionCard/FactionCard";
+import FancyFactionDiv from "../../../../../../../src/components/FactionCard/FactionCard";
 import FactionCircle from "../../../../../../../src/components/FactionCircle/FactionCircle";
 import FactionComponents from "../../../../../../../src/components/FactionComponents/FactionComponents";
+import FactionIcon from "../../../../../../../src/components/FactionIcon/FactionIcon";
 import FormattedDescription from "../../../../../../../src/components/FormattedDescription/FormattedDescription";
 import LabeledDiv from "../../../../../../../src/components/LabeledDiv/LabeledDiv";
 import LabeledLine from "../../../../../../../src/components/LabeledLine/LabeledLine";
@@ -73,8 +76,6 @@ import styles from "./ActionPhase.module.scss";
 import Faunus from "./Actions/Faunus";
 import { ComponentAction } from "./ComponentAction";
 import StrategicActions from "./StrategicActions/StrategicActions";
-import ChipGroup from "../../../../../../../src/components/Chip/ChipGroup";
-import FactionIcon from "../../../../../../../src/components/FactionIcon/FactionIcon";
 
 interface FactionActionButtonsProps {
   factionId: FactionId;
@@ -1386,7 +1387,7 @@ export function AdditionalActions({
       );
     }
     case "Component":
-      return <ComponentAction factionId={factionId} />;
+      return <ComponentAction factionId={factionId} style={style} />;
     case "Pass":
       let hasProveEndurance = false;
       scoredActionPhaseObjectives.forEach((objective) => {
@@ -1535,7 +1536,7 @@ export function AdditionalActions({
           conqueredPlanets={claimedPlanets}
           scorableObjectives={scorableObjectives}
           scoredObjectives={scoredActionPhaseObjectives}
-          style={style}
+          // style={style}
         />
       );
   }
@@ -1697,22 +1698,21 @@ function ActivePlayerColumn({
           classNames="fade"
           nodeRef={primaryRef}
         >
-          <FactionCard
+          <FancyFactionDiv
             factionId={activeFactionId}
             rightLabel={
               <FactionTimer
                 active={!primaryCompleted || allSecondariesCompleted}
                 factionId={activeFactionId}
                 style={{
-                  fontSize: rem(16),
-                  width: rem(84),
+                  fontSize: rem(24),
+                  width: rem(116),
                   fontFamily: "var(--main-font)",
                 }}
               />
             }
             opts={{
-              iconSize: rem(200),
-              fontSize: rem(32),
+              fontSize: rem(24),
             }}
           >
             <div ref={primaryRef} className={styles.ActivePlayerSection}>
@@ -1724,9 +1724,14 @@ function ActivePlayerColumn({
                 factionId={activeFactionId}
                 style={{ minWidth: rem(350) }}
               />
-              <ExpeditionSelector factionId={activeFactionId} />
+              <Card
+                label="End of Turn"
+                style={{ minWidth: rem(350), width: "fit-content" }}
+              >
+                <ExpeditionSelector factionId={activeFactionId} />
+              </Card>
             </div>
-          </FactionCard>
+          </FancyFactionDiv>
         </CSSTransition>
       </SwitchTransition>
       <NextPlayerButtons activeFactionId={activeFactionId} />
@@ -1876,60 +1881,56 @@ export default function ActionPhase() {
   return (
     <>
       <StrategyCardColumn activeFactionId={activeFactionId} />
-      <div className="flexColumn" style={{ gap: rem(16) }}>
-        <div className="flexColumn" style={{ width: "100%" }}>
-          {activeFactionId ? (
-            <ActivePlayerColumn
-              activeFactionId={activeFactionId}
-              onDeckFactionId={onDeckFactionId}
+      {activeFactionId ? (
+        <ActivePlayerColumn
+          activeFactionId={activeFactionId}
+          onDeckFactionId={onDeckFactionId}
+        />
+      ) : (
+        <div
+          className="flexColumn"
+          style={{ height: `calc(100dvh - ${rem(180)})` }}
+        >
+          <div
+            className="flexRow"
+            style={{
+              fontSize: rem(28),
+              textAlign: "center",
+              width: "100%",
+            }}
+          >
+            <FormattedMessage
+              id="Gns4AS"
+              description="Text showing that the current phase is complete"
+              defaultMessage="{phase} Phase Complete"
+              values={{ phase: phaseString("ACTION", intl) }}
             />
-          ) : (
-            <div
-              className="flexColumn"
-              style={{ height: `calc(100dvh - ${rem(180)})` }}
-            >
-              <div
-                className="flexRow"
-                style={{
-                  fontSize: rem(28),
-                  textAlign: "center",
-                  width: "100%",
-                }}
-              >
-                <FormattedMessage
-                  id="Gns4AS"
-                  description="Text showing that the current phase is complete"
-                  defaultMessage="{phase} Phase Complete"
-                  values={{ phase: phaseString("ACTION", intl) }}
-                />
-              </div>
-              <UnpassSection />
-              <LockedButtons
-                unlocked={true}
-                buttons={[
+          </div>
+          <UnpassSection />
+          <LockedButtons
+            unlocked={true}
+            buttons={[
+              {
+                text: intl.formatMessage(
                   {
-                    text: intl.formatMessage(
-                      {
-                        id: "8/h2ME",
-                        defaultMessage: "Advance to {phase} Phase",
-                        description:
-                          "Text on a button that will advance the game to a specific phase.",
-                      },
-                      { phase: phaseString("STATUS", intl) },
-                    ),
-                    onClick: () => {
-                      dataUpdate(Events.AdvancePhaseEvent());
-                    },
-                    primary: true,
-                    style: { fontSize: rem(32) },
+                    id: "8/h2ME",
+                    defaultMessage: "Advance to {phase} Phase",
+                    description:
+                      "Text on a button that will advance the game to a specific phase.",
                   },
-                ]}
-                viewOnly={viewOnly}
-              />
-            </div>
-          )}
+                  { phase: phaseString("STATUS", intl) },
+                ),
+                onClick: () => {
+                  dataUpdate(Events.AdvancePhaseEvent());
+                },
+                primary: true,
+                style: { fontSize: rem(32) },
+              },
+            ]}
+            viewOnly={viewOnly}
+          />
         </div>
-      </div>
+      )}
     </>
   );
 }

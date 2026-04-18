@@ -19,6 +19,7 @@ import ObjectiveSelectHoverMenu from "../../ObjectiveSelectHoverMenu/ObjectiveSe
 import ObjectiveGridSection from "./ObjectiveGridSection";
 import SecretSection from "./SecretsSection";
 import ChipGroup from "../../Chip/ChipGroup";
+import Card from "../../Card/Card";
 
 export default function ObjectiveGrid({ asModal }: { asModal?: boolean }) {
   const dataUpdate = useDataUpdate();
@@ -173,15 +174,18 @@ export default function ObjectiveGrid({ asModal }: { asModal?: boolean }) {
         return (
           <div
             key={name}
-            className="flexColumn"
+            className="flexRow"
             style={{
-              justifyContent: "center",
+              justifyContent: "flex-start",
               padding: `0 ${rem(4)}`,
               height: "100%",
               position: "relative",
               borderRadius: rem(3),
               border: `${"2px"} solid ${factionColor}`,
               whiteSpace: "nowrap",
+              gap: "0.125rem",
+              fontFamily: "var(--main-font)",
+              color: factionColors[name]?.color,
               // overflow: "hidden",
             }}
           >
@@ -205,7 +209,7 @@ export default function ObjectiveGrid({ asModal }: { asModal?: boolean }) {
                 />
               </div>
             ) : null}
-            <div
+            {/* <div
               style={{
                 width: "100%",
                 height: "100%",
@@ -213,9 +217,9 @@ export default function ObjectiveGrid({ asModal }: { asModal?: boolean }) {
                 opacity: 0.5,
                 zIndex: -1,
               }}
-            >
-              <FactionComponents.Icon factionId={name} size="100%" />
-            </div>
+            > */}
+            <FactionComponents.Icon factionId={name} size={16} />
+            {/* </div> */}
             {<FactionComponents.Name factionId={name} />}
           </div>
         );
@@ -227,6 +231,7 @@ export default function ObjectiveGrid({ asModal }: { asModal?: boolean }) {
           width: "100%",
           justifyContent: "flex-end",
           padding: `0 ${rem(4)}`,
+          fontFamily: "var(--main-font)",
         }}
       >
         <FormattedMessage
@@ -245,6 +250,7 @@ export default function ObjectiveGrid({ asModal }: { asModal?: boolean }) {
               width: "100%",
               height: "100%",
               fontSize: rem(24),
+              fontFamily: "var(--main-font)",
             }}
           >
             {<FactionComponents.VPs factionId={name} />}
@@ -264,7 +270,7 @@ export default function ObjectiveGrid({ asModal }: { asModal?: boolean }) {
         }}
       >
         {viewOnly ? null : (
-          <LabeledDiv
+          <Card
             label={
               <FormattedMessage
                 id="6L07nG"
@@ -277,42 +283,40 @@ export default function ObjectiveGrid({ asModal }: { asModal?: boolean }) {
               gridRow: "1 / 2",
               fontSize: rem(14),
             }}
-            innerStyle={{
-              flexDirection: "column",
-              alignItems: "stretch",
-            }}
           >
-            <div className="flexRow">
+            <div className="flexColumn" style={{ alignItems: "stretch" }}>
+              <div className="flexRow">
+                <ObjectiveSelectHoverMenu
+                  action={(objectiveId) =>
+                    dataUpdate(Events.RevealObjectiveEvent(objectiveId))
+                  }
+                  label={objectiveTypeString("STAGE ONE", intl)}
+                  objectives={remainingStageOneObjectives}
+                  fontSize={rem(14)}
+                  buttonStyle={{ fontSize: rem(14) }}
+                />
+                <ObjectiveSelectHoverMenu
+                  action={(objectiveId) =>
+                    dataUpdate(Events.RevealObjectiveEvent(objectiveId))
+                  }
+                  label={objectiveTypeString("STAGE TWO", intl)}
+                  objectives={remainingStageTwoObjectives}
+                  fontSize={rem(14)}
+                  buttonStyle={{ fontSize: rem(14) }}
+                />
+              </div>
               <ObjectiveSelectHoverMenu
                 action={(objectiveId) =>
                   dataUpdate(Events.RevealObjectiveEvent(objectiveId))
                 }
-                label={objectiveTypeString("STAGE ONE", intl)}
-                objectives={remainingStageOneObjectives}
+                label={"Secret (as Public)"}
+                objectives={remainingSecretObjectives}
                 fontSize={rem(14)}
                 buttonStyle={{ fontSize: rem(14) }}
-              />
-              <ObjectiveSelectHoverMenu
-                action={(objectiveId) =>
-                  dataUpdate(Events.RevealObjectiveEvent(objectiveId))
-                }
-                label={objectiveTypeString("STAGE TWO", intl)}
-                objectives={remainingStageTwoObjectives}
-                fontSize={rem(14)}
-                buttonStyle={{ fontSize: rem(14) }}
+                perColumn={14}
               />
             </div>
-            <ObjectiveSelectHoverMenu
-              action={(objectiveId) =>
-                dataUpdate(Events.RevealObjectiveEvent(objectiveId))
-              }
-              label={"Secret (as Public)"}
-              objectives={remainingSecretObjectives}
-              fontSize={rem(14)}
-              buttonStyle={{ fontSize: rem(14) }}
-              perColumn={10}
-            />
-          </LabeledDiv>
+          </Card>
         )}
       </div>
       <ObjectiveGridSection

@@ -194,8 +194,8 @@ export function SystemImage({
               position: "absolute",
               width: rem(4),
               height: rem(4),
-              backgroundColor: "white",
-              boxShadow: "0 0 8px 8px white",
+              backgroundColor: "var(--foreground-color)",
+              boxShadow: "0 0 8px 8px var(--foreground-color)",
             }}
           ></div>
         ) : null}
@@ -256,8 +256,8 @@ export function SystemImage({
               position: "absolute",
               width: rem(4),
               height: rem(4),
-              backgroundColor: "white",
-              boxShadow: "0 0 8px 8px white",
+              backgroundColor: "var(--foreground-color)",
+              boxShadow: "0 0 8px 8px var(--foreground-color)",
             }}
           ></div>
         ) : null}
@@ -295,7 +295,8 @@ export function SystemImage({
               width: "100%",
               height: "100%",
               fontSize: rem(28),
-              textShadow: "0 0 4px black, 0 0 4px black",
+              textShadow:
+                "0 0 4px var(--background-color), 0 0 4px var(--background-color)",
               gap: 0,
             }}
           >
@@ -303,7 +304,8 @@ export function SystemImage({
               className="flexRow"
               style={{
                 fontSize: rem(20),
-                textShadow: "0 0 4px black, 0 0 4px black",
+                textShadow:
+                  "0 0 4px var(--background-color), 0 0 4px var(--background-color)",
               }}
             >
               {systemNumber}
@@ -337,8 +339,8 @@ export function SystemImage({
               position: "absolute",
               width: rem(4),
               height: rem(4),
-              backgroundColor: "white",
-              boxShadow: "0 0 8px 8px white",
+              backgroundColor: "var(--foreground-color)",
+              boxShadow: "0 0 8px 8px var(--foreground-color)",
             }}
           ></div>
         ) : null}
@@ -389,7 +391,8 @@ export function SystemImage({
             top: 0,
             position: "absolute",
             fontSize: rem(18),
-            textShadow: "0 0 4px black, 0 0 4px black",
+            textShadow:
+              "0 0 4px var(--background-color), 0 0 4px var(--background-color)",
           }}
         >
           {systemNumber}
@@ -402,8 +405,8 @@ export function SystemImage({
             position: "absolute",
             width: rem(4),
             height: rem(4),
-            backgroundColor: "white",
-            boxShadow: "0 0 8px 8px white",
+            backgroundColor: "var(--foreground-color)",
+            boxShadow: "0 0 8px 8px var(--foreground-color)",
           }}
         ></div>
       ) : null}
