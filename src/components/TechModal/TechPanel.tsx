@@ -520,6 +520,8 @@ function TechsByFaction({
             justifyContent: "center",
             fontSize: rem(18),
             whiteSpace: "nowrap",
+            fontFamily: "var(--main-font)",
+            color: getFactionColor(faction),
           }}
         >
           <FactionComponents.Icon factionId={factionId} size={20} />
@@ -752,6 +754,7 @@ function TFTechList({
               factionId={factionId}
               gainedAbilities={[]}
               numToGain={1}
+              action={{ to: factionId }}
             />
           </div>
           <div className={styles.factionTechListWrapper}>
@@ -802,6 +805,7 @@ function TFTechList({
               factionId={factionId}
               gainedGenomes={[]}
               numToGain={1}
+              action={{ to: factionId }}
             />
           </div>
           <div className={styles.factionTechListWrapper}>
@@ -822,6 +826,7 @@ function TFTechList({
               factionId={factionId}
               gainedParadigms={[]}
               numToGain={1}
+              action={{ to: factionId }}
             />
           </div>
           <div className={styles.factionTechListWrapper}>
@@ -870,6 +875,7 @@ function TFTechList({
               factionId={factionId}
               gainedUpgrades={[]}
               numToGain={1}
+              action={{ to: factionId }}
             />
           </div>
           <div className={styles.factionTechListWrapper}>

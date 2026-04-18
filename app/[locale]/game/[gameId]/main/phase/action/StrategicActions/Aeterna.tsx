@@ -149,7 +149,11 @@ function Primary({ factionId }: { factionId: FactionId }) {
         )}
         {scoredPublics.length < 1 && !gainedParadigm ? <>OR</> : null}
         {scoredPublics.length < 1 ? (
-          <GainTFCard factionId={factionId} numToGain={{ paradigms: 1 }} />
+          <GainTFCard
+            factionId={factionId}
+            action={{ to: factionId }}
+            numToGain={{ paradigms: 1 }}
+          />
         ) : null}
       </div>
     </>
@@ -173,7 +177,11 @@ function Secondary({ factionId }: { factionId: FactionId }) {
       blur
     >
       <>
-        <GainTFCard factionId={factionId} numToGain={{ paradigms: 1 }} />
+        <GainTFCard
+          factionId={factionId}
+          action={{ to: factionId }}
+          numToGain={{ paradigms: 1 }}
+        />
       </>
     </LabeledDiv>
   );

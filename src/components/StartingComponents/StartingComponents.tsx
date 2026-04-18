@@ -36,6 +36,9 @@ import TechIcon from "../TechIcon/TechIcon";
 import TechSelectHoverMenu from "../TechSelectHoverMenu/TechSelectHoverMenu";
 import { Strings } from "../strings";
 import styles from "./StartingComponents.module.scss";
+import Card from "../Card/Card";
+import PlanetMenuSVG from "../../icons/ui/PlanetMenu";
+import UpgradeSVG from "../../icons/twilightsfall/upgrade";
 
 interface StartingComponentsProps {
   factionId: FactionId;
@@ -185,14 +188,29 @@ export default function StartingComponents({
       {options.expansions.includes("TWILIGHTS FALL") ? (
         <div className={styles.TFFactionSelectSection}>
           {options.hide?.includes("PLANETS") && !mapString ? null : (
-            <div className={styles.TFFactionSelect}>
-              Planet Faction:{" "}
-              <TFFactionSelect factionId={factionId} type="Planet" />
-            </div>
+            <>
+              <Card
+                label="Planet Faction"
+                icon={
+                  <div style={{ width: "1.25em", height: "1.25em" }}>
+                    <PlanetMenuSVG color="var(--muted-text)" />
+                  </div>
+                }
+              >
+                <TFFactionSelect factionId={factionId} type="Planet" />
+              </Card>
+            </>
           )}
-          <div className={styles.TFFactionSelect}>
-            Unit Faction: <TFFactionSelect factionId={factionId} type="Unit" />
-          </div>
+          <Card
+            label="Unit Faction"
+            icon={
+              <div style={{ width: "0.75em", height: "1em" }}>
+                <UpgradeSVG color="var(--muted-text)" />
+              </div>
+            }
+          >
+            <TFFactionSelect factionId={factionId} type="Unit" />
+          </Card>
         </div>
       ) : null}
       {startswith.planetchoice ? (
@@ -227,44 +245,48 @@ export default function StartingComponents({
           />
         </div>
       ) : null}
-      <div>
-        {orderedTechs.length === 0 &&
-        !startswith.choice &&
-        !options.expansions.includes("TWILIGHTS FALL") ? (
-          <div
-            style={{
-              fontSize: rem(14),
-            }}
-          >
-            <FormattedMessage
-              id="NEiUw9"
-              description="Message explaining that a faction has no starting tech."
-              defaultMessage="No Starting Tech"
-            />
-          </div>
-        ) : null}
-        {orderedTechs.map((tech) => {
-          if (startswith.choice) {
+      {options.expansions.includes("TWILIGHTS FALL") ? null : (
+        <div>
+          {orderedTechs.length === 0 &&
+          !startswith.choice &&
+          !options.expansions.includes("TWILIGHTS FALL") ? (
+            <div
+              style={{
+                fontSize: rem(14),
+              }}
+            >
+              <FormattedMessage
+                id="NEiUw9"
+                description="Message explaining that a faction has no starting tech."
+                defaultMessage="No Starting Tech"
+              />
+            </div>
+          ) : null}
+          {orderedTechs.map((tech) => {
+            if (startswith.choice) {
+              return (
+                <TechRow
+                  key={tech.id}
+                  techId={tech.id}
+                  removeTech={() =>
+                    dataUpdate(
+                      Events.RemoveStartingTechEvent(factionId, tech.id),
+                    )
+                  }
+                  opts={{ hideSymbols: true }}
+                />
+              );
+            }
             return (
               <TechRow
                 key={tech.id}
                 techId={tech.id}
-                removeTech={() =>
-                  dataUpdate(Events.RemoveStartingTechEvent(factionId, tech.id))
-                }
                 opts={{ hideSymbols: true }}
               />
             );
-          }
-          return (
-            <TechRow
-              key={tech.id}
-              techId={tech.id}
-              opts={{ hideSymbols: true }}
-            />
-          );
-        })}
-      </div>
+          })}
+        </div>
+      )}
       {numToChoose > 0 ? (
         <div>
           <Conditional
@@ -319,38 +341,36 @@ export default function StartingComponents({
         </div>
       ) : null}
       {/* Units */}
-      <div
-        className={styles.StartingUnits}
-        style={{
-          display: "grid",
-          gridAutoFlow: "row",
-          // gridTemplateColumns: "repeat(2, 1fr)",
-          // gridTemplateRows: `repeat(${Math.ceil(
-          //   orderedUnits.length / 2,
-          // )}, 1fr)`,
-          columnGap: rem(8),
-          fontSize: rem(14),
-          width: "100%",
-        }}
-      >
-        {orderedUnits.map(([unit, number]) => {
-          return (
-            <div
-              key={unit}
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                alignItems: "center",
-                gap: rem(2),
-              }}
-            >
-              <Strings.Units unit={unit} count={number} />
-              <UnitIcon unit={unit} color={getFactionColor(faction)} />
-            </div>
-          );
-        })}
-      </div>
+      {orderedUnits.length === 0 ? null : (
+        <div
+          className={styles.StartingUnits}
+          style={{
+            display: "grid",
+            gridAutoFlow: "row",
+            columnGap: rem(8),
+            fontSize: rem(14),
+            width: "100%",
+          }}
+        >
+          {orderedUnits.map(([unit, number]) => {
+            return (
+              <div
+                key={unit}
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  gap: rem(2),
+                }}
+              >
+                <Strings.Units unit={unit} count={number} />
+                <UnitIcon unit={unit} color={getFactionColor(faction)} />
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

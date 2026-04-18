@@ -54,6 +54,7 @@ import DiscardTFCard from "../../../../../../../src/components/Actions/DiscardSp
 import Splice from "../edict/Splice";
 import Card from "../../../../../../../src/components/Card/Card";
 import ActionCardsSVG from "../../../../../../../src/icons/expedition/ActionCards";
+import PurgeRelic from "../../../../../../../src/components/Actions/PurgeRelic";
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -714,6 +715,17 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       innerContent = <ComponentActions.Zeu.Content />;
       break;
     }
+    case "Transpose": {
+      leftLabel = undefined;
+      label = <ComponentActions.Transpose.Label />;
+      rightLabel = (
+        <ComponentActions.Transpose.RightLabel factionId={factionId} />
+      );
+      innerContent = (
+        <ComponentActions.Transpose.Content factionId={factionId} />
+      );
+      break;
+    }
     case "UNITDSGNFLAYESH": {
       conditional = "TECHS";
       innerContent = (
@@ -764,14 +776,25 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       break;
     }
     case "Coerce": {
+      conditional = "TECHS";
       innerContent = (
-        <GainTFCard factionId={factionId} steal numToGain={{ abilities: 1 }} />
+        <GainTFCard
+          factionId={factionId}
+          action={{ from: "ALL", to: factionId }}
+          numToGain={{ abilities: 1 }}
+          // noCards
+        />
       );
       break;
     }
     case "Elevate": {
+      conditional = "TECHS";
       innerContent = (
-        <GainTFCard factionId={factionId} numToGain={{ paradigms: 1 }} />
+        <GainTFCard
+          factionId={factionId}
+          action={{ to: factionId }}
+          numToGain={{ paradigms: 1 }}
+        />
       );
       break;
     }
@@ -780,6 +803,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       innerContent = (
         <GainTFCard
           factionId={factionId}
+          action={{ to: factionId }}
           numToGain={{ abilities: 1, genomes: 1, upgrades: 1, total: 1 }}
         />
       );
@@ -801,7 +825,11 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
     }
     case "Irradiate": {
       innerContent = (
-        <GainTFCard factionId={factionId} numToGain={{ upgrades: 1 }} />
+        <GainTFCard
+          factionId={factionId}
+          action={{ to: factionId }}
+          numToGain={{ upgrades: 1 }}
+        />
       );
       break;
     }
@@ -826,7 +854,11 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
             }}
           />
           {/* TODO: Only show if ability is discarded */}
-          <GainTFCard factionId={factionId} numToGain={{ abilities: 1 }} />
+          <GainTFCard
+            factionId={factionId}
+            action={{ to: factionId }}
+            numToGain={{ abilities: 1 }}
+          />
         </div>
       );
       break;
@@ -835,6 +867,7 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       innerContent = (
         <GainTFCard
           factionId={factionId}
+          action={{ to: factionId }}
           numToGain={{ abilities: 1, genomes: 1, upgrades: 1 }}
         />
       );
@@ -842,12 +875,26 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
     }
     case "Devour World": {
       innerContent = (
-        <GainTFCard factionId={factionId} numToGain={{ abilities: 1 }} />
+        <GainTFCard
+          factionId={factionId}
+          action={{ to: factionId }}
+          numToGain={{ abilities: 1 }}
+        />
       );
       break;
     }
     case "Witching Hour": {
-      innerContent = <StrategicActions.Tyrannus.Primary />;
+      innerContent = (
+        <StrategicActions.Tyrannus.Primary allowSpeakerToBeTyrant />
+      );
+      break;
+    }
+    case "Unravel": {
+      innerContent = (
+        <>
+          <PurgeRelic factionId={factionId} unravel />
+        </>
+      );
       break;
     }
     // case "Repeal Law": {

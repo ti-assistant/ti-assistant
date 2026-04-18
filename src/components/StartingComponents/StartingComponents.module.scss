@@ -18,7 +18,7 @@
   grid-template-columns: repeat(2, 1fr);
 }
 
-@container (inline-size > 23rem) {
+@container (inline-size > 30rem) {
   .StartingUnits {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -40,7 +40,7 @@
 
 .TFFactionSelectSection {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   width: 100%;
   gap: 0.5rem;
 }

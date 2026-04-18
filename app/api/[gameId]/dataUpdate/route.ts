@@ -148,6 +148,11 @@ import {
   ChooseEdictHandler,
   HideEdictHandler,
 } from "../../../../src/util/model/chooseEdict";
+import PurgeRelic from "../../../../src/components/Actions/PurgeRelic";
+import {
+  PurgeRelicHandler,
+  UnpurgeRelicHandler,
+} from "../../../../src/util/model/purgeRelic";
 
 export async function POST(
   req: Request,
@@ -570,6 +575,14 @@ function updateInTransaction(
       }
       case "LOSE_RELIC": {
         handler = new LoseRelicHandler(gameData, data);
+        break;
+      }
+      case "PURGE_RELIC": {
+        handler = new PurgeRelicHandler(gameData, data);
+        break;
+      }
+      case "UNPURGE_RELIC": {
+        handler = new UnpurgeRelicHandler(gameData, data);
         break;
       }
       case "GAIN_ALLIANCE": {

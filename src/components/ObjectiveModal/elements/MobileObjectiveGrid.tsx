@@ -453,11 +453,19 @@ export default function MobileObjectiveGrid() {
         </CollapsibleSection>
         <CollapsibleSection
           title={
-            <FormattedMessage
-              id="eGEjSH"
-              description="The title of points granted from using Imperial."
-              defaultMessage="Imperial Points"
-            />
+            options.expansions.includes("TWILIGHTS FALL") ? (
+              <FormattedMessage
+                id="Xf1B6k"
+                description="The title of points granted from using Aeterna."
+                defaultMessage="Aeterna Points"
+              />
+            ) : (
+              <FormattedMessage
+                id="eGEjSH"
+                description="The title of points granted from using Imperial."
+                defaultMessage="Imperial Points"
+              />
+            )
           }
           style={{
             width: "100%",

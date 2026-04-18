@@ -139,6 +139,12 @@ export function getGainedRelic(actionLog: ActionLog, planet?: PlanetId) {
     .map((logEntry) => logEntry.data.event.relic)[0];
 }
 
+export function getPurgedRelic(actionLog: ActionLog) {
+  return getLogEntries<PurgeRelicData>(actionLog, "PURGE_RELIC").map(
+    (logEntry) => logEntry.data.event.relic,
+  )[0];
+}
+
 export function getGainedCCs(actionLog: ActionLog, factionId: FactionId) {
   return getLogEntries<ManualCCUpdateData>(actionLog, "MANUAL_CC_UPDATE")
     .filter((logEntry) => {

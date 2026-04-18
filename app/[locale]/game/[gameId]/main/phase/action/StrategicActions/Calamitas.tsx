@@ -40,7 +40,12 @@ function Primary({ factionId }: { factionId: FactionId }) {
         borderColor={colors.border}
         blur
       >
-        <GainTFCard factionId={factionId} numToGain={{ upgrades: 1 }} splice />
+        <GainTFCard
+          factionId={factionId}
+          action={{ to: factionId }}
+          numToGain={{ upgrades: 1 }}
+          splice
+        />
       </LabeledDiv>
     </div>
   );
@@ -63,7 +68,12 @@ function Secondary({ factionId }: { factionId: FactionId }) {
       blur
     >
       <>
-        <GainTFCard factionId={factionId} numToGain={{ upgrades: 1 }} splice />
+        <GainTFCard
+          factionId={factionId}
+          action={{ to: factionId }}
+          numToGain={{ upgrades: 1 }}
+          splice
+        />
       </>
     </LabeledDiv>
   );

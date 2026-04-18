@@ -39,6 +39,7 @@ import UpgradeSVG from "../icons/twilightsfall/upgrade";
 import GenomeSVG from "../icons/twilightsfall/genome";
 import ParadigmSVG from "../icons/twilightsfall/paradigm";
 import Toggle from "./Toggle/Toggle";
+import { AllGenomesList } from "./Actions/GenomeRow";
 
 export function UnitStat({
   name,
@@ -820,6 +821,9 @@ function FactionPanelContent({
                     // TODO: Add one-color faction icon.
                   >
                     <FormattedDescription description={genome.description} />
+                    {genome.id === "Clever Genome" && !!genome.owner ? (
+                      <AllGenomesList owner={genome.owner} />
+                    ) : null}
                   </AbilitySection>
                 );
               })}

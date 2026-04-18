@@ -184,6 +184,8 @@ export default function ObjectiveGrid({ asModal }: { asModal?: boolean }) {
               border: `${"2px"} solid ${factionColor}`,
               whiteSpace: "nowrap",
               gap: "0.125rem",
+              fontFamily: "var(--main-font)",
+              color: factionColors[name]?.color,
               // overflow: "hidden",
             }}
           >
@@ -229,6 +231,7 @@ export default function ObjectiveGrid({ asModal }: { asModal?: boolean }) {
           width: "100%",
           justifyContent: "flex-end",
           padding: `0 ${rem(4)}`,
+          fontFamily: "var(--main-font)",
         }}
       >
         <FormattedMessage
@@ -247,6 +250,7 @@ export default function ObjectiveGrid({ asModal }: { asModal?: boolean }) {
               width: "100%",
               height: "100%",
               fontSize: rem(24),
+              fontFamily: "var(--main-font)",
             }}
           >
             {<FactionComponents.VPs factionId={name} />}
@@ -279,10 +283,6 @@ export default function ObjectiveGrid({ asModal }: { asModal?: boolean }) {
               gridRow: "1 / 2",
               fontSize: rem(14),
             }}
-            // innerStyle={{
-            //   flexDirection: "column",
-            //   alignItems: "stretch",
-            // }}
           >
             <div className="flexColumn" style={{ alignItems: "stretch" }}>
               <div className="flexRow">

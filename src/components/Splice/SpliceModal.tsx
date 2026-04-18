@@ -392,10 +392,10 @@ function SpliceModalContent({
                 return (
                   <div
                     className="flexColumn"
+                    key={index}
                     style={{ gap: 0, justifyContent: "flex-start" }}
                   >
                     <FactionCircle
-                      key={index}
                       factionId={factionId}
                       borderColor={factionColors[factionId]?.border}
                       fade={hasPicked}

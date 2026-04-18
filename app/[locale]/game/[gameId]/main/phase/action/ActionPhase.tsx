@@ -1,6 +1,7 @@
 import React, { CSSProperties, useRef } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
+import Card from "../../../../../../../src/components/Card/Card";
 import Chip from "../../../../../../../src/components/Chip/Chip";
 import ChipGroup from "../../../../../../../src/components/Chip/ChipGroup";
 import Conditional from "../../../../../../../src/components/Conditional/Conditional";
@@ -75,8 +76,6 @@ import styles from "./ActionPhase.module.scss";
 import Faunus from "./Actions/Faunus";
 import { ComponentAction } from "./ComponentAction";
 import StrategicActions from "./StrategicActions/StrategicActions";
-import OptionalLine from "../../../../../../../src/components/LineWithChildren/OptionalLine";
-import Card from "../../../../../../../src/components/Card/Card";
 
 interface FactionActionButtonsProps {
   factionId: FactionId;

@@ -46,7 +46,12 @@ function Secondary({ factionId }: { factionId: FactionId }) {
       blur
     >
       <>
-        <GainTFCard factionId={factionId} numToGain={{ genomes: 1 }} splice />
+        <GainTFCard
+          factionId={factionId}
+          action={{ to: factionId }}
+          numToGain={{ genomes: 1 }}
+          splice
+        />
       </>
     </LabeledDiv>
   );

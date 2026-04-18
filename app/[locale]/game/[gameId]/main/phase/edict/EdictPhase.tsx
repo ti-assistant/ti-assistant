@@ -265,40 +265,124 @@ function EdictDetails({
   factionId: FactionId;
   finished?: boolean;
 }) {
-  if (finished) {
+  const edicts = useEdicts();
+  const edict = edicts[edictId];
+  if (finished || !edict) {
     return null;
   }
   switch (edictId) {
     case "Arbitrate":
-      return <Arbitrate factionId={factionId} />;
-    case "Arise":
-      return null;
+      return (
+        <>
+          <div
+            style={{
+              fontSize: "0.75em",
+              color: "var(--muted-text)",
+              lineHeight: "1.25em",
+              whiteSpace: "normal",
+              textAlign: "left",
+            }}
+          >
+            <FormattedDescription description={edict.description} />
+          </div>
+          <Arbitrate factionId={factionId} />
+        </>
+      );
     case "Artifice":
       return (
-        <div className="flexColumn" style={{ alignItems: "flex-start" }}>
-          <GainRelic factionId={factionId} />
-          <GainTFCard
-            factionId={factionId}
-            numToGain={{
-              paradigms: 1,
+        <>
+          <div
+            style={{
+              fontSize: "0.75em",
+              color: "var(--muted-text)",
+              lineHeight: "1.25em",
+              whiteSpace: "normal",
+              textAlign: "left",
             }}
-          />
+          >
+            <FormattedDescription description={edict.description} />
+          </div>
+          <div className="flexColumn" style={{ alignItems: "flex-start" }}>
+            <GainRelic factionId={factionId} />
+            <GainTFCard
+              factionId={factionId}
+              action={{ to: factionId }}
+              numToGain={{
+                paradigms: 1,
+              }}
+            />
+          </div>
+        </>
+      );
+    case "Convene":
+      return (
+        <>
+          <div
+            style={{
+              fontSize: "0.75em",
+              color: "var(--muted-text)",
+              lineHeight: "1.25em",
+              whiteSpace: "normal",
+              textAlign: "left",
+            }}
+          >
+            <FormattedDescription description={edict.description} />
+          </div>
+          <Convene factionId={factionId} />
+        </>
+      );
+    case "Legacy of Ixth":
+      return (
+        <>
+          <div
+            style={{
+              fontSize: "0.75em",
+              color: "var(--muted-text)",
+              lineHeight: "1.25em",
+              whiteSpace: "normal",
+              textAlign: "left",
+            }}
+          >
+            <FormattedDescription description={edict.description} />
+          </div>
+          <LegacyOfIxth factionId={factionId} />
+        </>
+      );
+    case "Splice":
+      return (
+        <>
+          <div
+            style={{
+              fontSize: "0.75em",
+              color: "var(--muted-text)",
+              lineHeight: "1.25em",
+              whiteSpace: "normal",
+              textAlign: "left",
+            }}
+          >
+            <FormattedDescription description={edict.description} />
+          </div>
+          <Splice factionId={factionId} />
+        </>
+      );
+
+    case "Arise":
+    case "Bless":
+    case "Censure":
+    case "Execute":
+    case "Foretell":
+      return (
+        <div
+          style={{
+            fontSize: "0.75em",
+            color: "var(--muted-text)",
+            lineHeight: "1.25em",
+            whiteSpace: "normal",
+            textAlign: "left",
+          }}
+        >
+          <FormattedDescription description={edict.description} />
         </div>
       );
-    case "Bless":
-      // TODO: Need to update for tracking command counters.
-      return null;
-    case "Censure":
-      return null;
-    case "Convene":
-      return <Convene factionId={factionId} />;
-    case "Execute":
-      return null;
-    case "Foretell":
-      return null;
-    case "Legacy of Ixth":
-      return <LegacyOfIxth factionId={factionId} />;
-    case "Splice":
-      return <Splice factionId={factionId} />;
   }
 }

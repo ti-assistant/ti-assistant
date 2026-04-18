@@ -1,10 +1,11 @@
 import { useMemo } from "react";
 import { FormattedMessage, IntlShape } from "react-intl";
+import { FactionCard } from "../../../../../../../src/components/Card/Card";
 import Conditional from "../../../../../../../src/components/Conditional/Conditional";
 import FactionDiv from "../../../../../../../src/components/LabeledDiv/FactionDiv";
-import LabeledDiv from "../../../../../../../src/components/LabeledDiv/LabeledDiv";
 import ObjectiveCard from "../../../../../../../src/components/ObjectiveRow/ObjectiveCard";
 import ObjectiveSelectHoverMenu from "../../../../../../../src/components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
+import InauguralSplice from "../../../../../../../src/components/StartingComponents/InauguralSplice";
 import StartingComponents from "../../../../../../../src/components/StartingComponents/StartingComponents";
 import {
   useLogEntries,
@@ -21,10 +22,6 @@ import { rem } from "../../../../../../../src/util/util";
 import FinishPhaseButton from "./FinishPhaseButton";
 import MapStringInput from "./MapStringInput";
 import styles from "./SetupPhase.module.scss";
-import InauguralSplice from "../../../../../../../src/components/StartingComponents/InauguralSplice";
-import Card, {
-  FactionCard,
-} from "../../../../../../../src/components/Card/Card";
 
 export default function SetupSteps({ intl }: { intl: IntlShape }) {
   const dataUpdate = useDataUpdate();
@@ -170,17 +167,6 @@ export default function SetupSteps({ intl }: { intl: IntlShape }) {
                 style={{ width: "100%", gap: "0.25rem" }}
               >
                 {revealedObjectives.length > 0 ? (
-                  // <Card
-                  //   label={
-                  //     <FormattedMessage
-                  //       id="RBlsAq"
-                  //       description="A label for the stage I objectives that have been revealed"
-                  //       defaultMessage="Revealed stage I {count, plural, one {objective} other {objectives}}"
-                  //       values={{ count: revealedObjectives.length }}
-                  //     />
-                  //   }
-                  //   // color="var(--muted-text)"
-                  // >
                   <div
                     className="flexColumn"
                     style={{
@@ -201,8 +187,7 @@ export default function SetupSteps({ intl }: { intl: IntlShape }) {
                       );
                     })}
                   </div>
-                ) : // </Card>
-                null}
+                ) : null}
                 {revealedObjectives.length < 2 ? (
                   <ObjectiveSelectHoverMenu
                     action={(objectiveId) =>

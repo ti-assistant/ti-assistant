@@ -537,6 +537,10 @@ export default function StrategyPhase() {
   const onDeckFactionId = useOnDeckFactionId();
   const round = useRound();
 
+  const onDeckColors = onDeckFactionId
+    ? factionColors[onDeckFactionId]
+    : undefined;
+
   interface Ability {
     name: string;
     description: string;
@@ -810,7 +814,11 @@ export default function StrategyPhase() {
       <div className={styles.MainColumn}>
         <div
           className="flexRow"
-          style={{ position: "relative", maxWidth: rem(420) }}
+          style={{
+            position: "relative",
+            alignItems: "center",
+            maxWidth: rem(420),
+          }}
         >
           {activeFactionId ? (
             <div className="flexColumn" style={{ alignItems: "center" }}>
@@ -822,6 +830,9 @@ export default function StrategyPhase() {
               <FancyFactionDiv
                 factionId={activeFactionId}
                 style={{ height: rem(80) }}
+                opts={{
+                  fontSize: rem(24),
+                }}
               >
                 <div
                   className="flexColumn"
@@ -857,35 +868,53 @@ export default function StrategyPhase() {
           )}
           {onDeckFactionId ? (
             <div className="flexColumn" style={{ alignItems: "center" }}>
-              <FormattedMessage
-                id="S0vXJt"
-                description="Label showing that the specific player is up next."
-                defaultMessage="On Deck"
-              />
-              <FancyFactionDiv
-                factionId={onDeckFactionId}
-                style={{ height: rem(64) }}
-                opts={{
-                  fontSize: rem(24),
-                }}
-              >
-                <div
-                  className="flexColumn"
-                  style={{
-                    paddingBottom: rem(4),
-                    height: "100%",
-                  }}
-                >
+              <LabeledDiv
+                label={
+                  <FormattedMessage
+                    id="S0vXJt"
+                    description="Label showing that the specific player is up next."
+                    defaultMessage="On Deck"
+                  />
+                }
+                rightLabel={
                   <StaticFactionTimer
                     active={false}
                     factionId={onDeckFactionId}
                     style={{
-                      fontSize: rem(18),
+                      fontSize: rem(16),
                     }}
-                    width={96}
+                    width={72}
+                  />
+                }
+                color={onDeckColors?.color}
+                borderColor={onDeckColors?.border}
+                style={{
+                  width: "fit-content",
+                  minWidth: rem(200),
+                }}
+              >
+                <div
+                  className="flexRow"
+                  style={{
+                    width: "100%",
+                    height: rem(44),
+                    whiteSpace: "nowrap",
+                    gap: rem(4),
+                    fontSize: rem(24),
+                    fontFamily: "var(--main-font)",
+                  }}
+                >
+                  <FactionComponents.Icon
+                    factionId={onDeckFactionId}
+                    size={16}
+                  />
+                  {<FactionComponents.Name factionId={onDeckFactionId} />}
+                  <FactionComponents.Icon
+                    factionId={onDeckFactionId}
+                    size={16}
                   />
                 </div>
-              </FancyFactionDiv>
+              </LabeledDiv>
             </div>
           ) : null}
         </div>

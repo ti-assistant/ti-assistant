@@ -10,6 +10,7 @@ import {
 } from "../../context/dataHooks";
 import { useClaimedPlanetEvents } from "../../context/planetDataHooks";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
+import PlanetMenuSVG from "../../icons/ui/PlanetMenu";
 import { getAttachments } from "../../util/actionLog";
 import { useDataUpdate } from "../../util/api/dataUpdate";
 import { Events } from "../../util/api/events";
@@ -17,12 +18,11 @@ import { applyPlanetAttachments } from "../../util/planets";
 import { rem } from "../../util/util";
 import GainRelic from "../Actions/GainRelic";
 import AttachmentSelectRadialMenu from "../AttachmentSelectRadialMenu/AttachmentSelectRadialMenu";
+import Card from "../Card/Card";
 import LabeledDiv from "../LabeledDiv/LabeledDiv";
 import PlanetIcon from "../PlanetIcon/PlanetIcon";
 import PlanetRow from "../PlanetRow/PlanetRow";
 import styles from "./ClaimPlanetsSection.module.scss";
-import Card from "../Card/Card";
-import PlanetMenuSVG from "../../icons/ui/PlanetMenu";
 
 export default function ClaimPlanetsSection({
   availablePlanets,
@@ -74,19 +74,10 @@ export default function ClaimPlanetsSection({
 
   return (
     <Card
-      label={
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            height: "1em",
-            width: "100%",
-          }}
-        >
-          Planets
-          <div style={{ width: "1.5em", height: "1.5em" }}>
-            <PlanetMenuSVG color="var(--muted-text)" />
-          </div>
+      label="Planets"
+      icon={
+        <div style={{ width: "1.25em", height: "1.25em" }}>
+          <PlanetMenuSVG color="var(--muted-text)" />
         </div>
       }
     >

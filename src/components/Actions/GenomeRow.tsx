@@ -44,7 +44,7 @@ export default function GenomeRow({ genome }: { genome: TFGenome }) {
   );
 }
 
-function AllGenomesList({ owner }: { owner: FactionId }) {
+export function AllGenomesList({ owner }: { owner: FactionId }) {
   const genomes = useGenomes();
 
   const genomeList = Object.values(genomes).filter((genome) => {

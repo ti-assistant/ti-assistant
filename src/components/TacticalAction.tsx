@@ -124,24 +124,15 @@ export function TacticalAction({
       ) : null}
       <Conditional appSection="OBJECTIVES">
         <Card
-          label={
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                height: "1em",
-                width: "100%",
-              }}
-            >
-              Action Phase Objectives
-              <div style={{ width: "1.5em", height: "1.5em" }}>
-                <ObjectivesMenuSVG
-                  color="var(--muted-text)"
-                  borderColor="var(--muted-text)"
-                />
-              </div>
+          icon={
+            <div style={{ width: "1.25em", height: "1.25em" }}>
+              <ObjectivesMenuSVG
+                color="var(--muted-text)"
+                borderColor="var(--muted-text)"
+              />
             </div>
           }
+          label="Action Phase Objectives"
         >
           <div className="flexColumn" style={{ alignItems: "flex-start" }}>
             {scoredObjectives.length > 0 ? (

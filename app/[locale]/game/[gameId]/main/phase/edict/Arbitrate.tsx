@@ -119,6 +119,7 @@ function MulliganSection({ factionId }: { factionId: FactionId }) {
         <div>
           <GainTFCard
             factionId={factionId}
+            action={{ to: factionId }}
             numToGain={{
               abilities: discardedCardsByType.abilities.length,
               genomes: discardedCardsByType.genomes.length,

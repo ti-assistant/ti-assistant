@@ -7,7 +7,7 @@ import FormattedDescription from "../../../../../../../src/components/FormattedD
 import IconDiv from "../../../../../../../src/components/LabeledDiv/IconDiv";
 import LabeledDiv from "../../../../../../../src/components/LabeledDiv/LabeledDiv";
 import LabeledLine from "../../../../../../../src/components/LabeledLine/LabeledLine";
-import ObjectiveRow from "../../../../../../../src/components/ObjectiveRow/ObjectiveRow";
+import ObjectiveCard from "../../../../../../../src/components/ObjectiveRow/ObjectiveCard";
 import ObjectiveSelectHoverMenu from "../../../../../../../src/components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import { Selector } from "../../../../../../../src/components/Selector/Selector";
 import TechResearchSection from "../../../../../../../src/components/TechResearchSection/TechResearchSection";
@@ -71,7 +71,7 @@ import {
   rem,
 } from "../../../../../../../src/util/util";
 import styles from "./StatusPhase.module.scss";
-import ObjectiveCard from "../../../../../../../src/components/ObjectiveRow/ObjectiveCard";
+import { FactionCard } from "../../../../../../../src/components/Card/Card";
 
 function CommandTokenGains() {
   const factionsWithHyper = useFactionsWithTech("Hyper Metabolism");
@@ -1010,38 +1010,32 @@ export default function StatusPhase() {
                 />
               }
             >
-              {revealedObjective ? (
-                <LabeledDiv
-                  label={
-                    <FormattedMessage
-                      id="IfyaDZ"
-                      description="A label for revealed objectives."
-                      defaultMessage="Revealed {type} {count, plural, one {Objective} other {Objectives}}"
-                      values={{
-                        count: 1,
-                        type:
-                          round > 3
-                            ? objectiveTypeString("STAGE TWO", intl)
-                            : objectiveTypeString("STAGE ONE", intl),
-                      }}
-                    />
-                  }
-                  color="var(--muted-text)"
-                >
+              <FactionCard
+                label={
+                  <FormattedMessage
+                    id="lDBTCO"
+                    description="Instruction telling the speaker to reveal objectives."
+                    defaultMessage="Reveal {count, number} {type} {count, plural, one {objective} other {objectives}}"
+                    values={{
+                      count: 1,
+                      type:
+                        round > 3
+                          ? objectiveTypeString("STAGE TWO", intl)
+                          : objectiveTypeString("STAGE ONE", intl),
+                    }}
+                  />
+                }
+                factionId={speaker}
+                style={{ fontSize: "1rem" }}
+              >
+                {revealedObjective ? (
                   <ObjectiveCard
                     objectiveId={revealedObjective}
                     removeObjective={() =>
                       dataUpdate(Events.HideObjectiveEvent(revealedObjective))
                     }
                   />
-                </LabeledDiv>
-              ) : (
-                <LabeledDiv
-                  label={<FactionComponents.Name factionId={speaker} />}
-                  color={factionColors[speaker]?.color}
-                  borderColor={factionColors[speaker]?.border}
-                  style={{ width: "100%" }}
-                >
+                ) : (
                   <div className="flexRow" style={{ whiteSpace: "nowrap" }}>
                     <ObjectiveSelectHoverMenu
                       action={(objectiveId) =>
@@ -1049,16 +1043,9 @@ export default function StatusPhase() {
                       }
                       label={
                         <FormattedMessage
-                          id="lDBTCO"
-                          description="Instruction telling the speaker to reveal objectives."
-                          defaultMessage="Reveal {count, number} {type} {count, plural, one {objective} other {objectives}}"
-                          values={{
-                            count: 1,
-                            type:
-                              round > 3
-                                ? objectiveTypeString("STAGE TWO", intl)
-                                : objectiveTypeString("STAGE ONE", intl),
-                          }}
+                          id="6L07nG"
+                          description="Text telling the user to reveal an objective."
+                          defaultMessage="Reveal Objective"
                         />
                       }
                       objectives={Object.values(availableObjectives).filter(
@@ -1071,8 +1058,8 @@ export default function StatusPhase() {
                       )}
                     />
                   </div>
-                </LabeledDiv>
-              )}
+                )}
+              </FactionCard>
             </Conditional>
           </div>
         </NumberedItem>

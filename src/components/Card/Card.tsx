@@ -1,16 +1,23 @@
 import { CSSProperties, PropsWithChildren, ReactNode } from "react";
-import styles from "./Card.module.scss";
-import FactionIcon from "../FactionIcon/FactionIcon";
 import { useFactionColors } from "../../context/factionDataHooks";
+import FactionIcon from "../FactionIcon/FactionIcon";
+import styles from "./Card.module.scss";
+import FactionName from "../FactionComponents/FactionName";
 
 export default function Card({
   children,
   label,
+  icon,
   style,
-}: PropsWithChildren<{ label: ReactNode; style?: CSSProperties }>) {
+}: PropsWithChildren<{
+  icon?: ReactNode;
+  label: ReactNode;
+  style?: CSSProperties;
+}>) {
   return (
     <div className={styles.Card} style={style}>
       <label>{label}</label>
+      {icon ? <div className={styles.Icon}>{icon}</div> : null}
       <div className={styles.CardBody}>{children}</div>
     </div>
   );
@@ -23,23 +30,27 @@ export function FactionCard({
   style,
 }: PropsWithChildren<{
   factionId: FactionId;
-  label: ReactNode;
+  label?: ReactNode;
   style?: CSSProperties;
 }>) {
   const factionColor = useFactionColors(factionId);
+
   return (
-    <div
-      className={styles.Card}
+    <Card
+      label={
+        label ?? (
+          <span style={{ color: factionColor.color }}>
+            <FactionName factionId={factionId} />
+          </span>
+        )
+      }
+      icon={<FactionIcon factionId={factionId} size={20} />}
       style={{
-        ...style,
         border: `1px solid ${factionColor.border}`,
+        ...style,
       }}
     >
-      <label>{label}</label>
-      <div className={styles.Icon}>
-        <FactionIcon factionId={factionId} size={16} />
-      </div>
-      <div className={styles.CardBody}>{children}</div>
-    </div>
+      {children}
+    </Card>
   );
 }

@@ -3,6 +3,7 @@ import { useAbilities, useViewOnly } from "../../context/dataHooks";
 import { ClientOnlyHoverMenu } from "../../HoverMenu";
 import { getTechTypeColor } from "../../util/techs";
 import { rem } from "../../util/util";
+import FactionIcon from "../FactionIcon/FactionIcon";
 import TechIcon from "../TechIcon/TechIcon";
 import styles from "./Splice.module.scss";
 
@@ -11,11 +12,13 @@ export default function AbilitySelectMenu({
   label,
   selectAbility,
   style,
+  showOwnerIcon,
 }: {
   filter: (ability: TFAbility) => boolean;
   label: ReactNode;
   selectAbility: (ability: TFAbilityId) => void;
   style?: CSSProperties;
+  showOwnerIcon?: boolean;
 }) {
   const abilities = useAbilities();
 
@@ -57,24 +60,28 @@ export default function AbilitySelectMenu({
             label={<TechIcon type="GREEN" size="1.5em" />}
             selectAbility={selectAbility}
             outerCloseFn={outerCloseFn}
+            showOwnerIcon={showOwnerIcon}
           />
           <InnerAbilitySelectMenu
             abilities={blueAbilities}
             label={<TechIcon type="BLUE" size="1.5em" />}
             selectAbility={selectAbility}
             outerCloseFn={outerCloseFn}
+            showOwnerIcon={showOwnerIcon}
           />
           <InnerAbilitySelectMenu
             abilities={yellowAbilities}
             label={<TechIcon type="YELLOW" size="1.5em" />}
             selectAbility={selectAbility}
             outerCloseFn={outerCloseFn}
+            showOwnerIcon={showOwnerIcon}
           />
           <InnerAbilitySelectMenu
             abilities={redAbilities}
             label={<TechIcon type="RED" size="1.5em" />}
             selectAbility={selectAbility}
             outerCloseFn={outerCloseFn}
+            showOwnerIcon={showOwnerIcon}
           />
         </div>
       )}
@@ -87,12 +94,14 @@ function InnerAbilitySelectMenu({
   abilities,
   label,
   selectAbility,
+  showOwnerIcon,
   outerCloseFn,
 }: {
   abilities: TFAbility[];
   label: ReactNode;
   selectAbility: (ability: TFAbilityId) => void;
   outerCloseFn: () => void;
+  showOwnerIcon?: boolean;
 }) {
   const viewOnly = useViewOnly();
 
@@ -137,6 +146,9 @@ function InnerAbilitySelectMenu({
                 }}
                 disabled={viewOnly}
               >
+                {showOwnerIcon ? (
+                  <FactionIcon factionId={ability.owner} size={16} />
+                ) : null}
                 {ability.name}
               </button>
             );

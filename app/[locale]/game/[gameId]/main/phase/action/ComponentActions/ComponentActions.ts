@@ -14,9 +14,9 @@ import PurgePlanet from "./PurgePlanet";
 import RiftwalkerMeian from "./RiftwalkerMeian";
 import ShareKnowledge from "./ShareKnowledge";
 import SilverFlame from "./SilverFlame";
-import StealTFAbility from "./StealTFAbility";
 import Strategize from "./Strategize";
 import TaZernDeepwrought from "./TaZernDeepwrought";
+import Transpose from "./Transpose";
 import VaultsOfTheHeir from "./VaultsOfTheHeir";
 import VisionariaSelect from "./VisionariaSelect";
 import Zeu from "./Zeu";
@@ -38,9 +38,9 @@ const ComponentActions = {
   RiftwalkerMeian,
   ShareKnowledge,
   SilverFlame,
-  StealTFAbility, 
   Strategize,
   TaZernDeepwrought,
+  Transpose,
   VaultsOfTheHeir,
   VisionariaSelect,
   Zeu,

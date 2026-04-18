@@ -47,6 +47,7 @@ type GameUpdateData =
   | (PlayPromissoryNoteData | UnplayPromissoryNoteData)
   | (PlayComponentData | UnplayComponentData)
   | (GainRelicData | LoseRelicData)
+  | (PurgeRelicData | UnpurgeRelicData)
   | UpdatePlanetStateData
   | UpdateLeaderStateData
   | UpdateBreakthroughStateData
@@ -515,6 +516,21 @@ interface LoseAllianceData {
 interface LoseRelicData {
   action: "LOSE_RELIC";
   event: GainRelicEvent;
+}
+
+interface PurgeRelicEvent {
+  relic: RelicId;
+  unravel?: boolean;
+}
+
+interface PurgeRelicData {
+  action: "PURGE_RELIC";
+  event: PurgeRelicEvent;
+}
+
+interface UnpurgeRelicData {
+  action: "UNPURGE_RELIC";
+  event: PurgeRelicEvent;
 }
 
 interface GiftOfPrescienceEvent {

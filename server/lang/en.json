@@ -147,6 +147,10 @@
     "defaultMessage": "Research Tech",
     "description": "Label on a hover menu used to research tech."
   },
+  "3seFjE": {
+    "defaultMessage": "Gain {count} {count, plural, one {Genome} other {Genomes}}",
+    "description": "Label for a section used to gain genomes."
+  },
   "3xEbCN": {
     "defaultMessage": "Codex IV",
     "description": "Text on a button that will enable/disable Codex IV."
@@ -158,10 +162,6 @@
   "46dzNs": {
     "defaultMessage": "Map:",
     "description": "A label for a section of options related to the map."
-  },
-  "49U8Wl": {
-    "defaultMessage": "Hover to see full text.",
-    "description": "Text telling the user that they can hover over objectives to see the full text."
   },
   "4PYolM": {
     "defaultMessage": "Start of {phase} Phase",
@@ -279,9 +279,17 @@
     "defaultMessage": "Done",
     "description": "Text on a button for marking something completed."
   },
+  "9INv4t": {
+    "defaultMessage": "Discard {count} {count, plural, one {Paradigm} other {Paradigms}}",
+    "description": "Label for a section used to discard paradigms."
+  },
   "9eqKm5": {
     "defaultMessage": "Unique {count, plural, one {Unit} other {Units}}",
     "description": "Header for section listing out unique units."
+  },
+  "9k9JtR": {
+    "defaultMessage": "Discard {count} {count, plural, one {Ability} other {Abilities}}",
+    "description": "Label for a section used to discard abilities."
   },
   "9m91nk": {
     "defaultMessage": "Objective View",
@@ -2707,29 +2715,45 @@
     "defaultMessage": "Gain Unit Upgrade",
     "description": "Title of Component: Gain Unit Upgrade"
   },
+  "Components.Give Ability.Title": {
+    "defaultMessage": "Give Ability",
+    "description": "Title of Component: Give Ability"
+  },
+  "Components.Give Genome.Title": {
+    "defaultMessage": "Give Genome",
+    "description": "Title of Component: Give Genome"
+  },
+  "Components.Give Paradigm.Title": {
+    "defaultMessage": "Give Paradigm",
+    "description": "Title of Component: Give Paradigm"
+  },
+  "Components.Give Unit Upgrade.Title": {
+    "defaultMessage": "Give Unit Upgrade",
+    "description": "Title of Component: Give Unit Upgrade"
+  },
   "Components.Mercenaries for Hire.Description": {
     "defaultMessage": "ACTION: Spend 3 trade goods to gain the top card of the mercenary deck and place it in your play area.",
     "description": "Description for Component: Mercenaries for Hire"
   },
-  "Components.Steal Ability.Title": {
-    "defaultMessage": "Steal Ability",
-    "description": "Title of Component: Steal Ability"
-  },
-  "Components.Steal Genome.Title": {
-    "defaultMessage": "Steal Genome",
-    "description": "Title of Component: Steal Genome"
-  },
-  "Components.Steal Paradigm.Title": {
-    "defaultMessage": "Steal Paradigm",
-    "description": "Title of Component: Steal Paradigm"
-  },
-  "Components.Steal Unit Upgrade.Title": {
-    "defaultMessage": "Steal Unit Upgrade",
-    "description": "Title of Component: Steal Unit Upgrade"
-  },
   "Components.Stellar Atomics.Description": {
     "defaultMessage": "ACTION: Discard your control token from the Stellar Atomics card to destroy all ground forces and structures on any non-home planet.",
     "description": "Description for Component: Stellar Atomics"
+  },
+  "Components.Take Ability.Title": {
+    "defaultMessage": "Take Ability",
+    "description": "Title of Component: Take Ability"
+  },
+  "Components.Take Genome.Title": {
+    "defaultMessage": "Take Genome",
+    "description": "Title of Component: Take Genome"
+  },
+  "Components.Take Paradigm.Title": {
+    "defaultMessage": "Take Paradigm",
+    "description": "Title of Component: Take Paradigm"
+  },
+  "Components.Take Unit Upgrade.Title": {
+    "defaultMessage": "Take Unit Upgrade",
+    "description": "Title of Component: Take Unit Upgrade"
   },
   "Components.Total War.Description": {
     "defaultMessage": "ACTION: Discard 10 commodities from planets in your home system to gain 1 victory point.",
@@ -3026,10 +3050,6 @@
   "D82kvD": {
     "defaultMessage": "ANTI-FIGHTER BARRAGE {value}",
     "description": "A unit ability that allows a unit to destroy fighters."
-  },
-  "DGs6vS": {
-    "defaultMessage": "Scored Action Phase {count, plural, one {Objective} other {Objectives}}",
-    "description": "Label for section of scored action phase objectives."
   },
   "DS.Planets.Abyssus.Name": {
     "defaultMessage": "Abyssus",
@@ -5575,6 +5595,10 @@
     "defaultMessage": "Propulsion",
     "description": "Title of blue techs."
   },
+  "Nwro0F": {
+    "defaultMessage": "Discard any number of Abilities",
+    "description": "Label for a section used to discard abilities."
+  },
   "NxpzKH": {
     "defaultMessage": "End Turn",
     "description": "Text on a button that will end the player's turn."
@@ -6458,6 +6482,10 @@
   "PXA3op": {
     "defaultMessage": "Track",
     "description": "Label for a section where users can decide what information to track."
+  },
+  "PXvHO0": {
+    "defaultMessage": "Gain {count} {count, plural, one {Unit Upgrade} other {Unit Upgrades}}",
+    "description": "Label for a section used to gain unit upgrades."
   },
   "Phase.Action": {
     "defaultMessage": "Action",
@@ -7735,6 +7763,10 @@
     "defaultMessage": "Thunder's Edge",
     "description": "Text on a button that will enable/disable the Thunder's Edge expansion."
   },
+  "SqFE9l": {
+    "defaultMessage": "Discard any number of Unit Upgrades",
+    "description": "Label for a section used to discard unit upgrades."
+  },
   "Strategy Cards.Aeterna.Primary": {
     "defaultMessage": "Immediately score 1 public objective if you fulfill its requirements; otherwise, draw 1 paradigm.{br}Gain 1 victory point if you control Mecatol Rex; otherwise, draw 1 secret objective.",
     "description": "Primary of Strategy Card: Aeterna"
@@ -7928,7 +7960,7 @@
     "description": "Title of Strategy Card: Trade"
   },
   "Strategy Cards.Tyrannus.Primary": {
-    "defaultMessage": "Choose a player other than the speaker. That player gains the speaker token.{br}Choose a player other than the speaker or tyrant. That player gainst the benediction token.{br}Draw 2 action cards.",
+    "defaultMessage": "Choose a player other than the speaker. That player gains the speaker token.{br}Choose a player other than the speaker or tyrant. That player gains the benediction token.{br}Draw 2 action cards.",
     "description": "Primary of Strategy Card: Tyrannus"
   },
   "Strategy Cards.Tyrannus.Secondary": {
@@ -10283,6 +10315,10 @@
     "defaultMessage": "Score Objectives",
     "description": "Text telling the players to score objectives."
   },
+  "WV1Cwe": {
+    "defaultMessage": "Discard any number of Paradigms",
+    "description": "Label for a section used to discard paradigms."
+  },
   "WVs5Hr": {
     "defaultMessage": "Events",
     "description": "Event actions."
@@ -10438,6 +10474,14 @@
   "XG4lKH": {
     "defaultMessage": "Return Tech",
     "description": "Label on a hover menu used to return a tech."
+  },
+  "XIEHjL": {
+    "defaultMessage": "Discard {count} {count, plural, one {Genome} other {Genomes}}",
+    "description": "Label for a section used to discard genomes."
+  },
+  "Xf1B6k": {
+    "defaultMessage": "Aeterna Points",
+    "description": "The title of points granted from using Aeterna."
   },
   "Xxcha Kingdom.Abilities.Peace Accords.Description": {
     "defaultMessage": "After you resolve the primary or secondary ability of the \"Diplomacy\" strategy card, you may gain control of 1 planet other than Mecatol Rex that does not contain any units and is in a system that is adjacent to a planet you control.",
@@ -11203,6 +11247,14 @@
     "defaultMessage": "Phase",
     "description": "A section of the game (e.g. Strategy Phase)."
   },
+  "rojlVT": {
+    "defaultMessage": "Gain {count} {count, plural, one {Ability} other {Abilities}}",
+    "description": "Label for a section used to gain abilities."
+  },
+  "rpByRO": {
+    "defaultMessage": "Gain {count} {count, plural, one {Paradigm} other {Paradigms}}",
+    "description": "Label for a section used to gain paradigms."
+  },
   "sJ5zBj": {
     "defaultMessage": "{count} {count, plural, one {Cruiser} other {Cruisers}}",
     "description": "A number of Cruiser units."
@@ -11299,6 +11351,10 @@
     "defaultMessage": "Repair Units",
     "description": "Instruction telling players to repair units."
   },
+  "xps7l+": {
+    "defaultMessage": "Discard {count} {count, plural, one {Unit Upgrade} other {Unit Upgrades}}",
+    "description": "Label for a section used to discard unit upgrades."
+  },
   "xtgxwA": {
     "defaultMessage": "Draw Action Cards",
     "description": "Instruction telling players to draw action cards."
@@ -11326,6 +11382,10 @@
   "ys7uwX": {
     "defaultMessage": "Techs",
     "description": "Shortened version of technologies."
+  },
+  "z3Fj4q": {
+    "defaultMessage": "Discard any number of Genomes",
+    "description": "Label for a section used to discard genomes."
   },
   "zAhkl6": {
     "defaultMessage": "Completed Games",
