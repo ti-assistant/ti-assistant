@@ -8,7 +8,10 @@ import {
   useUpgrades,
   useViewOnly,
 } from "../../context/dataHooks";
-import { useAllFactionColors } from "../../context/factionDataHooks";
+import {
+  useAllFactionColors,
+  useFactions,
+} from "../../context/factionDataHooks";
 import { useOrderedFactionIds } from "../../context/gameDataHooks";
 import AbilitySVG from "../../icons/twilightsfall/ability";
 import GenomeSVG from "../../icons/twilightsfall/genome";
@@ -290,6 +293,7 @@ function SpliceModalContent({
   );
   const currentTurn = useCurrentTurn();
   const dataUpdate = useDataUpdate();
+  const factions = useFactions();
   let spliceParticipants = new Set(getSpliceParticipants(currentTurn));
   if (allPlayers) {
     spliceParticipants = new Set(orderedFactionIds);
@@ -349,6 +353,17 @@ function SpliceModalContent({
     currentFaction = thievePlayer === "None" ? undefined : thievePlayer;
     isThieve = !!thievePlayer;
   }
+
+  const hasAntimatter = !currentFaction
+    ? false
+    : !!factions[currentFaction]?.techs[
+        getAntimatterForFaction(currentFaction)
+      ];
+  const hasWavelength = !currentFaction
+    ? false
+    : !!factions[currentFaction]?.techs[
+        getWavelengthForFaction(currentFaction)
+      ];
 
   return (
     <div>
@@ -495,10 +510,10 @@ function SpliceModalContent({
                     ),
                   );
                 }}
-                disabled={!currentFaction || isThieve}
+                disabled={!currentFaction || isThieve || hasAntimatter}
               >
                 Antimatter
-                {currentFaction && !isThieve ? (
+                {currentFaction && !isThieve && !hasAntimatter ? (
                   <FactionIcon factionId={currentFaction} size={16} />
                 ) : null}
               </button>
@@ -529,10 +544,10 @@ function SpliceModalContent({
                     ),
                   );
                 }}
-                disabled={!currentFaction || isThieve}
+                disabled={!currentFaction || isThieve || hasWavelength}
               >
                 Wavelength
-                {currentFaction && !isThieve ? (
+                {currentFaction && !isThieve && !hasWavelength ? (
                   <FactionIcon factionId={currentFaction} size={16} />
                 ) : null}
               </button>
@@ -556,7 +571,6 @@ function SpliceModalContent({
       </div>
     </div>
   );
-  return "Potato";
 }
 
 function SpliceCard({

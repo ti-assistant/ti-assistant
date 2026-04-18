@@ -204,7 +204,7 @@ export default function StartingComponents({
           <Card
             label="Unit Faction"
             icon={
-              <div style={{ width: "0.75em", height: "1em" }}>
+              <div style={{ width: "0.875em", height: "1.25em" }}>
                 <UpgradeSVG color="var(--muted-text)" />
               </div>
             }

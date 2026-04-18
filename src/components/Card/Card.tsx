@@ -16,8 +16,10 @@ export default function Card({
 }>) {
   return (
     <div className={styles.Card} style={style}>
-      <label>{label}</label>
-      {icon ? <div className={styles.Icon}>{icon}</div> : null}
+      <label>
+        {label}
+        {icon ? <div className={styles.Icon}>{icon}</div> : null}
+      </label>
       <div className={styles.CardBody}>{children}</div>
     </div>
   );

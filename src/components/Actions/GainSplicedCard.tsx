@@ -21,7 +21,6 @@ import { Events } from "../../util/api/events";
 import { getTechTypeColor } from "../../util/techs";
 import { rem } from "../../util/util";
 import Card from "../Card/Card";
-import FactionIcon from "../FactionIcon/FactionIcon";
 import FormattedDescription from "../FormattedDescription/FormattedDescription";
 import { Selector } from "../Selector/Selector";
 import AbilitySelectMenu from "../Splice/AbilitySelectMenu";

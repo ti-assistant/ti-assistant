@@ -34,21 +34,16 @@
   font-size: 0.875rem;
   line-height: 1em;
   color: var(--muted-text);
-  margin-block-end: 0.25rem;
+  margin-block-end: 0.125rem;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 
   width: 100%;
 }
 
-.Card:has(.Icon) > label {
-  padding-inline-end: 1.5rem;
-  margin-block-end: 0.5rem;
-}
-
-.Card > .Icon {
-  position: absolute;
-  right: 0.25rem;
-  top: 0.25rem;
-
+.Card .Icon {
   // Reset font size to ensure icons are all the same size.
   font-size: 1rem;
 }
