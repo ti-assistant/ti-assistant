@@ -8,7 +8,7 @@ import {
 } from "../../../src/util/strings";
 
 export default function getTwilightsFallFactions(
-  intl: IntlShape
+  intl: IntlShape,
 ): Record<TwilightsFall.FactionId, BaseFaction> {
   return {
     "A Sickening Lurch": {
@@ -333,7 +333,7 @@ export default function getTwilightsFallFactions(
             id: "Radiant Aur.Units.Airo Shir Rex.Description",
             description: "Description for Faction Unit: Airo Shir Rex",
             defaultMessage:
-              "At the start of the edict phase, if this unit is on the game board, draw and resolve 1 edict.",
+              "At the end of the edict phase, if this unit is on the game board, draw and resolve 1 edict.",
           }),
           expansion: "TWILIGHTS FALL",
           name: intl.formatMessage({
