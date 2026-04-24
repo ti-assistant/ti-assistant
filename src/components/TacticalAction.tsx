@@ -344,7 +344,9 @@ function AdjudicatorBaal() {
               systemNumber < 19 ||
               (systemNumber > 50 && systemNumber < 59) ||
               (systemNumber > 80 && systemNumber < 82) ||
-              (systemNumber > 82 && systemNumber < 1037)
+              (systemNumber > 82 && systemNumber < 94) ||
+              (systemNumber > 94 && systemNumber < 97) ||
+              (systemNumber > 117 && systemNumber < 1035)
             ) {
               return false;
             }
@@ -360,7 +362,9 @@ function AdjudicatorBaal() {
               systemNumber < 19 ||
               (systemNumber > 50 && systemNumber < 59) ||
               (systemNumber > 80 && systemNumber < 82) ||
-              (systemNumber > 82 && systemNumber < 1037)
+              (systemNumber > 82 && systemNumber < 94) ||
+              (systemNumber > 94 && systemNumber < 97) ||
+              (systemNumber > 117 && systemNumber < 1035)
             ) {
               return;
             }

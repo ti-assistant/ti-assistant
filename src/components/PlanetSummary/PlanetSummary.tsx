@@ -80,11 +80,6 @@ export default function PlanetSummary({
           break;
       }
     }
-    if (planet.attachments?.includes("Terraform")) {
-      ++cultural;
-      ++industrial;
-      ++hazardous;
-    }
     if ((planet.attachments ?? []).length > 0) {
       ++attachments;
     }

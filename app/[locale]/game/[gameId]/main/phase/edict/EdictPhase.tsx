@@ -15,7 +15,6 @@ import {
 import {
   useAllFactionColors,
   useFaction,
-  useFactionColors,
 } from "../../../../../../../src/context/factionDataHooks";
 import { useTyrant } from "../../../../../../../src/context/stateDataHooks";
 import { InfoRow } from "../../../../../../../src/InfoRow";
@@ -80,82 +79,6 @@ export default function EdictPhase() {
           values={{ phase: phaseString("EDICT", intl) }}
         />
       </div>
-      {aur ? (
-        <LabeledDiv
-          label={
-            <div className="flexRow" style={{ gap: "0.25rem" }}>
-              <FactionIcon factionId="Radiant Aur" size={16} />
-              <FactionComponents.Name factionId="Radiant Aur" />
-            </div>
-          }
-          color={getFactionColor(aur)}
-          borderColor={getFactionBorder(aur)}
-          style={{ width: "fit-content" }}
-        >
-          {intl.formatMessage({
-            id: "6ZifFF",
-            description: "Instructions for Radiant Aur Edict Phase",
-            defaultMessage:
-              "At the start of the edict phase, if your flagship is on the game board, draw and resolve 1 edict.",
-          })}
-
-          <Selector
-            selectedItem={aurEdict?.data.event.edictId}
-            hoverMenuLabel="Draw Edict"
-            toggleItem={(edictId, add) => {
-              if (add) {
-                dataUpdate(Events.ChooseEdictEvent(edictId, false));
-              } else {
-                dataUpdate(Events.HideEdictEvent(edictId, false));
-              }
-            }}
-            renderItem={(edictId) => {
-              const edict = edicts[edictId];
-              if (!edict) {
-                return null;
-              }
-              return (
-                <LabeledLine
-                  leftLabel={
-                    <SelectableRow
-                      removeItem={
-                        canRemoveAur
-                          ? () => {
-                              dataUpdate(Events.HideEdictEvent(edictId, false));
-                            }
-                          : undefined
-                      }
-                      itemId={edictId}
-                      style={{
-                        fontFamily: "var(--main-font)",
-                      }}
-                    >
-                      <InfoRow
-                        infoTitle={edict.name}
-                        infoContent={
-                          <FormattedDescription
-                            description={edict.description}
-                          />
-                        }
-                      >
-                        {edict.name}
-                      </InfoRow>
-                    </SelectableRow>
-                  }
-                />
-              );
-            }}
-            options={Object.values(edicts)}
-          />
-          {aurEdict?.data.event.edictId ? (
-            <EdictDetails
-              edictId={aurEdict.data.event.edictId}
-              factionId="Radiant Aur"
-              finished={!!tyrantEdict}
-            />
-          ) : null}
-        </LabeledDiv>
-      ) : null}
       {tyrant ? (
         <LabeledDiv
           label={
@@ -226,6 +149,82 @@ export default function EdictPhase() {
             <EdictDetails
               edictId={tyrantEdict.data.event.edictId}
               factionId={tyrant}
+              finished={!!aurEdict}
+            />
+          ) : null}
+        </LabeledDiv>
+      ) : null}
+      {aur ? (
+        <LabeledDiv
+          label={
+            <div className="flexRow" style={{ gap: "0.25rem" }}>
+              <FactionIcon factionId="Radiant Aur" size={16} />
+              <FactionComponents.Name factionId="Radiant Aur" />
+            </div>
+          }
+          color={getFactionColor(aur)}
+          borderColor={getFactionBorder(aur)}
+          style={{ width: "fit-content" }}
+        >
+          {intl.formatMessage({
+            id: "6ZifFF",
+            description: "Instructions for Radiant Aur Edict Phase",
+            defaultMessage:
+              "At the end of the edict phase, if your flagship is on the game board, draw and resolve 1 edict.",
+          })}
+
+          <Selector
+            selectedItem={aurEdict?.data.event.edictId}
+            hoverMenuLabel="Draw Edict"
+            toggleItem={(edictId, add) => {
+              if (add) {
+                dataUpdate(Events.ChooseEdictEvent(edictId, false));
+              } else {
+                dataUpdate(Events.HideEdictEvent(edictId, false));
+              }
+            }}
+            renderItem={(edictId) => {
+              const edict = edicts[edictId];
+              if (!edict) {
+                return null;
+              }
+              return (
+                <LabeledLine
+                  leftLabel={
+                    <SelectableRow
+                      removeItem={
+                        canRemoveAur
+                          ? () => {
+                              dataUpdate(Events.HideEdictEvent(edictId, false));
+                            }
+                          : undefined
+                      }
+                      itemId={edictId}
+                      style={{
+                        fontFamily: "var(--main-font)",
+                      }}
+                    >
+                      <InfoRow
+                        infoTitle={edict.name}
+                        infoContent={
+                          <FormattedDescription
+                            description={edict.description}
+                          />
+                        }
+                      >
+                        {edict.name}
+                      </InfoRow>
+                    </SelectableRow>
+                  }
+                />
+              );
+            }}
+            options={Object.values(edicts)}
+          />
+          {aurEdict?.data.event.edictId ? (
+            <EdictDetails
+              edictId={aurEdict.data.event.edictId}
+              factionId="Radiant Aur"
             />
           ) : null}
         </LabeledDiv>
