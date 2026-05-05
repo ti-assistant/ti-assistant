@@ -65,24 +65,15 @@
 
 .ChipContainer:hover {
   background-color: var(--hovered-bg);
-  // border: var(--border-size) solid var(--border-color);
   color: var(--foreground-color);
 }
 
 .ChipContainer.disabled,
 .ChipContainer.disabled:hover {
   background-color: var(--light-bg);
-  // border: var(--border-size) solid var(--disabled-border);
-  // color: var(--muted-text);
   opacity: 0.4;
   cursor: default;
 }
-
-// .ChipContainer:hover:has(input[type="radio"]:checked) {
-//   background-color: var(--selected-bg);
-//   // border: var(--border-size) solid var(--selected-border);
-//   color: var(--foreground-color);
-// }
 
 .ChipContainer > input[type="radio"] {
   appearance: none;
@@ -97,11 +88,7 @@
 .ChipContainer:has(input[type="radio"]:checked) {
   background-color: var(--background-color);
   cursor: default;
-  // font-weight: bold;
   border-radius: 1.25rem;
-  // color: var(--accent-color);
-  // border: var(--border-size) solid var(--selected-border);
-  // color: var(--background-color);
 }
 
 .ChipContainer > * {

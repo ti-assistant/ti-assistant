@@ -35,6 +35,7 @@ export const Events = {
   MarkSecondaryEvent,
   PlayActionCardEvent,
   PlayAdjudicatorBaalEvent,
+  PlayLeaderEvent,
   PlayPromissoryNoteEvent,
   PlayRiderEvent,
   PurgeRelicEvent,
@@ -67,6 +68,7 @@ export const Events = {
   UndoGenomeEvent,
   UnpassEvent,
   UnplayActionCardEvent,
+  UnplayLeaderEvent,
   UnplayPromissoryNoteEvent,
   UnplayRiderEvent,
   UnpurgeRelicEvent,
@@ -496,6 +498,15 @@ function PlayAdjudicatorBaalEvent(systemId: SystemId): PlayAdjudicatorBaalData {
   };
 }
 
+function PlayLeaderEvent(leaderId: LeaderId): PlayLeaderData {
+  return {
+    action: "PLAY_LEADER",
+    event: {
+      leader: leaderId,
+    },
+  };
+}
+
 function PlayPromissoryNoteEvent(
   card: string,
   target: FactionId,
@@ -856,6 +867,15 @@ function UnplayActionCardEvent(
     event: {
       card,
       target,
+    },
+  };
+}
+
+function UnplayLeaderEvent(leaderId: LeaderId): UnplayLeaderData {
+  return {
+    action: "UNPLAY_LEADER",
+    event: {
+      leader: leaderId,
     },
   };
 }

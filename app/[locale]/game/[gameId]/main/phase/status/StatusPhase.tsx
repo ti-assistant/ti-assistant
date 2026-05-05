@@ -1,12 +1,13 @@
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
+import { FactionCard } from "../../../../../../../src/components/Card/Card";
+import Reminder, {
+  ReminderType,
+} from "../../../../../../../src/components/Card/Reminder";
 import Conditional from "../../../../../../../src/components/Conditional/Conditional";
-import CrownOfEmphidia from "../../../../../../../src/components/CrownOfEmphidia/CrownOfEmphidia";
 import FactionComponents from "../../../../../../../src/components/FactionComponents/FactionComponents";
-import FormattedDescription from "../../../../../../../src/components/FormattedDescription/FormattedDescription";
 import IconDiv from "../../../../../../../src/components/LabeledDiv/IconDiv";
 import LabeledDiv from "../../../../../../../src/components/LabeledDiv/LabeledDiv";
-import LabeledLine from "../../../../../../../src/components/LabeledLine/LabeledLine";
 import ObjectiveCard from "../../../../../../../src/components/ObjectiveRow/ObjectiveCard";
 import ObjectiveSelectHoverMenu from "../../../../../../../src/components/ObjectiveSelectHoverMenu/ObjectiveSelectHoverMenu";
 import { Selector } from "../../../../../../../src/components/Selector/Selector";
@@ -16,6 +17,7 @@ import {
   useActionLog,
   useAgenda,
   useCurrentTurn,
+  useLeaders,
   useOptions,
   usePlanets,
   useRelics,
@@ -43,7 +45,6 @@ import {
   useTechState,
 } from "../../../../../../../src/context/techDataHooks";
 import { ClientOnlyHoverMenu } from "../../../../../../../src/HoverMenu";
-import { InfoRow } from "../../../../../../../src/InfoRow";
 import { LockedButtons } from "../../../../../../../src/LockedButton";
 import { NumberedItem } from "../../../../../../../src/NumberedItem";
 import { TechRow } from "../../../../../../../src/TechRow";
@@ -57,7 +58,10 @@ import { getCurrentTurnLogEntries } from "../../../../../../../src/util/api/acti
 import { useDataUpdate } from "../../../../../../../src/util/api/dataUpdate";
 import { Events } from "../../../../../../../src/util/api/events";
 import { hasTech } from "../../../../../../../src/util/api/techs";
-import { convertToFactionColor } from "../../../../../../../src/util/factions";
+import {
+  convertToFactionColor,
+  hasLeader,
+} from "../../../../../../../src/util/factions";
 import { getInitiativeForFaction } from "../../../../../../../src/util/helpers";
 import { sortStrategyCards } from "../../../../../../../src/util/strategyCards";
 import {
@@ -71,7 +75,6 @@ import {
   rem,
 } from "../../../../../../../src/util/util";
 import styles from "./StatusPhase.module.scss";
-import { FactionCard } from "../../../../../../../src/components/Card/Card";
 
 function CommandTokenGains() {
   const factionsWithHyper = useFactionsWithTech("Hyper Metabolism");
@@ -408,18 +411,28 @@ function MiddleColumn() {
                 );
               });
               return (
-                <div
+                <FactionCard
                   key={card.id}
-                  className={styles.ObjectiveSection}
-                  style={{ width: "100%", position: "relative" }}
+                  factionId={factionId}
+                  style={{
+                    width: "100%",
+                    position: "relative",
+                    gridColumn: "span 3",
+                  }}
+                  innerStyle={{
+                    display: "grid",
+                    gridTemplateColumns: "subgrid",
+                    justifyItems: "center",
+                    gridAutoFlow: "column",
+                  }}
                 >
-                  <div style={{ gridColumn: "1 / 4", width: "100%" }}>
+                  {/* <div style={{ gridColumn: "1 / 4", width: "100%" }}>
                     <LabeledLine
                       label={<FactionComponents.Name factionId={factionId} />}
                       color={factionColors[factionId]?.color}
                       borderColor={factionColors[factionId]?.border}
                     />
-                  </div>
+                  </div> */}
                   {!canScoreObjectives ? (
                     <div className="smallFont" style={{ textAlign: "center" }}>
                       <FormattedMessage
@@ -442,7 +455,7 @@ function MiddleColumn() {
                       style={{
                         width: "100%",
                         alignItems: scoredPublics[0] ? "flex-start" : "center",
-                        gridColumn: "1 / 2",
+                        // gridColumn: "1 / 2",
                       }}
                     >
                       <div style={{ width: "fit-content" }}>
@@ -474,6 +487,21 @@ function MiddleColumn() {
                                 );
                               }
                             }}
+                            renderItem={(objectiveId) => {
+                              return (
+                                <ObjectiveCard
+                                  objectiveId={objectiveId}
+                                  removeObjective={() => {
+                                    dataUpdate(
+                                      Events.UnscoreObjectiveEvent(
+                                        factionId,
+                                        objectiveId,
+                                      ),
+                                    );
+                                  }}
+                                />
+                              );
+                            }}
                           />
                         ) : (
                           <ObjectiveSelectHoverMenu
@@ -499,7 +527,7 @@ function MiddleColumn() {
                       </div>
                     </div>
                   )}
-                  <div
+                  {/* <div
                     className="flexColumn"
                     style={{
                       position: "absolute",
@@ -525,12 +553,12 @@ function MiddleColumn() {
                         size="100%"
                       />
                     </div>
-                  </div>
+                  </div> */}
                   <div
                     className="flexColumn smallFont"
                     style={{
                       alignItems: "flex-start",
-                      gridColumn: "3 / 4",
+                      // gridColumn: "3 / 4",
                     }}
                   >
                     <div style={{ width: "fit-content" }}>
@@ -564,6 +592,21 @@ function MiddleColumn() {
                               );
                             }
                           }}
+                          renderItem={(objectiveId) => {
+                            return (
+                              <ObjectiveCard
+                                objectiveId={objectiveId}
+                                removeObjective={() => {
+                                  dataUpdate(
+                                    Events.UnscoreObjectiveEvent(
+                                      factionId,
+                                      objectiveId,
+                                    ),
+                                  );
+                                }}
+                              />
+                            );
+                          }}
                         />
                       ) : (
                         <ObjectiveSelectHoverMenu
@@ -589,7 +632,7 @@ function MiddleColumn() {
                       )}
                     </div>
                   </div>
-                </div>
+                </FactionCard>
               );
             })}
           </div>
@@ -622,12 +665,18 @@ export function statusPhaseComplete(currentTurn: ActionLog) {
 export default function StatusPhase() {
   const currentTurn = useCurrentTurn();
   const dataUpdate = useDataUpdate();
-  const factionColors = useAllFactionColors();
+  const factions = useFactions();
+  const leaders = useLeaders();
   const objectives = useObjectives();
   const options = useOptions();
   const planets = usePlanets();
   const relics = useRelics();
   const strategyCards = useStrategyCards();
+
+  const wasOraclePlayed = !!getLogEntries<PlayLeaderData>(
+    currentTurn,
+    "PLAY_LEADER",
+  )[0];
 
   const factionsWithBioplasmosis = useFactionsWithTech("Bioplasmosis");
   const factionsWithWormholeGenerator =
@@ -651,6 +700,10 @@ export default function StatusPhase() {
   interface Ability {
     name: string;
     description: string;
+    onClick?: () => void;
+    type: ReminderType;
+    subType?: TechType | UnitType | LeaderType;
+    used?: boolean;
   }
 
   function hasStartOfStatusPhaseAbilities() {
@@ -687,6 +740,7 @@ export default function StatusPhase() {
               "Your space docks cannot produce infantry. At the start of the status phase, place 1 infantry from your reinforcements on any planet you control.",
             description: "Description for Faction Ability: Mitosis",
           }),
+          type: "ABILITY",
         });
       }
       if (
@@ -706,6 +760,8 @@ export default function StatusPhase() {
               "At the start of the status phase, place or move a Creuss wormhole token into either a system that contains a planet you control or a non-home system that does not contain another player's ships.",
             description: "Description for Tech: Wormhole Generator",
           }),
+          type: "TECH",
+          subType: "BLUE",
         });
       }
       if (factionsWithHydrothermalMining.has(factionId)) {
@@ -721,6 +777,8 @@ export default function StatusPhase() {
             defaultMessage:
               "At the start of the status phase, gain 1 trade good for each ocean card in play.",
           }),
+          type: "TECH",
+          subType: "GREEN",
         });
       }
       if (factionAbilities.length > 0) {
@@ -764,7 +822,49 @@ export default function StatusPhase() {
   function getEndOfStatusPhaseAbilities() {
     let abilities: Partial<Record<FactionId, Ability[]>> = {};
     for (const factionId of initiativeOrderedFactionIds) {
+      const faction = factions[factionId];
+
       const factionAbilities: Ability[] = [];
+      if (factionId === crownOwner) {
+        if (!isCrownPurged || wasCrownPlayedThisTurn) {
+          factionAbilities.push({
+            name: intl.formatMessage({
+              id: "Relics.The Crown of Emphidia.Title",
+              description: "Title of Relic: The Crown of Emphidia",
+              defaultMessage: "The Crown of Emphidia",
+            }),
+            description: intl.formatMessage(
+              {
+                id: "Relics.The Crown of Emphidia.Description",
+                description: "Description for Relic: The Crown of Emphidia",
+                defaultMessage:
+                  'After you perform a tactical action, you may exhaust this card to explore 1 planet you control.{br}At the end of the status phase, if you control the "Tomb of Emphidia", you may purge this card to gain 1 Victory Point.',
+              },
+              { br: "\n\n" },
+            ),
+            type: "RELIC",
+            onClick: () => {
+              if (wasCrownPlayedThisTurn) {
+                dataUpdate({
+                  action: "UNPLAY_RELIC",
+                  event: {
+                    relic: "The Crown of Emphidia",
+                  },
+                });
+              } else {
+                dataUpdate({
+                  action: "PLAY_RELIC",
+                  event: {
+                    relic: "The Crown of Emphidia",
+                  },
+                });
+              }
+            },
+            used: !!wasCrownPlayedThisTurn,
+          });
+        }
+      }
+
       if (factionId === "Federation of Sol") {
         factionAbilities.push({
           name: intl.formatMessage({
@@ -778,6 +878,8 @@ export default function StatusPhase() {
               "At the end of the status phase, place 1 infantry from your reinforcements in this system's space area.",
             description: "Description for Faction Unit: Genesis",
           }),
+          type: "UNIT",
+          subType: "Flagship",
         });
       }
       if (factionsWithBioplasmosis.has(factionId)) {
@@ -793,6 +895,40 @@ export default function StatusPhase() {
               "At the end of the status phase, you may remove any number of your infantry from planets you control and place them on 1 or more planets you control in the same or adjacent systems.",
             description: "Description for Tech: Bioplasmosis",
           }),
+          type: "TECH",
+          subType: "GREEN",
+        });
+      }
+      if (
+        factionId === "Naalu Collective" &&
+        faction &&
+        (hasLeader("The Oracle", faction, leaders) || wasOraclePlayed)
+      ) {
+        factionAbilities.push({
+          name: intl.formatMessage({
+            id: "Naalu Collective.Leaders.The Oracle.Name",
+            defaultMessage: "The Oracle",
+            description: "Name of Naalu Hero: The Oracle",
+          }),
+          description: intl.formatMessage(
+            {
+              id: "Naalu Collective.Leaders.The Oracle.Description",
+              defaultMessage:
+                "At the end of the status phase:{br}You may force each other player to give you 1 promissory note from their hand. If you do, purge this card.",
+              description: "Description for Naalu Hero: The Oracle",
+            },
+            { br: "\n\n" },
+          ),
+          type: "LEADER",
+          subType: "HERO",
+          used: wasOraclePlayed,
+          onClick: () => {
+            if (wasOraclePlayed) {
+              dataUpdate(Events.UnplayLeaderEvent("The Oracle"));
+            } else {
+              dataUpdate(Events.PlayLeaderEvent("The Oracle"));
+            }
+          },
         });
       }
       if (
@@ -808,6 +944,7 @@ export default function StatusPhase() {
           }),
           description:
             ministerOfPolicy.passedText ?? ministerOfPolicy.description,
+          type: "AGENDA",
         });
       }
       if (factionAbilities.length > 0) {
@@ -918,35 +1055,28 @@ export default function StatusPhase() {
                     })
                     .map(([factionId, abilities]) => {
                       return (
-                        <LabeledDiv
-                          key={factionId}
-                          label={
-                            <FactionComponents.Name factionId={factionId} />
-                          }
-                          color={factionColors[factionId]?.color}
-                          borderColor={factionColors[factionId]?.border}
-                        >
+                        <FactionCard key={factionId} factionId={factionId}>
                           <div
                             className="flexColumn"
-                            style={{ alignItems: "flex-start" }}
+                            style={{
+                              alignItems: "flex-start",
+                              fontSize: "0.875rem",
+                              gap: "0.25rem",
+                            }}
                           >
                             {abilities.map((ability) => {
                               return (
-                                <InfoRow
-                                  key={ability.name}
-                                  infoTitle={ability.name}
-                                  infoContent={
-                                    <FormattedDescription
-                                      description={ability.description}
-                                    />
-                                  }
-                                >
-                                  {ability.name}
-                                </InfoRow>
+                                <Reminder
+                                  text={ability.name}
+                                  type={ability.type}
+                                  subType={ability.subType}
+                                  onClick={ability.onClick}
+                                  used={ability.used}
+                                />
                               );
                             })}
                           </div>
-                        </LabeledDiv>
+                        </FactionCard>
                       );
                     })}
                 </div>
@@ -1145,36 +1275,31 @@ export default function StatusPhase() {
                   })
                   .map(([factionId, abilities]) => {
                     return (
-                      <LabeledDiv
-                        key={factionId}
-                        label={<FactionComponents.Name factionId={factionId} />}
-                        color={factionColors[factionId]?.color}
-                        borderColor={factionColors[factionId]?.border}
-                      >
+                      <FactionCard key={factionId} factionId={factionId}>
                         <div
                           className="flexColumn"
-                          style={{ width: "100%", alignItems: "flex-start" }}
+                          style={{
+                            width: "100%",
+                            alignItems: "flex-start",
+                            fontSize: "0.875rem",
+                            gap: "0.25rem",
+                          }}
                         >
                           {abilities.map((ability) => {
                             return (
-                              <InfoRow
-                                key={ability.name}
-                                infoTitle={ability.name}
-                                infoContent={
-                                  <FormattedDescription
-                                    description={ability.description}
-                                  />
-                                }
-                              >
-                                {ability.name}
-                              </InfoRow>
+                              <Reminder
+                                text={ability.name}
+                                type={ability.type}
+                                subType={ability.subType}
+                                onClick={ability.onClick}
+                                used={ability.used}
+                              />
                             );
                           })}
                         </div>
-                      </LabeledDiv>
+                      </FactionCard>
                     );
                   })}
-                <CrownOfEmphidia />
               </div>
             </ClientOnlyHoverMenu>
           </NumberedItem>

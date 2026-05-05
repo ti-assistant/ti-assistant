@@ -32,6 +32,7 @@ import {
 import { UnplayActionCardHandler } from "../model/playActionCard";
 import { UndoAdjudicatorBaalHandler } from "../model/playAdjudicatorBaal";
 import { UnplayComponentHandler } from "../model/playComponent";
+import { PlayLeaderHandler, UnplayLeaderHandler } from "../model/playLeader";
 import { UnplayPromissoryNoteHandler } from "../model/playPromissoryNote";
 import { UnplayRelicHandler } from "../model/playRelic";
 import { UnplayRiderHandler } from "../model/playRider";
@@ -651,6 +652,16 @@ export function getOppositeHandler(
     case "HIDE_EDICT":
       return new ChooseEdictHandler(gameData, {
         action: "CHOOSE_EDICT",
+        event: data.event,
+      });
+    case "PLAY_LEADER":
+      return new UnplayLeaderHandler(gameData, {
+        action: "UNPLAY_LEADER",
+        event: data.event,
+      });
+    case "UNPLAY_LEADER":
+      return new PlayLeaderHandler(gameData, {
+        action: "PLAY_LEADER",
         event: data.event,
       });
   }

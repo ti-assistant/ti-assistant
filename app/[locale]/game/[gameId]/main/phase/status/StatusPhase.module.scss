@@ -1,7 +1,9 @@
 .ScoreObjectivesSection {
   display: grid;
 
-  grid-template-columns: 2fr 1fr 2fr;
+  grid-template-columns: repeat(2, 1fr);
+
+  row-gap: 0.5rem;
 
   width: 100%;
 }

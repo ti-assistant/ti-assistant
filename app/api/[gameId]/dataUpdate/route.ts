@@ -27,6 +27,10 @@ import { AdvancePhaseHandler } from "../../../../src/util/model/advancePhase";
 import { AssignStrategyCardHandler } from "../../../../src/util/model/assignStrategyCard";
 import { CastVotesHandler } from "../../../../src/util/model/castVotes";
 import {
+  ChooseEdictHandler,
+  HideEdictHandler,
+} from "../../../../src/util/model/chooseEdict";
+import {
   ChooseStartingTechHandler,
   RemoveStartingTechHandler,
 } from "../../../../src/util/model/chooseStartingTech";
@@ -55,6 +59,10 @@ import {
   LoseTFCardHandler,
 } from "../../../../src/util/model/gainTFCard";
 import { GiftOfPrescienceHandler } from "../../../../src/util/model/giftOfPrescience";
+import {
+  JoinSpliceHandler,
+  LeaveSpliceHandler,
+} from "../../../../src/util/model/joinSplice";
 import { ManualCCUpdateHandler } from "../../../../src/util/model/manualCCUpdate";
 import { ManualVoteUpdateHandler } from "../../../../src/util/model/manualVoteUpdate";
 import { ManualVPUpdateHandler } from "../../../../src/util/model/manualVPUpdate";
@@ -75,6 +83,10 @@ import {
   UnplayComponentHandler,
 } from "../../../../src/util/model/playComponent";
 import {
+  PlayLeaderHandler,
+  UnplayLeaderHandler,
+} from "../../../../src/util/model/playLeader";
+import {
   PlayPromissoryNoteHandler,
   UnplayPromissoryNoteHandler,
 } from "../../../../src/util/model/playPromissoryNote";
@@ -86,6 +98,10 @@ import {
   PlayRiderHandler,
   UnplayRiderHandler,
 } from "../../../../src/util/model/playRider";
+import {
+  PurgeRelicHandler,
+  UnpurgeRelicHandler,
+} from "../../../../src/util/model/purgeRelic";
 import {
   PurgeSystemHandler,
   UnpurgeSystemHandler,
@@ -134,25 +150,12 @@ import { PassHandler, UnpassHandler } from "../../../../src/util/model/unpass";
 import { UpdateBreakthroughStateHandler } from "../../../../src/util/model/updateBreakthroughState";
 import { UpdateLeaderStateHandler } from "../../../../src/util/model/updateLeaderState";
 import { UpdatePlanetStateHandler } from "../../../../src/util/model/updatePlanetState";
-import { getFirestoreAdmin, SCHEMA_VERSION } from "../../../../src/util/server";
-import { Optional } from "../../../../src/util/types/types";
 import {
   UndoGenomeHandler,
   UseGenomeHandler,
 } from "../../../../src/util/model/useGenome";
-import {
-  JoinSpliceHandler,
-  LeaveSpliceHandler,
-} from "../../../../src/util/model/joinSplice";
-import {
-  ChooseEdictHandler,
-  HideEdictHandler,
-} from "../../../../src/util/model/chooseEdict";
-import PurgeRelic from "../../../../src/components/Actions/PurgeRelic";
-import {
-  PurgeRelicHandler,
-  UnpurgeRelicHandler,
-} from "../../../../src/util/model/purgeRelic";
+import { getFirestoreAdmin, SCHEMA_VERSION } from "../../../../src/util/server";
+import { Optional } from "../../../../src/util/types/types";
 
 export async function POST(
   req: Request,
@@ -710,6 +713,12 @@ function updateInTransaction(
         break;
       case "HIDE_EDICT":
         handler = new HideEdictHandler(gameData, data);
+        break;
+      case "PLAY_LEADER":
+        handler = new PlayLeaderHandler(gameData, data);
+        break;
+      case "UNPLAY_LEADER":
+        handler = new UnplayLeaderHandler(gameData, data);
         break;
 
       case "UNDO": {

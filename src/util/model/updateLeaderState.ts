@@ -2,11 +2,11 @@
 export class UpdateLeaderStateHandler implements Handler {
   constructor(
     public gameData: StoredGameData,
-    public data: UpdateLeaderStateData
+    public data: UpdateLeaderStateData,
   ) {
     const leader = (gameData.leaders ?? {})[data.event.leaderId];
     if (leader) {
-      this.data.event.prevState = leader.state;
+      this.data.event.prevState = leader.state ?? "locked";
     } else {
       this.data.event.prevState = "locked";
     }

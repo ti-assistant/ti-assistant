@@ -40,13 +40,11 @@
 
 .ToggleContainer:hover {
   background-color: var(--dark-hover-bg);
-  // border: var(--border-size) solid var(--neutral-border);
 }
 
 .ToggleContainer.disabled,
 .ToggleContainer.disabled:hover {
   background-color: var(--disabled-bg);
-  // border: var(--border-size) solid var(--disabled-border);
   color: var(--interactive-bg);
   cursor: default;
 }

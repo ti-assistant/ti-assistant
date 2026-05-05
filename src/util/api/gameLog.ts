@@ -47,6 +47,7 @@ import {
   PlayComponentHandler,
   UnplayComponentHandler,
 } from "../model/playComponent";
+import { PlayLeaderHandler, UnplayLeaderHandler } from "../model/playLeader";
 import {
   PlayPromissoryNoteHandler,
   UnplayPromissoryNoteHandler,
@@ -272,5 +273,9 @@ export function getHandler(gameData: StoredGameData, data: GameUpdateData) {
       return new PurgeRelicHandler(gameData, data);
     case "UNPURGE_RELIC":
       return new UnpurgeRelicHandler(gameData, data);
+    case "PLAY_LEADER":
+      return new PlayLeaderHandler(gameData, data);
+    case "UNPLAY_LEADER":
+      return new UnplayLeaderHandler(gameData, data);
   }
 }

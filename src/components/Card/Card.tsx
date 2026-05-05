@@ -9,9 +9,11 @@ export default function Card({
   label,
   icon,
   style,
+  innerStyle,
 }: PropsWithChildren<{
   icon?: ReactNode;
   label: ReactNode;
+  innerStyle?: CSSProperties;
   style?: CSSProperties;
 }>) {
   return (
@@ -20,7 +22,9 @@ export default function Card({
         {label}
         {icon ? <div className={styles.Icon}>{icon}</div> : null}
       </label>
-      <div className={styles.CardBody}>{children}</div>
+      <div className={styles.CardBody} style={innerStyle}>
+        {children}
+      </div>
     </div>
   );
 }
@@ -30,10 +34,12 @@ export function FactionCard({
   label,
   factionId,
   style,
+  innerStyle,
 }: PropsWithChildren<{
   factionId: FactionId;
   label?: ReactNode;
   style?: CSSProperties;
+  innerStyle?: CSSProperties;
 }>) {
   const factionColor = useFactionColors(factionId);
 
@@ -51,6 +57,7 @@ export function FactionCard({
         border: `1px solid ${factionColor.border}`,
         ...style,
       }}
+      innerStyle={innerStyle}
     >
       {children}
     </Card>

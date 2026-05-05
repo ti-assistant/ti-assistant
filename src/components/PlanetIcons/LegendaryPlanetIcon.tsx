@@ -3,7 +3,7 @@
 import { use } from "react";
 import { ModalContext } from "../../context/contexts";
 import LegendaryPlanetSVG from "../../icons/planets/LegendaryPlanet";
-import { rem } from "../../util/util";
+import { em, rem } from "../../util/util";
 import FormattedDescription from "../FormattedDescription/FormattedDescription";
 import { ModalContent } from "../Modal/Modal";
 
@@ -55,9 +55,9 @@ export default function LegendaryPlanetIcon({
         style={{
           cursor,
           borderRadius: "100%",
-          height: rem(16),
-          width: rem(16),
-          boxShadow: `0px 0px ${rem(2)} ${rem(1.5)} purple`,
+          height: em(16),
+          width: em(16),
+          boxShadow: `0px 0px ${em(2)} ${em(1.5)} purple`,
           backgroundColor: "var(--background-color)",
         }}
       >
@@ -65,8 +65,8 @@ export default function LegendaryPlanetIcon({
           className="flexRow"
           style={{
             position: "relative",
-            width: rem(12),
-            height: rem(12),
+            width: em(12),
+            height: em(12),
           }}
         >
           <LegendaryPlanetSVG />

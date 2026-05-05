@@ -73,6 +73,7 @@ type GameUpdateData =
   | (UseGenomeData | UndoGenomeData)
   | (JoinSpliceData | LeaveSpliceData)
   | (ChooseEdictData | HideEdictData)
+  | (PlayLeaderData | UnplayLeaderData)
   | UndoData;
 
 type Secondary = "PENDING" | "DONE" | "SKIPPED";
@@ -915,6 +916,20 @@ interface PlayAdjudicatorBaalData {
 interface UndoAdjudicatorBaalData {
   action: "UNDO_ADJUDICATOR_BAAL";
   event: AdjudicatorBaalEvent;
+}
+
+interface PlayLeaderEvent {
+  leader: LeaderId;
+}
+
+interface PlayLeaderData {
+  action: "PLAY_LEADER";
+  event: PlayLeaderEvent;
+}
+
+interface UnplayLeaderData {
+  action: "UNPLAY_LEADER";
+  event: PlayLeaderEvent;
 }
 
 interface SwapMapTilesEvent {

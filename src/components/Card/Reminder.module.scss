@@ -1,0 +1,42 @@
+@use "../../../src/styles/mixins" as *;
+
+.Reminder {
+  @include main-font;
+
+  --color: var(--foreground-color);
+
+  font-size: 1em;
+
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 0.4em;
+
+  padding-inline: 0.25em;
+
+  border-radius: 40rem;
+
+  // border: 1px solid var(--hidden-border);
+}
+
+.Reminder.Used {
+  --color: var(--between-text);
+
+  color: var(--between-text);
+  background-color: var(--local-background);
+  // border: 1px solid var(--hidden-border);
+}
+
+.Icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-block: 0.125em;
+  width: 1em;
+  height: 1em;
+  border-radius: 100%;
+}
