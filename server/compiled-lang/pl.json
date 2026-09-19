@@ -209,6 +209,16 @@
       "value": "Zwróć Karty Strategii"
     }
   ],
+  "0pQtUL": [
+    {
+      "type": 0,
+      "value": "Polskie (pl) Tłumaczenie: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
   "0rSMZW": [
     {
       "type": 0,
@@ -9019,6 +9029,16 @@
     {
       "type": 1,
       "value": "value"
+    }
+  ],
+  "KeMh1j": [
+    {
+      "type": 0,
+      "value": "Portugalskie (pt-BR) Tłumacznie: "
+    },
+    {
+      "type": 1,
+      "value": "name"
     }
   ],
   "KiioBO": [
