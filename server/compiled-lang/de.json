@@ -35,6 +35,60 @@
       "value": "Vertrag"
     }
   ],
+  "+L4gCQ": [
+    {
+      "offset": 0,
+      "options": {
+        "few": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": "rd"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": "st"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": "th"
+            }
+          ]
+        },
+        "two": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": "nd"
+            }
+          ]
+        }
+      },
+      "pluralType": "ordinal",
+      "type": 6,
+      "value": "num"
+    }
+  ],
   "+WkrHz": [
     {
       "type": 0,
@@ -161,22 +215,10 @@
       "value": "Heimat"
     }
   ],
-  "2HJ0k5": [
-    {
-      "type": 0,
-      "value": "S"
-    }
-  ],
   "2I5JBO": [
     {
       "type": 0,
       "value": "Biotechnik"
-    }
-  ],
-  "2dmEIv": [
-    {
-      "type": 0,
-      "value": "Fraktionsfähigkeiten"
     }
   ],
   "2fB0Ox": [
@@ -213,6 +255,12 @@
     {
       "type": 0,
       "value": "Technologie erforschen"
+    }
+  ],
+  "3xEbCN": [
+    {
+      "type": 0,
+      "value": "Codex IV"
     }
   ],
   "43UU69": [
@@ -304,7 +352,7 @@
   "5WXn8l": [
     {
       "type": 0,
-      "value": "Nächste Runde starten"
+      "value": "Nächste Runde Starten"
     }
   ],
   "5rR4S2": [
@@ -410,7 +458,7 @@
   "A5p5qF": [
     {
       "type": 0,
-      "value": "Problem melden"
+      "value": "Problem Melden"
     }
   ],
   "AO8lj8": [
@@ -422,7 +470,7 @@
   "Agendas.Anti-Intellectual Revolution.Description": [
     {
       "type": 0,
-      "value": "DAFÜR : Nachdem ein Spieler eine Technologie erforscht hat, muss er 1 seiner Nicht-Jäger-Schiffe zerstören."
+      "value": "Dafür: Nachdem ein Spieler eine Technologie erforscht hat, muss er 1 seiner Nicht-Jäger-Schiffe zerstören."
     },
     {
       "type": 1,
@@ -430,7 +478,7 @@
     },
     {
       "type": 0,
-      "value": "DAGEGEN : Zu Beginn der nächsten Strategiephase wählt jeder Spieler für jede Technologie in seinem Besitz 1 Planeten aus und erschöpft ihn."
+      "value": "Dagegen: Zu Beginn der nächsten Strategiephase wählt jeder Spieler für jede Technologie in seinem Besitz 1 Planeten aus und erschöpft ihn."
     }
   ],
   "Agendas.Anti-Intellectual Revolution.Title": [
@@ -466,7 +514,7 @@
   "Agendas.Arms Reduction.Description": [
     {
       "type": 0,
-      "value": "DAFÜR : Jeder Spieler zerstört alle seine Schlachtschiffe bis auf 2 und alle seine Kreuzer bis auf 4."
+      "value": "Dafür: Jeder Spieler zerstört alle seine Schlachtschiffe bis auf 2 und alle seine Kreuzer bis auf 4."
     },
     {
       "type": 1,
@@ -474,7 +522,7 @@
     },
     {
       "type": 0,
-      "value": "DAGEGEN : Zu Beginn der nächsten Strategiephase erschöpft jeder Spieler alle seine Planeten, die eine Technologie-Spezialisierung haben."
+      "value": "Dagegen: Zu Beginn der nächsten Strategiephase erschöpft jeder Spieler alle seine Planeten, die eine Technologie-Spezialisierung haben."
     }
   ],
   "Agendas.Arms Reduction.Title": [
@@ -486,7 +534,7 @@
   "Agendas.Articles of War.Description": [
     {
       "type": 0,
-      "value": "DAFÜR : Alle Mechs verlieren ihre aufgedruckten Fähigkeiten außer SCHADENSRESISTENZ."
+      "value": "Dafür: Alle Mechs verlieren ihre aufgedruckten Fähigkeiten außer SCHADENSRESISTENZ."
     },
     {
       "type": 1,
@@ -494,7 +542,7 @@
     },
     {
       "type": 0,
-      "value": "DAGEGEN : Jeder Spieler, der mit \"Dafür\" gestimmt hat, erhält 3 Handelswaren."
+      "value": "Dagegen: Jeder Spieler, der mit \"Dafür\" gestimmt hat, erhält 3 Handelswaren."
     }
   ],
   "Agendas.Articles of War.Title": [
@@ -506,7 +554,7 @@
   "Agendas.Checks and Balances.Description": [
     {
       "type": 0,
-      "value": "DAFÜR : Sobald ein Spieler während der Strategiephase eine Strategiekarte auswählt, gibt er sie, falls möglich, einem anderen Spieler, der keine Strategiekarte hat (oder einem Spieler, der keine 2 hat, falls ihr zu dritt oder zu viert spielt)."
+      "value": "Dafür: Sobald ein Spieler während der Strategiephase eine Strategiekarte auswählt, gibt er sie, falls möglich, einem anderen Spieler, der keine Strategiekarte hat (oder einem Spieler, der keine 2 hat, falls ihr zu dritt oder zu viert spielt)."
     },
     {
       "type": 1,
@@ -514,7 +562,7 @@
     },
     {
       "type": 0,
-      "value": "DAGEGEN : Am Ende dieser Agendaphase macht jeder Spieler nur 3 seiner Planeten spielbereit."
+      "value": "Dagegen: Am Ende dieser Agendaphase macht jeder Spieler nur 3 seiner Planeten spielbereit."
     }
   ],
   "Agendas.Checks and Balances.Title": [
@@ -526,7 +574,7 @@
   "Agendas.Clandestine Operations.Description": [
     {
       "type": 0,
-      "value": "DAFÜR : Jeder Spieler entfernt 2 Kommandomarker von seinem Kommandobogen und legt sie in seinen Nachschub zurück."
+      "value": "Dafür: Jeder Spieler entfernt 2 Kommandomarker von seinem Kommandobogen und legt sie in seinen Nachschub zurück."
     },
     {
       "type": 1,
@@ -534,7 +582,7 @@
     },
     {
       "type": 0,
-      "value": "DAGEGEN : Jeder Spieler entfernt 1 Kommandomarker aus seinem Flottenpool und legt ihn in seinen Nachschub zurück."
+      "value": "Dagegen: Jeder Spieler entfernt 1 Kommandomarker aus seinem Flottenpool und legt ihn in seinen Nachschub zurück."
     }
   ],
   "Agendas.Clandestine Operations.Title": [
@@ -618,7 +666,7 @@
   "Agendas.Conventions of War.Description": [
     {
       "type": 0,
-      "value": "DAFÜR : Die Spieler dürfen BOMBARDEMENT nicht gegen Einheiten auf kulturellen Planeten verwenden."
+      "value": "Dafür: Die Spieler dürfen BOMBARDEMENT nicht gegen Einheiten auf kulturellen Planeten verwenden."
     },
     {
       "type": 1,
@@ -626,7 +674,7 @@
     },
     {
       "type": 0,
-      "value": "DAGEGEN : Jeder Spieler, der mit \"Dagegen\" gestimmt hat, legt alle seine Aktionskarten ab."
+      "value": "Dagegen: Jeder Spieler, der mit \"Dagegen\" gestimmt hat, legt alle seine Aktionskarten ab."
     }
   ],
   "Agendas.Conventions of War.Title": [
@@ -714,7 +762,7 @@
   "Agendas.Economic Equality.Description": [
     {
       "type": 0,
-      "value": "DAFÜR : Jeder Spieler legt alle seine Handelswaren in den Vorrat zurück. Dann erhält jeder Spieler 5 Handelswaren."
+      "value": "Dafür: Jeder Spieler legt alle seine Handelswaren in den Vorrat zurück. Dann erhält jeder Spieler 5 Handelswaren."
     },
     {
       "type": 1,
@@ -722,7 +770,7 @@
     },
     {
       "type": 0,
-      "value": "DAGEGEN : Jeder Spieler legt alle seinen Handelswaren in den Vorrat zurück."
+      "value": "Dagegen: Jeder Spieler legt alle seinen Handelswaren in den Vorrat zurück."
     }
   ],
   "Agendas.Economic Equality.Title": [
@@ -734,7 +782,7 @@
   "Agendas.Enforced Travel Ban.Description": [
     {
       "type": 0,
-      "value": "DAFÜR : Während der Bewegung von Einheiten haben Alpha- und Beta-Wurmlöcher keinen Effekt."
+      "value": "Dafür: Während der Bewegung von Einheiten haben Alpha- und Beta-Wurmlöcher keinen Effekt."
     },
     {
       "type": 1,
@@ -742,7 +790,7 @@
     },
     {
       "type": 0,
-      "value": "DAGEGEN : Jedes PVS, das sich in einem System mit Wurmloch oder in einem angrenzenden System befindet, wird zerstört."
+      "value": "Dagegen: Jedes PVS, das sich in einem System mit Wurmloch oder in einem angrenzenden System befindet, wird zerstört."
     }
   ],
   "Agendas.Enforced Travel Ban.Title": [
@@ -754,7 +802,7 @@
   "Agendas.Executive Sanctions.Description": [
     {
       "type": 0,
-      "value": "DAFÜR : Jeder Spieler kann maximal 3 Aktionskarten auf seiner Hand haben."
+      "value": "Dafür: Jeder Spieler kann maximal 3 Aktionskarten auf seiner Hand haben."
     },
     {
       "type": 1,
@@ -762,7 +810,7 @@
     },
     {
       "type": 0,
-      "value": "DAGEGEN : Jeder Spieler legt 1 zufällige Aktionskarte von seiner Hand ab."
+      "value": "Dagegen: Jeder Spieler legt 1 zufällige Aktionskarte von seiner Hand ab."
     }
   ],
   "Agendas.Executive Sanctions.Title": [
@@ -774,7 +822,7 @@
   "Agendas.Fleet Regulations.Description": [
     {
       "type": 0,
-      "value": "DAFÜR : Jeder Spieler darf nicht mehr als 4 Marker in seinem Flottenpool haben."
+      "value": "Dafür: Jeder Spieler darf nicht mehr als 4 Marker in seinem Flottenpool haben."
     },
     {
       "type": 1,
@@ -782,7 +830,7 @@
     },
     {
       "type": 0,
-      "value": "DAGEGEN : Jeder Spieler plaziert 1 Kommandomarker aus seinem Nachschub in seinem Flottenpool."
+      "value": "Dagegen: Jeder Spieler plaziert 1 Kommandomarker aus seinem Nachschub in seinem Flottenpool."
     }
   ],
   "Agendas.Fleet Regulations.Title": [
@@ -850,7 +898,7 @@
   "Agendas.Homeland Defense Act.Description": [
     {
       "type": 0,
-      "value": "DAFÜR : Jeder Spieler kann beliebig viele PVS-Einheiten auf den Planeten unter seiner Kontrolle haben."
+      "value": "Dafür: Jeder Spieler kann beliebig viele PVS-Einheiten auf den Planeten unter seiner Kontrolle haben."
     },
     {
       "type": 1,
@@ -858,7 +906,7 @@
     },
     {
       "type": 0,
-      "value": "DAGEGEN : Jeder Spieler zerstört 1 seiner PVS-Einheiten."
+      "value": "Dagegen: Jeder Spieler zerstört 1 seiner PVS-Einheiten."
     }
   ],
   "Agendas.Homeland Defense Act.Title": [
@@ -890,7 +938,7 @@
   "Agendas.Incentive Program.Description": [
     {
       "type": 0,
-      "value": "DAFÜR : 1 öffentlicher Auftrag wird vom Stufe-I-Auftragsstapel gezogen und in der Nähe der öffentlichen Aufträge platziert."
+      "value": "Dafür: 1 öffentlicher Auftrag wird vom Stufe-I-Auftragsstapel gezogen und in der Nähe der öffentlichen Aufträge platziert."
     },
     {
       "type": 1,
@@ -898,7 +946,7 @@
     },
     {
       "type": 0,
-      "value": "DAGEGEN : 1 öffentlicher Auftrag wird vom Stufe-II-Auftragsstapel gezogen und in der Nähe der öffentlichen Aufträge platziert."
+      "value": "Dagegen: 1 öffentlicher Auftrag wird vom Stufe-II-Auftragsstapel gezogen und in der Nähe der öffentlichen Aufträge platziert."
     }
   ],
   "Agendas.Incentive Program.Title": [
@@ -910,7 +958,7 @@
   "Agendas.Ixthian Artifact.Description": [
     {
       "type": 0,
-      "value": "DAFÜR : Der Sprecher wirft 1 Würfel. ist das Ergebnis 6-10, darf jeder Spieler 2 Technologien erforschen. Ist das Ergebnis 1-5, werden alle Einheiten im Mecatol-Rex-System zerstört und jeder Spieler mit Einheiten in angrenzenden Systemen zerstört 3 seiner Einheiten in jedem dieser Systeme."
+      "value": "Dafür: Der Sprecher wirft 1 Würfel. ist das Ergebnis 6-10, darf jeder Spieler 2 Technologien erforschen. Ist das Ergebnis 1-5, werden alle Einheiten im Mecatol-Rex-System zerstört und jeder Spieler mit Einheiten in angrenzenden Systemen zerstört 3 seiner Einheiten in jedem dieser Systeme."
     },
     {
       "type": 1,
@@ -918,7 +966,7 @@
     },
     {
       "type": 0,
-      "value": "DAGEGEN : Kein Effekt."
+      "value": "Dagegen: Kein Effekt."
     }
   ],
   "Agendas.Ixthian Artifact.Title": [
@@ -1122,7 +1170,7 @@
   "Agendas.Mutiny.Description": [
     {
       "type": 0,
-      "value": "DAFÜR : Jeder Spieler, der mit \"Dafür\" gestimmt hat, erhält 1 Siegpunkt."
+      "value": "Dafür: Jeder Spieler, der mit \"Dafür\" gestimmt hat, erhält 1 Siegpunkt."
     },
     {
       "type": 1,
@@ -1130,7 +1178,7 @@
     },
     {
       "type": 0,
-      "value": "DAGEGEN : Jeder Spieler, der mit \"Dafür\" gestimmt hat, verliert 1 Siegpunkt."
+      "value": "Dagegen: Jeder Spieler, der mit \"Dafür\" gestimmt hat, verliert 1 Siegpunkt."
     }
   ],
   "Agendas.Mutiny.Title": [
@@ -1150,7 +1198,7 @@
     },
     {
       "type": 0,
-      "value": "DAFÜR : Alle Gesetze werden aus dem Spiel abgelegt. Zu Beginn der nächsten Streategiephase erschöpft jeder Spieler alle Planeten in seinem Heimat-System."
+      "value": "Dafür: Alle Gesetze werden aus dem Spiel abgelegt. Zu Beginn der nächsten Streategiephase erschöpft jeder Spieler alle Planeten in seinem Heimat-System."
     },
     {
       "type": 1,
@@ -1158,7 +1206,7 @@
     },
     {
       "type": 0,
-      "value": "DAGEGEN : Kein Effekt."
+      "value": "Dagegen: Kein Effekt."
     }
   ],
   "Agendas.New Constitution.Title": [
@@ -1170,7 +1218,7 @@
   "Agendas.Nexus Sovereignty.Description": [
     {
       "type": 0,
-      "value": "DAFÜR : Die Alpha- und Beta-Wurmlöcher im Wurmloch-Nexsus haben bei Bewegungen keinen Effekt."
+      "value": "Dafür: Die Alpha- und Beta-Wurmlöcher im Wurmloch-Nexsus haben bei Bewegungen keinen Effekt."
     },
     {
       "type": 1,
@@ -1178,7 +1226,7 @@
     },
     {
       "type": 0,
-      "value": "DAGEGEN : Plaziert einen Gamma-Wurmlochmarker in das Mecatol-Rex-System."
+      "value": "Dagegen: Plaziert einen Gamma-Wurmlochmarker in das Mecatol-Rex-System."
     }
   ],
   "Agendas.Nexus Sovereignty.Title": [
@@ -1250,7 +1298,7 @@
   "Agendas.Publicize Weapon Schematics.Description": [
     {
       "type": 0,
-      "value": "DAFÜR : Falls ein Spieler die Technologie \"Kriegssonne\" besitzt, dürfen alle Spieler alle Voraussetzungen der Technologie \"Kriegssonne\" ignorieren. ALle Kriegssonnen verlieren SCHADENSRESISTENZ."
+      "value": "Dafür: Falls ein Spieler die Technologie \"Kriegssonne\" besitzt, dürfen alle Spieler alle Voraussetzungen der Technologie \"Kriegssonne\" ignorieren. ALle Kriegssonnen verlieren SCHADENSRESISTENZ."
     },
     {
       "type": 1,
@@ -1258,7 +1306,7 @@
     },
     {
       "type": 0,
-      "value": "DAGEGEN : Jeder Spieler, der die Technologie \"Kriegssonne\" besitzt, legt alle seine Aktionskarten ab."
+      "value": "Dagegen: Jeder Spieler, der die Technologie \"Kriegssonne\" besitzt, legt alle seine Aktionskarten ab."
     }
   ],
   "Agendas.Publicize Weapon Schematics.Title": [
@@ -1270,7 +1318,7 @@
   "Agendas.Rearmament Agreement.Description": [
     {
       "type": 0,
-      "value": "DAFÜR : Jeder Spieler plaziert 1 Mech aus seinem Nachschub auf einen Planeten, den er in seinem Heimat-System kontrolliert."
+      "value": "Dafür: Jeder Spieler plaziert 1 Mech aus seinem Nachschub auf einen Planeten, den er in seinem Heimat-System kontrolliert."
     },
     {
       "type": 1,
@@ -1278,7 +1326,7 @@
     },
     {
       "type": 0,
-      "value": "DAGEGEN : Jeder Spieler ersetzt jeden seiner Mechs durch 1 Infanterie aus seinem Nachschub."
+      "value": "Dagegen: Jeder Spieler ersetzt jeden seiner Mechs durch 1 Infanterie aus seinem Nachschub."
     }
   ],
   "Agendas.Rearmament Agreement.Title": [
@@ -1290,7 +1338,7 @@
   "Agendas.Regulated Conscription.Description": [
     {
       "type": 0,
-      "value": "DAFÜR : Sobald ein Spieler Einheiten produziert, produziert er nur 1 Jäger bzw. 1 Infanterie für die angegebenen Kosten(anstatt 2)."
+      "value": "Dafür: Sobald ein Spieler Einheiten produziert, produziert er nur 1 Jäger bzw. 1 Infanterie für die angegebenen Kosten(anstatt 2)."
     },
     {
       "type": 1,
@@ -1298,7 +1346,7 @@
     },
     {
       "type": 0,
-      "value": "DAGEGEN : Kein Effekt."
+      "value": "Dagegen: Kein Effekt."
     }
   ],
   "Agendas.Regulated Conscription.Title": [
@@ -1310,7 +1358,7 @@
   "Agendas.Representative Government.Description": [
     {
       "type": 0,
-      "value": "DAFÜR : Während der Agendphase dürfen die Spieler keine Planeten erschöpfen, um Stimmen abzugeben; stattdessen darf jeder Spieler bei jeder Agenda 1 Stimme abgeben."
+      "value": "Dafür: Während der Agendphase dürfen die Spieler keine Planeten erschöpfen, um Stimmen abzugeben; stattdessen darf jeder Spieler bei jeder Agenda 1 Stimme abgeben."
     },
     {
       "type": 1,
@@ -1318,13 +1366,13 @@
     },
     {
       "type": 0,
-      "value": "DAGEGEN : Zu Beginn der nächsten Strategiephase erschöpft jeder Spieler, der mit \"Dagegen\" gestimmt hat alle seine kulturellen Planeten."
+      "value": "Dagegen: Zu Beginn der nächsten Strategiephase erschöpft jeder Spieler, der mit \"Dagegen\" gestimmt hat alle seine kulturellen Planeten."
     }
   ],
   "Agendas.Representative Government.Omega.Description": [
     {
       "type": 0,
-      "value": "DAFÜR : Während der Agendphase dürfen die Spieler keine Planeten erschöpfen, um Stimmen abzugeben; stattdessen darf jeder Spieler genau 1 Stimme pro Agenda abgeben. Zusätzliche Stimmen dürfen nicht abgegeben werden."
+      "value": "Dafür: Während der Agendphase dürfen die Spieler keine Planeten erschöpfen, um Stimmen abzugeben; stattdessen darf jeder Spieler genau 1 Stimme pro Agenda abgeben. Zusätzliche Stimmen dürfen nicht abgegeben werden."
     },
     {
       "type": 1,
@@ -1332,7 +1380,7 @@
     },
     {
       "type": 0,
-      "value": "DAGEGEN : Zu Beginn der nächsten Strategiephase erschöpft jeder Spieler, der mit \"Dagegen\" gestimmt hat alle seine kulturellen Planeten."
+      "value": "Dagegen: Zu Beginn der nächsten Strategiephase erschöpft jeder Spieler, der mit \"Dagegen\" gestimmt hat alle seine kulturellen Planeten."
     }
   ],
   "Agendas.Representative Government.Title": [
@@ -1456,7 +1504,7 @@
   "Agendas.Seed of an Empire.Description": [
     {
       "type": 0,
-      "value": "DAFÜR : Der Spieler mit den meisten Siegpunkten erhält 1 Siegpunkt."
+      "value": "Dafür: Der Spieler mit den meisten Siegpunkten erhält 1 Siegpunkt."
     },
     {
       "type": 1,
@@ -1464,7 +1512,7 @@
     },
     {
       "type": 0,
-      "value": "DAGEGEN : Der Spieler mit den wenigsten Siegpunkten erhält 1 Siegpunkt."
+      "value": "Dagegen: Der Spieler mit den wenigsten Siegpunkten erhält 1 Siegpunkt."
     }
   ],
   "Agendas.Seed of an Empire.Title": [
@@ -1524,7 +1572,7 @@
   "Agendas.Shared Research.Description": [
     {
       "type": 0,
-      "value": "DAFÜR : Die Einheiten aller Spieler können sich durch Nebel hindurch bewegen."
+      "value": "Dafür: Die Einheiten aller Spieler können sich durch Nebel hindurch bewegen."
     },
     {
       "type": 1,
@@ -1532,7 +1580,7 @@
     },
     {
       "type": 0,
-      "value": "DAGEGEN : Jeder Spieler platziert einen Kommandomarker aus seinem Nachschub in seinem Heimat-System, falls möglich."
+      "value": "Dagegen: Jeder Spieler platziert einen Kommandomarker aus seinem Nachschub in seinem Heimat-System, falls möglich."
     }
   ],
   "Agendas.Shared Research.Title": [
@@ -1544,7 +1592,7 @@
   "Agendas.Swords to Plowshares.Description": [
     {
       "type": 0,
-      "value": "DAFÜR : Jeder Spieler zerstört auf jedem Planeten unter seiner Kontrolle die Hälfte seiner Infanterie (aufgerundet). Dann erhält jeder Spieler 1 Handelsware pro Infanterie, die er zerstört hat."
+      "value": "Dafür: Jeder Spieler zerstört auf jedem Planeten unter seiner Kontrolle die Hälfte seiner Infanterie (aufgerundet). Dann erhält jeder Spieler 1 Handelsware pro Infanterie, die er zerstört hat."
     },
     {
       "type": 1,
@@ -1552,7 +1600,7 @@
     },
     {
       "type": 0,
-      "value": "DAGEGEN : Jeder Spieler plaziert auf jedem Planeten unter seiner Kontrolle 1 Infanterie aus seinem Nachschub."
+      "value": "Dagegen: Jeder Spieler plaziert auf jedem Planeten unter seiner Kontrolle 1 Infanterie aus seinem Nachschub."
     }
   ],
   "Agendas.Swords to Plowshares.Title": [
@@ -1632,7 +1680,7 @@
   "Agendas.Unconventional Measures.Description": [
     {
       "type": 0,
-      "value": "DAFÜR : Jeder Spieler, der mit \"Dafür\" gestimmt hat, zieht 2 Aktionskarten."
+      "value": "Dafür: Jeder Spieler, der mit \"Dafür\" gestimmt hat, zieht 2 Aktionskarten."
     },
     {
       "type": 1,
@@ -1640,7 +1688,7 @@
     },
     {
       "type": 0,
-      "value": "DAGEGEN : Jeder Spieler, der mit \"Dafür\" gestimmt hat, legt alle seine Aktionskarten ab."
+      "value": "Dagegen: Jeder Spieler, der mit \"Dafür\" gestimmt hat, legt alle seine Aktionskarten ab."
     }
   ],
   "Agendas.Unconventional Measures.Title": [
@@ -1652,7 +1700,7 @@
   "Agendas.Wormhole Reconstruction.Description": [
     {
       "type": 0,
-      "value": "DAFÜR : Alle Systeme, dei ein Alpha- oder Beta-Wurmloch enthalten, grenzen aneinander an."
+      "value": "Dafür: Alle Systeme, dei ein Alpha- oder Beta-Wurmloch enthalten, grenzen aneinander an."
     },
     {
       "type": 1,
@@ -1660,7 +1708,7 @@
     },
     {
       "type": 0,
-      "value": "DAGEGEN : Jeder Spieler plaziert einen Kommandomarker aus seinem Nachschub in jedem System, das ein Wurmloch und mindests 1 seiner Schiffe enthält."
+      "value": "Dagegen: Jeder Spieler plaziert einen Kommandomarker aus seinem Nachschub in jedem System, das ein Wurmloch und mindests 1 seiner Schiffe enthält."
     }
   ],
   "Agendas.Wormhole Reconstruction.Title": [
@@ -1672,7 +1720,7 @@
   "Agendas.Wormhole Research.Description": [
     {
       "type": 0,
-      "value": "DAFÜR : Jeder Spieler der mindestens 1 Schiff in einem System mit Wurmloch hat, darf 1 Technologie erforschen. Dann werden alle Schiffe in Systemen mit Alpha- oder Beta-Wurmlöchern zerstört."
+      "value": "Dafür: Jeder Spieler der mindestens 1 Schiff in einem System mit Wurmloch hat, darf 1 Technologie erforschen. Dann werden alle Schiffe in Systemen mit Alpha- oder Beta-Wurmlöchern zerstört."
     },
     {
       "type": 1,
@@ -1680,7 +1728,7 @@
     },
     {
       "type": 0,
-      "value": "DAGEGEN : Jeder Spieler, der mit \"Dagegen\" gestimmt hat, entfernt 1 Kommandomarker von seinem Kommandobogen und legt ihn in seinen Nachschub zurück."
+      "value": "Dagegen: Jeder Spieler, der mit \"Dagegen\" gestimmt hat, entfernt 1 Kommandomarker von seinem Kommandobogen und legt ihn in seinen Nachschub zurück."
     }
   ],
   "Agendas.Wormhole Research.Title": [
@@ -2081,30 +2129,6 @@
       "value": "Biotechnik-Laboratorium"
     }
   ],
-  "Attachments.Branch Office - Broadcast Hub.Title": [
-    {
-      "type": 0,
-      "value": "Branch Office - Broadcast Hub"
-    }
-  ],
-  "Attachments.Branch Office - Orbital Shipyard.Title": [
-    {
-      "type": 0,
-      "value": "Branch Office - Orbital Shipyard"
-    }
-  ],
-  "Attachments.Branch Office - Reserve Bank.Title": [
-    {
-      "type": 0,
-      "value": "Branch Office - Reserve Bank"
-    }
-  ],
-  "Attachments.Branch Office - Tax Haven.Title": [
-    {
-      "type": 0,
-      "value": "Branch Office - Tax Haven"
-    }
-  ],
   "Attachments.Core Mining.Title": [
     {
       "type": 0,
@@ -2127,18 +2151,6 @@
     {
       "type": 0,
       "value": "Dyson-Sphäre"
-    }
-  ],
-  "Attachments.Gledge Base.Title": [
-    {
-      "type": 0,
-      "value": "Gledge Base"
-    }
-  ],
-  "Attachments.Holy Planet of Ixth.Title": [
-    {
-      "type": 0,
-      "value": "Der Heilige Planet Ixth"
     }
   ],
   "Attachments.Lazax Survivors.Title": [
@@ -2171,46 +2183,10 @@
       "value": "Antriebstechnik-Laboratorium"
     }
   ],
-  "Attachments.Research Team: Biotic.Title": [
-    {
-      "type": 0,
-      "value": "Forschungsgruppe: Biotechnik"
-    }
-  ],
-  "Attachments.Research Team: Cybernetic.Title": [
-    {
-      "type": 0,
-      "value": "Forschungsgruppe: Kybernetik"
-    }
-  ],
-  "Attachments.Research Team: Propulsion.Title": [
-    {
-      "type": 0,
-      "value": "Forschungsgruppe: Antriebstechnik"
-    }
-  ],
-  "Attachments.Research Team: Warfare.Title": [
-    {
-      "type": 0,
-      "value": "Forschungsgruppe: Militärtechnik"
-    }
-  ],
   "Attachments.Rich World.Title": [
     {
       "type": 0,
       "value": "Reiche Welt"
-    }
-  ],
-  "Attachments.Senate Sanctuary.Title": [
-    {
-      "type": 0,
-      "value": "Senatssitz"
-    }
-  ],
-  "Attachments.Terraform.Title": [
-    {
-      "type": 0,
-      "value": "Terraforming"
     }
   ],
   "Attachments.Terraforming Initiative.Title": [
@@ -2693,148 +2669,6 @@
       "value": "Öffentliche Ziele können nicht bewertet werden"
     }
   ],
-  "Components.Ancient Burial Sites.Title": [
-    {
-      "type": 0,
-      "value": "Uralte Grabstätten"
-    }
-  ],
-  "Components.Archaeological Expedition.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Decke die obersten 3 Karten eines Erkundungsstapel auf, der zu einem von dir kontrollierten Planeten passt; du erhältst alle aufgedeckten Reliktfragmente und legst die restlichen Karten ab."
-    }
-  ],
-  "Components.Archaeological Expedition.Title": [
-    {
-      "type": 0,
-      "value": "Archäologische Expedition"
-    }
-  ],
-  "Components.Assassinate Representative.Title": [
-    {
-      "type": 0,
-      "value": "Attentat auf einen Abgeordneten"
-    }
-  ],
-  "Components.Black Market Forgery.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Vernichte 2 deiner gleichartigen Reliktfragmente, um 1 Relikt zu erhalten."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "Dann gibst du diese Karte an den Naaz-Rokha-Spieler zurück."
-    }
-  ],
-  "Components.Black Market Forgery.Title": [
-    {
-      "type": 0,
-      "value": "Schwarzmarkt-Fälschung"
-    }
-  ],
-  "Components.Blood Pact.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Platziere diese Karte offen in deinen Spielbereich."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "Sobald du un der Empyrier-Spieler für dieselbe Alternative Stimmen abgebt, gibst du 4 zusätzliche Stimmen für diese Alternative ab."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "Falls du ein System aktivierst, das mindestens 1 Einheit des Empyrier-Spielers enthält, gibst du diese Karte an den Empyrier-Spieler zurück."
-    }
-  ],
-  "Components.Blood Pact.Title": [
-    {
-      "type": 0,
-      "value": "Blutsbund"
-    }
-  ],
-  "Components.Cripple Defenses.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Wähle 1 Planeten. Zerstöre jedes PVS auf jenem Planeten."
-    }
-  ],
-  "Components.Cripple Defenses.Title": [
-    {
-      "type": 0,
-      "value": "Verteidigung lahmlegen"
-    }
-  ],
-  "Components.Dark Pact.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Platziere diese Karte offen in deinen Spielbereich."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "Sobald du dem Empyrier-Spieler Massenprodukte in Höhe deines Massenproduktwertes gibst, erhaltet ihr beide je 1 Handelsware."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "Falls du ein System aktivierst, das mindestens 1 Einheit des Empyrier-Spielers enthält, gibst du diese Karte an den Empyrier-Spieler zurück."
-    }
-  ],
-  "Components.Dark Pact.Title": [
-    {
-      "type": 0,
-      "value": "Dunkler Pakt"
-    }
-  ],
-  "Components.Distinguished Councilor.Title": [
-    {
-      "type": 0,
-      "value": "Angesehener Ratsherr"
-    }
-  ],
-  "Components.Divert Funding.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Lege eine nicht fraktionsspezifische Technologie, die keine Aufwertung für Einheiten ist, aus deinem Besitz auf deinen Technologiestapel zurück. Erforsche dann eine andere Technologie."
-    }
-  ],
-  "Components.Divert Funding.Title": [
-    {
-      "type": 0,
-      "value": "Fördergelder umverteilen"
-    }
-  ],
-  "Components.Economic Initiative.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Mache alle kulturellen Planeten unter deiner Kontrolle spielbereit."
-    }
-  ],
-  "Components.Economic Initiative.Title": [
-    {
-      "type": 0,
-      "value": "Wirtschaftsinitiative"
-    }
-  ],
   "Components.Enigmatic Device.Description": [
     {
       "type": 0,
@@ -2847,86 +2681,6 @@
       "value": "Rätselhafte Maschine"
     }
   ],
-  "Components.Exploration Probe.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Erkunde einen Wilder-Raum-Marker in oder angrenzend zu einem System, das mindestens 1 deiner Schiffe enthält."
-    }
-  ],
-  "Components.Exploration Probe.Title": [
-    {
-      "type": 0,
-      "value": "Foschungssonde"
-    }
-  ],
-  "Components.Fabrication.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Vernichte entweder 2 deiner gleichartigen Reliktfragmente, um 1 Relikt zu erhalten; oder vernichte 1 deiner Reliktfragmente, um 1 Kommandomarker zu erhalten."
-    }
-  ],
-  "Components.Fabrication.Title": [
-    {
-      "type": 0,
-      "value": "Verarbeitung"
-    }
-  ],
-  "Components.Fighter Conscription.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Platziere in jedes System, das mindestens 1 deiner Raumwerften oder Einheiten mit Kapazität enthält, 1 Jäger aus deinem Nachschub; sie dürfen nicht in Systeme platziert werden, die Schiffe anderer Spieler enthalten."
-    }
-  ],
-  "Components.Fighter Conscription.Title": [
-    {
-      "type": 0,
-      "value": "Jägereinberufung"
-    }
-  ],
-  "Components.Fires of the Gashlai.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Entferne 1 Marker aus dem Flottenpool des Muaat-Spielers und lege ihn in dessen Nachschub zurück. Dann erhältst du aus deinem Technologiestapel die Aufwertungstechnologie für die Einheit Kriegssonne."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "Dann gibst du diese Karte an den Muaat-Spieler zurück."
-    }
-  ],
-  "Components.Fires of the Gashlai.Title": [
-    {
-      "type": 0,
-      "value": "Das Feuer der Gashlai"
-    }
-  ],
-  "Components.Focused Research.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Gib 4 Handelswaren aus, um 1 Technologie zu erforschen."
-    }
-  ],
-  "Components.Focused Research.Title": [
-    {
-      "type": 0,
-      "value": "Zielgerichtete Forschung"
-    }
-  ],
-  "Components.Frontline Deployment.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Plaziere 3 Infantrie aus deinem Nachschub auf 1 Planeten unter deiner Kontrolle."
-    }
-  ],
-  "Components.Frontline Deployment.Title": [
-    {
-      "type": 0,
-      "value": "Truppentransport an die Front"
-    }
-  ],
   "Components.Gain Relic.Description": [
     {
       "type": 0,
@@ -2937,506 +2691,6 @@
     {
       "type": 0,
       "value": "Relikt erhalten"
-    }
-  ],
-  "Components.Ghost Ship.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Platziere 1 Zerstörer aus deinem Nachschub in einem Nicht-Heimat-System, das ein Wurmloch und keine Schiffe anderer Spieler enthält."
-    }
-  ],
-  "Components.Ghost Ship.Title": [
-    {
-      "type": 0,
-      "value": "Geisterschiff"
-    }
-  ],
-  "Components.Hack Election.Title": [
-    {
-      "type": 0,
-      "value": "Gehackte Wahl"
-    }
-  ],
-  "Components.Impersonation.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Gib 3 Einfluss aus, um 1 geheimen Auftrag zu ziehen."
-    }
-  ],
-  "Components.Impersonation.Title": [
-    {
-      "type": 0,
-      "value": "Verkleidung"
-    }
-  ],
-  "Components.Industrial Initiative.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Du erhältst 1 Handelsware für jeden industriellen Planeten unter deiner Kontrolle."
-    }
-  ],
-  "Components.Industrial Initiative.Title": [
-    {
-      "type": 0,
-      "value": "Industrie Initiative"
-    }
-  ],
-  "Components.Insubordination.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Entferne 1 Marker aus dem Taktikpool eines anderen Spielers und lege ihn in dessen Nachschub zurück."
-    }
-  ],
-  "Components.Insubordination.Title": [
-    {
-      "type": 0,
-      "value": "Befehlsverweigerung"
-    }
-  ],
-  "Components.Lazax Gate Folding.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Falls du Mecatol Rex kontrollierst, erschöpfe diese Karte, um 1 Infanterie aus deinem Nachschub auf Mecatol Rex zu platzieren."
-    }
-  ],
-  "Components.Lazax Gate Folding.Title": [
-    {
-      "type": 0,
-      "value": "Lazaxianische Raumfaltung"
-    }
-  ],
-  "Components.Lucky Shot.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Zerstöre 1 Schlachtschiff, Kreuzer oder Zerstörer in einem System, das einen von dir kontrollierten Planeten enthält."
-    }
-  ],
-  "Components.Lucky Shot.Title": [
-    {
-      "type": 0,
-      "value": "Glückstreffer"
-    }
-  ],
-  "Components.Mageon Implants.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Erschöpfe diese Karte, um dir die Aktionskarten auf der Hand eines anderen Spielers anzusehen. Wähle 1 der angesehenen Karten aus und füge sie deiner Hand hinzu."
-    }
-  ],
-  "Components.Mageon Implants.Title": [
-    {
-      "type": 0,
-      "value": "Mageon-Implantate"
-    }
-  ],
-  "Components.Mining Initiative.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Du erhältst Handelswaren in Höhe des Ressourcenwerts eines Planeten unter deiner Kontrolle."
-    }
-  ],
-  "Components.Mining Initiative.Title": [
-    {
-      "type": 0,
-      "value": "Bergbauinitiative "
-    }
-  ],
-  "Components.Orbital Drop.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Gib 1 Marker aus deinem Strategiepool aus, um 2 Infanterie aus deinem Nachschub auf 1 von dir kontrollierten Planeten zu platzieren."
-    }
-  ],
-  "Components.Orbital Drop.Title": [
-    {
-      "type": 0,
-      "value": "Orbitale Landung"
-    }
-  ],
-  "Components.Plagiarize.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Gib 5 Einfluss aus und wähle eine nicht fraktionsspezifische Technologie im Besitz eines deiner Nachbarn aus; erhalte die ausgewählte Technologie."
-    }
-  ],
-  "Components.Plagiarize.Title": [
-    {
-      "type": 0,
-      "value": "Plagiat"
-    }
-  ],
-  "Components.Plague.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Wähle 1 Planeten unter der Kontrolle eines anderen Spielers. Wirf für jede Infanterie auf jenem Planeten 1 Würfel. Für jedes Ergebnis, das 6 oder höher ist, zerstörst du 1 dieser Einheiten."
-    }
-  ],
-  "Components.Plague.Title": [
-    {
-      "type": 0,
-      "value": "Seuche"
-    }
-  ],
-  "Components.Production Biomes.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Erschöpfe diese Karte und gib 1 Marker aus deinem Strategiepool aus, um 4 Handelswaren zu erhalten und 1 anderen Spieler auszuwählen; der ausgewählte Spieler erhält 2 Handelswaren."
-    }
-  ],
-  "Components.Production Biomes.Title": [
-    {
-      "type": 0,
-      "value": "Fertigungsbiome"
-    }
-  ],
-  "Components.Promise of Protection.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Platziere diese Karte offen in deinem Spielbereich."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "Solange diese Karte in deinem Spielbereich ist, darf der Mentak-Spieler seine Fraktionsfähigkeit PLÜNDERN nicht gegen dich verwenden."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "Falls du ein System aktivierst, das mindestens 1 Einheit des Mentak-Spielers enthält, gibst du diese Karte an den Mentak-Spieler zurück."
-    }
-  ],
-  "Components.Promise of Protection.Title": [
-    {
-      "type": 0,
-      "value": "Schutzversprechen"
-    }
-  ],
-  "Components.Reactor Meltdown.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Zerstöre 1 Raumwerft in einem Nicht-Heimat-System."
-    }
-  ],
-  "Components.Reactor Meltdown.Title": [
-    {
-      "type": 0,
-      "value": "Kernschmelze"
-    }
-  ],
-  "Components.Refit Troops.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Wähle 1 oder 2 deiner Infanterie auf dem Spielplan aus und lege sie in deinen Nachschub zurück; ersetze jede ausgewählte Infanterie durch einen Mech."
-    }
-  ],
-  "Components.Refit Troops.Title": [
-    {
-      "type": 0,
-      "value": "Truppen umrüsten"
-    }
-  ],
-  "Components.Repeal Law.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Lege 1 Gesetz aus dem Spiel ab."
-    }
-  ],
-  "Components.Repeal Law.Title": [
-    {
-      "type": 0,
-      "value": "Gesetzesaufhebung"
-    }
-  ],
-  "Components.Rise of a Messiah.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Platziere 1 Infanterie aus deinem Nachschub auf jedem Planeten unter deiner Kontrolle."
-    }
-  ],
-  "Components.Rise of a Messiah.Title": [
-    {
-      "type": 0,
-      "value": "Aufstieg eines Messias"
-    }
-  ],
-  "Components.Scuttle.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Wähle 1 oder 2 deiner Nicht-Jäger-Schiffe auf dem Spielplan aus und lege sie in deinen Nachschub zurück; du erhältst Handelswaren in Höhe der Gesamtkosten jener Schiffe."
-    }
-  ],
-  "Components.Scuttle.Title": [
-    {
-      "type": 0,
-      "value": "Schiffe verschrotten"
-    }
-  ],
-  "Components.Seize Artifact.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Wähle 1 deiner Nachbarn aus, der mindestens 1 Reliktfragment hat. Der ausgewählte Spieler muss dir 1 Reliktfragment deiner Wahl geben."
-    }
-  ],
-  "Components.Seize Artifact.Title": [
-    {
-      "type": 0,
-      "value": "Artefakt erbeuten"
-    }
-  ],
-  "Components.Signal Jamming.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Wähle 1 Nicht-Heimat-System, das 1 deiner Schiffe enthält oder an 1 deiner Schiffe angrenzt. Platziere einen Kommandomarker aus dem Nachschub eines anderen Spielers in jenem System."
-    }
-  ],
-  "Components.Signal Jamming.Title": [
-    {
-      "type": 0,
-      "value": "Signalstörung"
-    }
-  ],
-  "Components.Sling Relay.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Erschöpfe diese Karte, um 1 Schiff in einem beliebigen System, das 1 deiner Raumwerften enthält, zu produzieren."
-    }
-  ],
-  "Components.Sling Relay.Title": [
-    {
-      "type": 0,
-      "value": "Slingshot-Relais"
-    }
-  ],
-  "Components.Spy.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Wähle 1 Spieler. Jener Spieler gibt dir 1 zufällige Aktionskarte von seiner Hand."
-    }
-  ],
-  "Components.Spy.Title": [
-    {
-      "type": 0,
-      "value": "Spion"
-    }
-  ],
-  "Components.Stall Tactics.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Lege 1 Aktionskarte von deiner Hand ab."
-    }
-  ],
-  "Components.Stall Tactics.Title": [
-    {
-      "type": 0,
-      "value": "Verzögerungstaktik"
-    }
-  ],
-  "Components.Star Forge.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Gib 1 Marker aus deinem Strategiepool aus, um entweder 2 Jäger oder 1 Zerstörer aus deinem Nachschub in einem System zu platzieren, das mindestens 1 deiner Kriegssonnen enthält."
-    }
-  ],
-  "Components.Star Forge.Title": [
-    {
-      "type": 0,
-      "value": "Sternenschmiede"
-    }
-  ],
-  "Components.Stymie.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Platziere diese Karte offen in deinem Spielbereich."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "Solange diese Karte in deinem Spielbereich ist, darf der Arborec-Spieler in Nicht-Heimat-Systemen, die mindestens 1 deiner Einheiten enthalten, sowie in angrenzenden Systemen keine Einheiten produzieren."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "Falls du ein System aktivierst, das mindestens 1 Einheit des Arborec-Spielers enthält, gibst du diese Karte an den Arborec-Spieler zurück."
-    }
-  ],
-  "Components.Stymie.Title": [
-    {
-      "type": 0,
-      "value": "Wachstumshemmer"
-    }
-  ],
-  "Components.Tactical Bombardment.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Wähle 1 System, das mindestens 1 deiner Einheiten mit BOMBARDEMENT enthält. Erschöpfe alle Planeten unter der Kontrolle anderer Spieler in jenem System."
-    }
-  ],
-  "Components.Tactical Bombardment.Title": [
-    {
-      "type": 0,
-      "value": "Taktisches Bombardment"
-    }
-  ],
-  "Components.Terraform.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Lege diese Karte an einen von dir kontrollierten Nicht-Heimat-Planeten außer Mecatol Rex an."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "Sein Ressourcen- und Einflusswert erhöhen sich jeweils 1 und er wird behandelt, als hätte er alle 3 Planetenmerkmale (kulturell, gefährlich und industriell)."
-    }
-  ],
-  "Components.Terraform.Title": [
-    {
-      "type": 0,
-      "value": "Terraforming"
-    }
-  ],
-  "Components.The Inferno.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Gib 1 Marker aus deinem Strategiepool aus, um 1 Kreuzer im System dieser Einheit zu platzieren."
-    }
-  ],
-  "Components.The Inferno.Title": [
-    {
-      "type": 0,
-      "value": "Die Inferno"
-    }
-  ],
-  "Components.Trade Convoys.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Platziere diese Karte offen in deinem Spielbereich."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "Solange diese Karte in deinem Spielbereich ist, darfst du Transaktionen mit Spielen aushandeln, die nicht deine Nachbarn sind."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "Falls du ein System aktivierst, das mindestens 1 Einheit des Hacan-Spielers enthält, gibst du diese Karte an den Hacan-Spieler zurück."
-    }
-  ],
-  "Components.Trade Convoys.Title": [
-    {
-      "type": 0,
-      "value": "Handelskonvois"
-    }
-  ],
-  "Components.Unexpected Action.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Entferne 1 deiner Kommandomarker vom Spielplan und lege ihn in deinen Nachschub zurück."
-    }
-  ],
-  "Components.Unexpected Action.Title": [
-    {
-      "type": 0,
-      "value": "Unerwartete Aktion"
-    }
-  ],
-  "Components.Unstable Planet.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Wähle 1 gefährlichen Planeten. Erschöpfe ihn und zerstöre bis zu 3 Infanterie auf ihm."
-    }
-  ],
-  "Components.Unstable Planet.Title": [
-    {
-      "type": 0,
-      "value": "Instabiler Planet"
-    }
-  ],
-  "Components.Uprising.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Erschöpfe 1 Nicht-Heimat-Planeten unter der Kontrolle eines anderen Spielers. Dann erhältst du Handelswaren in Höhe seines Ressourcenwertes."
-    }
-  ],
-  "Components.Uprising.Title": [
-    {
-      "type": 0,
-      "value": "Aufstand"
-    }
-  ],
-  "Components.Veto.Title": [
-    {
-      "type": 0,
-      "value": "Veto"
-    }
-  ],
-  "Components.Vortex.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Erschöpfe diese Karte, um eine Nicht-Gebäude-Einheit eines anderen Spielers in einem System auszuwählen, das an mindestens 1 deiner Raumwerften angrenzt. Kapere 1 Einheit vom Typ der ausgewählten Einheit aus dem Nachschub jenes Spielers."
-    }
-  ],
-  "Components.Vortex.Title": [
-    {
-      "type": 0,
-      "value": "Vortex"
-    }
-  ],
-  "Components.War Effort.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Platziere 1 Kreuzer aus deinem Nachschub in einem System, das mindestens 1 deiner Schiffe enthält."
-    }
-  ],
-  "Components.War Effort.Title": [
-    {
-      "type": 0,
-      "value": "Kriegsmühen"
-    }
-  ],
-  "Components.Wormhole Generator.Description": [
-    {
-      "type": 0,
-      "value": "AKTION: Erschöpfe diese Karte, um einen Wurmlochmarker der Creuss entweder in ein System, das einen von dir kontrollierten Planeten enthält, oder in ein Nicht-Heimat-System, das keine Schiffe anderer Spieler enthält, zu bewegen oder platzieren."
-    }
-  ],
-  "Components.Wormhole Generator.Title": [
-    {
-      "type": 0,
-      "value": "Wurmloch-Generator Ω"
-    }
-  ],
-  "Components.X-89 Bacterial Weapon.Description": [
-    {
-      "type": 0,
-      "value": "ACTION: Erschöpfe diese Karte und wähle in einem System, das mindestens 1 deiner Schiffe mit BOMBARDEMENT enthält, 1 Planeten aus; zerstöre jede Infanterie auf dem ausgewähltem Planeten."
-    }
-  ],
-  "Components.X-89 Bacterial Weapon.Title": [
-    {
-      "type": 0,
-      "value": "Bakterieller Kampfstoff X-89"
     }
   ],
   "Council Keleres.Abilities.Council Patronage.Description": [
@@ -3763,7 +3017,7 @@
           "value": [
             {
               "type": 0,
-              "value": "Planet wurde"
+              "value": "Planet Wurde"
             }
           ]
         },
@@ -3771,7 +3025,7 @@
           "value": [
             {
               "type": 0,
-              "value": "Planeten wurden"
+              "value": "Planeten Wurden"
             }
           ]
         }
@@ -3782,7 +3036,7 @@
     },
     {
       "type": 0,
-      "value": " neulich erobert"
+      "value": " Neulich Erobert"
     }
   ],
   "EAsvAe": [
@@ -4891,6 +4145,12 @@
       "value": "Aktionskarten"
     }
   ],
+  "Hp1kqe": [
+    {
+      "type": 0,
+      "value": "Zug"
+    }
+  ],
   "IG7CG4": [
     {
       "type": 1,
@@ -4973,12 +4233,6 @@
     {
       "type": 0,
       "value": "Stufe I"
-    }
-  ],
-  "JS92Jj": [
-    {
-      "type": 0,
-      "value": "Zum Sprecher ernennen"
     }
   ],
   "Jdx9F+": [
@@ -7147,18 +6401,6 @@
       "value": "Lege grosse Reserven an"
     }
   ],
-  "Objectives.Holy Planet of Ixth.Description": [
-    {
-      "type": 0,
-      "value": "Verliehen an den derzeitigen Besitzer des Heiligen Planeten von Ixth."
-    }
-  ],
-  "Objectives.Holy Planet of Ixth.Title": [
-    {
-      "type": 0,
-      "value": "Der Heilige Planet Ixth"
-    }
-  ],
   "Objectives.Imperial Point.Description": [
     {
       "type": 0,
@@ -7169,18 +6411,6 @@
     {
       "type": 0,
       "value": "Imperium Punkt"
-    }
-  ],
-  "Objectives.Imperial Rider.Description": [
-    {
-      "type": 0,
-      "value": "Gib eine korrekte Prognose für eine Verordnung ab, während du \"Nachtrag zum Imperialen Gesetz\" verwendest."
-    }
-  ],
-  "Objectives.Imperial Rider.Title": [
-    {
-      "type": 0,
-      "value": "Nachtrag zum Imperialen Gesetz"
     }
   ],
   "Objectives.Improve Infrastructure.Description": [
@@ -7339,26 +6569,6 @@
       "value": "Errichte ein Monopol"
     }
   ],
-  "Objectives.Mutiny.Description": [
-    {
-      "type": 0,
-      "value": "DAFÜR : Jeder Spieler, der mit \"Dafür\" gestimmt hat, erhält 1 Siegpunkt."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "DAGEGEN : Jeder Spieler, der mit \"Dafür\" gestimmt hat, verliert 1 Siegpunkt."
-    }
-  ],
-  "Objectives.Mutiny.Title": [
-    {
-      "type": 0,
-      "value": "Meuterei"
-    }
-  ],
   "Objectives.Negotiate Trade Routes.Description": [
     {
       "type": 0,
@@ -7405,18 +6615,6 @@
     {
       "type": 0,
       "value": "Patrouilliere im Weltall"
-    }
-  ],
-  "Objectives.Political Censure.Description": [
-    {
-      "type": 0,
-      "value": "Verliehen an den Spieler, der für \"Ordnungsruf\" gewählt wurde."
-    }
-  ],
-  "Objectives.Political Censure.Title": [
-    {
-      "type": 0,
-      "value": "Ordnungsruf"
     }
   ],
   "Objectives.Populate the Outer Rim.Description": [
@@ -7527,18 +6725,6 @@
       "value": "Beherrsche ferne Lande"
     }
   ],
-  "Objectives.Seed of an Empire.Description": [
-    {
-      "type": 0,
-      "value": "Besitze entweder die meisten Siegpunkte wenn \"Entstehung eines neuen Imperiums\" angenommen wird, oder besitze die wenigsten Siegpunkte wenn \"Entstehung eines neuen Imperiums\" abgelehnt wird."
-    }
-  ],
-  "Objectives.Seed of an Empire.Title": [
-    {
-      "type": 0,
-      "value": "Entstehung eines neuen Imperiums"
-    }
-  ],
   "Objectives.Seize an Icon.Description": [
     {
       "type": 0,
@@ -7549,18 +6735,6 @@
     {
       "type": 0,
       "value": "Erobere ein Symbol"
-    }
-  ],
-  "Objectives.Shard of the Throne.Description": [
-    {
-      "type": 0,
-      "value": "Verliehen an den derzeitigen Besitzer von \"Scherbe des Throns\"."
-    }
-  ],
-  "Objectives.Shard of the Throne.Title": [
-    {
-      "type": 0,
-      "value": "Scherbe des Throns"
     }
   ],
   "Objectives.Spark a Rebellion.Description": [
@@ -7635,18 +6809,6 @@
       "value": "Beeinflusse den Rat"
     }
   ],
-  "Objectives.The Crown of Emphidia.Description": [
-    {
-      "type": 0,
-      "value": "Verliehen an den derzeitigen Besitzer von \"Die Krone der Emphidia\"."
-    }
-  ],
-  "Objectives.The Crown of Emphidia.Title": [
-    {
-      "type": 0,
-      "value": "Die Krone der Emphidia"
-    }
-  ],
   "Objectives.Threaten Enemies.Description": [
     {
       "type": 0,
@@ -7657,18 +6819,6 @@
     {
       "type": 0,
       "value": "Bedränge den Feind"
-    }
-  ],
-  "Objectives.Tomb + Crown of Emphidia.Description": [
-    {
-      "type": 0,
-      "value": "Falls du das \"Das Grab der Emphidia\" kontrollierst, darfst du \"Die Krone der Emphidia\" am Ende der Statusphase vernichten, um 1 Siegpunkt zu erhalten."
-    }
-  ],
-  "Objectives.Tomb + Crown of Emphidia.Title": [
-    {
-      "type": 0,
-      "value": "Grab und Krone der Emphidia"
     }
   ],
   "Objectives.Turn Their Fleets to Dust.Description": [
@@ -7733,42 +6883,6 @@
     {
       "type": 1,
       "value": "value"
-    }
-  ],
-  "OpsE1E": [
-    {
-      "options": {
-        "1": {
-          "value": [
-            {
-              "type": 0,
-              "value": "Erste"
-            }
-          ]
-        },
-        "2": {
-          "value": [
-            {
-              "type": 0,
-              "value": "Zweite"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "Erste"
-            }
-          ]
-        }
-      },
-      "type": 5,
-      "value": "num"
-    },
-    {
-      "type": 0,
-      "value": " Agenda"
     }
   ],
   "Outcomes.Cultural Planet": [
@@ -7986,7 +7100,31 @@
   "RBlsAq": [
     {
       "type": 0,
-      "value": "Aufgedeckte Stufe-I-Auftragskarten"
+      "value": "Aufgedeckte Stufe-I-"
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Auftragskarte"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Auftragskarten"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
   "Relics.Dominus Orb.Description": [
@@ -8148,15 +7286,7 @@
   "Relics.The Obsidian.Description": [
     {
       "type": 0,
-      "value": "Ziehe 1 geheimen Auftrag, sobald du diese Karte erhältst."
-    },
-    {
-      "type": 1,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "Du kannst 1 zusätzlichen gewerteten oder nicht-gewerteten geheimen Auftrag haben."
+      "value": "Ziehe 1 geheimen Auftrag, sobald du diese Karte erhältst. Du kannst 1 zusätzlichen gewerteten oder nicht-gewerteten geheimen Auftrag haben."
     }
   ],
   "Relics.The Obsidian.Title": [
@@ -9191,12 +8321,6 @@
       "value": "Map String"
     }
   ],
-  "UJs3kj": [
-    {
-      "type": 0,
-      "value": "Leeren Planeten beanspruchen"
-    }
-  ],
   "USnh0f": [
     {
       "type": 0,
@@ -9903,6 +9027,28 @@
       "value": "Duldung Ω"
     }
   ],
+  "Winnu.Promissories.Acquiescence.TE.Description": [
+    {
+      "type": 0,
+      "value": "When the Winnu player resolves a strategic action:"
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "You do not have to spend a command token to resolve the secondary ability of that strategy card."
+    },
+    {
+      "type": 1,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Then, return this card to the Winnu player."
+    }
+  ],
   "Winnu.Promissories.Acquiescence.Title": [
     {
       "type": 0,
@@ -10429,6 +9575,12 @@
       "value": "Dannel von der 10. Ω"
     }
   ],
+  "Yin Brotherhood.Leaders.Dannel of the Tenth.TE.AbilityName": [
+    {
+      "type": 0,
+      "value": "QUANTENSTREUUNG"
+    }
+  ],
   "Yin Brotherhood.Name": [
     {
       "type": 0,
@@ -10805,12 +9957,6 @@
       "value": "Wähle Fraktion"
     }
   ],
-  "c9hO6S": [
-    {
-      "type": 0,
-      "value": "Ermordeter Abgeordneter"
-    }
-  ],
   "cHsAYk": [
     {
       "type": 0,
@@ -10947,12 +10093,6 @@
       "value": "Commander"
     }
   ],
-  "g92Jbl": [
-    {
-      "type": 0,
-      "value": "Aktualisierungen sind pausiert"
-    }
-  ],
   "gQ0twG": [
     {
       "type": 0,
@@ -10963,12 +10103,6 @@
     {
       "type": 0,
       "value": "Geheim"
-    }
-  ],
-  "hCXyLw": [
-    {
-      "type": 0,
-      "value": "Strategiekarte wählen"
     }
   ],
   "hIFcXI": [
@@ -11188,12 +10322,6 @@
       "value": "Spiel starten"
     }
   ],
-  "m5acGq": [
-    {
-      "type": 0,
-      "value": "Stimmen abgeben (oder enthalten)"
-    }
-  ],
   "mcZgiQ": [
     {
       "type": 1,
@@ -11254,12 +10382,6 @@
     {
       "type": 0,
       "value": "Andere Siegpunkte"
-    }
-  ],
-  "oiV4lE": [
-    {
-      "type": 0,
-      "value": "Gesetze im Spiel"
     }
   ],
   "p4V2Yv": [
@@ -11344,10 +10466,10 @@
       "value": "Startmaterialien"
     }
   ],
-  "rqdwvE": [
+  "rmSsKq": [
     {
       "type": 0,
-      "value": "Spielerfarben"
+      "value": "Phase"
     }
   ],
   "sJ5zBj": [
@@ -11472,26 +10594,34 @@
   ],
   "t6v2oN": [
     {
-      "type": 0,
-      "value": "Verordnungen"
-    }
-  ],
-  "tM6gjG": [
-    {
-      "type": 0,
-      "value": "Verordnung"
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Verordnung"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Verordnungen"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
   "tocXJ4": [
     {
       "type": 0,
       "value": "Zurücksetzen"
-    }
-  ],
-  "uEqy1T": [
-    {
-      "type": 0,
-      "value": "Schliessem um fortzufahren"
     }
   ],
   "urcttb": [
@@ -11537,7 +10667,7 @@
   "vsuOf1": [
     {
       "type": 0,
-      "value": "Spiel beenden"
+      "value": "Spiel Beenden"
     }
   ],
   "wDLqxZ": [
@@ -11631,13 +10761,13 @@
   "xDzJ9/": [
     {
       "type": 0,
-      "value": "Spielplan anzeigen"
+      "value": "Spielplan Anzeigen"
     }
   ],
   "xhMq82": [
     {
       "type": 0,
-      "value": "Schiffe reparieren"
+      "value": "Schiffe Reparieren"
     }
   ],
   "xtgxwA": [
@@ -11710,12 +10840,6 @@
     {
       "type": 0,
       "value": "Codex III"
-    }
-  ],
-  "zjv9Gr": [
-    {
-      "type": 0,
-      "value": "(filters out non-claimable planets)"
     }
   ],
   "zlpl9F": [

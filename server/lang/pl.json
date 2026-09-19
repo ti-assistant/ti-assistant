@@ -91,6 +91,10 @@
     "description": "Instruction telling players to return strategy cards.",
     "defaultMessage": "Zwróć Karty Strategii"
   },
+  "0pQtUL": {
+    "description": "Credit for the polish translation of TI Assistant.",
+    "defaultMessage": "Polskie (pl) Tłumaczenie: {name}"
+  },
   "0rSMZW": {
     "description": "Text on a button specifying that the map style should be large.",
     "defaultMessage": "Duża"
@@ -446,6 +450,10 @@
   "K1ks2a": {
     "description": "A unit ability that allows a unit to use SPACE CANNON.",
     "defaultMessage": "DZIAŁO KOSMICZNE {value}"
+  },
+  "KeMh1j": {
+    "description": "Credit for the portuguese (pt-BR) translation of TI Assistant.",
+    "defaultMessage": "Portugalskie (pt-BR) Tłumacznie: {name}"
   },
   "KiioBO": {
     "description": "An ordering of factions based on end game scoring.",
