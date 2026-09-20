@@ -154,11 +154,15 @@ export async function processGames(baseData: BaseData) {
   const gameIds = await gamesRef.listDocuments();
   gameIds.forEach(async (val) => {
     const processed = processedGames.findIndex((p) => p.id === val.id);
-    if (processed !== -1) {
+    const archive = await db.collection("archive").doc(val.id).get();
+    if (processed !== -1 && archive.exists) {
       return;
     }
-    const gameData = (await val.get()).data() as StoredGameData;
+    const gameData = (await val.get()).data() as Optional<StoredGameData>;
     const actionLog = await getFullActionLog(val.id, "games");
+    if (!gameData) {
+      return;
+    }
 
     if (!isCompletedGame(gameData, baseData, actionLog)) {
       return;
@@ -168,16 +172,19 @@ export async function processGames(baseData: BaseData) {
       return;
     }
     const timers = await getTimers(val.id, "timers");
-    const processedGame = processGame(
-      structuredClone(fixedGame),
-      baseData,
-      timers,
-    );
-    if (!processedGame) {
-      return;
+    if (processed === -1) {
+      const processedGame = processGame(
+        structuredClone(fixedGame),
+        baseData,
+        timers,
+      );
+      if (!processedGame) {
+        return;
+      }
+      await db.collection("processed").doc(val.id).create(processedGame);
     }
-    await db.collection("processed").doc(val.id).create(processedGame);
     await archiveGame(fixedGame, val.id, timers);
+    console.log("Processed game", val.id);
   });
 }
 
