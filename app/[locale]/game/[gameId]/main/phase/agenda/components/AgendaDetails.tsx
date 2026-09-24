@@ -347,7 +347,7 @@ export default function AgendaDetails({
       );
       break;
     }
-    case "Minister of Antiques": {
+    case "Minister of Antiquities": {
       if (options.hide?.includes("RELICS")) {
         break;
       }

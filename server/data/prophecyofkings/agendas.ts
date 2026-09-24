@@ -105,22 +105,22 @@ export default function getProphecyOfKingsAgendas(
       }),
       type: "DIRECTIVE",
     },
-    "Minister of Antiques": {
+    "Minister of Antiquities": {
       description: intl.formatMessage(
         {
-          id: "Agendas.Minister of Antiques.Description",
-          description: "Description for Agenda Card: Minister of Antiques",
+          id: "Agendas.Minister of Antiquities.Description",
+          description: "Description for Agenda Card: Minister of Antiquities",
           defaultMessage: "The elected player gains 1 relic.",
         },
         { br: "\n\n" },
       ),
       elect: "Player",
       expansion: "POK",
-      id: "Minister of Antiques",
+      id: "Minister of Antiquities",
       name: intl.formatMessage({
-        id: "Agendas.Minister of Antiques.Title",
-        description: "Title of Agenda Card: Minister of Antiques",
-        defaultMessage: "Minister of Antiques",
+        id: "Agendas.Minister of Antiquities.Title",
+        description: "Title of Agenda Card: Minister of Antiquities",
+        defaultMessage: "Minister of Antiquities",
       }),
       type: "DIRECTIVE",
     },
