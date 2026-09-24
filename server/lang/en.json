@@ -232,7 +232,7 @@
     "description": "Text telling the user to reveal an objective."
   },
   "6ZifFF": {
-    "defaultMessage": "At the start of the edict phase, if your flagship is on the game board, draw and resolve 1 edict.",
+    "defaultMessage": "At the end of the edict phase, if your flagship is on the game board, draw and resolve 1 edict.",
     "description": "Instructions for Radiant Aur Edict Phase"
   },
   "73882v": {
@@ -1767,13 +1767,13 @@
     "defaultMessage": "Judicial Abolishment",
     "description": "Title of Agenda Card: Judicial Abolishment"
   },
-  "Agendas.Minister of Antiques.Description": {
+  "Agendas.Minister of Antiquities.Description": {
     "defaultMessage": "The elected player gains 1 relic.",
-    "description": "Description for Agenda Card: Minister of Antiques"
+    "description": "Description for Agenda Card: Minister of Antiquities"
   },
-  "Agendas.Minister of Antiques.Title": {
-    "defaultMessage": "Minister of Antiques",
-    "description": "Title of Agenda Card: Minister of Antiques"
+  "Agendas.Minister of Antiquities.Title": {
+    "defaultMessage": "Minister of Antiquities",
+    "description": "Title of Agenda Card: Minister of Antiquities"
   },
   "Agendas.Minister of Commerce.Description": {
     "defaultMessage": "The elected player gains this card.{br}After the owner of this card replenishes commodities, they gain 1 trade good for each player that is their neighbor.",
@@ -2734,6 +2734,10 @@
   "Components.Mercenaries for Hire.Description": {
     "defaultMessage": "ACTION: Spend 3 trade goods to gain the top card of the mercenary deck and place it in your play area.",
     "description": "Description for Component: Mercenaries for Hire"
+  },
+  "Components.Purge Relic.Title": {
+    "defaultMessage": "Purge Relic",
+    "description": "Title of Component: Purge Relic"
   },
   "Components.Stellar Atomics.Description": {
     "defaultMessage": "ACTION: Discard your control token from the Stellar Atomics card to destroy all ground forces and structures on any non-home planet.",
@@ -7228,7 +7232,7 @@
     "description": "Title of Tech: Wavelength Orange"
   },
   "Radiant Aur.Units.Airo Shir Rex.Description": {
-    "defaultMessage": "At the start of the edict phase, if this unit is on the game board, draw and resolve 1 edict.",
+    "defaultMessage": "At the end of the edict phase, if this unit is on the game board, draw and resolve 1 edict.",
     "description": "Description for Faction Unit: Airo Shir Rex"
   },
   "Radiant Aur.Units.Airo Shir Rex.Title": {

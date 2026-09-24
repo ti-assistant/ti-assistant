@@ -502,7 +502,7 @@
   "6ZifFF": [
     {
       "type": 0,
-      "value": "At the start of the edict phase, if your flagship is on the game board, draw and resolve 1 edict."
+      "value": "At the end of the edict phase, if your flagship is on the game board, draw and resolve 1 edict."
     }
   ],
   "73882v": [
@@ -3951,16 +3951,16 @@
       "value": "Judicial Abolishment"
     }
   ],
-  "Agendas.Minister of Antiques.Description": [
+  "Agendas.Minister of Antiquities.Description": [
     {
       "type": 0,
       "value": "The elected player gains 1 relic."
     }
   ],
-  "Agendas.Minister of Antiques.Title": [
+  "Agendas.Minister of Antiquities.Title": [
     {
       "type": 0,
-      "value": "Minister of Antiques"
+      "value": "Minister of Antiquities"
     }
   ],
   "Agendas.Minister of Commerce.Description": [
@@ -5993,6 +5993,12 @@
     {
       "type": 0,
       "value": "ACTION: Spend 3 trade goods to gain the top card of the mercenary deck and place it in your play area."
+    }
+  ],
+  "Components.Purge Relic.Title": [
+    {
+      "type": 0,
+      "value": "Purge Relic"
     }
   ],
   "Components.Stellar Atomics.Description": [
@@ -14508,7 +14514,7 @@
   "Radiant Aur.Units.Airo Shir Rex.Description": [
     {
       "type": 0,
-      "value": "At the start of the edict phase, if this unit is on the game board, draw and resolve 1 edict."
+      "value": "At the end of the edict phase, if this unit is on the game board, draw and resolve 1 edict."
     }
   ],
   "Radiant Aur.Units.Airo Shir Rex.Title": [

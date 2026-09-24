@@ -24,7 +24,7 @@ namespace ProphecyOfKings {
     | "Checks and Balances"
     | "Covert Legislation"
     | "Galactic Crisis Pact"
-    | "Minister of Antiques"
+    | "Minister of Antiquities"
     | "Nexus Sovereignty"
     | "Political Censure"
     | "Rearmament Agreement"
