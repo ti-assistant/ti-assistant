@@ -742,12 +742,18 @@ function ComponentDetails({ factionId }: { factionId: FactionId }) {
       innerContent = <ComponentActions.PlanetaryRigs factionId={factionId} />;
       break;
     }
+    case "Mathis Mathinus":
+    case "Sins of the Father": {
+      innerContent = (
+        <ComponentActions.Overrule allCards factionId={factionId} />
+      );
+      break;
+    }
     case "Overrule": {
       innerContent = <ComponentActions.Overrule factionId={factionId} />;
       break;
     }
-    case "Strategize":
-    case "Sins of the Father": {
+    case "Strategize": {
       innerContent = <ComponentActions.Strategize factionId={factionId} />;
       break;
     }
