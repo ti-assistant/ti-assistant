@@ -10,7 +10,13 @@ import { Events } from "../../../../../../../../src/util/api/events";
 import { rem } from "../../../../../../../../src/util/util";
 import StrategicActions from "../StrategicActions/StrategicActions";
 
-export default function Overrule({ factionId }: { factionId: FactionId }) {
+export default function Overrule({
+  allCards,
+  factionId,
+}: {
+  allCards?: boolean;
+  factionId: FactionId;
+}) {
   const currentTurn = useCurrentTurn();
   const dataUpdate = useDataUpdate();
   const strategyCards = useStrategyCards();
@@ -19,7 +25,7 @@ export default function Overrule({ factionId }: { factionId: FactionId }) {
   const selectedCard = getSelectedSubComponent(currentTurn);
 
   const validStrategyCards = Object.values(strategyCards).filter(
-    (card) => !card.used,
+    (card) => allCards || !card.used,
   );
 
   let additionalActions;
@@ -47,6 +53,34 @@ export default function Overrule({ factionId }: { factionId: FactionId }) {
         <StrategicActions.Imperial.Primary factionId={factionId} />
       );
       break;
+    case "Noctis": {
+      additionalActions = (
+        <StrategicActions.Noctis.Primary factionId={factionId} />
+      );
+      break;
+    }
+    case "Tyrannus": {
+      additionalActions = <StrategicActions.Tyrannus.Primary />;
+      break;
+    }
+    case "Calamitas": {
+      additionalActions = (
+        <StrategicActions.Calamitas.Primary factionId={factionId} />
+      );
+      break;
+    }
+    case "Magus": {
+      additionalActions = (
+        <StrategicActions.Magus.Primary factionId={factionId} />
+      );
+      break;
+    }
+    case "Aeterna": {
+      additionalActions = (
+        <StrategicActions.Aeterna.Primary factionId={factionId} />
+      );
+      break;
+    }
   }
 
   return (
