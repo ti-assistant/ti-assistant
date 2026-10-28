@@ -288,7 +288,7 @@ export function buildCompleteFactions(
     const factionId = id;
     const baseFaction = baseData.factions[factionId];
     if (!baseFaction) {
-      throw new Error("Unable to get base version of faction.");
+      throw new Error(`Unable to get base version of faction ${factionId}.`);
     }
 
     const omegaMergeFn = buildMergeFunction(storedGameData.options.expansions);

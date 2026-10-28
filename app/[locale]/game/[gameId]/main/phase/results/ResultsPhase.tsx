@@ -397,8 +397,8 @@ function buildSetupGameData(gameData: GameData): {
   for (const faction of Object.values(gameData.factions)) {
     factions[faction.mapPosition] = {
       color: faction.color,
-      name: faction.id,
-      id: faction.id,
+      name: faction.id === "Obsidian" ? "Firmament" : faction.id,
+      id: faction.id === "Obsidian" ? "Firmament" : faction.id,
       playerName: faction.playerName,
     };
   }
