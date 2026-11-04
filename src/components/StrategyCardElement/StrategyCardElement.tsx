@@ -123,51 +123,46 @@ export function StrategyCardElement({
     </>
   );
 
+  const style = {
+    ...strategyCardElementCSS,
+    padding: "unset",
+    "--border-color": card.color,
+    "--hover-color": card.color,
+  } as CSSProperties;
+
   if (onClick) {
     return (
       <button
         className={`${styles.StrategyCardElement} outline`}
         onClick={onClick}
-        style={
-          {
-            ...strategyCardElementCSS,
-            padding: "unset",
-            "--border-color": card.color,
-            "--hover-color": card.color,
-          } as CSSProperties
-        }
-      >
-        {innerContent}
-      </button>
-    );
-  } else {
-    return (
-      <button
-        className={`${styles.StrategyCardElement} outline`}
-        onClick={onClick}
-        disabled
-        style={
-          {
-            ...strategyCardElementCSS,
-            padding: "unset",
-            "--border-color": card.color,
-            "--hover-color": card.color,
-          } as CSSProperties
-        }
+        style={style}
       >
         {innerContent}
       </button>
     );
   }
 
+  // Browsers don't propagate clicks out of a disabled <button>, so interactive
+  // children (e.g. the Checks and Balances "Give to" menu) would never receive
+  // them. Render a <div> styled like the disabled button instead.
+  if (!card.faction && children) {
+    return (
+      <div
+        className={`${styles.StrategyCardElement} ${styles.Static}`}
+        style={style}
+      >
+        {innerContent}
+      </div>
+    );
+  }
+
   return (
-    <div
-      className={styles.StrategyCardElement}
-      onClick={onClick}
-      style={strategyCardElementCSS}
+    <button
+      className={`${styles.StrategyCardElement} outline`}
+      disabled
+      style={style}
     >
       {innerContent}
-    </div>
-    // </div>
+    </button>
   );
 }
