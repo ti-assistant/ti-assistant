@@ -483,22 +483,24 @@ export function StrategyCardSelectList({ mobile }: { mobile: boolean }) {
             }
             fontSize={mobile ? 20 : 24}
           >
-            <ChecksAndBalancesMenu
-              factionId={activeFactionId}
-              strategyCards={orderedStrategyCards}
-              onSelect={(factionId) => {
-                if (!activeFactionId) {
-                  return;
-                }
-                dataUpdate(
-                  Events.AssignStrategyCardEvent(
-                    factionId,
-                    card.id,
-                    activeFactionId,
-                  ),
-                );
-              }}
-            />
+            {checksAndBalances ? (
+              <ChecksAndBalancesMenu
+                factionId={activeFactionId}
+                strategyCards={orderedStrategyCards}
+                onSelect={(factionId) => {
+                  if (!activeFactionId) {
+                    return;
+                  }
+                  dataUpdate(
+                    Events.AssignStrategyCardEvent(
+                      factionId,
+                      card.id,
+                      activeFactionId,
+                    ),
+                  );
+                }}
+              />
+            ) : null}
           </StrategyCardElement>
         );
       })}

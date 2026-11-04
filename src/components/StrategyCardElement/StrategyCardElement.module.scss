@@ -15,6 +15,15 @@
   grid-column: 1 / 5;
 }
 
+// Matches a disabled `button.outline` for cards rendered as a <div> so that
+// their children can still be clicked.
+.Static {
+  box-sizing: content-box;
+  border: var(--border-size) solid var(--interactive-bg);
+  color: var(--interactive-bg);
+  line-height: 1.2em;
+}
+
 .StrategyCardElement:hover {
   background-color: var(--hovered-bg);
 }
