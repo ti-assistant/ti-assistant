@@ -26,11 +26,13 @@ import styles from "./ClaimPlanetsSection.module.scss";
 
 export default function ClaimPlanetsSection({
   availablePlanets,
+  blockExploration,
   factionId,
   numPlanets,
   hideWrapper,
 }: {
   availablePlanets: Planet[];
+  blockExploration?: boolean;
   factionId: FactionId;
   numPlanets?: number;
   hideWrapper?: boolean;
@@ -81,7 +83,11 @@ export default function ClaimPlanetsSection({
         </div>
       }
     >
-      <ClaimedPlanetsSection factionId={factionId} hideWrapper={hideWrapper} />
+      <ClaimedPlanetsSection
+        blockExploration={blockExploration}
+        factionId={factionId}
+        hideWrapper={hideWrapper}
+      />
       {!complete && availablePlanets.length > 0 ? (
         <ClientOnlyHoverMenu
           label={
@@ -125,9 +131,11 @@ export default function ClaimPlanetsSection({
 
 function ClaimedPlanetsSection({
   factionId,
+  blockExploration,
   hideWrapper,
 }: {
   factionId: FactionId;
+  blockExploration?: boolean;
   hideWrapper?: boolean;
 }) {
   const claimedPlanetEvents = useClaimedPlanetEvents(factionId);
@@ -140,7 +148,13 @@ function ClaimedPlanetsSection({
     return (
       <div className={styles.ClaimedPlanetsSection}>
         {claimedPlanetEvents.map((event) => {
-          return <ClaimedPlanetRow key={event.planet} event={event} />;
+          return (
+            <ClaimedPlanetRow
+              key={event.planet}
+              blockExploration={blockExploration}
+              event={event}
+            />
+          );
         })}
       </div>
     );
@@ -166,7 +180,13 @@ function ClaimedPlanetsSection({
   );
 }
 
-export function ClaimedPlanetRow({ event }: { event: ClaimPlanetEvent }) {
+export function ClaimedPlanetRow({
+  event,
+  blockExploration,
+}: {
+  event: ClaimPlanetEvent;
+  blockExploration?: boolean;
+}) {
   const attachments = useAttachments();
   const dataUpdate = useDataUpdate();
   const planets = usePlanets();
@@ -204,7 +224,7 @@ export function ClaimedPlanetRow({ event }: { event: ClaimPlanetEvent }) {
             }}
           />
         </div>
-        <AddAttachment event={event} />
+        {blockExploration ? null : <AddAttachment event={event} />}
       </div>
       {!event.prevOwner && adjustedPlanet.attributes.includes("relic") ? (
         <div style={{ marginLeft: rem(16) }}>
