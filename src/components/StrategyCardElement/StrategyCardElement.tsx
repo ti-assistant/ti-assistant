@@ -123,51 +123,44 @@ export function StrategyCardElement({
     </>
   );
 
+  const style = {
+    ...strategyCardElementCSS,
+    padding: "unset",
+    "--border-color": card.color,
+    "--hover-color": card.color,
+  } as CSSProperties;
+
   if (onClick) {
     return (
       <button
         className={`${styles.StrategyCardElement} outline`}
         onClick={onClick}
-        style={
-          {
-            ...strategyCardElementCSS,
-            padding: "unset",
-            "--border-color": card.color,
-            "--hover-color": card.color,
-          } as CSSProperties
-        }
-      >
-        {innerContent}
-      </button>
-    );
-  } else {
-    return (
-      <button
-        className={`${styles.StrategyCardElement} outline`}
-        onClick={onClick}
-        disabled
-        style={
-          {
-            ...strategyCardElementCSS,
-            padding: "unset",
-            "--border-color": card.color,
-            "--hover-color": card.color,
-          } as CSSProperties
-        }
+        style={style}
       >
         {innerContent}
       </button>
     );
   }
 
+  if (!card.faction && children && active) {
+    return (
+      <div
+        className={`${styles.StrategyCardElement} ${styles.FakeButton}`}
+        onClick={onClick}
+        style={style}
+      >
+        {innerContent}
+      </div>
+    );
+  }
+
   return (
-    <div
-      className={styles.StrategyCardElement}
-      onClick={onClick}
-      style={strategyCardElementCSS}
+    <button
+      className={`${styles.StrategyCardElement} outline`}
+      disabled
+      style={style}
     >
       {innerContent}
-    </div>
-    // </div>
+    </button>
   );
 }
