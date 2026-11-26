@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { Dispatch, JSX, SetStateAction, useState } from "react";
 import { FormattedMessage, IntlShape, useIntl } from "react-intl";
+import { FactionCard } from "../../../../../../../src/components/Card/Card";
 import Chip from "../../../../../../../src/components/Chip/Chip";
-import FactionDiv from "../../../../../../../src/components/LabeledDiv/FactionDiv";
+import ChipGroup from "../../../../../../../src/components/Chip/ChipGroup";
 import InauguralSplice from "../../../../../../../src/components/StartingComponents/InauguralSplice";
+import RapidMobilization from "../../../../../../../src/components/StartingComponents/RapidMobilization";
 import StartingComponents from "../../../../../../../src/components/StartingComponents/StartingComponents";
 import { useOptions } from "../../../../../../../src/context/dataHooks";
 import { useOrderedFactionIds } from "../../../../../../../src/context/gameDataHooks";
@@ -11,10 +13,6 @@ import { rem } from "../../../../../../../src/util/util";
 import FinishPhaseButton from "./FinishPhaseButton";
 import styles from "./SetupPhase.module.scss";
 import SetupSteps from "./SetupSteps";
-import ChipGroup from "../../../../../../../src/components/Chip/ChipGroup";
-import { FactionCard } from "../../../../../../../src/components/Card/Card";
-import FactionName from "../../../../../../../src/components/FactionComponents/FactionName";
-import { useFactionColors } from "../../../../../../../src/context/factionDataHooks";
 
 function factionTechChoicesComplete(
   factions: Partial<Record<FactionId, Faction>>,
@@ -109,6 +107,88 @@ function getSetupPhaseText(
   );
 }
 
+type Section =
+  | "STARTING COMPONENTS"
+  | "INAUGURAL SPLICE"
+  | "RAPID MOBILIZATION";
+
+interface SetupPhaseSection {
+  section: Section;
+  element: JSX.Element;
+}
+
+function SetupPhaseSectionHeader({
+  selectedSection,
+  switchSection,
+  options,
+}: {
+  selectedSection: Section;
+  switchSection: Dispatch<SetStateAction<Section>>;
+  options: Options;
+}) {
+  const sections: SetupPhaseSection[] = [
+    {
+      section: "STARTING COMPONENTS",
+      element: (
+        <FormattedMessage
+          id="rlGbdz"
+          description="A label for a section of components that a faction starts with."
+          defaultMessage="Starting Components"
+        />
+      ),
+    },
+  ];
+
+  if (
+    options.expansions.includes("TWILIGHTS FALL") &&
+    !options.hide?.includes("TECHS")
+  ) {
+    sections.push({
+      section: "INAUGURAL SPLICE",
+      element: (
+        <FormattedMessage
+          id="fHRZ5N"
+          description="A step in the setup phase: The inaugural splice."
+          defaultMessage="Inaugural Splice"
+        />
+      ),
+    });
+  }
+
+  if (options.events?.includes("Rapid Mobilization")) {
+    sections.push({
+      section: "RAPID MOBILIZATION",
+      element: (
+        <FormattedMessage
+          id="Events.Rapid Mobilization.Title"
+          description="Title of Event: Rapid Mobilization"
+          defaultMessage="Rapid Mobilization"
+        />
+      ),
+    });
+  }
+
+  if (sections.length > 1) {
+    return (
+      <ChipGroup>
+        {sections.map((section) => {
+          return (
+            <Chip
+              toggleFn={() => switchSection(section.section)}
+              selected={section.section === selectedSection}
+              fontSize={16}
+            >
+              {section.element}
+            </Chip>
+          );
+        })}
+      </ChipGroup>
+    );
+  }
+
+  return sections[0]?.element;
+}
+
 export default function SetupPhase() {
   const options = useOptions();
 
@@ -116,8 +196,7 @@ export default function SetupPhase() {
 
   const intl = useIntl();
 
-  const [showInauguralSplice, setShowInauguralSplice] =
-    useState<boolean>(false);
+  const [section, switchSection] = useState<Section>("STARTING COMPONENTS");
 
   return (
     <>
@@ -139,39 +218,11 @@ export default function SetupPhase() {
             className="flexRow"
             style={{ width: "100%", justifyContent: "center" }}
           >
-            {options.expansions.includes("TWILIGHTS FALL") &&
-            !options.hide?.includes("TECHS") ? (
-              <ChipGroup>
-                <Chip
-                  toggleFn={() => setShowInauguralSplice(false)}
-                  selected={!showInauguralSplice}
-                  fontSize={16}
-                >
-                  <FormattedMessage
-                    id="rlGbdz"
-                    description="A label for a section of components that a faction starts with."
-                    defaultMessage="Starting Components"
-                  />
-                </Chip>
-                <Chip
-                  toggleFn={() => setShowInauguralSplice(true)}
-                  selected={showInauguralSplice}
-                  fontSize={16}
-                >
-                  <FormattedMessage
-                    id="fHRZ5N"
-                    description="A step in the setup phase: The inaugural splice."
-                    defaultMessage="Inaugural Splice"
-                  />
-                </Chip>
-              </ChipGroup>
-            ) : (
-              <FormattedMessage
-                id="rlGbdz"
-                description="A label for a section of components that a faction starts with."
-                defaultMessage="Starting Components"
-              />
-            )}
+            <SetupPhaseSectionHeader
+              selectedSection={section}
+              switchSection={switchSection}
+              options={options}
+            />
           </div>
           <div
             style={{
@@ -185,7 +236,7 @@ export default function SetupPhase() {
           >
             {Object.values(orderedFactionIds).map((factionId) => {
               return (
-                <FactionCard factionId={factionId}>
+                <FactionCard key={factionId} factionId={factionId}>
                   <div
                     className="flexColumn"
                     style={{
@@ -194,14 +245,10 @@ export default function SetupPhase() {
                       width: "100%",
                     }}
                   >
-                    {showInauguralSplice ? (
-                      <InauguralSplice factionId={factionId} />
-                    ) : (
-                      <StartingComponents
-                        factionId={factionId}
-                        showFactionIcon
-                      />
-                    )}
+                    <SetupPhaseSections
+                      factionId={factionId}
+                      section={section}
+                    />
                   </div>
                 </FactionCard>
               );
@@ -212,4 +259,21 @@ export default function SetupPhase() {
       </div>
     </>
   );
+}
+
+function SetupPhaseSections({
+  factionId,
+  section,
+}: {
+  factionId: FactionId;
+  section: Section;
+}) {
+  switch (section) {
+    case "STARTING COMPONENTS":
+      return <StartingComponents factionId={factionId} showFactionIcon />;
+    case "INAUGURAL SPLICE":
+      return <InauguralSplice factionId={factionId} />;
+    case "RAPID MOBILIZATION":
+      return <RapidMobilization factionId={factionId} />;
+  }
 }
